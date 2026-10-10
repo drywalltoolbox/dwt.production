@@ -1,21 +1,7 @@
-name: Publish or roll back SiteGround staging (manual only)
+name: Deploy Latest Frontend to Staging
 
 on:
   workflow_dispatch:
-    inputs:
-      action:
-        description: "Staging-only action"
-        required: true
-        type: choice
-        options: [publish, rollback]
-      source_sha:
-        description: "Optional for publish (auto-select latest successful build); required for rollback"
-        required: false
-        type: string
-      build_run_id:
-        description: "Optional for publish; provide with source SHA to pin a specific build"
-        required: false
-        type: string
 
 permissions:
   contents: read
@@ -31,24 +17,16 @@ jobs:
     timeout-minutes: 25
     environment: staging
     env:
-      RELEASE_ACTION: ${{ inputs.action }}
+      RELEASE_ACTION: publish
       SITEGROUND_HOST: ${{ secrets.SITEGROUND_STAGING_SSH_HOST }}
       SITEGROUND_USER: ${{ secrets.SITEGROUND_STAGING_SSH_USER }}
       SITEGROUND_PORT: ${{ secrets.SITEGROUND_STAGING_SSH_PORT }}
       STAGING_ROOT: ${{ secrets.SITEGROUND_STAGING_PUBLIC_DIR }}
       RELEASE_ROOT: ${{ secrets.SITEGROUND_STAGING_RELEASE_DIR }}
     steps:
-      - name: Validate input and publication credentials
-        env:
-          REQUESTED_SHA: ${{ inputs.source_sha }}
-          REQUESTED_RUN_ID: ${{ inputs.build_run_id }}
+      - name: Validate staging deployment configuration
         run: |
           set -euo pipefail
-          [[ "$RELEASE_ACTION" == publish || "$RELEASE_ACTION" == rollback ]] || exit 2
-          if [[ "$RELEASE_ACTION" == rollback ]]; then
-            [[ "$REQUESTED_SHA" =~ ^[a-f0-9]{40}$ ]] || { echo "::error::Rollback requires the current release SHA"; exit 2; }
-            [[ -z "$REQUESTED_RUN_ID" ]] || { echo "::error::Rollback must not include a build run ID"; exit 2; }
-          fi
           for name in SITEGROUND_HOST SITEGROUND_USER STAGING_ROOT RELEASE_ROOT; do
             [[ -n "${!name}" ]] || { echo "::error::Missing staging deployment environment secret: $name"; exit 2; }
           done
@@ -60,22 +38,16 @@ jobs:
           persist-credentials: false
 
       - name: Test staging build resolver
-        if: inputs.action == 'publish'
         run: python3 -m unittest discover -s scripts/deployment/tests -p 'test_resolve_staging_build.py'
 
       - name: Resolve and validate staging build
-        if: inputs.action == 'publish'
         env:
           GH_TOKEN: ${{ github.token }}
-          REQUESTED_SHA: ${{ inputs.source_sha }}
-          REQUESTED_RUN_ID: ${{ inputs.build_run_id }}
         run: |
           set -euo pipefail
-          python3 scripts/deployment/resolve-staging-build.py \
-            --source-sha "$REQUESTED_SHA" --build-run-id "$REQUESTED_RUN_ID"
+          python3 scripts/deployment/resolve-staging-build.py
 
       - name: Obtain successful build artifact
-        if: inputs.action == 'publish'
         uses: actions/download-artifact@v4
         with:
           name: dtb-staging-${{ env.RELEASE_SHA }}
@@ -84,7 +56,6 @@ jobs:
           path: validated-artifact
 
       - name: Validate build provenance and unpack safely
-        if: inputs.action == 'publish'
         run: |
           set -euo pipefail
           [[ "$(cat validated-artifact/staging-source-sha.txt)" == "$RELEASE_SHA" ]] ||
@@ -120,12 +91,6 @@ jobs:
           done
           cp validated-artifact/staging-artifact-sha256.txt payload/.dtb-file-sha256
 
-      - name: Set rollback release identity
-        if: inputs.action == 'rollback'
-        env:
-          REQUESTED_SHA: ${{ inputs.source_sha }}
-        run: echo "RELEASE_SHA=$REQUESTED_SHA" >> "$GITHUB_ENV"
-
       - name: Configure staging SSH identity
         env:
           SSH_KEY: ${{ secrets.SITEGROUND_STAGING_SSH_PRIVATE_KEY }}
@@ -138,7 +103,6 @@ jobs:
           chmod 600 ~/.ssh/id_staging
 
       - name: Detect already published staging release
-        if: inputs.action == 'publish'
         run: |
           set -euo pipefail
           printf -v remote '%q ' bash -s -- "$RELEASE_ROOT" "$RELEASE_SHA"
@@ -158,7 +122,7 @@ jobs:
           fi
 
       - name: Prepare private incoming release directory
-        if: inputs.action == 'publish' && env.ALREADY_PUBLISHED != 'true'
+        if: env.ALREADY_PUBLISHED != 'true'
         run: |
           set -euo pipefail
           printf -v remote '%q ' bash -s -- prepare "$STAGING_ROOT" "$RELEASE_ROOT" "$RELEASE_SHA"
@@ -166,7 +130,7 @@ jobs:
             "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < scripts/deployment/staging-release.sh
 
       - name: Transfer artifact outside webroot
-        if: inputs.action == 'publish' && env.ALREADY_PUBLISHED != 'true'
+        if: env.ALREADY_PUBLISHED != 'true'
         run: |
           set -euo pipefail
           printf -v remote_dest '%q' "$RELEASE_ROOT/incoming/$RELEASE_SHA/"
@@ -174,8 +138,8 @@ jobs:
             -e "ssh -i $HOME/.ssh/id_staging -p ${SITEGROUND_PORT:-22} -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
             payload/ "$SITEGROUND_USER@$SITEGROUND_HOST:$remote_dest"
 
-      - name: Publish or roll back staging with lock
-        if: inputs.action == 'rollback' || env.ALREADY_PUBLISHED != 'true'
+      - name: Publish staging with lock
+        if: env.ALREADY_PUBLISHED != 'true'
         run: |
           set -euo pipefail
           printf -v remote '%q ' bash -s -- "$RELEASE_ACTION" "$STAGING_ROOT" "$RELEASE_ROOT" "$RELEASE_SHA"
@@ -183,7 +147,7 @@ jobs:
             "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < scripts/deployment/staging-release.sh
 
       - name: Verify staging HTTP shell and noindex response
-        if: inputs.action == 'publish' || inputs.action == 'rollback'
+        
         run: |
           set -euo pipefail
           headers="$(mktemp)"
