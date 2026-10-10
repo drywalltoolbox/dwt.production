@@ -1,0 +1,39 @@
+# SiteGround staging deployment control plane
+
+## Authority and boundaries
+
+GitHub Actions in `drywalltoolbox/dwt.production` is the sole executor for the React storefront's SiteGround staging publication. ChatGPT agents and MCP integrations may request and inspect a run only through an explicitly authorized GitHub Actions workflow-dispatch integration. Neither the storefront nor WordPress/DTB MCP should accept arbitrary SSH credentials or independently publish frontend files.
+
+- Build: `.github/workflows/staging-frontend-build.yml` (validated `dtb-staging-<sha>` artifact, 14-day retention).
+- Publish/rollback: `.github/workflows/staging-frontend-publish.yml`.
+- Build resolver: `scripts/deployment/resolve-staging-build.py`.
+- Remote staging release executor: `scripts/deployment/staging-release.sh`.
+- Read-only SSH preflight: `.github/workflows/staging-ssh-preflight.yml`.
+
+## Publication contract
+
+The publication workflow is manual (`workflow_dispatch`) and uses the protected `staging` environment.
+
+- **Publish, automatic:** select `publish` and leave `source_sha` and `build_run_id` blank. The resolver chooses the most recent `main` staging-build run. It **fails closed** if that run is not successful, its artifact is missing/expired, or its identity/provenance is invalid. It never falls back silently to an older successful run.
+- **Publish, pinned:** supply both the 40-character source SHA and successful build run ID. The resolver verifies that the run belongs to the intended staging build workflow, the repository and `main` branch, and that its artifact matches the SHA.
+- **Rollback:** select `rollback`, provide the *current published release SHA*, and leave `build_run_id` blank. The remote script requires an existing snapshot and rejects mismatched release identities. A rollback is a deliberate mutation and must never be triggered automatically on a failed health check without operator approval.
+
+Build provenance, checksums, staging-only target validation, a release lock, snapshots, and HTTP/noindex verification remain enforced by the existing workflow. A successful HTTP shell/noindex check is not a comprehensive browser, commerce, or integration test.
+
+## Agent integration contract (not yet connected)
+
+A future agent-facing GitHub integration must expose narrowly scoped **workflow dispatch** for the exact repository and workflow, and read-only workflow run/job/log access. Enforce the connected user's authorization, audit identity, explicit staging-only action allowlist, and approval for destructive rollback. Do not expose a generic arbitrary-workflow dispatcher or long-lived GitHub credential to the storefront, WordPress, logs, or ChatGPT messages.
+
+The current connected GitHub MCP tools can inspect run jobs and logs but **do not expose workflow dispatch**. Thus ChatGPT can review deployment outcomes, but cannot currently initiate a new run directly. Operators can start it at GitHub Actions until an authorized dispatch capability is connected. The automated artifact resolver does not change that limitation.
+
+## Operational verification and recovery
+
+1. Confirm the desired frontend build succeeded and has an unexpired artifact. For automatic publish, ensure the most recent `main` build succeeded.
+2. Dispatch the staging publish workflow and inspect its GitHub Actions run.
+3. Verify the explicit `Published staging release: <sha>` log entry and successful HTTP/noindex step.
+4. If a publication fails, **inspect before retrying**. The remote `incoming/<sha>` directory may remain after a failed attempt; blindly rerunning the same SHA can be refused by the release script.
+5. For rollback, inspect the current release and snapshot, explicitly authorize the rollback, and dispatch with the current release SHA. Verify restoration in the run logs and staging HTTP response.
+
+## Security and residual risks
+
+The staging SSH private key is stored only as a GitHub `staging` environment secret. Never commit or print it. The remote release root is outside `public_html`; the publication target is restricted to `public_html/staging`. The existing SSH commands currently disable host-key verification; pin a verified SiteGround host key in a future security-hardening change. The previously exposed SiteGround key must be retired once its dependencies are checked. A successful initial staging publication does not prove rollback or agent-dispatch behavior.
