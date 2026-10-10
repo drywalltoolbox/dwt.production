@@ -1,0 +1,80 @@
+name: Rollback Staging to Previous Release
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: siteground-staging-publish
+  cancel-in-progress: false
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment: staging
+    env:
+      SITEGROUND_HOST: ${{ secrets.SITEGROUND_STAGING_SSH_HOST }}
+      SITEGROUND_USER: ${{ secrets.SITEGROUND_STAGING_SSH_USER }}
+      SITEGROUND_PORT: ${{ secrets.SITEGROUND_STAGING_SSH_PORT }}
+      STAGING_ROOT: ${{ secrets.SITEGROUND_STAGING_PUBLIC_DIR }}
+      RELEASE_ROOT: ${{ secrets.SITEGROUND_STAGING_RELEASE_DIR }}
+    steps:
+      - name: Validate staging rollback configuration
+        run: |
+          set -euo pipefail
+          for name in SITEGROUND_HOST SITEGROUND_USER STAGING_ROOT RELEASE_ROOT; do
+            [[ -n "${!name}" ]] || { echo "::error::Missing staging environment secret: $name"; exit 2; }
+          done
+          [[ "$STAGING_ROOT" = /* && "$RELEASE_ROOT" = /* ]] || exit 2
+
+      - name: Check out release script
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Configure staging SSH identity
+        env:
+          SSH_KEY: ${{ secrets.SITEGROUND_STAGING_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          [[ -n "$SSH_KEY" ]] || { echo "::error::Staging SSH key is required"; exit 2; }
+          mkdir -m 700 -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_staging
+          chmod 600 ~/.ssh/id_staging
+
+      - name: Roll back the current staging release under lock
+        run: |
+          set -euo pipefail
+          printf -v remote '%q ' bash -s -- rollback "$STAGING_ROOT" "$RELEASE_ROOT" auto
+          ssh -i ~/.ssh/id_staging -p "${SITEGROUND_PORT:-22}" -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < scripts/deployment/staging-release.sh
+
+      - name: Verify staging HTTP shell and noindex response
+        run: |
+          set -euo pipefail
+          headers="$(mktemp)"
+          curl --fail --silent --show-error --location --max-time 30 \
+            --dump-header "$headers" -o /tmp/dtb-staging.html \
+            https://drywalltoolbox.com/staging/
+          grep -qi '<html' /tmp/dtb-staging.html
+          grep -qi 'x-robots-tag:.*noindex' "$headers" ||
+            { echo "::error::Staging noindex header missing"; exit 2; }
+
+      - name: Summarize rollback result
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          {
+            echo "## SiteGround staging rollback"
+            echo ""
+            echo "| Field | Value |"
+            echo "| --- | --- |"
+            echo "| Action | rollback previous release |"
+            echo "| Job status | \`$JOB_STATUS\` |"
+            echo "| Workflow run | [View run](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID) |"
+            echo "| Staging URL | https://drywalltoolbox.com/staging/ |"
+          } >> "$GITHUB_STEP_SUMMARY"
