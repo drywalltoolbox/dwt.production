@@ -168,3 +168,21 @@ jobs:
           grep -qi '<html' /tmp/dtb-staging.html
           grep -qi 'x-robots-tag:.*noindex' "$headers" ||
             { echo "::error::Staging noindex header missing"; exit 2; }
+
+      - name: Summarize staging deployment outcome
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          {
+            echo "## SiteGround staging deployment"
+            echo ""
+            echo "| Field | Value |"
+            echo "| --- | --- |"
+            echo "| Action | \`$RELEASE_ACTION\` |"
+            echo "| Job status | \`$JOB_STATUS\` |"
+            echo "| Source SHA | \`${RELEASE_SHA:-not resolved}\` |"
+            echo "| Build run ID | \`${BUILD_RUN_ID:-not applicable}\` |"
+            echo "| Workflow run | [View run](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID) |"
+            echo "| Staging URL | https://drywalltoolbox.com/staging/ |"
+          } >> "$GITHUB_STEP_SUMMARY"
