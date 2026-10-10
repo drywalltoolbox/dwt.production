@@ -133,8 +133,28 @@ jobs:
           printf '%s\n' "$SSH_KEY" > ~/.ssh/id_staging
           chmod 600 ~/.ssh/id_staging
 
-      - name: Prepare private incoming release directory
+      - name: Detect already published staging release
         if: inputs.action == 'publish'
+        run: |
+          set -euo pipefail
+          printf -v remote '%q ' bash -s -- "$RELEASE_ROOT" "$RELEASE_SHA"
+          if ssh -i ~/.ssh/id_staging -p "${SITEGROUND_PORT:-22}" -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" <<'REMOTE'
+          set -euo pipefail
+          private="$1"
+          release="$2"
+          [[ -d "$private" && ! -L "$private" ]] || exit 2
+          current="$private/current-release"
+          [[ -f "$current" && ! -L "$current" ]] || exit 1
+          [[ "$(cat "$current")" == "$release" ]]
+          REMOTE
+          then
+            echo "ALREADY_PUBLISHED=true" >> "$GITHUB_ENV"
+            echo "Requested staging release is already current; publication will be skipped."
+          fi
+
+      - name: Prepare private incoming release directory
+        if: inputs.action == 'publish' && env.ALREADY_PUBLISHED != 'true'
         run: |
           set -euo pipefail
           printf -v remote '%q ' bash -s -- prepare "$STAGING_ROOT" "$RELEASE_ROOT" "$RELEASE_SHA"
@@ -142,7 +162,7 @@ jobs:
             "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < scripts/deployment/staging-release.sh
 
       - name: Transfer artifact outside webroot
-        if: inputs.action == 'publish'
+        if: inputs.action == 'publish' && env.ALREADY_PUBLISHED != 'true'
         run: |
           set -euo pipefail
           printf -v remote_dest '%q' "$RELEASE_ROOT/incoming/$RELEASE_SHA/"
@@ -151,6 +171,7 @@ jobs:
             payload/ "$SITEGROUND_USER@$SITEGROUND_HOST:$remote_dest"
 
       - name: Publish or roll back staging with lock
+        if: inputs.action == 'rollback' || env.ALREADY_PUBLISHED != 'true'
         run: |
           set -euo pipefail
           printf -v remote '%q ' bash -s -- "$RELEASE_ACTION" "$STAGING_ROOT" "$RELEASE_ROOT" "$RELEASE_SHA"
@@ -181,6 +202,7 @@ jobs:
             echo "| --- | --- |"
             echo "| Action | \`$RELEASE_ACTION\` |"
             echo "| Job status | \`$JOB_STATUS\` |"
+            echo "| Already current | \`${ALREADY_PUBLISHED:-false}\` |"
             echo "| Source SHA | \`${RELEASE_SHA:-not resolved}\` |"
             echo "| Build run ID | \`${BUILD_RUN_ID:-not applicable}\` |"
             echo "| Workflow run | [View run](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID) |"
