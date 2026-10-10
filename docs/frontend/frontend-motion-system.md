@@ -267,3 +267,12 @@ Motion is bounded to the campaign content and active navigation indicator. The s
 The current responsive artwork remains the LCP authority until campaign-specific media is produced. Future hero assets must preserve browser-native `<picture>` art direction, a stable text-safe composition, compressed responsive sources, and the existing media/content layer separation rather than introducing JavaScript viewport branching.
 
 `frontend/tests/homeHeroResponsiveMediaContract.test.mjs` protects this contract, including responsive art direction, LCP priority, explicit manual navigation semantics, reduced-motion support, layer ordering, and compressed asset bounds.
+
+
+### Mobile scroll and input responsiveness (October 2026)
+
+The browser owns the vertical page scroll, horizontal rail inertia, axis arbitration, and overscroll behavior. Keep scroll snapping optional (proximity) on narrow coarse-pointer product rails rather than routing each pointer movement through React state or replacing native momentum with a JavaScript smooth-scroll library. Avoid global `touchmove` interception, synthetic rubber-band physics, per-frame layout writes, and page-wide `will-change`.
+
+Product rail cards do **not** initiate speculative PDP and quick-view fetches on touch `pointerdown`: initial contact can be the start of an inertial swipe. Preserve the existing intent preloading on focus and mouse/pen pointer entry; actual taps still open the existing product interaction. This keeps touch input handling lightweight without changing catalog, cart, modal, or checkout authorities.
+
+Performance acceptance must use production-build mobile traces for interaction delay, main-thread long tasks, stable layout and actual touch frame pacing. The static source contracts are guardrails, not replacements for Safari/Chrome device measurements. Reference material: MDN CSS Scroll Snap, MDN touch-action and overscroll-behavior, and web.dev Interaction to Next Paint optimization guidance.
