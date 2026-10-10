@@ -159,6 +159,14 @@ export default function ProductModal({ isOpen, product, onClose, children }) {
   useEffect(() => {
     if (!isOpen) return undefined;
     const handler = (event) => {
+      // The product gallery can open its own body-portaled full-screen image
+      // dialog. The parent's focus trap must never intercept that dialog's
+      // keyboard handling or steal its focus on Tab.
+      const nestedDialog = event.target instanceof Element
+        ? event.target.closest('[role="dialog"][aria-modal="true"]')
+        : null;
+      if (nestedDialog && nestedDialog !== scrollRef.current
+        && !scrollRef.current?.contains(nestedDialog)) return;
       if (event.key === 'Escape') {
         event.stopPropagation();
         onClose();
