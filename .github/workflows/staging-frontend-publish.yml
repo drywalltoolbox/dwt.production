@@ -9,11 +9,11 @@ on:
         type: choice
         options: [publish, rollback]
       source_sha:
-        description: "40-character build source SHA (or current release SHA when rolling back)"
-        required: true
+        description: "Optional for publish (auto-select latest successful build); required for rollback"
+        required: false
         type: string
       build_run_id:
-        description: "Successful staging build run ID (required for publish)"
+        description: "Optional for publish; provide with source SHA to pin a specific build"
         required: false
         type: string
 
@@ -31,8 +31,6 @@ jobs:
     timeout-minutes: 25
     environment: staging
     env:
-      RELEASE_SHA: ${{ inputs.source_sha }}
-      BUILD_RUN_ID: ${{ inputs.build_run_id }}
       RELEASE_ACTION: ${{ inputs.action }}
       SITEGROUND_HOST: ${{ secrets.SITEGROUND_STAGING_SSH_HOST }}
       SITEGROUND_USER: ${{ secrets.SITEGROUND_STAGING_SSH_USER }}
@@ -43,10 +41,10 @@ jobs:
       - name: Validate input and publication credentials
         run: |
           set -euo pipefail
-          [[ "$RELEASE_SHA" =~ ^[a-f0-9]{40}$ ]] || exit 2
           [[ "$RELEASE_ACTION" == publish || "$RELEASE_ACTION" == rollback ]] || exit 2
-          if [[ "$RELEASE_ACTION" == publish ]]; then
-            [[ "$BUILD_RUN_ID" =~ ^[0-9]+$ ]] || exit 2
+          if [[ "$RELEASE_ACTION" == rollback ]]; then
+            [[ "${{ inputs.source_sha }}" =~ ^[a-f0-9]{40}$ ]] || { echo "::error::Rollback requires the current release SHA"; exit 2; }
+            [[ -z "${{ inputs.build_run_id }}" ]] || { echo "::error::Rollback must not include a build run ID"; exit 2; }
           fi
           for name in SITEGROUND_HOST SITEGROUND_USER STAGING_ROOT RELEASE_ROOT; do
             [[ -n "${!name}" ]] || { echo "::error::Missing staging deployment environment secret: $name"; exit 2; }
@@ -58,12 +56,23 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Resolve and validate staging build
+        if: inputs.action == 'publish'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REQUESTED_SHA: ${{ inputs.source_sha }}
+          REQUESTED_RUN_ID: ${{ inputs.build_run_id }}
+        run: |
+          set -euo pipefail
+          python3 scripts/deployment/resolve-staging-build.py \
+            --source-sha "$REQUESTED_SHA" --build-run-id "$REQUESTED_RUN_ID"
+
       - name: Obtain successful build artifact
         if: inputs.action == 'publish'
         uses: actions/download-artifact@v4
         with:
-          name: dtb-staging-${{ inputs.source_sha }}
-          run-id: ${{ inputs.build_run_id }}
+          name: dtb-staging-${{ env.RELEASE_SHA }}
+          run-id: ${{ env.BUILD_RUN_ID }}
           github-token: ${{ github.token }}
           path: validated-artifact
 
@@ -103,6 +112,12 @@ jobs:
             test -s "payload/$f" || { echo "::error::Missing $f"; exit 2; }
           done
           cp validated-artifact/staging-artifact-sha256.txt payload/.dtb-file-sha256
+
+      - name: Set rollback release identity
+        if: inputs.action == 'rollback'
+        env:
+          REQUESTED_SHA: ${{ inputs.source_sha }}
+        run: echo "RELEASE_SHA=$REQUESTED_SHA" >> "$GITHUB_ENV"
 
       - name: Configure staging SSH identity
         env:
