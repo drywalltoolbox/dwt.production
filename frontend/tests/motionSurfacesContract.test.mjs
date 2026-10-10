@@ -70,3 +70,15 @@ test('cart, repair packages and dashboard suppress positional motion when reduce
   assert.match(account, /useReducedMotion\(\)/);
   assert.match(account, /reduceMotion \? reducedTransition/);
 });
+
+test('mobile header never changes class from document scroll and hero uses stable viewport geometry', () => {
+  const header = read('components/storefront/StorefrontHeader.jsx');
+  const responsive = read('styles/unified-responsive.css');
+  const hero = read('styles/home-hero.css');
+  assert.doesNotMatch(header, /mobileHeaderScrolled|setMobileHeaderScrolled|window\.scrollY > 24/);
+  assert.doesNotMatch(header, /addEventListener\('scroll', schedule/);
+  assert.doesNotMatch(responsive, /site-header--mobile-scrolled/);
+  assert.match(hero, /@media \(max-width: 1024px\)\s*\{\s*\.home-hero__stage/);
+  assert.match(hero, /100svh - var\(--header-height/);
+  assert.match(hero, /100vh - var\(--header-height/);
+});
