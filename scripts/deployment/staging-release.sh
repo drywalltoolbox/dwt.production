@@ -66,18 +66,23 @@ if [[ "$action" == "publish" ]]; then
   recover_partial_publish() {
     local saved="$snapshots/$release"
     echo "Publish failed; attempting staging restoration" >&2
-    rsync -a --exclude '/index.html' --exclude '/asset-manifest.json' \
+    rsync -a --delete --exclude '/index.html' --exclude '/asset-manifest.json' \
       --exclude '/.dtb-previous-release' "$saved/" "$target/" || true
     for mutable in asset-manifest.json index.html; do
       if [[ -f "$saved/$mutable" ]]; then
         cp -f "$saved/$mutable" "$target/$mutable" || true
+      else
+        rm -f "$target/$mutable" || true
       fi
     done
   }
   trap 'recover_partial_publish' ERR
-  # Do not delete old hashed assets: sessions may continue requesting them.
-  rsync -a --exclude '/index.html' --exclude '/asset-manifest.json' \
+  # Stage is a build-owned mirror: delete stale assets and files, then atomically swap
+  # the manifest and index to limit exposure to partially published entrypoints.
+  # Existing browser tabs referencing old hashed assets may need to reload.
+  rsync -a --delete --exclude '/index.html' --exclude '/asset-manifest.json' \
     --exclude '/.dtb-file-sha256' "$incoming/" "$target/"
+  rm -f "$target/.dtb-file-sha256"
   install -m 644 "$incoming/asset-manifest.json" "$target/.dtb-next-manifest"
   mv -f "$target/.dtb-next-manifest" "$target/asset-manifest.json"
   install -m 644 "$incoming/index.html" "$target/.dtb-next-index"
@@ -94,8 +99,8 @@ else
     { echo "No verified rollback snapshot" >&2; exit 4; }
   previous="$(cat "$backup/.dtb-previous-release")"
   [[ -z "$previous" || "$previous" =~ ^[a-f0-9]{40}$ ]] || exit 4
-  # Restore snapshot with NO deletion, preserving immutable assets still in use.
-  rsync -a --exclude '/index.html' --exclude '/asset-manifest.json' \
+  # Restore the exact prior staging snapshot; remove files from the newer release.
+  rsync -a --delete --exclude '/index.html' --exclude '/asset-manifest.json' \
     --exclude '/.dtb-previous-release' "$backup/" "$target/"
   for mutable in asset-manifest.json index.html; do
     if [[ -f "$backup/$mutable" ]]; then
