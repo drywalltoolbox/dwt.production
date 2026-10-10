@@ -62,6 +62,19 @@ if [[ "$action" == "publish" ]]; then
   mkdir -m 700 "$snapshots/$release"
   cp -a "$target/." "$snapshots/$release/"
   printf '%s\n' "$current" > "$snapshots/$release/.dtb-previous-release"
+  # Restore the snapshot if publication fails after modifying any staging file.
+  recover_partial_publish() {
+    local saved="$snapshots/$release"
+    echo "Publish failed; attempting staging restoration" >&2
+    rsync -a --exclude '/index.html' --exclude '/asset-manifest.json' \
+      --exclude '/.dtb-previous-release' "$saved/" "$target/" || true
+    for mutable in asset-manifest.json index.html; do
+      if [[ -f "$saved/$mutable" ]]; then
+        cp -f "$saved/$mutable" "$target/$mutable" || true
+      fi
+    done
+  }
+  trap 'recover_partial_publish' ERR
   # Do not delete old hashed assets: sessions may continue requesting them.
   rsync -a --exclude '/index.html' --exclude '/asset-manifest.json' \
     --exclude '/.dtb-file-sha256' "$incoming/" "$target/"
@@ -71,6 +84,7 @@ if [[ "$action" == "publish" ]]; then
   mv -f "$target/.dtb-next-index" "$target/index.html"
   printf '%s\n' "$release" > "$private/.next-current-release"
   mv -f "$private/.next-current-release" "$state"
+  trap - ERR
   echo "Published staging release: $release"
 else
   [[ "$current" == "$release" ]] ||
