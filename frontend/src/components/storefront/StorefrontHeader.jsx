@@ -1,5 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { startTransition, useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { m as Motion, useReducedMotion } from 'framer-motion';
+import { collapseTransition, reducedTransition } from '../../motion/dtbMotion.js';
 import { useCart } from '../../context/CartContext';
 import { useAuthContext } from '../../auth/AuthContext.js';
 import { ShoppingCart, X, ChevronRight, User, Headset, Phone } from 'lucide-react';
@@ -135,6 +137,7 @@ function toSearchProduct(product) {
 }
 
 export default function Header({ onCartToggle, onMobileMenuOpen }) {
+  const reduceMotion = useReducedMotion();
   const location = useLocation();
   const navigate = useNavigate();
   const { getCartCount } = useCart();
@@ -630,10 +633,13 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
           <MobileDrawerChevron expanded={expanded} />
         </button>
       </div>
-      <div
+      <Motion.div
         id={`storefront-mobile-drawer-${id}`}
         className={`storefront-mobile-drawer__brands${expanded ? ' is-expanded' : ''}`}
         inert={!expanded}
+        initial={false}
+        animate={{ height: expanded ? 'auto' : 0, opacity: expanded ? 1 : 0 }}
+        transition={reduceMotion ? reducedTransition : collapseTransition}
       >
         {items.map((item) => {
           const children = Array.isArray(item.children) ? item.children : [];
@@ -663,7 +669,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
             />
           );
         })}
-      </div>
+      </Motion.div>
     </div>
   );
 
