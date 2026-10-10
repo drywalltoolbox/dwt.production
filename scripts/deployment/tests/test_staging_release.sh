@@ -21,7 +21,7 @@ printf '{"new":true}\n' > "$incoming/asset-manifest.json"
 printf 'new asset\n' > "$incoming/new.js"
 printf 'Options -Indexes\n' > "$incoming/.htaccess"
 printf '{}\n' > "$incoming/site.webmanifest"
-(cd "$incoming"; find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum) > "$incoming/.dtb-file-sha256"
+(cd "$incoming"; find . -type f ! -name '.dtb-file-sha256' -print0 | LC_ALL=C sort -z | xargs -0 sha256sum) > "$incoming/.dtb-file-sha256"
 
 bash "$script" publish "$target" "$private" "$new_sha"
 [[ "$(cat "$private/current-release")" == "$new_sha" ]]
