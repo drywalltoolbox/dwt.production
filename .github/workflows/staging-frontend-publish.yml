@@ -84,6 +84,8 @@ jobs:
               for member in tar:
                   path = pathlib.PurePosixPath(member.name)
                   parts = [p for p in path.parts if p != "."]
+                  if not parts and member.isdir():
+                      continue
                   assert parts and ".." not in parts and not path.is_absolute(), "Unsafe archive path"
                   normalized = "/".join(parts)
                   assert normalized not in names, "Duplicate archive path"
