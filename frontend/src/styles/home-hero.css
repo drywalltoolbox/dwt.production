@@ -397,6 +397,17 @@
 
 }
 
+/* On mobile browsers the dynamic viewport changes height as the address bar
+   collapses/expands while users scroll ANYWHERE in the document. A 100dvh hero
+   consequently resizes and shifts content mid-gesture. svh is the stable
+   small-viewport unit; retain the vh fallback for older engines. */
+@media (max-width: 1024px) {
+  .home-hero__stage {
+    height: max(32rem, calc(100vh - var(--header-height, var(--dtb-header-height, 72px))));
+    height: max(32rem, calc(100svh - var(--header-height, var(--dtb-header-height, 72px))));
+  }
+}
+
 @media (max-width: 640px) {
   .home-hero {
     overflow: visible;
