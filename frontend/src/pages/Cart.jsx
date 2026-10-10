@@ -122,7 +122,7 @@ export default function Cart() {
         <div className="dtb-cart-sheet">
           <div {...itemsList.rootProps} className="dtb-cart-sheet__items">
             <AnimatePresence mode="popLayout" initial={false}>
-              {cartItems.map((item, index) => {
+              {cartItems.map((item) => {
                 const itemKey = item.cartKey || item.id;
                 const quantity = Number(item.quantity) || 1;
                 const unitPrice = Number(item.price) || 0;
