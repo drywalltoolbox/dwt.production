@@ -82,3 +82,13 @@ test('mobile header never changes class from document scroll and hero uses stabl
   assert.match(hero, /100svh - var\(--header-height/);
   assert.match(hero, /100vh - var\(--header-height/);
 });
+
+test('mobile navigation expansion uses intrinsic Motion layout, not hard-coded menu height caps', () => {
+  const header = read('components/storefront/StorefrontHeader.jsx');
+  const drawer = read('styles/storefront-drawer.css');
+  const taxonomy = read('styles/storefront-navigation-taxonomy.css');
+  assert.match(header, /<Motion\.div[\s\S]*?animate=\{\{ height: expanded \? 'auto' : 0/);
+  assert.match(header, /inert=\{!expanded\}/);
+  assert.doesNotMatch(drawer, /\.storefront-mobile-drawer__brands\.is-expanded\s*\{\s*max-height:/);
+  assert.doesNotMatch(taxonomy, /#storefront-mobile-drawer-products\.storefront-mobile-drawer__brands\.is-expanded/);
+});
