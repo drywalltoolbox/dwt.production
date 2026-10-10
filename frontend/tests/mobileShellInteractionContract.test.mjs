@@ -74,3 +74,16 @@ test('touch rail swipes do not eagerly load product detail or modal bundles', as
   assert.doesNotMatch(card, /onPointerDown=\{warmProductRoute\}/);
   assert.match(card, /onFocus=\{warmProductRoute\}/);
 });
+
+test('cross-route mobile focus and anchor offsets remain accessible', async () => {
+  const [css, rail] = await Promise.all([
+    source('styles/unified-responsive.css'),
+    source('components/storefront/StorefrontRail.jsx'),
+  ]);
+  assert.match(css, /:focus-visible/);
+  assert.match(css, /scroll-margin-block-start: calc\(var\(--header-height, 72px\) \+ 1rem\)/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.match(css, /\.storefront-rail \{ scroll-behavior: auto; \}/);
+  assert.match(rail, /prefers-reduced-motion: reduce/);
+  assert.match(rail, /behavior: window\.matchMedia/);
+});
