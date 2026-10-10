@@ -20,6 +20,7 @@ test('quick view retains modal focus containment and connected focus restoration
   assert.match(src, /document\.addEventListener\('keydown', handler, true\)/);
   assert.match(src, /dialog\.contains\(document\.activeElement\)/);
   assert.match(src, /openerRef\.current\.isConnected/);
+  assert.match(src, /nestedDialog && nestedDialog !== scrollRef\.current/);
   assert.match(src, /useReducedMotion/);
 });
 
@@ -39,6 +40,7 @@ test('search suggestions remain reachable from the header input without a false 
   const css = read('styles/storefront-drawer.css');
   assert.match(overlay, /role="region" aria-hidden=\{!isOpen\} inert=\{!isOpen \? true : undefined\}/);
   assert.doesNotMatch(overlay, /aria-modal=\{isOpen/);
+  assert.match(overlay, /owningDialog && !document\.getElementById\('storefront-search-results'\)/);
   assert.match(css, /\.storefront-search-overlay\[data-open="true"\] \.storefront-search-overlay__panel/);
 });
 
