@@ -105,6 +105,7 @@ function MobileTaxonomyGroup({ item, itemKey, expanded, onToggle, onNavigate }) 
       <div
         id={childrenId}
         className={`storefront-mobile-drawer__taxonomy-children${expanded ? ' is-expanded' : ''}`}
+        inert={!expanded}
       >
         {children.map((child) => (
           <button
@@ -627,6 +628,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       <div
         id={`storefront-mobile-drawer-${id}`}
         className={`storefront-mobile-drawer__brands${expanded ? ' is-expanded' : ''}`}
+        inert={!expanded}
       >
         {items.map((item) => {
           const children = Array.isArray(item.children) ? item.children : [];
