@@ -89,9 +89,9 @@ test('hero presentation keeps stable media, atmosphere, scrim, content, and navi
 test('hero styling provides fluid desktop/mobile composition and reduced-motion fallback', async () => {
   const css = await readHeroStyles();
 
-  assert.match(css, /height:\s*clamp\(520px, 36vw, 620px\)/);
+  assert.match(css, /height:\s*max\(32rem, calc\(100dvh - var\(--header-height/);\n  assert.match(css, /height:\s*max\(32rem, calc\(100svh - var\(--header-height/);
   assert.match(css, /\.home-hero-campaigns__rail\s*\{[\s\S]*?backdrop-filter:\s*blur\(18px\)/);
-  assert.match(css, /@media \(max-width: 640px\)[\s\S]*?height:\s*clamp\(510px, 132vw, 585px\)/);
+  assert.match(css, /@media \(max-width: 1024px\)\s*\{\s*\.home-hero__stage/);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
 });
 
