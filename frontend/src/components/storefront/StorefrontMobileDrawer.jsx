@@ -18,8 +18,11 @@ export default function StorefrontMobileDrawer({ isOpen, onClose, labelledBy, ch
   const closeRef = useRef(null);
   const panelRef = useRef(null);
   const onCloseRef = useRef(onClose);
-  onCloseRef.current = onClose;
   const reduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
