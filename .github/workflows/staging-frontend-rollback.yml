@@ -35,6 +35,9 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Test staging release and rollback locally
+        run: bash scripts/deployment/tests/test_staging_release.sh
+
       - name: Configure staging SSH identity
         env:
           SSH_KEY: ${{ secrets.SITEGROUND_STAGING_SSH_PRIVATE_KEY }}
