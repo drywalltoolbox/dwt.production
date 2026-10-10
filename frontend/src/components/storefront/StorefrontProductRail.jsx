@@ -40,11 +40,13 @@ export default function StorefrontProductRail({
       setShouldLoad(true);
       return undefined;
     }
+    // Begin fetching before the rail reaches the viewport so mobile swipes
+    // do not wait for network work that could have started during approach.
     const observer = new IntersectionObserver(([entry]) => {
       if (!entry?.isIntersecting) return;
       setShouldLoad(true);
       observer.disconnect();
-    });
+    }, { rootMargin: '280px 0px' });
     observer.observe(target);
     return () => observer.disconnect();
   }, []);

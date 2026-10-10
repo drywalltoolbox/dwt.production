@@ -84,6 +84,19 @@
 .storefront-rail { display:grid; grid-auto-flow:column; grid-auto-columns:minmax(0,1fr); align-items:start; gap:var(--dtb-space-2,.75rem); max-width:100%; overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; scroll-behavior:smooth; scroll-padding-inline:2px; scrollbar-width:none; -webkit-overflow-scrolling:touch; padding:2px 2px 6px; margin:0; }
 .storefront-rail::-webkit-scrollbar { display:none; }
 .storefront-rail>* { scroll-snap-align:start; }
+
+/* Proximity snapping retains native inertial swipes on narrow touch devices:
+   users can pass several products in one gesture without forced card-by-card
+   stops. Pointer/keyboard arrow scrolling keeps the existing component API. */
+@media (max-width: 767px) and (pointer: coarse) {
+  .storefront-rail {
+    scroll-snap-type: x proximity;
+    touch-action: pan-x pan-y;
+  }
+  .storefront-rail > * {
+    scroll-snap-stop: normal;
+  }
+}
 .storefront-rail-arrow { display:none; }
 
 /* Product rails deliberately stretch one shared implicit grid row. This is the

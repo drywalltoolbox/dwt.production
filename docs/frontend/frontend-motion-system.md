@@ -211,6 +211,8 @@ The product Quick View retains its owning modal body's overflow lock and scrollb
 
 Native browser touch/momentum scrolling is the default for the document, catalog rails and independently scrollable overlays. Do not intercept `touchmove`/wheel events or install JavaScript-based smoothing on the root scroll shell. Route changes reset only explicitly marked `[data-route-scroll-container]` elements; generic overflow utility classes are not a route-scroll ownership signal, because they also appear in drawers, product widgets and other independently scrollable components. History POP restoration and hash navigation remain synchronous and use `behavior: 'auto'`, without delayed animated correction. Any scroll-locked modal must preserve the underlying document position and release locks at the owning modal lifecycle boundary.
 
+The mobile navigation panel is a native vertical scroller with contained overscroll. Its full-size surface uses only a small translation and opacity during entrance/exit, never a scale animation. While navigation is open, keyboard Tab navigation remains within the dialog; collapsed brand/taxonomy branches are inert rather than focusable offscreen. On dismissal, focus returns to the opening control if focus has not already moved into a newly opened surface. Product rails use the existing native horizontal CSS scroll snapping and initiate their catalog read when approaching within 280px of the viewport via `IntersectionObserver`; they do not replace native touch momentum.
+
 ## Responsive contract
 
 Motion semantics are shared across breakpoints. Mobile differences are limited to interaction geometry where the interaction itself differs.

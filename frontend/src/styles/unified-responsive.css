@@ -549,6 +549,19 @@ body,
     padding-bottom: max(0.5rem, env(safe-area-inset-bottom, 0px));
   }
 
+  /* Scrolled state modifies only the header's paint, never its measured
+     height: fixed-header offsets and route scroll restoration stay stable. */
+  .site-header--mobile-scrolled .header-mobile-search-dock {
+    border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+    background-color: var(--dtb-shell, #0a1020);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .site-header .header-mobile-search-dock {
+      transition: border-color var(--dtb-motion-fast), background-color var(--dtb-motion-fast);
+    }
+  }
+
   .storefront-mobile-drawer,
   .storefront-search-overlay__panel,
   .cart-drawer,

@@ -105,6 +105,7 @@ function MobileTaxonomyGroup({ item, itemKey, expanded, onToggle, onNavigate }) 
       <div
         id={childrenId}
         className={`storefront-mobile-drawer__taxonomy-children${expanded ? ' is-expanded' : ''}`}
+        inert={!expanded}
       >
         {children.map((child) => (
           <button
@@ -139,6 +140,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
   const { getCartCount } = useCart();
   const { user, isAuthenticated, isLoading, login, register, logout } = useAuthContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileHeaderScrolled, setMobileHeaderScrolled] = useState(false);
   const [productsExpanded, setProductsExpanded] = useState(false);
   const [expandedProductGroupKey, setExpandedProductGroupKey] = useState(null);
   const [brandsExpanded, setBrandsExpanded] = useState(false);
@@ -435,6 +437,32 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     };
   }, []);
 
+  // Visual adaptation only: header geometry and route scroll restoration stay stable.
+  // Crossing a threshold updates one class instead of re-rendering on every scroll frame.
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 1024px)');
+    let frame = 0;
+    let previous = null;
+    const sample = () => {
+      frame = 0;
+      const next = mq.matches && window.scrollY > 24;
+      if (next === previous) return;
+      previous = next;
+      setMobileHeaderScrolled(next);
+    };
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(sample);
+    };
+    schedule();
+    window.addEventListener('scroll', schedule, { passive: true });
+    mq.addEventListener?.('change', schedule);
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', schedule);
+      mq.removeEventListener?.('change', schedule);
+    };
+  }, []);
+
   useEffect(() => {
     const handleClickOutside = (e) => {
       const header = document.querySelector('.site-header');
@@ -627,6 +655,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       <div
         id={`storefront-mobile-drawer-${id}`}
         className={`storefront-mobile-drawer__brands${expanded ? ' is-expanded' : ''}`}
+        inert={!expanded}
       >
         {items.map((item) => {
           const children = Array.isArray(item.children) ? item.children : [];
@@ -672,7 +701,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
 
   return (
     <>
-      <header className="site-header site-header--no-ticker" role="banner">
+      <header className={`site-header site-header--no-ticker${mobileHeaderScrolled ? ' site-header--mobile-scrolled' : ''}`} role="banner">
         <div className="dtb-header-utility-bar">
           <Link to="/contact" className="dtb-header-utility-bar__item">
             <Headset size={17} strokeWidth={2} aria-hidden="true" />
