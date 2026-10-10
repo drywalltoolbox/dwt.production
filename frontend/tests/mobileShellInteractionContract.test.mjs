@@ -66,3 +66,11 @@ test('mobile card prices are not truncated and remain server-projected values', 
   assert.match(styles, /\.dtb-product-card__compare-price \{ min-width:0;white-space:nowrap; \}/);
   assert.doesNotMatch(card, /fetch\(|axios\./);
 });
+
+test('touch rail swipes do not eagerly load product detail or modal bundles', async () => {
+  const card = await source('components/storefront/StorefrontProductTile.jsx');
+  assert.match(card, /event\.pointerType === 'mouse' \|\| event\.pointerType === 'pen'/);
+  assert.match(card, /onPointerEnter=\{handlePointerIntent\}/);
+  assert.doesNotMatch(card, /onPointerDown=\{warmProductRoute\}/);
+  assert.match(card, /onFocus=\{warmProductRoute\}/);
+});
