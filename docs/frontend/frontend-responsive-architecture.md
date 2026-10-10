@@ -55,6 +55,8 @@ Do not add another global mobile, tablet, desktop, fix, patch, mockup, polish, c
 
 Use `Container` or `.dtb-container` instead of recreating page padding and `max-width` declarations. Supported sizes are `narrow`, `default`, `wide`, `full`, and `fluid`.
 
+Mobile navigation uses a contained native vertical scroll region; only the open drawer temporarily locks document body scrolling. Closed taxonomy and brand branches must be `inert` so clipped links cannot enter the keyboard focus order. The navigation dialog must trap Tab focus and restore it on dismissal unless focus moved to another surface. Horizontal product rails prefetch via `IntersectionObserver` shortly before entering the viewport, but retain native swipe momentum and CSS snap semantics.
+
 Horizontal card rails must remain inside the owning container gutter. Shared `StorefrontRail` instances must not use negative inline margins or persistent edge masks that visually cover the first or last card. Navigation controls belong inside the rail shell, while the scroll viewport keeps a small internal safety inset for borders, focus rings, and scroll snapping. Product image thumbnail rails follow the same edge-safety principle inside both the full PDP and quick-view modal.
 
 ### Category hero composition and loading
