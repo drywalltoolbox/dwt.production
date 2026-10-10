@@ -42,6 +42,8 @@ test('search suggestions remain reachable from the header input without a false 
   assert.doesNotMatch(overlay, /aria-modal=\{isOpen/);
   assert.match(overlay, /owningDialog && !document\.getElementById\('storefront-search-results'\)/);
   assert.match(css, /\.storefront-search-overlay\[data-open="true"\] \.storefront-search-overlay__panel/);
+  assert.match(css, /touch-action: auto;/);
+  assert.match(css, /\.storefront-search-overlay \.storefront-mobile-drawer__backdrop[\s\S]*?touch-action: none;/);
 });
 
 test('builder workflow and confirmed selections use restrained motion without altering domain selection', () => {
