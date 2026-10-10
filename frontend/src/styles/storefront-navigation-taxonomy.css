@@ -87,10 +87,6 @@
     color: #bfdbfe;
   }
 
-  #storefront-mobile-drawer-products.storefront-mobile-drawer__brands.is-expanded {
-    max-height: 2400px;
-  }
-
   .storefront-mobile-drawer__taxonomy-group {
     margin: 0 var(--dtb-space-3);
     border-top: 1px solid rgba(148, 163, 184, 0.13);
