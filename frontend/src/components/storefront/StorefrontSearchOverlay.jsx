@@ -60,6 +60,12 @@ export default function StorefrontSearchOverlay({
     document.body.style.overflow = 'hidden';
     const onKeyDown = (event) => {
       if (event.key === 'Escape') {
+        // Quick View and its image lightbox render through portals. Their own
+        // active dialog handles Escape before search suggestions may close.
+        const owningDialog = event.target instanceof Element
+          ? event.target.closest('[role="dialog"][aria-modal="true"]')
+          : null;
+        if (owningDialog && !document.getElementById('storefront-search-results')?.contains(owningDialog)) return;
         if (isModalOpen) closeQuickView();
         else onClose?.();
       }
