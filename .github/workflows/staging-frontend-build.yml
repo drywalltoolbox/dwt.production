@@ -1,0 +1,94 @@
+name: Frontend staging build (validation only)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/staging-frontend-build.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dtb-staging-build
+  cancel-in-progress: false
+
+jobs:
+  build-staging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Check out current main source
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Verify source commit
+        env:
+          EXPECTED_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$EXPECTED_SHA" || {
+            echo "::error::Checked-out source commit differs from triggering commit"
+            exit 1
+          }
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: frontend
+        run: npm ci --no-audit --no-fund
+
+      - name: Build staging frontend
+        working-directory: frontend
+        run: npm run build:staging
+
+      - name: Validate staging distribution and inventory
+        run: |
+          set -euo pipefail
+          root=dist-staging
+          for f in index.html .htaccess asset-manifest.json site.webmanifest; do
+            test -s "$root/$f" || { echo "::error::Missing/empty $f"; exit 1; }
+          done
+          python3 - <<'PY'
+          import json, pathlib, re
+          root = pathlib.Path("dist-staging")
+          manifest = json.loads((root / "asset-manifest.json").read_text())
+          entry = manifest.get("entrypoints")
+          assert isinstance(entry, list) and entry, "Missing entrypoints"
+          for uri in entry:
+              assert isinstance(uri, str) and uri.startswith("/staging/"), f"Incorrect staging URL: {uri}"
+              target = root / uri.removeprefix("/staging/")
+              assert target.is_file(), f"Missing entrypoint: {uri}"
+          html = (root / "index.html").read_text()
+          assert "/staging/" in html, "Missing staging base path"
+          assert not re.search(r'src=["\']/assets/', html), "Root-mounted asset reference found"
+          print(f"Validated {len(entry)} staging entrypoints")
+          PY
+          (
+            cd "$root"
+            find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum
+          ) > staging-artifact-sha256.txt
+          printf '%s\n' "${{ github.sha }}" > staging-source-sha.txt
+
+      - name: Package staging distribution
+        run: tar -C dist-staging -czf staging-dist.tar.gz .
+
+      - name: Upload validated distribution
+        uses: actions/upload-artifact@v4
+        with:
+          name: dtb-staging-${{ github.sha }}
+          path: |
+            staging-dist.tar.gz
+            staging-artifact-sha256.txt
+            staging-source-sha.txt
+          if-no-files-found: error
+          retention-days: 14
