@@ -163,7 +163,7 @@ jobs:
             echo "| Action | \`$RELEASE_ACTION\` |"
             echo "| Job status | \`$JOB_STATUS\` |"
             echo "| Rebuilt from source | \`${SOURCE_SHA:-not resolved}\` |"
-            echo "| Source SHA | \`${RELEASE_SHA:-not resolved}\` |"
+            echo "| Release identity | \`${RELEASE_SHA:-not resolved}\` |"
             echo "| Workflow build run | \`${BUILD_RUN_ID:-not resolved}\` |"
             echo "| Workflow run | [View run](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID) |"
             echo "| Staging URL | https://drywalltoolbox.com/staging/ |"
