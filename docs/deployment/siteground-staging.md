@@ -33,3 +33,7 @@ If a publication fails after creating `incoming/<sha>`, inspect the private inco
 ChatGPT's connected GitHub tool currently **cannot dispatch** new workflows. The operator's GitHub **Run workflow** button is the deliberate trigger. No plugin, private GitHub App, or agent dispatch service is needed.
 
 SSH host-key verification is currently disabled by the existing workflows; pin a verified SiteGround host key in a separate hardening change. Retire the previously exposed SSH key after confirming it has no remaining dependencies. The first deployment succeeded before the new zero-input rollback workflow was added; newly changed code still needs a workflow run to validate real SiteGround behavior.
+
+## Fresh build on every manual deploy
+
+The Deploy Latest Frontend to Staging workflow checks out the current main commit, installs locked dependencies using npm ci, and builds with npm run build:staging. Webpack loads frontend/.env.staging with APP_ENV=staging and PUBLIC_URL=/staging. The workflow validates dist-staging, creates a unique release identity for every run (source SHA plus run ID and attempt), snapshots the previous staging files, mirrors the fresh dist-staging content and verifies HTTP/noindex. An unchanged Git commit is not treated as an already-published identical build. The old automatically running staging build workflow remains a validation-only workflow; it is not consumed by deployment. This new build-and-deploy code is not yet live-tested.
