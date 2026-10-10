@@ -159,3 +159,12 @@ When changing responsive UI:
 5. Preserve accessibility, safe-area, reduced-motion, checkout ownership, schematic coordinates, and dynamic-content overflow behavior.
 6. Remove superseded selectors instead of adding a later visual override.
 7. Update this document and `frontend-motion-system.md` when the responsive or motion contract changes.
+
+
+### Cross-route mobile interaction refinement (October 2026)
+
+The unified responsive stylesheet remains the single owner for cross-route anchor alignment and keyboard focus visibility. Anchor targets and programmatically focused route elements honor the measured `--header-height` instead of obscuring content beneath persistent chrome. Interactive descendants of route content use a visible `:focus-visible` outline; individual components may refine but must not remove it.
+
+The browser remains responsible for touch physics, vertical scroll and horizontal rails. On reduced-motion preferences, product rails and explicit rail-arrow navigation use non-smooth scrolling; do not animate the page-sized route wrapper or synthesize scroll offsets after lazy hydration. Do not move these concerns into a second animation framework or global scroll engine.
+
+Performance changes are incremental: mobile touch pointerdown does not preload quick-view/PDP data for cards being swiped past. Validate keyboard, screen reader, browser history, actual touch scrolling, safe-area layouts, viewport resize, zoom, reduced motion and checkout on physical iOS/Android devices before merging.

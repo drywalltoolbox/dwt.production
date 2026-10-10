@@ -66,3 +66,24 @@ test('mobile card prices are not truncated and remain server-projected values', 
   assert.match(styles, /\.dtb-product-card__compare-price \{ min-width:0;white-space:nowrap; \}/);
   assert.doesNotMatch(card, /fetch\(|axios\./);
 });
+
+test('touch rail swipes do not eagerly load product detail or modal bundles', async () => {
+  const card = await source('components/storefront/StorefrontProductTile.jsx');
+  assert.match(card, /event\.pointerType === 'mouse' \|\| event\.pointerType === 'pen'/);
+  assert.match(card, /onPointerEnter=\{handlePointerIntent\}/);
+  assert.doesNotMatch(card, /onPointerDown=\{warmProductRoute\}/);
+  assert.match(card, /onFocus=\{warmProductRoute\}/);
+});
+
+test('cross-route mobile focus and anchor offsets remain accessible', async () => {
+  const [css, rail] = await Promise.all([
+    source('styles/unified-responsive.css'),
+    source('components/storefront/StorefrontRail.jsx'),
+  ]);
+  assert.match(css, /:focus-visible/);
+  assert.match(css, /scroll-margin-block-start: calc\(var\(--header-height, 72px\) \+ 1rem\)/);
+  assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
+  assert.match(css, /\.storefront-rail \{ scroll-behavior: auto; \}/);
+  assert.match(rail, /prefers-reduced-motion: reduce/);
+  assert.match(rail, /behavior: window\.matchMedia/);
+});

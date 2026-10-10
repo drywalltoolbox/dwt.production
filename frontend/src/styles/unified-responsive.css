@@ -59,6 +59,27 @@ body,
   margin-inline: auto;
 }
 
+/* Shared mobile interaction contract. Keep focus visible above fixed chrome,
+   contain deliberate horizontal scrollers locally, and never suppress the
+   browser's vertical pan, focus ring, or viewport scroll restoration. */
+:where(main, section, article, aside, form) :where(
+  button, a[href], input, select, textarea, [role='button']
+):focus-visible {
+  outline: 2px solid var(--dtb-focus, #2255ee);
+  outline-offset: 3px;
+}
+
+:where(main, section, article, aside) :where(
+  [id], [tabindex='-1']
+) {
+  scroll-margin-block-start: calc(var(--header-height, 72px) + 1rem);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .storefront-rail { scroll-behavior: auto; }
+}
+
 /* Header */
 .storefront-header-stack,
 .site-header,

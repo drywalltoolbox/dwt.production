@@ -112,7 +112,13 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
       preloadProductDetail(slug).catch(() => null);
     }
   }, [productUrl, slug]);
-  const handleMouseEnter = useCallback(() => { warmProductRoute(); if (showDesktopOverlay) setOverlayActive(true); }, [showDesktopOverlay, warmProductRoute]);
+  // Do not warm PDP/quick-view modules on touch pointerdown. A finger touching
+  // the image is often the beginning of a rail swipe, not purchase intent.
+  // Keyboard focus and precise mouse/pen hover retain intent-based preloading.
+  const handlePointerIntent = useCallback((event) => {
+    if (event.pointerType === 'mouse' || event.pointerType === 'pen') warmProductRoute();
+  }, [warmProductRoute]);
+  const handleMouseEnter = useCallback(() => { if (showDesktopOverlay) { warmProductRoute(); setOverlayActive(true); } }, [showDesktopOverlay, warmProductRoute]);
   const handleMouseLeave = useCallback(() => { if (showDesktopOverlay) closeOverlay(); }, [closeOverlay, showDesktopOverlay]);
   const handleTitleClick = useCallback((event) => {
     event.stopPropagation(); closeOverlay();
@@ -128,7 +134,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   return (
     <article ref={cardRef} className={`dtb-product-card dtb-product-card--${variant} storefront-motion-card${isVariable ? ' dtb-product-card--variable' : ''}`} style={{ '--dtb-card-delay': `${Math.min(index, 8) * 30}ms` }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={openModalFromMobileCard}>
       <div className="dtb-product-card__image">
-        <div ref={imageButtonRef} role="button" tabIndex={0} className="dtb-product-card__image-hit" onFocus={warmProductRoute} onPointerDown={warmProductRoute} onClick={handleImageClick} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleImageClick(e); } }} aria-label={isMobile ? `Quick view ${name}` : `View ${name}`}>
+        <div ref={imageButtonRef} role="button" tabIndex={0} className="dtb-product-card__image-hit" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} onClick={handleImageClick} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleImageClick(e); } }} aria-label={isMobile ? `Quick view ${name}` : `View ${name}`}>
           <ProductCardImage product={displayProduct} src={image} srcSet={imageSrcset} sizes={variant === 'rail' ? '(max-width: 767px) 44vw, 188px' : variant === 'list' ? '(max-width: 767px) 32vw, 240px' : '(max-width: 767px) 50vw, (max-width: 1024px) 33vw, 240px'} alt={name} className="dtb-product-card__img" padding="0" fit="contain" preferThumbnail eager={false} />
         </div>
         <span className={`dtb-product-card__badge dtb-product-card__badge--${outOfStock ? 'out' : 'in'} dtb-product-card__badge--right`}>{outOfStock ? 'Out of Stock' : 'In Stock'}</span>
@@ -137,7 +143,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
       </div>
       <div className="dtb-product-card__meta">
         {displayProduct.brand ? <span className="dtb-product-card__brand">{displayProduct.brand}</span> : null}
-        <button type="button" onClick={handleTitleClick} className="dtb-product-card__name" onFocus={warmProductRoute} onPointerDown={warmProductRoute} data-dtb-card-action="title" aria-label={isMobile ? `Open full page for ${name}` : `View product details for ${name}`}>{name}</button>
+        <button type="button" onClick={handleTitleClick} className="dtb-product-card__name" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} data-dtb-card-action="title" aria-label={isMobile ? `Open full page for ${name}` : `View product details for ${name}`}>{name}</button>
         <span className={`dtb-product-card__sku${sku ? '' : ' dtb-product-card__sku--empty'}`} aria-hidden={sku ? undefined : true}>{sku ? `SKU: ${sku}` : '\u00a0'}</span>
         <div className="dtb-product-card__divider" />
         <div className="dtb-product-card__footer"><div className="dtb-product-card__price-col"><div className="dtb-product-card__price-group"><strong className="dtb-product-card__price" style={{ color: outOfStock ? 'var(--dtb-muted)' : 'var(--dtb-text)' }}>{priceStr}</strong>{comparePriceStr ? <span className="dtb-product-card__compare-price">{comparePriceStr}</span> : null}</div></div>{!isMobile && !isVariable && <AddToCartButton onClick={handleAddButtonClick} disabled={outOfStock} className="dtb-product-card__action" size="card" label="Add" productId={displayProduct.id} aria-label={`Add ${name} to cart`} data-dtb-card-action="add" />}</div>

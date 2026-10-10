@@ -32,7 +32,7 @@ export default function StorefrontRail({ label, className = '', children }) {
     const amount = Math.max(MIN_SCROLL_AMOUNT, rail.clientWidth * SCROLL_RATIO);
     rail.scrollBy({
       left: direction === 'next' ? amount : -amount,
-      behavior: 'smooth',
+      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
     });
   }, []);
 
