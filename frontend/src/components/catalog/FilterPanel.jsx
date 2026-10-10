@@ -1,8 +1,12 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
+import { m as Motion, useReducedMotion } from 'framer-motion';
+import MotionPresence from '../motion/MotionPresence.jsx';
+import { dtbDistance, dtbSpring, dtbTransition, reducedTransition } from '../../motion/dtbMotion.js';
 import { X, ChevronDown, Sliders } from 'lucide-react';
 import '../../styles/filter-panel.css';
 
 const VISIBLE_ITEM_LIMIT = 8;
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 function normalizeFilterBrands(brands = []) {
   if (!Array.isArray(brands) || brands.length === 0) return [];
@@ -41,27 +45,64 @@ export default function FilterPanel({
   });
 
   const filterBrands = useMemo(() => normalizeFilterBrands(brands), [brands]);
+  const reduceMotion = useReducedMotion();
+  const panelRef = useRef(null);
+  const closeButtonRef = useRef(null);
+  const onCloseRef = useRef(onClose);
 
-  // Close on escape key
-  useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape' && isOpen) {
-        onClose();
-      }
-    };
-    if (isOpen) {
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
-    }
-    return undefined;
-  }, [isOpen, onClose]);
+  useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
 
+  // The mobile filter sheet is modal. Keep focus inside while it is open and
+  // restore the actual opener after dismissal rather than trapping tab focus in
+  // the document behind the backdrop.
   useEffect(() => {
     if (!isOpen) return undefined;
-    const prev = document.body.style.overflow;
+
+    const opener = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+
+    const focusFrame = window.requestAnimationFrame(() => {
+      closeButtonRef.current?.focus({ preventScroll: true });
+    });
+
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onCloseRef.current?.();
+        return;
+      }
+      if (event.key !== 'Tab' || !panelRef.current) return;
+      const focusable = Array.from(panelRef.current.querySelectorAll(FOCUSABLE_SELECTOR))
+        .filter((element) => element.getClientRects().length > 0 && !element.closest('[inert]'));
+      if (!focusable.length) {
+        event.preventDefault();
+        panelRef.current.focus({ preventScroll: true });
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!panelRef.current.contains(document.activeElement)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus({ preventScroll: true });
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus({ preventScroll: true });
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus({ preventScroll: true });
+      }
+    };
+
+    document.addEventListener('keydown', onKeyDown, true);
     return () => {
-      document.body.style.overflow = prev;
+      window.cancelAnimationFrame(focusFrame);
+      document.removeEventListener('keydown', onKeyDown, true);
+      document.body.style.overflow = previousOverflow;
+      if (opener instanceof HTMLElement && opener.isConnected
+        && panelRef.current?.contains(document.activeElement)) {
+        opener.focus({ preventScroll: true });
+      }
     };
   }, [isOpen]);
 
@@ -103,8 +144,17 @@ export default function FilterPanel({
       </aside>
 
       {/* Mobile Sidebar - Slide In */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 lg:hidden" style={{ top: 'var(--header-height)' }}>
+      <MotionPresence initial={false}>
+        {isOpen ? (
+        <Motion.div
+          key="mobile-filters"
+          className="fixed inset-0 z-50 lg:hidden"
+          style={{ top: 'var(--header-height)' }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={reduceMotion ? reducedTransition : dtbTransition.fast}
+        >
           <div
             className="absolute inset-0 bg-black/35 backdrop-blur-[1px] filter-mobile-overlay-enter"
             onClick={(e) => {
@@ -114,8 +164,19 @@ export default function FilterPanel({
             }}
           />
 
-          <div className="absolute inset-x-0 top-0">
+          <Motion.div
+            className="absolute inset-x-0 top-0"
+            initial={{ y: reduceMotion ? 0 : -dtbDistance.medium }}
+            animate={{ y: 0 }}
+            exit={{ y: reduceMotion ? 0 : -dtbDistance.small }}
+            transition={reduceMotion ? reducedTransition : dtbSpring.gentle}
+          >
             <div
+              ref={panelRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="dtb-mobile-filter-title"
+              tabIndex={-1}
               className="w-full bg-white shadow-2xl overflow-hidden flex flex-col rounded-b-2xl filter-mobile-sheet-enter"
               style={{
                 maxHeight: 'min(78dvh, calc(100dvh - var(--header-height) - 0.5rem))',
@@ -123,11 +184,13 @@ export default function FilterPanel({
               }}
             >
               <div className="sticky top-0 bg-white border-b border-slate-200 px-4 py-4 flex items-center justify-between shrink-0">
-                <h2 className="text-base font-semibold text-slate-900 flex items-center gap-2">
+                <h2 id="dtb-mobile-filter-title" className="text-base font-semibold text-slate-900 flex items-center gap-2">
                   <Sliders size={18} />
                   Advanced Filters
                 </h2>
                 <button
+                  ref={closeButtonRef}
+                  type="button"
                   onClick={onClose}
                   className="p-2 hover:bg-slate-100 rounded-xl transition-colors touch-target"
                   aria-label="Close filters"
@@ -174,9 +237,10 @@ export default function FilterPanel({
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      )}
+          </Motion.div>
+        </Motion.div>
+        ) : null}
+      </MotionPresence>
     </>
   );
 }
