@@ -64,16 +64,18 @@
   color: var(--dtb-text);
   text-align: left;
   cursor: pointer;
+  /* Geometry motion belongs to the Framer workflow button; CSS handles
+     appearance without competing with a live transform. */
   transition:
     border-color var(--dtb-motion-standard),
-    box-shadow var(--dtb-motion-standard),
-    transform var(--dtb-motion-standard);
+    box-shadow var(--dtb-motion-standard);
 }
 
-.dtb-toolset-workflow-card:hover {
-  border-color: color-mix(in srgb, var(--dtb-primary) 38%, var(--dtb-border));
-  box-shadow: var(--dtb-shadow-card);
-  transform: translateY(-2px);
+@media (hover: hover) and (pointer: fine) {
+  .dtb-toolset-workflow-card:hover {
+    border-color: color-mix(in srgb, var(--dtb-primary) 38%, var(--dtb-border));
+    box-shadow: var(--dtb-shadow-card);
+  }
 }
 
 .dtb-toolset-workflow-card__icon {
