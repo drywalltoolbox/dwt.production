@@ -463,7 +463,8 @@
   touch-action: pan-y;
 }
 
-.storefront-search-overlay[data-open="true"][data-has-query="true"] .storefront-search-overlay__panel {
+/* Suggested categories/brands must also remain visible before a query is typed. */
+.storefront-search-overlay[data-open="true"] .storefront-search-overlay__panel {
   opacity: 1;
   transform: translateY(0) scale(1);
   visibility: visible;
