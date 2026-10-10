@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
-import { m as Motion } from 'framer-motion';
-import { dtbTransition } from '../motion/dtbMotion.js';
+import { m as Motion, useReducedMotion } from 'framer-motion';
+import { dtbTransition, reducedTransition } from '../motion/dtbMotion.js';
 import {
   ArrowRight,
   Check,
@@ -53,13 +53,14 @@ function persistSelectedPackage(pkg) {
 }
 
 function AnimatedPrice({ price }) {
+  const reduceMotion = useReducedMotion();
   return (
     <Motion.span
       key={price}
       className="repair-package-card__price-value"
-      initial={{ opacity: 1, y: 4 }}
+      initial={{ opacity: 1, y: reduceMotion ? 0 : 4 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={dtbTransition.fast}
+      transition={reduceMotion ? reducedTransition : dtbTransition.fast}
     >
       {price}
     </Motion.span>
@@ -174,6 +175,7 @@ function CategoryTabs({ groups, activeGroupId, focusGroupId, onChange }) {
 }
 
 function PackageCard({ pkg, index, packageCount, resumeState }) {
+  const reduceMotion = useReducedMotion();
   const familyLabel = REPAIR_TOOL_FAMILIES[pkg.toolFamily]?.label || 'Repair Service';
   const featured = isFeaturedPackage(pkg, index, packageCount);
   const price = getPriceDisplay(pkg);
@@ -181,12 +183,12 @@ function PackageCard({ pkg, index, packageCount, resumeState }) {
 
   return (
     <Motion.article
-      layout
+      layout={!reduceMotion}
       className={`repair-package-card${featured ? ' repair-package-card--featured' : ''}`}
-      initial={{ y: 6, opacity: 1 }}
+      initial={{ y: reduceMotion ? 0 : 6, opacity: 1 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={dtbTransition.fast}
-      whileHover={{ y: -2 }}
+      transition={reduceMotion ? reducedTransition : dtbTransition.fast}
+      whileHover={reduceMotion ? undefined : { y: -2 }}
     >
       {featured && (
         <div className="repair-package-card__recommended">
@@ -246,6 +248,7 @@ function PackageCard({ pkg, index, packageCount, resumeState }) {
 }
 
 export default function RepairPackages() {
+  const reduceMotion = useReducedMotion();
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const groups = useMemo(() => getRepairPackageGroups(), []);
@@ -327,9 +330,9 @@ export default function RepairPackages() {
             role="tabpanel"
             aria-labelledby={`repair-package-tab-${activeGroup.id}`}
             className="repair-packages-grid"
-            initial={{ opacity: 1, y: 4 }}
+            initial={{ opacity: 1, y: reduceMotion ? 0 : 4 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={dtbTransition.fast}
+            transition={reduceMotion ? reducedTransition : dtbTransition.fast}
           >
             {activeGroup.packages.map((pkg, index) => (
               <PackageCard
