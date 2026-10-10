@@ -1,7 +1,8 @@
 // Cart checkout remains WooCommerce-authoritative.
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { m as Motion, AnimatePresence } from 'framer-motion';
+import { m as Motion, AnimatePresence, useReducedMotion } from 'framer-motion';
+import { dtbTransition } from '../motion/dtbMotion.js';
 import { ShoppingBag, Trash2, Plus, Minus, ArrowRight, ArrowLeft, Lock, ShoppingCart, ShieldAlert } from 'lucide-react';
 
 import SEOHead from '../components/shared/SEOHead';
@@ -28,6 +29,7 @@ function formatMoney(value) {
 }
 
 export default function Cart() {
+  const reduceMotion = useReducedMotion();
   const navigate = useNavigate();
   const { cart, cartItems, updateQuantity, removeFromCart, refreshCart, isMutating } = useCart();
   const { isAuthenticated, ensureNativeCheckoutReady } = useAuthContext();
@@ -126,7 +128,7 @@ export default function Cart() {
                 const unitPrice = Number(item.price) || 0;
                 const optionText = Array.isArray(item.variation_attribute_values) ? item.variation_attribute_values.map((attribute) => attribute.option).filter(Boolean).join(' / ') : '';
                 return (
-                  <Motion.article key={itemKey} layout initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, x: -28, scale: 0.97, transition: { duration: 0.2 } }} transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1], delay: index * 0.055 }} className="dtb-cart-row">
+                  <Motion.article key={itemKey} layout={!reduceMotion} initial={false} animate={{ opacity: 1, y: 0 }} exit={reduceMotion ? { opacity: 1, transition: { duration: 0 } } : { opacity: 0, x: -28, scale: 0.97, transition: dtbTransition.exit }} transition={reduceMotion ? { duration: 0 } : dtbTransition.standard} className="dtb-cart-row">
                     <div className="dtb-cart-row__image">{item.image ? <img src={item.image} alt={item.name} loading="lazy" decoding="async" /> : <div className="dtb-cart-row__placeholder"><ShoppingCart size={24} aria-hidden="true" strokeWidth={1.5} /></div>}</div>
                     <div className="dtb-cart-row__content">
                       <div className="dtb-cart-row__heading"><div>{item.brand && <p className="dtb-cart-row__brand">{item.brand}</p>}<h2>{item.name}</h2>{item.sku && <p className="dtb-cart-row__sku">SKU: {item.sku}</p>}{optionText && <p className="dtb-cart-row__option">{optionText}</p>}</div><button type="button" onClick={() => removeFromCart(itemKey)} disabled={isMutating} className="dtb-cart-row__remove" aria-label={`Remove ${item.name}`}><Trash2 size={14} aria-hidden="true" /></button></div>
