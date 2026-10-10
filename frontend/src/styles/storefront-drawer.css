@@ -298,13 +298,9 @@
 
 .storefront-mobile-drawer__brands {
   display: grid;
-  max-height: 0;
+  min-height: 0;
   overflow: hidden;
-  transition: max-height 200ms ease;
-}
-
-.storefront-mobile-drawer__brands.is-expanded {
-  max-height: 480px;
+  /* Motion owns the intrinsic height of expandable navigation groups. */
 }
 
 .storefront-mobile-drawer__brand-link {
@@ -415,7 +411,9 @@
     visibility 0s linear var(--dtb-normal, 320ms);
   visibility: hidden;
   overscroll-behavior: none;
-  touch-action: none;
+  /* The suggestion body must accept native vertical pans; only the
+     non-scrolling backdrop suppresses touch gestures. */
+  touch-action: auto;
 }
 
 .storefront-search-overlay[data-open="true"] {
@@ -438,6 +436,7 @@
 .storefront-search-overlay .storefront-mobile-drawer__backdrop {
   background: rgba(3, 10, 24, 0.58);
   backdrop-filter: blur(12px);
+  touch-action: none;
 }
 
 .storefront-search-overlay__panel {
@@ -463,7 +462,8 @@
   touch-action: pan-y;
 }
 
-.storefront-search-overlay[data-open="true"][data-has-query="true"] .storefront-search-overlay__panel {
+/* Suggested categories/brands must also remain visible before a query is typed. */
+.storefront-search-overlay[data-open="true"] .storefront-search-overlay__panel {
   opacity: 1;
   transform: translateY(0) scale(1);
   visibility: visible;

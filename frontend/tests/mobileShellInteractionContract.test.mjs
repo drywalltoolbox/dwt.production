@@ -4,19 +4,19 @@ import test from 'node:test';
 
 const source = (path) => readFile(new URL(`../src/${path}`, import.meta.url), 'utf8');
 
-test('mobile header uses thresholded passive scrolling and retains shell geometry', async () => {
-  const [header, responsive, shell] = await Promise.all([
+test('mobile header is stable throughout native scrolling and retains shell geometry', async () => {
+  const [header, responsive, shell, hero] = await Promise.all([
     source('components/storefront/StorefrontHeader.jsx'),
     source('styles/unified-responsive.css'),
     source('styles/storefront-shell.css'),
+    source('styles/home-hero.css'),
   ]);
 
-  assert.match(header, /window\.scrollY > 24/);
-  assert.match(header, /requestAnimationFrame\(sample\)/);
-  assert.match(header, /addEventListener\('scroll', schedule, \{ passive: true \}\)/);
-  assert.match(header, /site-header--mobile-scrolled/);
-  assert.match(responsive, /site-header--mobile-scrolled \.header-mobile-search-dock/);
+  assert.doesNotMatch(header, /mobileHeaderScrolled|setMobileHeaderScrolled|window\.scrollY > 24/);
+  assert.doesNotMatch(header, /addEventListener\('scroll', schedule/);
+  assert.doesNotMatch(responsive, /site-header--mobile-scrolled/);
   assert.match(shell, /padding-top: var\(--header-height/);
+  assert.match(hero, /100svh - var\(--header-height/);
   assert.doesNotMatch(header, /addEventListener\('touchmove'/);
 });
 

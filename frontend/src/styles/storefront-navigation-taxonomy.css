@@ -55,13 +55,8 @@
     color: #bfdbfe;
   }
 
-  .storefront-mobile-drawer__brands {
-    transition: max-height 180ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .storefront-mobile-drawer__brands.is-expanded {
-    max-height: 760px;
-  }
+  /* The owning Motion element measures the actual child height.
+     No arbitrary 760/2400px caps that clip long navigation groups. */
 
   .storefront-mobile-drawer__brand-link {
     min-height: 44px;
@@ -90,10 +85,6 @@
 
   .storefront-mobile-drawer__row-link.is-active {
     color: #bfdbfe;
-  }
-
-  #storefront-mobile-drawer-products.storefront-mobile-drawer__brands.is-expanded {
-    max-height: 2400px;
   }
 
   .storefront-mobile-drawer__taxonomy-group {

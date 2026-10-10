@@ -97,9 +97,7 @@
   transition: transform var(--dtb-motion-emphasized);
 }
 
-.storefront-mobile-drawer__brands {
-  transition: max-height var(--dtb-motion-standard);
-}
+/* Mobile navigation group height is Framer-owned in StorefrontHeader. */
 
 .storefront-search-dock {
   transition:

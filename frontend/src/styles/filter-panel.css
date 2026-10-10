@@ -4,12 +4,10 @@
   animation: fadeIn 0.2s ease-out;
 }
 
-.filter-mobile-overlay-enter {
-  animation: fadeIn 0.22s ease-out;
-}
-
+.filter-mobile-overlay-enter,
 .filter-mobile-sheet-enter {
-  animation: mobileSheetIn 0.24s ease-out;
+  /* Motion-owned overlay lifecycle; CSS must not race its transforms. */
+  animation: none;
 }
 
 @keyframes fadeIn {

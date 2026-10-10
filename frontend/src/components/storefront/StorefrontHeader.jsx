@@ -1,5 +1,7 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { startTransition, useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { m as Motion, useReducedMotion } from 'framer-motion';
+import { collapseTransition, reducedTransition } from '../../motion/dtbMotion.js';
 import { useCart } from '../../context/CartContext';
 import { useAuthContext } from '../../auth/AuthContext.js';
 import { ShoppingCart, X, ChevronRight, User, Headset, Phone } from 'lucide-react';
@@ -135,12 +137,12 @@ function toSearchProduct(product) {
 }
 
 export default function Header({ onCartToggle, onMobileMenuOpen }) {
+  const reduceMotion = useReducedMotion();
   const location = useLocation();
   const navigate = useNavigate();
   const { getCartCount } = useCart();
   const { user, isAuthenticated, isLoading, login, register, logout } = useAuthContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [mobileHeaderScrolled, setMobileHeaderScrolled] = useState(false);
   const [productsExpanded, setProductsExpanded] = useState(false);
   const [expandedProductGroupKey, setExpandedProductGroupKey] = useState(null);
   const [brandsExpanded, setBrandsExpanded] = useState(false);
@@ -437,32 +439,11 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     };
   }, []);
 
-  // Visual adaptation only: header geometry and route scroll restoration stay stable.
-  // Crossing a threshold updates one class instead of re-rendering on every scroll frame.
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 1024px)');
-    let frame = 0;
-    let previous = null;
-    const sample = () => {
-      frame = 0;
-      const next = mq.matches && window.scrollY > 24;
-      if (next === previous) return;
-      previous = next;
-      setMobileHeaderScrolled(next);
-    };
-    const schedule = () => {
-      if (!frame) frame = window.requestAnimationFrame(sample);
-    };
-    schedule();
-    window.addEventListener('scroll', schedule, { passive: true });
-    mq.addEventListener?.('change', schedule);
-    return () => {
-      if (frame) window.cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', schedule);
-      mq.removeEventListener?.('change', schedule);
-    };
-  }, []);
-
+  // Keep the mobile header visually and geometrically identical throughout
+  // native document scrolling. Updating React state at a scroll threshold used
+  // to restyle persistent chrome regardless of which homepage section was on
+  // screen. Mobile browser UI can also resize the visual viewport during touch
+  // scrolling; neither event should animate this fixed commerce shell.
   useEffect(() => {
     const handleClickOutside = (e) => {
       const header = document.querySelector('.site-header');
@@ -652,10 +633,13 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
           <MobileDrawerChevron expanded={expanded} />
         </button>
       </div>
-      <div
+      <Motion.div
         id={`storefront-mobile-drawer-${id}`}
         className={`storefront-mobile-drawer__brands${expanded ? ' is-expanded' : ''}`}
         inert={!expanded}
+        initial={false}
+        animate={{ height: expanded ? 'auto' : 0, opacity: expanded ? 1 : 0 }}
+        transition={reduceMotion ? reducedTransition : collapseTransition}
       >
         {items.map((item) => {
           const children = Array.isArray(item.children) ? item.children : [];
@@ -685,7 +669,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
             />
           );
         })}
-      </div>
+      </Motion.div>
     </div>
   );
 
@@ -701,7 +685,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
 
   return (
     <>
-      <header className={`site-header site-header--no-ticker${mobileHeaderScrolled ? ' site-header--mobile-scrolled' : ''}`} role="banner">
+      <header className="site-header site-header--no-ticker" role="banner">
         <div className="dtb-header-utility-bar">
           <Link to="/contact" className="dtb-header-utility-bar__item">
             <Headset size={17} strokeWidth={2} aria-hidden="true" />

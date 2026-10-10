@@ -1,4 +1,6 @@
 import { useMemo } from 'react';
+import { m as Motion, useReducedMotion } from 'framer-motion';
+import { dtbSpring } from '../motion/dtbMotion.js';
 import { Link, useSearchParams } from 'react-router-dom';
 import {
   ArrowRight,
@@ -50,14 +52,18 @@ const WORKFLOW_MEDIA = {
 };
 
 function WorkflowCard({ workflow, onSelect }) {
+  const reduceMotion = useReducedMotion();
   const Icon = WORKFLOW_ICONS[workflow.id] || Settings2;
   const media = WORKFLOW_MEDIA[workflow.id] || toolsetHeroImage;
 
   return (
-    <button
+    <Motion.button
       type="button"
       className="dtb-toolset-workflow-card"
       onClick={() => onSelect(workflow.id)}
+      whileHover={reduceMotion ? undefined : { y: -2 }}
+      whileTap={reduceMotion ? undefined : { scale: 0.992 }}
+      transition={dtbSpring.responsive}
     >
       <span className="dtb-toolset-workflow-card__media" aria-hidden="true">
         <img src={media} alt="" loading="lazy" decoding="async" />
@@ -73,7 +79,7 @@ function WorkflowCard({ workflow, onSelect }) {
       <span className="dtb-toolset-workflow-card__arrow" aria-hidden="true">
         <ArrowRight size={20} />
       </span>
-    </button>
+    </Motion.button>
   );
 }
 

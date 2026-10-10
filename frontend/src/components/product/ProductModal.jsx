@@ -16,6 +16,8 @@ import {
 } from '../../motion/dtbMotion.js';
 import '../../styles/product-quick-view-desktop.css';
 
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
 function useIsMobileModal() {
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window === 'undefined') return false;
@@ -49,7 +51,7 @@ export default function ProductModal({ isOpen, product, onClose, children }) {
       openerRef.current = document.activeElement;
     } else {
       const id = setTimeout(() => {
-        if (openerRef.current && typeof openerRef.current.focus === 'function') {
+        if (openerRef.current instanceof HTMLElement && openerRef.current.isConnected) {
           openerRef.current.focus({ preventScroll: true });
         }
         openerRef.current = null;
@@ -156,13 +158,47 @@ export default function ProductModal({ isOpen, product, onClose, children }) {
 
   useEffect(() => {
     if (!isOpen) return undefined;
-    const handler = (e) => {
-      if (e.key === 'Escape') {
+    const handler = (event) => {
+      // The product gallery can open its own body-portaled full-screen image
+      // dialog. The parent's focus trap must never intercept that dialog's
+      // keyboard handling or steal its focus on Tab.
+      const nestedDialog = event.target instanceof Element
+        ? event.target.closest('[role="dialog"][aria-modal="true"]')
+        : null;
+      if (nestedDialog && nestedDialog !== scrollRef.current
+        && !scrollRef.current?.contains(nestedDialog)) return;
+      if (event.key === 'Escape') {
+        event.stopPropagation();
         onClose();
+        return;
+      }
+      if (event.key !== 'Tab' || !scrollRef.current) return;
+
+      const dialog = scrollRef.current;
+      const focusable = Array.from(dialog.querySelectorAll(FOCUSABLE_SELECTOR))
+        .filter((element) => element.getClientRects().length > 0 && !element.closest('[inert]'));
+      if (!focusable.length) {
+        event.preventDefault();
+        dialog.focus({ preventScroll: true });
+        return;
+      }
+
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!dialog.contains(document.activeElement)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus({ preventScroll: true });
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus({ preventScroll: true });
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus({ preventScroll: true });
       }
     };
-    window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+    // Capture on the active modal, before underlying drawer/search listeners.
+    document.addEventListener('keydown', handler, true);
+    return () => document.removeEventListener('keydown', handler, true);
   }, [isOpen, onClose]);
 
   if (typeof document === 'undefined') return null;

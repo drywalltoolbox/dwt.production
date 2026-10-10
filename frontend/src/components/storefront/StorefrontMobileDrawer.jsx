@@ -68,6 +68,7 @@ export default function StorefrontMobileDrawer({ isOpen, onClose, labelledBy, ch
       }
     };
 
+    const activePanel = panelRef.current;
     document.addEventListener('keydown', onKeyDown);
 
     return () => {
@@ -76,7 +77,7 @@ export default function StorefrontMobileDrawer({ isOpen, onClose, labelledBy, ch
       document.body.style.overflow = previousOverflow;
 
       // Do not steal focus if navigation opened another surface while closing.
-      if (panelRef.current?.contains(document.activeElement)
+      if (activePanel?.contains(document.activeElement)
         && previouslyFocused instanceof HTMLElement
         && previouslyFocused.isConnected) {
         previouslyFocused.focus({ preventScroll: true });

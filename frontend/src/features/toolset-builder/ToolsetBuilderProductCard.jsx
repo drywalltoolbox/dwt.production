@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { AnimatePresence, m as Motion, useReducedMotion } from 'framer-motion';
+import { dtbTransition, reducedTransition } from '../../motion/dtbMotion.js';
 import { Check, ChevronDown, Layers3, PackageCheck, RefreshCw, Trash2 } from 'lucide-react';
 import { fetchToolsetVariations, normalizeToolsetSelection } from '../../api/toolsetBuilderApi.js';
 import { resolveBrandLogo } from '../../utils/brandLogoAssets.js';
@@ -60,6 +62,7 @@ export default function ToolsetBuilderProductCard({
   const [variationError, setVariationError] = useState('');
   const [selectedVariationId, setSelectedVariationId] = useState('');
   const variationMenuRef = useRef(null);
+  const reduceMotion = useReducedMotion();
 
   const isVariable = product?.type === 'variable';
   const selectedProductItems = useMemo(
@@ -181,12 +184,21 @@ export default function ToolsetBuilderProductCard({
             <PackageCheck size={34} />
           </span>
         )}
-        {isSelected ? (
-          <span className="dtb-toolset-product-card__selected-badge">
-            <Check size={14} aria-hidden="true" />
-            Selected
-          </span>
-        ) : null}
+        <AnimatePresence initial={false}>
+          {isSelected ? (
+            <Motion.span
+              key="selected"
+              className="dtb-toolset-product-card__selected-badge"
+              initial={{ opacity: 0, scale: reduceMotion ? 1 : 0.94 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: reduceMotion ? 1 : 0.97 }}
+              transition={reduceMotion ? reducedTransition : dtbTransition.fast}
+            >
+              <Check size={14} aria-hidden="true" />
+              Selected
+            </Motion.span>
+          ) : null}
+        </AnimatePresence>
       </div>
 
       <div className="dtb-toolset-product-card__body">
@@ -295,6 +307,7 @@ export default function ToolsetBuilderProductCard({
                 className="dtb-toolset-product-card__select"
                 disabled={atMaximum && !activeVariationAlreadySelected}
                 onClick={handleVariationSelect}
+                aria-pressed={activeVariationAlreadySelected}
               >
                 {activeVariationAlreadySelected ? 'Remove selection' : 'Select configuration'}
               </button>
@@ -306,6 +319,7 @@ export default function ToolsetBuilderProductCard({
             className="dtb-toolset-product-card__select"
             disabled={(atMaximum && !isSelected) || isOutOfStock}
             onClick={handleSimpleSelect}
+            aria-pressed={isSelected}
           >
             {isSelected ? <Trash2 size={16} aria-hidden="true" /> : null}
             <span>{isSelected ? 'Remove selection' : atMaximum ? 'Selection limit reached' : 'Select tool'}</span>

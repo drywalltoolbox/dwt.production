@@ -17,8 +17,10 @@
  * Pointer events must not leak into the diagram's zoom/pan handlers while a
  * user is interacting with the card controls.
  */
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import SchematicHotspotCard from './SchematicHotspotCard';
+
+const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
 const OFFSET = 12; // gap between hotspot and modal
 const PADDING = 8; // minimum clearance from wrapper edges
@@ -60,7 +62,12 @@ function stopDialogPointerPropagation(event) {
 
 export default function SchematicPartDialog({ part, schematicContext, anchorRect, wrapRef, isMobile, onClose }) {
   const cardRef = useRef(null);
+  const mobileDialogRef = useRef(null);
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const hasPart = Boolean(part);
 
   useLayoutEffect(() => {
     if (isMobile || !anchorRect || !wrapRef?.current) return;
@@ -81,6 +88,54 @@ export default function SchematicPartDialog({ part, schematicContext, anchorRect
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isMobile, onClose]);
 
+  useEffect(() => {
+    if (!isMobile || !hasPart) return undefined;
+
+    const opener = document.activeElement;
+    const focusFrame = window.requestAnimationFrame(() => {
+      mobileDialogRef.current?.focus({ preventScroll: true });
+    });
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        event.stopPropagation();
+        onCloseRef.current?.();
+        return;
+      }
+      if (event.key !== 'Tab' || !mobileDialogRef.current) return;
+      const dialog = mobileDialogRef.current;
+      const focusable = Array.from(dialog.querySelectorAll(FOCUSABLE_SELECTOR))
+        .filter((element) => element.getClientRects().length > 0 && !element.closest('[inert]'));
+      if (!focusable.length) {
+        event.preventDefault();
+        dialog.focus({ preventScroll: true });
+        return;
+      }
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (!dialog.contains(document.activeElement)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus({ preventScroll: true });
+      } else if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus({ preventScroll: true });
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus({ preventScroll: true });
+      }
+    };
+    const activeDialog = mobileDialogRef.current;
+    document.addEventListener('keydown', onKeyDown, true);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.removeEventListener('keydown', onKeyDown, true);
+      if (opener instanceof HTMLElement && opener.isConnected
+        && activeDialog?.contains(document.activeElement)) {
+        opener.focus({ preventScroll: true });
+      }
+    };
+  }, [isMobile, hasPart, part?.part_ref]);
+
   if (!part) return null;
 
   const dialogLabel = part.title ? `${part.title} details` : 'Part details';
@@ -90,6 +145,8 @@ export default function SchematicPartDialog({ part, schematicContext, anchorRect
       <>
         <div className="mobile-modal-backdrop" onClick={onClose} />
         <div
+          ref={mobileDialogRef}
+          tabIndex={-1}
           className="mobile-part-modal-overlay"
           role="dialog"
           aria-modal="true"
