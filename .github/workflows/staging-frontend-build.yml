@@ -1,0 +1,107 @@
+name: Frontend staging build (validation only)
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_sha:
+        description: "Exact 40-character commit SHA in elliotttmiller/launch-dtb"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dtb-staging-build
+  cancel-in-progress: false
+
+jobs:
+  build-staging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Validate immutable source identity
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          if ! [[ "$SOURCE_SHA" =~ ^[0-9a-fA-F]{40}$ ]]; then
+            echo "::error::source_sha must be exactly 40 hex characters"
+            exit 1
+          fi
+
+      - name: Check out canonical application source
+        uses: actions/checkout@v4
+        with:
+          repository: elliotttmiller/launch-dtb
+          ref: ${{ inputs.source_sha }}
+          persist-credentials: false
+          path: source
+
+      - name: Confirm checkout commit
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          actual="$(git -C source rev-parse HEAD)"
+          if [[ "${actual,,}" != "${SOURCE_SHA,,}" ]]; then
+            echo "::error::Source identity mismatch"
+            exit 1
+          fi
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: source/frontend/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: source/frontend
+        run: npm ci --no-audit --no-fund
+
+      - name: Run canonical staging build
+        working-directory: source/frontend
+        run: npm run build:staging
+
+      - name: Validate staging distribution
+        env:
+          SOURCE_SHA: ${{ inputs.source_sha }}
+        run: |
+          set -euo pipefail
+          root=source/dist-staging
+          for f in index.html .htaccess asset-manifest.json site.webmanifest; do
+            test -s "$root/$f" || { echo "::error::Missing/empty $f"; exit 1; }
+          done
+          python3 - <<'PY'
+          import json, pathlib, re
+          root = pathlib.Path("source/dist-staging")
+          manifest = json.loads((root / "asset-manifest.json").read_text())
+          entry = manifest.get("entrypoints")
+          assert isinstance(entry, list) and entry, "Missing entrypoints"
+          for uri in entry:
+              assert isinstance(uri, str) and uri.startswith("/staging/"), f"Incorrect staging URL: {uri}"
+              target = root / uri.removeprefix("/staging/")
+              assert target.is_file(), f"Missing entrypoint: {uri}"
+          html = (root / "index.html").read_text()
+          assert "/staging/" in html, "Missing staging base path"
+          assert not re.search(r'src=["\']/assets/', html), "Root-mounted script found"
+          print(f"Validated {len(entry)} entrypoints and required static files")
+          PY
+          (
+            cd "$root"
+            find . -type f -print0 | sort -z | xargs -0 sha256sum
+          ) > staging-artifact-sha256.txt
+          printf '%s\n' "$SOURCE_SHA" > staging-source-sha.txt
+
+      - name: Package immutable staging artifact
+        run: tar -C source/dist-staging -czf staging-dist.tar.gz .
+
+      - name: Upload validated artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: dtb-staging-${{ inputs.source_sha }}
+          path: |
+            staging-dist.tar.gz
+            staging-artifact-sha256.txt
+            staging-source-sha.txt
+          if-no-files-found: error
+          retention-days: 14
