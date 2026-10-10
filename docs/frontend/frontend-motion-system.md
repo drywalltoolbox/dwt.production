@@ -276,3 +276,14 @@ The browser owns the vertical page scroll, horizontal rail inertia, axis arbitra
 Product rail cards do **not** initiate speculative PDP and quick-view fetches on touch `pointerdown`: initial contact can be the start of an inertial swipe. Preserve the existing intent preloading on focus and mouse/pen pointer entry; actual taps still open the existing product interaction. This keeps touch input handling lightweight without changing catalog, cart, modal, or checkout authorities.
 
 Performance acceptance must use production-build mobile traces for interaction delay, main-thread long tasks, stable layout and actual touch frame pacing. The static source contracts are guardrails, not replacements for Safari/Chrome device measurements. Reference material: MDN CSS Scroll Snap, MDN touch-action and overscroll-behavior, and web.dev Interaction to Next Paint optimization guidance.
+
+
+### Cart motion consistency refinement (October 2026)
+
+The cart page uses the shared `dtbTransition.standard` and `dtbTransition.exit` presets instead of per-row custom durations, easings and index-based stagger. Cart rows retain layout reflow and exit feedback under normal motion settings. Under `prefers-reduced-motion`, the cart suppresses layout projection and positional exits, leaving authoritative cart updates and assistive semantics intact. Animation never implies a successful mutation before the cart context updates.
+
+### Motion-surface audit and follow-up priorities
+
+Source-verified: the app mounts strict LazyMotion with asynchronous domMax features; `StorefrontMobileDrawer` uses `MotionDrawer`, `MotionBackdrop` and reduced-motion support; `ProductModal` uses shared variants and responsive drawer/dialog wrappers; `Cart` uses animated list presence and layout; `RepairPackages` uses motion hover and content; `PageTransition` intentionally does not animate a document-sized route wrapper.
+
+Follow-up inspection and physical-device validation are required for product-card to quick-view shared-element transitions, gallery image transitions, search/filter sheets, toolset selection, repair workflow, schematic hotspots, account tabs and checkout validation feedback. Do not introduce layoutId across route/portal boundaries until the origin/destination image lifecycle, focus, modal ownership, reduced motion and geometry stability are proven. Retain browser-native rails and scrolling.
