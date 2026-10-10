@@ -18,7 +18,8 @@
 
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { m as Motion } from 'framer-motion';
+import { m as Motion, useReducedMotion } from 'framer-motion';
+import { dtbTransition, reducedTransition } from '../../motion/dtbMotion.js';
 import {
   Headphones, LayoutDashboard, Package, Wrench, RotateCcw, Settings, LogOut, User,
 } from 'lucide-react';
@@ -53,7 +54,7 @@ const BASE_TABS = [
 
 const tabTransition = {
   initial: { opacity: 1, y: 4 },
-  animate: { opacity: 1, y: 0, transition: { duration: 0.18, ease: [ 0.22, 1, 0.36, 1 ] } },
+  animate: { opacity: 1, y: 0, transition: dtbTransition.fast },
 };
 
 // Dot-grid hero overlay
@@ -73,6 +74,7 @@ function settledValue(result, normalize) {
 
 export default function AccountHub() {
   const TABS = useMemo( () => BASE_TABS, [] );
+  const reduceMotion = useReducedMotion();
   const navigate                                      = useNavigate();
   const { user, isAuthenticated, isLoading, logout }  = useAuthContext();
 
@@ -211,8 +213,8 @@ export default function AccountHub() {
             <Motion.span
               key={ i }
               style={ { display: 'block', width: '9px', height: '9px', borderRadius: '50%', background: '#2255ee' } }
-              animate={ { scale: [ 1, 1.5, 1 ], opacity: [ 0.3, 1, 0.3 ] } }
-              transition={ { duration: 1.1, repeat: Infinity, delay: i * 0.2, ease: 'easeInOut' } }
+              animate={ reduceMotion ? { scale: 1, opacity: 1 } : { scale: [ 1, 1.5, 1 ], opacity: [ 0.3, 1, 0.3 ] } }
+              transition={ reduceMotion ? reducedTransition : { duration: 1.1, repeat: Infinity, delay: i * 0.2, ease: 'easeInOut' } }
             />
           ) ) }
         </div>
@@ -250,9 +252,9 @@ export default function AccountHub() {
 
         <div style={ { position: 'relative', zIndex: 1, maxWidth: '1200px', margin: '0 auto', padding: 'clamp(1.75rem, 4.5vw, 3rem) clamp(1.25rem, 5vw, 3rem)' } }>
           <Motion.div
-            initial={ { opacity: 0, y: 14 } }
-            animate={ { opacity: 1, y: 0  } }
-            transition={ { duration: 0.45, ease: [ 0.16, 1, 0.3, 1 ] } }
+            initial={ reduceMotion ? false : { opacity: 1, y: 8 } }
+            animate={ { opacity: 1, y: 0 } }
+            transition={ reduceMotion ? reducedTransition : dtbTransition.emphasized }
           >
             {/* ── Desktop layout: avatar + text side by side ── */}
             <div className="dash-hero-inner">
@@ -305,7 +307,7 @@ export default function AccountHub() {
         <div style={ { maxWidth: '1200px', margin: '0 auto' } }>
           <Motion.div
             key={ activeTab }
-            variants={ tabTransition }
+            variants={ reduceMotion ? { initial: { opacity: 1, y: 0 }, animate: { opacity: 1, y: 0, transition: reducedTransition } } : tabTransition }
             initial="initial"
             animate="animate"
             style={ {
