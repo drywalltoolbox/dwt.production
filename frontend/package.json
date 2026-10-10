@@ -21,7 +21,8 @@
     "test:render-continuity": "node --test tests/renderContinuityContract.test.mjs",
     "test:toolset-builder": "node --test tests/toolsetBuilderFrontendContract.test.mjs",
     "test:breadcrumb": "node --test tests/breadcrumbContract.test.mjs",
-    "test:category-hero": "node --test tests/categoryHeroContract.test.mjs"
+    "test:category-hero": "node --test tests/categoryHeroContract.test.mjs",
+    "test:mobile-shell": "node --test tests/mobileShellInteractionContract.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
