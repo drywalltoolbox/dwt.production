@@ -551,20 +551,14 @@ body,
 
   /* Scrolled state modifies only the header's paint, never its measured
      height: fixed-header offsets and route scroll restoration stay stable. */
-  .site-header--mobile-scrolled {
-    box-shadow: 0 6px 22px rgba(2, 6, 23, 0.14);
-  }
-
   .site-header--mobile-scrolled .header-mobile-search-dock {
-    border-bottom: 1px solid rgba(148, 163, 184, 0.16);
+    border-bottom: 1px solid rgba(148, 163, 184, 0.24);
+    background-color: var(--dtb-shell, #0a1020);
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .site-header {
-      transition: box-shadow var(--dtb-motion-fast);
-    }
     .site-header .header-mobile-search-dock {
-      transition: border-color var(--dtb-motion-fast);
+      transition: border-color var(--dtb-motion-fast), background-color var(--dtb-motion-fast);
     }
   }
 
