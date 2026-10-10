@@ -67,6 +67,7 @@ export default function SchematicPartDialog({ part, schematicContext, anchorRect
 
   useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
   const [position, setPosition] = useState({ top: 0, left: 0 });
+  const hasPart = Boolean(part);
 
   useLayoutEffect(() => {
     if (isMobile || !anchorRect || !wrapRef?.current) return;
@@ -88,7 +89,7 @@ export default function SchematicPartDialog({ part, schematicContext, anchorRect
   }, [isMobile, onClose]);
 
   useEffect(() => {
-    if (!isMobile || !part) return undefined;
+    if (!isMobile || !hasPart) return undefined;
 
     const opener = document.activeElement;
     const focusFrame = window.requestAnimationFrame(() => {
@@ -132,7 +133,7 @@ export default function SchematicPartDialog({ part, schematicContext, anchorRect
         opener.focus({ preventScroll: true });
       }
     };
-  }, [isMobile, part?.part_ref]);
+  }, [isMobile, hasPart, part?.part_ref]);
 
   if (!part) return null;
 
