@@ -39,9 +39,11 @@ jobs:
         run: npm run lint
 
       - name: Run frontend contract regression suites
+        if: ${{ !cancelled() }}
         working-directory: frontend
         run: node --test tests/*.test.mjs tests/calculators/calculators.test.mjs
 
       - name: Build staging frontend without deployment
+        if: ${{ !cancelled() }}
         working-directory: frontend
         run: npm run build:staging
