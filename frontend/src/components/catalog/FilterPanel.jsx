@@ -94,13 +94,14 @@ export default function FilterPanel({
       }
     };
 
+    const activePanel = panelRef.current;
     document.addEventListener('keydown', onKeyDown, true);
     return () => {
       window.cancelAnimationFrame(focusFrame);
       document.removeEventListener('keydown', onKeyDown, true);
       document.body.style.overflow = previousOverflow;
       if (opener instanceof HTMLElement && opener.isConnected
-        && panelRef.current?.contains(document.activeElement)) {
+        && activePanel?.contains(document.activeElement)) {
         opener.focus({ preventScroll: true });
       }
     };
