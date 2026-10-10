@@ -124,12 +124,13 @@ export default function SchematicPartDialog({ part, schematicContext, anchorRect
         first.focus({ preventScroll: true });
       }
     };
+    const activeDialog = mobileDialogRef.current;
     document.addEventListener('keydown', onKeyDown, true);
     return () => {
       window.cancelAnimationFrame(focusFrame);
       document.removeEventListener('keydown', onKeyDown, true);
       if (opener instanceof HTMLElement && opener.isConnected
-        && mobileDialogRef.current?.contains(document.activeElement)) {
+        && activeDialog?.contains(document.activeElement)) {
         opener.focus({ preventScroll: true });
       }
     };
