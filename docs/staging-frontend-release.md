@@ -1,33 +1,42 @@
-# Staging frontend build and deployment contract
+# SiteGround staging build and publication
 
-## Source and ownership
+## Authority and scope
 
-The `main` branch of `drywalltoolbox/dwt.production` currently contains the imported frontend source. The staging workflow builds **its own triggering commit**, not an independently pinned copy from another repository. The canonical application architecture and commerce ownership remain governed by the existing implementation contracts. If repository source ownership changes, update this workflow deliberately.
+The `main` branch of `drywalltoolbox/dwt.production` currently contains the imported React frontend. `.github/workflows/staging-frontend-build.yml` builds its triggering commit using `frontend/package-lock.json`, Node 22, and `npm run build:staging`. The output is repository-root `dist-staging/` mounted at `/staging/`.
 
-- Build: `cd frontend && npm ci && npm run build:staging`
-- Output: repository-root `dist-staging/`
-- Publication target: SiteGround `public_html/staging/` only.
-- Never overwrite `public_html/index.html` or deploy frontend artifacts into `public_html/wp/`.
-- The checked-out source identity is `github.sha`; the artifact contains `staging-source-sha.txt` and a SHA-256 inventory.
+The GitHub artifact includes `staging-dist.tar.gz`, `staging-artifact-sha256.txt`, and `staging-source-sha.txt`. Build run **38022157842** completed successfully; artifact **11658768062**, source **8998ace04c6a5caa2cf7f0414f084050bbf60949**, was confirmed non-expired at inspection.
 
-## Implemented: staging artifact build
+## Staging-only publish and rollback (implemented, not yet exercised)
 
-`.github/workflows/staging-frontend-build.yml` runs on `main` changes to the workflow or `frontend/**`, and supports manual `workflow_dispatch`. It checks out the triggering commit, installs locked dependencies using Node 22, runs the canonical staging build, verifies required files and staging asset entrypoints, and uploads a validated distribution archive plus source/checksum metadata for 14 days.
+The manually dispatched `.github/workflows/staging-frontend-publish.yml` uses `actions/download-artifact` to retrieve a selected successful build run and matches its artifact to an exact source SHA. Before transferring, it validates archive member types, boundaries and size, staging-required files, source identity, and all recorded SHA-256 hashes.
 
-It performs **no hosting writes**. A passing workflow establishes that the distribution was built and its declared entrypoint assets exist, not that the live storefront works.
+It uses pinned SSH host identification and a staging-specific SSH private key. It copies the validated payload into a private incoming release directory **outside `public_html`**, then calls `scripts/deployment/staging-release.sh`. On the server, the script enforces that the target is exactly the immediate `public_html/staging` directory; prohibits private release roots under `public_html`; checks incoming hashes; acquires an exclusive directory lock; snapshots the previous staging tree privately; retains old assets; and replaces the mutable manifest and HTML shell last. On an error during publication, a best-effort restoration is attempted. Rollback requires that the requested release is currently published and restores its private snapshot under the same lock. A follow-up HTTP check asserts an HTML response and `X-Robots-Tag: noindex`.
 
-## Not yet enabled: controlled staging publication
+**Important:** This is a first implementation, not a proven end-to-end release. Do not assume SiteGround's SSH account supports `rsync`, `sha256sum`, `install`, and `bash` until tested. Snapshot creation requires sufficient private disk space. Existing `staging/.htaccess` and other mutable files must be audited before first publication. If the first publication fails and the original staging HTML lacked required files, manual restoration may be necessary.
 
-A separate staging-only release publisher must be implemented and authorized before uploading artifacts:
+## Required GitHub staging environment
 
-1. Verify artifact provenance and SHA-256 inventory. Reject missing files, symlinks, traversal paths, or mismatched source SHA.
-2. Limit the deployment credential to staging and prevent writes to site root, WordPress, customer uploads, and server-owned files.
-3. Acquire a release lock. Prepare and retain a private rollback snapshot before modifying mutable release files.
-4. Upload content-hashed assets first, keeping old hashed assets available for active clients. Replace mutable manifests and `index.html` last, only after verification.
-5. Perform both filesystem and HTTP checks of HTML, representative assets, SPA routing, cache headers, noindex policy, shared REST integration routes, and checkout ownership. Do not mutate real orders to smoke-test a deployment.
-6. Rollback under the same lock, restoring only the previous release's mutable files; reject restoration over an unrelated newer release and reverify the result.
-7. Maintain bounded artifact/backup retention with an operator-controlled cleanup policy.
+Create a protected GitHub Actions environment named `staging` and provide the following **environment secrets** (never commit values):
 
-The existing SiteGround Git release engine covers the WordPress `/wp` tree. It does not authorize frontend staging publication.
+| Secret | Description |
+| --- | --- |
+| `SITEGROUND_STAGING_SSH_HOST` | SSH host |
+| `SITEGROUND_STAGING_SSH_PORT` | SSH port (optional; defaults to 22) |
+| `SITEGROUND_STAGING_SSH_USER` | Staging-scoped SSH user |
+| `SITEGROUND_STAGING_SSH_PRIVATE_KEY` | SSH private key |
+| `SITEGROUND_STAGING_SSH_KNOWN_HOSTS` | Prevalidated `known_hosts` entry or entries |
+| `SITEGROUND_STAGING_PUBLIC_DIR` | Absolute path to existing `public_html/staging` |
+| `SITEGROUND_STAGING_RELEASE_DIR` | Absolute path to an **existing private writable directory outside `public_html`** |
 
-**Production publication, homepage switching, and server-side builds remain disabled.** Do not infer deployment from a successful Actions build.
+For first publish, run the manual workflow with `action=publish`, `source_sha` equal to the selected successful build's source SHA, and `build_run_id` equal to that GitHub Actions run ID. For rollback, run with `action=rollback` and `source_sha` equal to the **currently deployed** release SHA. Rollback does not require `build_run_id`.
+
+The private directory contains incoming payloads, snapshots, release state and a lock. A failed or interrupted release can leave a lock that must be inspected and removed manually; do **not** automatically override it. If a failure happens after publication but before HTTP verification, the manual rollback workflow can restore the previous snapshot.
+
+## Boundaries and outstanding verification
+
+- No frontend publication to production root, `public_html/index.html`, WordPress `/wp`, or commerce persistence.
+- The existing WordPress SiteGround Git release engine is intentionally unrelated.
+- No production publisher or homepage switching workflow is included.
+- Publisher has **not** been executed against SiteGround: the staging SSH secrets, capabilities, and disk layout have not yet been verified.
+- SiteGround-side runtime still needs checking, especially the first-release rollback behavior, HTTP routing, cache headers, and absence of stale assets. The HTML/noindex smoke test is necessary but not sufficient.
+- Do not promote a release to production based on this staging workflow alone.
