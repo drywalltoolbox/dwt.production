@@ -151,6 +151,8 @@ export default function FilterPanel({
           key="mobile-filters"
           className="fixed inset-0 z-50 lg:hidden"
           style={{ top: 'var(--header-height)' }}
+          inert={!isOpen ? true : undefined}
+          aria-hidden={!isOpen ? 'true' : undefined}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
