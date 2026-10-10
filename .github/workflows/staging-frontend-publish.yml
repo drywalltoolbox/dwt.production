@@ -14,7 +14,7 @@ concurrency:
 jobs:
   staging:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 50
     environment: staging
     env:
       RELEASE_ACTION: publish
@@ -32,64 +32,76 @@ jobs:
           done
           [[ "$STAGING_ROOT" = /* && "$RELEASE_ROOT" = /* ]] || exit 2
 
-      - name: Check out release script
+      - name: Check out current frontend source and release script
         uses: actions/checkout@v4
         with:
           persist-credentials: false
 
-      - name: Test staging build resolver
-        run: python3 -m unittest discover -s scripts/deployment/tests -p 'test_resolve_staging_build.py'
-
-      - name: Resolve and validate staging build
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          python3 scripts/deployment/resolve-staging-build.py
-
-      - name: Obtain successful build artifact
-        uses: actions/download-artifact@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          name: dtb-staging-${{ env.RELEASE_SHA }}
-          run-id: ${{ env.BUILD_RUN_ID }}
-          github-token: ${{ github.token }}
-          path: validated-artifact
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
 
-      - name: Validate build provenance and unpack safely
+      - name: Install locked dependencies
+        working-directory: frontend
+        run: npm ci --no-audit --no-fund
+
+      - name: Assert staging configuration exists
         run: |
           set -euo pipefail
-          [[ "$(cat validated-artifact/staging-source-sha.txt)" == "$RELEASE_SHA" ]] ||
-            { echo "::error::Artifact source SHA does not match"; exit 2; }
+          test -s frontend/.env.staging || { echo "::error::frontend/.env.staging missing or empty"; exit 2; }
+
+      - name: Build staging frontend using .env.staging
+        working-directory: frontend
+        run: npm run build:staging
+
+      - name: Validate staging distribution and inventory
+        run: |
+          set -euo pipefail
+          root=dist-staging
+          for f in index.html .htaccess asset-manifest.json site.webmanifest; do
+            test -s "$root/$f" || { echo "::error::Missing/empty $f"; exit 1; }
+          done
           python3 - <<'PY'
-          import pathlib, tarfile
-          archive = pathlib.Path("validated-artifact/staging-dist.tar.gz")
-          root = pathlib.Path("payload")
-          root.mkdir()
-          with tarfile.open(archive, "r:gz") as tar:
-              names = set()
-              total = 0
-              for member in tar:
-                  path = pathlib.PurePosixPath(member.name)
-                  parts = [p for p in path.parts if p != "."]
-                  if not parts and member.isdir():
-                      continue
-                  assert parts and ".." not in parts and not path.is_absolute(), "Unsafe archive path"
-                  normalized = "/".join(parts)
-                  assert normalized not in names, "Duplicate archive path"
-                  names.add(normalized)
-                  assert member.isfile() or member.isdir(), "Non-regular archive entry"
-                  total += member.size
-                  assert total <= 512 * 1024 * 1024, "Oversized archive"
-              tar.extractall(root, filter="data")
+          import json, pathlib, re
+          root = pathlib.Path("dist-staging")
+          manifest = json.loads((root / "asset-manifest.json").read_text())
+          entry = manifest.get("entrypoints")
+          assert isinstance(entry, list) and entry, "Missing entrypoints"
+          for uri in entry:
+              assert isinstance(uri, str) and uri.startswith("/staging/"), f"Incorrect staging URL: {uri}"
+              target = root / uri.removeprefix("/staging/")
+              assert target.is_file(), f"Missing entrypoint: {uri}"
+          html = (root / "index.html").read_text()
+          assert "/staging/" in html, "Missing staging base path"
+          assert not re.search(r'src=["\']/assets/', html), "Root-mounted asset reference found"
+          print(f"Validated {len(entry)} staging entrypoints")
           PY
           (
+            cd "$root"
+            find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum
+          ) > staging-artifact-sha256.txt
+
+      - name: Prepare build payload and unique release identity
+        run: |
+          set -euo pipefail
+          source_sha="$(git rev-parse HEAD)"
+          [[ "$source_sha" =~ ^[a-f0-9]{40}$ ]] || exit 2
+          [[ "$source_sha" == "$GITHUB_SHA" ]] || { echo "::error::Unexpected checkout SHA"; exit 2; }
+          release_sha="$(printf '%s:%s:%s' "$source_sha" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" | sha1sum | cut -d' ' -f1)"
+          echo "SOURCE_SHA=$source_sha" >> "$GITHUB_ENV"
+          echo "RELEASE_SHA=$release_sha" >> "$GITHUB_ENV"
+          echo "BUILD_RUN_ID=$GITHUB_RUN_ID" >> "$GITHUB_ENV"
+          mkdir -p payload
+          cp -a dist-staging/. payload/
+          cp staging-artifact-sha256.txt payload/.dtb-file-sha256
+          (
             cd payload
-            sha256sum -c ../validated-artifact/staging-artifact-sha256.txt
+            sha256sum -c .dtb-file-sha256 >/dev/null
           )
-          for f in index.html .htaccess asset-manifest.json site.webmanifest; do
-            test -s "payload/$f" || { echo "::error::Missing $f"; exit 2; }
-          done
-          cp validated-artifact/staging-artifact-sha256.txt payload/.dtb-file-sha256
+          echo "Built staging commit $source_sha as release $release_sha"
 
       - name: Test staging release and rollback locally
         run: bash scripts/deployment/tests/test_staging_release.sh
@@ -105,35 +117,14 @@ jobs:
           printf '%s\n' "$SSH_KEY" > ~/.ssh/id_staging
           chmod 600 ~/.ssh/id_staging
 
-      - name: Detect already published staging release
-        run: |
-          set -euo pipefail
-          printf -v remote '%q ' bash -s -- "$RELEASE_ROOT" "$RELEASE_SHA"
-          if ssh -i ~/.ssh/id_staging -p "${SITEGROUND_PORT:-22}" -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
-            "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" <<'REMOTE'
-          set -euo pipefail
-          private="$1"
-          release="$2"
-          [[ -d "$private" && ! -L "$private" ]] || exit 2
-          current="$private/current-release"
-          [[ -f "$current" && ! -L "$current" ]] || exit 1
-          [[ "$(cat "$current")" == "$release" ]]
-          REMOTE
-          then
-            echo "ALREADY_PUBLISHED=true" >> "$GITHUB_ENV"
-            echo "Requested staging release is already current; publication will be skipped."
-          fi
-
       - name: Prepare private incoming release directory
-        if: env.ALREADY_PUBLISHED != 'true'
         run: |
           set -euo pipefail
           printf -v remote '%q ' bash -s -- prepare "$STAGING_ROOT" "$RELEASE_ROOT" "$RELEASE_SHA"
           ssh -i ~/.ssh/id_staging -p "${SITEGROUND_PORT:-22}" -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < scripts/deployment/staging-release.sh
 
-      - name: Transfer artifact outside webroot
-        if: env.ALREADY_PUBLISHED != 'true'
+      - name: Transfer current staging build outside webroot
         run: |
           set -euo pipefail
           printf -v remote_dest '%q' "$RELEASE_ROOT/incoming/$RELEASE_SHA/"
@@ -142,7 +133,6 @@ jobs:
             payload/ "$SITEGROUND_USER@$SITEGROUND_HOST:$remote_dest"
 
       - name: Publish staging with lock
-        if: env.ALREADY_PUBLISHED != 'true'
         run: |
           set -euo pipefail
           printf -v remote '%q ' bash -s -- "$RELEASE_ACTION" "$STAGING_ROOT" "$RELEASE_ROOT" "$RELEASE_SHA"
@@ -150,7 +140,6 @@ jobs:
             "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < scripts/deployment/staging-release.sh
 
       - name: Verify staging HTTP shell and noindex response
-        
         run: |
           set -euo pipefail
           headers="$(mktemp)"
@@ -173,9 +162,9 @@ jobs:
             echo "| --- | --- |"
             echo "| Action | \`$RELEASE_ACTION\` |"
             echo "| Job status | \`$JOB_STATUS\` |"
-            echo "| Already current | \`${ALREADY_PUBLISHED:-false}\` |"
+            echo "| Rebuilt from source | \`${SOURCE_SHA:-not resolved}\` |"
             echo "| Source SHA | \`${RELEASE_SHA:-not resolved}\` |"
-            echo "| Build run ID | \`${BUILD_RUN_ID:-not applicable}\` |"
+            echo "| Workflow build run | \`${BUILD_RUN_ID:-not resolved}\` |"
             echo "| Workflow run | [View run](https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID) |"
             echo "| Staging URL | https://drywalltoolbox.com/staging/ |"
           } >> "$GITHUB_STEP_SUMMARY"
