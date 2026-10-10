@@ -18,7 +18,7 @@ The publication workflow is manual (`workflow_dispatch`) and uses the protected 
 - **Publish, pinned:** supply both the 40-character source SHA and successful build run ID. The resolver verifies that the run belongs to the intended staging build workflow, the repository and `main` branch, and that its artifact matches the SHA.
 - **Rollback:** select `rollback`, provide the *current published release SHA*, and leave `build_run_id` blank. The remote script requires an existing snapshot and rejects mismatched release identities. A rollback is a deliberate mutation and must never be triggered automatically on a failed health check without operator approval.
 
-Build provenance, checksums, staging-only target validation, a release lock, snapshots, and HTTP/noindex verification remain enforced by the existing workflow. A successful HTTP shell/noindex check is not a comprehensive browser, commerce, or integration test.
+The workflow checks the remote current-release identity before preparing an incoming release. Re-publishing the same current SHA is a no-op (HTTP/noindex verification still runs). Build provenance, checksums, staging-only target validation, a release lock, snapshots, and HTTP/noindex verification remain enforced by the existing workflow. A GitHub Actions job summary reports the resolved release, action, build run, and outcome. A successful HTTP shell/noindex check is not a comprehensive browser, commerce, or integration test.
 
 ## Agent integration contract (not yet connected)
 
