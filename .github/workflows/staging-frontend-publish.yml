@@ -104,26 +104,23 @@ jobs:
           done
           cp validated-artifact/staging-artifact-sha256.txt payload/.dtb-file-sha256
 
-      - name: Configure pinned SSH host identity
+      - name: Configure staging SSH identity
         env:
           SSH_KEY: ${{ secrets.SITEGROUND_STAGING_SSH_PRIVATE_KEY }}
-          KNOWN_HOSTS: ${{ secrets.SITEGROUND_STAGING_SSH_KNOWN_HOSTS }}
         run: |
           set -euo pipefail
-          [[ -n "$SSH_KEY" && -n "$KNOWN_HOSTS" ]] ||
-            { echo "::error::Staging SSH key and pinned known_hosts are required"; exit 2; }
+          [[ -n "$SSH_KEY" ]] ||
+            { echo "::error::Staging SSH key is required"; exit 2; }
           mkdir -m 700 -p ~/.ssh
           printf '%s\n' "$SSH_KEY" > ~/.ssh/id_staging
           chmod 600 ~/.ssh/id_staging
-          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
-          chmod 600 ~/.ssh/known_hosts
 
       - name: Prepare private incoming release directory
         if: inputs.action == 'publish'
         run: |
           set -euo pipefail
           printf -v remote '%q ' bash -s -- prepare "$STAGING_ROOT" "$RELEASE_ROOT" "$RELEASE_SHA"
-          ssh -i ~/.ssh/id_staging -p "${SITEGROUND_PORT:-22}" -o BatchMode=yes -o StrictHostKeyChecking=yes \
+          ssh -i ~/.ssh/id_staging -p "${SITEGROUND_PORT:-22}" -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < scripts/deployment/staging-release.sh
 
       - name: Transfer artifact outside webroot
@@ -132,14 +129,14 @@ jobs:
           set -euo pipefail
           printf -v remote_dest '%q' "$RELEASE_ROOT/incoming/$RELEASE_SHA/"
           rsync -a --no-owner --no-group --no-perms \
-            -e "ssh -i $HOME/.ssh/id_staging -p ${SITEGROUND_PORT:-22} -o BatchMode=yes -o StrictHostKeyChecking=yes" \
+            -e "ssh -i $HOME/.ssh/id_staging -p ${SITEGROUND_PORT:-22} -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
             payload/ "$SITEGROUND_USER@$SITEGROUND_HOST:$remote_dest"
 
       - name: Publish or roll back staging with lock
         run: |
           set -euo pipefail
           printf -v remote '%q ' bash -s -- "$RELEASE_ACTION" "$STAGING_ROOT" "$RELEASE_ROOT" "$RELEASE_SHA"
-          ssh -i ~/.ssh/id_staging -p "${SITEGROUND_PORT:-22}" -o BatchMode=yes -o StrictHostKeyChecking=yes \
+          ssh -i ~/.ssh/id_staging -p "${SITEGROUND_PORT:-22}" -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < scripts/deployment/staging-release.sh
 
       - name: Verify staging HTTP shell and noindex response
