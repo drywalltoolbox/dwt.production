@@ -411,7 +411,9 @@
     visibility 0s linear var(--dtb-normal, 320ms);
   visibility: hidden;
   overscroll-behavior: none;
-  touch-action: none;
+  /* The suggestion body must accept native vertical pans; only the
+     non-scrolling backdrop suppresses touch gestures. */
+  touch-action: auto;
 }
 
 .storefront-search-overlay[data-open="true"] {
@@ -434,6 +436,7 @@
 .storefront-search-overlay .storefront-mobile-drawer__backdrop {
   background: rgba(3, 10, 24, 0.58);
   backdrop-filter: blur(12px);
+  touch-action: none;
 }
 
 .storefront-search-overlay__panel {
