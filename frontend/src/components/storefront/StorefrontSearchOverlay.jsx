@@ -121,7 +121,7 @@ export default function StorefrontSearchOverlay({
 
   return (
     <>
-      <div id="storefront-search-results" className="storefront-search-overlay" data-open={isOpen ? 'true' : 'false'} data-has-query={hasQuery ? 'true' : 'false'} role="dialog" aria-modal={isOpen ? 'true' : undefined} aria-hidden={!isOpen} aria-label="Search products">
+      <div id="storefront-search-results" className="storefront-search-overlay" data-open={isOpen ? 'true' : 'false'} data-has-query={hasQuery ? 'true' : 'false'} role="region" aria-hidden={!isOpen} inert={!isOpen ? true : undefined} aria-label="Product search suggestions">
         <button
           type="button"
           className="storefront-mobile-drawer__backdrop"
