@@ -39,12 +39,15 @@ jobs:
       RELEASE_ROOT: ${{ secrets.SITEGROUND_STAGING_RELEASE_DIR }}
     steps:
       - name: Validate input and publication credentials
+        env:
+          REQUESTED_SHA: ${{ inputs.source_sha }}
+          REQUESTED_RUN_ID: ${{ inputs.build_run_id }}
         run: |
           set -euo pipefail
           [[ "$RELEASE_ACTION" == publish || "$RELEASE_ACTION" == rollback ]] || exit 2
           if [[ "$RELEASE_ACTION" == rollback ]]; then
-            [[ "${{ inputs.source_sha }}" =~ ^[a-f0-9]{40}$ ]] || { echo "::error::Rollback requires the current release SHA"; exit 2; }
-            [[ -z "${{ inputs.build_run_id }}" ]] || { echo "::error::Rollback must not include a build run ID"; exit 2; }
+            [[ "$REQUESTED_SHA" =~ ^[a-f0-9]{40}$ ]] || { echo "::error::Rollback requires the current release SHA"; exit 2; }
+            [[ -z "$REQUESTED_RUN_ID" ]] || { echo "::error::Rollback must not include a build run ID"; exit 2; }
           fi
           for name in SITEGROUND_HOST SITEGROUND_USER STAGING_ROOT RELEASE_ROOT; do
             [[ -n "${!name}" ]] || { echo "::error::Missing staging deployment environment secret: $name"; exit 2; }
