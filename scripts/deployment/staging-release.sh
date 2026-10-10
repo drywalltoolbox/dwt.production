@@ -7,9 +7,9 @@ umask 077
 action="${1:?action required}"
 target="${2:?absolute staging webroot required}"
 private="${3:?absolute private release root required}"
-release="${4:?40-character release SHA required}"
+release="${4:?release identifier required}"
 
-[[ "$release" =~ ^[a-f0-9]{40}$ ]] || { echo "Invalid release identity" >&2; exit 2; }
+[[ "$release" =~ ^[a-f0-9]{40}$ || ( "$action" == "rollback" && "$release" == "auto" ) ]] || { echo "Invalid release identity" >&2; exit 2; }
 [[ "$target" = /* && "$private" = /* ]] || { echo "Absolute paths required" >&2; exit 2; }
 [[ -d "$target" && -d "$private" ]] || { echo "Preexisting target and private directories required" >&2; exit 2; }
 target="$(cd "$target" && pwd -P)"
@@ -45,6 +45,10 @@ current=""
 [[ ! -f "$state" ]] || current="$(cat "$state")"
 [[ -z "$current" || "$current" =~ ^[a-f0-9]{40}$ ]] ||
   { echo "Invalid release state" >&2; exit 2; }
+if [[ "$action" == "rollback" && "$release" == "auto" ]]; then
+  [[ -n "$current" ]] || { echo "No current staging release to roll back" >&2; exit 4; }
+  release="$current"
+fi
 
 if [[ "$action" == "publish" ]]; then
   if [[ "$current" == "$release" ]]; then
