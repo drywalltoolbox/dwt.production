@@ -59,6 +59,10 @@ jobs:
         with:
           persist-credentials: false
 
+      - name: Test staging build resolver
+        if: inputs.action == 'publish'
+        run: python3 -m unittest discover -s scripts/deployment/tests -p 'test_resolve_staging_build.py'
+
       - name: Resolve and validate staging build
         if: inputs.action == 'publish'
         env:
