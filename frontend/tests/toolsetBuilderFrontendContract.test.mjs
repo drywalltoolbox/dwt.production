@@ -11,17 +11,17 @@ async function read(relativePath) {
   return readFile(path.join(root, relativePath), 'utf8');
 }
 
-test('toolset builder remains lazy-routed while temporarily absent from storefront navigation', async () => {
+test('toolset builder remains out of the initial-launch route surface', async () => {
   const [app, routes, header] = await Promise.all([
     read('src/App.jsx'),
     read('src/routing/routeModules.js'),
     read('src/components/storefront/StorefrontHeader.jsx'),
   ]);
 
-  assert.match(routes, /toolsetBuilder:\s*\(\) => import\('\.\.\/pages\/ToolsetBuilder\.jsx'\)/);
-  assert.match(routes, /pathname === '\/toolset-builder'\) return 'toolsetBuilder'/);
-  assert.match(app, /const ToolsetBuilder = createLazyRoute\('toolsetBuilder'\)/);
-  assert.match(app, /<Route path="\/toolset-builder" element={<ToolsetBuilder \/>} \/>/);
+  assert.doesNotMatch(routes, /toolsetBuilder:\s*\(\) => import\('\.\.\/pages\/ToolsetBuilder\.jsx'\)/);
+  assert.doesNotMatch(routes, /pathname === '\/toolset-builder'\) return 'toolsetBuilder'/);
+  assert.doesNotMatch(app, /const ToolsetBuilder = createLazyRoute\('toolsetBuilder'\)/);
+  assert.doesNotMatch(app, /<Route path="\/toolset-builder" element={<ToolsetBuilder \/>} \/>/);
   assert.doesNotMatch(header, /to: '\/toolset-builder', label: 'Toolset Builder'/);
   assert.doesNotMatch(header, /id: 'toolset-builder'[\s\S]*landingTo: '\/toolset-builder'/);
 });
