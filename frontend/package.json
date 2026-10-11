@@ -23,7 +23,8 @@
     "test:breadcrumb": "node --test tests/breadcrumbContract.test.mjs",
     "test:category-hero": "node --test tests/categoryHeroContract.test.mjs",
     "test:mobile-shell": "node --test tests/mobileShellInteractionContract.test.mjs",
-    "test:motion-surfaces": "node --test tests/motionSurfacesContract.test.mjs"
+    "test:motion-surfaces": "node --test tests/motionSurfacesContract.test.mjs",
+    "test:product-pricing": "node --test tests/productPricing.test.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

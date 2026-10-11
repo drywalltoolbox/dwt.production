@@ -47,6 +47,10 @@ jobs:
         working-directory: frontend
         run: npm ci --no-audit --no-fund
 
+      - name: Test product pricing display
+        working-directory: frontend
+        run: npm run test:product-pricing
+
       - name: Build staging frontend
         working-directory: frontend
         run: npm run build:staging
