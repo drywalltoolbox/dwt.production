@@ -1,22 +1,20 @@
 # Frontend Toolset Builder
 
-Last verified: 2026-09-25 against branch `feat/universal-toolset-builder-frontend`.
+Last verified: 2026-10-11 against initial-launch scope.
 
 ## Status
 
-The React Toolset Builder frontend is implemented as an in-progress feature route at:
+The React Toolset Builder implementation is retained for **post-launch planned development**, but it is not part of the initial-launch customer route surface. `frontend/src/App.jsx` does not register `/toolset-builder`, and `routeModules.js` does not preload or resolve that path. A direct request therefore falls through the normal storefront 404 handling rather than presenting an inoperative purchase flow.
 
-`/toolset-builder`
+The final **Add set to cart** action remains disabled in the retained implementation until the backend phase supplies authoritative whole-set validation and cart finalization. Re-enabling the route requires an explicit product-release decision plus the missing backend finalization contract; it must not be exposed merely by restoring a navigation link.
 
-The route is intentionally `noindex` and the final **Add set to cart** action remains disabled until the backend phase supplies authoritative whole-set validation and cart finalization.
-
-This document describes the frontend contract only. It does not define product eligibility, compatibility, pricing, stock, discounts, shipping, cart validity, or checkout behavior.
+This document describes the retained frontend contract only. It does not define product eligibility, compatibility, pricing, stock, discounts, shipping, cart validity, or checkout behavior.
 
 ## Ownership
 
 `frontend/` owns:
 
-- builder routing and lazy loading;
+- builder routing and lazy loading when the post-launch feature is explicitly enabled;
 - workflow-selection presentation;
 - guided step navigation;
 - local in-progress selection state;
@@ -50,7 +48,7 @@ The frontend must not:
 
 ## Data path
 
-Current frontend read flow:
+Retained frontend read flow when the post-launch route is explicitly enabled:
 
 ```text
 /toolset-builder
@@ -157,8 +155,9 @@ npm run test:toolset-builder
 
 The test protects the following invariants:
 
-- route remains lazy loaded;
-- storefront navigation points to the route;
+- initial-launch `App.jsx` does not register `/toolset-builder`;
+- initial-launch `routeModules.js` does not preload or resolve the builder route;
+- storefront navigation does not point to the route;
 - catalog reads use the canonical catalog layer and require `product_kind=tool` for selectable builder products;
 - the legacy `/toolsets` API is not introduced as frontend authority;
 - workflow presentation does not contain shipping/discount/pricing authority;
