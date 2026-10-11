@@ -1,6 +1,8 @@
 name: Native checkout mount contract
 
 on:
+  push:
+    branches: [fix/staging-native-checkout-query-404]
   pull_request:
     branches: [main]
     paths:
