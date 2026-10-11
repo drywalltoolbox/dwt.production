@@ -24,7 +24,7 @@ The storefront uses the verified public contract:
 8. A `dtb_return` record is created in `pending_review` and receives a secure public tracking token.
 9. Customer must wait for approval and return instructions before shipping.
 
-The older public `POST /wp-json/dtb/v1/returns/request` endpoint remains registered for compatibility. The React storefront does not use it. Do not remove or repurpose the legacy endpoint until all external callers and deployment dependencies are audited.
+The older public `POST /wp-json/dtb/v1/returns/request` endpoint remains registered for compatibility. The React storefront does not use it. Compatibility callers must still provide a WooCommerce order number and matching checkout email; the handler verifies both against WooCommerce and re-derives order/customer identity server-side before persistence or notification. Do not remove or repurpose the legacy endpoint until all external callers and deployment dependencies are audited.
 
 ## Public lookup security
 
