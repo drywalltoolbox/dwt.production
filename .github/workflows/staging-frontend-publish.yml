@@ -1,6 +1,8 @@
 name: Deploy Latest Frontend to Staging
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -131,6 +133,16 @@ jobs:
           rsync -a --no-owner --no-group --no-perms \
             -e "ssh -i $HOME/.ssh/id_staging -p ${SITEGROUND_PORT:-22} -o BatchMode=yes -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null" \
             payload/ "$SITEGROUND_USER@$SITEGROUND_HOST:$remote_dest"
+
+      - name: Reject superseded push before publishing
+        if: github.event_name == 'push'
+        run: |
+          set -euo pipefail
+          latest_main="$(git ls-remote --exit-code origin refs/heads/main | awk '{print $1}')"
+          [[ "$latest_main" == "$GITHUB_SHA" ]] || {
+            echo "::error::Skipping outdated staging publish for $GITHUB_SHA; main is $latest_main"
+            exit 1
+          }
 
       - name: Publish staging with lock
         run: |
