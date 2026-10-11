@@ -57,6 +57,7 @@ jobs:
             if (await challenge()) {
               report.status = 'blocked_by_robot_challenge';
               report.challengeEvidence = (await bodyText()).slice(0, 1200);
+              console.log('DTB_QA_SUMMARY=' + JSON.stringify(report));
               await fs.writeFile(out + '/summary.json', JSON.stringify(report, null, 2));
               process.exitCode = 0;
             } else {
@@ -117,6 +118,7 @@ jobs:
               }
 
               report.status = 'completed';
+              console.log('DTB_QA_SUMMARY=' + JSON.stringify(report));
               await fs.writeFile(out + '/summary.json', JSON.stringify(report, null, 2));
               if (!report.cart?.containsAngleHeadAdapter || report.checkout?.hasUnavailable) process.exitCode = 1;
             }
@@ -124,7 +126,8 @@ jobs:
             report.status = 'test_error';
             report.error = error.stack || String(error);
             await page.screenshot({ path: out + '/failure.png', fullPage: true }).catch(() => {});
-            await fs.writeFile(out + '/summary.json', JSON.stringify(report, null, 2));
+            console.log('DTB_QA_SUMMARY=' + JSON.stringify(report));
+              await fs.writeFile(out + '/summary.json', JSON.stringify(report, null, 2));
             process.exitCode = 1;
           } finally {
             await browser.close();
