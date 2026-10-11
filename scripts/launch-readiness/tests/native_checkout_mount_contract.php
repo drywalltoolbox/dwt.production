@@ -52,6 +52,11 @@ expect_same(
 	$registered_filters['redirect_canonical'] ?? null,
 	'The native runtime must register the scoped canonical filter.'
 );
+expect_same(
+	[ [ DTB_WooNativeCheckoutRuntime::class, 'resolve_staging_checkout_query' ], 10, 1 ],
+	$registered_filters['request'] ?? null,
+	'The native runtime must correct the staging page query before WP_Query.'
+);
 expect_same( true, defined( 'DONOTCACHEPAGE' ) && DONOTCACHEPAGE, 'Native staging payment aliases must bypass page caches at bootstrap.' );
 
 $canonical_url = home_url( '/checkout/' );
@@ -71,6 +76,8 @@ foreach ( $checkout_paths as $path ) {
 	$original_query = $_GET;
 	expect_same( '/staging', DTB_WooNativeCheckoutRuntime::staging_checkout_base_path(), 'Existing native staging aliases must retain their mount.' );
 	expect_same( false, DTB_WooNativeCheckoutRuntime::preserve_staging_checkout_canonical( $canonical_url, home_url( $path ) ), 'Canonical routing must not escape to production.' );
+	$resolved = DTB_WooNativeCheckoutRuntime::resolve_staging_checkout_query( [ 'pagename' => 'staging/checkout', 'order-pay' => '12', 'key' => 'wc_order_test' ] );
+	expect_same( [ 'pagename' => 'checkout', 'order-pay' => '12', 'key' => 'wc_order_test' ], $resolved, 'Staging must resolve the real checkout page and preserve payment context.' );
 	expect_same( $original_uri, $_SERVER['REQUEST_URI'], 'The original callback URI must remain unchanged.' );
 	expect_same( $original_query, $_GET, 'WooCommerce/provider query values must remain unchanged.' );
 }
@@ -95,12 +102,14 @@ foreach ( [
 	$_SERVER['HTTP_ORIGIN'] = 'https://drywalltoolbox.com/staging/checkout/';
 	$_SERVER['HTTP_REFERER'] = home_url( '/staging/checkout/' );
 	expect_same( '', DTB_WooNativeCheckoutRuntime::staging_checkout_base_path(), 'An unrelated or encoded path must not create a staging mount.' );
+	expect_same( [ 'pagename' => 'other' ], DTB_WooNativeCheckoutRuntime::resolve_staging_checkout_query( [ 'pagename' => 'other' ] ), 'Unrelated requests must retain their page query.' );
 	expect_same( $canonical_url, DTB_WooNativeCheckoutRuntime::preserve_staging_checkout_canonical( $canonical_url, home_url( '/staging/checkout/' ) ), 'Proposed redirect/referrer must not broaden the canonical exception.' );
 }
 
 $_SERVER['REQUEST_URI'] = '/staging/checkout/';
 $admin_request = true;
 expect_same( $canonical_url, DTB_WooNativeCheckoutRuntime::preserve_staging_checkout_canonical( $canonical_url, '' ), 'Admin requests must retain normal canonical handling.' );
+expect_same( [ 'pagename' => 'other' ], DTB_WooNativeCheckoutRuntime::resolve_staging_checkout_query( [ 'pagename' => 'other' ] ), 'Admin requests must retain normal page routing.' );
 $admin_request = false;
 $ajax_request = true;
 expect_same( $canonical_url, DTB_WooNativeCheckoutRuntime::preserve_staging_checkout_canonical( $canonical_url, '' ), 'AJAX requests must retain normal canonical handling.' );
@@ -121,5 +130,6 @@ foreach ( [ '/staging/checkout/' => [ '/staging/', '/staging/cart/' ], '/checkou
 define( 'REST_REQUEST', true );
 $_SERVER['REQUEST_URI'] = '/staging/checkout/';
 expect_same( $canonical_url, DTB_WooNativeCheckoutRuntime::preserve_staging_checkout_canonical( $canonical_url, '' ), 'REST requests must retain normal canonical handling.' );
+expect_same( [ 'pagename' => 'other' ], DTB_WooNativeCheckoutRuntime::resolve_staging_checkout_query( [ 'pagename' => 'other' ] ), 'REST requests must retain normal page routing.' );
 
 echo "native checkout mount contract passed\n";
