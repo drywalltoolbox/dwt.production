@@ -162,6 +162,35 @@ jobs:
           grep -qi 'x-robots-tag:.*noindex' "$headers" ||
             { echo "::error::Staging noindex header missing"; exit 2; }
 
+      - name: Verify staging public asset responses
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          manifest = json.loads(Path("dist-staging/asset-manifest.json").read_text())
+          entry = manifest["entrypoints"]
+          extensions = {".js": "javascript", ".css": "text/css"}
+          selected = {}
+          for uri in entry:
+              ext = Path(uri).suffix
+              if ext in extensions and ext not in selected:
+                  selected[ext] = uri
+          assert set(selected) == set(extensions), "Missing JS or CSS entrypoint"
+          Path("/tmp/dtb-staging-asset-urls").write_text("\\n".join(selected.values()) + "\\n")
+          PY
+          while IFS= read -r path; do
+            headers="$(mktemp)"
+            curl --fail --silent --show-error --location --max-time 30 \\
+              --dump-header "$headers" -o /dev/null "https://drywalltoolbox.com$path"
+            grep -qi '^content-type:.*\\(javascript\\|css\\)' "$headers" || {
+              echo "::error::Incorrect content type for $path"
+              cat "$headers"
+              exit 2
+            }
+            rm -f "$headers"
+          done < /tmp/dtb-staging-asset-urls
+
       - name: Summarize staging deployment outcome
         if: always()
         env:
