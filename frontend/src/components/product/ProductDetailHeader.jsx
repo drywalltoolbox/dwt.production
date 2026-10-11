@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { decodeHtmlEntities } from '../../utils/string';
+import { shouldShowCompareAtPrice } from '../../utils/productPricing.js';
 import '../../styles/product-detail-overview-refinements.css';
 import '../../styles/product-detail-brand-refinements.css';
 
@@ -95,7 +96,7 @@ export default function ProductDetailHeader({
           <span className="dtb-pdp-header__price">
             {pricePrefix}{primaryPrice}
           </span>
-          {resolvedRegularPrice != null ? (
+          {shouldShowCompareAtPrice(rawPriceValue, resolvedRegularPrice) ? (
             <span className="dtb-pdp-header__compare-at">
               ${money(resolvedRegularPrice)}
             </span>
