@@ -31,7 +31,7 @@ jobs:
         continue-on-error: true
         run: |
           mkdir -p artifacts/staging-qa
-          cat > /tmp/staging-qa.mjs <<'JS'
+          cat > staging-qa.mjs <<'JS'
           import { chromium } from 'playwright';
           import fs from 'node:fs/promises';
 
@@ -130,7 +130,7 @@ jobs:
             await browser.close();
           }
           JS
-          node /tmp/staging-qa.mjs
+          node staging-qa.mjs
 
       - name: Upload browser screenshots and diagnostics
         if: always()
