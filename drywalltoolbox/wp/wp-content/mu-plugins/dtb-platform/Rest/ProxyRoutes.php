@@ -528,7 +528,7 @@ function dtb_wc_get( string $wc_path, array $params = [] ): WP_REST_Response {
  * @param string          $route_key Unique key per route (e.g. 'orders_post').
  * @return WP_REST_Response|null  Response to return immediately, or null to continue.
  */
-function dtb_rate_limit( WP_REST_Request $request, string $route_key ): ?WP_REST_Response {
+function dtb_proxy_mutation_rate_limit( WP_REST_Request $request, string $route_key ): ?WP_REST_Response {
 	if ( empty( $_SERVER['REMOTE_ADDR'] ) ) {
 		return new WP_REST_Response( dtb_error_envelope( 'bad_request', 'Unable to identify request origin.', 400 ), 400 );
 	}
@@ -1125,7 +1125,7 @@ function dtb_proxy_coupon( WP_REST_Request $request ): WP_REST_Response {
 
 /** POST /drywall/v1/customers  (rate-limited) */
 function dtb_proxy_create_customer( WP_REST_Request $request ): WP_REST_Response {
-	$rl = dtb_rate_limit( $request, 'customers_post' );
+	$rl = dtb_proxy_mutation_rate_limit( $request, 'customers_post' );
 	if ( $rl ) {
 		return $rl;
 	}
