@@ -27,7 +27,8 @@ function dtb_returns_rest_register_routes(): void {
 		],
 	] );
 
-	// Public-facing submission endpoint — no auth required.
+	// Legacy compatibility submission. Public, but order number + checkout email
+	// are verified against WooCommerce before any return record is created.
 	register_rest_route( 'dtb/v1', '/returns/request', [
 		'methods'             => WP_REST_Server::CREATABLE,
 		'callback'            => 'dtb_returns_rest_public_submit',
@@ -223,9 +224,13 @@ function dtb_returns_rest_get( WP_REST_Request $request ): WP_REST_Response {
 }
 
 /**
- * Public-facing return submission handler — no auth required.
+ * Legacy public return submission handler.
  *
- * Creates a return record in the CPT, then sends a notification email.
+ * Compatibility callers must prove possession of the WooCommerce order number
+ * and checkout email. Customer identity and order ID are then re-derived from
+ * WooCommerce before persistence or notification. The current React storefront
+ * uses the stricter lookup-token + item-level verified submission contract.
+ *
  * Rate-limited to 3 submissions per IP per 10 minutes via transient.
  */
 function dtb_returns_rest_public_submit( WP_REST_Request $request ): WP_REST_Response {
@@ -241,20 +246,32 @@ function dtb_returns_rest_public_submit( WP_REST_Request $request ): WP_REST_Res
 	}
 	set_transient( $rate_key, $rate_count + 1, 10 * MINUTE_IN_SECONDS );
 
-	// ── Collect fields ────────────────────────────────────────────────────────
+	// ── Verify the WooCommerce order and derive customer identity ─────────────
 	$order_number   = (string) $request->get_param( 'order_number' );
-	$customer_name  = (string) $request->get_param( 'customer_name' );
 	$customer_email = (string) $request->get_param( 'customer_email' );
 	$reason         = (string) $request->get_param( 'reason' );
 	$notes          = (string) $request->get_param( 'notes' );
 
-	// Derive a numeric order ID if the customer entered "#1234" or "1234".
-	$order_id = (int) ltrim( trim( $order_number ), '#' );
+	$order = dtb_returns_resolve_verified_order( $order_number, $customer_email );
+	if ( is_wp_error( $order ) ) {
+		return new WP_REST_Response(
+			[ 'error' => $order->get_error_message() ],
+			(int) ( $order->get_error_data()['status'] ?? 404 )
+		);
+	}
 
-	// ── Create the return record ──────────────────────────────────────────────
+	$order_id       = (int) $order->get_id();
+	$order_number   = (string) $order->get_order_number();
+	$customer_email = sanitize_email( (string) $order->get_billing_email() );
+	$customer_name  = trim( (string) $order->get_formatted_billing_full_name() );
+	if ( '' === $customer_name ) {
+		$customer_name = __( 'Customer', 'drywall-toolbox' );
+	}
+
+	// ── Create the compatibility return record from verified server data ─────
 	$result = dtb_return_create( [
 		'order_id'       => $order_id,
-		'order_number'   => $order_number,   // raw string, stored as extra meta
+		'order_number'   => $order_number,
 		'customer_name'  => $customer_name,
 		'customer_email' => $customer_email,
 		'reason'         => $reason,
