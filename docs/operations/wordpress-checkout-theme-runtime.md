@@ -23,12 +23,17 @@ The staging React storefront is mounted at `/staging`. Its public checkout URL r
 
 Production remains root-mounted at `/checkout/` and is internally routed to the same shared WordPress checkout controller.
 
+`dtb-commerce/Payment/WooNativeCheckoutRuntime.php` suppresses WordPress's canonical redirect only for the original request paths `/staging/checkout`, `/staging/checkout/order-pay/<numeric-id>`, `/staging/checkout/order-received/<numeric-id>`, and `/staging/order-pay/<numeric-id>` (with optional trailing slash). These are the existing internal native checkout aliases, not a separate WordPress installation. The adapter derives the presentation mount from this exact path allowlist, without decoding path segments or trusting an Origin, referrer, query value, or proposed redirect URL. Admin, AJAX, and REST requests retain normal canonical handling.
+
+On those native staging documents the theme's brand link points to `/staging/` and Back to cart points to `/staging/cart/`. Production continues to use `home_url('/')` and `wc_get_cart_url()`. Checkout/order-pay/order-received query parameters remain unchanged and WooCommerce/payment providers retain order-key validation, authentication, payment execution, and callback ownership. Plain-permalink provider callbacks at the mount root are outside this canonical exception.
+
 ## Deployment checklist
 
 Deploy these together when checkout/theme runtime changes:
 
 - `drywalltoolbox/wp/wp-content/themes/drywall-toolbox/`
 - `drywalltoolbox/wp/wp-content/mu-plugins/dtb-deployment/`
+- `drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/Payment/WooNativeCheckoutRuntime.php`
 - `drywalltoolbox/staging/.htaccess` for staging routing changes
 - the corresponding frontend build when checkout URL generation changes
 
@@ -40,3 +45,6 @@ After deployment verify:
 4. `/checkout/` renders WooCommerce in production routing;
 5. checkout remains private/no-store;
 6. payment fields and order creation remain provider/WooCommerce-owned.
+
+Before deployment run `python -m unittest discover -s scripts/launch-readiness/tests -p test_routing_contract.py`. The native mount regression harness requires PHP CLI and is reported as skipped when PHP is unavailable; a skipped harness does not establish PHP execution or live routing success.
+
