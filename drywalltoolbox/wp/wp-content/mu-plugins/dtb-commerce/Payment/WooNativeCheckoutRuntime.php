@@ -87,7 +87,8 @@ final class DTB_WooNativeCheckoutRuntime {
 	 * Apache's staging alias executes wp/index.php with pagename=checkout, but
 	 * WordPress reparses the original /staging/checkout/ request against its own
 	 * permalink rules. The resulting staging/checkout page does not exist.
-	 * Restore only the page identity; retain Woo endpoint and provider query vars.
+	 * Restore only the page identity and clear the stale 404 parsed from the
+ * staging-only path; retain Woo endpoint and provider query vars.
 	 */
 	public static function resolve_staging_checkout_query( array $query_vars ): array {
 		if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || '' === self::staging_checkout_base_path() ) {
@@ -95,7 +96,7 @@ final class DTB_WooNativeCheckoutRuntime {
 		}
 
 		$query_vars['pagename'] = 'checkout';
-		unset( $query_vars['name'], $query_vars['page_id'] );
+		unset( $query_vars['name'], $query_vars['page_id'], $query_vars['error'] );
 		return $query_vars;
 	}
 
