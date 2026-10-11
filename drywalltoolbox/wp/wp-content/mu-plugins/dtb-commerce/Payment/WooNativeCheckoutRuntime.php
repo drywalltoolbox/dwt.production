@@ -23,6 +23,7 @@ final class DTB_WooNativeCheckoutRuntime {
 		 * restore the SPA asset stripper on a transactional checkout request. */
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'prepare_runtime' ], 0 );
 		add_filter( 'template_include', [ __CLASS__, 'template_include' ], 1000 );
+		add_filter( 'redirect_canonical', [ __CLASS__, 'preserve_staging_checkout_canonical' ], 10, 2 );
 		add_action( 'send_headers', [ __CLASS__, 'send_private_headers' ], 20 );
 		add_action( 'woocommerce_store_api_checkout_order_processed', [ __CLASS__, 'persist_store_api_checkout_metadata' ], 100 );
 	}
@@ -49,6 +50,36 @@ final class DTB_WooNativeCheckoutRuntime {
 		return is_string( $theme_template ) && '' !== $theme_template && is_readable( $theme_template )
 			? $theme_template
 			: $template;
+	}
+
+	/**
+	 * Resolve only the native checkout aliases served by staging/.htaccess.
+	 * The shared WordPress installation retains its production home URL. Use
+	 * the original request path, never an Origin, referrer, or redirect input,
+	 * to identify the staging presentation mount. Do not decode path segments.
+	 */
+	public static function staging_checkout_base_path(): string {
+		$request_uri = isset( $_SERVER['REQUEST_URI'] )
+			? (string) wp_unslash( $_SERVER['REQUEST_URI'] )
+			: '';
+		if ( ! str_starts_with( $request_uri, '/' ) || str_starts_with( $request_uri, '//' ) ) {
+			return '';
+		}
+		$path = (string) wp_parse_url( $request_uri, PHP_URL_PATH );
+
+		return preg_match( '#^/staging/(?:checkout(?:/(?:order-pay|order-received)/[0-9]+)?|order-pay/[0-9]+)/?$#D', $path )
+			? '/staging'
+			: '';
+	}
+
+	/** Keep an internal staging alias from being canonicalized to production. */
+	public static function preserve_staging_checkout_canonical( $redirect_url, $requested_url ) {
+		unset( $requested_url );
+		if ( self::is_native_checkout_surface() && '' !== self::staging_checkout_base_path() ) {
+			return false;
+		}
+
+		return $redirect_url;
 	}
 
 	public static function send_private_headers(): void {
@@ -91,7 +122,7 @@ final class DTB_WooNativeCheckoutRuntime {
 			return true;
 		}
 
-		return self::request_uri_targets_checkout();
+		return '' !== self::staging_checkout_base_path() || self::request_uri_targets_checkout();
 	}
 
 	private static function request_uri_targets_checkout(): bool {
@@ -119,7 +150,7 @@ final class DTB_WooNativeCheckoutRuntime {
 			return;
 		}
 
-		if ( self::request_uri_targets_checkout() ) {
+		if ( '' !== self::staging_checkout_base_path() || self::request_uri_targets_checkout() ) {
 			define( 'DONOTCACHEPAGE', true );
 		}
 	}
@@ -127,3 +158,4 @@ final class DTB_WooNativeCheckoutRuntime {
 
 DTB_WooNativeCheckoutRuntime::define_donotcachepage_if_checkout();
 DTB_WooNativeCheckoutRuntime::register();
+

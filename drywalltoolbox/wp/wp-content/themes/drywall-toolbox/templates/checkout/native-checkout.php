@@ -11,7 +11,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
-$storefront_home_url = home_url( '/' );
+$storefront_base_path = is_callable( [ 'DTB_WooNativeCheckoutRuntime', 'staging_checkout_base_path' ] )
+	? DTB_WooNativeCheckoutRuntime::staging_checkout_base_path()
+	: '';
+$storefront_home_url = home_url( $storefront_base_path . '/' );
+$storefront_cart_url = '' !== $storefront_base_path
+	? home_url( $storefront_base_path . '/cart/' )
+	: wc_get_cart_url();
 $summary_style_path  = get_template_directory() . '/assets/checkout/checkout-summary.css';
 $summary_style_ver   = file_exists( $summary_style_path ) ? (string) filemtime( $summary_style_path ) : DTB_VERSION;
 $desktop_style_path  = get_template_directory() . '/assets/checkout/checkout-desktop.css';
@@ -58,7 +64,7 @@ wp_enqueue_style(
 		</div>
 	</header>
 	<div class="dtb-checkout__utility">
-		<a class="dtb-checkout__back-link" href="<?php echo esc_url( wc_get_cart_url() ); ?>">&larr;&nbsp;<?php esc_html_e( 'Back to cart', 'drywall-toolbox' ); ?></a>
+		<a class="dtb-checkout__back-link" href="<?php echo esc_url( $storefront_cart_url ); ?>">&larr;&nbsp;<?php esc_html_e( 'Back to cart', 'drywall-toolbox' ); ?></a>
 	</div>
 	<main id="primary" role="main">
 		<?php
@@ -76,3 +82,4 @@ wp_enqueue_style(
 <?php wp_footer(); ?>
 </body>
 </html>
+

@@ -3,6 +3,8 @@
 from __future__ import annotations
 
 import re
+import shutil
+import subprocess
 import unittest
 from pathlib import Path
 
@@ -11,6 +13,31 @@ REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 
 
 class RoutingContractTests(unittest.TestCase):
+    def test_staging_native_aliases_share_woo_and_preserve_query_values(self) -> None:
+        htaccess = (REPOSITORY_ROOT / "drywalltoolbox" / "staging" / ".htaccess").read_text(
+            encoding="utf-8"
+        )
+        aliases = [
+            "RewriteRule ^checkout/?$ /wp/index.php?pagename=checkout [QSA,L]",
+            "RewriteRule ^checkout/order-pay/([0-9]+)/?$ /wp/index.php?pagename=checkout&order-pay=$1 [QSA,L]",
+            "RewriteRule ^order-pay/([0-9]+)/?$ /wp/index.php?pagename=checkout&order-pay=$1 [QSA,L]",
+            "RewriteRule ^checkout/order-received/([0-9]+)/?$ /wp/index.php?pagename=checkout&order-received=$1 [QSA,L]",
+        ]
+        for alias in aliases:
+            with self.subTest(alias=alias):
+                self.assertIn(alias, htaccess)
+                self.assertLess(htaccess.index(alias), htaccess.index("RewriteRule ^$ index.html [L]"))
+
+    @unittest.skipUnless(shutil.which("php"), "PHP CLI is required for native checkout behavioral checks")
+    def test_native_checkout_mount_behavior(self) -> None:
+        result = subprocess.run(
+            ["php", str(Path(__file__).with_name("native_checkout_mount_contract.php"))],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        self.assertIn("native checkout mount contract passed", result.stdout)
+
     def test_production_build_selects_the_canonical_root_htaccess(self) -> None:
         webpack_config = (
             REPOSITORY_ROOT / "frontend" / "webpack.config.cjs"
@@ -117,3 +144,4 @@ class RoutingContractTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+

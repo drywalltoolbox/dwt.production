@@ -1,42 +1,24 @@
-import { Link, useParams } from 'react-router-dom';
-import { CheckCircle, ShoppingBag } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { CheckCircle, Info, ShoppingBag } from 'lucide-react';
 
 import SEOHead from '../components/shared/SEOHead.jsx';
-import AnimatedOrderSuccess from '../components/order/AnimatedOrderSuccess.jsx';
 import '../styles/order-pages.css';
 
 export default function CheckoutReturn({ fallbackState = 'complete' }) {
-	const { id } = useParams();
 	const failed = fallbackState === 'failed' || fallbackState === 'cancelled';
 	const title = failed ? 'Checkout was not completed' : 'Checkout status';
 	const description = failed
 		? 'Return to checkout to try your payment again.'
 		: 'Use your account dashboard or order email for final order details.';
 
-	if (!failed) {
-		return (
-			<div className="dtb-order-page page-wrapper">
-				<SEOHead noindex title="Order confirmed" />
-				<div className="dtb-order-shell" style={{ maxWidth: 720 }}>
-					<section className="dtb-order-hero" aria-labelledby="checkout-return-title">
-						<AnimatedOrderSuccess
-							orderId={id}
-							title="Order confirmed"
-							titleId="checkout-return-title"
-							message="A receipt is on its way to your inbox."
-						/>
-					</section>
-				</div>
-			</div>
-		);
-	}
+	const StatusIcon = failed ? CheckCircle : Info;
 
 	return (
 		<div className="min-h-screen flex items-center justify-center py-16 page-wrapper" style={{ paddingInline: 'var(--dtb-viewport-gutter)' }}>
 			<SEOHead noindex title={title} />
 			<div className="w-full max-w-lg rounded-3xl border border-slate-200 bg-white p-7 text-center shadow-[0_18px_48px_rgba(15,23,42,0.10)] sm:p-10">
 				<div className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-full bg-slate-50">
-					<CheckCircle className="h-12 w-12 text-primary-600" strokeWidth={1.8} />
+					<StatusIcon className="h-12 w-12 text-primary-600" strokeWidth={1.8} />
 				</div>
 				<p className="mb-2 text-[10px] font-black uppercase tracking-[0.18em] text-primary-600">Secure checkout</p>
 				<h1 className="mb-3 text-2xl font-black tracking-tight text-slate-950 sm:text-3xl">{title}</h1>
