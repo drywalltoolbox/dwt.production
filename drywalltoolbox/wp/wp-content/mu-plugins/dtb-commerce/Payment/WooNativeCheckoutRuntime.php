@@ -23,6 +23,7 @@ final class DTB_WooNativeCheckoutRuntime {
 		 * restore the SPA asset stripper on a transactional checkout request. */
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'prepare_runtime' ], 0 );
 		add_filter( 'template_include', [ __CLASS__, 'template_include' ], 1000 );
+		add_filter( 'request', [ __CLASS__, 'resolve_staging_checkout_query' ] );
 		add_filter( 'redirect_canonical', [ __CLASS__, 'preserve_staging_checkout_canonical' ], 10, 2 );
 		add_action( 'send_headers', [ __CLASS__, 'send_private_headers' ], 20 );
 		add_action( 'woocommerce_store_api_checkout_order_processed', [ __CLASS__, 'persist_store_api_checkout_metadata' ], 100 );
@@ -80,6 +81,22 @@ final class DTB_WooNativeCheckoutRuntime {
 		}
 
 		return $redirect_url;
+	}
+
+	/**
+	 * Apache's staging alias executes wp/index.php with pagename=checkout, but
+	 * WordPress reparses the original /staging/checkout/ request against its own
+	 * permalink rules. The resulting staging/checkout page does not exist.
+	 * Restore only the page identity; retain Woo endpoint and provider query vars.
+	 */
+	public static function resolve_staging_checkout_query( array $query_vars ): array {
+		if ( is_admin() || wp_doing_ajax() || ( defined( 'REST_REQUEST' ) && REST_REQUEST ) || '' === self::staging_checkout_base_path() ) {
+			return $query_vars;
+		}
+
+		$query_vars['pagename'] = 'checkout';
+		unset( $query_vars['name'], $query_vars['page_id'] );
+		return $query_vars;
 	}
 
 	public static function send_private_headers(): void {

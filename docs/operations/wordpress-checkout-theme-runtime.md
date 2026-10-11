@@ -25,6 +25,8 @@ Production remains root-mounted at `/checkout/` and is internally routed to the 
 
 `dtb-commerce/Payment/WooNativeCheckoutRuntime.php` suppresses WordPress's canonical redirect only for the original request paths `/staging/checkout`, `/staging/checkout/order-pay/<numeric-id>`, `/staging/checkout/order-received/<numeric-id>`, and `/staging/order-pay/<numeric-id>` (with optional trailing slash). These are the existing internal native checkout aliases, not a separate WordPress installation. The adapter derives the presentation mount from this exact path allowlist, without decoding path segments or trusting an Origin, referrer, query value, or proposed redirect URL. Admin, AJAX, and REST requests retain normal canonical handling.
 
+WordPress also parses the original staging path against its permalink rules after Apache's internal rewrite. For these exact aliases, the `request` filter resolves `pagename` to the configured checkout page slug while retaining WooCommerce endpoint and provider query variables. Without this correction, the canonical redirect can be suppressed while the main query still resolves a nonexistent `staging/checkout` page and the native theme renders its 404 fallback.
+
 On those native staging documents the theme's brand link points to `/staging/` and Back to cart points to `/staging/cart/`. Production continues to use `home_url('/')` and `wc_get_cart_url()`. Checkout/order-pay/order-received query parameters remain unchanged and WooCommerce/payment providers retain order-key validation, authentication, payment execution, and callback ownership. Plain-permalink provider callbacks at the mount root are outside this canonical exception.
 
 ## Deployment checklist
