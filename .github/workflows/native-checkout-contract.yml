@@ -1,0 +1,31 @@
+name: Native checkout mount contract
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/Payment/WooNativeCheckoutRuntime.php'
+      - 'drywalltoolbox/wp/wp-content/themes/drywall-toolbox/templates/checkout/native-checkout.php'
+      - 'scripts/launch-readiness/tests/native_checkout_mount_contract.php'
+      - '.github/workflows/native-checkout-contract.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  native-checkout-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up PHP 8.2
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Run native checkout mount contract
+        run: php scripts/launch-readiness/tests/native_checkout_mount_contract.php
