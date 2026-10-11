@@ -81,7 +81,7 @@ if [[ "$action" == "publish" ]]; then
     done
   }
   trap 'recover_partial_publish' ERR
-  # Stage is a build-owned mirror: delete stale assets and files, then atomically swap
+  # Incoming payloads arrive with private permissions; normalize only public\n  # release content before rsync -a preserves its modes in the webroot.\n  find "$incoming" -type d -exec chmod 755 {} +\n  find "$incoming" -type f -exec chmod 644 {} +\n  # Stage is a build-owned mirror: delete stale assets and files, then atomically swap
   # the manifest and index to limit exposure to partially published entrypoints.
   # Existing browser tabs referencing old hashed assets may need to reload.
   rsync -a --delete --exclude '/index.html' --exclude '/asset-manifest.json' \
