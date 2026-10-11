@@ -149,7 +149,7 @@ final class DTB_VariationReadModelService {
 		}
 
 		$diagnostic_key = $inherits_parent ? 'inheritedGalleryCount' : 'explicitGalleryCount';
-		self::$last_diagnostics[ $diagnostic_key ]++;
+		self::$last_diagnostics[ $diagnostic_key ] = (int) ( self::$last_diagnostics[ $diagnostic_key ] ?? 0 ) + 1;
 
 		$media = is_array( $variation['media'] ?? null ) ? $variation['media'] : [];
 		$media['variationImages'] = $gallery;
