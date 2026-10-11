@@ -34,7 +34,6 @@ const moduleLoaders = {
   returnPolicy: () => import('../pages/ReturnPolicy.jsx'),
   termsOfService: () => import('../pages/legal/TermsOfService.jsx'),
   privacyPolicy: () => import('../pages/legal/PrivacyPolicy.jsx'),
-  toolsetBuilder: () => import('../pages/ToolsetBuilder.jsx'),
   technicalSpecificationsPreview: () => import('../pages/TechnicalSpecificationsPreview.jsx'),
 };
 
@@ -96,7 +95,6 @@ export function resolveRouteModuleKey(input) {
   if (pathname === '/policies') return 'storePolicies';
   if (pathname === '/terms-of-service' || pathname === '/terms-of-service/') return 'termsOfService';
   if (pathname === '/privacy-policy' || pathname === '/privacy-policy/') return 'privacyPolicy';
-  if (pathname === '/toolset-builder') return 'toolsetBuilder';
   if (pathname === '/cart') return 'cart';
   if (pathname === '/checkout') return 'checkout';
   if (pathname.startsWith('/checkout/')) return 'checkoutReturn';
