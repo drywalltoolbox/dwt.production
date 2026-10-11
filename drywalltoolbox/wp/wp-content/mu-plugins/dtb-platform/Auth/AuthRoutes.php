@@ -976,6 +976,11 @@ function dtb_auth_register( WP_REST_Request $request ): WP_REST_Response {
  * @return WP_REST_Response
  */
 function dtb_auth_forgot_password( WP_REST_Request $request ): WP_REST_Response {
+	$rl = dtb_rate_limit( $request, 'auth_forgot_password' );
+	if ( $rl ) {
+		return $rl;
+	}
+
 	$email = sanitize_email( (string) $request->get_param( 'email' ) );
 
 	$generic = new WP_REST_Response( [
@@ -1106,6 +1111,11 @@ function dtb_auth_forgot_password( WP_REST_Request $request ): WP_REST_Response 
  * @return WP_REST_Response
  */
 function dtb_auth_reset_password( WP_REST_Request $request ): WP_REST_Response {
+	$rl = dtb_rate_limit( $request, 'auth_reset_password' );
+	if ( $rl ) {
+		return $rl;
+	}
+
 	$key      = sanitize_text_field( (string) $request->get_param( 'key' ) );
 	$login    = sanitize_user( (string) $request->get_param( 'login' ) );
 	$password = (string) $request->get_param( 'password' );
