@@ -177,13 +177,13 @@ jobs:
               if ext in extensions and ext not in selected:
                   selected[ext] = uri
           assert set(selected) == set(extensions), "Missing JS or CSS entrypoint"
-          Path("/tmp/dtb-staging-asset-urls").write_text("\\n".join(selected.values()) + "\\n")
+          Path("/tmp/dtb-staging-asset-urls").write_text("\n".join(selected.values()) + "\n")
           PY
           while IFS= read -r path; do
             headers="$(mktemp)"
-            curl --fail --silent --show-error --location --max-time 30 \\
+            curl --fail --silent --show-error --location --max-time 30 \
               --dump-header "$headers" -o /dev/null "https://drywalltoolbox.com$path"
-            grep -qi '^content-type:.*\\(javascript\\|css\\)' "$headers" || {
+            grep -qi '^content-type:.*\(javascript\|css\)' "$headers" || {
               echo "::error::Incorrect content type for $path"
               cat "$headers"
               exit 2
