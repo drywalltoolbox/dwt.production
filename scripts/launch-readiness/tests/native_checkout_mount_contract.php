@@ -76,8 +76,8 @@ foreach ( $checkout_paths as $path ) {
 	$original_query = $_GET;
 	expect_same( '/staging', DTB_WooNativeCheckoutRuntime::staging_checkout_base_path(), 'Existing native staging aliases must retain their mount.' );
 	expect_same( false, DTB_WooNativeCheckoutRuntime::preserve_staging_checkout_canonical( $canonical_url, home_url( $path ) ), 'Canonical routing must not escape to production.' );
-	$resolved = DTB_WooNativeCheckoutRuntime::resolve_staging_checkout_query( [ 'pagename' => 'staging/checkout', 'order-pay' => '12', 'key' => 'wc_order_test' ] );
-	expect_same( [ 'pagename' => 'checkout', 'order-pay' => '12', 'key' => 'wc_order_test' ], $resolved, 'Staging must resolve the real checkout page and preserve payment context.' );
+	$resolved = DTB_WooNativeCheckoutRuntime::resolve_staging_checkout_query( [ 'pagename' => 'staging/checkout', 'order-pay' => '12', 'key' => 'wc_order_test', 'error' => '404' ] );
+	expect_same( [ 'pagename' => 'checkout', 'order-pay' => '12', 'key' => 'wc_order_test' ], $resolved, 'Staging must resolve the real checkout page, clear its stale 404, and preserve payment context.' );
 	expect_same( $original_uri, $_SERVER['REQUEST_URI'], 'The original callback URI must remain unchanged.' );
 	expect_same( $original_query, $_GET, 'WooCommerce/provider query values must remain unchanged.' );
 }
