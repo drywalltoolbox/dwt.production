@@ -19,6 +19,7 @@ final class DTB_CatalogFacetsController {
 			'permission_callback' => '__return_true',
 			'args'                => [
 				'brand'            => [ 'sanitize_callback' => 'sanitize_text_field' ],
+				'search'           => [ 'sanitize_callback' => 'sanitize_text_field' ],
 				'category'         => [ 'sanitize_callback' => 'sanitize_key' ],
 				'display_category' => [ 'sanitize_callback' => 'sanitize_text_field' ],
 				'product_kind'     => [ 'sanitize_callback' => 'sanitize_key' ],
@@ -121,6 +122,7 @@ final class DTB_CatalogFacetsController {
 
 		$scope = [
 			'brand'            => (string) $request->get_param( 'brand' ),
+			'search'           => sanitize_text_field( (string) $request->get_param( 'search' ) ),
 			'category'         => (string) $request->get_param( 'category' ),
 			'display_category' => (string) $request->get_param( 'display_category' ),
 			'product_kind'     => (string) $request->get_param( 'product_kind' ),
@@ -149,6 +151,7 @@ final class DTB_CatalogFacetsController {
 		do {
 			$query = DTB_CatalogProductRepository::find_ids( [
 				'brand'            => (string) ( $scope['brand'] ?? '' ),
+				'search'           => (string) ( $scope['search'] ?? '' ),
 				'category'         => (string) ( $scope['category'] ?? '' ),
 				'display_category' => (string) ( $scope['display_category'] ?? '' ),
 				'product_kind'     => (string) ( $scope['product_kind'] ?? '' ),
