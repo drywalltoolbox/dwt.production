@@ -727,7 +727,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
             <Breadcrumb items={[{ label: 'Home', path: '/' }, { label: 'Search' }]} />
             <div className="dtb-search-results-intro__copy">
               <h1 id="dtb-search-results-title">Search results</h1>
-              <p>{unifiedHeadingMeta}</p>
+              <p>{itemsLoading ? `Searching the catalog for “${searchQuery}”…` : <>Showing <strong>{total.toLocaleString()}</strong> result{total === 1 ? '' : 's'} for <strong>“{searchQuery}”</strong>.</>}</p>
             </div>
           </section>
         )}
