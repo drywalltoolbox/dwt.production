@@ -321,7 +321,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
 
   const isBrandSelectorRoute = location.pathname === '/products/brands';
   const isBrandCategorySelectorRoute = Boolean(brandSlug) && !categorySlug && location.pathname.startsWith('/products/brands/');
-  const isAllProductsRoute = location.pathname === '/products';
+  const isAllProductsRoute = location.pathname === '/products' && !query.search.trim();
   const isSelectorRoute = !forceProductGrid && (isBrandSelectorRoute || isBrandCategorySelectorRoute);
   const productsEnabled = !isSelectorRoute || Boolean(query.search);
 
@@ -416,9 +416,12 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
 
   const activeFilterCount = (selectedBrand ? 1 : 0) + selectedDisplayCategories.length;
   const categoryScopeLabel = selectedBrandFacet?.label || selectedBrand;
-  const pageHeading = selectedCategoryLabel
-    ? `${categoryScopeLabel ? `${categoryScopeLabel} ` : ''}${selectedCategoryLabel}`
-    : title;
+  const searchQuery = query.search.trim();
+  const pageHeading = searchQuery
+    ? `Search results for “${searchQuery}”`
+    : selectedCategoryLabel
+      ? `${categoryScopeLabel ? `${categoryScopeLabel} ` : ''}${selectedCategoryLabel}`
+      : title;
   const isCategoryProductRoute = Boolean(selectedCategoryLabel);
   const page = Number(pagination?.page || query.page || 1);
   const totalPages = Math.max(1, Number(pagination?.totalPages || 1));
@@ -427,16 +430,20 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   const pageStart = (page - 1) * perPage;
   const desktopHeading = isCategoryProductRoute ? pageHeading : title;
   const unifiedHeadingTitle = isCategoryProductRoute ? selectedCategoryLabel : desktopHeading;
-  const unifiedHeadingMeta = isCategoryProductRoute
-    ? `${categoryScopeLabel || 'All brands'}${total > 0 ? ` · ${total.toLocaleString()} product${total === 1 ? '' : 's'}` : ''}`
-    : `${isPartsPage ? 'Replacement parts and service components' : 'All brands and categories'}${total > 0 ? ` · ${total.toLocaleString()} product${total === 1 ? '' : 's'}` : ''}`;
+  const unifiedHeadingMeta = searchQuery
+    ? (total > 0 ? `${total.toLocaleString()} result${total === 1 ? '' : 's'} for “${searchQuery}”` : `No results for “${searchQuery}”`)
+    : isCategoryProductRoute
+      ? `${categoryScopeLabel || 'All brands'}${total > 0 ? ` · ${total.toLocaleString()} product${total === 1 ? '' : 's'}` : ''}`
+      : `${isPartsPage ? 'Replacement parts and service components' : 'All brands and categories'}${total > 0 ? ` · ${total.toLocaleString()} product${total === 1 ? '' : 's'}` : ''}`;
   const canonicalCategorySlug = categoryPathSlug || query.category || '';
   const canonicalUrl = canonicalCategorySlug
     ? buildCategoryPageUrl(canonicalCategorySlug)
     : (isPartsPage ? '/parts' : '/products');
-  const seoDescription = isPartsPage
-    ? 'Shop professional drywall replacement parts, service kits, and repair components from leading brands.'
-    : 'Shop professional drywall tools and accessories from leading drywall brands.';
+  const seoDescription = searchQuery
+    ? `Products matching “${searchQuery}” in the Drywall Toolbox catalog.`
+    : isPartsPage
+      ? 'Shop professional drywall replacement parts, service kits, and repair components from leading brands.'
+      : 'Shop professional drywall tools and accessories from leading drywall brands.';
 
   const categoryBreadcrumbs = useMemo(() => {
     if (!isCategoryPageRoute || !categoryMeta) return [];
@@ -681,7 +688,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
 
   return (
     <div className="min-h-screen page-wrapper">
-      <SEOHead title={categorySeoTitle} description={categorySeoDescription} canonical={canonicalUrl} schema={categorySeoSchema} noindex={isCategoryPageRoute && (categoryMetaLoading || itemsLoading || Boolean(categoryMetaError))} />
+      <SEOHead title={categorySeoTitle} description={categorySeoDescription} canonical={canonicalUrl} schema={categorySeoSchema} noindex={Boolean(searchQuery) || (isCategoryPageRoute && (categoryMetaLoading || itemsLoading || Boolean(categoryMetaError)))} />
       <div className={`dtb-container dtb-container--fluid py-4 pt-6${isCategoryPageRoute ? ' dtb-catalog-category-layout' : ''}${showBrandLanding ? ' dtb-catalog-brand-layout' : ''}`}>
         {isCategoryPageRoute && (
           categoryMeta ? (
