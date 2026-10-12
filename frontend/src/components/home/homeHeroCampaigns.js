@@ -20,16 +20,6 @@ export const HOME_HERO_CAMPAIGNS = [
     secondaryAction: { label: 'Browse Schematics', to: '/schematics' },
   },
   {
-    id: 'builder',
-    label: 'Builder',
-    eyebrow: 'Build Your System',
-    titleLines: ['Build your setup.', 'Your way.'],
-    accentLine: 1,
-    description: 'Configure a professional taping and finishing toolset around the tools, brands, and workflow you actually use.',
-    primaryAction: { label: 'Build Your Toolset', to: '/toolset-builder' },
-    secondaryAction: { label: 'Shop Tools', to: '/all-products' },
-  },
-  {
     id: 'repairs',
     label: 'Repairs',
     eyebrow: 'Professional Repair Service',
