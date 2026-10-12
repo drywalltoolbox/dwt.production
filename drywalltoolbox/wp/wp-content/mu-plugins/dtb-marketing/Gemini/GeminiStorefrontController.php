@@ -29,15 +29,14 @@ add_action( 'rest_api_init', static function (): void {
                 return new WP_REST_Response( [ 'enabled' => false ], 200 );
             }
 
-            $storefront = new \Google\Gemini_Enterprise_For_CX\Storefront( $plugin_file );
             $widget_url = (string) apply_filters( 'gecx_chat_widget_script_url', 'https://www.gstatic.com/gecx/chat-widget/woocommerce-chat-widget.js' );
             $load_now = (bool) apply_filters(
                 'gecx_should_load_widget',
                 ! (bool) get_option( 'gecx_defer_widget_until_interaction', false )
             );
             $config = [
-                'placement'        => 'floating',
-                'markup'           => [ 'button' => $storefront->get_agent_button_html() ],
+                'placement'        => 'manual',
+                'markup'           => [ 'button' => do_shortcode( '[gecx_agent_button]' ) ],
                 'isWidgetEnabled'  => true,
                 'widgetScriptUrl'  => esc_url_raw( $widget_url ),
                 'shouldLoadWidget' => $load_now,
@@ -47,7 +46,7 @@ add_action( 'rest_api_init', static function (): void {
                 'isCart'           => false,
                 'isCheckout'       => false,
                 'isCartOrCheckout' => false,
-                'cartRefresh'      => $storefront::get_cart_refresh_config(),
+                'cartRefresh'      => \Google\Gemini_Enterprise_For_CX\Storefront::get_cart_refresh_config(),
             ];
 
             $data = [
