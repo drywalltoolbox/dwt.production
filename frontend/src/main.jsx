@@ -39,6 +39,7 @@ import './styles/storefront-motion.css';
 import './styles/unified-responsive.css';
 import './styles/side-sheet.css';
 
+import { initializeGeminiStorefront } from './integrations/geminiStorefront.js';
 import App from './App.jsx';
 import ErrorBoundary from './components/system/AppErrorBoundary.jsx';
 import GlobalMotionProvider from './components/motion/GlobalMotionProvider.jsx';
@@ -51,6 +52,7 @@ import { prewarmCatalog } from './services/catalog.js';
 // The /schematics route (frontend/src/pages/SchematicsPage.jsx) owns page
 // labels and navigation directly through React state and React Router.
 installRepairPackageSelectionRuntime();
+void initializeGeminiStorefront();
 
 if (typeof window !== 'undefined') {
   const pathname = window.location.pathname.replace(/^\/drywall-toolbox(?=\/|$)/, '') || '/';
