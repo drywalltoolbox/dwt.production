@@ -1,16 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ShoppingCart, X, Package, Minus, Plus, ArrowRight, Trash2 } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useRef, useState, lazy, Suspense } from 'react';
-import { useCart } from '../../context/CartContext.jsx';
-import ProductModal from '../product/ProductModal.jsx';
-
-// ProductDetail (~19KB gzip) is only needed when the cart-sheet quick-view
-// modal is actually opened, but was previously a static import here — pulling
-// the full quick-view component into every page's initial bundle even though
-// most page loads never open the cart sheet. Lazy-load it on first open.
-const ProductDetail = lazy(() => import('../product/ProductDetail.jsx'));
-import { getProduct, getProductVariations } from '../../services/api.js';
-import { getVariationSelectionMap } from '../../utils/variationSelection.js';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const CART_QTY_SYNC_DELAY_MS = 260;
 const MAX_CART_QUANTITY = 99;
@@ -29,69 +19,30 @@ function getDisplayQuantity(item, localQuantities) {
   return 1;
 }
 
-function toNumericId(value) {
-  const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed > 0 ? parsed : null;
-}
-
 function getCartItemSku(item) {
   return String(item?.sku || item?.part_number || item?.raw?.sku || '').trim();
 }
 
-function buildFallbackProductFromCartItem(item) {
-  const image = item?.image || '';
-  const sku = getCartItemSku(item);
-  const id = toNumericId(item?.parent_id) || toNumericId(item?.id) || sku || getCartItemKey(item);
-
-  return {
-    id,
-    name: item?.name || sku || 'Product',
-    brand: item?.brand || '',
-    sku,
-    part_number: sku,
-    price: Number(item?.price) || 0,
-    regular_price: item?.price != null ? String(item.price) : '',
-    sale_price: '',
-    image,
-    images: image ? [image] : [],
-    stock_status: 'instock',
-    type: 'simple',
-    is_variable: false,
-    variation_attributes: [],
-    variation_attribute_values: null,
-    attributes: [],
-    meta_data: [],
-    short_description: '',
-    description_full: '',
-    _source: 'cart-fallback',
-  };
-}
-
-function buildFallbackVariationFromCartItem(item) {
-  const fallback = buildFallbackProductFromCartItem(item);
-  return {
-    ...fallback,
-    id: toNumericId(item?.variation_id) || toNumericId(item?.id) || fallback.id,
-    parent_id: toNumericId(item?.parent_id) || null,
-    type: 'variation',
-    is_variable: false,
-    variation_attribute_values: Array.isArray(item?.variation_attribute_values)
-      ? item.variation_attribute_values
-      : [],
-    variation_attribute: item?.variation_name || '',
-  };
-}
-
-function findCartItemVariation(variations, item) {
-  if (!Array.isArray(variations) || variations.length === 0) return null;
-
-  const variationId = toNumericId(item?.variation_id) || toNumericId(item?.id);
-  const sku = getCartItemSku(item).toLowerCase();
-
-  return variations.find((variation) => (
-    (variationId && String(variation?.id) === String(variationId))
-    || (sku && String(variation?.sku || variation?.part_number || '').trim().toLowerCase() === sku)
-  )) || null;
+function getProductDetailHref(item) {
+  // The Store API cart item points at the parent product. Preserve that URL
+  // when present so variable-product line items navigate to their parent PDP.
+  const raw = item?.raw || {};
+  const permalink = String(raw.permalink || '').trim();
+  let slug = String(raw.slug || item?.slug || '').trim();
+  if (!slug && permalink) {
+    try {
+      const url = new URL(permalink, window.location.origin);
+      const segments = url.pathname.split('/').filter(Boolean);
+      slug = segments[segments.length - 1] || '';
+    } catch { /* Use the existing product lookup route below. */ }
+  }
+  if (slug) {
+    const variationId = Number(item?.variation_id || 0);
+    return `/products/${encodeURIComponent(slug)}${variationId > 0 ? `?variant=${variationId}` : ''}`;
+  }
+  // Existing legacy route resolves SKUs and numeric IDs against WooCommerce.
+  const fallbackKey = item?.parent_id || item?.sku || item?.part_number || item?.id;
+  return fallbackKey ? `/product/${encodeURIComponent(String(fallbackKey))}` : '/products';
 }
 
 export default function StorefrontCartSheet({
@@ -103,7 +54,6 @@ export default function StorefrontCartSheet({
   clearCart,
   isMutating = false,
 }) {
-  const { addToCart } = useCart();
   const overlayRef = useRef(null);
   const closeButtonRef = useRef(null);
   const previouslyFocusedRef = useRef(null);
@@ -115,11 +65,6 @@ export default function StorefrontCartSheet({
   const [isClearing, setIsClearing] = useState(false);
   const [syncingKeys, setSyncingKeys] = useState(() => new Set());
   const [localQuantities, setLocalQuantities] = useState({});
-  const [productModalState, setProductModalState] = useState(null);
-  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
-  const productModalClearTimerRef = useRef(null);
-  const [productModalLoadingKey, setProductModalLoadingKey] = useState('');
-
   const setItemSyncing = useCallback((key, isSyncing) => {
     if (!key) return;
     const next = new Set(syncingKeysRef.current);
@@ -141,12 +86,6 @@ export default function StorefrontCartSheet({
     if (overlayRef.current?.contains(document.activeElement)) {
       document.activeElement?.blur?.();
     }
-    setIsProductModalOpen(false);
-    if (productModalClearTimerRef.current) window.clearTimeout(productModalClearTimerRef.current);
-    productModalClearTimerRef.current = window.setTimeout(() => {
-      setProductModalState(null);
-      productModalClearTimerRef.current = null;
-    }, 220);
     onClose?.();
   }, [onClose]);
 
@@ -154,78 +93,6 @@ export default function StorefrontCartSheet({
     event.currentTarget?.blur?.();
     handleClose();
   }, [handleClose]);
-
-  const closeProductModal = useCallback(() => {
-    setIsProductModalOpen(false);
-    setProductModalLoadingKey('');
-    if (productModalClearTimerRef.current) window.clearTimeout(productModalClearTimerRef.current);
-    productModalClearTimerRef.current = window.setTimeout(() => {
-      setProductModalState(null);
-      productModalClearTimerRef.current = null;
-    }, 220);
-  }, []);
-
-  const handleProductModalAddToCart = useCallback(async (product, quantity = 1) => {
-    await addToCart(product, quantity);
-  }, [addToCart]);
-
-  const handleOpenProduct = useCallback(async (item) => {
-    const key = getCartItemKey(item);
-    if (!item || !key || productModalLoadingKey === key) return;
-
-    const fallbackProduct = buildFallbackProductFromCartItem(item);
-    const fallbackVariation = buildFallbackVariationFromCartItem(item);
-    const parentId = toNumericId(item?.parent_id);
-    const variationId = toNumericId(item?.variation_id);
-
-    if (productModalClearTimerRef.current) {
-      window.clearTimeout(productModalClearTimerRef.current);
-      productModalClearTimerRef.current = null;
-    }
-    setProductModalLoadingKey(key);
-
-    try {
-      let parentProduct = null;
-      let selectedVariation = null;
-      let initialVariations = [];
-
-      if (parentId) {
-        parentProduct = await getProduct(parentId);
-        initialVariations = await getProductVariations(parentId);
-        selectedVariation = findCartItemVariation(initialVariations, item) || fallbackVariation;
-      } else {
-        const fetchedProduct = await getProduct(item.id);
-        if (fetchedProduct?.parent_id) {
-          parentProduct = await getProduct(fetchedProduct.parent_id);
-          initialVariations = await getProductVariations(fetchedProduct.parent_id);
-          selectedVariation = findCartItemVariation(initialVariations, item) || fetchedProduct;
-        } else {
-          parentProduct = fetchedProduct || fallbackProduct;
-        }
-      }
-
-      const shouldSeedVariation = Boolean(selectedVariation && (parentId || variationId || selectedVariation?.parent_id));
-
-      setProductModalState({
-        key,
-        product: parentProduct || fallbackProduct,
-        initialVariations,
-        initialResolvedVariation: shouldSeedVariation ? selectedVariation : null,
-        initialSelectedAttrs: shouldSeedVariation ? getVariationSelectionMap(selectedVariation) : {},
-      });
-    } catch {
-      setProductModalState({
-        key,
-        product: fallbackProduct,
-        initialVariations: [],
-        initialResolvedVariation: null,
-        initialSelectedAttrs: {},
-      });
-    } finally {
-      setProductModalLoadingKey((current) => (current === key ? '' : current));
-      setIsProductModalOpen(true);
-    }
-  }, [productModalLoadingKey]);
 
   const handleRemove = useCallback(async (key) => {
     if (!key || removingKey === key || isClearing) return;
@@ -320,7 +187,6 @@ export default function StorefrontCartSheet({
   useEffect(() => () => {
     syncTimersRef.current.forEach((timer) => window.clearTimeout(timer));
     syncTimersRef.current.clear();
-    if (productModalClearTimerRef.current) window.clearTimeout(productModalClearTimerRef.current);
   }, []);
 
   useEffect(() => {
@@ -333,11 +199,10 @@ export default function StorefrontCartSheet({
     let cancelled = false;
     window.queueMicrotask(() => {
       if (cancelled) return;
-      closeProductModal();
       previouslyFocusedRef.current?.focus?.();
     });
     return () => { cancelled = true; };
-  }, [isOpen, closeProductModal]);
+  }, [isOpen]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -449,40 +314,38 @@ export default function StorefrontCartSheet({
                 const quantity = getDisplayQuantity(item, localQuantities);
                 const isSyncing = syncingKeys.has(key);
                 const isRemoving = removingKey === key;
-                const isPreviewLoading = productModalLoadingKey === key;
+                const productHref = getProductDetailHref(item);
                 const skuText = getCartItemSku(item);
                 const lineTotal = ((Number(item.price) || 0) * quantity).toFixed(2);
 
                 return (
                   <li
                     key={key}
-                    className={`scs-item${isSyncing ? ' scs-item--syncing' : ''}${isRemoving ? ' scs-item--removing' : ''}${isPreviewLoading ? ' scs-item--preview-loading' : ''}`}
+                    className={`scs-item${isSyncing ? ' scs-item--syncing' : ''}${isRemoving ? ' scs-item--removing' : ''}`}
                     role="listitem"
-                    aria-busy={isSyncing || isRemoving || isPreviewLoading || isClearing ? 'true' : 'false'}
+                    aria-busy={isSyncing || isRemoving || isClearing ? 'true' : 'false'}
                   >
-                    <button
-                      type="button"
+                    <Link
+                      to={productHref}
                       className="scs-item-img scs-item-open-target"
-                      onClick={() => handleOpenProduct(item)}
+                      onClick={handleNavAndClose}
                       aria-label={`View ${item.name} details`}
-                      disabled={isRemoving || isPreviewLoading || isClearing}
                     >
                       {item.image
                         ? <img src={item.image} alt="" loading="lazy" decoding="async" />
                         : <Package size={22} strokeWidth={1.4} className="scs-item-img-placeholder" />}
-                    </button>
+                    </Link>
 
                     <div className="scs-item-body">
                       <div className="scs-item-top">
-                        <button
-                          type="button"
+                        <Link
+                          to={productHref}
                           className="scs-item-name scs-item-name-button"
-                          onClick={() => handleOpenProduct(item)}
-                          disabled={isRemoving || isPreviewLoading || isClearing}
+                          onClick={handleNavAndClose}
                           aria-label={`View ${item.name} details`}
                         >
                           {item.name}
-                        </button>
+                        </Link>
                         <button
                           type="button"
                           onClick={() => handleRemove(key)}
@@ -522,7 +385,7 @@ export default function StorefrontCartSheet({
                         </div>
 
                         <span className="scs-item-line-total">
-                          {isSyncing || isPreviewLoading ? <span className="scs-sync-dot" aria-hidden="true" /> : null}
+                          {isSyncing ? <span className="scs-sync-dot" aria-hidden="true" /> : null}
                           ${lineTotal}
                         </span>
                       </div>
@@ -564,25 +427,6 @@ export default function StorefrontCartSheet({
         )}
       </aside>
 
-      <ProductModal
-        isOpen={isProductModalOpen && Boolean(productModalState?.product)}
-        product={productModalState?.product || null}
-        onClose={closeProductModal}
-      >
-        {productModalState?.product ? (
-          <Suspense fallback={<div className="scs-product-detail-loading" aria-busy="true" />}>
-            <ProductDetail
-              key={`${productModalState.product?.id || productModalState.key}:${productModalState.initialResolvedVariation?.id || 'parent'}`}
-              product={productModalState.product}
-              onAddToCart={handleProductModalAddToCart}
-              onClose={closeProductModal}
-              initialVariations={productModalState.initialVariations || []}
-              initialResolvedVariation={productModalState.initialResolvedVariation || null}
-              initialSelectedAttrs={productModalState.initialSelectedAttrs || {}}
-            />
-          </Suspense>
-        ) : null}
-      </ProductModal>
     </div>
   );
 }
