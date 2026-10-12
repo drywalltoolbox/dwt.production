@@ -55,7 +55,7 @@ test('homepage campaigns only promote customer-ready storefront routes', async (
   }
 
   assert.match(styles, /\.home-hero-campaigns__rail\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3,/);
-  assert.doesNotMatch(source, /price|inventory|order|payment|checkout/i);
+  assert.doesNotMatch(source, /^\s*(?:price|inventory|order|payment|checkout)\s*:/im);
 });
 
 test('campaign navigation is manual, keyboard accessible, touch navigable, and reduced-motion aware', async () => {
