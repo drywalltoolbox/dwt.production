@@ -66,6 +66,8 @@ export default function Products(props) {
     [location.search],
   );
 
+  const isSearchResultsPage = isAllProductsRoute && Boolean(query.search.trim());
+
   const activeFilters = useMemo(() => {
     if (!isAllProductsRoute) return [];
     const filters = [];
@@ -109,7 +111,7 @@ export default function Products(props) {
 
   return (
     <div className="dtb-products-page">
-      {isAllProductsRoute ? <ProductsHero activeFilters={activeFilters} onRemoveFilter={removeFilter} /> : null}
+      {isAllProductsRoute && !isSearchResultsPage ? <ProductsHero activeFilters={activeFilters} onRemoveFilter={removeFilter} /> : null}
       <ProductsCatalogPlatform {...props} />
     </div>
   );
