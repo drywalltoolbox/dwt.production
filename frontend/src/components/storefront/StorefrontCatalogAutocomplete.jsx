@@ -172,9 +172,8 @@ export default function StorefrontCatalogAutocomplete({
           onKeyDown={(event) => {
             if (event.key !== 'Enter' || !query.trim()) return;
 
-            // The autocomplete auto-highlights the first suggestion. Keep Enter
-            // reserved for the full catalog search so a broad query (for example,
-            // a brand name) cannot silently open one arbitrary product.
+            // Keep Enter reserved for the full catalog search so a broad query (for
+            // example, a brand name) cannot silently open one arbitrary product.
             event.preventDefault();
             event.stopPropagation();
             onViewAll();
