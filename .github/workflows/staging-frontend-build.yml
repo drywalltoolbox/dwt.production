@@ -55,6 +55,10 @@ jobs:
         working-directory: frontend
         run: npm run test:home-hero
 
+      - name: Test selector card accessibility
+        working-directory: frontend
+        run: node --test tests/selectorCardsAccessibility.test.mjs
+
       - name: Test search result filters and facets
         working-directory: frontend
         run: npm run test:search-results
