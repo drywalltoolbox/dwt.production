@@ -180,15 +180,35 @@ jobs:
           Path("/tmp/dtb-staging-asset-urls").write_text("\n".join(selected.values()) + "\n")
           PY
           while IFS= read -r path; do
-            headers="$(mktemp)"
-            curl --fail --silent --show-error --location --max-time 30 \
-              --dump-header "$headers" -o /dev/null "https://drywalltoolbox.com$path"
-            grep -qi '^content-type:.*\(javascript\|css\)' "$headers" || {
-              echo "::error::Incorrect content type for $path"
-              cat "$headers"
+            expected_type=javascript
+            [[ "$path" == *.css ]] && expected_type=text/css
+            verified=false
+            for attempt in 1 2 3; do
+              headers="$(mktemp)"
+              body="$(mktemp)"
+              status="$(curl --silent --show-error --location --max-time 30 \
+                --dump-header "$headers" --output "$body" \
+                --write-out '%{http_code}' "https://drywalltoolbox.com$path")" || status=000
+              if [[ "$status" == 200 ]] && grep -qi "^content-type:.*$expected_type" "$headers"; then
+                verified=true
+                rm -f "$headers" "$body"
+                break
+              fi
+              if grep -qi '^sg-captcha:.*challenge' "$headers"; then
+                echo "::warning::SiteGround CAPTCHA challenged asset verification for $path (attempt $attempt/3, HTTP $status)"
+              else
+                echo "::error::Staging asset verification returned HTTP $status for $path (expected $expected_type)"
+                cat "$headers"
+                rm -f "$headers" "$body"
+                exit 2
+              fi
+              rm -f "$headers" "$body"
+              if [[ "$attempt" -lt 3 ]]; then sleep "$((attempt * 5))"; fi
+            done
+            if [[ "$verified" != true ]]; then
+              echo "::error::SiteGround repeatedly challenged asset verification for $path. Asset deployment may be correct, but public delivery is not verified. Review SiteGround bot protection and request a narrow authorization for GitHub Actions checks; do not disable storefront security globally."
               exit 2
-            }
-            rm -f "$headers"
+            fi
           done < /tmp/dtb-staging-asset-urls
 
       - name: Summarize staging deployment outcome
