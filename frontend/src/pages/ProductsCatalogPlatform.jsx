@@ -673,7 +673,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
         />
       )}
 
-      {mappedProducts.length === 0 && !productsError && (
+      {mappedProducts.length === 0 && !productsError && !itemsLoading && (
         <div className="text-center py-16">
           <ShoppingCart className="h-24 w-24 mx-auto mb-6 text-gray-300" />
           <h2 className="text-2xl font-bold text-gray-900 mb-4">No products found</h2>
