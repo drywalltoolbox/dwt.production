@@ -152,7 +152,6 @@ export default function StorefrontCatalogAutocomplete({
       itemToStringValue={(product) => product?.name || ''}
       filter={null}
       limit={MAX_RESULTS}
-      autoHighlight
       keepHighlight
     >
       <Autocomplete.InputGroup className="dtb-desktop-search-pill dtb-catalog-autocomplete__input-group">
