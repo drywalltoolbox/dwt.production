@@ -330,8 +330,8 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   // may contain both tools and parts; Parts alone applies is_parts=1.
   const effectivePartsFilter = isPartsPage ? 1 : null;
   const scopedFacets = effectivePartsFilter === null
-    ? { brand: selectedBrand, category: query.category }
-    : { isParts: effectivePartsFilter, brand: selectedBrand, category: query.category };
+    ? { brand: selectedBrand, category: query.category, search: query.search }
+    : { isParts: effectivePartsFilter, brand: selectedBrand, category: query.category, search: query.search };
   const productQuery = effectivePartsFilter === null ? query : { ...query, isParts: effectivePartsFilter };
 
   const { facets, loading: facetsLoading, error: facetsError } = useCatalogFacets(scopedFacets);
@@ -418,7 +418,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   const categoryScopeLabel = selectedBrandFacet?.label || selectedBrand;
   const searchQuery = query.search.trim();
   const pageHeading = searchQuery
-    ? `Search results for “${searchQuery}”`
+    ? 'Search results'
     : selectedCategoryLabel
       ? `${categoryScopeLabel ? `${categoryScopeLabel} ` : ''}${selectedCategoryLabel}`
       : title;
@@ -431,7 +431,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   const desktopHeading = isCategoryProductRoute ? pageHeading : title;
   const unifiedHeadingTitle = isCategoryProductRoute ? selectedCategoryLabel : desktopHeading;
   const unifiedHeadingMeta = searchQuery
-    ? (total > 0 ? `${total.toLocaleString()} result${total === 1 ? '' : 's'} for “${searchQuery}”` : `No results for “${searchQuery}”`)
+    ? (itemsLoading ? `Searching the catalog for “${searchQuery}”…` : `Showing ${total.toLocaleString()} result${total === 1 ? '' : 's'} for “${searchQuery}”.`)
     : isCategoryProductRoute
       ? `${categoryScopeLabel || 'All brands'}${total > 0 ? ` · ${total.toLocaleString()} product${total === 1 ? '' : 's'}` : ''}`
       : `${isPartsPage ? 'Replacement parts and service components' : 'All brands and categories'}${total > 0 ? ` · ${total.toLocaleString()} product${total === 1 ? '' : 's'}` : ''}`;
@@ -481,9 +481,11 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
     { label: 'All Products', path: '/products' },
   ], []);
 
-  const categorySeoTitle = isCategoryPageRoute
-    ? (categoryMeta?.label || (categoryMetaError ? 'Category not found' : 'Loading category…'))
-    : pageHeading;
+  const categorySeoTitle = searchQuery
+    ? `Search: ${searchQuery}`
+    : isCategoryPageRoute
+      ? (categoryMeta?.label || (categoryMetaError ? 'Category not found' : 'Loading category…'))
+      : pageHeading;
   const categorySeoDescription = isCategoryPageRoute
     ? (categoryMeta?.description || seoDescription)
     : seoDescription;
@@ -611,7 +613,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
     const next = current.includes(displayCategory)
       ? current.filter((slug) => slug !== displayCategory)
       : [...current, displayCategory];
-    setQuery({ displayCategory: next, category: '', ...(next.length > 0 ? { search: '' } : {}) });
+    setQuery({ displayCategory: next, category: '', search: query.search || '' });
   };
 
   const removeBreadcrumbFilter = useCallback((filter) => {
@@ -629,7 +631,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
     }
     if (filter.type === 'displayCategory') {
       const next = (query.displayCategory || []).filter((slug) => slug !== filter.value);
-      setQuery({ displayCategory: next, category: '', ...(next.length > 0 ? { search: '' } : {}) });
+      setQuery({ displayCategory: next, category: '', search: query.search || '' });
     }
   }, [query, setQuery]);
   const resetToBrandList = () => navigate('/products/brands');
@@ -720,6 +722,16 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
           )
         )}
 
+        {searchQuery && (
+          <section className="dtb-search-results-intro" aria-labelledby="dtb-search-results-title">
+            <Breadcrumb items={[{ label: 'Home', path: '/' }, { label: 'Search' }]} />
+            <div className="dtb-search-results-intro__copy">
+              <h1 id="dtb-search-results-title">Search results</h1>
+              <p>{unifiedHeadingMeta}</p>
+            </div>
+          </section>
+        )}
+
         {isAllProductsRoute && !showCategoryLanding && !showBrandLanding && (
           <>
             <Breadcrumb items={allProductsBreadcrumbs} activeFilters={activeBreadcrumbFilters} onRemoveFilter={removeBreadcrumbFilter} />
@@ -729,7 +741,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
           </>
         )}
 
-        {!isCategoryPageRoute && !isAllProductsRoute && !showCategoryLanding && !showBrandLanding && (
+        {!searchQuery && !isCategoryPageRoute && !isAllProductsRoute && !showCategoryLanding && !showBrandLanding && (
           <div className="mb-5 sm:mb-8">
             <div className={`dtb-listing-heading${isCategoryProductRoute ? '' : ' dtb-listing-heading--standard'}`}>
               {isCategoryProductRoute && (
@@ -822,7 +834,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                 isOpen={showFilters}
                 onClose={() => setShowFilters(false)}
                 categories={filterCategories}
-                brands={brands}
+                brands={brandFacets}
                 maxPrice={0}
                 selectedBrands={selectedBrand ? [canonicalBrandLabel(selectedBrand)] : []}
                 selectedCategories={selectedDisplayCategories}
@@ -830,7 +842,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                 onBrandChange={toggleBrand}
                 onCategoryChange={toggleDisplayCategory}
                 onPriceChange={() => {}}
-                onClearFilters={() => selectedBrand ? setQuery({ brands: [], category: '', displayCategory: [], search: '', sort: 'popular' }) : navigate(isPartsPage ? '/parts' : '/products')}
+                onClearFilters={() => setQuery({ brands: [], category: '', displayCategory: [], search: query.search || '', sort: 'popular' })}
                 resultsCount={total}
               />
 
