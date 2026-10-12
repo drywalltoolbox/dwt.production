@@ -152,6 +152,7 @@ export function normalizeCatalogScope(scope = {}) {
     normalized.brand = brandToSlug(scope.brand) || String(scope.brand);
   }
   if (scope.category) normalized.category = String(scope.category);
+  if (scope.search) normalized.search = String(scope.search).trim();
   if (scope.displayCategory && !isAllProductsCategorySlug(scope.displayCategory)) {
     normalized.display_category = String(scope.displayCategory);
   }
