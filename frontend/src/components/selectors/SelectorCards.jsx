@@ -1,8 +1,8 @@
 import { ChevronRight, ImageOff } from 'lucide-react';
 
-export function SelectorGrid({ children, variant = 'categories', className = '', role = 'list' }) {
+export function SelectorGrid({ children, variant = 'categories', className = '' }) {
   return (
-    <div className={`dtb-selector-grid dtb-selector-grid--${variant}${className ? ` ${className}` : ''}`} role={role}>
+    <div className={`dtb-selector-grid dtb-selector-grid--${variant}${className ? ` ${className}` : ''}`}>
       {children}
     </div>
   );
@@ -24,7 +24,6 @@ export function MediaSelectorCard({
   return (
     <button
       type="button"
-      role="listitem"
       className={`dtb-selector-card dtb-selector-card--media${className ? ` ${className}` : ''}`}
       onClick={onClick}
     >
