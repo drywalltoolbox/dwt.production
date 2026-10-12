@@ -231,7 +231,7 @@
 .home-hero-campaigns__rail {
   width: min(780px, 72vw);
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   overflow: hidden;
   border: 1px solid var(--home-hero-border);
   border-radius: 16px;
