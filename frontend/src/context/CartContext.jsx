@@ -407,6 +407,14 @@ export function CartProvider({ children }) {
     };
   }, [refreshCart]);
 
+  // The Google WooCommerce agent mutates the same authoritative Store API cart.
+  // Refresh React's projection after the plugin announces a completed update.
+  useEffect(() => {
+    const onGeminiCartUpdated = () => { void refreshCart(); };
+    document.body.addEventListener('gecx:cart-updated', onGeminiCartUpdated);
+    return () => document.body.removeEventListener('gecx:cart-updated', onGeminiCartUpdated);
+  }, [refreshCart]);
+
   const addToCart = useCallback(async (product, quantity = 1) => {
     if (!product?.id) return null;
     const mutationId = beginMutation();
