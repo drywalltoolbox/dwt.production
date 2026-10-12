@@ -65,8 +65,11 @@ export function initializeGeminiStorefront() {
 
     // Google's storefront runtime owns launcher behavior, nonce renewal and
     // gecx:cart-updated. Its own config controls deferred widget loading.
-    await loadScript(data.storefrontUrl);
+    // Match Google's wp_enqueue_scripts order: widget bundle first when
+    // eager, then the plugin storefront adapter. In deferred mode the plugin
+    // adapter owns gecxLoadWidget() and loads the hosted bundle on demand.
     if (data.config.shouldLoadWidget) await loadScript(data.widgetUrl);
+    await loadScript(data.storefrontUrl);
     return true;
   })().catch((error) => {
     console.warn('[DTB] Gemini unavailable:', error.message);
