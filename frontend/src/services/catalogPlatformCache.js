@@ -214,7 +214,7 @@ export function buildCatalogProductParams(query = {}) {
     params.brand = brandToSlug(query.brands[0]);
   }
   if (query.category) params.category = query.category;
-  if (!query.search && Array.isArray(query.displayCategory) && query.displayCategory.length > 0) {
+  if (Array.isArray(query.displayCategory) && query.displayCategory.length > 0) {
     const slugs = Array.from(new Set(
       query.displayCategory
         .map(canonicalDisplayCategorySlug)
