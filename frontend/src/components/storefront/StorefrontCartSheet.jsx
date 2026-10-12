@@ -19,6 +19,10 @@ function getDisplayQuantity(item, localQuantities) {
   return 1;
 }
 
+function getCartItemSku(item) {
+  return String(item?.sku || item?.part_number || item?.raw?.sku || '').trim();
+}
+
 function getProductDetailHref(item) {
   // The Store API cart item points at the parent product. Preserve that URL
   // when present so variable-product line items navigate to their parent PDP.
