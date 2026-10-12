@@ -171,10 +171,14 @@ export default function StorefrontCatalogAutocomplete({
           spellCheck={false}
           onFocus={onFocus}
           onKeyDown={(event) => {
-            if (event.key === 'Enter' && fuzzyResults.length === 0) {
-              event.preventDefault();
-              onViewAll();
-            }
+            if (event.key !== 'Enter' || !query.trim()) return;
+
+            // The autocomplete auto-highlights the first suggestion. Keep Enter
+            // reserved for the full catalog search so a broad query (for example,
+            // a brand name) cannot silently open one arbitrary product.
+            event.preventDefault();
+            event.stopPropagation();
+            onViewAll();
           }}
         />
         {query.trim() ? (
