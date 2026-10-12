@@ -67,7 +67,6 @@ export function BrandSelectorCard({
   return (
     <button
       type="button"
-      role="listitem"
       className={`dtb-selector-card dtb-selector-card--brand${className ? ` ${className}` : ''}`}
       style={style}
       onClick={onClick}
