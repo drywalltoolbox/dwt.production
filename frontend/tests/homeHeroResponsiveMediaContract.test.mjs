@@ -38,18 +38,24 @@ test('HomeHero preserves browser-native responsive art direction and LCP priorit
   assert.doesNotMatch(source, /window\.innerWidth|matchMedia\(|useMediaQuery|isMobile/);
 });
 
-test('homepage campaigns are presentation-only navigation to existing storefront routes', async () => {
-  const source = await readFile(HERO_CAMPAIGNS, 'utf8');
+test('homepage campaigns only promote customer-ready storefront routes', async () => {
+  const [source, styles] = await Promise.all([
+    readFile(HERO_CAMPAIGNS, 'utf8'),
+    readHeroStyles(),
+  ]);
 
-  for (const id of ['tools', 'parts', 'builder', 'repairs']) {
+  for (const id of ['tools', 'parts', 'repairs']) {
     assert.match(source, new RegExp(`id: '${id}'`));
   }
 
-  for (const route of ['/all-products', '/products/brands', '/parts', '/schematics', '/toolset-builder', '/repairs/start', '/repairs']) {
+  assert.doesNotMatch(source, /id: 'builder'|label: 'Builder'|\/toolset-builder/);
+
+  for (const route of ['/all-products', '/products/brands', '/parts', '/schematics', '/repairs/start', '/repairs']) {
     assert.match(source, new RegExp(route.replaceAll('/', '\\/')));
   }
 
-  assert.doesNotMatch(source, /price|inventory|order|payment|checkout/i);
+  assert.match(styles, /\.home-hero-campaigns__rail\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3,/);
+  assert.doesNotMatch(source, /^\s*(?:price|inventory|order|payment|checkout)\s*:/im);
 });
 
 test('campaign navigation is manual, keyboard accessible, touch navigable, and reduced-motion aware', async () => {
