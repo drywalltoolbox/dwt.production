@@ -40,6 +40,7 @@ export function useCatalogFacets(scope = {}) {
     } else {
       Promise.resolve().then(() => {
         if (!mounted) return;
+        setFacets(null);
         setLoading(true);
         setRefreshing(false);
         setError(null);

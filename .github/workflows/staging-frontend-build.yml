@@ -51,6 +51,10 @@ jobs:
         working-directory: frontend
         run: npm run test:product-pricing
 
+      - name: Test search result filters and facets
+        working-directory: frontend
+        run: npm run test:search-results
+
       - name: Build staging frontend
         working-directory: frontend
         run: npm run build:staging

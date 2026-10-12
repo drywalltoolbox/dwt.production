@@ -152,6 +152,7 @@ export function normalizeCatalogScope(scope = {}) {
     normalized.brand = brandToSlug(scope.brand) || String(scope.brand);
   }
   if (scope.category) normalized.category = String(scope.category);
+  if (scope.search) normalized.search = String(scope.search).trim();
   if (scope.displayCategory && !isAllProductsCategorySlug(scope.displayCategory)) {
     normalized.display_category = String(scope.displayCategory);
   }
@@ -213,7 +214,7 @@ export function buildCatalogProductParams(query = {}) {
     params.brand = brandToSlug(query.brands[0]);
   }
   if (query.category) params.category = query.category;
-  if (!query.search && Array.isArray(query.displayCategory) && query.displayCategory.length > 0) {
+  if (Array.isArray(query.displayCategory) && query.displayCategory.length > 0) {
     const slugs = Array.from(new Set(
       query.displayCategory
         .map(canonicalDisplayCategorySlug)

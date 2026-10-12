@@ -293,3 +293,41 @@
     transition: none !important;
   }
 }
+
+
+/* Search results use a compact title and centered query/count summary, separate from the All Products hero. */
+.dtb-search-results-intro {
+  margin: 0 0 clamp(1.35rem, 2.2vw, 2rem);
+}
+
+.dtb-search-results-intro__copy {
+  padding: clamp(0.9rem, 1.6vw, 1.5rem) 0 clamp(1.05rem, 1.8vw, 1.65rem);
+  text-align: center;
+}
+
+.dtb-search-results-intro__copy h1 {
+  margin: 0;
+  color: #0b1f40;
+  font-family: var(--dtb-font-display, var(--dtb-font-ui));
+  font-size: clamp(1.55rem, 2.4vw, 2rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.035em;
+}
+
+.dtb-search-results-intro__copy p {
+  margin: 0.8rem 0 0;
+  color: #587092;
+  font-size: clamp(0.9rem, 1vw, 1rem);
+  font-weight: 550;
+}
+
+.dtb-search-results-intro__copy p strong {
+  color: #10284e;
+  font-weight: 750;
+}
+
+@media (max-width: 767px) {
+  .dtb-search-results-intro { margin-bottom: 1.1rem; }
+  .dtb-search-results-intro__copy { padding: 0.85rem 0 1.1rem; text-align: left; }
+}

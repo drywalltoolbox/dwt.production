@@ -189,13 +189,10 @@ export function parseCatalogQuery(searchParams, pathParams = {}) {
     ? decodeURIComponent(searchParams.get('search'))
     : '';
 
-  // `search` and `displayCategory` are mutually exclusive — the backend ANDs
-  // them together which always produces zero results.  If both are present in
-  // the URL (e.g. from a stale/shared link), search takes priority and the
-  // display_category is silently cleared so the query makes sense.
-  // The synthetic All Products slug is preserved here as view state so the page
-  // can still render the correct heading; lower data layers strip it from API filters.
-  const displayCategory = search ? [] : rawDisplayCategory;
+  // Search and display-category filters can be combined by the catalog product
+  // repository, so keep both when reading a shared or filtered search URL.
+  // The synthetic All Products slug is view state only and is stripped below.
+  const displayCategory = rawDisplayCategory;
 
   return {
     brands,
@@ -228,10 +225,9 @@ export function buildCatalogUrl(query, pathParams = {}) {
   if (!pathParams.brandSlug && query.brands && query.brands.length > 0) {
     params.set('brand', query.brands.map((b) => brandToSlug(b)).join(','));
   }
-  // Never include display_category and search in the same URL — they are
-  // mutually exclusive.  Search takes priority. The synthetic All Products
-  // selector is only a route/view state and must not become a filter param.
-  if (!pathParams.categorySlug && query.displayCategory?.length > 0 && !query.search) {
+  // Search and display_category are supported together. The synthetic All
+  // Products selector is route/view state and must not become a filter param.
+  if (!pathParams.categorySlug && query.displayCategory?.length > 0) {
     const slugs = Array.from(new Set(
       query.displayCategory
         .map(canonicalDisplayCategorySlug)

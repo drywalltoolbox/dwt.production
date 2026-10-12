@@ -13,10 +13,15 @@ function normalizeFilterBrands(brands = []) {
   const seen = new Set();
 
   return brands
-    .map((brand) => String(brand || '').trim())
+    .map((brand) => {
+      const label = String(typeof brand === 'string' ? brand : (brand?.label || brand?.name || '')).trim();
+      const rawCount = typeof brand === 'string' ? null : (brand?.productCount ?? brand?.count);
+      const count = rawCount === null || rawCount === undefined ? undefined : Number(rawCount);
+      return { id: label, label, count: Number.isFinite(count) ? count : undefined };
+    })
     .filter((brand) => {
-      if (!brand) return false;
-      const key = brand.toLowerCase();
+      if (!brand.label) return false;
+      const key = brand.label.toLowerCase();
       if (seen.has(key)) return false;
       seen.add(key);
       return true;
@@ -304,7 +309,7 @@ function FilterContent({
         {/* Brands Section */}
         <FilterCheckboxGroup
           title="Brand"
-          items={brands.map((brand) => ({ id: brand, label: brand }))}
+          items={brands}
           selectedIds={selectedBrands}
           onToggle={onBrandChange}
         />
