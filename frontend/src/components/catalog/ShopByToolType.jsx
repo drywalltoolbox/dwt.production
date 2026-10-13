@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ArrowRight, Wrench } from 'lucide-react';
+import { ArrowRight, ChevronRight, Wrench } from 'lucide-react';
 import StorefrontRail from '../storefront/StorefrontRail.jsx';
 import { buildCategoryPageUrl } from '../../utils/catalogFacets.js';
 import { resolveCategoryThumbnail } from '../../utils/categoryThumbnailImages.js';
 import '../../styles/category-hero.css';
 import '../../styles/tool-type-merchandising.css';
 
-function ToolTypeTile({ category }) {
+function ToolTypeTile({ category, showSelectorChevron = false }) {
   const [imageFailed, setImageFailed] = useState(false);
   const image = resolveCategoryThumbnail(category);
   const hasImage = Boolean(image) && !imageFailed;
@@ -33,7 +33,8 @@ function ToolTypeTile({ category }) {
         )}
       </span>
       <span className="dtb-tool-type-tile__label">{category.name}</span>
-      {description && <span className="dtb-tool-type-tile__description">{description}</span>}
+      {description && !showSelectorChevron && <span className="dtb-tool-type-tile__description">{description}</span>}
+      {showSelectorChevron && <ChevronRight size={15} strokeWidth={2} className="dtb-tool-type-tile__chevron" aria-hidden="true" />}
     </Link>
   );
 }
@@ -83,7 +84,7 @@ export default function ShopByToolType({ categories = [], onOpenFilters }) {
 
       <StorefrontRail label="Shop by tool type" className="dtb-tool-type-rail">
         {items.map((category) => (
-          <ToolTypeTile key={category.slug} category={category} />
+          <ToolTypeTile key={category.slug} category={category} showSelectorChevron={isAllProductsRoute} />
         ))}
         {isAllProductsRoute && (
           <a
