@@ -87,10 +87,10 @@
   }
 }
 
-/* Keep centered copy clear of the right-side links on narrower desktops. */
+/* Preserve true horizontal centering when desktop space is constrained. */
 @media (min-width: 1025px) and (max-width: 1439px) {
-  .dtb-header-utility-bar {
-    justify-content: flex-start;
+  .dtb-header-utility-bar__links {
+    display: none;
   }
 }
 
