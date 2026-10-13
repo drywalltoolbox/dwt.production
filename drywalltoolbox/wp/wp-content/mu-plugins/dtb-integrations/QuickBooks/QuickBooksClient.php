@@ -276,7 +276,19 @@ function dtb_qbo_get_access_token(): string {
 	return (string) ( $tokens['access_token'] ?? '' );
 }
 
+/**
+ * Prelaunch accounting-write pause. Changing this to false requires a reviewed
+ * deployment after checkout validation. Read-only connection diagnostics remain.
+ */
+function dtb_qbo_exports_paused(): bool {
+	return true;
+}
+
 function dtb_qbo_request( string $method, string $path, array $params = [], array $body = [], bool $retry_auth = true ): array {
+	if ( dtb_qbo_exports_paused() && ! in_array( strtoupper( $method ), [ 'GET', 'HEAD', 'OPTIONS' ], true ) ) {
+		return [ 'ok' => false, 'status' => 0, 'data' => null, 'error' => 'QuickBooks writes temporarily paused during checkout validation.', 'retryable' => false ];
+	}
+
 	$config = dtb_qbo_config();
 	if ( ! dtb_qbo_enabled() ) {
 		return [ 'ok' => false, 'status' => 0, 'data' => null, 'error' => 'QuickBooks is not connected.', 'retryable' => false ];

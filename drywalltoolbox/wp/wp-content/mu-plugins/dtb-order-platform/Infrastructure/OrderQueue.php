@@ -14,17 +14,11 @@ if ( ! defined( 'DTB_ORDER_JOB_RETRY_BASE' ) ) {
 	define( 'DTB_ORDER_JOB_RETRY_BASE', 300 );
 }
 
-function dtb_quickbooks_test_order_excluded( int $order_id ): bool {
-    if ( $order_id <= 0 || ! function_exists( 'wc_get_order' ) ) { return false; }
-    $order = wc_get_order( $order_id );
-    return $order instanceof WC_Order && 'yes' === (string) $order->get_meta( '_dtb_quickbooks_export_suppressed', true );
-}
-
 function dtb_order_enqueue_job( string $job_type, int $order_id, array $args = [], int $delay = 0 ): string|int|false {
 	if ( '' === $job_type || $order_id <= 0 ) {
 		return false;
 	}
-	if ( 'dtb_order_sync_quickbooks' === $job_type && dtb_quickbooks_test_order_excluded( $order_id ) ) { return false; }
+	if ( 'dtb_order_sync_quickbooks' === $job_type && dtb_qbo_exports_paused() ) { return false; }
 	if ( 'dtb_order_issue_rewards' === $job_type ) {
 		return false;
 	}
@@ -251,7 +245,7 @@ function dtb_order_job_sync_quickbooks( int $order_id, array $args = [] ): void 
 	}
 	if ( dtb_quickbooks_test_order_excluded( $order_id ) ) {
 		dtb_order_update_integration_state( $order_id, 'quickbooks', [ 'status' => 'skipped', 'error' => 'Explicit test-order exclusion.' ] );
-		dtb_order_append_event( $order_id, 'integration.quickbooks.skipped', [ 'source' => 'cron', 'actor_type' => 'system', 'visibility' => 'operator', 'payload' => [ 'reason' => 'test_order_excluded' ] ] );
+		dtb_order_append_event( $order_id, 'integration.quickbooks.skipped', [ 'source' => 'cron', 'actor_type' => 'system', 'visibility' => 'operator', 'payload' => [ 'reason' => 'quickbooks_exports_paused' ] ] );
 		return;
 	}
 	if ( dtb_order_job_should_skip_order_side_effects( $order ) ) {
