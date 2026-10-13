@@ -828,8 +828,9 @@ if ( ! function_exists( 'dtb_email_social_links' ) ) {
 		return (array) apply_filters(
 			'dtb_email_social_links',
 			[
-				[ 'label' => 'Facebook', 'url' => 'https://www.facebook.com/drywalltoolbox' ],
 				[ 'label' => 'Instagram', 'url' => 'https://www.instagram.com/drywalltoolbox' ],
+				[ 'label' => 'Facebook', 'url' => 'https://www.facebook.com/Drywalltoolbox/' ],
+				[ 'label' => 'X', 'url' => 'https://twitter.com' ],
 			]
 		);
 	}
@@ -858,7 +859,7 @@ if ( ! function_exists( 'dtb_email_social_icons' ) ) {
 				continue;
 			}
 			$icon_name = 'Facebook' === $label ? 'facebook' : ( 'Instagram' === $label ? 'instagram' : '' );
-			$icon_html = '' !== $icon_name && function_exists( 'dtb_email_icon' ) ? dtb_email_icon( $icon_name, 22 ) : esc_html( function_exists( 'mb_substr' ) ? mb_substr( $label, 0, 1 ) : substr( $label, 0, 1 ) );
+			$icon_html = 'X' === $label ? '<span aria-hidden="true" style="display:inline-block;color:#ffffff;font-family:Arial,sans-serif;font-size:20px;font-weight:700;line-height:24px;">𝕏</span>' : ( '' !== $icon_name && function_exists( 'dtb_email_icon' ) ? dtb_email_icon( $icon_name, 22 ) : esc_html( function_exists( 'mb_substr' ) ? mb_substr( $label, 0, 1 ) : substr( $label, 0, 1 ) ) );
 			$cells  .= '<td style="padding:0 10px;"><a href="' . esc_url( $url ) . '" target="_blank" rel="noopener noreferrer" aria-label="' . esc_attr( $label ) . '" style="display:inline-block;width:24px;height:24px;line-height:24px;color:#ffffff;font-family:' . $font . ';font-size:13px;font-weight:800;text-align:center;text-decoration:none;">' . $icon_html . '</a></td>';
 		}
 
