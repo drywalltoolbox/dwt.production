@@ -55,3 +55,19 @@
   .dtb-interior-hero__title { font-size: clamp(1.65rem, 6.6vw, 2.2rem); }
   .dtb-interior-hero__description { font-size: 0.84rem; }
 }
+
+/* Category and brand listings already live in guttered catalog containers. */
+.dtb-catalog-category-layout > .dtb-interior-hero,
+.dtb-catalog-brand-layout .products-brand-selector > .dtb-interior-hero {
+  width: calc(100% + (2 * var(--dtb-viewport-gutter)));
+  margin-left: calc(-1 * var(--dtb-viewport-gutter));
+  margin-right: calc(-1 * var(--dtb-viewport-gutter));
+  margin-bottom: clamp(0.85rem, 1.5vw, 1.25rem);
+}
+.dtb-category-loading-placeholder {
+  display: block;
+  width: min(23rem, 65%);
+  height: 2.1rem;
+  border-radius: 0.4rem;
+  background: linear-gradient(90deg, #e9eef5, #f4f7fc, #e9eef5);
+}
