@@ -194,3 +194,41 @@
     transition: none;
   }
 }
+
+/* Footer branding/social and legal alignment. Global footer only. */
+.dtb-footer-template__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.dtb-footer-template__brand > a {
+  display: block;
+  width: fit-content;
+  max-width: 100%;
+}
+.dtb-footer-template__brand .dtb-footer-template__socials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: fit-content;
+  margin: 8px auto 0;
+}
+.dtb-footer-template__bottom {
+  justify-content: center;
+  text-align: center;
+}
+.dtb-footer-template__bottom > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.dtb-footer-template__legal {
+  margin: 0;
+  justify-content: center;
+}
+@media (max-width: 700px) {
+  .dtb-footer-template__brand { align-items: center; }
+  .dtb-footer-template__brand .dtb-footer-template__socials { margin-top: 8px; }
+}
