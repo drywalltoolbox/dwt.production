@@ -67,6 +67,9 @@ ErrorDocument 504 /staging/errors/504.html
   RewriteCond %{HTTP_HOST} ^www\.drywalltoolbox\.com$ [NC]
   RewriteRule ^ https://drywalltoolbox.com%{REQUEST_URI} [R=301,L,NE]
 
+  # Administrator-only native WooPayments shortcode probe (shared backend, test mode only).
+  RewriteRule ^__wallet-probe-20261013/?$ /wp/index.php?pagename=dtb-staging-wallet-probe-20261013 [QSA,L]
+
   # Staging shares the root WordPress/WooCommerce runtime. These internal
   # aliases preserve same-origin cookies while keeping one REST authority.
   RewriteRule ^wp-json/?$ /wp/index.php?rest_route=/ [QSA,L]
