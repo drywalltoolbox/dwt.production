@@ -54,7 +54,7 @@ function XLogo() {
 
 const SOCIAL_LINKS = [
   { label: 'Instagram', href: 'https://www.instagram.com/drywalltoolbox', Icon: Instagram },
-  { label: 'Facebook', href: 'https://facebook.com', Icon: Facebook },
+  { label: 'Facebook', href: 'https://www.facebook.com/Drywalltoolbox/', Icon: Facebook },
   { label: 'X', href: 'https://twitter.com', Icon: XLogo },
 ];
 
