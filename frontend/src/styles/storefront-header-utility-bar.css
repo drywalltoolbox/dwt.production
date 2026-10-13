@@ -3,7 +3,12 @@
  * The centered message is independent of the desktop support links, avoiding
  * off-center positioning when their labels have unequal widths.
  */
-.dtb-header-utility-bar {
+.site-header > .dtb-header-utility-bar {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  flex: 0 0 100%;
+  align-self: stretch;
   display: flex;
   position: relative;
   align-items: center;
@@ -25,6 +30,7 @@
   letter-spacing: 0.075em;
   text-align: center;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .dtb-header-utility-bar__links {
@@ -32,7 +38,7 @@
 }
 
 @media (min-width: 1025px) {
-  .dtb-header-utility-bar {
+  .site-header > .dtb-header-utility-bar {
     min-height: 40px;
     padding: 9px clamp(var(--dtb-space-6), 3.4vw, 64px);
   }
@@ -88,9 +94,16 @@
 }
 
 /* Preserve true horizontal centering when desktop space is constrained. */
-@media (min-width: 1025px) and (max-width: 1439px) {
+@media (min-width: 1025px) and (max-width: 1599px) {
   .dtb-header-utility-bar__links {
     display: none;
+  }
+}
+
+@media (max-width: 374px) {
+  .dtb-header-utility-bar__announcement {
+    font-size: 0.64rem;
+    letter-spacing: 0.045em;
   }
 }
 
