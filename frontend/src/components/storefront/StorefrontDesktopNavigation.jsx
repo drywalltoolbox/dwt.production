@@ -372,7 +372,7 @@ function DeliberatePanelRenderer({ item, onNavigate }) {
   return Renderer ? <Renderer item={item} onNavigate={onNavigate} /> : <MegaMenuDeferredState item={item} />;
 }
 
-function DesktopNavTrigger({ item, isOpen, active, panelId, onOpen, onToggle, onCloseImmediate }) {
+function DesktopNavTrigger({ item, isOpen, active, panelId, onOpen, onNavigate, onCloseImmediate }) {
   const triggerRef = useRef(null);
 
   const closeAndFocus = () => {
@@ -382,15 +382,15 @@ function DesktopNavTrigger({ item, isOpen, active, panelId, onOpen, onToggle, on
 
   return (
     <div className={`dtb-desktop-nav-menu${isOpen ? ' is-open' : ''}`} onPointerEnter={(event) => { if (event.pointerType === 'mouse') onOpen(false); }}>
-      <button
+      <Link
         ref={triggerRef}
-        type="button"
+        to={item.landingTo}
+
         className={`dtb-desktop-nav-tab${active ? ' is-active' : ''}`}
         aria-haspopup="true"
         aria-expanded={isOpen}
         aria-controls={panelId}
-        onClick={onToggle}
-        onFocus={() => onOpen(true)}
+        onClick={() => { onCloseImmediate(); onNavigate(); }}
         onKeyDown={(event) => {
           if (event.key === 'Escape') {
             event.preventDefault();
@@ -400,7 +400,7 @@ function DesktopNavTrigger({ item, isOpen, active, panelId, onOpen, onToggle, on
       >
         <span className="dtb-desktop-nav-tab__label">{item.label}</span>
         <ChevronDown size={14} aria-hidden="true" />
-      </button>
+      </Link>
     </div>
   );
 }
@@ -541,10 +541,7 @@ export default function StorefrontDesktopNavigation({ items, openMenuId, onOpen,
           isOpen={openMenuId === item.id}
           active={isItemActive(item)}
           onOpen={(immediate = false) => requestOpen(item.id, immediate)}
-          onToggle={() => {
-            if (openMenuId === item.id) closeImmediately();
-            else requestOpen(item.id, true);
-          }}
+          onNavigate={onNavigate}
           onCloseImmediate={closeImmediately}
         />
       ) : (
