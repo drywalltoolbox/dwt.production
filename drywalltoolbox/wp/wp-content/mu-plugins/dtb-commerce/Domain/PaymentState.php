@@ -62,7 +62,9 @@ function dtb_checkout_handoff_uses_official_stripe_gateway( WC_Order $order ): b
 function dtb_checkout_handoff_has_provider_verified_payment( WC_Order $order ): bool {
 	$provider = sanitize_key( (string) $order->get_meta( '_dtb_payment_provider', true ) );
 	$verified_provider = 'woo_native_woopayments' === sanitize_key( (string) $order->get_meta( '_dtb_checkout_gateway', true ) )
-		? ( 'woopayments' === $provider && 'woocommerce_payments' === substr( sanitize_key( (string) $order->get_payment_method() ), 0, 20 ) && in_array( sanitize_key( (string) $order->get_meta( '_wcpay_mode', true ) ), [ 'test', 'prod' ], true ) )
+		? ( 'woopayments' === $provider && 'woocommerce_payments' === substr( sanitize_key( (string) $order->get_payment_method() ), 0, 20 ) && in_array( sanitize_key( (string) $order->get_meta( '_wcpay_mode', true ) ), [ 'test', 'prod' ], true )
+			&& 'succeeded' === sanitize_key( (string) $order->get_meta( '_intention_status', true ) )
+			&& '' !== trim( (string) $order->get_meta( '_intent_id', true ) ) )
 		: dtb_checkout_handoff_uses_verified_stripe_provider( $order );
 	return dtb_checkout_handoff_is_order( $order )
 		&& $verified_provider
