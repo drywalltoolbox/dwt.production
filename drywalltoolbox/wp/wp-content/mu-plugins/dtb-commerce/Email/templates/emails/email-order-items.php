@@ -45,7 +45,7 @@ foreach ( $items as $item_id => $item ) :
 
 	?>
 	<tr class="<?php echo esc_attr( $order_item_class ); ?>">
-		<td class="td font-family text-align-left" width="68%" style="width:68%;padding:16px 8px 16px 0;vertical-align:middle;word-wrap:break-word;overflow-wrap:break-word;text-align:left;">
+		<td class="td font-family text-align-left" width="68%" style="width:68%;padding:18px 10px 18px 0;vertical-align:middle;word-wrap:break-word;overflow-wrap:break-word;text-align:left;">
 			<table class="order-item-data" role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
 				<tr>
 					<?php if ( $show_image && '' !== trim( $thumbnail ) ) : ?>
@@ -119,7 +119,7 @@ foreach ( $items as $item_id => $item ) :
 				</tr>
 			</table>
 		</td>
-		<td class="td font-family text-align-right" width="10%" style="width:10%;padding:16px 5px;vertical-align:middle;text-align:center;white-space:nowrap;">
+		<td class="td font-family text-align-right" width="10%" style="width:10%;padding:18px 5px;vertical-align:middle;text-align:center;white-space:nowrap;">
 			<?php
 			$qty          = $item->get_quantity();
 			$refunded_qty = $order->get_qty_refunded_for_item( $item_id );
@@ -135,7 +135,7 @@ foreach ( $items as $item_id => $item ) :
 			}
 			?>
 		</td>
-		<td class="td font-family text-align-right" width="22%" style="width:22%;padding:16px 0 16px 5px;vertical-align:middle;text-align:right;white-space:nowrap;">
+		<td class="td font-family text-align-right" width="22%" style="width:22%;padding:18px 0 18px 6px;vertical-align:middle;text-align:right;white-space:nowrap;">
 			<span class="dtb-mobile-label"><?php esc_html_e( 'Price:', 'drywall-toolbox' ); ?> </span><?php echo wp_kses_post( $order->get_formatted_line_subtotal( $item ) ); ?>
 		</td>
 	</tr>

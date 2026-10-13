@@ -13,14 +13,14 @@ if($is_order_family):
 <tr><td align="center" style="padding:18px 0 20px;border-top:1px solid #d7dee8;border-bottom:1px solid #d7dee8;color:#071b45;font-family:<?php echo esc_attr($font); ?>;">
 <span style="display:block;margin:0 0 6px;color:#52627e;font-size:9px;font-weight:750;line-height:13px;letter-spacing:2px;text-transform:uppercase;"><?php esc_html_e('Order details','drywall-toolbox'); ?></span>
 <strong style="display:block;font-size:23px;font-weight:650;line-height:29px;letter-spacing:-.35px;"><?php esc_html_e('Order number:','drywall-toolbox'); ?></strong>
-<span style="display:block;margin-top:2px;color:#65738f;font-size:20px;font-weight:450;line-height:27px;">DTB-<?php echo esc_html($order->get_order_number()); ?></span>
+<span style="display:block;margin-top:2px;color:#65738f;font-size:20px;font-weight:450;line-height:27px;"><?php echo esc_html( preg_match( '/^DTB-/i', (string) $order->get_order_number() ) ? $order->get_order_number() : 'DTB-' . $order->get_order_number() ); ?></span>
 </td></tr>
-<tr><td style="padding:15px 18px 3px;">
+<tr><td style="padding:18px 18px 5px;">
 <table class="td font-family email-order-details" cellspacing="0" cellpadding="0" width="100%" style="width:100%;border-collapse:collapse;" border="0" role="presentation"><tbody>
 <?php echo wc_get_email_order_items($order,['show_sku'=>true,'show_image'=>true,'image_size'=>[72,72],'plain_text'=>$plain_text,'sent_to_admin'=>$sent_to_admin]); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 </tbody></table>
 </td></tr>
-<tr><td style="padding:15px 18px 20px;border-top:1px solid #d7dee8;">
+<tr><td style="padding:17px 18px 22px;border-top:1px solid #e4eaf1;">
 <table class="td font-family email-order-details email-order-totals" cellspacing="0" cellpadding="0" width="100%" style="width:100%;border-collapse:collapse;" border="0" role="presentation">
 <?php foreach($order->get_order_item_totals() as $total): $type=sanitize_html_class((string)($total['type']??'unknown')); $is_total='total'===$type; ?>
 <tr class="order-totals order-totals-<?php echo esc_attr($type); ?><?php echo $is_total?' order-totals-total':''; ?>"><th scope="row" colspan="2" style="padding:8px 0;color:<?php echo $is_total?'#071b45':'#65738f'; ?>;font-family:<?php echo esc_attr($font); ?>;font-size:<?php echo $is_total?'19':'13'; ?>px;font-weight:<?php echo $is_total?'750':'450'; ?>;line-height:22px;text-align:left;<?php echo $is_total?'border-top:1px solid #d7dee8;padding-top:13px;':''; ?>"><?php echo wp_kses_post($total['label']??''); ?></th><td align="right" style="padding:8px 0;color:<?php echo $is_total?'#071b45':'#65738f'; ?>;font-family:<?php echo esc_attr($font); ?>;font-size:<?php echo $is_total?'20':'13'; ?>px;font-weight:<?php echo $is_total?'800':'500'; ?>;line-height:22px;white-space:nowrap;<?php echo $is_total?'border-top:1px solid #d7dee8;padding-top:13px;':''; ?>"><?php echo wp_kses_post($total['value']??''); ?></td></tr>
