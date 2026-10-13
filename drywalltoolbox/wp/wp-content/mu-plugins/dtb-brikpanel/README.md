@@ -22,11 +22,10 @@ Live active BrikPanel plugin at `wp-content/plugins/brikpanel-admin-panel-dashbo
 ## Deployment and rollback
 Deploy the module files before updating the compatibility entrypoint. Verify live readback against GitHub. Reverting the entrypoint returns the previous layout without touching WooCommerce data or BrikPanel vendor files.
 
-## Product Media Studio extracted (default off)
+## Product Media Studio extracted (prelaunch enabled; rollback flag)
 `Products/ProductMediaStudio.php` and its co-located JS/CSS were extracted from
 `elliotttmiller/launch-dtb/docs/admin/brikpanel/products`. They are
-**not enabled by default**. Opt in only after validating with the current live
-BrikPanel product editor; flag `DTB_BRIKPANEL_PRODUCT_MEDIA_STUDIO`.
+enabled for prelaunch UI verification after static compatibility review. Disable immediately with `DTB_BRIKPANEL_PRODUCT_MEDIA_STUDIO=false` if the editor misbehaves.
 The adapter hydrates existing variation galleries and enqueues a progressive UI,
 but does not add a save endpoint or replace the WooCommerce storefront gallery.
 
