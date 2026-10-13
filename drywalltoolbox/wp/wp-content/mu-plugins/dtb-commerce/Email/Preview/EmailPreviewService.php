@@ -71,13 +71,7 @@ final class EmailPreviewService {
 	public static function supported_emails(): array {
 		$supported = [];
 		foreach ( array_keys( self::registered_order_emails() ) as $email_id ) {
-			$supported[ $email_id ] = self::ORDER_EMAILS[ $email_id ];
-		}
-
-		foreach ( array_keys( self::registered_order_emails() ) as $email_id ) {
-			if ( isset( self::ACCOUNT_EMAILS[ $email_id ] ) ) {
-				$supported[ $email_id ] = self::ACCOUNT_EMAILS[ $email_id ];
-			}
+			$supported[ $email_id ] = self::ORDER_EMAILS[ $email_id ] ?? self::ACCOUNT_EMAILS[ $email_id ] ?? $email_id;
 		}
 		return $supported;
 	}
