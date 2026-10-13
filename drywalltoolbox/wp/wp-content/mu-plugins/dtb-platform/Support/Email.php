@@ -829,7 +829,7 @@ if ( ! function_exists( 'dtb_email_social_links' ) ) {
 			'dtb_email_social_links',
 			[
 				[ 'label' => 'Instagram', 'url' => 'https://www.instagram.com/drywalltoolbox' ],
-				[ 'label' => 'Facebook', 'url' => 'https://facebook.com' ],
+				[ 'label' => 'Facebook', 'url' => 'https://www.facebook.com/Drywalltoolbox/' ],
 				[ 'label' => 'X', 'url' => 'https://twitter.com' ],
 			]
 		);
