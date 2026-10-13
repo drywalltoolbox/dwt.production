@@ -163,6 +163,12 @@ final class DTB_ProductMeta {
 	/** Timestamp of the most recent universal-parts sync touching this product. */
 	const UNIVERSAL_PART_SYNCED_AT = '_dtb_universal_part_synced_at';
 
+	/** Validated serialized JSON document for customer-facing features. */
+	const FEATURES_JSON = '_dtb_features_json';
+
+	/** Version of the structured content contract. */
+	const CONTENT_SCHEMA_VERSION = '_dtb_content_schema_version';
+
 	// ── Field registry ─────────────────────────────────────────────────────────
 
 	/**
@@ -173,6 +179,8 @@ final class DTB_ProductMeta {
 	 * @var array<string, array{ type: string, description: string }>
 	 */
 	const FIELDS = [
+		self::FEATURES_JSON => [ 'type' => 'string', 'description' => 'Versioned DTB Features JSON.' ],
+		self::CONTENT_SCHEMA_VERSION => [ 'type' => 'string', 'description' => 'Structured product content schema version.' ],
 		self::BRAND_KEY             => [ 'type' => 'string',  'description' => 'Canonical brand slug key (e.g. tapetech).' ],
 		self::BRAND_LABEL           => [ 'type' => 'string',  'description' => 'Human-readable brand label (e.g. TapeTech).' ],
 		self::MANUFACTURER_SKU      => [ 'type' => 'string',  'description' => 'Manufacturer SKU / part number.' ],

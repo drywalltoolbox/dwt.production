@@ -405,6 +405,7 @@ export function toLegacyVariationDTO(variationDto = {}, parentDto = null) {
       : (Array.isArray(media?.variationImages) ? media.variationImages : []),
     attributes,
     variation: variationDto?.variation || {},
+    structured_content: variationDto?.content?.structured === true ? variationDto.content : null,
     meta_data: mergedMeta,
     variation_attribute_values: toLegacyVariationAttributeValues(attributes),
   };
@@ -452,6 +453,7 @@ export function toLegacyProductCardDTO(dto = {}, computed = null) {
     description: dto?.description || '',
     description_full: dto?.description || dto?.description_full || '',
     short_description: dto?.shortDescription || '',
+    structured_content: dto?.content?.structured === true ? dto.content : null,
     sku: dto?.sku || '',
     part_number: dto?.sku || '',
     brand: dto?.brand?.label || dto?.brand || '',

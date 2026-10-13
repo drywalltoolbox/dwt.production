@@ -33,7 +33,7 @@ EXPECTED_COLUMNS = (
     "Meta: _dtb_inherit_parent_image", "Meta: _dtb_schematic_brand",
     "Meta: _dtb_schematic_group", "Meta: _dtb_schematic_position",
     "Meta: _dtb_replacement_part_for", "Meta: _dtb_compatible_tool_skus", "Meta: _dtb_brand",
-    "Meta: _dtb_specs_json",
+    "Meta: _dtb_specs_json", "Meta: _dtb_features_json", "Meta: _dtb_content_schema_version",
     *tuple(value for slot in range(20) for value in (f"Meta: _includes_{slot}_name", f"Meta: _includes_{slot}_sku")),
     "Meta: _dtb_schematic_id", "Meta: _dtb_schematic_category", "Meta: _dtb_schematic_page",
     "Meta: _dtb_schematic_variant", "Meta: _dtb_schematic_url", "Meta: _dtb_seo_title",
@@ -48,6 +48,7 @@ EXPECTED_COLUMNS = (
     "Meta: _seopress_robots_canonical", "Meta: _seopress_robots_index",
     "Meta: surerank_settings_post_no_index", "Meta: _wds_title", "Meta: _wds_metadesc",
     "Meta: _wds_canonical", "Meta: _wds_focus-keywords",
+    "Meta: _veeqo_sellable_id", "Meta: _veeqo_mapped_sku", "Meta: _veeqo_product_id",
 )
 
 ALLOWED_TYPES = {"simple", "variable", "variation"}
@@ -242,6 +243,31 @@ def validate_catalog(catalog_path: Path, gap_audit_path: Path) -> dict[str, obje
         ]
         if len(set(identifiers)) > 1:
             errors.append(f"{sku}: MPN/manufacturer-SKU fields disagree: {identifiers}")
+
+        raw_features = (row.get("Meta: _dtb_features_json") or "").strip()
+        content_version = (row.get("Meta: _dtb_content_schema_version") or "").strip()
+        if raw_features or content_version:
+            if content_version != "2" or not raw_features:
+                errors.append(f"{sku}: structured Features requires schema version 2 and JSON payload")
+            else:
+                try:
+                    features_doc = json.loads(raw_features)
+                    if (not isinstance(features_doc, dict)
+                            or list(features_doc) != ["schema_version", "features"]
+                            or features_doc["schema_version"] != 1
+                            or not isinstance(features_doc["features"], list)
+                            or len(features_doc["features"]) > 50):
+                        raise ValueError("unexpected feature document shape")
+                    for feature in features_doc["features"]:
+                        if (not isinstance(feature, dict)
+                                or list(feature) != ["label", "description"]
+                                or not all(isinstance(feature.get(k), str)
+                                           and feature[k].strip()
+                                           and len(feature[k]) <= limit
+                                           for k, limit in (("label", 160), ("description", 2000)))):
+                            raise ValueError("invalid feature entry")
+                except (ValueError, TypeError, KeyError) as exc:
+                    errors.append(f"{sku}: invalid structured Features: {exc}")
 
         raw_specs = (row.get("Meta: _dtb_specs_json") or "").strip()
         try:
