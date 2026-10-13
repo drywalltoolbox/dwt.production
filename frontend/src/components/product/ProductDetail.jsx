@@ -639,6 +639,7 @@ export default function ProductDetail({
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [activeTab, setActiveTab] = useState('description');
+  const [specificationsRequest, setSpecificationsRequest] = useState(0);
   const [addToCartError, setAddToCartError] = useState('');
   const [addToCartState, setAddToCartState] = useState('idle');
   const [buyNowState, setBuyNowState] = useState('idle');
@@ -994,13 +995,13 @@ export default function ProductDetail({
 
   const handleViewIncludes = () => {
     if (!hasIncludesSpec || detailTabs.hidden) return;
-    setActiveTab('includes');
+    setSpecificationsRequest((current) => current + 1);
 
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
     window.requestAnimationFrame(() => {
-      const sections = document.querySelector('.dtb-pdp-sections');
-      sections?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      document.getElementById('product-tab-includes')?.focus({ preventScroll: true });
+      const specsButton = document.querySelector('.dtb-pdp-info-accordion [data-pdp-section="specs"]');
+      specsButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      specsButton?.focus({ preventScroll: true });
     });
   };
 
@@ -1107,6 +1108,7 @@ export default function ProductDetail({
                   features={featuresNode}
                   specs={!specTable.hidden ? <ProductSpecTable specs={productSpecifications} /> : null}
                   partsUrl={browsePartsUrl}
+                  specificationsRequest={specificationsRequest}
                 />
               )}
 
