@@ -18,6 +18,7 @@ import { getRepairPackageGroups } from '../../data/repairPackages.js';
 import { SCHEMATIC_BRANDS } from '../../data/schematicBrands.js';
 import { getBrandLogo } from '../../utils/brandAssets.js';
 import { resolveCategoryThumbnail } from '../../utils/categoryThumbnailImages.js';
+import { buildCatalogUrl } from '../../utils/catalogUrlState.js';
 import '../../styles/mobile-hamburger.css';
 import '../../styles/mobile-header-actions.css';
 import '../../styles/storefront-header-utility-bar.css';
@@ -178,6 +179,16 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
   const isActive = (path) => location.pathname === path;
   const drawerBrands = useMemo(() => mapCatalogBrands(facets?.brands), [facets]);
   const partsBrands = useMemo(() => mapCatalogBrands(partsFacets?.brands), [partsFacets]);
+  const partsCategories = useMemo(() => (Array.isArray(partsFacets?.categories) ? partsFacets.categories : [])
+    .map((category) => {
+      const label = category?.label || category?.name || '';
+      const slug = category?.slug || category?.key || normalizeDisplayCategorySlug(label);
+      const count = Number(category?.productCount || category?.count || 0);
+      return { label, slug, count, to: buildCatalogUrl({ displayCategory: [slug] }, { basePath: '/parts' }) };
+    })
+    .filter((category) => category.slug && category.label && category.count > 0)
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label))
+    .slice(0, 8), [partsFacets]);
   const repairPackageGroups = useMemo(() => getRepairPackageGroups().filter(({ id }) => id !== 'diagnostic'), []);
   const drawerRepairPackages = useMemo(() => repairPackageGroups.map(({ id, label }) => ({
     id,
@@ -272,6 +283,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       landingDescription: 'Browse our complete collection of replacement parts.',
       description: 'Choose a brand with available replacement parts.',
       heading: 'Find OEM parts for your tools.',
+      partCategories: partsCategories,
       size: 'wide',
       columns: 2,
       activePrefixes: ['/parts'],
@@ -339,7 +351,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       activePrefixes: ['/contact'],
       items: [],
     },
-  ], [desktopProductNavigation, drawerBrands, partsBrands, repairPackageGroups]);
+  ], [desktopProductNavigation, drawerBrands, partsBrands, partsCategories, repairPackageGroups]);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
   const closeMenus = () => {
