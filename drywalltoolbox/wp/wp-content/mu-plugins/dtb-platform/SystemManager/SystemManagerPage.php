@@ -63,7 +63,7 @@ function dtb_system_manager_render_page(): void {
 			$tabs[] = [
 				'id'     => $tab['id'],
 				'label'  => $tab['label'],
-				'active' => $active_tab === $tab['id'],
+				'active' => $active_tab === $tab['id'] || ( 'more' === $tab['id'] && in_array( $active_tab, [ 'system', 'queues', 'integrations', 'webhooks', 'audit', 'logs', 'integration-settings', 'tools' ], true ) ),
 				'url'    => add_query_arg( 'tab', $tab['id'], $base_url ),
 				'group'  => $group_key,
 				'group_start' => $first_in_group,
@@ -667,18 +667,29 @@ function dtb_system_manager_render_live_updates_tab(): void {
 		echo '<p>' . esc_html__( 'No recorded file updates yet.', 'drywall-toolbox' ) . '</p>';
 	} else {
 		echo dtb_admin_ui_table_open( [
-			[ 'label' => __( 'When (UTC)', 'drywall-toolbox' ), 'key' => 'time' ],
-			[ 'label' => __( 'Change', 'drywall-toolbox' ), 'key' => 'action' ],
-			[ 'label' => __( 'File / Release', 'drywall-toolbox' ), 'key' => 'path' ],
-			[ 'label' => __( 'Source', 'drywall-toolbox' ), 'key' => 'source' ],
+			[ 'label' => __( 'When', 'drywall-toolbox' ), 'key' => 'time' ],
+			[ 'label' => __( 'Update', 'drywall-toolbox' ), 'key' => 'update' ],
+			[ 'label' => __( 'Origin', 'drywall-toolbox' ), 'key' => 'source' ],
 		], [] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$action_labels = [
+			'write-file'       => __( 'Updated', 'drywall-toolbox' ),
+			'create-file'      => __( 'Created', 'drywall-toolbox' ),
+			'delete-file'      => __( 'Deleted', 'drywall-toolbox' ),
+			'restore-backup'   => __( 'Restored', 'drywall-toolbox' ),
+			'set-plugin-state' => __( 'Plugin changed', 'drywall-toolbox' ),
+			'switch-theme'     => __( 'Theme changed', 'drywall-toolbox' ),
+		];
 		foreach ( $entries as $entry ) {
 			$location = trim( $entry['root'] . '/' . $entry['path'], '/' );
-			echo '<tr><td>' . esc_html( $entry['time'] ) . '</td>';
-			echo '<td><strong>' . esc_html( $entry['action'] ) . '</strong></td>';
-			echo '<td><code>' . esc_html( $location ) . '</code>';
+			$timestamp = strtotime( $entry['time'] );
+			$when = $timestamp ? wp_date( 'M j, g:i A', $timestamp ) : $entry['time'];
+			$name = basename( $location );
+			$description = $action_labels[ $entry['action'] ] ?? $entry['action'];
+			echo '<tr><td style="white-space:nowrap">' . esc_html( $when ) . '</td>';
+			echo '<td><strong>' . esc_html( $description ) . '</strong> &middot; <code title="' . esc_attr( $location ) . '">' . esc_html( $name ) . '</code>';
+			echo '<div style="font-size:12px;color:#667085;overflow-wrap:anywhere">' . esc_html( $location ) . '</div>';
 			if ( '' !== $entry['backup'] ) {
-				echo '<small> ' . esc_html__( 'Backup available', 'drywall-toolbox' ) . '</small>';
+				echo '<small>' . esc_html__( 'Recovery copy available', 'drywall-toolbox' ) . '</small>';
 			}
 			echo '</td><td>' . esc_html( $entry['source'] ) . '</td></tr>';
 		}
