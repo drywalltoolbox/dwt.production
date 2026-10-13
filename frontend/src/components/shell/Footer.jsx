@@ -1,4 +1,4 @@
-import { Facebook, Instagram, Twitter } from 'lucide-react';
+import { Facebook, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 import { DTB_LOGO_WHITE_URL } from '../../utils/dtbLogoAssets.js';
@@ -44,10 +44,18 @@ const FOOTER_GROUPS = [
   },
 ];
 
+function XLogo() {
+  return (
+    <svg width="17" height="17" viewBox="0 0 48 48" fill="none" aria-hidden="true" focusable="false">
+      <path d="M36.6526 3.80782H43.3995L28.6594 20.6548L46 43.5798H32.4225L21.7881 29.6759L9.61989 43.5798H2.86886L18.6349 25.56L2 3.80782H15.9222L25.5348 16.5165L36.6526 3.80782ZM34.2846 39.5414H38.0232L13.8908 7.63408H9.87892L34.2846 39.5414Z" fill="currentColor" />
+    </svg>
+  );
+}
+
 const SOCIAL_LINKS = [
   { label: 'Instagram', href: 'https://www.instagram.com/drywalltoolbox', Icon: Instagram },
   { label: 'Facebook', href: 'https://facebook.com', Icon: Facebook },
-  { label: 'Twitter / X', href: 'https://twitter.com', Icon: Twitter },
+  { label: 'X', href: 'https://twitter.com', Icon: XLogo },
 ];
 
 function FooterLinkGroup({ title, links }) {
@@ -78,6 +86,20 @@ export default function Footer() {
             <Link to="/" aria-label="Drywall Toolbox home">
               <img className="dtb-footer-template__logo" src={DTB_LOGO_WHITE_URL} alt="Drywall Toolbox" width="230" height="70" loading="lazy" decoding="async" />
             </Link>
+          <nav className="dtb-footer-template__socials" aria-label="Social media">
+            {SOCIAL_LINKS.map(({ label, href, Icon }) => (
+              <a
+                key={label}
+                className="dtb-footer-template__social"
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+              >
+                <Icon size={18} strokeWidth={1.9} aria-hidden="true" />
+              </a>
+            ))}
+          </nav>
           </section>
 
           {FOOTER_GROUPS.map((group) => <FooterLinkGroup key={group.title} {...group} />)}
@@ -92,20 +114,7 @@ export default function Footer() {
             </nav>
           </div>
 
-          <div className="dtb-footer-template__socials" aria-label="Social media">
-            {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-              <a
-                key={label}
-                className="dtb-footer-template__social"
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-              >
-                <Icon size={18} strokeWidth={1.9} aria-hidden="true" />
-              </a>
-            ))}
-          </div>
+
         </div>
       </div>
     </footer>
