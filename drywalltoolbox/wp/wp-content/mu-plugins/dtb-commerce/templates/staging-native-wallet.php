@@ -43,6 +43,7 @@ while ( have_posts() ) {
   'use strict';
   var id = <?php echo wp_json_encode( $product_id ); ?>;
   var mount = document.getElementById('wcpay-express-checkout-element');
+  var initialQty = <?php echo wp_json_encode( max( 1, min( 99, absint( $_GET['quantity'] ?? 1 ) ) ) ); ?>;
   function setQuantity(quantity) {
     var field = document.querySelector('form.cart input.qty');
     if (!field) return;
@@ -57,6 +58,7 @@ while ( have_posts() ) {
       setQuantity(event.data.quantity);
     }
   });
+  setQuantity(initialQty);
   var announced = false;
   function notify(){
     if (announced) return;
