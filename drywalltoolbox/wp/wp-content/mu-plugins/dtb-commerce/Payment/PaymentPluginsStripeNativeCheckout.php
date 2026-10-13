@@ -141,12 +141,19 @@ final class DTB_PaymentPluginsStripeNativeCheckout {
 		if ( class_exists( 'WC_Payments' ) && is_callable( [ 'WC_Payments', 'mode' ] ) ) {
 			$mode = WC_Payments::mode();
 			if ( is_object( $mode ) && is_callable( [ $mode, 'is_test' ] ) && $mode->is_test() ) {
+				// Never expose simulated payment methods to ordinary visitors on
+				// the shared live WooCommerce backend. Only authorized operators
+				// may see WooPayments while its account is in test mode.
+				$operator_test = is_user_logged_in() && current_user_can( 'manage_woocommerce' );
 				foreach ( $gateways as $id => $gateway ) {
-					if ( ! class_exists( 'DTB_WooPaymentsNativeCheckout' ) || ! DTB_WooPaymentsNativeCheckout::is_gateway( (string) $id ) ) {
+					$woopayments = class_exists( 'DTB_WooPaymentsNativeCheckout' ) && DTB_WooPaymentsNativeCheckout::is_gateway( (string) $id );
+					if ( $operator_test ? ! $woopayments : $woopayments ) {
 						unset( $gateways[ $id ] );
 					}
 				}
-				return $gateways;
+				if ( $operator_test ) {
+					return $gateways;
+				}
 			}
 		}
 
