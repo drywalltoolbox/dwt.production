@@ -1272,3 +1272,55 @@
     transition: none;
   }
 }
+
+/* Desktop header mockup geometry. Reuse existing navigation, search and commerce controls. */
+@media (min-width: 1025px) {
+  .site-header .site-header-inner {
+    height: 190px !important;
+    min-height: 190px !important;
+  }
+  .site-header .header-desktop-layout {
+    display: grid;
+    grid-template-columns: clamp(210px, 18vw, 300px) minmax(0, 1fr) auto;
+    grid-template-rows: 122px 68px;
+    column-gap: clamp(22px, 3vw, 58px);
+    row-gap: 0;
+    height: 190px;
+    align-items: center;
+  }
+  .site-header .header-left { grid-column: 1; grid-row: 1; }
+  .site-header .logo-image { max-width: 270px; max-height: 88px; }
+  .site-header .header-center--desktop-search {
+    grid-column: 2;
+    grid-row: 1;
+    justify-content: stretch;
+  }
+  .site-header .dtb-desktop-search--header {
+    width: 100%;
+    max-width: 960px;
+    margin-inline: auto;
+  }
+  .site-header .header-right {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: end;
+    gap: clamp(12px, 1.5vw, 26px);
+  }
+  .site-header .header-desktop-nav-row {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-content: center;
+    height: 68px;
+    border-top: 1px solid rgba(175, 198, 237, .16);
+  }
+  .site-header .dtb-desktop-nav { justify-content: center; gap: clamp(20px, 2.5vw, 44px); }
+  .site-header .dtb-desktop-nav-tab { font-size: clamp(.94rem, .98vw, 1.08rem); }
+}
+@media (min-width: 1025px) and (max-width: 1240px) {
+  .site-header .header-desktop-layout {
+    grid-template-columns: 190px minmax(0, 1fr) auto;
+    column-gap: 18px;
+  }
+  .site-header .logo-image { max-width: 188px; }
+  .site-header .dtb-desktop-nav { gap: 12px; }
+}

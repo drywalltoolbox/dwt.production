@@ -4,7 +4,7 @@ import { m as Motion, useReducedMotion } from 'framer-motion';
 import { collapseTransition, reducedTransition } from '../../motion/dtbMotion.js';
 import { useCart } from '../../context/CartContext';
 import { useAuthContext } from '../../auth/AuthContext.js';
-import { ShoppingCart, X, ChevronRight, User, Headset, Phone } from 'lucide-react';
+import { ShoppingCart, X, ChevronRight, User, MessageSquareText, Truck, Phone } from 'lucide-react';
 import { DTB_LOGO_WHITE_URL } from '../../utils/dtbLogoAssets.js';
 import StorefrontSearchOverlay from './StorefrontSearchOverlay';
 import StorefrontMobileDrawer from './StorefrontMobileDrawer';
@@ -701,15 +701,15 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     <>
       <header className="site-header site-header--no-ticker" role="banner">
         <div className="dtb-header-utility-bar">
-          <span className="dtb-header-utility-bar__announcement">Free shipping on orders $75+</span>
+          <span className="dtb-header-utility-bar__announcement"><Truck size={19} strokeWidth={2} aria-hidden="true" />Free shipping on orders $75+</span>
           <div className="dtb-header-utility-bar__links">
           <Link to="/contact" className="dtb-header-utility-bar__item">
-            <Headset size={17} strokeWidth={2} aria-hidden="true" />
+            <MessageSquareText size={18} strokeWidth={1.9} aria-hidden="true" />
             Expert Support
           </Link>
           <a href="tel:+16098665269" className="dtb-header-utility-bar__item dtb-header-utility-bar__phone">
             <Phone size={17} strokeWidth={2} aria-hidden="true" />
-            (609) 866-5269
+            <span className="dtb-header-utility-bar__phone-copy"><strong>(609) 866-5269</strong><small>Mon–Fri 8AM–5PM EST</small></span>
           </a>
           </div>
         </div>
