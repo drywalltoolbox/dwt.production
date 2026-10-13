@@ -169,8 +169,10 @@
 			if ( ! endpoint ) return;
 
 			state.inFlight = true;
-			region.classList.add( 'is-refreshing' );
-			setToolbarState( toolbar, 'refreshing', 'Refreshing…' );
+			if ( reason !== 'auto' ) {
+				region.classList.add( 'is-refreshing' );
+				setToolbarState( toolbar, 'refreshing', 'Checking for updates…' );
+			}
 
 			if ( state.controller ) state.controller.abort();
 			state.controller = new AbortController();
@@ -210,7 +212,7 @@
 					setToolbarState(
 						toolbar,
 						state.fast ? 'fast' : 'live',
-						'Updated ' + nowLabel + ' · refreshing every ' + ( state.fast ? '5s' : '60s' )
+						'Checked ' + nowLabel + ' · updates shown only when changed'
 					);
 				} )
 				.catch( function ( error ) {
