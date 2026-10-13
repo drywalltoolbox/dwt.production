@@ -131,7 +131,33 @@ final class DTB_PaymentPluginsStripeNativeCheckout {
 	 */
 	public static function enforce_single_stripe_authority( $gateways ): array {
 		$gateways = is_array( $gateways ) ? $gateways : [];
-		if ( ! self::is_storefront_payment_request() || ! self::is_upm_gateway_enabled() ) {
+		if ( ! self::is_storefront_payment_request() ) {
+			return $gateways;
+		}
+
+		// A WooPayments test-mode checkout has one provider for new transactions.
+		// This is deliberately inactive in WooPayments live mode. Never touch
+		// historical Stripe orders, tokens, refunds or gateway registrations.
+		if ( class_exists( 'WC_Payments' ) && is_callable( [ 'WC_Payments', 'mode' ] ) ) {
+			$mode = WC_Payments::mode();
+			if ( is_object( $mode ) && is_callable( [ $mode, 'is_test' ] ) && $mode->is_test() ) {
+				// Never expose simulated payment methods to ordinary visitors on
+				// the shared live WooCommerce backend. Only authorized operators
+				// may see WooPayments card checkout while its account is in test mode.
+				$operator_test = is_user_logged_in() && current_user_can( 'manage_woocommerce' );
+				foreach ( $gateways as $id => $gateway ) {
+					$woopayments = class_exists( 'DTB_WooPaymentsNativeCheckout' ) && DTB_WooPaymentsNativeCheckout::is_gateway( (string) $id );
+					if ( $operator_test ? 'woocommerce_payments' !== sanitize_key( (string) $id ) : $woopayments ) {
+						unset( $gateways[ $id ] );
+					}
+				}
+				if ( $operator_test ) {
+					return $gateways;
+				}
+			}
+		}
+
+		if ( ! self::is_upm_gateway_enabled() ) {
 			return $gateways;
 		}
 

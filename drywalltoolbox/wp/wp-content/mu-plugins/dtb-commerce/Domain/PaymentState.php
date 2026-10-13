@@ -6,6 +6,7 @@ defined( 'ABSPATH' ) || exit;
 function dtb_checkout_handoff_supported_contracts(): array {
 	return [
 		'payment-plugins-stripe-v1',
+		'woopayments-v1',
 		'woo-stripe-v1', // Historical orders created before the provider migration.
 	];
 }
@@ -26,8 +27,8 @@ function dtb_checkout_handoff_is_order( $order ): bool {
 	$gateway  = sanitize_key( (string) $order->get_meta( '_dtb_checkout_gateway', true ) );
 	$contract = sanitize_key( (string) $order->get_meta( '_dtb_checkout_contract_version', true ) );
 
-	return 'woo_native_stripe' === $gateway
-		&& in_array( $contract, dtb_checkout_handoff_supported_contracts(), true );
+	return ( 'woo_native_stripe' === $gateway && in_array( $contract, [ 'payment-plugins-stripe-v1', 'woo-stripe-v1' ], true ) )
+		|| ( 'woo_native_woopayments' === $gateway && 'woopayments-v1' === $contract );
 }
 
 function dtb_checkout_handoff_has_gateway_reference( WC_Order $order ): bool {
@@ -59,8 +60,14 @@ function dtb_checkout_handoff_uses_official_stripe_gateway( WC_Order $order ): b
 }
 
 function dtb_checkout_handoff_has_provider_verified_payment( WC_Order $order ): bool {
+	$provider = sanitize_key( (string) $order->get_meta( '_dtb_payment_provider', true ) );
+	$verified_provider = 'woo_native_woopayments' === sanitize_key( (string) $order->get_meta( '_dtb_checkout_gateway', true ) )
+		? ( 'woopayments' === $provider && 'woocommerce_payments' === substr( sanitize_key( (string) $order->get_payment_method() ), 0, 20 ) && in_array( sanitize_key( (string) $order->get_meta( '_wcpay_mode', true ) ), [ 'test', 'prod' ], true )
+			&& 'succeeded' === sanitize_key( (string) $order->get_meta( '_intention_status', true ) )
+			&& '' !== trim( (string) $order->get_meta( '_intent_id', true ) ) )
+		: dtb_checkout_handoff_uses_verified_stripe_provider( $order );
 	return dtb_checkout_handoff_is_order( $order )
-		&& dtb_checkout_handoff_uses_verified_stripe_provider( $order )
+		&& $verified_provider
 		&& null !== $order->get_date_paid()
 		&& dtb_checkout_handoff_has_gateway_reference( $order );
 }

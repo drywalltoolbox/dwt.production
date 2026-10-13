@@ -28,6 +28,7 @@ require_once __DIR__ . '/Payment/StoreApiSameOriginCartSession.php';
 require_once __DIR__ . '/Payment/WooNativeCheckoutRuntime.php';
 require_once __DIR__ . '/Payment/StorefrontReturnContext.php';
 require_once __DIR__ . '/Payment/PaymentPluginsStripeNativeCheckout.php';
+require_once __DIR__ . '/Payment/WooPaymentsNativeCheckout.php';
 require_once __DIR__ . '/Payment/StripeElementAppearance.php';
 require_once __DIR__ . '/Payment/FailedPaymentRecovery.php';
 require_once __DIR__ . '/Payment/CheckoutPerformance.php';

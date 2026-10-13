@@ -81,6 +81,9 @@ if ( ! function_exists( 'dtb_operational_pipeline_route_veeqo_status_change' ) )
 		if ( ! $order instanceof WC_Order ) {
 			return;
 		}
+		if ( function_exists( 'dtb_order_is_woopayments_test_order' ) && dtb_order_is_woopayments_test_order( $order ) ) {
+			return;
+		}
 		if ( ! function_exists( 'dtb_veeqo_enabled' ) || ! dtb_veeqo_enabled() ) {
 			return;
 		}
@@ -123,6 +126,9 @@ if ( ! function_exists( 'dtb_operational_pipeline_sync_veeqo_status_job' ) ) {
 			return;
 		}
 
+		if ( function_exists( 'dtb_order_is_woopayments_test_order' ) && dtb_order_is_woopayments_test_order( $order ) ) {
+			return;
+		}
 		$attempt        = isset( $args['attempt'] ) ? max( 1, absint( $args['attempt'] ) ) : 1;
 		$veeqo_order_id = dtb_operational_pipeline_get_veeqo_order_id( $order, $args );
 		$veeqo_status   = sanitize_key( (string) ( $args['veeqo_status'] ?? '' ) );

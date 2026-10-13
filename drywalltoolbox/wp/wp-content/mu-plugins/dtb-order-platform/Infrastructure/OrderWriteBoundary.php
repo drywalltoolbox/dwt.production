@@ -504,10 +504,59 @@ if ( ! function_exists( 'dtb_order_loop_is_duplicate' ) ) {
 	}
 }
 
+/**
+ * WooPayments test orders are never eligible for external order side effects.
+ * Persisted WooPayments order mode remains authoritative after test mode is
+ * turned off. Missing/unknown mode is fail-closed until a persisted production
+ * value is available.
+ */
+if ( ! function_exists( 'dtb_order_is_woopayments_test_order' ) ) {
+	function dtb_order_is_woopayments_test_order( $order ): bool {
+		if ( ! $order instanceof WC_Order ) {
+			return false;
+		}
+		$gateway = sanitize_key( (string) $order->get_payment_method() );
+		if ( 'woocommerce_payments' !== $gateway && ! str_starts_with( $gateway, 'woocommerce_payments_' ) ) {
+			return false;
+		}
+
+		$mode = sanitize_key( (string) $order->get_meta( '_wcpay_mode', true ) );
+		if ( 'test' === $mode ) {
+			return true;
+		}
+		if ( 'prod' === $mode || 'production' === $mode || 'live' === $mode ) {
+			return false;
+		}
+		// An unmarked WooPayments order is NOT safe for provider writes: mode
+		// metadata can arrive asynchronously, or an old job can run after mode
+		// has changed. Only an explicit persisted production value opts in.
+		return true;
+	}
+}
+
+// Native WooCommerce stock handling must not decrement real sellable inventory
+// for WooPayments test transactions on the shared production database.
+add_filter(
+	'woocommerce_can_reduce_order_stock',
+	static function ( $can_reduce, $order ) {
+		return $can_reduce && ! dtb_order_is_woopayments_test_order( $order );
+	},
+	100,
+	2
+);
+
 if ( ! function_exists( 'dtb_order_write_boundary_order_should_skip_side_effects' ) ) {
 	/** Determine whether all downstream side effects must be suppressed. */
 	function dtb_order_write_boundary_order_should_skip_side_effects( $order ): bool {
-		if ( ! dtb_order_write_boundary_enabled() || ! $order instanceof WC_Order ) {
+		if ( ! $order instanceof WC_Order ) {
+			return false;
+		}
+		// Test-payment isolation is unconditional, even if legacy duplicate
+		// containment is explicitly disabled by an operator.
+		if ( dtb_order_is_woopayments_test_order( $order ) ) {
+			return true;
+		}
+		if ( ! dtb_order_write_boundary_enabled() ) {
 			return false;
 		}
 		if ( '1' === (string) $order->get_meta( '_dtb_skip_integrations', true ) ) {

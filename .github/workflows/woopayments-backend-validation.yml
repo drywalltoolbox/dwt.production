@@ -1,0 +1,32 @@
+name: WooPayments backend change validation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/**'
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-order-platform/**'
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-integrations/OperationalPipeline/**'
+      - '.github/workflows/woopayments-backend-validation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  php-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Lint WooPayments integration and order boundary
+        run: |
+          set -euo pipefail
+          for path in \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/bootstrap.php \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/Domain/PaymentState.php \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/Payment/WooPaymentsNativeCheckout.php \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-order-platform/Infrastructure/OrderWriteBoundary.php \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-integrations/OperationalPipeline/OrderPipelineHookOverrides.php; do
+            php -l "$path"
+          done
