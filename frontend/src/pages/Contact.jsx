@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Check, Mail, Phone } from 'lucide-react';
+import { ArrowRight, Check, Clock3, Mail, Phone } from 'lucide-react';
 import SEOHead from '../components/shared/SEOHead';
 import { apiClient } from '../api/client';
 import './contact.css';
@@ -90,6 +90,14 @@ export default function Contact() {
             <div className="dtb-contact__detail">
               <span className="dtb-contact__detail-icon"><Mail size={23} strokeWidth={1.9} aria-hidden="true" /></span>
               <div><span className="dtb-contact__detail-label">Email</span><a href="mailto:support@drywalltoolbox.com">support@drywalltoolbox.com</a></div>
+            </div>
+            <div className="dtb-contact__detail">
+              <span className="dtb-contact__detail-icon"><Clock3 size={23} strokeWidth={1.9} aria-hidden="true" /></span>
+              <div>
+                <span className="dtb-contact__detail-label">Business Hours</span>
+                <span className="dtb-contact__hours">Monday – Friday</span>
+                <span className="dtb-contact__hours">8:00 AM – 5:00 PM Central Time (CT)</span>
+              </div>
             </div>
           </div>
         </aside>
