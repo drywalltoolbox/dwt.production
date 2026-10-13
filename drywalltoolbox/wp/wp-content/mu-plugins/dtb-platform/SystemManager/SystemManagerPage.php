@@ -54,6 +54,7 @@ function dtb_system_manager_tab_groups(): array {
 		'diagnostics' => [
 			'label' => __( 'Diagnostics', 'drywall-toolbox' ),
 			'tabs'  => [
+				[ 'id' => 'live-updates', 'label' => __( 'Live Updates', 'drywall-toolbox' ) ],
 				[ 'id' => 'audit', 'label' => __( 'Audit Log', 'drywall-toolbox' ) ],
 				[ 'id' => 'logs',  'label' => __( 'Debug Log', 'drywall-toolbox' ) ],
 			],
@@ -196,6 +197,9 @@ function dtb_system_manager_dispatch_tab( string $active_tab, bool $can_system, 
 			break;
 		case 'webhooks':
 			dtb_system_manager_render_webhooks_tab();
+			break;
+		case 'live-updates':
+			dtb_system_manager_render_live_updates_tab();
 			break;
 		case 'audit':
 			dtb_system_manager_render_audit_tab();
@@ -598,6 +602,85 @@ function dtb_system_manager_render_webhooks_tab(): void {
 	$body = ob_get_clean();
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo dtb_admin_ui_card( $body, [ 'title' => __( 'Registered Webhooks', 'drywall-toolbox' ) ] );
+}
+
+/**
+ * Read-only, automatically refreshed activity view. MCP writes are recorded in
+ * dtb_mcp_admin_audit; GitHub release events appear only when already recorded.
+ * This is a bounded audit feed, not a filesystem watcher or a deployment claim.
+ */
+function dtb_system_manager_render_live_updates_tab(): void {
+	if ( ! current_user_can( 'dtb_manage_system' ) ) {
+		dtb_system_manager_render_tab_access_denied( __( 'System access required.', 'drywall-toolbox' ) );
+		return;
+	}
+
+	$audit = get_option( 'dtb_mcp_admin_audit', [] );
+	$audit = is_array( $audit ) ? array_slice( $audit, 0, 100 ) : [];
+	$actions = [ 'write-file', 'create-file', 'delete-file', 'restore-backup', 'set-plugin-state', 'switch-theme' ];
+	$entries = [];
+	foreach ( $audit as $entry ) {
+		if ( ! is_array( $entry ) || ! in_array( (string) ( $entry['action'] ?? '' ), $actions, true ) ) {
+			continue;
+		}
+		$context = is_array( $entry['context'] ?? null ) ? $entry['context'] : [];
+		$path = (string) ( $context['path'] ?? $context['plugin'] ?? $context['stylesheet'] ?? '' );
+		$entries[] = [
+			'time'   => (string) ( $entry['timestamp_gmt'] ?? '' ),
+			'action' => (string) $entry['action'],
+			'path'   => $path,
+			'root'   => (string) ( $context['root'] ?? '' ),
+			'actor'  => absint( $entry['user_id'] ?? 0 ),
+			'backup' => (string) ( $context['backup_id'] ?? '' ),
+			'source' => 'MCP',
+		];
+	}
+
+	// Release events are separate evidence, not implied by an MCP file write.
+	if ( function_exists( 'dtb_release_history_get' ) ) {
+		foreach ( dtb_release_history_get( 15 ) as $release ) {
+			if ( ! is_array( $release ) ) {
+				continue;
+			}
+			$entries[] = [
+				'time'   => (string) ( $release['updated_at'] ?? $release['started_at'] ?? '' ),
+				'action' => (string) ( $release['status_label'] ?? 'Release event' ),
+				'path'   => (string) ( $release['release_id'] ?? '' ),
+				'root'   => '',
+				'actor'  => 0,
+				'backup' => '',
+				'source' => 'GitHub release record',
+			];
+		}
+	}
+	usort( $entries, static fn( $a, $b ) => strcmp( $b['time'], $a['time'] ) );
+	$entries = array_slice( $entries, 0, 40 );
+
+	ob_start();
+	echo '<p>' . esc_html__( 'Recent recorded server changes. Refreshes automatically while this tab is open. Changes outside MCP or recorded release workflows may not appear.', 'drywall-toolbox' ) . '</p>';
+	if ( empty( $entries ) ) {
+		echo '<p>' . esc_html__( 'No recorded file updates yet.', 'drywall-toolbox' ) . '</p>';
+	} else {
+		echo dtb_admin_ui_table_open( [
+			[ 'label' => __( 'When (UTC)', 'drywall-toolbox' ), 'key' => 'time' ],
+			[ 'label' => __( 'Change', 'drywall-toolbox' ), 'key' => 'action' ],
+			[ 'label' => __( 'File / Release', 'drywall-toolbox' ), 'key' => 'path' ],
+			[ 'label' => __( 'Source', 'drywall-toolbox' ), 'key' => 'source' ],
+		], [] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		foreach ( $entries as $entry ) {
+			$location = trim( $entry['root'] . '/' . $entry['path'], '/' );
+			echo '<tr><td>' . esc_html( $entry['time'] ) . '</td>';
+			echo '<td><strong>' . esc_html( $entry['action'] ) . '</strong></td>';
+			echo '<td><code>' . esc_html( $location ) . '</code>';
+			if ( '' !== $entry['backup'] ) {
+				echo '<small> ' . esc_html__( 'Backup available', 'drywall-toolbox' ) . '</small>';
+			}
+			echo '</td><td>' . esc_html( $entry['source'] ) . '</td></tr>';
+		}
+		echo dtb_admin_ui_table_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+	$body = ob_get_clean();
+	echo dtb_admin_ui_card( $body, [ 'title' => __( 'Live Updates', 'drywall-toolbox' ) ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 function dtb_system_manager_render_audit_tab(): void {
