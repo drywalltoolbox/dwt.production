@@ -84,6 +84,7 @@ export default function Dropdown({
   id,
   triggerRef,
   required = false,
+  fitViewport = false,
   value,
   onChange,
   options = [],
@@ -95,6 +96,7 @@ export default function Dropdown({
   style = {},
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [placement, setPlacement] = useState({ above: false, maxHeight: 360 });
   const containerRef = useRef(null);
   const visibleOptions = useMemo(() => dedupeOptions(options), [options]);
   const selectedOption = options.find((o) => o.value === value);
@@ -115,7 +117,24 @@ export default function Dropdown({
     return () => document.removeEventListener('keydown', handler);
   }, [isOpen]);
 
-  const toggle = () => { if (!disabled) setIsOpen((o) => !o); };
+  const toggle = () => {
+    if (disabled) return;
+    if (!isOpen && fitViewport && typeof window !== 'undefined') {
+      const rect = (triggerRef?.current || containerRef.current)?.getBoundingClientRect();
+      if (rect) {
+        const viewportHeight = window.visualViewport?.height || window.innerHeight;
+        const below = Math.max(0, viewportHeight - rect.bottom - 12);
+        const above = Math.max(0, rect.top - 12);
+        const desiredHeight = Math.min(360, visibleOptions.length * 42 + 12);
+        const openAbove = below < desiredHeight && above > below;
+        setPlacement({
+          above: openAbove,
+          maxHeight: Math.max(96, Math.min(360, openAbove ? above : below)),
+        });
+      }
+    }
+    setIsOpen((o) => !o);
+  };
   const select = (val) => { onChange(val); setIsOpen(false); };
 
   return (
@@ -174,17 +193,18 @@ export default function Dropdown({
         {isOpen && (
           <Motion.div
             role="listbox"
-            initial={{ opacity: 0, y: -8, scale: 0.985 }}
+            initial={{ opacity: 0, y: fitViewport && placement.above ? 8 : -8, scale: 0.985 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -4, scale: 0.992 }}
+            exit={{ opacity: 0, y: fitViewport && placement.above ? 4 : -4, scale: 0.992 }}
             transition={dtbTransition.standard}
             style={{
-              position: 'absolute', top: 'calc(100% + 6px)', left: 0,
+              position: 'absolute', top: fitViewport && placement.above ? 'auto' : 'calc(100% + 6px)',
+              bottom: fitViewport && placement.above ? 'calc(100% + 6px)' : 'auto', left: 0,
               minWidth: '100%', width: fullWidth ? '100%' : undefined,
               background: 'white', border: '1px solid rgba(15,23,42,0.09)', borderRadius: '12px',
               boxShadow: '0 8px 24px rgba(15,23,42,0.12), 0 2px 8px rgba(15,23,42,0.06)',
               overflowX: 'hidden', overflowY: 'auto', overscrollBehavior: 'contain',
-              WebkitOverflowScrolling: 'touch', maxHeight: 'min(360px, calc(100vh - 180px))',
+              WebkitOverflowScrolling: 'touch', maxHeight: fitViewport ? `${placement.maxHeight}px` : 'min(360px, calc(100vh - 180px))',
               zIndex: 10000, padding: '4px',
             }}
           >
