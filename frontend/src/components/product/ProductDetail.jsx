@@ -8,7 +8,6 @@ import ProductImageGallery from './ProductImageGallery';
 import ProductVariationRail from './ProductVariationRail';
 import ProductDetailHeader from './ProductDetailHeader';
 import ProductPurchasePanel from './ProductPurchasePanel';
-import ProductDetailTabs from './ProductDetailTabs';
 import ProductInformationAccordion from './ProductInformationAccordion.jsx';
 import ProductSpecTable from './ProductSpecTable';
 import { getProductSpecifications } from '../../utils/productSpecifications';
@@ -240,6 +239,58 @@ function stripSetIncludesFromDescription(content) {
   }
 
   return out.join('\n').trim();
+}
+
+
+/**
+ * Extract only explicitly identified Features sections. Never infer features
+ * from general marketing copy or specifications.
+ */
+function splitProductFeatureSection(source = '') {
+  const value = String(source || '');
+  if (!value.trim()) return { description: value, features: '' };
+
+  // Structured HTML: take a Features / Key Features heading and its following
+  // siblings until the next heading; retain all other content as Description.
+  if (hasHtmlMarkup(value) && typeof document !== 'undefined') {
+    const root = document.createElement('div');
+    root.innerHTML = DOMPurify.sanitize(value, { USE_PROFILES: { html: true } });
+    const heading = [...root.querySelectorAll('h2, h3, h4, h5, h6')].find((node) =>
+      /^(key\s+|product\s+)?features(?:\s*(?:&|and)\s*benefits)?\s*:?$/i.test(node.textContent.trim())
+    );
+    if (heading) {
+      const extracted = [];
+      let sibling = heading.nextSibling;
+      while (sibling && !(sibling.nodeType === 1 && /^H[2-6]$/.test(sibling.nodeName))) {
+        const next = sibling.nextSibling;
+        extracted.push(sibling.cloneNode(true));
+        sibling.remove();
+        sibling = next;
+      }
+      if (extracted.some((node) => node.textContent?.trim() || node.nodeType === 1)) {
+        heading.remove();
+        const featuresRoot = document.createElement('div');
+        extracted.forEach((node) => featuresRoot.appendChild(node));
+        return { description: root.innerHTML, features: featuresRoot.innerHTML };
+      }
+    }
+  }
+
+  // Plain text catalogs often include an explicit Features: subheading.
+  const match = /(?:^|\n)\s*(?:key |product )?features(?: and benefits)?\s*:\s*/i.exec(value);
+  if (match) {
+    const remaining = value.slice(match.index + match[0].length);
+    const nextHeading = /\n\s*(?:specifications?|description|overview|shipping|warranty|compatibility)\s*:/i.exec(remaining);
+    const features = (nextHeading ? remaining.slice(0, nextHeading.index) : remaining).trim();
+    if (features) {
+      return {
+        description: (value.slice(0, match.index) + (nextHeading ? remaining.slice(nextHeading.index) : '')).trim(),
+        features,
+      };
+    }
+  }
+
+  return { description: value, features: '' };
 }
 
 function ProductDescriptionContent({ html, text }) {
@@ -588,6 +639,7 @@ export default function ProductDetail({
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [activeTab, setActiveTab] = useState('description');
+  const [specificationsRequest, setSpecificationsRequest] = useState(0);
   const [addToCartError, setAddToCartError] = useState('');
   const [addToCartState, setAddToCartState] = useState('idle');
   const [buyNowState, setBuyNowState] = useState('idle');
@@ -931,25 +983,25 @@ export default function ProductDetail({
     ? stripSetIncludesFromDescription(rawDescriptionBase)
     : rawDescriptionBase;
   const decodedDescription = decodeEscapedHtml(rawDescription);
-  const descriptionContent = hasHtmlMarkup(decodedDescription)
-    ? <ProductDescriptionContent html={decodedDescription} />
-    : (
-      <ProductDescriptionContent
-        text={decodedDescription || 'No description available.'}
-      />
-      );
-
-  const descriptionNode = descriptionContent;
+  const separatedContent = splitProductFeatureSection(decodedDescription);
+  const descriptionNode = hasHtmlMarkup(separatedContent.description)
+    ? <ProductDescriptionContent html={separatedContent.description} />
+    : <ProductDescriptionContent text={separatedContent.description || 'No description available.'} />;
+  const featuresNode = separatedContent.features
+    ? (hasHtmlMarkup(separatedContent.features)
+      ? <ProductDescriptionContent html={separatedContent.features} />
+      : <ProductDescriptionContent text={separatedContent.features} />)
+    : null;
 
   const handleViewIncludes = () => {
     if (!hasIncludesSpec || detailTabs.hidden) return;
-    setActiveTab('includes');
+    setSpecificationsRequest((current) => current + 1);
 
     if (typeof window === 'undefined' || typeof document === 'undefined') return;
     window.requestAnimationFrame(() => {
-      const sections = document.querySelector('.dtb-pdp-sections');
-      sections?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      document.getElementById('product-tab-includes')?.focus({ preventScroll: true });
+      const specsButton = document.querySelector('.dtb-pdp-info-accordion [data-pdp-section="specs"]');
+      specsButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      specsButton?.focus({ preventScroll: true });
     });
   };
 
@@ -1050,14 +1102,13 @@ export default function ProductDetail({
                 ) : null}
               </div>
 
-              {!onClose && !detailTabs.hidden && (
+              {!detailTabs.hidden && (
                 <ProductInformationAccordion
                   description={descriptionNode}
+                  features={featuresNode}
                   specs={!specTable.hidden ? <ProductSpecTable specs={productSpecifications} /> : null}
-                  reviews={<Reviews productId={effectiveProduct.id || product.id || effectiveSku || product.slug || product.name} />}
                   partsUrl={browsePartsUrl}
-                  sku={effectiveSku}
-                  brand={brandLabel}
+                  specificationsRequest={specificationsRequest}
                 />
               )}
 
@@ -1081,28 +1132,6 @@ export default function ProductDetail({
             </div>
           ) : null}
 
-          {onClose && !detailTabs.hidden && (
-          <div {...detailTabs.rootProps}>
-          <ProductDetailTabs
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            descriptionNode={descriptionNode}
-            specsNode={specTable.hidden ? null : (
-              <div {...specTable.rootProps}>
-                <ProductSpecTable specs={productSpecifications} onItemClick={onClose} />
-              </div>
-            )}
-            hasIncludes={hasIncludesSpec}
-            compatibilityNode={(
-              <div className="dtb-pdp-compatibility">
-                <p>Confirm fit using this product&apos;s specifications and available options.</p>
-                <Link to={browsePartsUrl}>View compatible schematics and parts</Link>
-              </div>
-            )}
-            reviewsNode={<Reviews productId={effectiveProduct.id || product.id || effectiveSku || product.slug || product.name} />}
-          />
-          </div>
-          )}
 
           <div className="dtb-pdp-browse-parts-row">
             <Link to={browsePartsUrl} className="dtb-pdp-browse-parts-row__link">
