@@ -989,9 +989,12 @@ export default function ProductDetail({
     : <ProductDescriptionContent text={separatedContent.description || 'No description available.'} />;
   // Server-validated structured content takes precedence over legacy HTML
   // feature extraction; both full PDP and Quick View reuse this component.
-  const structuredFeatures = effectiveProduct.structured_content?.structured === true
-    ? effectiveProduct.structured_content.features
-    : null;
+  const structuredSource = effectiveProduct.structured_content?.structured === true
+    ? effectiveProduct.structured_content
+    : product.structured_content?.structured === true
+      ? product.structured_content
+      : null;
+  const structuredFeatures = structuredSource ? structuredSource.features : null;
   const featuresNode = separatedContent.features
     ? (hasHtmlMarkup(separatedContent.features)
       ? <ProductDescriptionContent html={separatedContent.features} />
