@@ -1,0 +1,27 @@
+name: Catalog content v2 validation
+on:
+  pull_request:
+    paths:
+      - 'products/launch/official/dtb_official_catalog.csv'
+      - 'scripts/catalog/**'
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/**'
+      - '.github/workflows/catalog-content-v2-validation.yml'
+  workflow_dispatch:
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: PHP syntax
+        run: |
+          php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Application/CatalogContentCsv.php
+          php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Domain/ProductMeta.php
+          php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Services/CatalogProductNormalizer.php
+          php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/bootstrap.php
+      - name: Canonical catalog validation
+        run: python scripts/catalog/validate_official_catalog.py
+      - name: V2 migration regression
+        run: python -m unittest discover -s scripts/catalog/tests -p 'test_content_schema_v2.py' -v
