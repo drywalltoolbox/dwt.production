@@ -30,39 +30,13 @@ defined( 'ABSPATH' ) || exit;
  */
 function dtb_system_manager_tab_groups(): array {
 	return [
-		'overview' => [
-			'label' => __( 'Overview', 'drywall-toolbox' ),
+		'primary' => [
+			'label' => __( 'System Manager', 'drywall-toolbox' ),
 			'tabs'  => [
 				[ 'id' => 'overview', 'label' => __( 'Overview', 'drywall-toolbox' ) ],
-			],
-		],
-		'platform' => [
-			'label' => __( 'Platform Health', 'drywall-toolbox' ),
-			'tabs'  => [
-				[ 'id' => 'system',       'label' => __( 'System Info', 'drywall-toolbox' ) ],
-				[ 'id' => 'queues',       'label' => __( 'Queues & Cron', 'drywall-toolbox' ) ],
-				[ 'id' => 'integrations', 'label' => __( 'Integrations', 'drywall-toolbox' ) ],
-				[ 'id' => 'webhooks',     'label' => __( 'Webhooks', 'drywall-toolbox' ) ],
-			],
-		],
-		'tools' => [
-			'label' => __( 'Platform Tools', 'drywall-toolbox' ),
-			'tabs'  => [
-				[ 'id' => 'tools', 'label' => __( 'Tools & Recovery', 'drywall-toolbox' ) ],
-			],
-		],
-		'diagnostics' => [
-			'label' => __( 'Diagnostics', 'drywall-toolbox' ),
-			'tabs'  => [
+				[ 'id' => 'operations', 'label' => __( 'Operations', 'drywall-toolbox' ) ],
 				[ 'id' => 'live-updates', 'label' => __( 'Live Updates', 'drywall-toolbox' ) ],
-				[ 'id' => 'audit', 'label' => __( 'Audit Log', 'drywall-toolbox' ) ],
-				[ 'id' => 'logs',  'label' => __( 'Debug Log', 'drywall-toolbox' ) ],
-			],
-		],
-		'settings' => [
-			'label' => __( 'Settings', 'drywall-toolbox' ),
-			'tabs'  => [
-				[ 'id' => 'integration-settings', 'label' => __( 'Integration Settings', 'drywall-toolbox' ) ],
+				[ 'id' => 'more', 'label' => __( 'More', 'drywall-toolbox' ) ],
 			],
 		],
 	];
@@ -189,6 +163,13 @@ function dtb_system_manager_dispatch_tab( string $active_tab, bool $can_system, 
 	}
 
 	switch ( $active_tab ) {
+		case 'operations':
+			dtb_system_manager_render_queues_tab();
+			dtb_system_manager_render_integrations_tab();
+			break;
+		case 'more':
+			dtb_system_manager_render_more_tab();
+			break;
 		case 'queues':
 			dtb_system_manager_render_queues_tab();
 			break;
@@ -220,6 +201,30 @@ function dtb_system_manager_dispatch_tab( string $active_tab, bool $can_system, 
 			dtb_system_manager_render_overview_tab( $can_system, $can_deployments );
 			break;
 	}
+}
+
+/**
+ * Secondary technical views remain available without occupying launch-critical
+ * navigation space. Keep the original tab handlers and deep links intact.
+ */
+function dtb_system_manager_render_more_tab(): void {
+	$views = [
+		[ 'system', __( 'System Info', 'drywall-toolbox' ), __( 'WordPress and server environment.', 'drywall-toolbox' ) ],
+		[ 'webhooks', __( 'Webhooks', 'drywall-toolbox' ), __( 'Webhook delivery and failures.', 'drywall-toolbox' ) ],
+		[ 'audit', __( 'Audit Log', 'drywall-toolbox' ), __( 'Detailed administrative history.', 'drywall-toolbox' ) ],
+		[ 'logs', __( 'Debug Log', 'drywall-toolbox' ), __( 'Troubleshooting when needed.', 'drywall-toolbox' ) ],
+		[ 'integration-settings', __( 'Integration Settings', 'drywall-toolbox' ), __( 'Connector configuration.', 'drywall-toolbox' ) ],
+		[ 'tools', __( 'Tools & Recovery', 'drywall-toolbox' ), __( 'Restricted administrative utilities.', 'drywall-toolbox' ) ],
+	];
+	echo '<div class="dtb-grid dtb-grid--two">';
+	foreach ( $views as $view ) {
+		$url = add_query_arg( [ 'page' => 'dtb-system-manager', 'tab' => $view[0] ], admin_url( 'admin.php' ) );
+		echo '<section class="dtb-card"><div class="dtb-card__body">';
+		echo '<h2 class="dtb-card__title"><a href="' . esc_url( $url ) . '">' . esc_html( $view[1] ) . '</a></h2>';
+		echo '<p>' . esc_html( $view[2] ) . '</p>';
+		echo '</div></section>';
+	}
+	echo '</div>';
 }
 
 /** Surface capability-protected platform tools without duplicating ownership. */
