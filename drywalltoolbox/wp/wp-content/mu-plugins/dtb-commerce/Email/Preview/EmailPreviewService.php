@@ -16,14 +16,24 @@ use WP_Error;
 
 defined( 'ABSPATH' ) || exit;
 
-require_once __DIR__ . '/SyntheticEmailFixture.php';
-
 final class EmailPreviewService {
 	public const TEST_RECIPIENT = '';
 	private const MAX_HTML_BYTES = 750000;
 
+	/** Load WC_Order-derived fixtures only after WooCommerce has initialized. */
+	private static function fixtures_available(): bool {
+		if ( ! class_exists( '\\WC_Order' ) || ! class_exists( WC_Email::class ) ) {
+			return false;
+		}
+		require_once __DIR__ . '/SyntheticEmailFixture.php';
+		return true;
+	}
+
 	/** All recognized production customer and operator notification templates. */
 	public static function supported_emails(): array {
+		if ( ! self::fixtures_available() ) {
+			return [];
+		}
 		$supported = [];
 		foreach ( SyntheticEmailFixture::TEMPLATES as $id => $definition ) {
 			$supported[ $id ] = $definition[0];
@@ -41,6 +51,9 @@ final class EmailPreviewService {
 	public static function render( int $order_id, string $email_id ) {
 		unset( $order_id );
 		$email_id = sanitize_key( $email_id );
+		if ( ! self::fixtures_available() ) {
+			return new WP_Error( 'dtb_email_preview_unavailable', __( 'WooCommerce fixtures are not initialized.', 'drywall-toolbox' ), [ 'status' => 503 ] );
+		}
 		if ( ! isset( SyntheticEmailFixture::TEMPLATES[ $email_id ] ) ) {
 			return new WP_Error( 'dtb_email_preview_unsupported', __( 'Unrecognized WooCommerce email template.', 'drywall-toolbox' ), [ 'status' => 422 ] );
 		}
