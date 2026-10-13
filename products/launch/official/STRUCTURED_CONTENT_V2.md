@@ -28,3 +28,9 @@ No feature data is currently migrated; blank fields mean legacy content stays in
 7. Add permissions, replay-safe bounded batch operations, rollback/backups and audit evidence before any product updates.
 
 **No production CSV, WooCommerce product or staging/production runtime mutation is performed by this foundation.**
+
+## Implementation update (October 13, 2026)
+
+The branch now includes the two empty metadata columns in the official CSV, and the ordered schema recognizes all existing three trailing Veeqo mapping columns. The migration retained 1,134 rows; original values were compared field by field in the migration operation. No generated Features content was inserted.
+
+The WooCommerce importer uses the supported `woocommerce_product_import_pre_insert_product_object` hook with validation and WC CRUD `update_meta_data`. Its readback/export path uses the native CSV exporter with metadata export enabled and `woocommerce_product_export_meta_value` for scalar output. The exporter does not include metadata unless the WooCommerce **Export custom meta** option is enabled. Blank or absent content metadata does not intentionally overwrite existing populated values; malformed JSON is rejected. Dedicated CI runs PHP lint, a PHP importer contract regression, Python canonical schema validation, and a CSV migration regression. Runtime importer/exporter round-trip against WooCommerce remains required before content publication.
