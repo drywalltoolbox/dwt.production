@@ -5,6 +5,10 @@ defined( 'ABSPATH' ) || exit;
 do_action( 'woocommerce_email_header', $email_heading, $email );
 echo function_exists( 'DTB\\Commerce\\Email\\dtb_email_v4_order_hero' ) ? DTB\Commerce\Email\dtb_email_v4_order_hero( $order, $email, [ 'title' => __( 'Your order is complete.', 'drywall-toolbox' ), 'body' => __( 'Your order has been marked complete. Review the details and reach out whenever you need assistance.', 'drywall-toolbox' ), 'steps' => [] ] ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
+if ( $order instanceof WC_Order && function_exists( 'DTB\\Commerce\\Email\\dtb_email_lifecycle_panel' ) ) {
+	echo DTB\Commerce\Email\dtb_email_lifecycle_panel( $order, 'completed' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}
+
 do_action( 'woocommerce_email_order_details', $order, $sent_to_admin, $plain_text, $email );
 do_action( 'woocommerce_email_order_meta', $order, $sent_to_admin, $plain_text, $email );
 do_action( 'woocommerce_email_customer_details', $order, $sent_to_admin, $plain_text, $email );
