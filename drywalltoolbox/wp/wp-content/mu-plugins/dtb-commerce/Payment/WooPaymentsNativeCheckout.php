@@ -46,8 +46,12 @@ final class DTB_WooPaymentsNativeCheckout {
 		}
 		$mode = sanitize_key( (string) $order->get_meta( '_wcpay_mode', true ) );
 		$reference = trim( (string) $order->get_transaction_id() );
+		$intent_status = sanitize_key( (string) $order->get_meta( '_intention_status', true ) );
+		$intent_id = trim( (string) $order->get_meta( '_intent_id', true ) );
 		// No assumption that merely authorized or redirected means captured.
-		if ( ! in_array( $mode, [ 'test', 'prod' ], true )
+		if ( 'succeeded' !== $intent_status
+			|| '' === $intent_id
+			|| ! in_array( $mode, [ 'test', 'prod' ], true )
 			|| null === $order->get_date_paid()
 			|| '' === $reference
 			|| ! in_array( $order->get_status(), [ 'processing', 'completed' ], true )
