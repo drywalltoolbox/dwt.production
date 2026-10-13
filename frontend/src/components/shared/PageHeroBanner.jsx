@@ -7,7 +7,7 @@ export default function PageHeroBanner({ eyebrow, title, highlight, description 
       id="dtb-page-hero-title"
       title={<>{title}{highlight ? <> {highlight}</> : null}</>}
       description={description}
-      breadcrumbs={eyebrow ? [{ label: 'Home', path: '/' }, { label: eyebrow }] : []}
+      breadcrumbs={[{ label: 'Home', path: '/' }, { label: title }]}
     />
   );
 }
