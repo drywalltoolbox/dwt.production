@@ -4,7 +4,7 @@
  * No new persistence endpoint and no storefront gallery override.
  */
 defined( 'ABSPATH' ) || exit;
-if ( ! current_user_can( 'edit_products' ) || get_option( 'brikpanel_simple_product_editor', 'yes' ) !== 'yes' ) {
+if ( get_option( 'brikpanel_simple_product_editor', 'yes' ) !== 'yes' ) {
     return;
 }
 
@@ -124,7 +124,7 @@ function dtb_brikpanel_media_studio_resolve_variation_images($variation) {
  */
 add_action('admin_footer', function () {
     $screen = function_exists('get_current_screen') ? get_current_screen() : null;
-    if (!$screen || $screen->id !== 'admin_page_brikpanel-product-editor') {
+    if (!$screen || $screen->id !== 'admin_page_brikpanel-product-editor' || !current_user_can('edit_products')) {
         return;
     }
 
