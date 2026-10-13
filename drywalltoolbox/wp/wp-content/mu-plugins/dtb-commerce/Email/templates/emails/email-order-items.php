@@ -37,23 +37,20 @@ foreach ( $items as $item_id => $item ) :
 	}
 
 	$order_item_class = apply_filters( 'woocommerce_order_item_class', 'order_item', $item, $order );
+	$thumbnail = '';
+	if ( $show_image ) {
+		$thumbnail = function_exists( 'dtb_email_render_item_thumbnail' ) ? dtb_email_render_item_thumbnail( $item ) : '';
+		$thumbnail = (string) apply_filters( 'woocommerce_order_item_thumbnail', $thumbnail, $item );
+	}
+
 	?>
 	<tr class="<?php echo esc_attr( $order_item_class ); ?>">
 		<td class="td font-family text-align-left" width="68%" style="width:68%;padding:16px 8px 16px 0;vertical-align:middle;word-wrap:break-word;overflow-wrap:break-word;text-align:left;">
 			<table class="order-item-data" role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
 				<tr>
-					<?php if ( $show_image ) : ?>
+					<?php if ( $show_image && '' !== trim( $thumbnail ) ) : ?>
 						<td class="dtb-order-item-image" width="82" valign="middle" style="width:82px;padding:0 14px 0 0;">
-							<?php
-							$thumbnail = function_exists( 'dtb_email_render_item_thumbnail' ) ? dtb_email_render_item_thumbnail( $item ) : '';
-							/**
-							 * Email Order Item Thumbnail hook.
-							 *
-							 * @param string                $image The image HTML.
-							 * @param WC_Order_Item_Product $item  The item being displayed.
-							 */
-							echo wp_kses_post( apply_filters( 'woocommerce_order_item_thumbnail', $thumbnail, $item ) );
-							?>
+							<?php echo wp_kses_post( $thumbnail ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 						</td>
 					<?php endif; ?>
 					<td valign="middle" style="padding:0;text-align:left;overflow-wrap:anywhere;">
