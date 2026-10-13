@@ -41,6 +41,9 @@ final class DTB_WooPaymentsNativeCheckout {
 		}
 
 		self::tag( $order );
+		if ( self::CHECKOUT_GATEWAY !== (string) $order->get_meta( '_dtb_checkout_gateway', true ) ) {
+			return;
+		}
 		$mode = sanitize_key( (string) $order->get_meta( '_wcpay_mode', true ) );
 		$reference = trim( (string) $order->get_transaction_id() );
 		// No assumption that merely authorized or redirected means captured.
