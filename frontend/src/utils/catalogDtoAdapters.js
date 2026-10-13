@@ -452,6 +452,7 @@ export function toLegacyProductCardDTO(dto = {}, computed = null) {
     description: dto?.description || '',
     description_full: dto?.description || dto?.description_full || '',
     short_description: dto?.shortDescription || '',
+    structured_content: dto?.content?.structured === true ? dto.content : null,
     sku: dto?.sku || '',
     part_number: dto?.sku || '',
     brand: dto?.brand?.label || dto?.brand || '',
