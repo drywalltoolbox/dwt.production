@@ -220,6 +220,12 @@ final class DTB_PaymentPluginsStripeNativeCheckout {
 			return;
 		}
 
+		// The retired Stripe extension is optional while WooPayments owns new checkout.
+		// Historical Stripe orders and provider-specific handlers remain intact.
+		if ( self::is_gateway_enabled_by_id( 'woocommerce_payments' ) ) {
+			return;
+		}
+
 		if ( ! self::is_extension_active() ) {
 			echo '<div class="notice notice-error"><p>'
 				. esc_html__( 'Drywall Toolbox checkout requires Payment Plugins for Stripe WooCommerce. Install and activate woo-stripe-payment before testing payments.', 'drywall-toolbox' )
