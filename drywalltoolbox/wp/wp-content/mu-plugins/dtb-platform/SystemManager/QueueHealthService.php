@@ -21,6 +21,7 @@ function dtb_queue_health_get(): array {
 		'pending'  => 0,
 		'running'  => 0,
 		'failed'   => 0,
+		'failed_recent_24h' => 0,
 		'complete' => 0,
 		'total'    => 0,
 		'oldest_pending_seconds' => 0,
@@ -42,6 +43,14 @@ function dtb_queue_health_get(): array {
 				$data[ $status ]   = $cnt;
 				$data['total']    += $cnt;
 			}
+
+			// Distinguish actionable new failures from all retained history.
+			// Action Scheduler records its most recent attempt on the actions table.
+			$failed_since = gmdate( 'Y-m-d H:i:s', time() - DAY_IN_SECONDS );
+			$data['failed_recent_24h'] = (int) $wpdb->get_var( $wpdb->prepare(
+				"SELECT COUNT(*) FROM {$table} WHERE status = 'failed' AND last_attempt_gmt >= %s",
+				$failed_since
+			) );
 
 			$oldest = $wpdb->get_var(
 				"SELECT MIN(scheduled_date_gmt) FROM {$table} WHERE status = 'pending'"
