@@ -74,8 +74,19 @@ final class DTB_CatalogContentCsv {
         if ( ! is_scalar( $raw_features ) || ! is_scalar( $raw_version ) ) {
             throw new RuntimeException( 'DTB content meta must be scalar CSV text.' );
         }
-        // Blank metadata is intentionally non-destructive on existing products.
+        // WooCommerce populates the in-memory product from CSV meta BEFORE
+        // this hook. Restore persisted values on blank v2 cells, otherwise
+        // an update import could unintentionally clear approved Features.
         if ( '' === trim( (string) $raw_features ) && '' === trim( (string) $raw_version ) ) {
+            $previous = $product->get_id() ? wc_get_product( $product->get_id() ) : false;
+            foreach ( [ self::FEATURES, self::VERSION ] as $key ) {
+                $previous_value = $previous ? $previous->get_meta( $key, true, 'edit' ) : '';
+                if ( is_string( $previous_value ) && '' !== $previous_value ) {
+                    $product->update_meta_data( $key, $previous_value );
+                } else {
+                    $product->delete_meta_data( $key );
+                }
+            }
             return $product;
         }
         if ( '2' !== trim( (string) $raw_version ) || '' === trim( (string) $raw_features ) ) {
