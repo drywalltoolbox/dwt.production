@@ -21,3 +21,22 @@ Live active BrikPanel plugin at `wp-content/plugins/brikpanel-admin-panel-dashbo
 
 ## Deployment and rollback
 Deploy the module files before updating the compatibility entrypoint. Verify live readback against GitHub. Reverting the entrypoint returns the previous layout without touching WooCommerce data or BrikPanel vendor files.
+
+## Product Media Studio extracted (default off)
+`Products/ProductMediaStudio.php` and its co-located JS/CSS were extracted from
+`elliotttmiller/launch-dtb/docs/admin/brikpanel/products`. They are
+**not enabled by default**. Opt in only after validating with the current live
+BrikPanel product editor; flag `DTB_BRIKPANEL_PRODUCT_MEDIA_STUDIO`.
+The adapter hydrates existing variation galleries and enqueues a progressive UI,
+but does not add a save endpoint or replace the WooCommerce storefront gallery.
+
+Current live BrikPanel product editor and its shipped vendor variation-gallery
+file do not match the reference implementation. The legacy media bridge relies
+on BrikPanel's private `state.variations` and a temporary `wp.media` facade,
+so this specific UI behavior requires editor interaction testing before opt-in.
+
+Required before activation: verify product-editor screen ID and enqueue order,
+variation gallery edit/reorder/cancel/save/reload, image IDs and media permissions,
+variable-product defaults and stock/prices untouched, keyboard/focus behavior,
+mobile viewport, and vendor JavaScript compatibility. Keep QuickBooks paused and
+test-order side-effect boundaries unchanged.
