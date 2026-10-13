@@ -52,7 +52,7 @@ final class DTB_TestCheckoutExclusion {
         if ( '' === $key ) {
             return new WP_Error( 'test_cart_session_required', 'An existing WooCommerce cart session is required.', [ 'status' => 409 ] );
         }
-        set_transient( $key, [ 'user_id' => get_current_user_id(), 'expires' => time() + self::TTL ], self::TTL );
+        set_transient( $key, [ 'user_id' => get_current_user_id(), 'expires' => time() + self::TTL, 'claim' => bin2hex( random_bytes( 16 ) ) ], self::TTL );
         return new WP_REST_Response( [ 'armed' => true, 'expires_in_seconds' => self::TTL, 'single_use' => true ], 200 );
     }
 
@@ -69,8 +69,12 @@ final class DTB_TestCheckoutExclusion {
             || time() > absint( $authorization['expires'] ?? 0 ) ) {
             return;
         }
-        // Consume the authorization before marking the order. An operator must
-        // explicitly rearm for another order; retries cannot arm themselves.
+        // add_option is unique-key atomic in WordPress. A concurrent checkout
+        // cannot consume this same operator authorization twice.
+        $claim = (string) ( $authorization['claim'] ?? '' );
+        if ( ! preg_match( '/^[a-f0-9]{32}$/D', $claim ) || ! add_option( 'dtb_test_claim_' . $claim, (string) time(), '', 'no' ) ) {
+            return;
+        }
         delete_transient( $key );
         $order->update_meta_data( self::META, 'yes' );
         $order->save_meta_data();
