@@ -1,85 +1,53 @@
 <?php
-/**
- * DTB branded email footer.
- *
- * Traced against WooCommerce core emails/email-footer.php v10.4.0
- * (wp-content/plugins/woocommerce/templates/emails/email-footer.php).
- * DTB customization: dark footer band (bookending the dark header) with
- * confirmed-real social links (dtb_email_social_icons() — see that
- * function's own comment on why fabricated profile URLs are refused) above
- * settings-backed Terms/Privacy/Contact links. The
- * woocommerce_email_footer_text filter and $email context still execute for
- * extension compatibility, but free-form footer text is intentionally not
- * rendered so an address or unrelated copy cannot escape the approved footer.
- *
- * Terms and Privacy render only when WooCommerce/WordPress has an
- * authoritative page configured; no route is fabricated by this template.
- *
- * @package DrywalltoolboxCommerce
- */
-
+/** DTB v4 WooCommerce HTML email footer. @package DrywalltoolboxCommerce */
 defined( 'ABSPATH' ) || exit;
-
-$email = $email ?? null;
-
+$logo_url=function_exists('dtb_email_logo_url')?dtb_email_logo_url():'';
+$home_url=home_url('/');
+$home_host=(string)wp_parse_url($home_url,PHP_URL_HOST);
+$home_host=preg_replace('/^www\./i','',$home_host);
+$order = isset( $email ) && is_object( $email ) && isset( $email->object ) && $email->object instanceof WC_Order ? $email->object : null;
+$tracking_url = $order && function_exists( 'dtb_order_tracking_url' ) ? dtb_order_tracking_url( $order ) : '';
+$account_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : '';
+$shop_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : '';
+$support_url = function_exists( 'dtb_email_support_url' ) ? dtb_email_support_url() : home_url( '/contact/' );
+$links = [];
+if ( $tracking_url ) { $links[] = [ 'Track Order', $tracking_url ]; }
+if ( $account_url ) { $links[] = [ 'My Account', $account_url ]; }
+if ( $shop_url ) { $links[] = [ 'Shop', $shop_url ]; }
+if ( $support_url ) { $links[] = [ 'Contact Us', $support_url ]; }
+$links = apply_filters( 'dtb_email_customer_footer_links', $links, $order, $email ?? null );
+$link_html = [];
+foreach ( (array) $links as $link ) {
+    if ( ! is_array( $link ) || ! isset( $link[0], $link[1] ) || ! is_string( $link[0] ) || ! is_string( $link[1] ) || ! wp_http_validate_url( $link[1] ) ) { continue; }
+    $link_html[] = '<a href="' . esc_url( $link[1] ) . '" style="display:inline-block;margin:5px 10px;color:#d7e6fb;font-size:12px;font-weight:600;line-height:20px;text-decoration:underline;text-underline-offset:3px;">' . esc_html( $link[0] ) . '</a>';
+}
+$privacy_url = function_exists( 'get_privacy_policy_url' ) ? get_privacy_policy_url() : '';
+$font=function_exists('dtb_email_font_stack')?dtb_email_font_stack():"'Geist',Arial,sans-serif";
 ?>
-																		</div>
-																	</td>
-																</tr>
-															</table>
-															<!-- End Content -->
-														</td>
-													</tr>
-												</table>
-												<!-- End Body -->
-											</td>
-										</tr>
-									</table>
-								</td>
-							</tr>
-							<tr>
-								<td align="center" valign="top">
-									<!-- Footer -->
-									<table border="0" cellpadding="10" cellspacing="0" width="100%" id="template_footer" role="presentation">
-										<tr>
-											<td valign="top">
-												<table border="0" cellpadding="10" cellspacing="0" width="100%" role="presentation">
-													<tr>
-														<td colspan="2" valign="middle" id="credit">
-															<?php echo function_exists( 'dtb_email_social_icons' ) ? dtb_email_social_icons() : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-															<p style="margin:0 0 6px;">
-																<?php
-																/* translators: %s: current year. */
-																printf( esc_html__( '© %s Drywall Toolbox. All rights reserved.', 'drywall-toolbox' ), esc_html( gmdate( 'Y' ) ) );
-																?>
-															</p>
-																	<p style="margin:0 0 10px;"><?php echo function_exists( 'dtb_email_footer_link_html' ) ? dtb_email_footer_link_html() : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></p>
-															<?php
-															$email_footer_text = get_option( 'woocommerce_email_footer_text' );
-															if ( apply_filters( 'woocommerce_is_email_preview', false ) ) {
-																$text_transient    = get_transient( 'woocommerce_email_footer_text' );
-																$email_footer_text = false !== $text_transient ? $text_transient : $email_footer_text;
-															}
-																	/**
-																	 * Preserve the upstream filter invocation while DTB owns the visible footer.
-																	 */
-																	$email_footer_text = apply_filters( 'woocommerce_email_footer_text', $email_footer_text, $email );
-																	unset( $email_footer_text );
-															?>
-														</td>
-													</tr>
-												</table>
-											</td>
-										</tr>
-									</table>
-									<!-- End Footer -->
-								</td>
-							</tr>
-						</table>
-					</div>
-				</td>
-				<td class="dtb-email-shell-gutter"><!-- Deliberately empty to support consistent sizing and layout across multiple email clients. --></td>
-			</tr>
-		</table>
-	</body>
-</html>
+</div></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr>
+<tr><td align="center" valign="top" bgcolor="#061524" style="background-color:#061524;">
+<table id="template_footer" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#061524" style="width:100%;border-collapse:collapse;background-color:#061524;">
+<tr><td id="credit" align="center" bgcolor="#061524" style="padding:31px 22px 30px;text-align:center;background-color:#061524;color:#c4cfdd;font-family:<?php echo esc_attr( $font ); ?>;">
+<?php if ( $logo_url ) : ?>
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;border-collapse:collapse;"><tr><td align="center" style="padding:0;">
+<a href="<?php echo esc_url( $home_url ); ?>" style="display:inline-block;text-decoration:none;">
+<img src="<?php echo esc_url( $logo_url ); ?>" width="152" alt="Drywall Toolbox" style="display:block;width:152px;max-width:100%;height:auto;border:0;">
+</a></td></tr></table>
+<?php endif; ?>
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:12px auto 0;border-collapse:collapse;"><tr><td align="center" style="padding:0;">
+<?php echo function_exists( 'dtb_email_social_icons' ) ? dtb_email_social_icons() : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+</td></tr></table>
+<?php if ( $link_html ) : ?>
+<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;margin:18px auto 0;border-collapse:collapse;"><tr><td align="center" style="padding:0;text-align:center;font-family:<?php echo esc_attr( $font ); ?>;">
+<?php echo implode( '', $link_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+</td></tr></table>
+<?php endif; ?>
+<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:19px auto 0;border-collapse:collapse;border-top:1px solid #34475e;">
+<tr><td align="center" style="padding:18px 0 0;text-align:center;color:#aebdd0;font-family:<?php echo esc_attr( $font ); ?>;font-size:11px;line-height:19px;">
+&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> Drywall Toolbox. All rights reserved.
+<?php if ( $privacy_url ) : ?><br><a href="<?php echo esc_url( $privacy_url ); ?>" style="color:#aebdd0;font-size:11px;text-decoration:underline;">Privacy Policy</a><?php endif; ?>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table>
+</td></tr></table></div></td></tr></table></td></tr></table>
+</body></html>
