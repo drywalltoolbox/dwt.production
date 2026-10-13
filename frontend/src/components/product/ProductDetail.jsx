@@ -623,6 +623,7 @@ export default function ProductDetail({
   onAddToCart,
   onClose,
   onVariationChange,
+  renderExpressCheckout = null,
   initialSelectedAttrs = {},
   initialVariations = [],
   initialResolvedVariation = null,
@@ -1104,6 +1105,14 @@ export default function ProductDetail({
                   onViewIncludes={handleViewIncludes}
                   reviewNode={<ProductReviewsButton onClick={() => setActiveTab('reviews')} className="dtb-pdp-header__reviews--mobile-inline" rating={effectiveProduct.average_rating ?? effectiveProduct.rating ?? product.average_rating ?? product.rating} ratingCount={effectiveProduct.rating_count ?? effectiveProduct.reviews ?? product.rating_count ?? product.reviews} />}
                 />
+
+                {typeof renderExpressCheckout === 'function' ? renderExpressCheckout({
+                  productId: product?.id,
+                  variationId: selectedVariation?.id,
+                  quantity,
+                  selectedAttributes: selectedAttrs,
+                  canAddToCart,
+                }) : null}
 
                 {addToCartError ? (
                   <p className="text-sm text-red-600 mt-2" role="alert" aria-live="assertive">{addToCartError}</p>
