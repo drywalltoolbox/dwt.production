@@ -131,7 +131,26 @@ final class DTB_PaymentPluginsStripeNativeCheckout {
 	 */
 	public static function enforce_single_stripe_authority( $gateways ): array {
 		$gateways = is_array( $gateways ) ? $gateways : [];
-		if ( ! self::is_storefront_payment_request() || ! self::is_upm_gateway_enabled() ) {
+		if ( ! self::is_storefront_payment_request() ) {
+			return $gateways;
+		}
+
+		// A WooPayments test-mode checkout has one provider for new transactions.
+		// This is deliberately inactive in WooPayments live mode. Never touch
+		// historical Stripe orders, tokens, refunds or gateway registrations.
+		if ( class_exists( 'WC_Payments' ) && is_callable( [ 'WC_Payments', 'mode' ] ) ) {
+			$mode = WC_Payments::mode();
+			if ( is_object( $mode ) && is_callable( [ $mode, 'is_test' ] ) && $mode->is_test() ) {
+				foreach ( $gateways as $id => $gateway ) {
+					if ( ! class_exists( 'DTB_WooPaymentsNativeCheckout' ) || ! DTB_WooPaymentsNativeCheckout::is_gateway( (string) $id ) ) {
+						unset( $gateways[ $id ] );
+					}
+				}
+				return $gateways;
+			}
+		}
+
+		if ( ! self::is_upm_gateway_enabled() ) {
 			return $gateways;
 		}
 
