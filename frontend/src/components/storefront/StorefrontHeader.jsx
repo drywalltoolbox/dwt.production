@@ -184,7 +184,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       const label = category?.label || category?.name || '';
       const slug = category?.slug || category?.key || normalizeDisplayCategorySlug(label);
       const count = Number(category?.productCount || category?.count || 0);
-      return { label, slug, count, to: buildCatalogUrl({ displayCategory: [slug] }, { basePath: '/parts' }) };
+      return { label, slug, count, thumbnail: resolveCategoryThumbnail(category), to: buildCatalogUrl({ displayCategory: [slug] }, { basePath: '/parts' }) };
     })
     .filter((category) => category.slug && category.label && category.count > 0)
     .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label))
