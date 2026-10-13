@@ -148,6 +148,7 @@ export default function Contact() {
                   options={inquiryTypes.map((type) => ({ value: type, label: type }))}
                   placeholder="Select an inquiry type"
                   required
+                  fitViewport
                   disabled={submitting}
                   fullWidth
                   className="dtb-contact__inquiry-dropdown"
