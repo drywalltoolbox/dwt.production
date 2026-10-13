@@ -56,13 +56,13 @@ function dtb_email_v4_progress_bar( array $steps, ?int $active_index = null ): s
 		$detail = (string) ( $step['detail'] ?? '' );
 
 		if ( 'done' === $state ) {
-			$node_bg='#1769ff'; $node_border='#1769ff'; $node_fg='#ffffff'; $label_fg='#ffffff'; $detail_fg='#c9d6e7';
+			$node_bg='#1769ff'; $node_border='#1769ff'; $node_fg='#ffffff'; $label_fg='#071b45'; $detail_fg='#64748b';
 		} elseif ( 'active' === $state ) {
-			$node_bg='#071827'; $node_border='#7aa8ff'; $node_fg='#ffffff'; $label_fg='#ffffff'; $detail_fg='#d8e1ec';
+			$node_bg='#071827'; $node_border='#7aa8ff'; $node_fg='#ffffff'; $label_fg='#071b45'; $detail_fg='#52627e';
 		} elseif ( 'warning' === $state ) {
-			$node_bg='#2b1c08'; $node_border='#d58a20'; $node_fg='#ffd38a'; $label_fg='#ffd38a'; $detail_fg='#e4bf84';
+			$node_bg='#2b1c08'; $node_border='#d58a20'; $node_fg='#ffd38a'; $label_fg='#8c5210'; $detail_fg='#775e3a';
 		} else {
-			$node_bg='#263746'; $node_border='#697886'; $node_fg='#9aa8b5'; $label_fg='#ffffff'; $detail_fg='#b8c3cf';
+			$node_bg='#263746'; $node_border='#697886'; $node_fg='#9aa8b5'; $label_fg='#52627e'; $detail_fg='#718096';
 		}
 
 		if ( 'active' === $state ) {
@@ -118,7 +118,7 @@ function dtb_email_v4_order_hero( $order, $email, array $options = [] ): string 
 	$font = dtb_email_v3_font();
 	$progress = dtb_email_v4_progress_bar( (array) ( $config['steps'] ?? [] ) );
 	$progress_row = '' !== $progress
-		? '<tr><td class="dtb-v4-hero-progress" bgcolor="#061524" style="padding:24px 28px 26px;background-color:#061524;">'.$progress.'</td></tr>'
+		? '<tr><td class="dtb-v4-hero-progress" bgcolor="#f4f7fa" style="padding:26px 30px 27px;background-color:#f4f7fa;">'.$progress.'</td></tr>'
 		: '';
 	return '<table class="dtb-v4-order-intro" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff" style="width:100%;border-collapse:collapse;background-color:#ffffff;">'
 		.'<tr><td class="dtb-v4-hero-copy" align="left" style="padding:30px 38px 28px;text-align:left;">'
