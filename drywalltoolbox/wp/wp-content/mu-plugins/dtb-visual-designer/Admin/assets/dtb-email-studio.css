@@ -17,7 +17,7 @@
 .dtb-es__toolbar select{width:100%;min-height:40px;border:1px solid #cfd6e2;border-radius:8px;background:#fff;padding:0 10px}
 .dtb-es__fixture-label{font-size:10px;font-weight:700;letter-spacing:.045em;color:#64748b}
 .dtb-es__devices{display:flex;align-items:center;gap:2px;padding:3px;border:1px solid #cfd6e2;border-radius:9px;background:#f7f8fa}
-.dtb-es__devices button,.dtb-es__refresh,.dtb-es__fullscreen{min-height:36px;border:0;border-radius:6px;padding:0 12px;background:transparent;font:600 12px/1.4 inherit;cursor:pointer;white-space:nowrap}
+.dtb-es__devices button,.dtb-es__refresh,.dtb-es__fullscreen{min-height:36px;border:0;border-radius:6px;padding:0 12px;background:transparent;font-size:12px;font-weight:600;line-height:1.4;font-family:inherit;cursor:pointer;white-space:nowrap}
 .dtb-es__devices button.is-active{background:#111827;color:#fff}
 .dtb-es__devices button:focus-visible,.dtb-es__refresh:focus-visible,.dtb-es__fullscreen:focus-visible,.dtb-es__toolbar select:focus-visible{outline:2px solid #1769ff;outline-offset:2px}
 .dtb-es__refresh{background:#eef2f7;color:#344054}
