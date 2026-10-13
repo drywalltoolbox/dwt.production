@@ -183,19 +183,28 @@ jobs:
             expected_type=javascript
             [[ "$path" == *.css ]] && expected_type=text/css
             verified=false
+            last_failure=unknown
             for attempt in 1 2 3; do
               headers="$(mktemp)"
               body="$(mktemp)"
-              status="$(curl --silent --show-error --location --max-time 30 \
+              # Curl exit status distinguishes transport failures from HTTP responses.
+              # A TLS handshake failure has no HTTP status and merits a bounded retry.
+              status=000
+              curl_exit=0
+              status="$(curl --silent --show-error --location --connect-timeout 10 --max-time 30 \
                 --dump-header "$headers" --output "$body" \
-                --write-out '%{http_code}' "https://drywalltoolbox.com$path")" || status=000
-              if [[ "$status" == 200 ]] && grep -qi "^content-type:.*$expected_type" "$headers"; then
+                --write-out '%{http_code}' "https://drywalltoolbox.com$path")" || curl_exit=$?
+              if [[ "$curl_exit" -eq 0 && "$status" == 200 ]] && grep -qi "^content-type:.*$expected_type" "$headers"; then
                 verified=true
                 rm -f "$headers" "$body"
                 break
               fi
-              if grep -qi '^sg-captcha:.*challenge' "$headers"; then
-                echo "::warning::SiteGround CAPTCHA challenged asset verification for $path (attempt $attempt/3, HTTP $status)"
+              if [[ "$curl_exit" -ne 0 || "$status" == 000 ]]; then
+                last_failure="transport error (curl exit $curl_exit, HTTP $status)"
+                echo "::warning::Transient staging asset transport failure for $path (attempt $attempt/3: $last_failure)"
+              elif grep -qi '^sg-captcha:.*challenge' "$headers"; then
+                last_failure="SiteGround CAPTCHA challenge (HTTP $status)"
+                echo "::warning::SiteGround challenged asset verification for $path (attempt $attempt/3)"
               else
                 echo "::error::Staging asset verification returned HTTP $status for $path (expected $expected_type)"
                 cat "$headers"
@@ -206,7 +215,7 @@ jobs:
               if [[ "$attempt" -lt 3 ]]; then sleep "$((attempt * 5))"; fi
             done
             if [[ "$verified" != true ]]; then
-              echo "::error::SiteGround repeatedly challenged asset verification for $path. Asset deployment may be correct, but public delivery is not verified. Review SiteGround bot protection and request a narrow authorization for GitHub Actions checks; do not disable storefront security globally."
+              echo "::error::Public staging asset verification failed after three attempts for $path: $last_failure. Published files are not proof of public delivery. Investigate SiteGround TLS/network/bot protection; do not disable security globally."
               exit 2
             fi
           done < /tmp/dtb-staging-asset-urls
