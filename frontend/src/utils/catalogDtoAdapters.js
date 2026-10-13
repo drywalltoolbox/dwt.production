@@ -405,6 +405,7 @@ export function toLegacyVariationDTO(variationDto = {}, parentDto = null) {
       : (Array.isArray(media?.variationImages) ? media.variationImages : []),
     attributes,
     variation: variationDto?.variation || {},
+    structured_content: variationDto?.content?.structured === true ? variationDto.content : null,
     meta_data: mergedMeta,
     variation_attribute_values: toLegacyVariationAttributeValues(attributes),
   };
