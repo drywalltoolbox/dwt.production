@@ -425,3 +425,81 @@
     transition: none;
   }
 }
+
+/* Accordion document flow: imported WooCommerce markup may contain floats,
+ * fixed widths and tables from legacy descriptions. Scope normalization to
+ * product-information panels, not product data or global typography. */
+.dtb-pdp-info-accordion__panel,
+.dtb-pdp-info-accordion__panel .dtb-pdp-description-content,
+.dtb-pdp-info-accordion__panel .dtb-pdp-description-card {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: break-word;
+}
+.dtb-pdp-info-accordion__panel .dtb-pdp-description-card::after {
+  display: table;
+  clear: both;
+  content: '';
+}
+.dtb-pdp-info-accordion__panel .dtb-pdp-description-card > :is(p, div, section, ul, ol, blockquote, h2, h3, h4, h5, h6) {
+  box-sizing: border-box;
+  float: none !important;
+  clear: both;
+  width: 100% !important;
+  min-width: 0;
+  max-width: 100% !important;
+  margin-left: 0;
+  margin-right: 0;
+}
+.dtb-pdp-info-accordion__panel .dtb-pdp-description-card :is(p, li, blockquote) {
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+.dtb-pdp-info-accordion__panel .dtb-pdp-description-card :is(img, video, iframe) {
+  max-width: 100%;
+  height: auto;
+}
+.dtb-pdp-info-accordion__panel .dtb-pdp-description-card :is(table, .ts-table-shell) {
+  max-width: 100%;
+}
+.dtb-pdp-info-accordion__panel .dtb-pdp-description-card :is(ul, ol) {
+  list-style-position: outside;
+}
+/* Only explicit label/value rows get a two-column treatment on sufficiently
+ * wide panels; ordinary feature lists stay readable full-width paragraphs. */
+.dtb-pdp-info-accordion__panel .dtb-pdp-description-content--rich
+  .dtb-pdp-description-card > :is(h2, h3, h4) + :is(ul, ol) {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  padding-left: 1.2rem;
+  border: 0;
+  list-style: disc outside;
+}
+.dtb-pdp-info-accordion__panel .dtb-pdp-description-content--rich
+  .dtb-pdp-description-card > :is(h2, h3, h4) + :is(ul, ol) > li {
+  display: list-item;
+  margin: 0 0 .45rem;
+  padding: 0;
+  border: 0;
+  list-style: inherit;
+  overflow-wrap: anywhere;
+}
+.dtb-pdp-info-accordion__panel .dtb-pdp-description-content--rich
+  .dtb-pdp-description-card > :is(h2, h3, h4) + :is(ul, ol) > li::marker {
+  color: #2760d8;
+}
+.dtb-pdp-info-accordion__panel .dtb-pdp-description-card li > :is(strong, b):first-child {
+  display: inline;
+  margin-right: .3em;
+  font-weight: 720;
+}
+@media (max-width: 600px) {
+  .dtb-pdp-info-accordion__panel .dtb-pdp-description-content {
+    font-size: .88rem;
+    line-height: 1.55;
+  }
+}
