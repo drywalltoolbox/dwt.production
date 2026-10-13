@@ -15,7 +15,6 @@ import {
   ShoppingBag,
   Wrench,
 } from 'lucide-react';
-import { getDropdownHero } from '../../utils/dropdownHeroAssets.js';
 import '../../styles/storefront-desktop-navigation.css';
 import '../../styles/storefront-navigation-taxonomy.css';
 
@@ -92,7 +91,6 @@ function MegaMenuThumb({ label, logo, thumbnail }) {
 }
 
 function MegaMenuHero({ item, onNavigate }) {
-  const heroImage = item.heroImage || item.heroMedia || getDropdownHero(item.id);
   const eyebrow = item.eyebrow || (item.id === 'products' ? 'Our Products' : item.label);
   const ctaLabel = item.heroCtaLabel || item.landingLabel || `View all ${String(item.label || '').toLowerCase()}`;
 
@@ -110,11 +108,6 @@ function MegaMenuHero({ item, onNavigate }) {
         ) : null}
       </div>
 
-      {heroImage ? (
-        <div className="dtb-mega-menu__hero-media" aria-hidden="true">
-          <img src={heroImage} alt="" loading="eager" />
-        </div>
-      ) : null}
     </div>
   );
 }
@@ -285,8 +278,37 @@ function BrandsPanelRenderer(props) {
   return <BrandGridPanelRenderer {...props} />;
 }
 
-function PartsPanelRenderer(props) {
-  return <BrandGridPanelRenderer {...props} />;
+function PartsPanelRenderer({ item, onNavigate }) {
+  const categories = Array.isArray(item.partCategories) ? item.partCategories : [];
+  const brands = Array.isArray(item.items) ? item.items : [];
+  return (
+    <>
+      <MegaMenuHero item={item} onNavigate={onNavigate} />
+      {categories.length > 0 && (
+        <section className="dtb-mega-menu__parts-section" aria-label="Part categories">
+          <div className="dtb-mega-menu__section-heading">
+            <h3>Popular Part Categories</h3>
+            <Link to="/parts" onClick={onNavigate}>View all parts <ArrowRight size={15} aria-hidden="true" /></Link>
+          </div>
+          <div className="dtb-mega-menu__parts-categories">
+            {categories.map((entry) => (
+              <Link key={entry.slug} to={entry.to} onClick={onNavigate}>
+                <span>{entry.label}</span><ChevronRight size={15} aria-hidden="true" />
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+      {brands.length > 0 ? (
+        <section className="dtb-mega-menu__parts-section" aria-label="Shop parts by brand">
+          <div className="dtb-mega-menu__section-heading"><h3>Shop Parts by Brand</h3></div>
+          <div className="dtb-mega-menu__brand-grid">
+            {brands.map((entry) => <BrandCard key={entry.to || entry.label} entry={entry} onNavigate={onNavigate} />)}
+          </div>
+        </section>
+      ) : <MegaMenuDeferredState item={item} />}
+    </>
+  );
 }
 
 function SchematicsPanelRenderer(props) {
