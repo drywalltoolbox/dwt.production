@@ -6,10 +6,13 @@ class WP_Error {
 }
 class WC_Product {
     private array $meta = [];
+    public function get_id(): int { return 0; }
+    public function delete_meta_data( $key ): void { unset( $this->meta[$key] ); }
     public function update_meta_data( $key, $value ): void { $this->meta[$key] = $value; }
-    public function get_meta( $key ) { return $this->meta[$key] ?? ''; }
+    public function get_meta( $key, $single = true, $context = 'view' ) { return $this->meta[$key] ?? ''; }
 }
 function add_filter( ...$args ): void {}
+function wc_get_product( $id ) { return false; }
 function is_wp_error( $value ): bool { return $value instanceof WP_Error; }
 function wp_strip_all_tags( $text ): string { return strip_tags( $text ); }
 function wp_json_encode( $value, $flags = 0 ): string|false { return json_encode( $value, $flags ); }
@@ -45,4 +48,7 @@ try {
     check( 'Invalid HTML not rejected' !== $e->getMessage(), 'Invalid HTML was accepted' );
 }
 check( $before === $p->get_meta( DTB_CatalogContentCsv::FEATURES ), 'Rejected import mutated product' );
+$meta = (object) [ 'key' => DTB_CatalogContentCsv::FEATURES ];
+check( $before === DTB_CatalogContentCsv::export_meta_value( $before, $meta, $p ), 'CSV export changed JSON' );
+check( '' === DTB_CatalogContentCsv::export_meta_value( [ 1 ], $meta, $p ), 'Non-scalar export not rejected' );
 echo "Catalog Features importer validation: PASS\n";
