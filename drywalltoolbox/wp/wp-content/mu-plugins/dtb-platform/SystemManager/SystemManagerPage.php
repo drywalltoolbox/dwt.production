@@ -540,6 +540,17 @@ function dtb_system_manager_render_queues_tab(): void {
 	foreach ( array_slice( (array) ( $q['failed_notification_hooks'] ?? [] ), 0, 5 ) as $hook ) {
 		echo dtb_admin_ui_detail_row( esc_html( (string) ( $hook['hook'] ?? '' ) ), dtb_admin_ui_badge( (string) ( $hook['count'] ?? 0 ), 'danger' ) );
 	}
+	// Recent health and retained failure attribution are deliberately separate.
+	echo dtb_admin_ui_detail_row( __( 'DTB Failed — Last 24 Hours', 'drywall-toolbox' ), dtb_admin_ui_badge( (string) ( $q['dtb_failed_24h'] ?? 0 ), ( $q['dtb_failed_24h'] ?? 0 ) > 0 ? 'danger' : 'success' ) );
+	foreach ( (array) ( $q['failed_age_buckets'] ?? [] ) as $bucket ) {
+		echo dtb_admin_ui_detail_row( esc_html( 'Failure age: ' . (string) ( $bucket['age'] ?? '' ) ), esc_html( number_format_i18n( (int) ( $bucket['count'] ?? 0 ) ) ) );
+	}
+	foreach ( array_slice( (array) ( $q['failed_by_group'] ?? [] ), 0, 12 ) as $group ) {
+		echo dtb_admin_ui_detail_row( esc_html( 'Group: ' . (string) ( $group['group_name'] ?? '' ) ), esc_html( number_format_i18n( (int) ( $group['count'] ?? 0 ) ) . ' retained · ' . (int) ( $group['recent_24h'] ?? 0 ) . ' recent' ) );
+	}
+	foreach ( array_slice( (array) ( $q['failed_by_hook'] ?? [] ), 0, 20 ) as $hook ) {
+		echo dtb_admin_ui_detail_row( esc_html( 'Hook: ' . (string) ( $hook['hook'] ?? '' ) ), esc_html( number_format_i18n( (int) ( $hook['count'] ?? 0 ) ) . ' retained · ' . (int) ( $hook['recent_24h'] ?? 0 ) . ' recent' ) );
+	}
 	$q_body = ob_get_clean();
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo dtb_admin_ui_card( $q_body, [ 'title' => __( 'Action Scheduler Queue', 'drywall-toolbox' ) ] );
