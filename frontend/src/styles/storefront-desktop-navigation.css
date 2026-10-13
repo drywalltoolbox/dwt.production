@@ -1076,3 +1076,89 @@
     height: 32px;
   }
 }
+/* Shared compact, image-free desktop mega-menu hero and Parts taxonomy. */
+@media (min-width: 1025px) {
+  .site-header .dtb-mega-menu__hero {
+    min-height: 0;
+    padding: 20px 32px 22px;
+    background: linear-gradient(115deg, #fff, #fbfcff 75%, #f6f9ff);
+  }
+  .site-header .dtb-mega-menu__hero-copy {
+    max-width: 100%;
+    padding-left: 22px;
+    gap: 7px;
+  }
+  .site-header .dtb-mega-menu__hero-copy::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 2px;
+    bottom: 2px;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, #367cff 30%, #1457f5 55%, transparent);
+    pointer-events: none;
+  }
+  .site-header .dtb-mega-menu__heading {
+    max-width: 100%;
+    font-size: clamp(1.34rem, 1.6vw, 1.7rem);
+  }
+  .site-header .dtb-mega-menu__hero-cta { margin-top: 4px; min-height: 36px; }
+  .site-header .dtb-mega-menu__parts-section { padding: 16px 28px 0; }
+  .site-header .dtb-mega-menu__parts-section:last-child { padding-bottom: 26px; }
+  .site-header .dtb-mega-menu__section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    color: #536984;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.045em;
+    text-transform: uppercase;
+  }
+  .site-header .dtb-mega-menu__section-heading h3 { margin: 0; font: inherit; }
+  .site-header .dtb-mega-menu__section-heading a {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--mega-blue);
+    font-size: 0.76rem;
+    letter-spacing: 0;
+    text-transform: none;
+    text-decoration: none;
+  }
+  .site-header .dtb-mega-menu__parts-categories {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .site-header .dtb-mega-menu__parts-categories a {
+    display: flex;
+    min-width: 0;
+    min-height: 52px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 7px;
+    padding: 10px 12px;
+    border: 1px solid #dfe6ef;
+    border-radius: 9px;
+    background: #fff;
+    color: #11233c;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .site-header .dtb-mega-menu__parts-categories a:hover,
+  .site-header .dtb-mega-menu__parts-categories a:focus-visible {
+    border-color: #91b8f1;
+    background: #f5f8ff;
+    outline-offset: 2px;
+  }
+  .site-header .dtb-mega-menu__parts-categories svg { flex: 0 0 auto; }
+  .site-header .dtb-mega-menu__parts-section .dtb-mega-menu__brand-grid { padding: 0; }
+  .site-header .dtb-mega-menu__parts-section .dtb-mega-menu__brand-card {
+    min-height: 87px;
+    padding: 12px 19px;
+  }
+}
