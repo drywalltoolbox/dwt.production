@@ -48,5 +48,6 @@ $font=function_exists('dtb_email_font_stack')?dtb_email_font_stack():"'Geist',Ar
 <?php if ( $privacy_url ) : ?><br><a href="<?php echo esc_url( $privacy_url ); ?>" style="color:#aebdd0;font-size:11px;text-decoration:underline;">Privacy Policy</a><?php endif; ?>
 </td></tr></table>
 </td></tr></table>
-</td></tr></table></td></tr></table></td></tr></table>
+</td></tr></table>
+</td></tr></table></div></td></tr></table></td></tr></table>
 </body></html>
