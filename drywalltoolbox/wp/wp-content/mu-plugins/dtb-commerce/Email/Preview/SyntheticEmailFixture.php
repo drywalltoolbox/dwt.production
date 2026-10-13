@@ -125,7 +125,10 @@ final class SyntheticEmailFixture {
 		ob_start();
 		do_action( 'woocommerce_email_header', $heading, $email );
 		if ( function_exists( '\\DTB\\Commerce\\Email\\dtb_email_v4_order_hero' ) ) {
-			echo \DTB\Commerce\Email\dtb_email_v4_order_hero( $order, $email ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			echo \DTB\Commerce\Email\dtb_email_v4_order_hero( $order, $email, [ 'title' => __( 'Your shipment has an update.', 'drywall-toolbox' ), 'body' => __( 'Check your order tracking page for shipment details when available.', 'drywall-toolbox' ), 'steps' => [] ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		}
+		if ( function_exists( '\\DTB\\Commerce\\Email\\dtb_email_lifecycle_panel' ) ) {
+			echo \DTB\Commerce\Email\dtb_email_lifecycle_panel( $order, 'shipment' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 		echo '<table role="presentation" width="87%" align="center" style="margin:24px auto;background:#f4f7fa;border:1px solid #dce3ed;border-radius:8px"><tr><td style="padding:24px;color:#071b45;font:14px Arial,sans-serif">'
 			. '<strong>Shipment preview — simulated</strong><p style="color:#65738f">Carrier: Sample Carrier</p><p style="color:#65738f">Tracking: PREVIEW-ONLY</p>'
