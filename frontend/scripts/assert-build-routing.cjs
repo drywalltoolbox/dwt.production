@@ -138,11 +138,15 @@ if (appEnv === 'staging') {
   if (!emitted.includes('RewriteRule ^wp-json/(.*)$ /wp/index.php?rest_route=/$1 [QSA,L]')) {
     throw new Error('Staging REST aliases must route to the shared root WordPress runtime.');
   }
-  if (!emitted.includes('RewriteRule ^checkout/?$ /wp/index.php?pagename=checkout [QSA,L]')) {
-    throw new Error('Staging checkout must internally execute the shared WooCommerce checkout runtime.');
+  if (!emitted.includes('RewriteRule ^checkout/?$ /checkout/ [R=302,L,NE]')) {
+    throw new Error('Staging checkout must redirect to the canonical native WooCommerce checkout URL.');
   }
-  if (emitted.includes('RewriteRule ^checkout/?$ /checkout/ [R=302,L,NE]')) {
-    throw new Error('Staging checkout must not redirect the browser into the production-root checkout URL.');
+  if (emitted.includes('RewriteRule ^checkout/?$ /wp/index.php?pagename=checkout [QSA,L]')) {
+    throw new Error('Staging must not execute a second checkout URL inside WordPress.');
+  }
+  const checkoutUrlSource = fs.readFileSync(path.join(frontendRoot, 'src/utils/checkoutUrl.js'), 'utf8');
+  if (!/return buildCheckoutUrl\('\/checkout\/'\)/.test(checkoutUrlSource) || checkoutUrlSource.includes('getStorefrontMount')) {
+    throw new Error('Staging checkout CTA must hand off to root /checkout/, independent of PUBLIC_URL.');
   }
   if (!emitted.includes('RewriteRule ^checkout/order-pay/([0-9]+)/?$ /wp/index.php?pagename=checkout&order-pay=$1 [QSA,L]')) {
     throw new Error('Staging order-pay routes must stay on the staging mount and execute through shared WordPress.');
