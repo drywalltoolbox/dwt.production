@@ -112,3 +112,18 @@
     transition: none;
   }
 }
+
+/*
+ * Header surface: coordinate with the footer's restrained layered navy,
+ * eliminating the prominent saturated-blue glow behind navigation labels.
+ * This is background-only; layout, controls and pointer behavior are unchanged.
+ */
+.site-header {
+  background:
+    radial-gradient(circle at 9% 20%, rgba(34, 85, 238, 0.09), transparent 26rem),
+    radial-gradient(circle at 95% 90%, rgba(34, 85, 238, 0.065), transparent 24rem),
+    linear-gradient(160deg, #0b1120 0%, #0e1a32 52%, #132545 100%);
+}
+.site-header .site-header-inner {
+  background: transparent;
+}
