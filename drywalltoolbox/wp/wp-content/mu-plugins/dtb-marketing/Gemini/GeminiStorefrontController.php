@@ -9,6 +9,17 @@
  */
 defined( 'ABSPATH' ) || exit;
 
+// Google's launcher exposes inherited custom properties across its open shadow roots.
+// Scope DTB branding to the launch button; leave the chat panel and behavior alone.
+add_filter( 'gecx_agent_button_attributes', static function ( array $attributes ): array {
+    $brand_style = '--gecx-agent-button-background: #2255EE; --gecx-agent-button-color: #FFFFFF; --gecx-agent-button-shimmer-color: #2255EE; --gecx-agent-button-shimmer-color-hover: #3B6CFF;';
+    $existing_style = isset( $attributes['style'] ) && is_string( $attributes['style'] )
+        ? trim( $attributes['style'] )
+        : '';
+    $attributes['style'] = ( '' !== $existing_style ? rtrim( $existing_style, '; ' ) . '; ' : '' ) . $brand_style;
+    return $attributes;
+} );
+
 add_action( 'rest_api_init', static function (): void {
     register_rest_route( 'dtb/v1', '/gemini-storefront', [
         'methods'             => WP_REST_Server::READABLE,
