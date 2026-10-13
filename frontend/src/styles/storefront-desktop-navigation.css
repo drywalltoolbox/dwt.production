@@ -332,8 +332,8 @@
     --mega-panel-width: 1060px;
   }
 
-  .site-header .dtb-desktop-nav-dropdown--schematics {
-    --mega-panel-width: 1100px;
+   .site-header .dtb-desktop-nav-dropdown--schematics {
+    --mega-panel-width: 1180px;
   }
 
   /* ------------------------------------------------------------------
@@ -1323,4 +1323,27 @@
   }
   .site-header .logo-image { max-width: 188px; }
   .site-header .dtb-desktop-nav { gap: 12px; }
+}
+
+/* Shared selector-sheet geometry: Schematics and Repairs match the Brands cards. */
+@media (min-width: 1025px) {
+  .site-header .dtb-desktop-nav-dropdown--schematics .dtb-mega-menu__brand-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .site-header .dtb-mega-menu__brand-grid--repairs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    padding-top: 12px;
+  }
+
+  .site-header .dtb-mega-menu__brand-card--repair {
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 96px;
+    gap: 20px;
+    padding: 18px 26px;
+  }
+
+  .site-header .dtb-mega-menu__brand-card--repair .dtb-desktop-nav-row-text {
+    min-width: 0;
+  }
 }

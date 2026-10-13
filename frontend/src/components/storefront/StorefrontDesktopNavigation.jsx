@@ -309,9 +309,8 @@ function RepairCard({ entry, onNavigate }) {
   return (
     <Link
       to={entry.to}
-      className="dtb-mega-menu__repair-card"
+      className="dtb-mega-menu__brand-card dtb-mega-menu__brand-card--repair"
       onClick={onNavigate}
-      style={{ gridTemplateColumns: 'minmax(0, 1fr) auto', minHeight: '76px', paddingBlock: '14px' }}
     >
       <span className="dtb-desktop-nav-row-text">
         <span className="dtb-desktop-nav-row-title">{entry.label}</span>
@@ -346,7 +345,7 @@ function RepairsPanelRenderer({ item, onNavigate }) {
               <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
             </Link>
           </div>
-          <div className="dtb-mega-menu__repair-grid">
+          <div className="dtb-mega-menu__brand-grid dtb-mega-menu__brand-grid--repairs">
             {entries.map((entry) => (
               <RepairCard key={entry.to || entry.slug || entry.label} entry={entry} onNavigate={onNavigate} />
             ))}
