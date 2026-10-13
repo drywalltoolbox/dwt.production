@@ -20,9 +20,9 @@ import '../../styles/storefront-navigation-taxonomy.css';
 
 const RESILIENT_DROPDOWN_IDS = new Set(['products', 'brands', 'parts', 'repairs', 'schematics']);
 const CATALOG_BACKED_DROPDOWN_IDS = new Set(['products', 'brands', 'parts']);
-const POINTER_OPEN_INTENT_MS = 85;
-const POINTER_SWITCH_INTENT_MS = 42;
-const POINTER_CLOSE_DELAY_MS = 210;
+const POINTER_OPEN_INTENT_MS = 240;
+const POINTER_SWITCH_INTENT_MS = 160;
+const POINTER_CLOSE_DELAY_MS = 300;
 
 const ENTRY_ICONS = [Wrench, Layers, Box, PenTool, Ruler, Hammer, Package, Settings2, ShoppingBag, Award];
 const ENTRY_ICON_ELEMENTS_LARGE = ENTRY_ICONS.map((Icon, index) => (
@@ -391,7 +391,7 @@ function DesktopNavTrigger({ item, isOpen, active, panelId, onOpen, onToggle, on
   };
 
   return (
-    <div className={`dtb-desktop-nav-menu${isOpen ? ' is-open' : ''}`} onPointerEnter={() => onOpen(false)}>
+    <div className={`dtb-desktop-nav-menu${isOpen ? ' is-open' : ''}`} onPointerEnter={(event) => { if (event.pointerType === 'mouse') onOpen(false); }}>
       <button
         ref={triggerRef}
         type="button"
@@ -468,9 +468,11 @@ export default function StorefrontDesktopNavigation({ items, openMenuId, onOpen,
     clearTimer(openTimerRef);
     if (renderedMenuId === id && openMenuId === id) return;
 
-    const delay = immediate || reducedMotion
+    // Hover intent is an interaction safeguard, not an animation: retain
+    // the dwell threshold when reduced motion is requested.
+    const delay = immediate
       ? 0
-      : renderedMenuId
+      : openMenuId
         ? POINTER_SWITCH_INTENT_MS
         : POINTER_OPEN_INTENT_MS;
 
@@ -497,7 +499,7 @@ export default function StorefrontDesktopNavigation({ items, openMenuId, onOpen,
     closeTimerRef.current = window.setTimeout(() => {
       closeTimerRef.current = null;
       onClose();
-    }, reducedMotion ? 0 : POINTER_CLOSE_DELAY_MS);
+    }, POINTER_CLOSE_DELAY_MS);
   };
 
   useEffect(() => {
