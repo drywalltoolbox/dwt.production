@@ -39,11 +39,12 @@ function dtb_order_enqueue_job( string $job_type, int $order_id, array $args = [
 				return $existing;
 			}
 		}
-		return as_schedule_single_action( $timestamp, $job_type, $scheduled_args, 'dtb-orders' );
+		$action_id = as_schedule_single_action( $timestamp, $job_type, $scheduled_args, 'dtb-orders', true );
+		return $action_id > 0 ? $action_id : false;
 	}
 
-	wp_schedule_single_event( $timestamp, $job_type, $scheduled_args );
-	return $timestamp;
+	$scheduled = wp_schedule_single_event( $timestamp, $job_type, $scheduled_args );
+	return $scheduled ? $timestamp : false;
 }
 
 function dtb_order_retry_job( string $job_type, int $order_id, array $args = [] ): bool {

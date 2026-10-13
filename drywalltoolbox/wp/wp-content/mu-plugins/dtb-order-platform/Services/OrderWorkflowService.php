@@ -61,25 +61,70 @@ function dtb_order_on_refunded( int $order_id, int $refund_id ): void {
 	dtb_order_enqueue_job( 'dtb_order_sync_quickbooks', $order_id, [ 'action' => 'refund', 'refund_id' => $refund_id ] );
 }
 
+/**
+ * Dispatch receipts are durable per-job markers, separate from worker outcomes.
+ * Legacy dispatched orders without the v2 marker are deliberately NOT replayed:
+ * the old marker does not prove which provider calls may have completed.
+ */
 function dtb_order_dispatch_processing_jobs( int $order_id ): void {
 	$order = function_exists( 'wc_get_order' ) ? wc_get_order( $order_id ) : null;
-	if ( $order instanceof WC_Order && function_exists( 'dtb_checkout_handoff_is_unpaid_order' ) && dtb_checkout_handoff_is_unpaid_order( $order ) ) {
+	if ( ! $order instanceof WC_Order ) {
 		return;
 	}
-	if ( ! add_option( 'dtb_order_processing_dispatch_' . $order_id, current_time( 'mysql', true ), '', 'no' ) ) {
+	if ( function_exists( 'dtb_checkout_handoff_is_unpaid_order' ) && dtb_checkout_handoff_is_unpaid_order( $order ) ) {
+		return;
+	}
+	// Orders explicitly excluded from external work must not enter recovery.
+	if ( function_exists( 'dtb_order_write_boundary_order_should_skip_side_effects' )
+		&& dtb_order_write_boundary_order_should_skip_side_effects( $order ) ) {
 		return;
 	}
 
-	dtb_order_append_event( $order_id, 'order.fulfillment_queued', [
-		'source'     => 'system',
-		'actor_type' => 'system',
-		'visibility' => 'operator',
-		'idempotency_key' => 'order-processing-dispatch:' . $order_id,
-	] );
+	$legacy_key = 'dtb_order_processing_dispatch_' . $order_id;
+	$v2_key     = 'dtb_order_processing_dispatch_v2_' . $order_id;
+	$managed    = (bool) get_option( $v2_key, false );
+	if ( ! $managed ) {
+		// If the legacy marker exists, there is no reliable proof that provider
+		// work did not execute. Never replay it automatically.
+		if ( get_option( $legacy_key, false ) ) {
+			return;
+		}
+		if ( ! add_option( $legacy_key, current_time( 'mysql', true ), '', 'no' ) ) {
+			return;
+		}
+		add_option( $v2_key, '1', '', 'no' );
+		dtb_order_append_event( $order_id, 'order.fulfillment_queued', [
+			'source' => 'system', 'actor_type' => 'system', 'visibility' => 'operator',
+			'idempotency_key' => 'order-processing-dispatch:' . $order_id,
+		] );
+	}
 
-	dtb_order_enqueue_job( 'dtb_order_send_notification',            $order_id, [ 'template' => 'order-confirmation' ] );
-	dtb_order_enqueue_job( 'dtb_order_sync_veeqo',                  $order_id );
-	dtb_order_enqueue_job( 'dtb_order_sync_quickbooks',              $order_id, [ 'action' => 'create' ] );
-	// Rewards are intentionally disabled until the account rewards program is fully implemented and audited.
-	dtb_order_enqueue_job( 'dtb_order_refresh_tracking_projection',  $order_id );
+	$jobs = [
+		[ 'dtb_order_send_notification', [ 'template' => 'order-confirmation' ] ],
+		[ 'dtb_order_sync_veeqo', [] ],
+		[ 'dtb_order_sync_quickbooks', [ 'action' => 'create' ] ],
+		[ 'dtb_order_refresh_tracking_projection', [] ],
+	];
+	foreach ( $jobs as [ $hook, $args ] ) {
+		// Disabled or intentionally blocked integrations never acquire a receipt.
+		if ( 'dtb_order_sync_quickbooks' === $hook && function_exists( 'dtb_qbo_exports_paused' ) && dtb_qbo_exports_paused() ) {
+			continue;
+		}
+		if ( function_exists( 'dtb_order_write_boundary_should_block_job' ) && dtb_order_write_boundary_should_block_job( $hook, $order_id, $args ) ) {
+			continue;
+		}
+		$receipt = 'dtb_order_dispatch_job_' . hash( 'sha256', $order_id . ':' . $hook . ':' . wp_json_encode( $args ) );
+		if ( get_option( $receipt, false ) ) {
+			continue;
+		}
+		// Action Scheduler's pending-action de-duplication protects concurrent
+		// dispatch entry; the durable receipt prevents replay after completion.
+		$scheduled = dtb_order_enqueue_job( $hook, $order_id, $args );
+		if ( false !== $scheduled && 0 !== $scheduled ) {
+			add_option( $receipt, current_time( 'mysql', true ), '', 'no' );
+		} else {
+			// Preserve a searchable error; no side effects are retried here.
+			error_log( sprintf( '[DTB Orders] Dispatch scheduling failed: order %d, hook %s.', $order_id, $hook ) );
+		}
+	}
 }
