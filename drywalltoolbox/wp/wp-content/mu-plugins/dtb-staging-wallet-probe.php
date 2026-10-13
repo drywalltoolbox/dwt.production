@@ -41,6 +41,9 @@ add_action( 'wp', static function (): void {
         exit;
     }
 
+    // Prevent WordPress from redirecting the staging-only alias to the root private-page permalink.
+    remove_action( 'template_redirect', 'redirect_canonical' );
+
     // The active React theme strips all payment plugin scripts by default.
     // Only for this private, sandbox-only native page do we allow provider assets.
     remove_action( 'wp_enqueue_scripts', 'dtb_dequeue_non_react_assets', 9999 );
