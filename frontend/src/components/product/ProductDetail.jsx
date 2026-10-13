@@ -242,6 +242,58 @@ function stripSetIncludesFromDescription(content) {
   return out.join('\n').trim();
 }
 
+
+/**
+ * Extract only explicitly identified Features sections. Never infer features
+ * from general marketing copy or specifications.
+ */
+function splitProductFeatureSection(source = '') {
+  const value = String(source || '');
+  if (!value.trim()) return { description: value, features: '' };
+
+  // Structured HTML: take a Features / Key Features heading and its following
+  // siblings until the next heading; retain all other content as Description.
+  if (hasHtmlMarkup(value) && typeof document !== 'undefined') {
+    const root = document.createElement('div');
+    root.innerHTML = DOMPurify.sanitize(value, { USE_PROFILES: { html: true } });
+    const heading = [...root.querySelectorAll('h2, h3, h4, h5, h6')].find((node) =>
+      /^(key\\s+|product\\s+)?features(?:\\s*(?:&|and)\\s*benefits)?\\s*:?$/i.test(node.textContent.trim())
+    );
+    if (heading) {
+      const extracted = [];
+      let sibling = heading.nextSibling;
+      while (sibling && !(sibling.nodeType === 1 && /^H[2-6]$/.test(sibling.nodeName))) {
+        const next = sibling.nextSibling;
+        extracted.push(sibling.cloneNode(true));
+        sibling.remove();
+        sibling = next;
+      }
+      if (extracted.some((node) => node.textContent?.trim() || node.nodeType === 1)) {
+        heading.remove();
+        const featuresRoot = document.createElement('div');
+        extracted.forEach((node) => featuresRoot.appendChild(node));
+        return { description: root.innerHTML, features: featuresRoot.innerHTML };
+      }
+    }
+  }
+
+  // Plain text catalogs often include an explicit Features: subheading.
+  const match = /(?:^|\\n)\\s*(?:key |product )?features(?: and benefits)?\\s*:\\s*/i.exec(value);
+  if (match) {
+    const remaining = value.slice(match.index + match[0].length);
+    const nextHeading = /\\n\\s*(?:specifications?|description|overview|shipping|warranty|compatibility)\\s*:/i.exec(remaining);
+    const features = (nextHeading ? remaining.slice(0, nextHeading.index) : remaining).trim();
+    if (features) {
+      return {
+        description: (value.slice(0, match.index) + (nextHeading ? remaining.slice(nextHeading.index) : '')).trim(),
+        features,
+      };
+    }
+  }
+
+  return { description: value, features: '' };
+}
+
 function ProductDescriptionContent({ html, text }) {
   const sourceText = normalizeDescriptionText(text || '');
   const plainHtmlText = hasHtmlMarkup(html) ? normalizeDescriptionText(htmlToPlainText(html)) : '';
@@ -931,15 +983,15 @@ export default function ProductDetail({
     ? stripSetIncludesFromDescription(rawDescriptionBase)
     : rawDescriptionBase;
   const decodedDescription = decodeEscapedHtml(rawDescription);
-  const descriptionContent = hasHtmlMarkup(decodedDescription)
-    ? <ProductDescriptionContent html={decodedDescription} />
-    : (
-      <ProductDescriptionContent
-        text={decodedDescription || 'No description available.'}
-      />
-      );
-
-  const descriptionNode = descriptionContent;
+  const separatedContent = splitProductFeatureSection(decodedDescription);
+  const descriptionNode = hasHtmlMarkup(separatedContent.description)
+    ? <ProductDescriptionContent html={separatedContent.description} />
+    : <ProductDescriptionContent text={separatedContent.description || 'No description available.'} />;
+  const featuresNode = separatedContent.features
+    ? (hasHtmlMarkup(separatedContent.features)
+      ? <ProductDescriptionContent html={separatedContent.features} />
+      : <ProductDescriptionContent text={separatedContent.features} />)
+    : null;
 
   const handleViewIncludes = () => {
     if (!hasIncludesSpec || detailTabs.hidden) return;
@@ -1053,11 +1105,9 @@ export default function ProductDetail({
               {!onClose && !detailTabs.hidden && (
                 <ProductInformationAccordion
                   description={descriptionNode}
+                  features={featuresNode}
                   specs={!specTable.hidden ? <ProductSpecTable specs={productSpecifications} /> : null}
-                  reviews={<Reviews productId={effectiveProduct.id || product.id || effectiveSku || product.slug || product.name} />}
                   partsUrl={browsePartsUrl}
-                  sku={effectiveSku}
-                  brand={brandLabel}
                 />
               )}
 
