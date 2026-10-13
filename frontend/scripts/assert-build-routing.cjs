@@ -141,8 +141,11 @@ if (appEnv === 'staging') {
   if (!emitted.includes('RewriteRule ^checkout/?$ /checkout/ [R=302,L,NE]')) {
     throw new Error('Staging checkout must redirect to the canonical native WooCommerce checkout URL.');
   }
-  if (emitted.includes('RewriteRule ^checkout/?$ /wp/index.php?pagename=checkout [QSA,L]')) {
-    throw new Error('Staging must not execute a second checkout URL inside WordPress.');
+  // Order-pay query compatibility may still use this WordPress target under
+  // separate conditions. Only the first ordinary checkout rule is canonical.
+  const stagingCheckoutRules = emitted.match(/^\s*RewriteRule \^checkout\/\?\$ .*$/gm) || [];
+  if (!stagingCheckoutRules[0]?.includes('/checkout/ [R=302,L,NE]')) {
+    throw new Error('Staging ordinary checkout must hand off to canonical /checkout/.');
   }
   const checkoutUrlSource = fs.readFileSync(path.join(frontendRoot, 'src/utils/checkoutUrl.js'), 'utf8');
   if (!/return buildCheckoutUrl\('\/checkout\/'\)/.test(checkoutUrlSource) || checkoutUrlSource.includes('getStorefrontMount')) {
