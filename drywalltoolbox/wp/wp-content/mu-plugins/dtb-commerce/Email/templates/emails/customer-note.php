@@ -16,12 +16,13 @@ defined( 'ABSPATH' ) || exit;
 
 do_action( 'woocommerce_email_header', $email_heading, $email );
 
-echo function_exists( 'dtb_email_hero' ) ? dtb_email_hero( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	$email_heading,
-	'',
-	/* translators: %s: order number. */
-	sprintf( __( 'Order #%s', 'drywall-toolbox' ), $order->get_order_number() )
-) : '';
+echo function_exists( 'DTB\\Commerce\\Email\\dtb_email_v4_order_hero' )
+	? DTB\Commerce\Email\dtb_email_v4_order_hero( $order, $email, [
+		'title' => __( 'A note on your order', 'drywall-toolbox' ),
+		'body' => __( 'You have a new update about your order. Details are included below.', 'drywall-toolbox' ),
+		'steps' => [],
+	] )
+	: ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 ?>
 
 <div class="email-introduction">
