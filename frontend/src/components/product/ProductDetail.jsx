@@ -8,7 +8,6 @@ import ProductImageGallery from './ProductImageGallery';
 import ProductVariationRail from './ProductVariationRail';
 import ProductDetailHeader from './ProductDetailHeader';
 import ProductPurchasePanel from './ProductPurchasePanel';
-import ProductDetailTabs from './ProductDetailTabs';
 import ProductInformationAccordion from './ProductInformationAccordion.jsx';
 import ProductSpecTable from './ProductSpecTable';
 import { getProductSpecifications } from '../../utils/productSpecifications';
@@ -1102,7 +1101,7 @@ export default function ProductDetail({
                 ) : null}
               </div>
 
-              {!onClose && !detailTabs.hidden && (
+              {!detailTabs.hidden && (
                 <ProductInformationAccordion
                   description={descriptionNode}
                   features={featuresNode}
@@ -1131,28 +1130,6 @@ export default function ProductDetail({
             </div>
           ) : null}
 
-          {onClose && !detailTabs.hidden && (
-          <div {...detailTabs.rootProps}>
-          <ProductDetailTabs
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            descriptionNode={descriptionNode}
-            specsNode={specTable.hidden ? null : (
-              <div {...specTable.rootProps}>
-                <ProductSpecTable specs={productSpecifications} onItemClick={onClose} />
-              </div>
-            )}
-            hasIncludes={hasIncludesSpec}
-            compatibilityNode={(
-              <div className="dtb-pdp-compatibility">
-                <p>Confirm fit using this product&apos;s specifications and available options.</p>
-                <Link to={browsePartsUrl}>View compatible schematics and parts</Link>
-              </div>
-            )}
-            reviewsNode={<Reviews productId={effectiveProduct.id || product.id || effectiveSku || product.slug || product.name} />}
-          />
-          </div>
-          )}
 
           <div className="dtb-pdp-browse-parts-row">
             <Link to={browsePartsUrl} className="dtb-pdp-browse-parts-row__link">
