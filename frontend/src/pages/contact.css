@@ -1,0 +1,187 @@
+/* Contact page only. Global storefront shell, footer and form transport are unchanged. */
+.dtb-contact { min-height: 0; background: #fff; color: #0b1731; }
+.dtb-contact__hero {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(112deg, #fff 0%, #f6faff 43%, #dbeaff 100%);
+  border-bottom: 1px solid #e5edf8;
+  isolation: isolate;
+}
+.dtb-contact__hero::before,
+.dtb-contact__hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+.dtb-contact__hero::before {
+  background: linear-gradient(150deg, transparent 0 66%, rgba(255,255,255,.38) 66% 77%, transparent 77%);
+}
+.dtb-contact__hero::after {
+  background: linear-gradient(155deg, transparent 0 76%, rgba(65,128,230,.055) 76% 91%, transparent 91%);
+}
+.dtb-contact__hero-inner {
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: clamp(2.3rem, 4vw, 3.65rem) clamp(1.25rem, 3vw, 2.25rem) clamp(2.25rem, 3.4vw, 3.2rem);
+}
+.dtb-contact__eyebrow {
+  display: inline-block;
+  margin-bottom: .7rem;
+  color: #155bf3;
+  font-size: .77rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.dtb-contact__hero h1 {
+  margin: 0;
+  color: #07152c;
+  font-family: var(--dtb-font-display, var(--dtb-font-ui, sans-serif));
+  font-size: clamp(2.15rem, 4vw, 3.35rem);
+  font-weight: 850;
+  line-height: 1.07;
+  letter-spacing: -.052em;
+}
+.dtb-contact__hero p {
+  max-width: 650px;
+  margin: .9rem 0 0;
+  color: #526580;
+  font-size: clamp(.95rem, 1.15vw, 1.07rem);
+  line-height: 1.55;
+}
+.dtb-contact__content {
+  display: grid;
+  grid-template-columns: minmax(270px, .85fr) minmax(0, 1.5fr);
+  gap: clamp(1rem, 1.8vw, 1.4rem);
+  width: min(100% - 2.5rem, 1210px);
+  margin: 0 auto;
+  padding: clamp(1.25rem, 2.1vw, 1.75rem) 0;
+  align-items: stretch;
+}
+.dtb-contact__information,
+.dtb-contact__form-panel {
+  border: 1px solid #e1e7ef;
+  border-radius: 12px;
+  padding: clamp(1.35rem, 2.5vw, 2rem);
+}
+.dtb-contact__information { background: linear-gradient(125deg, #f7f9fc, #f2f5f9); }
+.dtb-contact__form-panel { background: #fff; }
+.dtb-contact__content h2 {
+  margin: 0;
+  color: #0b1731;
+  font-family: var(--dtb-font-display, var(--dtb-font-ui, sans-serif));
+  font-size: clamp(1.25rem, 1.7vw, 1.55rem);
+  font-weight: 780;
+  letter-spacing: -.038em;
+  line-height: 1.2;
+}
+.dtb-contact__information-intro {
+  margin: .65rem 0 1.4rem;
+  padding-bottom: 1.1rem;
+  border-bottom: 1px solid #dfe5ee;
+  color: #61718a;
+  line-height: 1.48;
+  font-size: .94rem;
+}
+.dtb-contact__details { display: grid; gap: 1.35rem; }
+.dtb-contact__detail { display: flex; align-items: center; gap: 1rem; min-width: 0; }
+.dtb-contact__detail-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 51px;
+  width: 51px;
+  height: 51px;
+  border-radius: 12px;
+  background: #e6efff;
+  color: #1460f9;
+}
+.dtb-contact__detail-label {
+  display: block;
+  margin-bottom: .2rem;
+  color: #758198;
+  font-size: .72rem;
+  font-weight: 750;
+  letter-spacing: .045em;
+  text-transform: uppercase;
+}
+.dtb-contact__detail a { color: #0c1b34; text-decoration: none; overflow-wrap: anywhere; font-size: .94rem; }
+.dtb-contact__detail a:hover { color: #145df4; text-decoration: underline; }
+.dtb-contact__form { margin-top: 1rem; display: grid; gap: .95rem; }
+.dtb-contact__field-row { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; }
+.dtb-contact__field { min-width: 0; display: grid; gap: .38rem; }
+.dtb-contact__field label {
+  color: #125af0;
+  font-size: .73rem;
+  font-weight: 800;
+  letter-spacing: .025em;
+  text-transform: uppercase;
+}
+.dtb-contact__field input,
+.dtb-contact__field select,
+.dtb-contact__field textarea {
+  width: 100%;
+  min-width: 0;
+  min-height: 43px;
+  padding: .68rem .9rem;
+  border: 1px solid #dce4ee;
+  border-radius: 8px;
+  outline: none;
+  background: #fff;
+  color: #15243b;
+  font: inherit;
+  font-size: .93rem;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.dtb-contact__field textarea { min-height: 95px; resize: vertical; }
+.dtb-contact__field input::placeholder,
+.dtb-contact__field textarea::placeholder { color: #8090a5; }
+.dtb-contact__field input:focus-visible,
+.dtb-contact__field select:focus-visible,
+.dtb-contact__field textarea:focus-visible {
+  border-color: #2771f5;
+  box-shadow: 0 0 0 3px rgba(37,99,235,.13);
+}
+.dtb-contact__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .65rem;
+  width: 100%;
+  min-height: 48px;
+  padding: .7rem 1.2rem;
+  border: 0;
+  border-radius: 8px;
+  background: #165cf4;
+  box-shadow: 0 3px 8px rgba(20,82,211,.12);
+  color: #fff;
+  font-size: .83rem;
+  font-weight: 800;
+  letter-spacing: .035em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.dtb-contact__submit:hover:not(:disabled) { background: #084cd9; }
+.dtb-contact__submit:focus-visible { outline: 3px solid #85b0ff; outline-offset: 2px; }
+.dtb-contact__submit:disabled { opacity: .63; cursor: progress; }
+.dtb-contact__error { margin: 0; padding: .85rem; color: #982222; background: #fff1f1; border: 1px solid #f4cccc; border-radius: 8px; font-size: .88rem; }
+.dtb-contact__success { display: grid; justify-items: center; gap: .8rem; text-align: center; padding: 1.5rem .5rem; }
+.dtb-contact__success-icon { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: #e9f8ef; color: #198246; }
+.dtb-contact__success h3 { margin: 0; font-size: 1.25rem; }
+.dtb-contact__success p { margin: 0; color: #5a6c85; }
+.dtb-contact__ticket-link { display: inline-flex; align-items: center; gap: .35rem; color: #145cf1; font-weight: 750; }
+.dtb-contact__reset { max-width: 275px; margin-top: .35rem; }
+@media (max-width: 800px) {
+  .dtb-contact__content { grid-template-columns: 1fr; width: min(100% - 2rem, 650px); }
+  .dtb-contact__details { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+}
+@media (max-width: 520px) {
+  .dtb-contact__hero-inner { padding: 2.1rem 1.25rem 2.25rem; }
+  .dtb-contact__content { width: calc(100% - 1.5rem); }
+  .dtb-contact__information,.dtb-contact__form-panel { padding: 1.2rem; }
+  .dtb-contact__field-row,.dtb-contact__details { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dtb-contact__field input,.dtb-contact__field select,.dtb-contact__field textarea { transition: none; }
+}
