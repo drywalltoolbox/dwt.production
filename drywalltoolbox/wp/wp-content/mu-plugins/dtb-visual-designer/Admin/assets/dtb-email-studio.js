@@ -5,7 +5,7 @@
 	if (!root) return;
 
 	var cfg = window.dtbAdminConfig || {};
-	var state = { manifest: null, emailId: '', orderId: 0, device: 'desktop', rendering: false, result: null, error: '' };
+	var state = { manifest: null, emailId: '', orderId: 0, device: 'desktop', rendering: false, renderSeq: 0, result: null, error: '' };
 
 	function isAccountFixture() {
 		return state.emailId === 'customer_new_account' || state.emailId === 'customer_reset_password';
@@ -56,18 +56,22 @@
 	}
 
 	function renderEmail() {
-		if (!state.emailId || state.rendering) return;
+		if (!state.emailId) return;
+		var requestId = ++state.renderSeq;
+		var emailId = state.emailId;
 		state.rendering = true;
 		state.error = '';
 		state.result = null;
 		render();
-		api('POST', '/dtb/v1/design/email-studio/render', { emailId: state.emailId, orderId: state.orderId })
+		api('POST', '/dtb/v1/design/email-studio/render', { emailId: emailId, orderId: 0 })
 			.then(function (result) {
+				if (requestId !== state.renderSeq || emailId !== state.emailId) return;
 				state.result = result;
 				state.rendering = false;
 				render();
 			})
 			.catch(function (error) {
+				if (requestId !== state.renderSeq || emailId !== state.emailId) return;
 				state.error = error.message;
 				state.rendering = false;
 				render();
