@@ -81,6 +81,9 @@ function dedupeOptions(options) {
 }
 
 export default function Dropdown({
+  id,
+  triggerRef,
+  required = false,
   value,
   onChange,
   options = [],
@@ -135,6 +138,9 @@ export default function Dropdown({
 
       <button
         type="button"
+        id={id}
+        ref={triggerRef}
+        aria-required={required || undefined}
         onClick={toggle}
         disabled={disabled}
         aria-haspopup="listbox"
