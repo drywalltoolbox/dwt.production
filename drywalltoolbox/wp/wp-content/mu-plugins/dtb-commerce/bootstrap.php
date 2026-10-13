@@ -34,6 +34,8 @@ require_once __DIR__ . '/Payment/FailedPaymentRecovery.php';
 require_once __DIR__ . '/Payment/CheckoutPerformance.php';
 require_once __DIR__ . '/Payment/CheckoutRuntimeIntegrity.php';
 require_once __DIR__ . '/Shipping/DTBShippingMethod.php';
+// Shared lifecycle email design must be available before template rendering.
+require_once __DIR__ . '/Email/DesignV3.php';
 require_once __DIR__ . '/Email/TemplateOverride.php';
 require_once __DIR__ . '/Email/Preview/EmailPreviewService.php';
 
