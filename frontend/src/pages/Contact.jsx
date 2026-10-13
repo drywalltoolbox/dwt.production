@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Check, Clock3, Mail, Phone } from 'lucide-react';
 import SEOHead from '../components/shared/SEOHead';
+import Dropdown from '../components/ui/Dropdown';
 import { apiClient } from '../api/client';
 import './contact.css';
 
@@ -15,6 +16,7 @@ const inquiryTypes = [
 ];
 
 export default function Contact() {
+  const inquiryRef = useRef(null);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -32,6 +34,11 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.inquiryType) {
+      setError('Please select an inquiry type.');
+      inquiryRef.current?.focus();
+      return;
+    }
     setError('');
     setSubmitting(true);
 
@@ -133,10 +140,18 @@ export default function Contact() {
               </div>
               <div className="dtb-contact__field">
                 <label htmlFor="dtb-contact-type">Inquiry Type</label>
-                <select id="dtb-contact-type" name="inquiryType" value={formData.inquiryType} onChange={handleChange} required disabled={submitting}>
-                  <option value="" disabled>Select an inquiry type</option>
-                  {inquiryTypes.map((type) => <option key={type} value={type}>{type}</option>)}
-                </select>
+                <Dropdown
+                  id="dtb-contact-type"
+                  triggerRef={inquiryRef}
+                  value={formData.inquiryType}
+                  onChange={(value) => { setFormData((current) => ({ ...current, inquiryType: value })); setError(''); }}
+                  options={inquiryTypes.map((type) => ({ value: type, label: type }))}
+                  placeholder="Select an inquiry type"
+                  required
+                  disabled={submitting}
+                  fullWidth
+                  className="dtb-contact__inquiry-dropdown"
+                />
               </div>
               <div className="dtb-contact__field">
                 <label htmlFor="dtb-contact-message">Message</label>
