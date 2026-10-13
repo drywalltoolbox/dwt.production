@@ -34,6 +34,9 @@ check( $before === $p->get_meta( DTB_CatalogContentCsv::FEATURES ), 'Repeat impo
 check( '2' === $p->get_meta( DTB_CatalogContentCsv::VERSION ), 'Version missing' );
 DTB_CatalogContentCsv::pre_insert( $p, [ 'meta_data' => [] ] );
 check( $before === $p->get_meta( DTB_CatalogContentCsv::FEATURES ), 'Missing column cleared metadata' );
+// Mirror WooCommerce's set_meta_data() behavior before its pre-insert hook.
+$p->update_meta_data( DTB_CatalogContentCsv::FEATURES, '' );
+$p->update_meta_data( DTB_CatalogContentCsv::VERSION, '' );
 DTB_CatalogContentCsv::pre_insert( $p, [ 'meta_data' => [
     [ 'key' => DTB_CatalogContentCsv::FEATURES, 'value' => '' ],
     [ 'key' => DTB_CatalogContentCsv::VERSION, 'value' => '' ],
