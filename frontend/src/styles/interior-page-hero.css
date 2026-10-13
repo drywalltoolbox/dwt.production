@@ -1,0 +1,57 @@
+/* Approved compact interior discovery header. Strictly presentation-only. */
+.dtb-interior-hero {
+  width: 100%;
+  min-width: 0;
+  border-bottom: 1px solid #e3eaf3;
+  background: linear-gradient(110deg, #ffffff 0%, #fcfdff 68%, #f7faff 100%);
+  color: #091b39;
+}
+.dtb-interior-hero__inner {
+  padding: clamp(0.85rem, 1.3vw, 1.15rem) var(--dtb-viewport-gutter, 2rem)
+    clamp(1.2rem, 2vw, 1.65rem);
+}
+.dtb-interior-hero .dtb-breadcrumb-bar {
+  margin: 0 0 clamp(0.65rem, 1vw, 0.9rem);
+  padding: 0;
+  background: transparent;
+}
+.dtb-interior-hero__body {
+  position: relative;
+  padding-left: clamp(1.25rem, 2vw, 1.9rem);
+}
+.dtb-interior-hero__body::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -0.1rem;
+  bottom: -0.1rem;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent 0%, #94baff 22%, #1262ef 50%, #94baff 78%, transparent 100%);
+  pointer-events: none;
+}
+.dtb-interior-hero__title {
+  margin: 0;
+  max-width: 35ch;
+  color: #081b38;
+  font-family: var(--dtb-font-display, var(--dtb-font-ui, sans-serif));
+  font-size: clamp(1.75rem, 2.65vw, 2.65rem);
+  font-weight: 830;
+  line-height: 1.12;
+  letter-spacing: -0.042em;
+  text-wrap: balance;
+}
+.dtb-interior-hero__description {
+  margin: 0.35rem 0 0;
+  max-width: 68ch;
+  color: #61738f;
+  font-family: var(--dtb-font-body, sans-serif);
+  font-size: clamp(0.84rem, 1vw, 0.96rem);
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+@media (max-width: 767px) {
+  .dtb-interior-hero__inner { padding: 0.8rem var(--dtb-viewport-gutter, 1rem) 1.05rem; }
+  .dtb-interior-hero__body { padding-left: 1rem; }
+  .dtb-interior-hero__title { font-size: clamp(1.65rem, 6.6vw, 2.2rem); }
+  .dtb-interior-hero__description { font-size: 0.84rem; }
+}
