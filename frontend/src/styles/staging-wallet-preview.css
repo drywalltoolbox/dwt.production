@@ -1,4 +1,4 @@
 /* Staging-only, opt-in: the existing PDP and modal layouts are untouched. */
-.dtb-native-wallet-preview:not([hidden]){display:block;margin-top:12px}
-.dtb-native-wallet-preview[hidden]{display:none}
+.dtb-native-wallet-preview{display:block;margin-top:12px;position:absolute;inset-inline:0;opacity:0;pointer-events:none}
+.dtb-native-wallet-preview.is-ready{position:relative;opacity:1;pointer-events:auto}
 .dtb-native-wallet-preview__frame{display:block;width:100%;height:110px;border:0;background:transparent}
