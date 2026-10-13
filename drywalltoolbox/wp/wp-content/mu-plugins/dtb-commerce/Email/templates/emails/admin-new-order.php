@@ -14,19 +14,11 @@ defined( 'ABSPATH' ) || exit;
 
 do_action( 'woocommerce_email_header', $email_heading, $email );
 
-echo function_exists( 'DTB\\Commerce\\Email\\dtb_email_v4_order_hero' )
-	? DTB\Commerce\Email\dtb_email_v4_order_hero( $order, $email, [
-		'title' => __( 'New order received', 'drywall-toolbox' ),
-		'body' => __( 'Review the payment state and prepare the next authorized fulfillment step.', 'drywall-toolbox' ),
-		'steps' => [],
-	] )
-	: ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo $order instanceof WC_Order && function_exists( 'DTB\\Commerce\\Email\\dtb_email_order_confirmation_intro' )
+	? DTB\Commerce\Email\dtb_email_order_confirmation_intro( $order, true ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 ?>
 
-<div class="email-introduction">
-	<?php echo function_exists( 'dtb_email_status_badge' ) ? dtb_email_status_badge( __( 'New order', 'drywall-toolbox' ), 'info' ) : ''; ?>
-	<p><?php printf( esc_html__( 'New order #%1$s from %2$s. Review payment and begin fulfillment.', 'drywall-toolbox' ), esc_html( $order->get_order_number() ), esc_html( $order->get_formatted_billing_full_name() ) ); ?></p>
-</div>
+
 
 <?php
 /*
