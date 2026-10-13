@@ -112,7 +112,7 @@
 		} else if (!state.result) {
 			frameContent = el('div', { class: 'dtb-es__empty' }, [el('strong', {}, ['Choose an email to preview']), el('p', {}, ['The Studio generates a synthetic preview automatically.'])]);
 		} else {
-			frameContent = el('iframe', { title: 'Rendered WooCommerce email', sandbox: 'allow-popups allow-popups-to-escape-sandbox', srcdoc: state.result.html }, []);
+			frameContent = el('iframe', { title: 'Rendered WooCommerce email', sandbox: '', srcdoc: state.result.html }, []);
 		}
 
 		root.appendChild(toolbar);
