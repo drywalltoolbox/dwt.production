@@ -30,39 +30,13 @@ defined( 'ABSPATH' ) || exit;
  */
 function dtb_system_manager_tab_groups(): array {
 	return [
-		'overview' => [
-			'label' => __( 'Overview', 'drywall-toolbox' ),
+		'primary' => [
+			'label' => __( 'System Manager', 'drywall-toolbox' ),
 			'tabs'  => [
 				[ 'id' => 'overview', 'label' => __( 'Overview', 'drywall-toolbox' ) ],
-			],
-		],
-		'platform' => [
-			'label' => __( 'Platform Health', 'drywall-toolbox' ),
-			'tabs'  => [
-				[ 'id' => 'system',       'label' => __( 'System Info', 'drywall-toolbox' ) ],
-				[ 'id' => 'queues',       'label' => __( 'Queues & Cron', 'drywall-toolbox' ) ],
-				[ 'id' => 'integrations', 'label' => __( 'Integrations', 'drywall-toolbox' ) ],
-				[ 'id' => 'webhooks',     'label' => __( 'Webhooks', 'drywall-toolbox' ) ],
-			],
-		],
-		'tools' => [
-			'label' => __( 'Platform Tools', 'drywall-toolbox' ),
-			'tabs'  => [
-				[ 'id' => 'tools', 'label' => __( 'Tools & Recovery', 'drywall-toolbox' ) ],
-			],
-		],
-		'diagnostics' => [
-			'label' => __( 'Diagnostics', 'drywall-toolbox' ),
-			'tabs'  => [
+				[ 'id' => 'operations', 'label' => __( 'Operations', 'drywall-toolbox' ) ],
 				[ 'id' => 'live-updates', 'label' => __( 'Live Updates', 'drywall-toolbox' ) ],
-				[ 'id' => 'audit', 'label' => __( 'Audit Log', 'drywall-toolbox' ) ],
-				[ 'id' => 'logs',  'label' => __( 'Debug Log', 'drywall-toolbox' ) ],
-			],
-		],
-		'settings' => [
-			'label' => __( 'Settings', 'drywall-toolbox' ),
-			'tabs'  => [
-				[ 'id' => 'integration-settings', 'label' => __( 'Integration Settings', 'drywall-toolbox' ) ],
+				[ 'id' => 'more', 'label' => __( 'More', 'drywall-toolbox' ) ],
 			],
 		],
 	];
@@ -89,7 +63,7 @@ function dtb_system_manager_render_page(): void {
 			$tabs[] = [
 				'id'     => $tab['id'],
 				'label'  => $tab['label'],
-				'active' => $active_tab === $tab['id'],
+				'active' => $active_tab === $tab['id'] || ( 'more' === $tab['id'] && in_array( $active_tab, [ 'system', 'queues', 'integrations', 'webhooks', 'audit', 'logs', 'integration-settings', 'tools' ], true ) ),
 				'url'    => add_query_arg( 'tab', $tab['id'], $base_url ),
 				'group'  => $group_key,
 				'group_start' => $first_in_group,
@@ -189,6 +163,13 @@ function dtb_system_manager_dispatch_tab( string $active_tab, bool $can_system, 
 	}
 
 	switch ( $active_tab ) {
+		case 'operations':
+			dtb_system_manager_render_queues_tab();
+			dtb_system_manager_render_integrations_tab();
+			break;
+		case 'more':
+			dtb_system_manager_render_more_tab();
+			break;
 		case 'queues':
 			dtb_system_manager_render_queues_tab();
 			break;
@@ -220,6 +201,30 @@ function dtb_system_manager_dispatch_tab( string $active_tab, bool $can_system, 
 			dtb_system_manager_render_overview_tab( $can_system, $can_deployments );
 			break;
 	}
+}
+
+/**
+ * Secondary technical views remain available without occupying launch-critical
+ * navigation space. Keep the original tab handlers and deep links intact.
+ */
+function dtb_system_manager_render_more_tab(): void {
+	$views = [
+		[ 'system', __( 'System Info', 'drywall-toolbox' ), __( 'WordPress and server environment.', 'drywall-toolbox' ) ],
+		[ 'webhooks', __( 'Webhooks', 'drywall-toolbox' ), __( 'Webhook delivery and failures.', 'drywall-toolbox' ) ],
+		[ 'audit', __( 'Audit Log', 'drywall-toolbox' ), __( 'Detailed administrative history.', 'drywall-toolbox' ) ],
+		[ 'logs', __( 'Debug Log', 'drywall-toolbox' ), __( 'Troubleshooting when needed.', 'drywall-toolbox' ) ],
+		[ 'integration-settings', __( 'Integration Settings', 'drywall-toolbox' ), __( 'Connector configuration.', 'drywall-toolbox' ) ],
+		[ 'tools', __( 'Tools & Recovery', 'drywall-toolbox' ), __( 'Restricted administrative utilities.', 'drywall-toolbox' ) ],
+	];
+	echo '<div class="dtb-grid dtb-grid--two">';
+	foreach ( $views as $view ) {
+		$url = add_query_arg( [ 'page' => 'dtb-system-manager', 'tab' => $view[0] ], admin_url( 'admin.php' ) );
+		echo '<section class="dtb-card"><div class="dtb-card__body">';
+		echo '<h2 class="dtb-card__title"><a href="' . esc_url( $url ) . '">' . esc_html( $view[1] ) . '</a></h2>';
+		echo '<p>' . esc_html( $view[2] ) . '</p>';
+		echo '</div></section>';
+	}
+	echo '</div>';
 }
 
 /** Surface capability-protected platform tools without duplicating ownership. */
@@ -662,18 +667,29 @@ function dtb_system_manager_render_live_updates_tab(): void {
 		echo '<p>' . esc_html__( 'No recorded file updates yet.', 'drywall-toolbox' ) . '</p>';
 	} else {
 		echo dtb_admin_ui_table_open( [
-			[ 'label' => __( 'When (UTC)', 'drywall-toolbox' ), 'key' => 'time' ],
-			[ 'label' => __( 'Change', 'drywall-toolbox' ), 'key' => 'action' ],
-			[ 'label' => __( 'File / Release', 'drywall-toolbox' ), 'key' => 'path' ],
-			[ 'label' => __( 'Source', 'drywall-toolbox' ), 'key' => 'source' ],
+			[ 'label' => __( 'When', 'drywall-toolbox' ), 'key' => 'time' ],
+			[ 'label' => __( 'Update', 'drywall-toolbox' ), 'key' => 'update' ],
+			[ 'label' => __( 'Origin', 'drywall-toolbox' ), 'key' => 'source' ],
 		], [] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$action_labels = [
+			'write-file'       => __( 'Updated', 'drywall-toolbox' ),
+			'create-file'      => __( 'Created', 'drywall-toolbox' ),
+			'delete-file'      => __( 'Deleted', 'drywall-toolbox' ),
+			'restore-backup'   => __( 'Restored', 'drywall-toolbox' ),
+			'set-plugin-state' => __( 'Plugin changed', 'drywall-toolbox' ),
+			'switch-theme'     => __( 'Theme changed', 'drywall-toolbox' ),
+		];
 		foreach ( $entries as $entry ) {
 			$location = trim( $entry['root'] . '/' . $entry['path'], '/' );
-			echo '<tr><td>' . esc_html( $entry['time'] ) . '</td>';
-			echo '<td><strong>' . esc_html( $entry['action'] ) . '</strong></td>';
-			echo '<td><code>' . esc_html( $location ) . '</code>';
+			$timestamp = strtotime( $entry['time'] );
+			$when = $timestamp ? wp_date( 'M j, g:i A', $timestamp ) : $entry['time'];
+			$name = basename( $location );
+			$description = $action_labels[ $entry['action'] ] ?? $entry['action'];
+			echo '<tr><td style="white-space:nowrap">' . esc_html( $when ) . '</td>';
+			echo '<td><strong>' . esc_html( $description ) . '</strong> &middot; <code title="' . esc_attr( $location ) . '">' . esc_html( $name ) . '</code>';
+			echo '<div style="font-size:12px;color:#667085;overflow-wrap:anywhere">' . esc_html( $location ) . '</div>';
 			if ( '' !== $entry['backup'] ) {
-				echo '<small> ' . esc_html__( 'Backup available', 'drywall-toolbox' ) . '</small>';
+				echo '<small>' . esc_html__( 'Recovery copy available', 'drywall-toolbox' ) . '</small>';
 			}
 			echo '</td><td>' . esc_html( $entry['source'] ) . '</td></tr>';
 		}
