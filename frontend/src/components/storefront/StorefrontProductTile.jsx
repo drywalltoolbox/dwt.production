@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, Info } from 'lucide-react';
+import { Eye, Info, SlidersHorizontal } from 'lucide-react';
 import ProductCardImage from '../product/ProductCardImage';
 import AddToCartButton from '../ui/AddToCartButton.jsx';
 import '../../styles/contractor-shopping.css';
@@ -146,7 +146,25 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
         <button type="button" onClick={handleTitleClick} className="dtb-product-card__name" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} data-dtb-card-action="title" aria-label={isMobile ? `Open full page for ${name}` : `View product details for ${name}`}>{name}</button>
         <span className={`dtb-product-card__sku${sku ? '' : ' dtb-product-card__sku--empty'}`} aria-hidden={sku ? undefined : true}>{sku ? `SKU: ${sku}` : '\u00a0'}</span>
         <div className="dtb-product-card__divider" />
-        <div className="dtb-product-card__footer"><div className="dtb-product-card__price-col"><div className="dtb-product-card__price-group"><strong className="dtb-product-card__price" style={{ color: outOfStock ? 'var(--dtb-muted)' : 'var(--dtb-text)' }}>{priceStr}</strong>{comparePriceStr ? <span className="dtb-product-card__compare-price">{comparePriceStr}</span> : null}</div></div>{!isMobile && !isVariable && <AddToCartButton onClick={handleAddButtonClick} disabled={outOfStock} className="dtb-product-card__action" size="card" label="Add" productId={displayProduct.id} aria-label={`Add ${name} to cart`} data-dtb-card-action="add" />}</div>
+        <div className="dtb-product-card__footer"><div className="dtb-product-card__price-col"><div className="dtb-product-card__price-group"><strong className="dtb-product-card__price" style={{ color: outOfStock ? 'var(--dtb-muted)' : 'var(--dtb-text)' }}>{priceStr}</strong>{comparePriceStr ? <span className="dtb-product-card__compare-price">{comparePriceStr}</span> : null}</div></div>{!isMobile && (isVariable ? (
+          <button
+            type="button"
+            className="dtb-add-to-cart dtb-add-to-cart--card dtb-product-card__action"
+            onClick={handleQuickView}
+            onFocus={warmProductRoute}
+            onPointerEnter={handlePointerIntent}
+            aria-label={`Choose options for ${name}`}
+            data-dtb-card-action="options"
+          >
+            <span className="dtb-add-to-cart__surface" aria-hidden="true" />
+            <span className="dtb-add-to-cart__content">
+              <SlidersHorizontal className="dtb-add-to-cart__cart" aria-hidden="true" />
+              <span className="dtb-add-to-cart__label">Options</span>
+            </span>
+          </button>
+        ) : (
+          <AddToCartButton onClick={handleAddButtonClick} disabled={outOfStock} className="dtb-product-card__action" size="card" label="Add" productId={displayProduct.id} aria-label={`Add ${name} to cart`} data-dtb-card-action="add" />
+        ))}</div>
       </div>
     </article>
   );
