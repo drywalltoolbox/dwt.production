@@ -48,6 +48,7 @@ EXPECTED_COLUMNS = (
     "Meta: _seopress_robots_canonical", "Meta: _seopress_robots_index",
     "Meta: surerank_settings_post_no_index", "Meta: _wds_title", "Meta: _wds_metadesc",
     "Meta: _wds_canonical", "Meta: _wds_focus-keywords",
+    "Meta: _veeqo_sellable_id", "Meta: _veeqo_mapped_sku", "Meta: _veeqo_product_id",
 )
 
 ALLOWED_TYPES = {"simple", "variable", "variation"}
