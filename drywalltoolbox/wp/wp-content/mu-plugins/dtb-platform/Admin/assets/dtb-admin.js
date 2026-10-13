@@ -891,7 +891,7 @@
 		const controller = new AbortController();
 		_liveAbort.set( target, controller );
 
-		DtbAdmin.setRegionLoading( target, true );
+		if ( ! silent ) DtbAdmin.setRegionLoading( target, true );
 
 		const url    = new URL( endpoint, window.location.origin );
 		const state  = Object.assign( DtbAdmin.readLiveState(), query );
@@ -932,9 +932,10 @@
 			} )
 			.then( function ( payload ) {
 				const html = ( payload && typeof payload === 'object' ) ? ( payload.html || '' ) : String( payload );
-				target.innerHTML = html;
-				DtbAdmin.setRegionLoading( target, false );
-				DtbAdmin.clearDirty( regionId );
+				const changed = target.innerHTML !== html;
+				if ( changed ) target.innerHTML = html;
+				if ( ! silent ) DtbAdmin.setRegionLoading( target, false );
+				if ( changed ) DtbAdmin.clearDirty( regionId );
 
 				// Hide "updates available" badge if present
 				const badge = target.querySelector( '.dtb-update-available' );
@@ -954,7 +955,7 @@
 					if ( tsEl ) tsEl.textContent = payload.meta.updated_at;
 				}
 
-				DtbAdmin.rebind( target );
+				if ( changed ) DtbAdmin.rebind( target );
 
 				if ( pushHistory ) {
 					DtbAdmin.applyHistoryState( state );
@@ -967,7 +968,7 @@
 			} )
 			.catch( function ( err ) {
 				if ( err.name === 'AbortError' ) return; // superseded request
-				DtbAdmin.setRegionLoading( target, false );
+				if ( ! silent ) DtbAdmin.setRegionLoading( target, false );
 				console.warn( '[DtbAdmin] liveNavigate failed:', err );
 				// Suppress toast for background auto-refresh polls (silent=true) so
 				// transient 403s from stale nonces don't interrupt the admin UI.

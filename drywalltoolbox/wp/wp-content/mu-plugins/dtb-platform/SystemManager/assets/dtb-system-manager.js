@@ -169,8 +169,10 @@
 			if ( ! endpoint ) return;
 
 			state.inFlight = true;
-			region.classList.add( 'is-refreshing' );
-			setToolbarState( toolbar, 'refreshing', 'Refreshing…' );
+			if ( reason !== 'auto' ) {
+				region.classList.add( 'is-refreshing' );
+				setToolbarState( toolbar, 'refreshing', 'Checking for updates…' );
+			}
 
 			if ( state.controller ) state.controller.abort();
 			state.controller = new AbortController();
@@ -198,8 +200,7 @@
 						const previousSignature = signatureForRegion( region );
 						state.lastHtml = parsed.html;
 						region.innerHTML = parsed.html;
-						region.classList.add( 'is-updating' );
-						window.setTimeout( () => region.classList.remove( 'is-updating' ), 220 );
+						// Preserve stable layout; highlighting rows alone indicates new data.
 						markNewRows( region, previousSignature );
 						scrollLogTailToEnd( region );
 						if ( DtbAdmin?.rebind ) DtbAdmin.rebind( region );
@@ -210,7 +211,7 @@
 					setToolbarState(
 						toolbar,
 						state.fast ? 'fast' : 'live',
-						'Updated ' + nowLabel + ' · refreshing every ' + ( state.fast ? '5s' : '60s' )
+						'Checked ' + nowLabel + ' · updates shown only when changed'
 					);
 				} )
 				.catch( function ( error ) {
