@@ -63,8 +63,8 @@ function dtb_order_retry_job( string $job_type, int $order_id, array $args = [] 
 
 	$delay           = DTB_ORDER_JOB_RETRY_BASE * (int) pow( 2, $attempt );
 	$args['attempt'] = $attempt + 1;
-	dtb_order_enqueue_job( $job_type, $order_id, $args, $delay );
-	return true;
+	$scheduled = dtb_order_enqueue_job( $job_type, $order_id, $args, $delay );
+	return false !== $scheduled;
 }
 
 function dtb_order_job_result_status( array $result ): string {
