@@ -102,17 +102,11 @@
 			el('div', { class: 'dtb-es__brand' }, [el('span', { class: 'dtb-es__eyebrow' }, ['TRANSACTIONAL EMAILS']), el('h1', {}, ['Email Studio']), el('p', {}, ['Preview customer and operator email templates using safe simulated data. No messages are sent.'])]),
 			el('label', {}, [el('span', {}, ['Email']), el('select', { onchange: function (event) { state.emailId = event.target.value; renderEmail(); } }, emailOptions)]),
 			el('div', { class: 'dtb-es__fixture-label', role: 'status' }, ['SYNTHETIC DATA · NO REAL ORDERS OR CUSTOMERS']),
-			el('div', { class: 'dtb-es__devices', role: 'group', 'aria-label': 'Email viewport width' }, [
+			el('div', { class: 'dtb-es__devices', role: 'group', 'aria-label': 'Email viewport width' },
 				['desktop', 'tablet', 'mobile'].map(function (device) {
 					return el('button', { type: 'button', class: state.device === device ? 'is-active' : '', 'aria-pressed': state.device === device ? 'true' : 'false', onclick: function () { state.device = device; render(); } }, [device.charAt(0).toUpperCase() + device.slice(1)]);
-				})[0],
-				['desktop', 'tablet', 'mobile'].map(function (device) {
-					return el('button', { type: 'button', class: state.device === device ? 'is-active' : '', 'aria-pressed': state.device === device ? 'true' : 'false', onclick: function () { state.device = device; render(); } }, [device.charAt(0).toUpperCase() + device.slice(1)]);
-				})[1],
-				['desktop', 'tablet', 'mobile'].map(function (device) {
-					return el('button', { type: 'button', class: state.device === device ? 'is-active' : '', 'aria-pressed': state.device === device ? 'true' : 'false', onclick: function () { state.device = device; render(); } }, [device.charAt(0).toUpperCase() + device.slice(1)]);
-				})[2]
-			]),
+				})
+			),
 			el('button', { type: 'button', class: 'dtb-es__fullscreen', 'aria-pressed': state.fullscreen ? 'true' : 'false', onclick: function () { state.fullscreen = !state.fullscreen; render(); } }, [state.fullscreen ? 'Exit fullscreen' : 'Fullscreen']),
 			el('button', { type: 'button', class: 'dtb-es__refresh', onclick: renderEmail, disabled: state.rendering ? 'disabled' : null }, [state.rendering ? 'Rendering…' : 'Refresh preview']),
 		]);
