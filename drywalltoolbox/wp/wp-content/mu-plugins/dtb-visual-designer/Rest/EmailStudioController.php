@@ -30,7 +30,8 @@ add_action( 'rest_api_init', static function (): void {
 				'sanitize_callback' => 'sanitize_key',
 			],
 			'orderId' => [
-				'required'          => true,
+				'required'          => false,
+				'default'           => 0,
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',
 				'validate_callback' => static fn( $value ): bool => absint( $value ) >= 0,
@@ -48,12 +49,14 @@ function dtb_vd_rest_email_studio_manifest( WP_REST_Request $request ) {
 
 	return rest_ensure_response( [
 		'emails' => EmailPreviewService::supported_emails(),
-		'orders' => EmailPreviewService::recent_orders( 30 ),
+		'orders' => [],
+		'fixtureMode' => 'synthetic',
+		'testSendEnabled' => false,
 		'limits' => [
 			'orderCount' => 0,
 			'htmlBytes'  => 750000,
 		],
-		'notice' => __( 'Preview renders the actual registered WooCommerce HTML email without sending it. Refund, fulfillment, account, and password-reset emails are omitted until their required lifecycle objects are available.', 'drywall-toolbox' ),
+		'notice' => __( 'All notification previews use simulated data, without reading real orders, customer credentials or sending email. Fulfillment previews are visual-only simulations.', 'drywall-toolbox' ),
 	] );
 }
 
