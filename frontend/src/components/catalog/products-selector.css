@@ -249,7 +249,10 @@
   padding: clamp(0.75rem, 2vw, 1.25rem);
   object-fit: contain;
   object-position: center;
-  background: #ffffff;
+  /* These catalog previews contain white matte pixels. Blend the white into
+     the existing gray card surface instead of exposing a white canvas band. */
+  background: transparent;
+  mix-blend-mode: multiply;
   transform: translateZ(0);
 }
 
