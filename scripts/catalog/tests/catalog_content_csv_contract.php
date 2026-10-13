@@ -6,13 +6,13 @@ class WP_Error {
 }
 class WC_Product {
     private array $meta = [];
-    public function get_id(): int { return 0; }
+    public function get_id(): int { return 1; }
     public function delete_meta_data( $key ): void { unset( $this->meta[$key] ); }
     public function update_meta_data( $key, $value ): void { $this->meta[$key] = $value; }
     public function get_meta( $key, $single = true, $context = 'view' ) { return $this->meta[$key] ?? ''; }
 }
 function add_filter( ...$args ): void {}
-function wc_get_product( $id ) { return false; }
+function wc_get_product( $id ) { return $GLOBALS['previous_product'] ?? false; }
 function is_wp_error( $value ): bool { return $value instanceof WP_Error; }
 function wp_strip_all_tags( $text ): string { return strip_tags( $text ); }
 function wp_json_encode( $value, $flags = 0 ): string|false { return json_encode( $value, $flags ); }
@@ -28,6 +28,7 @@ $row = [ 'meta_data' => [
 ] ];
 DTB_CatalogContentCsv::pre_insert( $p, $row );
 $before = $p->get_meta( DTB_CatalogContentCsv::FEATURES );
+$GLOBALS['previous_product'] = clone $p;
 DTB_CatalogContentCsv::pre_insert( $p, $row );
 check( $before === $p->get_meta( DTB_CatalogContentCsv::FEATURES ), 'Repeat import changed Features JSON' );
 check( '2' === $p->get_meta( DTB_CatalogContentCsv::VERSION ), 'Version missing' );
