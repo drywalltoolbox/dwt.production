@@ -1,0 +1,48 @@
+<?php
+/** Standalone import adapter regression without changing WooCommerce data. */
+class WP_Error {
+    public function __construct( private string $code, private string $message ) {}
+    public function get_error_message(): string { return $this->message; }
+}
+class WC_Product {
+    private array $meta = [];
+    public function update_meta_data( $key, $value ): void { $this->meta[$key] = $value; }
+    public function get_meta( $key ) { return $this->meta[$key] ?? ''; }
+}
+function add_filter( ...$args ): void {}
+function is_wp_error( $value ): bool { return $value instanceof WP_Error; }
+function wp_strip_all_tags( $text ): string { return strip_tags( $text ); }
+function wp_json_encode( $value, $flags = 0 ): string|false { return json_encode( $value, $flags ); }
+require_once dirname( __DIR__, 3 ) . '/drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Application/CatalogContentCsv.php';
+function check( bool $ok, string $reason ): void {
+    if ( ! $ok ) { throw new RuntimeException( $reason ); }
+}
+$input = '{"schema_version":1,"features":[{"label":"Clean","description":"Quick maintenance."}]}';
+$p = new WC_Product();
+$row = [ 'meta_data' => [
+    [ 'key' => DTB_CatalogContentCsv::FEATURES, 'value' => $input ],
+    [ 'key' => DTB_CatalogContentCsv::VERSION, 'value' => '2' ],
+] ];
+DTB_CatalogContentCsv::pre_insert( $p, $row );
+$before = $p->get_meta( DTB_CatalogContentCsv::FEATURES );
+DTB_CatalogContentCsv::pre_insert( $p, $row );
+check( $before === $p->get_meta( DTB_CatalogContentCsv::FEATURES ), 'Repeat import changed Features JSON' );
+check( '2' === $p->get_meta( DTB_CatalogContentCsv::VERSION ), 'Version missing' );
+DTB_CatalogContentCsv::pre_insert( $p, [ 'meta_data' => [] ] );
+check( $before === $p->get_meta( DTB_CatalogContentCsv::FEATURES ), 'Missing column cleared metadata' );
+DTB_CatalogContentCsv::pre_insert( $p, [ 'meta_data' => [
+    [ 'key' => DTB_CatalogContentCsv::FEATURES, 'value' => '' ],
+    [ 'key' => DTB_CatalogContentCsv::VERSION, 'value' => '' ],
+] ] );
+check( $before === $p->get_meta( DTB_CatalogContentCsv::FEATURES ), 'Blank column cleared metadata' );
+try {
+    DTB_CatalogContentCsv::pre_insert( $p, [ 'meta_data' => [
+        [ 'key' => DTB_CatalogContentCsv::FEATURES, 'value' => '{"schema_version":1,"features":[{"label":"<script>","description":"Unsafe"}]}' ],
+        [ 'key' => DTB_CatalogContentCsv::VERSION, 'value' => '2' ],
+    ] ] );
+    throw new RuntimeException( 'Invalid HTML not rejected' );
+} catch ( RuntimeException $e ) {
+    check( 'Invalid HTML not rejected' !== $e->getMessage(), 'Invalid HTML was accepted' );
+}
+check( $before === $p->get_meta( DTB_CatalogContentCsv::FEATURES ), 'Rejected import mutated product' );
+echo "Catalog Features importer validation: PASS\n";
