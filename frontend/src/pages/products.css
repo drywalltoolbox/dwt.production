@@ -336,8 +336,8 @@
  * Preserve the existing carousel, category links and every other page. */
 .dtb-products-page .dtb-tool-type-section--all-products .dtb-tool-type-tile {
   position: relative;
-  height: 138px;
-  min-height: 138px;
+  height: auto;
+  min-height: 146px;
   padding: 9px 10px 12px;
   justify-content: flex-end;
   gap: 7px;
@@ -357,9 +357,9 @@
 .dtb-products-page .dtb-tool-type-section--all-products .dtb-tool-type-tile__media {
   display: flex;
   width: 100%;
-  height: auto;
-  min-height: 0;
-  flex: 1 1 auto;
+  height: 84px;
+  min-height: 84px;
+  flex: 0 0 84px;
   align-items: center;
   justify-content: center;
   padding: 0;
@@ -374,27 +374,25 @@
   transform: none;
 }
 .dtb-products-page .dtb-tool-type-section--all-products .dtb-tool-type-tile__label {
-  display: -webkit-box;
+  display: block;
   width: 100%;
-  min-height: 2.5em;
-  max-height: 2.5em;
+  min-height: 0;
   margin: 0;
-  padding: 0 12px;
-  overflow: hidden;
+  padding: 0 14px;
   color: #10233d;
   font-size: 0.74rem;
   font-weight: 750;
   line-height: 1.25;
   text-align: center;
+  white-space: normal;
   overflow-wrap: anywhere;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
+  word-break: normal;
+  text-wrap: pretty;
 }
 .dtb-products-page .dtb-tool-type-section--all-products .dtb-tool-type-tile__chevron {
   position: absolute;
   right: 8px;
-  bottom: 17px;
+  bottom: 14px;
   color: #6c829f;
   pointer-events: none;
   transition: color 160ms ease, transform 160ms ease;
@@ -406,8 +404,13 @@
 }
 @media (max-width: 767px) {
   .dtb-products-page .dtb-tool-type-section--all-products .dtb-tool-type-tile {
-    height: 128px;
-    min-height: 128px;
+    height: auto;
+    min-height: 136px;
+  }
+  .dtb-products-page .dtb-tool-type-section--all-products .dtb-tool-type-tile__media {
+    height: 76px;
+    min-height: 76px;
+    flex-basis: 76px;
   }
   .dtb-products-page .dtb-tool-type-section--all-products .dtb-tool-type-tile__label {
     font-size: 0.7rem;
