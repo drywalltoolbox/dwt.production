@@ -20,8 +20,8 @@ import '../../styles/storefront-navigation-taxonomy.css';
 
 const RESILIENT_DROPDOWN_IDS = new Set(['products', 'brands', 'parts', 'repairs', 'schematics']);
 const CATALOG_BACKED_DROPDOWN_IDS = new Set(['products', 'brands', 'parts']);
-const POINTER_OPEN_INTENT_MS = 240;
-const POINTER_SWITCH_INTENT_MS = 160;
+const POINTER_OPEN_INTENT_MS = 500;
+const POINTER_SWITCH_INTENT_MS = 500;
 const POINTER_CLOSE_DELAY_MS = 300;
 
 const ENTRY_ICONS = [Wrench, Layers, Box, PenTool, Ruler, Hammer, Package, Settings2, ShoppingBag, Award];
