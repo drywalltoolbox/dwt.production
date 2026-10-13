@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 do_action( 'woocommerce_email_header', $email_heading, $email );
-echo function_exists( 'DTB\\Commerce\\Email\\dtb_email_v4_order_hero' ) ? DTB\Commerce\Email\dtb_email_v4_order_hero( $order, $email ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo function_exists( 'DTB\\Commerce\\Email\\dtb_email_v4_order_hero' ) ? DTB\Commerce\Email\dtb_email_v4_order_hero( $order, $email, [ 'title' => __( 'Your shipment has an update.', 'drywall-toolbox' ), 'body' => __( 'Your shipment information was updated. Check your tracking page for current details.', 'drywall-toolbox' ), 'steps' => [] ] ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 $customer_note_text = is_scalar( $customer_note ?? null ) ? trim( (string) $customer_note ) : '';
 if ( '' !== $customer_note_text ) {
