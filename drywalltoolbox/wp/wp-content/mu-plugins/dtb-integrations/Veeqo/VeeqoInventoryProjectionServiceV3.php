@@ -560,7 +560,9 @@ function dtb_veeqo_inventory_scheduled_run( int $attempt = 0, int $start_page = 
 
 	$data      = $result->get_error_data();
 	$status    = is_array( $data ) ? (int) ( $data['status'] ?? 0 ) : 0;
-	$retryable = 0 === $status || 408 === $status || 425 === $status || 429 === $status || $status >= 500;
+	$error_code = (string) $result->get_error_code();
+	$lock_contention = in_array( $error_code, [ 'veeqo_inventory_locked', 'veeqo_inventory_lock_lost' ], true );
+	$retryable = $lock_contention || 0 === $status || 408 === $status || 425 === $status || 429 === $status || $status >= 500;
 	$queued    = false;
 	$next_attempt = $attempt + 1;
 
