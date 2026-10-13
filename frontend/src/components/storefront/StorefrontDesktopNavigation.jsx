@@ -279,28 +279,10 @@ function BrandsPanelRenderer(props) {
 }
 
 function PartsPanelRenderer({ item, onNavigate }) {
-  const categories = Array.isArray(item.partCategories) ? item.partCategories : [];
   const brands = Array.isArray(item.items) ? item.items : [];
   return (
     <>
       <MegaMenuHero item={item} onNavigate={onNavigate} />
-      {categories.length > 0 && (
-        <section className="dtb-mega-menu__parts-section" aria-label="Part categories">
-          <div className="dtb-mega-menu__section-heading">
-            <h3>Popular Part Categories</h3>
-            <Link to="/parts" onClick={onNavigate}>View all parts <ArrowRight size={15} aria-hidden="true" /></Link>
-          </div>
-          <div className="dtb-mega-menu__parts-categories">
-            {categories.map((entry) => (
-              <Link key={entry.slug} to={entry.to} className="dtb-mega-menu__selector-card dtb-mega-menu__selector-card--category" onClick={onNavigate}>
-                <MegaMenuThumb label={entry.label} thumbnail={entry.thumbnail} />
-                <span className="dtb-mega-menu__selector-label">{entry.label}</span>
-                <ChevronRight size={15} className="dtb-mega-menu__selector-chevron" aria-hidden="true" />
-              </Link>
-            ))}
-          </div>
-        </section>
-      )}
       {brands.length > 0 ? (
         <section className="dtb-mega-menu__parts-section" aria-label="Shop parts by brand">
           <div className="dtb-mega-menu__section-heading"><h3>Shop Parts by Brand</h3></div>
