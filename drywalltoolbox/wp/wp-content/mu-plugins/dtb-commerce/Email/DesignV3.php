@@ -139,7 +139,13 @@ function dtb_email_v3_card_open(string $title='',string $meta=''):string{
 	return '<table class="dtb-v3-card" role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" bgcolor="#fff" style="width:87%;max-width:592px;margin:0 auto 22px;border-collapse:collapse;background-color:#fff;"><tr><td class="dtb-v3-card-cell" style="padding:0;">'.$header;
 }
 function dtb_email_v3_card_close():string{return '</td></tr></table>';}
-function dtb_email_v3_primary_button(string $url,string $label):string{return '';}
+function dtb_email_v3_primary_button(string $url,string $label):string{
+	if ( '' === trim( $url ) || '' === trim( $label ) ) { return ''; }
+	$font = dtb_email_v3_font();
+	return '<table class="dtb-v4-action" role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" style="width:87%;max-width:592px;margin:14px auto 22px;border-collapse:collapse;"><tr><td align="center" bgcolor="#1769ff" style="background-color:#1769ff;border-radius:6px;padding:0;">'
+		. '<a href="'.esc_url($url).'" style="display:block;padding:14px 20px;font-family:'.esc_attr($font).';font-size:14px;font-weight:700;line-height:20px;text-align:center;color:#ffffff!important;text-decoration:none;">'.esc_html($label).'</a>'
+		. '</td></tr></table>';
+}
 function dtb_email_v3_support_panel(string $heading='',string $copy=''):string{
 	$font=dtb_email_v3_font();$url=function_exists('dtb_email_support_url')?\dtb_email_support_url():home_url('/contact/');
 	$heading=''!==$heading?$heading:__('Questions about your order?','drywall-toolbox');$copy=''!==$copy?$copy:__('Our support team is here to help.','drywall-toolbox');
