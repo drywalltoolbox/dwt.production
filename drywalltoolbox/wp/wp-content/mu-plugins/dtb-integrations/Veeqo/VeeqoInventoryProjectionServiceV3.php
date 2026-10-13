@@ -561,29 +561,45 @@ function dtb_veeqo_inventory_scheduled_run( int $attempt = 0, int $start_page = 
 	$data      = $result->get_error_data();
 	$status    = is_array( $data ) ? (int) ( $data['status'] ?? 0 ) : 0;
 	$retryable = 0 === $status || 408 === $status || 425 === $status || 429 === $status || $status >= 500;
+	$queued    = false;
+	$next_attempt = $attempt + 1;
 
 	if ( $retryable && $attempt < DTB_VEEQO_INVENTORY_MAX_RETRIES && function_exists( 'as_schedule_single_action' ) ) {
 		$delay = min( HOUR_IN_SECONDS, ( 2 ** $attempt ) * 5 * MINUTE_IN_SECONDS );
-		as_schedule_single_action(
+		$next_args = [ $next_attempt, $start_page, $aggregate, $dry_run ];
+		$action_id = as_schedule_single_action(
 			time() + $delay,
 			DTB_VEEQO_INVENTORY_RECONCILE_HOOK,
-			[ $attempt + 1, $start_page, $aggregate, $dry_run ],
+			$next_args,
 			DTB_VEEQO_INVENTORY_ACTION_GROUP,
 			true
 		);
+		$queued = is_numeric( $action_id ) && (int) $action_id > 0;
+		if ( ! $queued && function_exists( 'as_has_scheduled_action' ) ) {
+			$queued = (bool) as_has_scheduled_action( DTB_VEEQO_INVENTORY_RECONCILE_HOOK, $next_args, DTB_VEEQO_INVENTORY_ACTION_GROUP );
+		}
 	}
 
 	if ( function_exists( 'dtb_veeqo_log' ) ) {
 		dtb_veeqo_log(
-			'error',
-			'inventory_reconciliation_failed',
-			'Veeqo inventory reconciliation failed.',
+			$queued ? 'warning' : 'error',
+			$queued ? 'inventory_reconciliation_retry_queued' : 'inventory_reconciliation_failed_terminal',
+			$queued ? 'Veeqo inventory reconciliation failed; a bounded retry is scheduled.' : 'Veeqo inventory reconciliation failed without a scheduled retry.',
 			[
-				'attempt'   => $attempt,
+				'attempt' => $attempt,
+				'next_attempt' => $queued ? $next_attempt : null,
 				'retryable' => $retryable,
-				'status'    => $status,
-				'error'     => sanitize_text_field( $result->get_error_message() ),
+				'retry_queued' => $queued,
+				'status' => $status,
+				'error_code' => $result->get_error_code(),
+				'error' => sanitize_text_field( $result->get_error_message() ),
 			]
 		);
+	}
+
+	// Action Scheduler distinguishes terminal provider failures from completed
+	// callbacks. A scheduled retry is an expected handoff, not a terminal failure.
+	if ( ! $queued ) {
+		throw new RuntimeException( 'Veeqo inventory reconciliation terminal failure (' . sanitize_key( $result->get_error_code() ) . ', HTTP ' . $status . ').' );
 	}
 }
