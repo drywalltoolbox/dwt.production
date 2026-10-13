@@ -1,10 +1,14 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 /** Full-page PDP information only; product, variation and cart state stay upstream. */
-export default function ProductInformationAccordion({ description, features, specs, partsUrl }) {
+export default function ProductInformationAccordion({ description, features, specs, partsUrl, specificationsRequest = 0 }) {
   const [openKeys, setOpenKeys] = useState([]);
+  useEffect(() => {
+    if (!specificationsRequest) return;
+    setOpenKeys((current) => current.includes('specs') ? current : [...current, 'specs']);
+  }, [specificationsRequest]);
   const toggle = (key) => setOpenKeys((current) => current.includes(key)
     ? current.filter((item) => item !== key)
     : [...current, key]);
@@ -26,7 +30,7 @@ export default function ProductInformationAccordion({ description, features, spe
       {sections.map(({ key, title, content }) => (
         <div className="dtb-pdp-info-accordion__item" key={key}>
           <h2 className="dtb-pdp-info-accordion__heading">
-            <button type="button" aria-expanded={openKeys.includes(key)} aria-controls={`dtb-pdp-detail-${key}`} onClick={() => toggle(key)}>
+            <button type="button" aria-expanded={openKeys.includes(key)} aria-controls={`dtb-pdp-detail-${key}`} data-pdp-section={key} onClick={() => toggle(key)}>
               <span>{title}</span><ChevronDown size={17} aria-hidden="true" className={openKeys.includes(key) ? 'is-open' : ''} />
             </button>
           </h2>
