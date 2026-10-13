@@ -22,7 +22,7 @@
 import { useCallback } from 'react';
 import AppErrorBoundary from '../components/system/AppErrorBoundary';
 import SEOHead from '../components/shared/SEOHead';
-import PageHeroBanner from '../components/shared/PageHeroBanner';
+import InteriorPageHero from '../components/shared/InteriorPageHero.jsx';
 import { buildBreadcrumbSchema } from '../utils/schema';
 import { useSchematicRouteState } from '../hooks/useSchematicRouteState';
 import { useSchematicCatalog } from '../hooks/useSchematicCatalog';
@@ -97,10 +97,11 @@ function SchematicsPageInner() {
       />
 
       {!isViewer && (
-        <PageHeroBanner
+        <InteriorPageHero
+          id="dtb-schematics-hero-title"
+          breadcrumbs={[{ label: 'Home', path: '/' }, { label: 'Schematics' }]}
           title="Parts Schematics"
           description="Find the diagram for your tool, then select a callout to identify and order the correct replacement part."
-          eyebrow="Parts & Service"
         />
       )}
 
