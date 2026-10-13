@@ -200,8 +200,7 @@
 						const previousSignature = signatureForRegion( region );
 						state.lastHtml = parsed.html;
 						region.innerHTML = parsed.html;
-						region.classList.add( 'is-updating' );
-						window.setTimeout( () => region.classList.remove( 'is-updating' ), 220 );
+						// Preserve stable layout; highlighting rows alone indicates new data.
 						markNewRows( region, previousSignature );
 						scrollLogTailToEnd( region );
 						if ( DtbAdmin?.rebind ) DtbAdmin.rebind( region );
