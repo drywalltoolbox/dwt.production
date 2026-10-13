@@ -101,3 +101,4 @@ final class DTB_CatalogContentCsv {
 }
 
 add_filter( 'woocommerce_product_import_pre_insert_product_object', [ DTB_CatalogContentCsv::class, 'pre_insert' ], 9, 2 );
+add_filter( 'woocommerce_product_export_meta_value', [ DTB_CatalogContentCsv::class, 'export_meta_value' ], 10, 3 );
