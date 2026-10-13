@@ -256,7 +256,7 @@ function splitProductFeatureSection(source = '') {
     const root = document.createElement('div');
     root.innerHTML = DOMPurify.sanitize(value, { USE_PROFILES: { html: true } });
     const heading = [...root.querySelectorAll('h2, h3, h4, h5, h6')].find((node) =>
-      /^(key\\s+|product\\s+)?features(?:\\s*(?:&|and)\\s*benefits)?\\s*:?$/i.test(node.textContent.trim())
+      /^(key\s+|product\s+)?features(?:\s*(?:&|and)\s*benefits)?\s*:?$/i.test(node.textContent.trim())
     );
     if (heading) {
       const extracted = [];
@@ -277,10 +277,10 @@ function splitProductFeatureSection(source = '') {
   }
 
   // Plain text catalogs often include an explicit Features: subheading.
-  const match = /(?:^|\\n)\\s*(?:key |product )?features(?: and benefits)?\\s*:\\s*/i.exec(value);
+  const match = /(?:^|\n)\s*(?:key |product )?features(?: and benefits)?\s*:\s*/i.exec(value);
   if (match) {
     const remaining = value.slice(match.index + match[0].length);
-    const nextHeading = /\\n\\s*(?:specifications?|description|overview|shipping|warranty|compatibility)\\s*:/i.exec(remaining);
+    const nextHeading = /\n\s*(?:specifications?|description|overview|shipping|warranty|compatibility)\s*:/i.exec(remaining);
     const features = (nextHeading ? remaining.slice(0, nextHeading.index) : remaining).trim();
     if (features) {
       return {
