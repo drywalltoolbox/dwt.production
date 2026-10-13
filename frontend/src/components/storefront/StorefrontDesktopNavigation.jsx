@@ -292,8 +292,10 @@ function PartsPanelRenderer({ item, onNavigate }) {
           </div>
           <div className="dtb-mega-menu__parts-categories">
             {categories.map((entry) => (
-              <Link key={entry.slug} to={entry.to} onClick={onNavigate}>
-                <span>{entry.label}</span><ChevronRight size={15} aria-hidden="true" />
+              <Link key={entry.slug} to={entry.to} className="dtb-mega-menu__selector-card dtb-mega-menu__selector-card--category" onClick={onNavigate}>
+                <MegaMenuThumb label={entry.label} thumbnail={entry.thumbnail} />
+                <span className="dtb-mega-menu__selector-label">{entry.label}</span>
+                <ChevronRight size={15} className="dtb-mega-menu__selector-chevron" aria-hidden="true" />
               </Link>
             ))}
           </div>
@@ -303,7 +305,13 @@ function PartsPanelRenderer({ item, onNavigate }) {
         <section className="dtb-mega-menu__parts-section" aria-label="Shop parts by brand">
           <div className="dtb-mega-menu__section-heading"><h3>Shop Parts by Brand</h3></div>
           <div className="dtb-mega-menu__brand-grid">
-            {brands.map((entry) => <BrandCard key={entry.to || entry.label} entry={entry} onNavigate={onNavigate} />)}
+            {brands.map((entry) => (
+              <Link key={entry.to || entry.label} to={entry.to} className="dtb-mega-menu__selector-card dtb-mega-menu__selector-card--brand" onClick={onNavigate}>
+                <MegaMenuThumb label={entry.label} logo={entry.logo} />
+                <span className="dtb-mega-menu__selector-label">{entry.label}</span>
+                <ChevronRight size={15} className="dtb-mega-menu__selector-chevron" aria-hidden="true" />
+              </Link>
+            ))}
           </div>
         </section>
       ) : <MegaMenuDeferredState item={item} />}
