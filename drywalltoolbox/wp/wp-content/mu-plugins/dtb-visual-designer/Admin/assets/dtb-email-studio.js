@@ -5,7 +5,11 @@
 	if (!root) return;
 
 	var cfg = window.dtbAdminConfig || {};
-	var state = { manifest: null, emailId: '', orderId: 0, device: 'desktop', rendering: false, result: null, error: '' };
+	var state = { manifest: null, emailId: '', orderId: 0, device: 'desktop', rendering: false, renderSeq: 0, result: null, error: '' };
+
+	function isAccountFixture() {
+		return state.emailId === 'customer_new_account' || state.emailId === 'customer_reset_password';
+	}
 
 	function restUrl(path) {
 		return (cfg.restUrl || '/wp-json/').replace(/\/$/, '') + path;
@@ -42,9 +46,9 @@
 		api('GET', '/dtb/v1/design/email-studio').then(function (manifest) {
 			state.manifest = manifest;
 			state.emailId = Object.keys(manifest.emails || {})[0] || '';
-			state.orderId = manifest.orders && manifest.orders[0] ? manifest.orders[0].id : 0;
+			state.orderId = 0;
 			render();
-			if (state.emailId && state.orderId) renderEmail();
+			if (state.emailId) renderEmail();
 		}).catch(function (error) {
 			state.error = error.message;
 			render();
@@ -52,17 +56,22 @@
 	}
 
 	function renderEmail() {
-		if (!state.emailId || !state.orderId || state.rendering) return;
+		if (!state.emailId) return;
+		var requestId = ++state.renderSeq;
+		var emailId = state.emailId;
 		state.rendering = true;
 		state.error = '';
+		state.result = null;
 		render();
-		api('POST', '/dtb/v1/design/email-studio/render', { emailId: state.emailId, orderId: state.orderId })
+		api('POST', '/dtb/v1/design/email-studio/render', { emailId: emailId, orderId: 0 })
 			.then(function (result) {
+				if (requestId !== state.renderSeq || emailId !== state.emailId) return;
 				state.result = result;
 				state.rendering = false;
 				render();
 			})
 			.catch(function (error) {
+				if (requestId !== state.renderSeq || emailId !== state.emailId) return;
 				state.error = error.message;
 				state.rendering = false;
 				render();
@@ -83,15 +92,11 @@
 		}
 
 		var emailOptions = selectOptions(state.manifest ? state.manifest.emails : {}, state.emailId);
-		var orderMap = {};
-		(state.manifest && state.manifest.orders || []).forEach(function (order) {
-			orderMap[String(order.id)] = '#' + order.number + ' · ' + order.status + ' · ' + order.customer + ' · ' + order.total;
-		});
 
 		var toolbar = el('div', { class: 'dtb-es__toolbar' }, [
-			el('div', { class: 'dtb-es__brand' }, [el('span', { class: 'dtb-es__eyebrow' }, ['TRANSACTIONAL EMAILS']), el('h1', {}, ['Email Studio']), el('p', {}, ['Actual WooCommerce HTML renderer. Nothing is sent and no order is changed.'])]),
+			el('div', { class: 'dtb-es__brand' }, [el('span', { class: 'dtb-es__eyebrow' }, ['TRANSACTIONAL EMAILS']), el('h1', {}, ['Email Studio']), el('p', {}, ['Preview customer and operator email templates using safe simulated data. No messages are sent.'])]),
 			el('label', {}, [el('span', {}, ['Email']), el('select', { onchange: function (event) { state.emailId = event.target.value; renderEmail(); } }, emailOptions)]),
-			el('label', {}, [el('span', {}, ['Order data']), el('select', { onchange: function (event) { state.orderId = parseInt(event.target.value, 10) || 0; renderEmail(); } }, selectOptions(orderMap, state.orderId))]),
+			el('div', { class: 'dtb-es__fixture-label', role: 'status' }, ['SYNTHETIC DATA · NO REAL ORDERS OR CUSTOMERS']),
 			el('div', { class: 'dtb-es__devices', role: 'group', 'aria-label': 'Preview viewport' }, [
 				el('button', { type: 'button', class: state.device === 'desktop' ? 'is-active' : '', onclick: function () { state.device = 'desktop'; render(); } }, ['Desktop']),
 				el('button', { type: 'button', class: state.device === 'mobile' ? 'is-active' : '', onclick: function () { state.device = 'mobile'; render(); } }, ['Mobile']),
@@ -102,15 +107,16 @@
 		var meta = state.result ? el('div', { class: 'dtb-es__meta' }, [
 			el('span', {}, ['Subject: ' + state.result.subject]),
 			el('span', {}, ['Heading: ' + state.result.heading]),
+			el('span', {}, [state.result.sourceFidelity === 'visual-only-fulfillment' ? 'Visual-only shipment simulation · fulfillment hooks not exercised' : 'Production template · simulated data']),
 		]) : el('div', { class: 'dtb-es__meta' }, [state.manifest ? state.manifest.notice : '']);
 
 		var frameContent;
 		if (state.error) {
 			frameContent = el('div', { class: 'dtb-es__empty dtb-es__empty--error' }, [el('strong', {}, ['Preview unavailable']), el('p', {}, [state.error])]);
 		} else if (!state.result) {
-			frameContent = el('div', { class: 'dtb-es__empty' }, [el('strong', {}, ['Choose an email and order']), el('p', {}, ['The studio needs an existing WooCommerce order to render truthful dynamic content.'])]);
+			frameContent = el('div', { class: 'dtb-es__empty' }, [el('strong', {}, ['Choose an email to preview']), el('p', {}, ['The Studio generates a synthetic preview automatically.'])]);
 		} else {
-			frameContent = el('iframe', { title: 'Rendered WooCommerce email', sandbox: 'allow-popups allow-popups-to-escape-sandbox', srcdoc: state.result.html }, []);
+			frameContent = el('iframe', { title: 'Rendered WooCommerce email', sandbox: '', srcdoc: state.result.html }, []);
 		}
 
 		root.appendChild(toolbar);

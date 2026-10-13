@@ -1,183 +1,104 @@
 <?php
 /**
- * Canonical read-only WooCommerce HTML email preview service.
+ * Operator-only WooCommerce HTML email preview using synthetic fixtures.
  *
- * Renders registered order-backed WC_Email classes through the same DTB
- * template resolver and WooCommerce CSS inliner used by customer delivery.
- * It never calls trigger() or send().
+ * No real users, orders, payments, refunds, fulfillment records, customer
+ * notes, password reset tokens, or outbound messages are accessed/created.
+ * Shares the actual DTB template resolver and WooCommerce CSS inlining.
  *
  * @package DrywalltoolboxCommerce
  */
-
 namespace DTB\Commerce\Email\Preview;
 
 use Throwable;
 use WC_Email;
-use WC_Order;
 use WP_Error;
 
 defined( 'ABSPATH' ) || exit;
 
 final class EmailPreviewService {
-	/** @var array<string,string> */
-	private const ORDER_EMAILS = [
-		'customer_processing_order' => 'Processing order',
-		'customer_completed_order'  => 'Completed order',
-		'customer_on_hold_order'     => 'On-hold order',
-		'customer_failed_order'      => 'Failed order',
-		'customer_cancelled_order'   => 'Cancelled order',
-		'customer_invoice'           => 'Customer invoice / order details',
-		'new_order'                  => 'Admin new order',
-		'cancelled_order'            => 'Admin cancelled order',
-		'failed_order'               => 'Admin failed order',
-	];
+	public const TEST_RECIPIENT = '';
+	private const MAX_HTML_BYTES = 750000;
 
-	/**
-	 * WooCommerce email registry keys are class names, while preview requests
-	 * use each WC_Email object's stable public id. Build one normalized map and
-	 * reuse it for both the manifest and rendering so the selected email cannot
-	 * disappear between two independent registry scans in the same request.
-	 *
-	 * @return array<string,WC_Email>
-	 */
-	private static function registered_order_emails(): array {
-		if ( ! function_exists( 'WC' ) || ! WC() ) {
-			return [];
+	/** Load WC_Order-derived fixtures only after WooCommerce has initialized. */
+	private static function fixtures_available(): bool {
+		if ( ! class_exists( '\\WC_Order' ) || ! class_exists( WC_Email::class ) ) {
+			return false;
 		}
-
-		$registered = [];
-		foreach ( WC()->mailer()->get_emails() as $email ) {
-			if ( ! $email instanceof WC_Email ) {
-				continue;
-			}
-
-			$email_id = sanitize_key( (string) $email->id );
-			if ( '' === $email_id || ! isset( self::ORDER_EMAILS[ $email_id ] ) ) {
-				continue;
-			}
-
-			$registered[ $email_id ] = $email;
-		}
-
-		return $registered;
+		require_once __DIR__ . '/SyntheticEmailFixture.php';
+		return true;
 	}
 
-	/** @return array<string,string> */
+	/** All recognized production customer and operator notification templates. */
 	public static function supported_emails(): array {
-		$supported = [];
-		foreach ( array_keys( self::registered_order_emails() ) as $email_id ) {
-			$supported[ $email_id ] = self::ORDER_EMAILS[ $email_id ];
+		if ( ! self::fixtures_available() ) {
+			return [];
 		}
-
+		$supported = [];
+		foreach ( SyntheticEmailFixture::TEMPLATES as $id => $definition ) {
+			$supported[ $id ] = $definition[0];
+		}
 		return $supported;
 	}
 
-	/**
-	 * @return array<int,array{id:int,number:string,status:string,date:string,customer:string,total:string}>
-	 */
+	/** No real orders are queried for Studio design reviews. */
 	public static function recent_orders( int $limit = 30 ): array {
-		if ( ! function_exists( 'wc_get_orders' ) ) {
-			return [];
-		}
-
-		$orders = wc_get_orders( [
-			'limit'   => max( 1, min( 50, $limit ) ),
-			'orderby' => 'date',
-			'order'   => 'DESC',
-			'return'  => 'objects',
-		] );
-
-		$result = [];
-		foreach ( $orders as $order ) {
-			if ( ! $order instanceof WC_Order ) {
-				continue;
-			}
-
-			$name     = trim( $order->get_formatted_billing_full_name() );
-			$result[] = [
-				'id'       => $order->get_id(),
-				'number'   => $order->get_order_number(),
-				'status'   => wc_get_order_status_name( $order->get_status() ),
-				'date'     => $order->get_date_created() ? wc_format_datetime( $order->get_date_created() ) : '',
-				'customer' => '' !== $name ? $name : __( 'Guest customer', 'drywall-toolbox' ),
-				'total'    => wp_strip_all_tags( $order->get_formatted_order_total() ),
-			];
-		}
-
-		return $result;
+		unset( $limit );
+		return [];
 	}
 
-	/** @return array{html:string,subject:string,heading:string,emailId:string,orderId:int}|WP_Error */
+	/** @return array{html:string,subject:string,heading:string,emailId:string,orderId:int,fixture:string,sourceFidelity:string}|WP_Error */
 	public static function render( int $order_id, string $email_id ) {
+		unset( $order_id );
 		$email_id = sanitize_key( $email_id );
-		$emails   = self::registered_order_emails();
-
-		if ( ! isset( self::ORDER_EMAILS[ $email_id ] ) ) {
-			return new WP_Error(
-				'dtb_email_preview_unsupported',
-				__( 'That email requires lifecycle-specific data that this preview does not fabricate.', 'drywall-toolbox' ),
-				[ 'status' => 422 ]
-			);
+		if ( ! self::fixtures_available() ) {
+			return new WP_Error( 'dtb_email_preview_unavailable', __( 'WooCommerce fixtures are not initialized.', 'drywall-toolbox' ), [ 'status' => 503 ] );
+		}
+		if ( ! isset( SyntheticEmailFixture::TEMPLATES[ $email_id ] ) ) {
+			return new WP_Error( 'dtb_email_preview_unsupported', __( 'Unrecognized WooCommerce email template.', 'drywall-toolbox' ), [ 'status' => 422 ] );
+		}
+		if ( ! function_exists( 'WC' ) || ! WC() || ! class_exists( WC_Email::class ) || ! function_exists( 'wc_get_template_html' ) ) {
+			return new WP_Error( 'dtb_email_preview_unavailable', __( 'WooCommerce email rendering is unavailable.', 'drywall-toolbox' ), [ 'status' => 503 ] );
 		}
 
-		if ( ! isset( $emails[ $email_id ] ) ) {
-			return new WP_Error(
-				'dtb_email_preview_class_missing',
-				__( 'WooCommerce did not register the selected email class for this request.', 'drywall-toolbox' ),
-				[ 'status' => 409 ]
-			);
+		$registered = [];
+		foreach ( WC()->mailer()->get_emails() as $existing ) {
+			if ( $existing instanceof WC_Email ) {
+				$registered[ sanitize_key( (string) $existing->id ) ] = $existing;
+			}
 		}
-
-		$order = wc_get_order( $order_id );
-		if ( ! $order instanceof WC_Order ) {
-			return new WP_Error(
-				'dtb_email_preview_order_missing',
-				__( 'The selected WooCommerce order was not found.', 'drywall-toolbox' ),
-				[ 'status' => 404 ]
-			);
-		}
-
-		$email = clone $emails[ $email_id ];
-		$email->set_object( $order );
-
-		if ( method_exists( $email, 'is_customer_email' ) && $email->is_customer_email() ) {
-			$email->recipient = $order->get_billing_email();
-		}
-
-		if ( is_array( $email->placeholders ) ) {
-			$email->placeholders['{order_date}']   = $order->get_date_created() ? wc_format_datetime( $order->get_date_created() ) : '';
-			$email->placeholders['{order_number}'] = $order->get_order_number();
-		}
-
+		$email = isset( $registered[ $email_id ] ) ? clone $registered[ $email_id ] : new WC_Email();
+		$email->id = $email_id;
 		$email->setup_locale();
 		try {
-			$html = $email->get_content();
+			$html = SyntheticEmailFixture::render( $email_id, $email );
 			$html = $email->style_inline( $html );
 			$html = apply_filters( 'woocommerce_mail_content', $html, $email );
 		} catch ( Throwable $exception ) {
-			return new WP_Error(
-				'dtb_email_preview_render_failed',
-				__( 'WooCommerce could not render this email preview.', 'drywall-toolbox' ),
-				[ 'status' => 500 ]
-			);
+			// Never return stack traces or potentially sensitive plugin data.
+			return new WP_Error( 'dtb_email_preview_render_failed', __( 'Synthetic fixture failed to render this email. Review server diagnostics.', 'drywall-toolbox' ), [ 'status' => 500 ] );
 		} finally {
 			$email->restore_locale();
 		}
 
-		if ( ! is_string( $html ) || strlen( $html ) > 750000 ) {
-			return new WP_Error(
-				'dtb_email_preview_payload_invalid',
-				__( 'The rendered email exceeded the preview safety limit.', 'drywall-toolbox' ),
-				[ 'status' => 413 ]
-			);
+		if ( ! is_string( $html ) || '' === $html || strlen( $html ) > self::MAX_HTML_BYTES ) {
+			return new WP_Error( 'dtb_email_preview_payload_invalid', __( 'Rendered email is empty or exceeds the preview safety limit.', 'drywall-toolbox' ), [ 'status' => 413 ] );
 		}
-
+		$visual_only = in_array( $email_id, [ 'customer_fulfillment_created', 'customer_fulfillment_updated' ], true );
 		return [
-			'html'    => $html,
-			'subject' => wp_strip_all_tags( $email->get_subject() ),
-			'heading' => wp_strip_all_tags( $email->get_heading() ),
+			'html' => $html,
+			'subject' => '[Synthetic preview] ' . SyntheticEmailFixture::TEMPLATES[ $email_id ][0],
+			'heading' => SyntheticEmailFixture::TEMPLATES[ $email_id ][0],
 			'emailId' => $email_id,
-			'orderId' => $order_id,
+			'orderId' => 0,
+			'fixture' => 'synthetic',
+			'sourceFidelity' => $visual_only ? 'visual-only-fulfillment' : 'production-template',
 		];
+	}
+
+	/** Synthetic fixtures are never sent, even to the fixed review inbox. */
+	public static function send_test( int $order_id, string $email_id ) {
+		unset( $order_id, $email_id );
+		return new WP_Error( 'dtb_email_preview_send_disabled', __( 'Synthetic Email Studio previews are non-deliverable. No email was sent.', 'drywall-toolbox' ), [ 'status' => 403 ] );
 	}
 }
