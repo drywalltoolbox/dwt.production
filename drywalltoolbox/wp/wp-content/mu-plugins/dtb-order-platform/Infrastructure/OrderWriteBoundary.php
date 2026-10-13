@@ -534,6 +534,17 @@ if ( ! function_exists( 'dtb_order_is_woopayments_test_order' ) ) {
 	}
 }
 
+// Native WooCommerce stock handling must not decrement real sellable inventory
+// for WooPayments test transactions on the shared production database.
+add_filter(
+	'woocommerce_can_reduce_order_stock',
+	static function ( $can_reduce, $order ) {
+		return $can_reduce && ! dtb_order_is_woopayments_test_order( $order );
+	},
+	100,
+	2
+);
+
 if ( ! function_exists( 'dtb_order_write_boundary_order_should_skip_side_effects' ) ) {
 	/** Determine whether all downstream side effects must be suppressed. */
 	function dtb_order_write_boundary_order_should_skip_side_effects( $order ): bool {
