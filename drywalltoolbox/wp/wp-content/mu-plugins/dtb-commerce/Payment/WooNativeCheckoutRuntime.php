@@ -95,7 +95,9 @@ final class DTB_WooNativeCheckoutRuntime {
 		}
 
 		$query_vars['pagename'] = 'checkout';
-		unset( $query_vars['name'], $query_vars['page_id'] );
+		// A rejected staging permalink can leave WordPress's error=404 query var
+		// set even after the checkout page identity is restored.
+		unset( $query_vars['name'], $query_vars['page_id'], $query_vars['error'] );
 		return $query_vars;
 	}
 
