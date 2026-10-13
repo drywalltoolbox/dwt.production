@@ -39,7 +39,7 @@ function dtb_order_enqueue_job( string $job_type, int $order_id, array $args = [
 				return $existing;
 			}
 		}
-		return as_schedule_single_action( $timestamp, $job_type, $scheduled_args, 'dtb-orders' );
+		return as_schedule_single_action( $timestamp, $job_type, $scheduled_args, 'dtb-orders', true );
 	}
 
 	wp_schedule_single_event( $timestamp, $job_type, $scheduled_args );
