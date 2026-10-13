@@ -186,3 +186,17 @@
 @media (prefers-reduced-motion: reduce) {
   .dtb-contact__field input,.dtb-contact__field select,.dtb-contact__field textarea { transition: none; }
 }
+
+/* Contact inquiry selector uses the shared animated dropdown sheet. */
+.dtb-contact__inquiry-dropdown { width: 100%; min-width: 0; }
+.dtb-contact__inquiry-dropdown > button {
+  min-height: 43px;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  box-shadow: none;
+}
+.dtb-contact__inquiry-dropdown [role="listbox"] { width: 100%; max-width: 100%; }
+.dtb-contact__inquiry-dropdown [role="option"] { min-height: 42px; }
+@media (max-width: 520px) {
+  .dtb-contact__inquiry-dropdown [role="listbox"] { max-height: min(300px, 45dvh); }
+}
