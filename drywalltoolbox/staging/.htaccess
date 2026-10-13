@@ -67,6 +67,10 @@ ErrorDocument 504 /staging/errors/504.html
   RewriteCond %{HTTP_HOST} ^www\.drywalltoolbox\.com$ [NC]
   RewriteRule ^ https://drywalltoolbox.com%{REQUEST_URI} [R=301,L,NE]
 
+  # Native WooPayments product context for administrator-only staging PDP preview.
+  # WooCommerce product query must initialize before WooPayments enqueues scripts.
+  RewriteRule ^__native-wallet/([1-9][0-9]*)/?$ /wp/index.php?post_type=product&p=$1 [QSA,L]
+
   # Administrator-only native WooPayments shortcode probe (shared backend, test mode only).
   RewriteRule ^__wallet-probe-20261013/?$ /wp/index.php?pagename=dtb-staging-wallet-probe-20261013 [QSA,L]
 

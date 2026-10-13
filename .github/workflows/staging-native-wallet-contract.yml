@@ -1,0 +1,32 @@
+name: Staging native wallet contract
+on:
+  pull_request:
+    paths:
+      - 'frontend/src/components/product/StagingProductWallet.jsx'
+      - 'frontend/src/components/product/ProductDetail.jsx'
+      - 'frontend/src/pages/ProductDetailPage.jsx'
+      - 'frontend/tests/stagingWalletPreviewContract.test.mjs'
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-staging-native-wallet.php'
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/templates/staging-native-wallet.php'
+      - 'drywalltoolbox/staging/.htaccess'
+      - '.github/workflows/staging-native-wallet-contract.yml'
+permissions:
+  contents: read
+jobs:
+  wallet-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify opt-in staging and quick-view isolation
+        run: node --test frontend/tests/stagingWalletPreviewContract.test.mjs
+      - name: Check PHP syntax
+        run: |
+          php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-staging-native-wallet.php
+          php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/templates/staging-native-wallet.php
+      - name: Verify native route stays inside staging
+        run: |
+          grep -F 'RewriteRule ^__native-wallet/([1-9][0-9]*)/?$ /wp/index.php?post_type=product&p=$1 [QSA,L]' drywalltoolbox/staging/.htaccess
+          ! grep -q '__native-wallet' drywalltoolbox/.htaccess
