@@ -74,10 +74,10 @@ ErrorDocument 504 /staging/errors/504.html
   RewriteRule ^dtb/(.*)$ /wp/index.php?rest_route=/dtb/$1 [QSA,L]
   RewriteRule ^wc-api/?$ /wp/index.php [QSA,L]
 
-  # WooCommerce remains the sole checkout authority. Keep the public staging
-  # URL mounted below /staging, but internally execute the shared WordPress
-  # checkout controller instead of redirecting the browser into production.
-  RewriteRule ^checkout/?$ /wp/index.php?pagename=checkout [QSA,L]
+  # The staging frontend previews the storefront only. Its ordinary checkout
+  # entry canonicalizes to the one native WooCommerce checkout at domain root.
+  # Keep historical order-pay/order-received callbacks below untouched.
+  RewriteRule ^checkout/?$ /checkout/ [R=302,L,NE]
   RewriteRule ^checkout/order-pay/([0-9]+)/?$ /wp/index.php?pagename=checkout&order-pay=$1 [QSA,L]
   RewriteRule ^order-pay/([0-9]+)/?$ /wp/index.php?pagename=checkout&order-pay=$1 [QSA,L]
   RewriteRule ^checkout/order-received/([0-9]+)/?$ /wp/index.php?pagename=checkout&order-received=$1 [QSA,L]
