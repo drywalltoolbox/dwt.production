@@ -329,10 +329,10 @@
   }
 
   .site-header .dtb-desktop-nav-dropdown--repairs {
-    --mega-panel-width: 1060px;
+    --mega-panel-width: 1180px;
   }
 
-   .site-header .dtb-desktop-nav-dropdown--schematics {
+  .site-header .dtb-desktop-nav-dropdown--schematics {
     --mega-panel-width: 1180px;
   }
 
@@ -1331,9 +1331,13 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .site-header .dtb-desktop-nav-dropdown--repairs .dtb-desktop-nav-dropdown__scroller {
+    padding: 0;
+  }
+
   .site-header .dtb-mega-menu__brand-grid--repairs {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    padding-top: 12px;
+    padding: 12px 32px 36px;
   }
 
   .site-header .dtb-mega-menu__brand-card--repair {
