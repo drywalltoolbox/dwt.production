@@ -1,39 +1,34 @@
 <?php
 /**
- * DTB branded customer new account email.
- *
- * Traced against WooCommerce core emails/customer-new-account.php v10.9.0
- * (this is WooCommerce's native My Account registration email — distinct
- * from the SPA's own /auth/forgot-password flow in
- * dtb-platform/Auth/AuthRoutes.php, which is untouched). DTB customization:
- * hero (no progress tracker or support card — an account/security email
- * stays brief and single-CTA per docs/visual-designer/dtb-email-design-system.md's
- * copywriting voice guidance). Hook sequence preserved.
+ * DTB branded WooCommerce customer registration email.
+ * Native account URLs and lifecycle remain WooCommerce-owned.
  *
  * @package DrywalltoolboxCommerce
  */
-
 defined( 'ABSPATH' ) || exit;
+require_once dirname( __DIR__, 2 ) . '/AccountPresentation.php';
 
 do_action( 'woocommerce_email_header', $email_heading, $email );
 
-echo function_exists( 'dtb_email_hero' ) ? dtb_email_hero( $email_heading ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-?>
+$action_url = ! empty( $password_generated ) && ! empty( $set_password_url )
+	? $set_password_url
+	: wc_get_page_permalink( 'myaccount' );
+$action_label = ! empty( $password_generated ) && ! empty( $set_password_url )
+	? __( 'Set your password', 'drywall-toolbox' )
+	: __( 'Go to your account', 'drywall-toolbox' );
 
-<div class="email-introduction">
-	<p><?php printf( esc_html__( 'Hi %s,', 'drywall-toolbox' ), esc_html( $user_display_name ) ); ?></p>
-	<p><?php printf( esc_html__( 'Your account on %s is ready. Use it to track orders, save addresses, and see your order history.', 'drywall-toolbox' ), esc_html( $blogname ) ); ?></p>
-	<p><?php echo wp_kses( sprintf( __( 'Username: <b>%s</b>', 'drywall-toolbox' ), esc_html( $user_login ) ), [ 'b' => [] ] ); ?></p>
-	<?php if ( $password_generated && $set_password_url ) : ?>
-		<?php echo function_exists( 'dtb_email_button' ) ? dtb_email_button( $set_password_url, __( 'Set your password', 'drywall-toolbox' ) ) : ''; ?>
-	<?php else : ?>
-		<?php echo function_exists( 'dtb_email_button' ) ? dtb_email_button( wc_get_page_permalink( 'myaccount' ), __( 'Go to my account', 'drywall-toolbox' ) ) : ''; ?>
-	<?php endif; ?>
-</div>
+echo \DTB\Commerce\Email\dtb_email_account_notice(
+	__( 'YOUR DRYWALL TOOLBOX ACCOUNT', 'drywall-toolbox' ),
+	__( 'Welcome to Drywall Toolbox.', 'drywall-toolbox' ),
+	__( 'Your account is ready to help you keep orders, saved addresses and project essentials organized.', 'drywall-toolbox' ),
+	sprintf( __( 'Hi %s,', 'drywall-toolbox' ), (string) $user_display_name ),
+	(string) $user_login,
+	(string) $action_url,
+	$action_label
+); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
-<?php
-if ( $additional_content ) {
-	echo '<table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation"><tr><td class="email-additional-content">';
+if ( ! empty( $additional_content ) ) {
+	echo '<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td class="email-additional-content">';
 	echo wp_kses_post( wpautop( wptexturize( $additional_content ) ) );
 	echo '</td></tr></table>';
 }
