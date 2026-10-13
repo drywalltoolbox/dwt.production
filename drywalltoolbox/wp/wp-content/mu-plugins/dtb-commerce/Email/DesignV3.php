@@ -128,6 +128,64 @@ function dtb_email_v4_order_hero( $order, $email, array $options = [] ): string 
 		.'</td></tr>'.$progress_row.'</table>';
 }
 
+/**
+ * Order confirmation masthead and compact identity/shipping overview.
+ * Visual grouping only: WC_Order remains the source of all displayed values.
+ * Never infers captured payment, shipment, or delivery from the email ID.
+ */
+function dtb_email_order_confirmation_intro( \WC_Order $order, bool $operator = false ): string {
+	$font = dtb_email_v3_font();
+	$paid = $order->is_paid();
+	$title = $operator ? __( 'A new order is in.', 'drywall-toolbox' ) : __( 'Thanks for your order.', 'drywall-toolbox' );
+	$copy = $operator
+		? __( 'Review the order and confirm its payment status before fulfillment.', 'drywall-toolbox' )
+		: ( $paid
+			? __( 'Your order is confirmed and being prepared. We will send shipping details once available.', 'drywall-toolbox' )
+			: __( 'We have received your order. You can review its status and payment details at any time.', 'drywall-toolbox' ) );
+	$number = (string) $order->get_order_number();
+	$reference = preg_match( '/^DTB-/i', $number ) ? $number : 'DTB-' . $number;
+	$date = $order->get_date_created();
+	$date_text = $date ? wc_format_datetime( $date, 'M j, Y' ) : '';
+	$recipient = trim( (string) $order->get_formatted_shipping_full_name() );
+	if ( '' === $recipient ) { $recipient = trim( (string) $order->get_formatted_billing_full_name() ); }
+	$address = trim( (string) $order->get_formatted_shipping_address() );
+	if ( '' === $address ) { $address = trim( (string) $order->get_formatted_billing_address() ); }
+	$address = wp_kses( $address, [ 'br' => [], 'p' => [], 'span' => [ 'class' => [] ] ] );
+	$status = wc_get_order_status_name( $order->get_status() );
+	$summary = '<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%;border-collapse:collapse;">'
+		. '<tr><td class="dtb-confirm-summary-cell" width="48%" valign="top" style="width:48%;padding:0 14px 0 0;vertical-align:top;">'
+		. '<p style="margin:0 0 10px;color:#1769ff;font:700 11px/17px '.esc_attr($font).';letter-spacing:1px;text-transform:uppercase;">'.esc_html__( 'Order summary', 'drywall-toolbox' ).'</p>'
+		. '<p style="margin:0 0 6px;color:#071b45;font:700 15px/22px '.esc_attr($font).';">'.esc_html( $status ).'</p>'
+		. '<p style="margin:0 0 8px;color:#64748b;font:400 12px/18px '.esc_attr($font).';">'.esc_html( $reference ).( $date_text ? ' &middot; '.esc_html( $date_text ) : '' ).'</p>'
+		. '<p style="margin:0;color:#071b45;font:700 16px/22px '.esc_attr($font).';">'.wp_kses_post( $order->get_formatted_order_total() ).'</p></td>'
+		. '<td class="dtb-confirm-summary-cell" width="52%" valign="top" style="width:52%;padding:0 0 0 14px;vertical-align:top;">'
+		. '<p style="margin:0 0 10px;color:#1769ff;font:700 11px/17px '.esc_attr($font).';letter-spacing:1px;text-transform:uppercase;">'.esc_html__( 'Shipping address', 'drywall-toolbox' ).'</p>'
+		. '<p style="margin:0 0 6px;color:#071b45;font:700 14px/20px '.esc_attr($font).';">'.esc_html($recipient).'</p>'
+		. '<div style="color:#52627e;font:400 12px/19px '.esc_attr($font).';">'.$address.'</div>'
+		. '</td></tr></table>';
+	$tracking = ! $operator && function_exists( 'dtb_order_tracking_url' ) ? dtb_order_tracking_url( $order ) : '';
+	$action = '';
+	if ( '' !== $tracking ) {
+		$action = '<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:23px auto 0;border-collapse:separate;">'
+			. '<tr><td align="center" bgcolor="#1769ff" style="background:#1769ff;border-radius:7px;">'
+			. '<a href="'.esc_url($tracking).'" style="display:inline-block;padding:14px 27px;font:700 14px/20px '.esc_attr($font).';color:#ffffff!important;text-decoration:none;">'
+			.esc_html__( 'Track your order', 'drywall-toolbox' ).'</a></td></tr></table>'
+			. '<p style="margin:11px 0 0;color:#64748b;text-align:center;font:400 12px/19px '.esc_attr($font).';">'
+			.esc_html__( 'Shipping tracking will appear here when it becomes available.', 'drywall-toolbox' ).'</p>';
+	}
+	return '<table class="dtb-confirm-intro" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff" style="width:100%;border-collapse:collapse;background:#ffffff;">'
+		. '<tr><td align="center" style="padding:36px 38px 31px;">'
+		. '<p style="margin:0 0 11px;color:#1769ff;text-align:center;font:700 11px/17px '.esc_attr($font).';letter-spacing:1.2px;text-transform:uppercase;">'
+		.esc_html( $operator ? __( 'Order notification', 'drywall-toolbox' ) : __( 'Order confirmation', 'drywall-toolbox' ) ).'</p>'
+		. '<h1 style="margin:0;color:#071b45;text-align:center;font:750 31px/39px '.esc_attr($font).';">'.esc_html($title).'</h1>'
+		. '<p style="margin:13px auto 0;max-width:475px;color:#52627e;text-align:center;font:400 15px/24px '.esc_attr($font).';">'.esc_html($copy).'</p>'
+		. $action.'</td></tr>'
+		. '<tr><td class="dtb-confirm-summary-outer" style="padding:0 38px 33px;">'
+		. '<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#f4f7fa" style="width:100%;border-collapse:separate;background:#f4f7fa;border:1px solid #e3e8f0;border-radius:9px;">'
+		. '<tr><td style="padding:23px 22px;">'.$summary.'</td></tr></table>'
+		. '</td></tr></table>';
+}
+
 function dtb_email_v3_processing_progress_rows(): string { return dtb_email_v4_progress_bar([[ 'label'=>__('Payment received','drywall-toolbox'),'state'=>'done' ],[ 'label'=>__('Being prepared','drywall-toolbox'),'state'=>'active' ],[ 'label'=>__('On the way soon','drywall-toolbox'),'state'=>'upcoming' ]]); }
 function dtb_email_v3_processing_hero( $order ): string { return dtb_email_v4_order_hero($order,'customer_processing_order'); }
 function dtb_email_v3_processing_progress(): string { return '<table role="presentation" width="100%"><tr><td>'.dtb_email_v3_processing_progress_rows().'</td></tr></table>'; }
