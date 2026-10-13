@@ -1056,6 +1056,8 @@ export default function ProductDetail({
                   specs={!specTable.hidden ? <ProductSpecTable specs={productSpecifications} /> : null}
                   reviews={<Reviews productId={effectiveProduct.id || product.id || effectiveSku || product.slug || product.name} />}
                   partsUrl={browsePartsUrl}
+                  sku={effectiveSku}
+                  brand={brandLabel}
                 />
               )}
 
