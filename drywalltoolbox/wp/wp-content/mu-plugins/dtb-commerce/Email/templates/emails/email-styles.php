@@ -28,3 +28,21 @@ body,table,td,th,p,a,span,div,h1,h2,h3,address{font-family:<?php echo $font; ?>}
 .dtb-v4-order,.dtb-v4-fulfillment,.dtb-v4-support,.dtb-v4-action{margin-left:auto!important;margin-right:auto!important}.dtb-v4-order td,.dtb-v4-order th{box-sizing:border-box}.dtb-v4-order .order-item-data td{padding-top:0!important;padding-bottom:0!important}.dtb-v4-order .order-item-data{border-collapse:collapse}.email-order-totals tr>th,.email-order-totals tr>td{padding-top:8px;padding-bottom:8px}.email-order-details>tbody>tr.order_item>td:nth-child(2){text-align:center}.email-order-details>tbody>tr.order_item>td:last-child{text-align:right}.dtb-mobile-label{display:none}
 @media only screen and (max-width:600px){.dtb-v4-order .email-order-details>tbody>tr.order_item>td:first-child{width:62%!important}.dtb-v4-order .email-order-details>tbody>tr.order_item>td:nth-child(2){width:12%!important}.dtb-v4-order .email-order-details>tbody>tr.order_item>td:last-child{width:26%!important}.dtb-v4-order .order-item-data td{padding:0!important}.dtb-v4-order .dtb-order-item-image{padding-right:8px!important}.dtb-v4-order .email-order-totals th{width:65%}.dtb-v4-order .email-order-totals td{width:35%}.dtb-v4-action{width:92%!important;max-width:none!important}}
 @media only screen and (max-width:420px){.dtb-v4-order .email-order-details>tbody>tr.order_item>td:first-child{width:58%!important}.dtb-v4-order .email-order-details>tbody>tr.order_item>td:nth-child(2){width:13%!important}.dtb-v4-order .email-order-details>tbody>tr.order_item>td:last-child{width:29%!important}.dtb-v4-action{width:94%!important}}
+
+
+/* Confirmation composition: stable in email clients; no visual effects required. */
+.dtb-confirm-intro{width:100%!important;border-collapse:collapse!important}
+.dtb-confirm-intro a{text-decoration:none}
+.dtb-confirm-summary-cell{overflow-wrap:anywhere;word-break:normal}
+@media only screen and (max-width:600px){
+ .dtb-confirm-intro>tbody>tr:first-child>td{padding:27px 24px 25px!important}
+ .dtb-confirm-summary-outer{padding:0 20px 26px!important}
+ .dtb-confirm-summary-outer>table>tbody>tr>td{padding:19px 17px!important}
+}
+@media only screen and (max-width:420px){
+ .dtb-confirm-intro>tbody>tr:first-child>td{padding:25px 20px 22px!important}
+ .dtb-confirm-summary-outer{padding:0 16px 24px!important}
+ .dtb-confirm-summary-outer>table>tbody>tr>td{padding:17px 13px!important}
+ .dtb-confirm-summary-cell{display:block!important;width:100%!important;max-width:100%!important;padding:0!important}
+ .dtb-confirm-summary-cell+td{padding-top:18px!important;border-top:1px solid #e3e8f0}
+}
