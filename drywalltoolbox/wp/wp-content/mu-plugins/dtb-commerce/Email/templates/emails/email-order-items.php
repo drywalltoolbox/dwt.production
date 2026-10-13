@@ -39,11 +39,11 @@ foreach ( $items as $item_id => $item ) :
 	$order_item_class = apply_filters( 'woocommerce_order_item_class', 'order_item', $item, $order );
 	?>
 	<tr class="<?php echo esc_attr( $order_item_class ); ?>">
-		<td class="td font-family text-align-left" style="vertical-align:middle;word-wrap:break-word;">
-			<table class="order-item-data" role="presentation" width="100%">
+		<td class="td font-family text-align-left" width="68%" style="width:68%;padding:16px 8px 16px 0;vertical-align:middle;word-wrap:break-word;overflow-wrap:break-word;text-align:left;">
+			<table class="order-item-data" role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">
 				<tr>
 					<?php if ( $show_image ) : ?>
-						<td class="dtb-order-item-image" width="82" valign="middle" style="padding:0 14px 0 0;">
+						<td class="dtb-order-item-image" width="82" valign="middle" style="width:82px;padding:0 14px 0 0;">
 							<?php
 							$thumbnail = function_exists( 'dtb_email_render_item_thumbnail' ) ? dtb_email_render_item_thumbnail( $item ) : '';
 							/**
@@ -56,7 +56,7 @@ foreach ( $items as $item_id => $item ) :
 							?>
 						</td>
 					<?php endif; ?>
-					<td valign="middle">
+					<td valign="middle" style="padding:0;text-align:left;overflow-wrap:anywhere;">
 						<?php
 						$item_name = function_exists( 'dtb_email_render_item_name' ) ? dtb_email_render_item_name( $item->get_name() ) : esc_html( $item->get_name() );
 						/**
@@ -122,7 +122,7 @@ foreach ( $items as $item_id => $item ) :
 				</tr>
 			</table>
 		</td>
-		<td class="td font-family text-align-right" style="vertical-align:middle;">
+		<td class="td font-family text-align-right" width="10%" style="width:10%;padding:16px 5px;vertical-align:middle;text-align:center;white-space:nowrap;">
 			<?php
 			$qty          = $item->get_quantity();
 			$refunded_qty = $order->get_qty_refunded_for_item( $item_id );
@@ -138,7 +138,7 @@ foreach ( $items as $item_id => $item ) :
 			}
 			?>
 		</td>
-		<td class="td font-family text-align-right" style="vertical-align:middle;">
+		<td class="td font-family text-align-right" width="22%" style="width:22%;padding:16px 0 16px 5px;vertical-align:middle;text-align:right;white-space:nowrap;">
 			<span class="dtb-mobile-label"><?php esc_html_e( 'Price:', 'drywall-toolbox' ); ?> </span><?php echo wp_kses_post( $order->get_formatted_line_subtotal( $item ) ); ?>
 		</td>
 	</tr>
