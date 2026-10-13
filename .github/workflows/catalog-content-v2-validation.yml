@@ -21,6 +21,8 @@ jobs:
           php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Domain/ProductMeta.php
           php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Services/CatalogProductNormalizer.php
           php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/bootstrap.php
+      - name: Features CSV importer regression
+        run: php scripts/catalog/tests/catalog_content_csv_contract.php
       - name: Canonical catalog validation
         run: python scripts/catalog/validate_official_catalog.py
       - name: V2 migration regression
