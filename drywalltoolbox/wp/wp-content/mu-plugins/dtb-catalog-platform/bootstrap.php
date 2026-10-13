@@ -94,6 +94,7 @@ require_once $_dtb_cp . '/Application/RegisterCategoryHeroImageSize.php';
 require_once $_dtb_cp . '/Application/RegisterCatalogMeta.php';
 require_once $_dtb_cp . '/Application/RegisterCatalogRoutes.php';
 require_once $_dtb_cp . '/Application/RegisterCatalogHooks.php';
+require_once $_dtb_cp . '/Application/CatalogContentCsv.php';
 require_once $_dtb_cp . '/Application/NormalizeCatalogProduct.php';
 require_once $_dtb_cp . '/Application/ResolveDefaultVariation.php';
 require_once $_dtb_cp . '/Application/ValidateCatalogProduct.php';
