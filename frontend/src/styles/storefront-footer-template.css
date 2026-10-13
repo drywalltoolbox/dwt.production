@@ -195,7 +195,9 @@
   }
 }
 
-/* Footer branding/social and legal alignment. Global footer only. */
+/* Footer logo artwork has asymmetric transparent padding on its right.
+   Align the social trio to the visible wordmark, not the image canvas midpoint.
+   Offset is proportional to the 230px/210px rendered logo sizes. */
 .dtb-footer-template__brand {
   display: flex;
   flex-direction: column;
@@ -213,6 +215,8 @@
   gap: 10px;
   width: fit-content;
   margin: 8px auto 0;
+  position: relative;
+  left: -36px;
 }
 .dtb-footer-template__bottom {
   justify-content: center;
@@ -229,6 +233,7 @@
   justify-content: center;
 }
 @media (max-width: 700px) {
-  .dtb-footer-template__brand { align-items: center; }
-  .dtb-footer-template__brand .dtb-footer-template__socials { margin-top: 8px; }
+  .dtb-footer-template__brand .dtb-footer-template__socials {
+    left: -33px;
+  }
 }
