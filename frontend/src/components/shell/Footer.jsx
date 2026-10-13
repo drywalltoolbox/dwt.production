@@ -10,36 +10,32 @@ const FOOTER_GROUPS = [
     title: 'Shop',
     links: [
       { label: 'All Products', to: '/products' },
-      { label: 'Brands', to: '/products/brands' },
+      { label: 'Shop by Brand', to: '/products/brands' },
       { label: 'Parts', to: '/parts' },
-      { label: 'New Arrivals', to: '/products?sort=newest' },
     ],
   },
   {
     title: 'Tools & Services',
     links: [
+      { label: 'Schematics', to: '/schematics' },
       { label: 'Repair Services', to: '/repairs' },
       { label: 'Repair Packages', to: '/repairs/packages' },
-      { label: 'Schematics', to: '/schematics' },
-      { label: 'Calculators', to: '/calculators' },
     ],
   },
   {
-    title: 'Support',
+    title: 'Customer Support',
     links: [
       { label: 'Contact Us', to: '/contact' },
-      { label: 'Frequently Asked Questions', to: '/faq' },
-      { label: 'Shipping', to: '/shipping-policy' },
-      { label: 'Returns', to: '/returns' },
+      { label: 'Shipping & Returns', to: '/policies' },
+      { label: 'FAQs', to: '/faq' },
     ],
   },
   {
-    title: 'Account',
+    title: 'My Account',
     links: [
+      { label: 'Account Dashboard', to: '/dashboard' },
+      { label: 'Track My Order', to: '/dashboard?tab=orders' },
       { label: 'Sign In', to: '/login' },
-      { label: 'Create Account', to: '/register' },
-      { label: 'My Account', to: '/dashboard' },
-      { label: 'Store Policies', to: '/policies' },
     ],
   },
 ];
