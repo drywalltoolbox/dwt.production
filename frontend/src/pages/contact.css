@@ -108,6 +108,7 @@
 }
 .dtb-contact__detail a { color: #0c1b34; text-decoration: none; overflow-wrap: anywhere; font-size: .94rem; }
 .dtb-contact__detail a:hover { color: #145df4; text-decoration: underline; }
+.dtb-contact__hours { display: block; color: #0c1b34; font-size: .94rem; line-height: 1.48; }
 .dtb-contact__form { margin-top: 1rem; display: grid; gap: .95rem; }
 .dtb-contact__field-row { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 1rem; }
 .dtb-contact__field { min-width: 0; display: grid; gap: .38rem; }
