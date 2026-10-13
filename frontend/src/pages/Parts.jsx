@@ -19,7 +19,7 @@ function PartsHero({ activeFilters = [], onRemoveFilter = null }) {
   return (
     <InteriorPageHero
       id="dtb-parts-hero-title"
-      title="Keep your tools working like they should."
+      title="All Parts"
       description="Find replacement parts and service components for professional drywall tools."
       breadcrumbs={[{ label: 'Home', path: '/' }, { label: 'Parts' }]}
       activeFilters={activeFilters}
