@@ -21,7 +21,10 @@
 }
 
 .dtb-header-utility-bar__announcement {
-  display: block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   color: rgba(255, 255, 255, 0.92);
   font-family: var(--dtb-font-body, "Nunito", ui-sans-serif, system-ui, sans-serif);
   font-size: 0.72rem;
@@ -126,4 +129,22 @@
 }
 .site-header .site-header-inner {
   background: transparent;
+}
+
+/* Mockup-aligned utility strip: true centered offer; support and phone on right. */
+.dtb-header-utility-bar__announcement svg { flex: 0 0 auto; color: #2294ff; }
+@media (min-width: 1025px) {
+  .site-header > .dtb-header-utility-bar { min-height: 58px; padding-block: 9px; border-bottom-color: rgba(38, 141, 255, .65); }
+  .dtb-header-utility-bar__announcement { font-size: .88rem; letter-spacing: .055em; }
+  .dtb-header-utility-bar__links { gap: 20px; }
+  .dtb-header-utility-bar__item svg { color: #2294ff; }
+  .dtb-header-utility-bar__phone-copy { display: flex; flex-direction: column; gap: 2px; }
+  .dtb-header-utility-bar__phone-copy strong { font-weight: 750; }
+  .dtb-header-utility-bar__phone-copy small { color: #a9bbd3; font-size: .7rem; white-space: nowrap; }
+}
+@media (min-width: 1025px) and (max-width: 1599px) {
+  .dtb-header-utility-bar__links { display: flex; }
+}
+@media (min-width: 1025px) and (max-width: 1420px) {
+  .dtb-header-utility-bar__links { display: none; }
 }
