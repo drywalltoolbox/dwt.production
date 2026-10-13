@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
 // Google's launcher exposes inherited custom properties across its open shadow roots.
 // Scope DTB branding to the launch button; leave the chat panel and behavior alone.
 add_filter( 'gecx_agent_button_attributes', static function ( array $attributes ): array {
-    $brand_style = '--gecx-agent-button-background: #2255EE; --gecx-agent-button-color: #FFFFFF; --gecx-agent-button-shimmer-color: #2255EE; --gecx-agent-button-shimmer-color-hover: #3B6CFF;';
+    $brand_style = '--gecx-agent-button-background: #2255EE; --gecx-agent-button-color: #FFFFFF; --gecx-agent-button-shimmer-color: #2255EE; --gecx-agent-button-shimmer-color-hover: #3B6CFF; --gecx-agent-button-circle-size: clamp(56px, 6vw, 60px); --gecx-agent-button-icon-size: clamp(22px, 2.4vw, 24px); --gecx-agent-button-box-shadow: 0 6px 22px rgba(15, 23, 42, 0.23), 0 2px 6px rgba(15, 23, 42, 0.16);';
     $existing_style = isset( $attributes['style'] ) && is_string( $attributes['style'] )
         ? trim( $attributes['style'] )
         : '';
