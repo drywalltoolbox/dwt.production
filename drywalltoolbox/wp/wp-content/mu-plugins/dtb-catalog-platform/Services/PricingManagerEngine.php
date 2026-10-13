@@ -35,7 +35,7 @@ add_action( 'deleted_post_meta', 'dtb_pricing_invalidate_product_meta', 10, 4 );
 add_action( 'set_object_terms', 'dtb_pricing_invalidate_product_terms', 10, 6 );
 
 /** Invalidate pricing snapshots when WooCommerce or another editor changes catalog metadata. */
-function dtb_pricing_invalidate_product_meta( int $meta_id, int $object_id, string $meta_key, mixed $meta_value = null ): void {
+function dtb_pricing_invalidate_product_meta( int|array $meta_id, int $object_id, string $meta_key, mixed $meta_value = null ): void {
 	if ( in_array( get_post_type( $object_id ), [ 'product', 'product_variation' ], true ) ) {
 		dtb_pricing_invalidate_index();
 	}
