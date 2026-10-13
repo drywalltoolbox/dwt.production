@@ -20,6 +20,11 @@ defined( 'ABSPATH' ) || exit;
 
 final class EmailPreviewService {
 	/** @var array<string,string> */
+	private const ACCOUNT_EMAILS = [
+		'customer_new_account' => 'New account (synthetic preview)',
+		'customer_reset_password' => 'Password reset (synthetic preview)',
+	];
+
 	private const ORDER_EMAILS = [
 		'customer_processing_order' => 'Processing order',
 		'customer_completed_order'  => 'Completed order',
@@ -52,7 +57,7 @@ final class EmailPreviewService {
 			}
 
 			$email_id = sanitize_key( (string) $email->id );
-			if ( '' === $email_id || ! isset( self::ORDER_EMAILS[ $email_id ] ) ) {
+			if ( '' === $email_id || ! isset( self::ORDER_EMAILS[ $email_id ] ) && ! isset( self::ACCOUNT_EMAILS[ $email_id ] ) ) {
 				continue;
 			}
 
@@ -69,6 +74,11 @@ final class EmailPreviewService {
 			$supported[ $email_id ] = self::ORDER_EMAILS[ $email_id ];
 		}
 
+		foreach ( array_keys( self::registered_order_emails() ) as $email_id ) {
+			if ( isset( self::ACCOUNT_EMAILS[ $email_id ] ) ) {
+				$supported[ $email_id ] = self::ACCOUNT_EMAILS[ $email_id ];
+			}
+		}
 		return $supported;
 	}
 
@@ -107,8 +117,53 @@ final class EmailPreviewService {
 		return $result;
 	}
 
+	/**
+	 * Synthetic account email previews never resolve a real customer or reset key.
+	 * They use the production WooCommerce classic template resolver and CSS inliner.
+	 */
+	private static function render_account_fixture( string $email_id ) {
+		$registered = self::registered_order_emails();
+		if ( ! isset( self::ACCOUNT_EMAILS[ $email_id ], $registered[ $email_id ] ) ) {
+			return new WP_Error( 'dtb_email_preview_class_missing', __( 'Selected account email is not registered.', 'drywall-toolbox' ), [ 'status' => 409 ] );
+		}
+		$email = clone $registered[ $email_id ];
+		$fixture = [
+			'email' => $email,
+			'email_heading' => $email_id === 'customer_new_account' ? __( 'Welcome to Drywall Toolbox', 'drywall-toolbox' ) : __( 'Reset your password', 'drywall-toolbox' ),
+			'user_login' => 'preview-account',
+			'user_display_name' => 'Preview Customer',
+			'user_id' => 0,
+			'reset_key' => 'dtb-preview-invalid-reset-key',
+			'password_generated' => false,
+			'set_password_url' => '',
+			'blogname' => get_bloginfo( 'name', 'display' ),
+			'additional_content' => '',
+		];
+		$email->setup_locale();
+		try {
+			$html = wc_get_template_html( 'emails/' . ( $email_id === 'customer_new_account' ? 'customer-new-account.php' : 'customer-reset-password.php' ), $fixture );
+			$html = $email->style_inline( $html );
+			$html = apply_filters( 'woocommerce_mail_content', $html, $email );
+		} catch ( Throwable $exception ) {
+			return new WP_Error( 'dtb_email_preview_render_failed', __( 'The synthetic account preview could not be rendered.', 'drywall-toolbox' ), [ 'status' => 500 ] );
+		} finally {
+			$email->restore_locale();
+		}
+		if ( ! is_string( $html ) || strlen( $html ) > self::MAX_HTML_BYTES ) {
+			return new WP_Error( 'dtb_email_preview_payload_invalid', __( 'Preview HTML exceeded the safety limit.', 'drywall-toolbox' ), [ 'status' => 413 ] );
+		}
+		return [
+			'html' => $html, 'subject' => $fixture['email_heading'] . ' [synthetic preview]',
+			'heading' => $fixture['email_heading'], 'emailId' => $email_id, 'orderId' => 0,
+		];
+	}
+
 	/** @return array{html:string,subject:string,heading:string,emailId:string,orderId:int}|WP_Error */
 	public static function render( int $order_id, string $email_id ) {
+		$email_id = sanitize_key( $email_id );
+		if ( isset( self::ACCOUNT_EMAILS[ $email_id ] ) ) {
+			return self::render_account_fixture( $email_id );
+		}
 		$email_id = sanitize_key( $email_id );
 		$emails   = self::registered_order_emails();
 
