@@ -1,4 +1,5 @@
 import InteriorPageHero from '../shared/InteriorPageHero.jsx';
+import '../../styles/category-hero.css';
 import CategoryMerchandising from './CategoryMerchandising.jsx';
 import ToolSetsKitsExperience from './ToolSetsKitsExperience.jsx';
 
