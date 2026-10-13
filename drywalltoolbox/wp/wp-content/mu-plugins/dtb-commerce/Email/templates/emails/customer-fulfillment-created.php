@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 do_action( 'woocommerce_email_header', $email_heading, $email );
-echo function_exists( 'DTB\\Commerce\\Email\\dtb_email_v4_order_hero' ) ? DTB\Commerce\Email\dtb_email_v4_order_hero( $order, $email ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo function_exists( 'DTB\\Commerce\\Email\\dtb_email_v4_order_hero' ) ? DTB\Commerce\Email\dtb_email_v4_order_hero( $order, $email, [ 'title' => __( 'Your shipment is being prepared.', 'drywall-toolbox' ), 'body' => __( 'A shipment record has been created. Tracking details will appear when available.', 'drywall-toolbox' ), 'steps' => [] ] ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 do_action( 'woocommerce_email_fulfillment_details', $order, $fulfillment, $sent_to_admin, $plain_text, $email );
 do_action( 'woocommerce_email_fulfillment_meta', $order, $fulfillment, $sent_to_admin, $plain_text, $email );
