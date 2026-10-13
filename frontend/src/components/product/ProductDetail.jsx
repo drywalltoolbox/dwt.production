@@ -9,6 +9,7 @@ import ProductVariationRail from './ProductVariationRail';
 import ProductDetailHeader from './ProductDetailHeader';
 import ProductPurchasePanel from './ProductPurchasePanel';
 import ProductDetailTabs from './ProductDetailTabs';
+import ProductInformationAccordion from './ProductInformationAccordion.jsx';
 import ProductSpecTable from './ProductSpecTable';
 import { getProductSpecifications } from '../../utils/productSpecifications';
 import { getProductVariations } from '../../services/api';
@@ -1048,6 +1049,17 @@ export default function ProductDetail({
                   <p className="text-sm text-red-600 mt-2" role="alert" aria-live="assertive">{addToCartError}</p>
                 ) : null}
               </div>
+
+              {!onClose && !detailTabs.hidden && (
+                <ProductInformationAccordion
+                  description={descriptionNode}
+                  specs={!specTable.hidden ? <ProductSpecTable specs={productSpecifications} /> : null}
+                  reviews={<Reviews productId={effectiveProduct.id || product.id || effectiveSku || product.slug || product.name} />}
+                  partsUrl={browsePartsUrl}
+                  sku={effectiveSku}
+                  brand={brandLabel}
+                />
+              )}
 
               <div className="dtb-pdp-mobile-post-purchase">
                 {partsUrl ? (
