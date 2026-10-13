@@ -47,7 +47,7 @@ function dtb_order_enqueue_job( string $job_type, int $order_id, array $args = [
 }
 
 function dtb_order_retry_job( string $job_type, int $order_id, array $args = [] ): bool {
-	if ( 'dtb_order_sync_quickbooks' === $job_type && dtb_quickbooks_test_order_excluded( $order_id ) ) { return false; }
+	if ( 'dtb_order_sync_quickbooks' === $job_type && dtb_qbo_exports_paused() ) { return false; }
 	if ( 'dtb_order_issue_rewards' === $job_type ) {
 		return false;
 	}
@@ -243,8 +243,8 @@ function dtb_order_job_sync_quickbooks( int $order_id, array $args = [] ): void 
 	if ( ! $order ) {
 		return;
 	}
-	if ( dtb_quickbooks_test_order_excluded( $order_id ) ) {
-		dtb_order_update_integration_state( $order_id, 'quickbooks', [ 'status' => 'skipped', 'error' => 'Explicit test-order exclusion.' ] );
+	if ( dtb_qbo_exports_paused() ) {
+		dtb_order_update_integration_state( $order_id, 'quickbooks', [ 'status' => 'disabled', 'error' => 'QuickBooks exports paused for checkout validation.' ] );
 		dtb_order_append_event( $order_id, 'integration.quickbooks.skipped', [ 'source' => 'cron', 'actor_type' => 'system', 'visibility' => 'operator', 'payload' => [ 'reason' => 'quickbooks_exports_paused' ] ] );
 		return;
 	}
