@@ -208,3 +208,27 @@ function dtb_email_v3_support_panel(string $heading='',string $copy=''):string{
 	$heading=''!==$heading?$heading:__('Questions about your order?','drywall-toolbox');$copy=''!==$copy?$copy:__('Our support team is here to help.','drywall-toolbox');
 	return '<table class="dtb-v4-support" role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" style="width:87%;max-width:592px;margin:16px auto 20px;"><tr><td align="center" style="padding:0 20px;color:#071b45;font-family:'.esc_attr($font).';"><strong style="display:block;margin:0 0 5px;font-size:16px;font-weight:750;line-height:22px;">'.esc_html($heading).'</strong><span style="display:block;color:#65738f;font-size:13px;font-weight:400;line-height:20px;">'.esc_html($copy).' <a href="'.esc_url($url).'" style="color:#1769ff;font-weight:600;text-decoration:none;">'.esc_html__('Contact support','drywall-toolbox').'</a>.</span></td></tr></table>';
 }
+
+
+/** Contextual lifecycle identity panel; never equates order completion with delivery. */
+function dtb_email_lifecycle_panel( \WC_Order $order, string $kind, $fulfillment = null ): string {
+	$font = dtb_email_v3_font();
+	$shipment = 'shipment' === $kind || 'shipment_update' === $kind;
+	$eyebrow = $shipment ? __( 'Shipment details', 'drywall-toolbox' ) : __( 'Order summary', 'drywall-toolbox' );
+	$label = $shipment ? __( 'Shipment activity', 'drywall-toolbox' ) : __( 'Order status', 'drywall-toolbox' );
+	$status = wc_get_order_status_name( $order->get_status() );
+	$info = '';
+	if ( $shipment && is_object( $fulfillment ) && method_exists( $fulfillment, 'get_date_deleted' ) && null === $fulfillment->get_date_deleted() ) {
+		$carrier = method_exists( $fulfillment, 'get_shipment_provider' ) ? (string) $fulfillment->get_shipment_provider() : '';
+		$number = method_exists( $fulfillment, 'get_tracking_number' ) ? (string) $fulfillment->get_tracking_number() : '';
+		if ( $carrier ) { $info .= '<p style="margin:6px 0 0;color:#52627e;">'.esc_html__( 'Carrier:', 'drywall-toolbox' ).' '.esc_html( $carrier ).'</p>'; }
+		if ( $number ) { $info .= '<p style="margin:6px 0 0;color:#52627e;">'.esc_html__( 'Tracking:', 'drywall-toolbox' ).' '.esc_html( $number ).'</p>'; }
+	}
+	$note = $shipment ? __( 'Carrier updates appear when your shipment starts moving.', 'drywall-toolbox' ) : __( 'Completed is an order status and does not confirm carrier delivery.', 'drywall-toolbox' );
+	return '<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" style="width:87%;max-width:592px;margin:0 auto 23px;border-collapse:separate;background:#f4f7fa;border:1px solid #e3e8f0;border-radius:9px;">'
+		.'<tr><td style="padding:21px 23px;font-family:'.esc_attr($font).';">'
+		.'<p style="margin:0 0 9px;color:#1769ff;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;">'.esc_html($eyebrow).'</p>'
+		.'<p style="margin:0;color:#071b45;font-size:15px;font-weight:700;line-height:22px;">'.esc_html($label).': '.esc_html($status).'</p>'.$info
+		.'<p style="margin:10px 0 0;color:#64748b;font-size:12px;line-height:19px;">'.esc_html($note).'</p>'
+		.'</td></tr></table>';
+}
