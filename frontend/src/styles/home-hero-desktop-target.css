@@ -7,7 +7,7 @@
 
 @media (min-width: 901px) {
   .home-hero__stage {
-    height: clamp(500px, 31vw, 548px);
+    height: max(640px, calc(100svh - var(--header-height, 248px)));
   }
 
   .home-hero__media-image {
@@ -27,7 +27,7 @@
   }
 
   .home-hero__content {
-    top: clamp(56px, 4vw, 72px);
+    top: 50%;
     left: clamp(72px, 5.25vw, 102px);
     width: min(680px, 43vw);
   }
@@ -90,10 +90,22 @@
 
 @media (min-width: 1440px) {
   .home-hero__stage {
-    height: clamp(520px, 30vw, 560px);
+    height: max(650px, calc(100svh - var(--header-height, 248px)));
   }
 
   .home-hero__content {
     left: clamp(84px, 5.3vw, 110px);
   }
+}
+
+/* Reserve a stable CTA-to-campaign clearance after the taller desktop header.
+ * The copy is centered within the existing shell (which excludes the navigation
+ * rail), rather than positioned a fixed distance from the stage top. */
+@media (min-width: 901px) {
+  .home-hero__content-shell { bottom: 108px; }
+  .home-hero__content { max-height: calc(100% - 32px); }
+  .home-hero-campaigns { bottom: 22px; }
+}
+@media (min-width: 901px) and (max-height: 760px) {
+  .home-hero__stage { min-height: 660px; }
 }
