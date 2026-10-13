@@ -2616,3 +2616,54 @@
     gap: 0.75rem;
   }
 }
+
+
+/* Quick View: share the PDP disclosure design without changing its modal
+ * overlay, scroll owner, image sizing or purchase controls. */
+.dtb-pdp--modal .dtb-pdp-info-accordion {
+  width: 100%;
+  min-width: 0;
+  margin-top: 18px;
+  border: 1px solid #dfe7f0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+.dtb-pdp--modal .dtb-pdp-info-accordion__item + .dtb-pdp-info-accordion__item { border-top: 1px solid #e1e8f2; }
+.dtb-pdp--modal .dtb-pdp-info-accordion__heading { margin: 0; font-size: inherit; }
+.dtb-pdp--modal .dtb-pdp-info-accordion__heading button {
+  display: flex;
+  width: 100%;
+  min-height: 46px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 11px 16px;
+  border: 0;
+  background: #fff;
+  color: #10203f;
+  font-size: .89rem;
+  font-weight: 730;
+  text-align: left;
+  cursor: pointer;
+}
+.dtb-pdp--modal .dtb-pdp-info-accordion__heading button:hover { background: #f8faff; }
+.dtb-pdp--modal .dtb-pdp-info-accordion__heading button:focus-visible { outline: 2px solid #1f55ee; outline-offset: -3px; }
+.dtb-pdp--modal .dtb-pdp-info-accordion__heading svg { flex: 0 0 auto; transition: transform 160ms ease; }
+.dtb-pdp--modal .dtb-pdp-info-accordion__heading svg.is-open { transform: rotate(180deg); }
+.dtb-pdp--modal .dtb-pdp-info-accordion__panel {
+  min-width: 0;
+  padding: 6px 16px 16px;
+  overflow-wrap: anywhere;
+  color: #465773;
+  font-size: .88rem;
+  line-height: 1.6;
+}
+.dtb-pdp--modal .dtb-pdp-info-accordion__panel a { color: #1557e9; text-decoration: underline; text-underline-offset: 2px; }
+@media (max-width: 767px) {
+  .dtb-pdp--modal .dtb-pdp-info-accordion__heading button { min-height: 48px; padding: 12px 14px; }
+  .dtb-pdp--modal .dtb-pdp-info-accordion__panel { padding: 5px 14px 15px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dtb-pdp--modal .dtb-pdp-info-accordion__heading svg { transition: none; }
+}
