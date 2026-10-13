@@ -537,11 +537,16 @@ if ( ! function_exists( 'dtb_order_is_woopayments_test_order' ) ) {
 if ( ! function_exists( 'dtb_order_write_boundary_order_should_skip_side_effects' ) ) {
 	/** Determine whether all downstream side effects must be suppressed. */
 	function dtb_order_write_boundary_order_should_skip_side_effects( $order ): bool {
-		if ( ! dtb_order_write_boundary_enabled() || ! $order instanceof WC_Order ) {
+		if ( ! $order instanceof WC_Order ) {
 			return false;
 		}
+		// Test-payment isolation is unconditional, even if legacy duplicate
+		// containment is explicitly disabled by an operator.
 		if ( dtb_order_is_woopayments_test_order( $order ) ) {
 			return true;
+		}
+		if ( ! dtb_order_write_boundary_enabled() ) {
+			return false;
 		}
 		if ( '1' === (string) $order->get_meta( '_dtb_skip_integrations', true ) ) {
 			return true;
