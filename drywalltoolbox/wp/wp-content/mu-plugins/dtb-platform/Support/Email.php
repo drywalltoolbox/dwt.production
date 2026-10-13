@@ -845,29 +845,33 @@ if ( ! function_exists( 'dtb_email_social_icons' ) ) {
 	 */
 	function dtb_email_social_icons(): string {
 		$links = dtb_email_social_links();
-		if ( empty( $links ) ) {
+		if ( ! is_array( $links ) || [] === $links ) {
 			return '';
 		}
 
-		$font  = dtb_email_font_stack();
+		// Rasterized from the same Instagram / Facebook Lucide v1.9-stroke
+		// geometry and custom XLogo path used in frontend/src/components/shell/Footer.jsx.
+		// Image-backed output is intentional: inline SVG is unreliable in email clients.
+		$assets = [
+			'Instagram' => 'frontend-instagram.png',
+			'Facebook'  => 'frontend-facebook.png',
+			'X'         => 'frontend-x.png',
+		];
 		$cells = '';
-
 		foreach ( $links as $link ) {
-			$url   = esc_url_raw( (string) ( $link['url'] ?? '' ) );
 			$label = dtb_email_clean_text( $link['label'] ?? '' );
-			if ( '' === $url || '' === $label ) {
+			$url = esc_url_raw( (string) ( $link['url'] ?? '' ) );
+			if ( ! isset( $assets[ $label ] ) || '' === $url || ! wp_http_validate_url( $url ) ) {
 				continue;
 			}
-			$icon_name = 'Facebook' === $label ? 'facebook' : ( 'Instagram' === $label ? 'instagram' : '' );
-			$icon_html = 'X' === $label ? '<span aria-hidden="true" style="display:inline-block;color:#ffffff;font-family:Arial,sans-serif;font-size:20px;font-weight:700;line-height:24px;">𝕏</span>' : ( '' !== $icon_name && function_exists( 'dtb_email_icon' ) ? dtb_email_icon( $icon_name, 22 ) : esc_html( function_exists( 'mb_substr' ) ? mb_substr( $label, 0, 1 ) : substr( $label, 0, 1 ) ) );
-			$cells  .= '<td style="padding:0 10px;"><a href="' . esc_url( $url ) . '" target="_blank" rel="noopener noreferrer" aria-label="' . esc_attr( $label ) . '" style="display:inline-block;width:24px;height:24px;line-height:24px;color:#ffffff;font-family:' . $font . ';font-size:13px;font-weight:800;text-align:center;text-decoration:none;">' . $icon_html . '</a></td>';
+			$src = home_url( '/logos/email-icons/' . $assets[ $label ] );
+			$cells .= '<td align="center" valign="middle" style="padding:0 9px;text-align:center;vertical-align:middle;">'
+				. '<a href="' . esc_url( $url ) . '" target="_blank" rel="noopener noreferrer" aria-label="' . esc_attr( $label ) . '" style="display:inline-block;padding:0;border:0;background:none;text-decoration:none;">'
+				. '<img src="' . esc_url( $src ) . '" alt="' . esc_attr( $label ) . '" width="21" height="21" style="display:block;width:21px;height:21px;border:0;background:transparent;outline:none;text-decoration:none;" />'
+				. '</a></td>';
 		}
 
-		if ( '' === $cells ) {
-			return '';
-		}
-
-		return '<table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin:0 auto 16px;"><tr>' . $cells . '</tr></table>';
+		return '' === $cells ? '' : '<table role="presentation" align="center" border="0" cellpadding="0" cellspacing="0" style="margin:0 auto;border-collapse:collapse;"><tr>' . $cells . '</tr></table>';
 	}
 }
 
