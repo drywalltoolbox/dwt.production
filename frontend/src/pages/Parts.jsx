@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ProductsCatalogPlatform from './ProductsCatalogPlatform.jsx';
-import Breadcrumb from '../components/shared/Breadcrumb.jsx';
-import partsHeroImage from '../assets/media/parts/hero.webp';
+import InteriorPageHero from '../components/shared/InteriorPageHero.jsx';
 import {
   buildCatalogUrl,
   canonicalBrandLabel,
@@ -18,43 +17,14 @@ function formatFilterLabel(value = '') {
 
 function PartsHero({ activeFilters = [], onRemoveFilter = null }) {
   return (
-    <>
-      <header className="dtb-parts-hero" aria-labelledby="dtb-parts-hero-title">
-        <div className="dtb-parts-hero__inner">
-          <div className="dtb-parts-breadcrumb-shell">
-            <Breadcrumb
-              items={[{ label: 'Home', path: '/' }, { label: 'Parts' }]}
-              activeFilters={activeFilters}
-              onRemoveFilter={onRemoveFilter}
-              className="dtb-breadcrumb-bar--compact"
-            />
-          </div>
-          <div className="dtb-parts-hero__content">
-            <div className="dtb-parts-hero__eyebrow-row">
-              <span className="dtb-parts-hero__eyebrow">Parts</span>
-              <span className="dtb-parts-hero__eyebrow-rule" aria-hidden="true" />
-            </div>
-            <h1 id="dtb-parts-hero-title" className="dtb-parts-hero__title">
-              Keep your tools working like they should.
-            </h1>
-            <p className="dtb-parts-hero__description">
-              Find replacement parts and service components for professional drywall tools.
-            </p>
-          </div>
-
-          <div className="dtb-parts-hero__media" aria-hidden="true">
-            <img
-              src={partsHeroImage}
-              alt=""
-              className="dtb-parts-hero__image"
-              loading="eager"
-              fetchPriority="high"
-              decoding="async"
-            />
-          </div>
-        </div>
-      </header>
-    </>
+    <InteriorPageHero
+      id="dtb-parts-hero-title"
+      title="Keep your tools working like they should."
+      description="Find replacement parts and service components for professional drywall tools."
+      breadcrumbs={[{ label: 'Home', path: '/' }, { label: 'Parts' }]}
+      activeFilters={activeFilters}
+      onRemoveFilter={onRemoveFilter}
+    />
   );
 }
 
