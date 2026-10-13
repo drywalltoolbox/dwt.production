@@ -109,6 +109,7 @@ final class DTB_CatalogProductNormalizer {
 			],
 			'variation'        => $variation,
 			'attributes'       => $wc['attributes'] ?? [],
+			'content'          => self::extract_structured_content( $meta ),
 			'metaData'         => self::extract_specs_meta_data( $wc['meta_data'] ?? [] ),
 		];
 
@@ -164,6 +165,42 @@ final class DTB_CatalogProductNormalizer {
 		}
 
 		return $filtered;
+	}
+
+	/**
+	 * Expose only validated Features JSON. Invalid/unmigrated records are
+	 * represented as unavailable so legacy description rendering stays intact.
+	 */
+	private static function extract_structured_content( array $meta ): array {
+		$raw = $meta[ DTB_ProductMeta::FEATURES_JSON ] ?? '';
+		$version = (string) ( $meta[ DTB_ProductMeta::CONTENT_SCHEMA_VERSION ] ?? '' );
+		$features = [];
+		if ( '2' === $version && is_string( $raw ) && '' !== trim( $raw ) ) {
+			$decoded = json_decode( $raw, true );
+			if ( is_array( $decoded ) && 1 === ( $decoded['schema_version'] ?? null ) && isset( $decoded['features'] ) && is_array( $decoded['features'] ) ) {
+				$valid = true;
+				if ( count( $decoded['features'] ) > 50 ) {
+					$valid = false;
+				}
+				foreach ( $decoded['features'] as $feature ) {
+					if ( ! is_array( $feature ) || ! isset( $feature['label'], $feature['description'] ) ||
+						! is_string( $feature['label'] ) || ! is_string( $feature['description'] ) ||
+						'' === trim( $feature['label'] ) || '' === trim( $feature['description'] ) ||
+						strlen( $feature['label'] ) > 160 || strlen( $feature['description'] ) > 2000 ) {
+						$valid = false;
+						break;
+					}
+					$features[] = [
+						'label'       => $feature['label'],
+						'description' => $feature['description'],
+					];
+				}
+				if ( $valid ) {
+					return [ 'schemaVersion' => 2, 'features' => $features, 'structured' => true ];
+				}
+			}
+		}
+		return [ 'schemaVersion' => 0, 'features' => [], 'structured' => false ];
 	}
 
 	/** Extract brand identity, trying meta → parent meta → WC attribute → WC category. */
