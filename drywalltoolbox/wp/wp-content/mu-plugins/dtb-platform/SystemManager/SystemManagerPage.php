@@ -682,7 +682,7 @@ function dtb_system_manager_render_live_updates_tab(): void {
 		foreach ( $entries as $entry ) {
 			$location = trim( $entry['root'] . '/' . $entry['path'], '/' );
 			$timestamp = strtotime( $entry['time'] );
-			$when = $timestamp ? wp_date( 'M j, g:i A', $timestamp ) : $entry['time'];
+			$when = $timestamp ? wp_date( 'M j, g:i A T', $timestamp, new DateTimeZone( 'America/Chicago' ) ) : $entry['time'];
 			$name = basename( $location );
 			$description = $action_labels[ $entry['action'] ] ?? $entry['action'];
 			echo '<tr><td style="white-space:nowrap">' . esc_html( $when ) . '</td>';
