@@ -23,6 +23,7 @@ export default function ProductPurchasePanel({
   needsVariation,
   hasCompleteSelection,
   addToCartState = 'idle',
+  expressCheckout = null,
   setSummary = null,
   onViewIncludes,
 }) {
@@ -113,6 +114,8 @@ export default function ProductPurchasePanel({
           feedbackMode="controlled"
         />
       </div>
+
+      {expressCheckout}
 
       <div className="dtb-pdp-payment-confidence" role="note" aria-label="Secure checkout and accepted payment methods">
         <div className="dtb-pdp-secure-checkout">
