@@ -27,7 +27,7 @@ export default function StagingProductWallet({ productId, variationId, quantity 
     return params.toString();
   }, [selectedAttributes]);
   const allowed = staging && preview && Number.isSafeInteger(id) && id > 0;
-  const source = allowed ? `/staging/__native-wallet/${id}/?dtb_wallet_preview=1${selectedId > 0 ? `&variation_id=${selectedId}` : ''}${attrs ? `&${attrs}` : ''}` : '';
+  const source = allowed ? `/staging/__native-wallet/${id}/?dtb_wallet_preview=1&quantity=${qty}${selectedId > 0 ? `&variation_id=${selectedId}` : ''}${attrs ? `&${attrs}` : ''}` : '';
   useEffect(() => {
     setVisible(false);
   }, [source]);
@@ -54,7 +54,7 @@ export default function StagingProductWallet({ productId, variationId, quantity 
 
   if (!allowed) return null;
   return (
-    <section className="dtb-native-wallet-preview" aria-label="Express checkout preview" hidden={!visible}>
+    <section className={`dtb-native-wallet-preview${visible ? ' is-ready' : ''}`} aria-label="Express checkout preview" aria-hidden={!visible}>
       <iframe
         key={source}
         ref={frameRef}
