@@ -507,8 +507,8 @@ if ( ! function_exists( 'dtb_order_loop_is_duplicate' ) ) {
 /**
  * WooPayments test orders are never eligible for external order side effects.
  * Persisted WooPayments order mode remains authoritative after test mode is
- * turned off; runtime test mode provides fail-closed protection before the
- * gateway has written its order meta.
+ * turned off. Missing/unknown mode is fail-closed until a persisted production
+ * value is available.
  */
 if ( ! function_exists( 'dtb_order_is_woopayments_test_order' ) ) {
 	function dtb_order_is_woopayments_test_order( $order ): bool {
