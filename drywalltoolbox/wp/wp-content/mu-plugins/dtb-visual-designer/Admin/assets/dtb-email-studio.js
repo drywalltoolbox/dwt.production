@@ -5,7 +5,11 @@
 	if (!root) return;
 
 	var cfg = window.dtbAdminConfig || {};
-	var state = { manifest: null, emailId: '', orderId: 0, device: 'desktop', rendering: false, renderSeq: 0, result: null, error: '' };
+	var state = { manifest: null, emailId: '', orderId: 0, device: 'desktop', fullscreen: false, rendering: false, renderSeq: 0, result: null, error: '' };
+
+	function viewportLabel() {
+		return state.device === 'mobile' ? '390px · Mobile' : state.device === 'tablet' ? '768px · Tablet' : 'Fluid · Desktop';
+	}
 
 	function isAccountFixture() {
 		return state.emailId === 'customer_new_account' || state.emailId === 'customer_reset_password';
@@ -85,6 +89,7 @@
 	}
 
 	function render() {
+		root.classList.toggle('dtb-es--fullscreen', state.fullscreen);
 		root.innerHTML = '';
 		if (!state.manifest && !state.error) {
 			root.appendChild(el('div', { class: 'dtb-vd__loading' }, [el('div', { class: 'dtb-vd__spinner' }, []), el('p', {}, ['Loading Email Studio…'])]));
@@ -97,16 +102,19 @@
 			el('div', { class: 'dtb-es__brand' }, [el('span', { class: 'dtb-es__eyebrow' }, ['TRANSACTIONAL EMAILS']), el('h1', {}, ['Email Studio']), el('p', {}, ['Preview customer and operator email templates using safe simulated data. No messages are sent.'])]),
 			el('label', {}, [el('span', {}, ['Email']), el('select', { onchange: function (event) { state.emailId = event.target.value; renderEmail(); } }, emailOptions)]),
 			el('div', { class: 'dtb-es__fixture-label', role: 'status' }, ['SYNTHETIC DATA · NO REAL ORDERS OR CUSTOMERS']),
-			el('div', { class: 'dtb-es__devices', role: 'group', 'aria-label': 'Preview viewport' }, [
-				el('button', { type: 'button', class: state.device === 'desktop' ? 'is-active' : '', onclick: function () { state.device = 'desktop'; render(); } }, ['Desktop']),
-				el('button', { type: 'button', class: state.device === 'mobile' ? 'is-active' : '', onclick: function () { state.device = 'mobile'; render(); } }, ['Mobile']),
-			]),
+			el('div', { class: 'dtb-es__devices', role: 'group', 'aria-label': 'Email viewport width' },
+				['desktop', 'tablet', 'mobile'].map(function (device) {
+					return el('button', { type: 'button', class: state.device === device ? 'is-active' : '', 'aria-pressed': state.device === device ? 'true' : 'false', onclick: function () { state.device = device; render(); } }, [device.charAt(0).toUpperCase() + device.slice(1)]);
+				})
+			),
+			el('button', { type: 'button', class: 'dtb-es__fullscreen', 'aria-pressed': state.fullscreen ? 'true' : 'false', onclick: function () { state.fullscreen = !state.fullscreen; render(); } }, [state.fullscreen ? 'Exit fullscreen' : 'Fullscreen']),
 			el('button', { type: 'button', class: 'dtb-es__refresh', onclick: renderEmail, disabled: state.rendering ? 'disabled' : null }, [state.rendering ? 'Rendering…' : 'Refresh preview']),
 		]);
 
 		var meta = state.result ? el('div', { class: 'dtb-es__meta' }, [
 			el('span', {}, ['Subject: ' + state.result.subject]),
 			el('span', {}, ['Heading: ' + state.result.heading]),
+			el('span', { class: 'dtb-es__viewport-label' }, [viewportLabel()]),
 			el('span', {}, [state.result.sourceFidelity === 'visual-only-fulfillment' ? 'Visual-only shipment simulation · fulfillment hooks not exercised' : 'Production template · simulated data']),
 		]) : el('div', { class: 'dtb-es__meta' }, [state.manifest ? state.manifest.notice : '']);
 
@@ -121,8 +129,9 @@
 
 		root.appendChild(toolbar);
 		root.appendChild(meta);
-		root.appendChild(el('section', { class: 'dtb-es__stage' }, [el('div', { class: 'dtb-es__canvas dtb-es__canvas--' + state.device }, [frameContent])]));
+		root.appendChild(el('section', { class: 'dtb-es__stage', 'aria-label': viewportLabel() + ' email preview' }, [el('div', { class: 'dtb-es__canvas dtb-es__canvas--' + state.device }, [frameContent])]));
 	}
 
+	document.addEventListener('keydown', function (event) { if (event.key === 'Escape' && state.fullscreen) { state.fullscreen = false; render(); } });
 	loadManifest();
 }());
