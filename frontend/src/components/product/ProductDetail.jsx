@@ -1081,7 +1081,7 @@ export default function ProductDetail({
             </div>
           ) : null}
 
-          {!detailTabs.hidden && (
+          {onClose && !detailTabs.hidden && (
           <div {...detailTabs.rootProps}>
           <ProductDetailTabs
             activeTab={activeTab}
