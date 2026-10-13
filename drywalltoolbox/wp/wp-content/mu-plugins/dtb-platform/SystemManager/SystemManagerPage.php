@@ -274,10 +274,10 @@ function dtb_system_manager_render_overview_tab( bool $can_system, bool $can_dep
 	}
 	if ( $q ) {
 		$kpis[] = [
-			'value'      => (string) $q['failed'],
+			'value'      => (string) ( $q['failed_recent_24h'] ?? 0 ),
 			'label'      => __( 'Failed Queue Jobs', 'drywall-toolbox' ),
 			'icon'       => 'dashicons-database',
-			'icon_color' => $q['failed'] > 0 ? 'danger' : 'success',
+			'icon_color' => ( $q['failed_recent_24h'] ?? 0 ) > 0 ? 'danger' : 'success',
 			'href'       => add_query_arg( 'tab', 'queues', admin_url( 'admin.php?page=dtb-system-manager' ) ),
 		];
 	}
@@ -394,8 +394,8 @@ function dtb_system_manager_collect_attention( ?array $h, ?array $q, ?array $ih,
 	if ( $h && ( ! $h['php_ok'] || ! $h['ssl_active'] ) ) {
 		$out[] = [ 'label' => __( 'System', 'drywall-toolbox' ), 'type' => 'danger', 'text' => __( 'PHP version or SSL requires attention.', 'drywall-toolbox' ), 'href' => add_query_arg( 'tab', 'system', $base ) ];
 	}
-	if ( $q && $q['failed'] > 0 ) {
-		$out[] = [ 'label' => __( 'Queue', 'drywall-toolbox' ), 'type' => 'danger', 'text' => sprintf( _n( '%d failed queue job.', '%d failed queue jobs.', $q['failed'], 'drywall-toolbox' ), $q['failed'] ), 'href' => add_query_arg( 'tab', 'queues', $base ) ];
+	if ( $q && ( $q['failed_recent_24h'] ?? 0 ) > 0 ) {
+		$out[] = [ 'label' => __( 'Queue', 'drywall-toolbox' ), 'type' => 'danger', 'text' => sprintf( _n( '%d queue job failed in the past 24 hours.', '%d queue jobs failed in the past 24 hours.', $q['failed_recent_24h'], 'drywall-toolbox' ), $q['failed_recent_24h'] ), 'href' => add_query_arg( 'tab', 'queues', $base ) ];
 	}
 	if ( $ih ) {
 		foreach ( $ih['integrations'] as $item ) {
@@ -529,7 +529,8 @@ function dtb_system_manager_render_queues_tab(): void {
 	ob_start();
 	echo dtb_admin_ui_detail_row( __( 'Pending', 'drywall-toolbox' ),   dtb_admin_ui_badge( (string) $q['pending'], $q['pending'] > 50 ? 'warning' : 'neutral' ) );
 	echo dtb_admin_ui_detail_row( __( 'Running', 'drywall-toolbox' ),   dtb_admin_ui_badge( (string) $q['running'], 'processing' ) );
-	echo dtb_admin_ui_detail_row( __( 'Failed', 'drywall-toolbox' ),    dtb_admin_ui_badge( (string) $q['failed'], $q['failed'] > 0 ? 'danger' : 'success' ) );
+	echo dtb_admin_ui_detail_row( __( 'Failed — Last 24 Hours', 'drywall-toolbox' ), dtb_admin_ui_badge( (string) ( $q['failed_recent_24h'] ?? 0 ), ( $q['failed_recent_24h'] ?? 0 ) > 0 ? 'danger' : 'success' ) );
+	echo dtb_admin_ui_detail_row( __( 'Failed — All Retained History', 'drywall-toolbox' ), esc_html( number_format_i18n( $q['failed'] ) ) );
 	echo dtb_admin_ui_detail_row( __( 'Completed', 'drywall-toolbox' ), esc_html( number_format( $q['complete'] ) ) );
 	echo dtb_admin_ui_detail_row( __( 'Failed Notification Jobs', 'drywall-toolbox' ), dtb_admin_ui_badge( (string) ( $q['failed_notification_jobs'] ?? 0 ), ( (int) ( $q['failed_notification_jobs'] ?? 0 ) > 0 ) ? 'danger' : 'success' ) );
 	if ( $q['oldest_pending_seconds'] > 0 ) {
