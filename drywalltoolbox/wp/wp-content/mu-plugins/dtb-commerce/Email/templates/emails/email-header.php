@@ -27,11 +27,11 @@ $shell_width     = 680;
 <tr><td align="center" valign="top" bgcolor="#ffffff" style="background-color:#ffffff;"><div id="wrapper" dir="<?php echo is_rtl() ? 'rtl' : 'ltr'; ?>" style="width:100%;max-width:680px;margin:0 auto;background-color:#ffffff;">
 <table border="0" cellpadding="0" cellspacing="0" width="100%" id="inner_wrapper" role="presentation" bgcolor="#ffffff" style="width:100%;border-collapse:separate;background-color:#ffffff;">
 <tr><td align="center" valign="top" bgcolor="#ffffff" style="background-color:#ffffff;">
-<?php // Shared navy brand header is always visible on customer and operator notifications. ?>
+<?php // Shared brand header on every transactional email. ?>
 <table border="0" cellpadding="0" cellspacing="0" width="100%" id="template_header" role="presentation" bgcolor="#061524" style="width:100%;background-color:#061524;border-collapse:collapse;"><tr><td id="template_header_image" align="center" valign="middle" bgcolor="#061524" style="padding:20px 34px;background-color:#061524;">
-<?php if ( $logo_url ) : ?><img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( $store_name ); ?>" width="184" style="display:block;width:184px;max-width:100%;height:auto;margin:0 auto;border:0;"><?php else : ?><span style="color:#fff;font-family:<?php echo esc_attr( $font_stack ); ?>;font-size:20px;font-weight:800;"><?php echo esc_html( $store_name ); ?></span><?php // End shared header. ?>
+<?php if ( $logo_url ) : ?><img src="<?php echo esc_url( $logo_url ); ?>" alt="<?php echo esc_attr( $store_name ); ?>" width="184" style="display:block;width:184px;max-width:100%;height:auto;margin:0 auto;border:0;"><?php else : ?><span style="color:#fff;font-family:<?php echo esc_attr( $font_stack ); ?>;font-size:20px;font-weight:800;"><?php echo esc_html( $store_name ); ?></span><?php endif; ?>
 </td></tr></table>
-<?php endif; ?>
+<?php // End shared header. ?>
 <table border="0" cellpadding="0" cellspacing="0" width="100%" id="template_container" role="presentation" bgcolor="#ffffff" style="width:100%;border-collapse:collapse;background-color:#ffffff;"><tr><td align="center" valign="top" bgcolor="#ffffff" style="background-color:#ffffff;">
 <table border="0" cellpadding="0" cellspacing="0" width="100%" id="template_body" role="presentation" bgcolor="#ffffff" style="width:100%;border-collapse:collapse;background-color:#ffffff;"><tr><td valign="top" id="body_content" bgcolor="#ffffff" style="width:100%;background-color:#ffffff;">
 <table border="0" cellpadding="0" cellspacing="0" width="100%" role="presentation" bgcolor="#ffffff" style="width:100%;border-collapse:collapse;background-color:#ffffff;"><tr><td valign="top" id="body_content_inner_cell" bgcolor="#ffffff" style="background-color:#ffffff;"><div id="body_content_inner">
