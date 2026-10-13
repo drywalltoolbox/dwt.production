@@ -527,11 +527,10 @@ if ( ! function_exists( 'dtb_order_is_woopayments_test_order' ) ) {
 		if ( 'prod' === $mode || 'production' === $mode || 'live' === $mode ) {
 			return false;
 		}
-		return class_exists( 'WC_Payments' )
-			&& is_callable( [ 'WC_Payments', 'mode' ] )
-			&& WC_Payments::mode()
-			&& is_callable( [ WC_Payments::mode(), 'is_test' ] )
-			&& WC_Payments::mode()->is_test();
+		// An unmarked WooPayments order is NOT safe for provider writes: mode
+		// metadata can arrive asynchronously, or an old job can run after mode
+		// has changed. Only an explicit persisted production value opts in.
+		return true;
 	}
 }
 
