@@ -643,7 +643,7 @@ function dtb_system_manager_render_live_updates_tab(): void {
 				continue;
 			}
 			$entries[] = [
-				'time'   => (string) ( $release['completed_at'] ?? $release['started_at'] ?? '' ),
+				'time'   => (string) ( $release['updated_at'] ?? $release['started_at'] ?? '' ),
 				'action' => (string) ( $release['status_label'] ?? 'Release event' ),
 				'path'   => (string) ( $release['release_id'] ?? '' ),
 				'root'   => '',
