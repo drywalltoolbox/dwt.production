@@ -1,20 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowRight, Check, Mail, Phone } from 'lucide-react';
 import SEOHead from '../components/shared/SEOHead';
 import { apiClient } from '../api/client';
-
-const contactInfo = [
-  {
-    icon: (
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.12 4.2 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.9.34 1.78.66 2.61a2 2 0 0 1-.45 2.11L8 9.99a16 16 0 0 0 6 6l1.55-1.32a2 2 0 0 1 2.11-.45c.83.32 1.71.54 2.61.66A2 2 0 0 1 22 16.92z"/>
-      </svg>
-    ),
-    label: 'Phone',
-    value: '(609) 866-5269',
-    href: 'tel:+16098665269'
-  }
-];
+import './contact.css';
 
 const inquiryTypes = [
   'Technical Support',
@@ -22,7 +11,7 @@ const inquiryTypes = [
   'Returns & Warranty',
   'Parts Availability',
   'Custom Fabrication',
-  'General Question'
+  'General Question',
 ];
 
 export default function Contact() {
@@ -72,280 +61,86 @@ export default function Contact() {
     }
   };
 
+
   return (
-    <div style={{ minHeight: '100vh' }} className="page-wrapper">
+    <main className="dtb-contact page-wrapper">
       <SEOHead
         title="Contact Us"
         description="Get in touch with the Drywall Toolbox team. Expert support from real people who know drywall tools."
         canonical="/contact"
       />
 
-      {/* Hero strip */}
-      <section style={{
-        background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2255ee 100%)',
-        padding: 'clamp(48px, 8vw, 80px) clamp(1.5rem, 5vw, 3rem) clamp(3rem, 6vw, 4rem)',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(255,255,255,0.06) 1px, transparent 0)',
-          backgroundSize: '40px 40px',
-          pointerEvents: 'none'
-        }} />
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '1400px', margin: '0 auto' }}>
-          <div className="dtb-title-eyebrow" style={{
-            display: 'inline-block',
-            background: 'rgba(255,255,255,0.1)',
-            border: '1px solid rgba(255,255,255,0.2)',
-            borderRadius: '20px',
-            padding: '4px 12px',
-            fontSize: '0.7rem',
-            fontWeight: 700,
-            letterSpacing: '0.12em',
-            textTransform: 'uppercase',
-            color: 'rgba(255,255,255,0.8)',
-            marginBottom: '16px'
-          }}>
-            Get In Touch
-          </div>
-          <h1 style={{
-            color: 'white',
-            fontSize: 'clamp(2rem, 5vw, 3.5rem)',
-            fontWeight: 800,
-            margin: 0,
-            lineHeight: 1.1,
-            letterSpacing: '-0.03em'
-          }}>
-            WE&apos;RE HERE TO HELP.
-          </h1>
-          <p style={{
-            color: 'rgba(255,255,255,0.65)',
-            fontSize: 'clamp(0.9rem, 2vw, 1rem)',
-            margin: '12px 0 0',
-            maxWidth: '500px',
-            lineHeight: 1.6
-          }}>
-            Technical support, bulk orders, returns, or custom tool fabrication — talk to a real person who knows the tools.
-          </p>
+      <header className="dtb-contact__hero">
+        <div className="dtb-contact__hero-inner">
+          <span className="dtb-contact__eyebrow">Contact Us</span>
+          <h1>We're here to help.</h1>
+          <p>Have a question, need product guidance, or want to talk to our team? Send us a message and we’ll get back to you as soon as possible.</p>
         </div>
-      </section>
+      </header>
 
-      {/* Main content */}
-      <section style={{
-        padding: 'clamp(2.5rem, 5vw, 4rem) clamp(1.5rem, 5vw, 3rem)',
-        maxWidth: '1400px',
-        margin: '0 auto'
-      }}>
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: 'clamp(2rem, 5vw, 4rem)',
-          alignItems: 'start'
-        }}>
-
-          {/* Left: contact info */}
-          <div>
-            <h2 style={{
-              fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-              fontWeight: 800,
-              color: 'var(--primary-600)',
-              margin: '0 0 8px 0',
-              letterSpacing: '-0.02em'
-            }}>
-              Contact Information
-            </h2>
-            <p style={{ fontSize: '0.875rem', color: 'rgba(15,23,42,0.6)', margin: '0 0 32px 0', lineHeight: 1.6 }}>
-              Call us directly or use the form and we&apos;ll get back to you within one business day.
-            </p>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', marginBottom: '32px' }}>
-              {contactInfo.map((item) => (
-                <div key={item.label} style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
-                  <div style={{
-                    width: '44px',
-                    height: '44px',
-                    background: 'linear-gradient(135deg, #eff6ff, #dbeafe)',
-                    borderRadius: '10px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    color: 'var(--primary-600)',
-                    flexShrink: 0
-                  }}>
-                    {item.icon}
-                  </div>
-                  <div>
-                    <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'rgba(15,23,42,0.4)', marginBottom: '3px' }}>
-                      {item.label}
-                    </div>
-                    <a
-                      href={item.href}
-                      style={{ fontSize: '0.9rem', color: 'black', textDecoration: 'none', fontFamily: 'var(--font-mono)', wordBreak: 'break-word' }}
-                      onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--primary-600)')}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = 'black')}
-                    >
-                      {item.value}
-                    </a>
-                  </div>
-                </div>
-              ))}
+      <section className="dtb-contact__content" aria-label="Contact Drywall Toolbox">
+        <aside className="dtb-contact__information">
+          <h2>Contact Information</h2>
+          <p className="dtb-contact__information-intro">Reach out directly or use the form and our support team will respond as soon as possible.</p>
+          <div className="dtb-contact__details">
+            <div className="dtb-contact__detail">
+              <span className="dtb-contact__detail-icon"><Phone size={23} strokeWidth={1.9} aria-hidden="true" /></span>
+              <div><span className="dtb-contact__detail-label">Phone</span><a href="tel:+16098665269">(609) 866-5269</a></div>
+            </div>
+            <div className="dtb-contact__detail">
+              <span className="dtb-contact__detail-icon"><Mail size={23} strokeWidth={1.9} aria-hidden="true" /></span>
+              <div><span className="dtb-contact__detail-label">Email</span><a href="mailto:support@drywalltoolbox.com">support@drywalltoolbox.com</a></div>
             </div>
           </div>
+        </aside>
 
-          {/* Right: form */}
-          <div style={{
-            background: 'white',
-            border: '1px solid var(--machined-border)',
-            borderRadius: '16px',
-            padding: 'clamp(1.5rem, 3vw, 2.5rem)'
-          }}>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'black', margin: '0 0 24px 0' }}>
-              Send a Message
-            </h3>
-
-            {/* Success state */}
-            {success ? (
-              <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '16px',
-                padding: '32px 16px',
-                textAlign: 'center'
-              }}>
-                <div style={{
-                  width: '56px',
-                  height: '56px',
-                  background: 'linear-gradient(135deg, #f0fdf4, #dcfce7)',
-                  borderRadius: '50%',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  color: '#16a34a',
-                }}>
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
+        <section className="dtb-contact__form-panel" aria-labelledby="dtb-contact-form-title">
+          <h2 id="dtb-contact-form-title">Send Us a Message</h2>
+          {success ? (
+            <div className="dtb-contact__success" role="status">
+              <span className="dtb-contact__success-icon"><Check size={28} aria-hidden="true" /></span>
+              <h3>Message sent!</h3>
+              <p>Your inquiry has been received. Our team will respond as soon as possible.</p>
+              {tracking && (
+                <Link className="dtb-contact__ticket-link" to={`/support/status/${tracking.id}?token=${encodeURIComponent(tracking.token)}`}>
+                  Track {tracking.number || 'your ticket'} <ArrowRight size={16} aria-hidden="true" />
+                </Link>
+              )}
+              <button type="button" className="dtb-contact__submit dtb-contact__reset" onClick={() => { setSuccess(false); setTracking(null); }}>
+                Send another message
+              </button>
+            </div>
+          ) : (
+            <form className="dtb-contact__form" onSubmit={handleSubmit}>
+              {error && <p className="dtb-contact__error" role="alert">{error}</p>}
+              <div className="dtb-contact__field-row">
+                <div className="dtb-contact__field">
+                  <label htmlFor="dtb-contact-name">Full Name</label>
+                  <input id="dtb-contact-name" type="text" name="name" autoComplete="name" value={formData.name} onChange={handleChange} placeholder="John Doe" required disabled={submitting} />
                 </div>
-                <div>
-                  <p style={{ fontWeight: 700, fontSize: '1rem', color: 'black', margin: '0 0 6px' }}>Message Sent!</p>
-                  <p style={{ fontSize: '0.875rem', color: 'rgba(15,23,42,0.6)', margin: 0 }}>
-                    Our team will get back to you within one business day.
-                  </p>
-                  {tracking && (
-                    <p style={{ fontSize: '0.875rem', margin: '12px 0 0' }}>
-                      <Link
-                        to={`/support/status/${tracking.id}?token=${encodeURIComponent(tracking.token)}`}
-                        style={{ color: 'var(--primary-600)', fontWeight: 700, textDecoration: 'none' }}
-                      >
-                        Track {tracking.number || 'your ticket'}
-                      </Link>
-                    </p>
-                  )}
+                <div className="dtb-contact__field">
+                  <label htmlFor="dtb-contact-email">Email Address</label>
+                  <input id="dtb-contact-email" type="email" name="email" autoComplete="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" required disabled={submitting} />
                 </div>
-                <button
-                  onClick={() => {
-                    setSuccess(false);
-                    setTracking(null);
-                  }}
-                  className="alloy-button"
-                  style={{ marginTop: '8px' }}
-                >
-                  Send Another Message
-                </button>
               </div>
-            ) : (
-              <form onSubmit={handleSubmit}>
-                {/* Error banner */}
-                {error && (
-                  <div style={{
-                    background: '#fef2f2',
-                    border: '1px solid #fecaca',
-                    borderRadius: '10px',
-                    padding: '12px 16px',
-                    marginBottom: '20px',
-                    fontSize: '0.85rem',
-                    color: '#991b1b',
-                  }}>
-                    {error}
-                  </div>
-                )}
-
-                <div className="form-group">
-                  <label className="machined-label text-blue-600">Full Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    placeholder="John Doe"
-                    className="machined-input text-black"
-                    required
-                    disabled={submitting}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="machined-label text-blue-600">Email Address</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    placeholder="you@example.com"
-                    className="machined-input text-black"
-                    required
-                    disabled={submitting}
-                  />
-                </div>
-
-                <div className="form-group">
-                  <label className="machined-label text-blue-600">Inquiry Type</label>
-                  <select
-                    name="inquiryType"
-                    value={formData.inquiryType}
-                    onChange={handleChange}
-                    className="machined-input text-black"
-                    required
-                    style={{ cursor: 'pointer' }}
-                    disabled={submitting}
-                  >
-                    <option value="" disabled>Select an inquiry type</option>
-                    {inquiryTypes.map((type) => (
-                      <option key={type} value={type}>{type}</option>
-                    ))}
-                  </select>
-                </div>
-
-                <div className="form-group">
-                  <label className="machined-label text-blue-600">Message</label>
-                  <textarea
-                    rows="5"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="How can we help?"
-                    className="machined-textarea text-black"
-                    required
-                    disabled={submitting}
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="alloy-button w-full justify-center"
-                  disabled={submitting}
-                  style={{ opacity: submitting ? 0.7 : 1, cursor: submitting ? 'not-allowed' : 'pointer' }}
-                >
-                  {submitting ? 'Sending...' : 'Submit Inquiry'}
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
+              <div className="dtb-contact__field">
+                <label htmlFor="dtb-contact-type">Inquiry Type</label>
+                <select id="dtb-contact-type" name="inquiryType" value={formData.inquiryType} onChange={handleChange} required disabled={submitting}>
+                  <option value="" disabled>Select an inquiry type</option>
+                  {inquiryTypes.map((type) => <option key={type} value={type}>{type}</option>)}
+                </select>
+              </div>
+              <div className="dtb-contact__field">
+                <label htmlFor="dtb-contact-message">Message</label>
+                <textarea id="dtb-contact-message" rows={4} name="message" value={formData.message} onChange={handleChange} placeholder="How can we help?" required disabled={submitting} />
+              </div>
+              <button type="submit" className="dtb-contact__submit" disabled={submitting}>
+                {submitting ? 'Sending…' : 'Submit Inquiry'} {!submitting && <ArrowRight size={18} aria-hidden="true" />}
+              </button>
+            </form>
+          )}
+        </section>
       </section>
-    </div>
+    </main>
   );
 }
