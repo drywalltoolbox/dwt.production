@@ -33,10 +33,12 @@ import {
 const SEARCH_OVERLAY_EXIT_MS = 360;
 const MOBILE_SEARCH_DELAY_MS = 220;
 const MAX_SEARCH_PRODUCTS = 6;
+// Restore calculator navigation after launch without removing the calculator routes.
+const SHOW_CALCULATORS_NAV = false;
 
 const DRAWER_NAV_ROWS = [
   { to: '/products?sort=newest', label: 'New Arrivals' },
-  { to: '/calculators', label: 'Calculators' },
+  ...(SHOW_CALCULATORS_NAV ? [{ to: '/calculators', label: 'Calculators' }] : []),
   { to: '/faq', label: 'FAQ' },
   { to: '/contact', label: 'Contact' },
 ];
@@ -323,13 +325,13 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
         logo: getBrandLogo(slug) || getBrandLogo(name),
       })),
     },
-    {
+    ...(SHOW_CALCULATORS_NAV ? [{
       id: 'calculators',
       label: 'Calculators',
       landingTo: '/calculators',
       activePrefixes: ['/calculators'],
       items: [],
-    },
+    }] : []),
     {
       id: 'support',
       label: 'Support',
@@ -687,6 +689,8 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     <>
       <header className="site-header site-header--no-ticker" role="banner">
         <div className="dtb-header-utility-bar">
+          <span className="dtb-header-utility-bar__announcement">Free shipping on orders $75+</span>
+          <div className="dtb-header-utility-bar__links">
           <Link to="/contact" className="dtb-header-utility-bar__item">
             <Headset size={17} strokeWidth={2} aria-hidden="true" />
             Expert Support
@@ -695,6 +699,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
             <Phone size={17} strokeWidth={2} aria-hidden="true" />
             (609) 866-5269
           </a>
+          </div>
         </div>
         <div className="site-header-inner">
           <div className="header-mobile-layout" style={{ display: isTablet ? 'flex' : undefined }}>
