@@ -1,5 +1,8 @@
 name: Catalog content v2 validation
 on:
+  push:
+    branches:
+      - 'feat/catalog-content-schema-v2-foundation'
   pull_request:
     paths:
       - 'products/launch/official/dtb_official_catalog.csv'
