@@ -469,28 +469,14 @@ function dtb_enqueue_native_checkout_assets(): void {
 		$checkout_style_ver
 	);
 
-	/*
-	 * Critical-CSS guard for the branded top bar, tied to the dtb-checkout
-	 * handle so it always prints inline immediately alongside its <link>
-	 * tag — before the external checkout.css request can complete. Without
-	 * it, a slow/blocked checkout.css load leaves the logo <img> governed
-	 * solely by its width="3000" height="917" attributes, rendering it at
-	 * native size and breaking the page layout (reproducible on any slow
-	 * mobile connection). Values mirror checkout.css's own "3. Branded top
-	 * bar" section (assets/checkout/checkout.css, .dtb-checkout__topbar /
-	 * .dtb-checkout__brand / .dtb-checkout__payment-badge rules) exactly —
-	 * keep the two in sync if that section changes.
-	 */
+	// A compact critical guard prevents the intrinsic logo dimensions from
+	// shifting the document while the checkout stylesheet is in flight.
 	wp_add_inline_style(
 		'dtb-checkout',
-		'.dtb-checkout__topbar{display:block;overflow:hidden}'
-		. '.dtb-checkout__topbar-inner{box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,118px);align-items:center;gap:12px;width:100%;max-width:1480px;margin:0 auto;padding:14px clamp(16px,4vw,24px)}'
-		. '.dtb-checkout__brand{display:flex;align-items:center;min-width:0;max-width:148px;line-height:0}'
-		. '.dtb-checkout__brand img{height:auto;width:auto;max-width:100%;max-height:36px;display:block}'
-		. '.dtb-checkout__payment-badge{display:inline-grid;grid-template-columns:14px minmax(0,1fr);align-items:center;gap:6px;min-width:0;max-width:118px;overflow:hidden}'
-		. '.dtb-checkout__payment-badge svg{width:14px;height:14px;flex:none;color:rgba(255,255,255,0.75)}'
-		. '.dtb-checkout__payment-badge img{display:block;width:100%;height:auto;max-width:98px;max-height:18px;object-fit:contain;object-position:right center}'
-		. '@media (min-width:768px){.dtb-checkout__topbar-inner{grid-template-columns:minmax(0,1fr) 140px;padding-block:16px}.dtb-checkout__brand{max-width:176px}.dtb-checkout__brand img{max-height:44px}.dtb-checkout__payment-badge{max-width:140px}.dtb-checkout__payment-badge img{max-width:118px;max-height:20px}}'
+		'.dtb-checkout__topbar-inner{box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,160px) minmax(0,1fr);align-items:center;gap:16px;width:100%;max-width:1400px;min-height:68px;margin:0 auto;padding:10px 24px}'
+		. '.dtb-checkout__brand{display:flex;align-items:center;justify-content:center;min-width:0;max-width:160px;line-height:0}'
+		. '.dtb-checkout__brand img{display:block;width:100%;max-width:100%;height:auto;max-height:50px;object-fit:contain}'
+		. '@media(min-width:1024px){.dtb-checkout__topbar-inner{grid-template-columns:minmax(0,1fr) 190px minmax(0,1fr);min-height:82px}.dtb-checkout__brand{max-width:190px}.dtb-checkout__brand img{max-height:58px}}'
 	);
 
 	// dtb-checkout-desktop (the >=1024px two-column layout authority) is

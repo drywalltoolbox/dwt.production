@@ -14,7 +14,6 @@ defined( 'ABSPATH' ) || exit;
 $storefront_base_path = is_callable( [ 'DTB_WooNativeCheckoutRuntime', 'staging_checkout_base_path' ] )
 	? DTB_WooNativeCheckoutRuntime::staging_checkout_base_path()
 	: '';
-$storefront_home_url = home_url( $storefront_base_path . '/' );
 $storefront_cart_url = '' !== $storefront_base_path
 	? home_url( $storefront_base_path . '/cart/' )
 	: wc_get_cart_url();
@@ -46,27 +45,25 @@ wp_enqueue_style(
 	<meta name="robots" content="noindex,nofollow,noarchive">
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-	<link rel="preload" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600;650;700;800&family=Nunito:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-	<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600;650;700;800&family=Nunito:wght@400;500;600;700&display=swap"></noscript>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700;800&display=swap">
 	<?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
 <?php wp_body_open(); ?>
 	<header class="dtb-checkout__topbar">
 		<div class="dtb-checkout__topbar-inner">
-			<a class="dtb-checkout__brand" href="<?php echo esc_url( $storefront_home_url ); ?>">
-				<img src="<?php echo esc_url( home_url( '/logos/logo-white.svg' ) ); ?>" alt="<?php esc_attr_e( 'Drywall Toolbox', 'drywall-toolbox' ); ?>" width="3000" height="917">
+			<a class="dtb-checkout__back-link" href="<?php echo esc_url( $storefront_cart_url ); ?>" aria-label="<?php esc_attr_e( 'Back to cart', 'drywall-toolbox' ); ?>">
+				<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+				<span><?php esc_html_e( 'Back to cart', 'drywall-toolbox' ); ?></span>
 			</a>
-			<span class="dtb-checkout__payment-badge" aria-label="<?php esc_attr_e( 'Secure payments by WooPayments', 'drywall-toolbox' ); ?>">
-				<svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 0a3 3 0 0 0-3 3v2H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-1V3a3 3 0 0 0-3-3Zm0 1.5A1.5 1.5 0 0 1 9.5 3v2h-3V3A1.5 1.5 0 0 1 8 1.5Z"/></svg>
-				<span><?php esc_html_e( 'Secure checkout', 'drywall-toolbox' ); ?></span>
-			</span>
+			<div class="dtb-checkout__brand">
+				<img src="<?php echo esc_url( home_url( '/logos/logo-white.svg' ) ); ?>" alt="<?php esc_attr_e( 'Drywall Toolbox', 'drywall-toolbox' ); ?>" width="3000" height="917">
+			</div>
+			<span class="dtb-checkout__header-label"><svg viewBox="0 0 16 16" aria-hidden="true" focusable="false"><path fill="currentColor" d="M8 0a3 3 0 0 0-3 3v2H4a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-1V3a3 3 0 0 0-3-3Zm0 1.5A1.5 1.5 0 0 1 9.5 3v2h-3V3A1.5 1.5 0 0 1 8 1.5Z"/></svg><span><?php esc_html_e( 'Secure checkout', 'drywall-toolbox' ); ?></span></span>
 		</div>
 	</header>
-	<div class="dtb-checkout__utility">
-		<a class="dtb-checkout__back-link" href="<?php echo esc_url( $storefront_cart_url ); ?>">&larr;&nbsp;<?php esc_html_e( 'Back to cart', 'drywall-toolbox' ); ?></a>
-	</div>
 	<main id="primary" role="main">
+		<div class="dtb-checkout__intro"><span class="dtb-checkout__eyebrow"><?php esc_html_e( 'Drywall Toolbox', 'drywall-toolbox' ); ?></span><h1><?php esc_html_e( 'Checkout', 'drywall-toolbox' ); ?></h1><p><?php esc_html_e( 'Your tools are almost on their way.', 'drywall-toolbox' ); ?></p></div>
 		<?php
 		if ( have_posts() ) {
 			while ( have_posts() ) {

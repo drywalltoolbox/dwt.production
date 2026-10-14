@@ -14,9 +14,6 @@
 	body.woocommerce-checkout .dtb-checkout__topbar-inner { min-width: 0; max-width: 100%; }
 	body.woocommerce-checkout .dtb-checkout__brand { min-width: 0; }
 	body.woocommerce-checkout .dtb-checkout__brand img { width: auto; max-width: 100%; height: auto; }
-	body.woocommerce-checkout .dtb-checkout__payment-badge { min-width: 0; overflow: hidden; }
-	body.woocommerce-checkout .dtb-checkout__payment-badge svg { flex: 0 0 14px; }
-	body.woocommerce-checkout .dtb-checkout__payment-badge img { width: 100%; height: auto; object-fit: contain; object-position: right center; }
 
 	body.woocommerce-checkout .wc-block-components-sidebar-layout,
 	body.woocommerce-checkout .wc-block-checkout,
@@ -321,9 +318,8 @@
 }
 
 @media (max-width: 374px) {
-	body.woocommerce-checkout .dtb-checkout__topbar-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 104px); gap: 8px; }
+	body.woocommerce-checkout .dtb-checkout__topbar-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 140px) minmax(0, 1fr); gap: 8px; }
 	body.woocommerce-checkout .dtb-checkout__brand { max-width: 132px; }
-	body.woocommerce-checkout .dtb-checkout__payment-badge { max-width: 104px; gap: 4px; }
 	body.woocommerce-checkout :where(.wp-block-woocommerce-checkout-order-summary-block, .wc-block-components-checkout-order-summary) .wc-block-components-order-summary-item {
 		grid-template-columns: 48px minmax(0, 1fr) auto !important;
 		gap: 10px !important;
