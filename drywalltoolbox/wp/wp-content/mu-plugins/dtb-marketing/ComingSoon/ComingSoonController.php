@@ -870,12 +870,12 @@ function dtb_send_confirmation_email( string $email ): void {
 	$html_message = '';
 	if ( function_exists( 'dtb_render_branded_email' ) ) {
 		$html_message = dtb_render_branded_email( [
-			'title'       => 'You\'re on the List!',
-			'preheader'   => 'Thanks for signing up — you\'re officially on the list',
+			'title'       => 'You\'re on the list.',
+			'preheader'   => 'You\'ll be among the first to hear from Drywall Toolbox.',
 			'greeting'    => 'Hi there,',
-			'intro'       => 'Thanks for signing up — you\'re officially on the list.',
+			'intro'       => 'Thanks for signing up. We\'re glad you\'re here.',
 			'body_html'   => sprintf(
-				'<p>We\'ve reserved your spot and will notify you at <strong style="color:#2563eb;">%s</strong> the moment Drywall Toolbox goes live. You\'ll be among the first to know.</p><p>Big things are on the way — the wait won\'t be long, and it\'ll be well worth the wait.</p>',
+				'<p>When we have a launch update, we\'ll send it to <strong style="color:#1769ff;">%s</strong>. You don\'t need to do anything else.</p><p>Big things are on the way — the wait won\'t be long, and it\'ll be well worth the wait.</p>',
 				esc_html( $email )
 			),
 			'signoff'     => 'The Drywall Toolbox Team',
