@@ -792,7 +792,7 @@ function dtb_save_subscriber( string $email, string $ip ) {
  * @param string $email The new subscriber's e-mail address.
  */
 function dtb_notify_admin( string $email ): void {
- $recipient = sanitize_email( (string) apply_filters( 'dtb_coming_soon_admin_notification_recipient', get_option( 'admin_email' ) ) );
+ $recipient = sanitize_email( (string) apply_filters( 'dtb_coming_soon_admin_notification_recipient', 'elliott.miller@drywalltoolbox.com' ) );
  if ( ! is_email( $recipient ) ) { return; }
  $ref = function_exists( 'dtb_coming_soon_get_referral_context' ) ? dtb_coming_soon_get_referral_context() : [];
  if ( strtolower( (string) ( $ref['email'] ?? '' ) ) !== strtolower( $email ) ) { $ref = []; }
@@ -853,9 +853,9 @@ function dtb_send_confirmation_email( string $email ): void {
 	$plain_message = sprintf(
 		__(
 			"Hi there,\n\n" .
-			"Thanks for signing up - you're officially on the list.\n\n" .
-			"We've reserved your spot and will notify you at %s the moment Drywall Toolbox goes live. You'll be among the first to know.\n\n" .
-			"Big things are on the way - the wait won't be long, and it'll be well worth the wait.\n\n" .
+			"Thanks for signing up. We're glad you're here.\n\n" .
+			"When we have a launch update, we'll send it to %s. You don't need to do anything else.\n\n" .
+			"We're getting things ready behind the scenes and will be in touch with launch news.\n\n" .
 			"Talk soon,\n" .
 			"The %s Team\n\n" .
 			"Unsubscribe: %s",
