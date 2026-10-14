@@ -65,7 +65,7 @@
 				.observe( { type: 'layout-shift', buffered: true } );
 		} catch {}
 		try {
-			new PerformanceObserver( ( list ) => { const entries = list.getEntries(); if ( entries.length ) lcp = entries.at( -1 ).startTime || 0; } )
+			new PerformanceObserver( ( list ) => { const entries = list.getEntries(); if ( entries.length ) lcp = entries[ entries.length - 1 ].startTime || 0; } )
 				.observe( { type: 'largest-contentful-paint', buffered: true } );
 		} catch {}
 	}

@@ -4,7 +4,7 @@ Last verified against active source: 2026-10-14.
 
 ## Purpose
 
-WooCommerce and the configured payment provider remain authoritative for payment execution and order payment status. New checkout uses WooPayments. DTB never infers success from a redirect, query value, browser state, order creation, or a raw `stripe_*` gateway ID.
+WooCommerce and the configured payment provider remain authoritative for payment execution and order payment status. New checkout uses WooPayments. DTB never infers success from a redirect, query value, browser state, order creation, or a raw provider gateway ID.
 
 The order platform contains one narrow reconciliation path for the failure mode where WooCommerce has already persisted complete provider-verified captured-payment evidence but a qualifying DTB order remains `pending` or `on-hold`.
 
