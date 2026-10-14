@@ -58,6 +58,8 @@
 			keepalive: true,
 			headers: {
 				'Content-Type': 'application/json',
+				// Preserve cookie-authenticated user context; the DTB nonce separately authorizes telemetry.
+				'X-WP-Nonce': config.wpRestNonce,
 				'X-DTB-Checkout-Telemetry': config.telemetryNonce,
 			},
 			body: JSON.stringify( {
