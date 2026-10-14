@@ -53,6 +53,8 @@ final class DTB_CheckoutPerformance {
 			'dtb-woo-native-checkout-performance',
 			'DTB_CHECKOUT_PERFORMANCE',
 			[
+				// Keep WordPress cookie authentication attached to this same-origin REST request.
+				'wpRestNonce'             => wp_create_nonce( 'wp_rest' ),
 				'telemetryUrl'            => esc_url_raw( rest_url( 'dtb/v1/checkout/runtime-telemetry' ) ),
 				'telemetryNonce'          => wp_create_nonce( self::TELEMETRY_NONCE_ACTION ),
 				'paymentSurfaceTimeoutMs' => self::PAYMENT_SURFACE_TIMEOUT_MS,
