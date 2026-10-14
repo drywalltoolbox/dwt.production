@@ -1119,3 +1119,29 @@ if ( ! function_exists( 'dtb_send_email' ) ) {
 		return $sent;
 	}
 }
+
+
+/**
+ * Prevent the third-party Email Templates plugin from wrapping an already complete
+ * DTB/WooCommerce branded HTML email inside another document.
+ *
+ * The plugin exposes mailtpl_disable_for_email before its wp_mail priority-100
+ * wrapper. Preserve its handling for plain text and unrelated notifications.
+ */
+if ( ! function_exists( 'dtb_email_skip_legacy_outer_wrapper' ) ) {
+	function dtb_email_skip_legacy_outer_wrapper( bool $disabled, array $mail_args ): bool {
+		if ( $disabled ) {
+			return true;
+		}
+		$message = (string) ( $mail_args['message'] ?? '' );
+		if ( '' === $message || false === stripos( $message, '<html' ) || false === stripos( $message, '</html>' ) ) {
+			return false;
+		}
+		$branded = false !== stripos( $message, 'Drywall Toolbox' )
+			&& ( false !== stripos( $message, 'dtb-' )
+				|| false !== stripos( $message, 'template_container' )
+				|| false !== stripos( $message, 'template_header' ) );
+		return $branded;
+	}
+	add_filter( 'mailtpl_disable_for_email', 'dtb_email_skip_legacy_outer_wrapper', 10, 2 );
+}
