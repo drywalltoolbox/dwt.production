@@ -2,6 +2,8 @@
 
 Date: 2026-08-06
 
+> Historical release note for the retired provider stack. See `woopayments-environment-architecture.md` for current payment ownership and staging rules.
+
 ## Architecture
 
 This release hardens the native WooCommerce Checkout Block presentation without changing commerce or payment ownership. WooCommerce remains authoritative for fields, validation, cart/session state, shipping, tax, totals and order creation. Payment Plugins for Stripe remains authoritative for provider UI, wallets, tokenization, authentication, confirmation and capture.

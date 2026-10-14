@@ -102,20 +102,20 @@ def run(config: "Config") -> StageResult:
                 "LAUNCH_ENABLE_CHECKOUT_SIMULATION is not set — guest/customer checkout "
                 "stages will be skipped and no orders will be placed.",
             )
-        test_mode = config.stripe_test_mode
-        if test_mode is None:
-            return (
-                Status.WARN,
-                "LAUNCH_STRIPE_PUBLISHABLE_KEY not set — cannot confirm Stripe test mode "
-                "before placing simulated orders. Proceeding on operator authority.",
-            )
-        if test_mode is False:
-            return (
-                Status.FAIL,
-                "Stripe publishable key is a LIVE key (pk_live_...). Refusing to run "
-                "checkout simulation against a live payment processor.",
-            )
-        return Status.PASS, "Stripe is configured in test mode (pk_test_...)."
+        url = f"{config.api_base}/dtb/v1/checkout/capabilities"
+        try:
+            response = session.get(url, timeout=config.request_timeout_s)
+            payload = response.json() if response.ok else {}
+        except (requests.RequestException, ValueError):
+            payload = {}
+        readiness = payload.get("readiness", {}) if isinstance(payload, dict) else {}
+        if readiness.get("provider_test_mode") is not True:
+            return Status.FAIL, "WooPayments is not confirmed in test mode; refusing checkout simulation."
+        if readiness.get("isolated_test_environment") is not True or readiness.get("test_checkout_available") is not True:
+            return Status.FAIL, "The target is not an isolated staging checkout; refusing simulated orders."
+        if payload.get("provider") != "woopayments":
+            return Status.FAIL, "WooPayments is not the reported checkout provider; refusing simulation."
+        return Status.PASS, "WooPayments test mode and isolated staging checkout are confirmed by the server."
 
     tui.run_step(stage, "Checkout simulation safety gate", check_checkout_simulation_safety)
 

@@ -577,14 +577,6 @@ module.exports = (envFlags, argv) => {
             priority: 45,
             reuseExistingChunk: true,
           },
-          // Stripe JS is only needed on the checkout route (lazy-loaded).
-          stripe: {
-            test:     /[\\/]node_modules[\\/]@stripe[\\/]/,
-            name:     'vendor-stripe',
-            chunks:   'async',
-            priority: 45,
-            reuseExistingChunk: true,
-          },
           // Remaining node_modules share one initial vendor chunk.
           vendor: {
             test:     /[\\/]node_modules[\\/]/,

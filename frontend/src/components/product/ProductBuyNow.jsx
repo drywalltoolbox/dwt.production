@@ -1,7 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import ExpressCheckoutMethods from '../checkout/ExpressCheckoutMethods.jsx';
 import useCheckoutReadiness from '../../hooks/useCheckoutReadiness.js';
-import { scheduleCheckoutPrewarm } from '../../utils/checkoutPrewarm.js';
 import '../../styles/product-buy-now.css';
 
 function readinessMessage(readiness) {
@@ -23,10 +21,6 @@ export default function ProductBuyNow({
   const observedPendingRef = useRef(false);
   const readiness = useCheckoutReadiness();
   const [interactionError, setInteractionError] = useState('');
-
-  useEffect(() => {
-    scheduleCheckoutPrewarm();
-  }, []);
 
   const pending = status === 'pending';
   const confirmed = status === 'confirmed';
@@ -98,8 +92,6 @@ export default function ProductBuyNow({
         data-state={pending ? 'pending' : confirmed ? 'confirmed' : 'idle'}
         data-suspended={suspended ? 'true' : undefined}
         onClick={handleBuyNow}
-        onFocus={scheduleCheckoutPrewarm}
-        onPointerEnter={scheduleCheckoutPrewarm}
         disabled={blocked}
         aria-busy={busy}
         aria-describedby={statusId}
@@ -114,7 +106,6 @@ export default function ProductBuyNow({
         </span>
       </button>
 
-      <ExpressCheckoutMethods paymentMethods={readiness.paymentMethods} />
 
       <p
         id={statusId}

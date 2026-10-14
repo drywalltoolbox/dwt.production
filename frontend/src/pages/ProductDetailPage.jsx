@@ -29,8 +29,6 @@ import useCatalogProductDetail from '../hooks/useCatalogProductDetail.js';
 import { getVariationSelectionMap } from '../utils/variationSelection';
 import { buildBreadcrumbSchema, buildProductSchema, stripHtml } from '../utils/schema';
 import ProductDetail from '../components/product/ProductDetail';
-import StagingProductWallet from '../components/product/StagingProductWallet.jsx';
-import '../styles/staging-wallet-preview.css';
 import SEOHead from '../components/shared/SEOHead';
 import Breadcrumb from '../components/shared/Breadcrumb.jsx';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
@@ -269,14 +267,6 @@ export default function ProductDetailPage() {
         <Breadcrumb items={breadcrumbItems} />
         <ProductDetail
           product={product}
-          renderExpressCheckout={({ productId, variationId, quantity, selectedAttributes, canAddToCart }) => (
-            canAddToCart ? <StagingProductWallet
-              productId={productId}
-              variationId={variationId}
-              quantity={quantity}
-              selectedAttributes={selectedAttributes}
-            /> : null
-          )}
           onAddToCart={handleAddToCart}
           onVariationChange={handleVariationChange}
           initialVariations={variations}

@@ -2,7 +2,7 @@
 /**
  * Checkout runtime integrity boundary.
  *
- * WooCommerce Checkout Block and Payment Plugins for Stripe own their complete
+ * WooCommerce Checkout Block and WooPayments own their complete
  * JavaScript dependency graph and execution order. DTB currently loads no checkout
  * presentation controller; diagnostics must never impose async/defer strategy or
  * dependency coupling on critical payment assets.
@@ -46,9 +46,7 @@ final class DTB_CheckoutRuntimeIntegrity {
 		'wc-cart-checkout-vendors',
 		'wc-blocks-checkout',
 		'wc-checkout-block-frontend',
-		'wc-stripe-checkout-modules',
-		'wc-stripe-upm-checkout',
-		'wc-stripe-block-upm',
+		'woocommerce-payments',
 	];
 
 	public static function register(): void {
@@ -124,13 +122,14 @@ final class DTB_CheckoutRuntimeIntegrity {
 		return array_values( array_unique( array_merge( $exclude_list, $handles ) ) );
 	}
 
-	/** Keep Stripe.js on Stripe's origin and outside host-generated bundles. */
+	/** Keep provider-owned external payment scripts outside host-generated bundles. */
 	public static function exclude_checkout_external_scripts_from_combine( $exclude_list ): array {
 		$exclude_list = is_array( $exclude_list ) ? $exclude_list : [];
 		if ( ! self::is_primary_checkout_request() ) {
 			return $exclude_list;
 		}
 
+		// WooPayments may load processor SDK assets from Stripe-hosted origins.
 		$exclude_list[] = 'js.stripe.com';
 		$exclude_list[] = 'pay.google.com';
 		return array_values( array_unique( $exclude_list ) );

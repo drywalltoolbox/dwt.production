@@ -1,4 +1,3 @@
-import { scheduleCheckoutPrewarm } from '../utils/checkoutPrewarm.js';
 
 /**
  * frontend/src/analytics/ecommerceEvents.js
@@ -75,10 +74,6 @@ export function trackAddToCart(item) {
     items: [normalizeItem(item)],
   });
 
-  // The first successful add-to-cart event in a document schedules one
-  // low-priority, idempotent prewarm of the native Woo checkout static assets.
-  // This never blocks the cart mutation or checkout navigation.
-  scheduleCheckoutPrewarm();
 }
 
 export function trackRemoveFromCart(item) {

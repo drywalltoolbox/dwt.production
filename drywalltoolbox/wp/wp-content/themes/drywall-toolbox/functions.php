@@ -442,10 +442,9 @@ function dtb_clean_head(): void {
 add_action( 'wp_enqueue_scripts', 'dtb_enqueue_native_checkout_assets', 30 );
 /**
  * Enqueue the branded checkout stylesheet and step-rail progress script.
- * Restyles native Woo Checkout Block markup and Payment Plugins for Stripe
+ * Restyles native Woo Checkout Block markup and WooPayments
  * container chrome only; never touches provider iframe contents (those are
- * styled via the Stripe Appearance API — see
- * mu-plugins/dtb-commerce/Payment/StripeElementAppearance.php).
+ * styled via provider-owned payment appearance).
  */
 function dtb_enqueue_native_checkout_assets(): void {
 	if ( is_admin() || ! function_exists( 'is_checkout' ) || ! is_checkout() ) {
@@ -479,7 +478,7 @@ function dtb_enqueue_native_checkout_assets(): void {
 	 * native size and breaking the page layout (reproducible on any slow
 	 * mobile connection). Values mirror checkout.css's own "3. Branded top
 	 * bar" section (assets/checkout/checkout.css, .dtb-checkout__topbar /
-	 * .dtb-checkout__brand / .dtb-checkout__stripe-badge rules) exactly —
+	 * .dtb-checkout__brand / .dtb-checkout__payment-badge rules) exactly —
 	 * keep the two in sync if that section changes.
 	 */
 	wp_add_inline_style(
@@ -488,10 +487,10 @@ function dtb_enqueue_native_checkout_assets(): void {
 		. '.dtb-checkout__topbar-inner{box-sizing:border-box;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,118px);align-items:center;gap:12px;width:100%;max-width:1480px;margin:0 auto;padding:14px clamp(16px,4vw,24px)}'
 		. '.dtb-checkout__brand{display:flex;align-items:center;min-width:0;max-width:148px;line-height:0}'
 		. '.dtb-checkout__brand img{height:auto;width:auto;max-width:100%;max-height:36px;display:block}'
-		. '.dtb-checkout__stripe-badge{display:inline-grid;grid-template-columns:14px minmax(0,1fr);align-items:center;gap:6px;min-width:0;max-width:118px;overflow:hidden}'
-		. '.dtb-checkout__stripe-badge svg{width:14px;height:14px;flex:none;color:rgba(255,255,255,0.75)}'
-		. '.dtb-checkout__stripe-badge img{display:block;width:100%;height:auto;max-width:98px;max-height:18px;object-fit:contain;object-position:right center}'
-		. '@media (min-width:768px){.dtb-checkout__topbar-inner{grid-template-columns:minmax(0,1fr) 140px;padding-block:16px}.dtb-checkout__brand{max-width:176px}.dtb-checkout__brand img{max-height:44px}.dtb-checkout__stripe-badge{max-width:140px}.dtb-checkout__stripe-badge img{max-width:118px;max-height:20px}}'
+		. '.dtb-checkout__payment-badge{display:inline-grid;grid-template-columns:14px minmax(0,1fr);align-items:center;gap:6px;min-width:0;max-width:118px;overflow:hidden}'
+		. '.dtb-checkout__payment-badge svg{width:14px;height:14px;flex:none;color:rgba(255,255,255,0.75)}'
+		. '.dtb-checkout__payment-badge img{display:block;width:100%;height:auto;max-width:98px;max-height:18px;object-fit:contain;object-position:right center}'
+		. '@media (min-width:768px){.dtb-checkout__topbar-inner{grid-template-columns:minmax(0,1fr) 140px;padding-block:16px}.dtb-checkout__brand{max-width:176px}.dtb-checkout__brand img{max-height:44px}.dtb-checkout__payment-badge{max-width:140px}.dtb-checkout__payment-badge img{max-width:118px;max-height:20px}}'
 	);
 
 	// dtb-checkout-desktop (the >=1024px two-column layout authority) is

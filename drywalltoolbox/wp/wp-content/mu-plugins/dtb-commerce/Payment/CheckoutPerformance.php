@@ -2,7 +2,7 @@
 /**
  * Checkout runtime telemetry and diagnostics.
  *
- * WooCommerce Checkout Block and Payment Plugins for Stripe own the complete
+ * WooCommerce Checkout Block and WooPayments own the complete
  * checkout/payment runtime graph. This class records bounded, non-secret
  * diagnostics only; it never dequeues, preloads, reprioritizes, or changes
  * provider execution strategy or apply presentation styling.
@@ -13,9 +13,7 @@
 defined( 'ABSPATH' ) || exit;
 
 final class DTB_CheckoutPerformance {
-	private const ASSET_VERSION              = '2026.07.28.3';
-	private const TELEMETRY_NONCE_ACTION     = 'dtb_checkout_runtime_telemetry';
-	private const PAYMENT_SURFACE_TIMEOUT_MS = 15000;
+	private const ASSET_VERSION              = '2026.10.14.1';
 	private const TELEMETRY_EVENT_TTL        = 10 * MINUTE_IN_SECONDS;
 
 	public static function register(): void {
@@ -54,8 +52,6 @@ final class DTB_CheckoutPerformance {
 			'DTB_CHECKOUT_PERFORMANCE',
 			[
 				'telemetryUrl'            => esc_url_raw( rest_url( 'dtb/v1/checkout/runtime-telemetry' ) ),
-				'telemetryNonce'          => wp_create_nonce( self::TELEMETRY_NONCE_ACTION ),
-				'paymentSurfaceTimeoutMs' => self::PAYMENT_SURFACE_TIMEOUT_MS,
 			]
 		);
 	}
@@ -81,9 +77,8 @@ final class DTB_CheckoutPerformance {
 
 		$data['performance'] = [
 			'checkout_runtime_telemetry' => true,
-			'payment_surface_timeout_ms' => self::PAYMENT_SURFACE_TIMEOUT_MS,
 			'checkout_document_cache'    => 'private_no_store',
-			'runtime_asset_authority'    => 'woocommerce_payment_plugins_stripe',
+			'runtime_asset_authority'    => 'woocommerce_payments',
 			'dtb_asset_queue_mutation'   => false,
 			'dtb_asset_prewarm'          => false,
 		];
@@ -93,13 +88,6 @@ final class DTB_CheckoutPerformance {
 
 	/** @return true|WP_Error */
 	public static function telemetry_permission( WP_REST_Request $request ) {
-		$nonce = (string) $request->get_header( 'X-DTB-Checkout-Telemetry' );
-		if ( '' === $nonce ) {
-			$nonce = sanitize_text_field( (string) $request->get_param( 'nonce' ) );
-		}
-		if ( ! wp_verify_nonce( $nonce, self::TELEMETRY_NONCE_ACTION ) ) {
-			return new WP_Error( 'dtb_checkout_telemetry_forbidden', 'Invalid checkout telemetry nonce.', [ 'status' => 403 ] );
-		}
 		if ( ! self::request_origin_is_same_site() ) {
 			return new WP_Error( 'dtb_checkout_telemetry_origin', 'Invalid checkout telemetry origin.', [ 'status' => 403 ] );
 		}
@@ -126,10 +114,7 @@ final class DTB_CheckoutPerformance {
 			'js_error',
 			'unhandled_rejection',
 			'resource_error',
-			'payment_surface_timeout',
-			'checkout_root_replaced',
 			'checkout_vitals',
-			'third_party_budget',
 		];
 		if ( ! in_array( $kind, $allowed_kinds, true ) ) {
 			$kind = 'js_error';
@@ -160,7 +145,7 @@ final class DTB_CheckoutPerformance {
 	private static function request_origin_is_same_site(): bool {
 		$origin = get_http_origin();
 		if ( ! $origin ) {
-			return true;
+			return false;
 		}
 		$request_origin = self::normalized_origin( $origin );
 		$home_origin    = self::normalized_origin( home_url( '/' ) );
@@ -224,8 +209,8 @@ final class DTB_CheckoutPerformance {
 	private static function redact_sensitive_text( string $value ): string {
 		$redactions = [
 			'/[A-Z0-9._%+\-]+@[A-Z0-9.\-]+\.[A-Z]{2,}/i' => '[redacted-email]',
-			'/\b(?:sk|rk)_(?:live|test)_[A-Za-z0-9_\-]+\b/' => '[redacted-stripe-key]',
-			'/\bpk_(?:live|test)_[A-Za-z0-9_\-]+\b/' => '[redacted-stripe-key]',
+			'/\b(?:sk|rk)_(?:live|test)_[A-Za-z0-9_\-]+\b/' => '[redacted-payment-key]',
+			'/\bpk_(?:live|test)_[A-Za-z0-9_\-]+\b/' => '[redacted-payment-key]',
 			'/\bwhsec_[A-Za-z0-9_\-]+\b/' => '[redacted-webhook-secret]',
 			'/\b(?:pi|seti)_[A-Za-z0-9]+_secret_[A-Za-z0-9_\-]+\b/' => '[redacted-client-secret]',
 			'/\bcs_(?:live|test)_[A-Za-z0-9_\-]+\b/' => '[redacted-checkout-secret]',

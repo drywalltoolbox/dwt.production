@@ -15,17 +15,16 @@
  * `contact` location, hid the native name inputs on the address forms via
  * `woocommerce_get_country_locale`, and synced the Contact-step value onto
  * the canonical billing/shipping name — both server-side here and, because
- * WooCommerce Blocks' *client-side* `wc/store/cart` state (which Payment
- * Plugins for Stripe's Payment Element and Address Element both read
+ * WooCommerce Blocks' *client-side* `wc/store/cart` state (which the payment provider's elements read
  * `billing_details`/shipping name from) was never populated by that
  * workaround, via a second, hand-written client-side sync in checkout.js.
  * That dual-field design directly caused a checkout-blocking production
- * incident (Redesign v15): Stripe's "Missing required param:
+ * incident (Redesign v15): a provider's "Missing required param:
  * payment_method_data[billing_details][name]" on every typed/card checkout,
- * because the name lived in a state tree neither Stripe Element ever read.
+ * because the name lived in a state tree neither provider element read.
  * The rebuild documented in checkout-ui-architecture.md removes the
  * duplicate field group and its sync workaround entirely; name now reaches
- * WooCommerce's canonical address state directly, the same state Stripe
+ * WooCommerce's canonical address state directly, the same state the provider
  * already reads, with no sync required.
  *
  * Only phone remains a Contact-location Additional Checkout Field

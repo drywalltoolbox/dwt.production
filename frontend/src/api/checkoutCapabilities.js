@@ -1,7 +1,6 @@
 import { apiClient } from './client.js';
 
-const CACHE_TTL_MS = 5 * 60 * 1000;
-
+const CACHE_TTL_MS = 60 * 1000;
 let cachedReadiness = null;
 let cacheExpiresAt = 0;
 let inFlightRequest = null;
@@ -15,28 +14,15 @@ function asNonNegativeInteger(value) {
   return Number.isInteger(parsed) && parsed >= 0 ? parsed : null;
 }
 
-function findStripeUpmGateway(capabilities) {
-  const gateways = Array.isArray(capabilities?.gateways) ? capabilities.gateways : [];
-  return gateways.find((gateway) => gateway?.provider === 'payment_plugins_stripe' && gateway?.id === 'stripe_upm')
-    || gateways.find((gateway) => gateway?.id === 'stripe_upm')
-    || null;
-}
-
 function unavailableReasons(checks) {
   const labels = {
     nativeCheckout: 'Native WooCommerce checkout is not ready.',
-    paymentPluginsProvider: 'Payment Plugins for Stripe is not authoritative.',
-    stripeExtensionActive: 'Payment Plugins for Stripe is not active.',
-    upmGatewayEnabled: 'The Stripe Universal Payment Method gateway is disabled.',
-    upmConfigurationReady: 'A dedicated Stripe Payment Method Configuration has not been selected.',
+    woopaymentsProvider: 'WooPayments is not the configured payment authority.',
+    gatewayEnabled: 'WooPayments is not enabled for checkout.',
     checkoutBlockReady: 'The WooCommerce Checkout Block is not configured.',
-    https: 'HTTPS is required for wallet payments.',
-    gatewayEntryEnabled: 'The Payment Plugins Universal Payment Method gateway is disabled.',
-    noCompetingOfficialStripe: 'The retired WooCommerce Stripe Gateway is still active.',
-    noCompetingWooPayments: 'WooPayments is enabled as a competing payment authority.',
-    walletShippingReady: 'WooCommerce shipping is not ready for wallet address resolution.',
+    https: 'HTTPS is required for secure checkout.',
+    testEnvironmentIsolated: 'Test payments require an isolated staging environment.',
   };
-
   return Object.entries(checks)
     .filter(([, value]) => value === false)
     .map(([key]) => labels[key])
@@ -47,99 +33,46 @@ export function normalizeProductBuyNowReadiness(capabilities) {
   const readiness = capabilities?.readiness && typeof capabilities.readiness === 'object'
     ? capabilities.readiness
     : {};
-  const gateway = findStripeUpmGateway(capabilities);
-  const competingOfficialStripe = asBoolean(readiness.competing_official_stripe);
-  const competingWooPayments = asBoolean(readiness.competing_woopayments);
-  const shippingEnabled = asBoolean(readiness.shipping_enabled);
-  const shippingMethodCount = asNonNegativeInteger(readiness.shipping_method_count);
-  const walletShippingReady = asBoolean(readiness.wallet_shipping_ready);
-
+  const gateways = Array.isArray(capabilities?.gateways) ? capabilities.gateways : [];
+  const gateway = gateways.find((item) => item?.provider === 'woopayments' && item?.id === 'woocommerce_payments') || null;
   const checks = {
     nativeCheckout: capabilities?.checkout === 'woo_native_checkout_block',
-    paymentPluginsProvider: capabilities?.provider === 'payment_plugins_stripe',
-    stripeExtensionActive: asBoolean(readiness.stripe_extension_active),
-    upmGatewayEnabled: asBoolean(readiness.upm_gateway_enabled),
-    upmConfigurationReady: asBoolean(readiness.upm_configuration_ready),
+    woopaymentsProvider: capabilities?.provider === 'woopayments',
+    gatewayEnabled: gateway ? asBoolean(gateway.enabled) : asBoolean(readiness.gateway_enabled),
     checkoutBlockReady: asBoolean(readiness.checkout_block),
     https: asBoolean(readiness.https),
-    gatewayEntryEnabled: gateway ? asBoolean(gateway.enabled) : null,
-    noCompetingOfficialStripe: competingOfficialStripe == null ? null : !competingOfficialStripe,
-    noCompetingWooPayments: competingWooPayments == null ? null : !competingWooPayments,
-    walletShippingReady,
+    testEnvironmentIsolated: readiness.provider_test_mode === true
+      ? asBoolean(readiness.isolated_test_environment)
+      : true,
   };
-
-  const requiredChecks = [
-    checks.nativeCheckout,
-    checks.paymentPluginsProvider,
-    checks.stripeExtensionActive,
-    checks.upmGatewayEnabled,
-    checks.upmConfigurationReady,
-    checks.checkoutBlockReady,
-    checks.https,
-    checks.gatewayEntryEnabled,
-    checks.noCompetingOfficialStripe,
-    checks.noCompetingWooPayments,
-    checks.walletShippingReady,
-  ];
-
-  const explicitlyUnavailable = requiredChecks.some((value) => value === false);
-  const fullyReady = requiredChecks.every((value) => value === true);
+  const required = Object.values(checks);
+  const unavailable = required.some((value) => value === false);
+  const ready = required.every((value) => value === true);
 
   return {
-    state: explicitlyUnavailable ? 'unavailable' : (fullyReady ? 'ready' : 'unknown'),
-    provider: 'Payment Plugins for Stripe',
+    state: unavailable ? 'unavailable' : (ready ? 'ready' : 'unknown'),
+    provider: 'WooPayments',
     checks,
     reasons: unavailableReasons(checks),
-    shipping: {
-      enabled: shippingEnabled,
-      methodCount: shippingMethodCount,
-      allowedCountryCount: asNonNegativeInteger(readiness.allowed_shipping_countries_count),
-    },
-    paymentMethods: {
-      applePay: asBoolean(readiness.apple_pay_enabled),
-      googlePay: asBoolean(readiness.google_pay_enabled),
-      link: asBoolean(readiness.link_enabled),
-      affirm: asBoolean(readiness.affirm_enabled),
-      klarna: asBoolean(readiness.klarna_enabled),
-      afterpay: asBoolean(readiness.afterpay_enabled),
-      paypal: asBoolean(readiness.paypal_enabled),
-      bnplCount: asNonNegativeInteger(readiness.bnpl_gateway_count),
-    },
   };
 }
 
 export async function getProductBuyNowReadiness({ force = false } = {}) {
-  if (inFlightRequest) {
-    return inFlightRequest;
-  }
-
-  const now = Date.now();
-  if (!force && cachedReadiness && cacheExpiresAt > now) {
-    return cachedReadiness;
-  }
+  if (inFlightRequest) return inFlightRequest;
+  if (!force && cachedReadiness && cacheExpiresAt > Date.now()) return cachedReadiness;
 
   inFlightRequest = apiClient('/wp-json/dtb/v1/checkout/capabilities', {
     method: 'GET',
     cache: 'no-store',
     headers: { Accept: 'application/json' },
   })
-    .then((capabilities) => normalizeProductBuyNowReadiness(capabilities))
-    .catch(() => ({
-      state: 'unknown',
-      provider: 'Payment Plugins for Stripe',
-      checks: {},
-      reasons: [],
-      shipping: {},
-      paymentMethods: {},
-    }))
+    .then(normalizeProductBuyNowReadiness)
+    .catch(() => ({ state: 'unknown', provider: 'WooPayments', checks: {}, reasons: [] }))
     .then((result) => {
       cachedReadiness = result;
       cacheExpiresAt = Date.now() + CACHE_TTL_MS;
       return result;
     })
-    .finally(() => {
-      inFlightRequest = null;
-    });
-
+    .finally(() => { inFlightRequest = null; });
   return inFlightRequest;
 }

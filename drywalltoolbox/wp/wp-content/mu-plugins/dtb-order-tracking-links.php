@@ -43,13 +43,11 @@ if ( ! function_exists( 'dtb_order_tracking_checkout_complete_url' ) ) {
  * Deliberately NOT rewriting `woocommerce_get_checkout_order_received_url` and
  * NOT redirecting away from `/checkout/order-received/{id}/` at `template_redirect`.
  *
- * That URL is also the Stripe gateway's own `return_url` for redirect-based
- * payment methods (3DS, some wallets), and native WooCommerce order-received
- * page loads are where the Stripe gateway synchronously verifies the payment
- * intent and calls `$order->payment_complete()`. Bouncing the browser away from
- * that page before it renders — as this file previously did — skips that
- * verification entirely, leaving the order stuck on "pending" until (and
- * unless) an external Stripe webhook eventually reconciles it.
+ * That URL is the provider return target for redirect-based payment methods
+ * (3DS and some wallets). WooCommerce/provider order-received handling must run
+ * before any customer-facing handoff so verified payment state is persisted.
+ * Redirecting away before that page renders can leave an order pending until a
+ * provider webhook synchronizes its authoritative status.
  *
  * Instead, redirect to the React tracking page from `woocommerce_thankyou`,
  * which WooCommerce's own order-received template fires only after it has

@@ -1,15 +1,11 @@
 import { Minus, Plus, ShieldCheck } from 'lucide-react';
-import {
-  EXPRESS_CHECKOUT_METHODS,
-  PAYMENT_CARD_NETWORK_ASSETS,
-} from '../../assets/payment-methods/index.js';
+import { PAYMENT_CARD_NETWORK_ASSETS } from '../../assets/payment-methods/index.js';
 import AddToCartButton from '../ui/AddToCartButton.jsx';
 
 const PDP_PAYMENT_METHODS = Object.freeze([
   PAYMENT_CARD_NETWORK_ASSETS.visa,
   PAYMENT_CARD_NETWORK_ASSETS.mastercard,
   PAYMENT_CARD_NETWORK_ASSETS.americanExpress,
-  ...EXPRESS_CHECKOUT_METHODS.filter(({ id }) => id !== 'paypal' && id !== 'afterpay'),
 ].filter(Boolean));
 
 export default function ProductPurchasePanel({

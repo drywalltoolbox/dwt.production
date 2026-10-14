@@ -1,5 +1,7 @@
 # Checkout UI Architecture and Reset Baseline
 
+> Historical UI change log. Provider-specific statements below describe the stack used at the time of each dated entry. Current payment ownership, guest-test policy, and checkout runtime boundaries are in `woopayments-environment-architecture.md` and `product-express-checkout.md`.
+
 Last verified against active source: 2026-07-28.
 
 ## Current state

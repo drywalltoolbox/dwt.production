@@ -8,7 +8,7 @@ This document defines the desktop presentation contract for the native WooCommer
 
 ## Authority
 
-Full checkout authority boundaries (WooCommerce, Payment Plugins for Stripe, and DTB ownership) are defined in `docs/checkout/checkout-ui-architecture.md`. This document adds only the desktop-specific presentation contract on top of that boundary: the active Drywall Toolbox theme owns presentation only and must not clone, move, reparent, hide, replace, fabricate, or manually remount native checkout fields, payment controls, wallet controls, order-summary data, or the Place Order action.
+Full checkout authority boundaries (WooCommerce, WooPayments, and DTB ownership) are defined in `docs/checkout/woopayments-environment-architecture.md` and `docs/checkout/product-express-checkout.md`. This document adds only the desktop-specific presentation contract: the active Drywall Toolbox theme must not clone, move, reparent, hide, replace, fabricate, or manually remount native checkout fields, payment controls, order-summary data, or the Place Order action.
 
 ## Active files
 

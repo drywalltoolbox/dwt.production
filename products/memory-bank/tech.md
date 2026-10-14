@@ -18,7 +18,6 @@
 | Library | Use |
 |---|---|
 | `axios` | HTTP client for all API calls |
-| `@stripe/react-stripe-js` + `@stripe/stripe-js` | Stripe payment elements |
 | `framer-motion` | Animations and page transitions |
 | `lucide-react` | Icon library (tree-shaken) |
 | `react-helmet-async` | Document head management |

@@ -92,22 +92,22 @@ class RoutingContractTests(unittest.TestCase):
             ),
         )
 
-    def test_stripe_query_string_returns_reach_wordpress_before_the_spa(self) -> None:
+    def test_provider_payment_intent_returns_reach_wordpress_before_the_spa(self) -> None:
         htaccess = (REPOSITORY_ROOT / "drywalltoolbox" / ".htaccess").read_text(
             encoding="utf-8"
         )
 
-        stripe_condition = (
+        payment_intent_condition = (
             "RewriteCond %{QUERY_STRING} "
-            "(^|&)_stripe_payment_method=stripe_[^&]+(&|$) [NC]"
+            "(^|&)payment_intent=pi_[^&]+(&|$) [NC]"
         )
         wordpress_rule = "RewriteRule ^$ wp/index.php [QSA,L]"
         homepage_rule = "RewriteRule ^$ index.html [L]"
 
-        self.assertIn(stripe_condition, htaccess)
+        self.assertIn(payment_intent_condition, htaccess)
         self.assertIn(wordpress_rule, htaccess)
-        self.assertLess(htaccess.index(stripe_condition), htaccess.index(homepage_rule))
-        self.assertLess(htaccess.index(wordpress_rule, htaccess.index(stripe_condition)), htaccess.index(homepage_rule))
+        self.assertLess(htaccess.index(payment_intent_condition), htaccess.index(homepage_rule))
+        self.assertLess(htaccess.index(wordpress_rule, htaccess.index(payment_intent_condition)), htaccess.index(homepage_rule))
 
     def test_plain_order_received_returns_reach_wordpress_before_the_spa(self) -> None:
         htaccess = (REPOSITORY_ROOT / "drywalltoolbox" / ".htaccess").read_text(

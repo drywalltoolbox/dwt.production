@@ -143,13 +143,6 @@
   letter-spacing: -0.012em;
 }
 
-.dtb-pdp__info-column .dtb-express-checkout-methods__label {
-  color: #7b879a;
-  font-size: clamp(0.7rem, 0.67rem + 0.1vw, 0.76rem);
-  font-weight: 450;
-  line-height: 1.35;
-}
-
 .dtb-pdp__info-column .dtb-pdp-trust-row strong {
   color: #07152f;
   font-size: clamp(0.66rem, 0.63rem + 0.08vw, 0.72rem);

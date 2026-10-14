@@ -2,6 +2,8 @@
 
 Date: 2026-08-06
 
+> Historical design note for the retired provider stack. See `woopayments-environment-architecture.md` for current payment ownership and staging rules.
+
 ## Architecture
 
 Redesign v18 replaces the mobile-only Contact / Shipping / Payment wizard chrome with a single-open accordion. The WooCommerce Checkout Block remains the only checkout form and order-creation surface. Payment Plugins for Stripe remains the only payment-state and payment-execution authority.

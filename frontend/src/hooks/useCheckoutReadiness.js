@@ -3,7 +3,6 @@ import { getProductBuyNowReadiness } from '../api/checkoutCapabilities.js';
 
 export const DEFAULT_CHECKOUT_READINESS = Object.freeze({
   state: 'unknown',
-  paymentMethods: {},
 });
 
 export default function useCheckoutReadiness() {

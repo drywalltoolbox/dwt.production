@@ -1,20 +1,20 @@
 # Checkout Captured-Payment Reconciliation
 
-Last verified against active source: 2026-07-28.
+Last verified against active source: 2026-10-14.
 
 ## Purpose
 
-WooCommerce and the configured payment provider remain authoritative for payment execution and order payment status. New Stripe checkout uses Payment Plugins for Stripe WooCommerce. DTB never infers success from a redirect, query value, browser state, order creation, or a raw `stripe_*` gateway ID.
+WooCommerce and the configured payment provider remain authoritative for payment execution and order payment status. New checkout uses WooPayments. DTB never infers success from a redirect, query value, browser state, order creation, or a raw `stripe_*` gateway ID.
 
 The order platform contains one narrow reconciliation path for the failure mode where WooCommerce has already persisted complete provider-verified captured-payment evidence but a qualifying DTB order remains `pending` or `on-hold`.
 
 ## Required evidence
 
-New replacement-provider orders are eligible only when all are true:
+New WooPayments orders are eligible only when all are true:
 
-- `_dtb_checkout_gateway = woo_native_stripe`;
-- `_dtb_checkout_contract_version = payment-plugins-stripe-v1`;
-- `_dtb_payment_provider = payment_plugins_stripe`, mirrored only after the selected gateway instance is verified as originating from `woo-stripe-payment`;
+- `_dtb_checkout_gateway = woo_native_woopayments`;
+- `_dtb_checkout_contract_version = woopayments-v1`;
+- `_dtb_payment_provider = woopayments`, mirrored only after WooPayments records a succeeded intention, intent ID, paid date, and transaction reference;
 - WooCommerce has a non-null `date_paid` value;
 - a non-secret transaction, PaymentIntent, or charge reference exists;
 - order total is greater than zero;
@@ -27,9 +27,9 @@ Authorization-only/manual-capture state is insufficient and remains non-fulfilla
 ## Runtime flow
 
 ```text
-WooCommerce Store API checkout or pending/on-hold transition
-  -> replacement provider completes/synchronizes payment
-  -> DTB replacement adapter verifies gateway provenance, date_paid, and reference
+WooCommerce Store API checkout or paid-order lifecycle
+  -> WooPayments completes/synchronizes payment
+  -> DTB WooPayments observer verifies provider state, date_paid, and reference
   -> DTB mirrors non-secret provider evidence
   -> DTB applies captured-payment gate
   -> WC_Order::payment_complete(reference)
@@ -52,10 +52,10 @@ The reconciliation method never calls Veeqo, QuickBooks, notifications, or anoth
 
 ## Provider migration constraints
 
-- The prior WooCommerce Stripe Gateway and the replacement plugin must not be simultaneously active as customer-facing card/wallet authorities.
-- The repository does not bundle or patch the regular plugin.
-- Plugin connection, webhooks, settings, saved-token/subscription migration, and live payment acceptance are operator tasks documented in `docs/checkout/payment-provider-migration.md`.
-- PayPal is outside this Stripe reconciliation contract and requires a separately reviewed provider/contract before it may enter DTB paid downstream processing.
+- WooPayments is the only DTB checkout integration. The retired payment extension is not loaded by DTB.
+- The repository does not bundle or patch WooPayments.
+- Provider connection, webhooks, settings, saved-token/subscription compatibility, and live payment acceptance require operator validation.
+- Other payment processors require a separate architecture decision before entering DTB paid downstream processing.
 - Historical orders and refunds must remain readable during and after cutover.
 
 ## Cart and native admin session continuity
@@ -81,8 +81,8 @@ Validate on a production-equivalent environment:
 2. Pretty-permalink and query-routed Store API requests resolve the same guest session.
 3. Guest storefront auth validation does not expire a privileged wp-admin session.
 4. A browser carrying a privileged native cookie preserves that same native identity across cart, checkout-document, and Checkout Block REST requests; a conflicting DTB customer handoff remains blocked.
-5. New Stripe-paid orders receive the replacement contract/provider metadata only after paid evidence.
-6. Historical official-Stripe orders still pass historical audit/refund/recovery rules.
+5. New WooPayments-paid orders receive the active contract/provider metadata only after paid evidence.
+6. Historical orders remain readable for payment audit, refund, and reconciliation.
 7. Captured-payment reconciliation emits one event and one downstream dispatch path.
 8. Failed, cancelled, authorization-only, or reference-less orders remain blocked.
 9. Card, saved card, 3DS/SCA, Apple Pay, Google Pay, configured BNPL, webhook, refund, Veeqo, QuickBooks, notification, and return-routing behavior are validated.

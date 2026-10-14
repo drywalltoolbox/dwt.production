@@ -43,7 +43,7 @@ final class DTB_CheckoutPaymentLifecycle {
 	public static function processing( $order_id ): void {
 		$order = wc_get_order( (int) $order_id );
 		if ( $order instanceof WC_Order && self::is_verified( $order ) ) {
-			// Authorization-only Stripe orders do not pass the captured-payment gate.
+			// Authorization-only payments do not pass the captured-payment gate.
 			self::record( $order, 'payment_confirmed' );
 		}
 	}
@@ -91,15 +91,15 @@ final class DTB_CheckoutPaymentLifecycle {
 		}
 
 		/*
-		 * Ask the active adapter to mirror provider-verified, non-secret evidence.
+		 * Ask the active WooPayments observer to mirror provider-verified evidence.
 		 * This does not trust redirects, browser flags, raw gateway prefixes, or DTB
 		 * metadata written before WooCommerce records paid state and a reference.
 		 */
 		if (
-			class_exists( 'DTB_PaymentPluginsStripeNativeCheckout' )
-			&& is_callable( [ 'DTB_PaymentPluginsStripeNativeCheckout', 'mirror_verified_stripe_payment' ] )
+			class_exists( 'DTB_WooPaymentsNativeCheckout' )
+			&& is_callable( [ 'DTB_WooPaymentsNativeCheckout', 'observe_order_id' ] )
 		) {
-			DTB_PaymentPluginsStripeNativeCheckout::mirror_verified_stripe_payment( $order_id );
+			DTB_WooPaymentsNativeCheckout::observe_order_id( $order_id );
 		}
 
 		$order = wc_get_order( $order_id );
@@ -172,7 +172,7 @@ final class DTB_CheckoutPaymentLifecycle {
 	private static function log_reconciliation_warning( int $order_id, string $source, string $status ): void {
 		if ( function_exists( 'wc_get_logger' ) ) {
 			wc_get_logger()->warning(
-				'Captured DTB Stripe payment did not transition to a fulfillable WooCommerce status.',
+				'Captured DTB payment did not transition to a fulfillable WooCommerce status.',
 				[
 					'source'       => 'dtb-order-platform',
 					'order_id'     => $order_id,
@@ -213,7 +213,7 @@ final class DTB_CheckoutPaymentLifecycle {
 		$message = (string) apply_filters(
 			'dtb_checkout_reconciliation_alert_message',
 			sprintf(
-				"A %s Stripe payment for order #%d was captured but did not transition to a fulfillable WooCommerce status (processing/completed).\n\nTrigger: %s\nCurrent status: %s\n\nReview and manually reconcile: %s",
+				"A %s payment for order #%d was captured but did not transition to a fulfillable WooCommerce status (processing/completed).\n\nTrigger: %s\nCurrent status: %s\n\nReview and manually reconcile: %s",
 				$site_name,
 				$order_id,
 				sanitize_key( $source ),

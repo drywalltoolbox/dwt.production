@@ -3,7 +3,7 @@
  * DTB Commerce bootstrap.
  *
  * Loads cart metadata, checkout validation, native WooCommerce checkout/runtime
- * support, Payment Plugins for Stripe observation, shipping, and commerce-facing
+ * support, WooPayments observation, shipping, and commerce-facing
  * REST/email integrations.
  *
  * @package drywall-toolbox
@@ -27,10 +27,7 @@ require_once __DIR__ . '/Domain/PaymentState.php';
 require_once __DIR__ . '/Payment/StoreApiSameOriginCartSession.php';
 require_once __DIR__ . '/Payment/WooNativeCheckoutRuntime.php';
 require_once __DIR__ . '/Payment/StorefrontReturnContext.php';
-require_once __DIR__ . '/Payment/PaymentPluginsStripeNativeCheckout.php';
 require_once __DIR__ . '/Payment/WooPaymentsNativeCheckout.php';
-require_once __DIR__ . '/Payment/StripeElementAppearance.php';
-require_once __DIR__ . '/Payment/FailedPaymentRecovery.php';
 require_once __DIR__ . '/Payment/CheckoutPerformance.php';
 require_once __DIR__ . '/Payment/CheckoutRuntimeIntegrity.php';
 require_once __DIR__ . '/Shipping/DTBShippingMethod.php';

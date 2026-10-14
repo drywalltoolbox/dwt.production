@@ -2,7 +2,7 @@
 
 ## Authority and scope
 
-The control center is an administrator workspace over the DTB accounting projection. WooCommerce remains the source of truth for orders, tax, payments, and refunds. Payment Plugins for Stripe remains payment authority. QuickBooks receives accounting documents only. Stripe settlement access is read-only and cannot capture, refund, or otherwise affect a payment.
+The control center is an administrator workspace over the DTB accounting projection. WooCommerce remains the source of truth for orders, tax, payments, and refunds. WooPayments is the active checkout authority. QuickBooks receives accounting documents only. Settlement reporting is read-only and cannot capture, refund, or otherwise affect a payment.
 
 All external accounting writes and reporting imports run through Action Scheduler group `dtb-orders`. Browser actions can preview, filter, export, approve rules, or enqueue work; they do not perform a QuickBooks or Stripe write.
 

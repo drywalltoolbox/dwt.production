@@ -111,9 +111,9 @@ legend { float: none; width: 100%; max-width: 100%; }
 }
 .dtb-checkout__brand { display: flex; align-items: center; min-width: 0; max-width: 148px; line-height: 0; }
 .dtb-checkout__brand img { display: block; width: auto; max-width: 100%; height: auto; max-height: 36px; }
-.dtb-checkout__stripe-badge { display: inline-grid; grid-template-columns: 14px minmax(0, 1fr); align-items: center; justify-self: end; gap: 6px; width: 100%; max-width: 118px; min-width: 0; overflow: hidden; }
-.dtb-checkout__stripe-badge svg { width: 14px; height: 14px; color: rgb(255 255 255 / 75%); }
-.dtb-checkout__stripe-badge img { display: block; width: 100%; max-width: 98px; height: auto; max-height: 18px; object-fit: contain; object-position: right center; }
+.dtb-checkout__payment-badge { display: inline-grid; grid-template-columns: 14px minmax(0, 1fr); align-items: center; justify-self: end; gap: 6px; width: 100%; max-width: 118px; min-width: 0; overflow: hidden; }
+.dtb-checkout__payment-badge svg { width: 14px; height: 14px; color: rgb(255 255 255 / 75%); }
+.dtb-checkout__payment-badge img { display: block; width: 100%; max-width: 98px; height: auto; max-height: 18px; object-fit: contain; object-position: right center; }
 
 .dtb-checkout__utility {
 	display: flex;
@@ -456,10 +456,10 @@ body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block .wc-block
 .wc-block-components-checkbox__input:checked { border-color: var(--dtb-checkout-blue-600); background: var(--dtb-checkout-blue-600); }
 /*
  * WooCommerce Blocks renders this account-vault opt-in after every payment
- * method whose gateway advertises `showSaveOption`. Stripe's Link opt-in lives
+ * method whose gateway advertises `showSaveOption`. Provider save-payment UI lives
  * inside the provider-owned Payment Element and is intentionally unaffected.
  * Keep one clear save-information choice in the card experience without
- * querying, moving, or mutating WooCommerce/Stripe payment state.
+ * querying, moving, or mutating WooCommerce/provider payment state.
  */
 body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block .wc-block-components-payment-methods__save-card-info {
 	display: none !important;
@@ -554,8 +554,8 @@ body.woocommerce-checkout :where(
 	.dtb-checkout__topbar-inner { grid-template-columns: minmax(0, 1fr) 140px; padding-block: 16px; }
 	.dtb-checkout__brand { max-width: 176px; }
 	.dtb-checkout__brand img { max-height: 44px; }
-	.dtb-checkout__stripe-badge { max-width: 140px; }
-	.dtb-checkout__stripe-badge img { max-width: 118px; max-height: 20px; }
+	.dtb-checkout__payment-badge { max-width: 140px; }
+	.dtb-checkout__payment-badge img { max-width: 118px; max-height: 20px; }
 }
 
 :focus-visible { outline: 2px solid var(--dtb-checkout-blue-600); outline-offset: 2px; }
