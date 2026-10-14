@@ -125,10 +125,9 @@ function dtb_coming_soon_capture_rest_referral( mixed $response, array $handler,
 		return $response;
 	}
 
-	$params = $request->get_json_params();
-	if ( ! is_array( $params ) ) {
-		$params = $request->get_body_params();
-	}
+	// Resolve merged WordPress REST parameters to support JSON, form-encoded
+	// and client-supplied route arguments without losing optional metadata.
+	$params = $request->get_params();
 
 	dtb_coming_soon_set_referral_context( dtb_coming_soon_build_referral_context( is_array( $params ) ? $params : [] ) );
 
