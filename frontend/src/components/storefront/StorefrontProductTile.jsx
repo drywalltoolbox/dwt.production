@@ -131,22 +131,34 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   }, [closeOverlay, onAddToCart]);
   const handleQuickView = useCallback((e) => { e.stopPropagation(); closeOverlay(); onOpenModal?.(); }, [closeOverlay, onOpenModal]);
 
-  // Search suggestions are a navigation utility, not catalog shopping cards.
-  // Reuse the same price, stock, image and route derivation, but omit the
-  // catalog card's reserved SKU, divider and commerce controls.
+  // Search uses shared product identities and existing cart/variation actions.\n  // Never present a variable parent's internal SKU as a sellable variation SKU.
   if (variant === 'search') {
     return (
       <article className="dtb-search-result" aria-label={name}>
-        <button type="button" className="dtb-search-result__image" onClick={handleImageClick} onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} aria-label={`Quick view ${name}`}>
-          <ProductCardImage product={displayProduct} src={image} srcSet={imageSrcset} sizes="(max-width: 767px) 84px, 108px" alt="" className="dtb-search-result__img" padding="0" fit="contain" preferThumbnail eager={false} />
-        </button>
+        <div className="dtb-search-result__visual">
+          <button type="button" className="dtb-search-result__image" onClick={handleImageClick} onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} aria-label={`Quick view ${name}`}>
+            <ProductCardImage product={displayProduct} src={image} srcSet={imageSrcset} sizes="(max-width: 767px) 84px, 108px" alt="" className="dtb-search-result__img" padding="0" fit="contain" preferThumbnail eager={false} />
+          </button>
+          <span className={`dtb-search-result__stock${outOfStock ? ' is-out' : ''}`}>{outOfStock ? 'Out of stock' : 'In stock'}</span>
+        </div>
         <div className="dtb-search-result__details">
           {displayProduct.brand ? <span className="dtb-search-result__brand">{displayProduct.brand}</span> : null}
           <button type="button" className="dtb-search-result__name" onClick={handleTitleClick} onFocus={warmProductRoute} onPointerEnter={handlePointerIntent}>{name}</button>
+          {sku ? <span className="dtb-search-result__sku">SKU: {sku}</span> : null}
           <div className="dtb-search-result__bottom">
-            <strong className="dtb-search-result__price">{priceStr}</strong>
-            {comparePriceStr ? <span className="dtb-search-result__compare">{comparePriceStr}</span> : null}
-            <span className={`dtb-search-result__stock${outOfStock ? ' is-out' : ''}`}>{outOfStock ? 'Out of stock' : 'In stock'}</span>
+            <span className="dtb-search-result__prices">
+              <strong className="dtb-search-result__price">{priceStr}</strong>
+              {comparePriceStr ? <span className="dtb-search-result__compare">{comparePriceStr}</span> : null}
+            </span>
+            {isVariable ? (
+              <button type="button" className="dtb-search-result__action dtb-search-result__options" onClick={handleQuickView} onFocus={warmProductRoute} aria-label={`Choose options for ${name}`}>
+                <SlidersHorizontal size={14} aria-hidden="true" /> Options
+              </button>
+            ) : outOfStock ? (
+              <button type="button" className="dtb-search-result__action" onClick={handleTitleClick} aria-label={`View ${name}`}>View</button>
+            ) : (
+              <AddToCartButton onClick={handleAddButtonClick} className="dtb-search-result__action" size="card" label="Add" productId={displayProduct.id} aria-label={`Add ${name} to cart`} data-dtb-card-action="add" />
+            )}
           </div>
         </div>
       </article>
