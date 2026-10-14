@@ -792,53 +792,32 @@ function dtb_save_subscriber( string $email, string $ip ) {
  * @param string $email The new subscriber's e-mail address.
  */
 function dtb_notify_admin( string $email ): void {
-	$admin_email = 'elliott.miller@drywalltoolbox.com';
-	$site_name   = get_option( 'blogname' );
-	$from_email  = 'no-reply@' . wp_parse_url( home_url(), PHP_URL_HOST );
-
-	// Avoid [brackets] in the subject — some spam filters penalise them.
-	$subject = sprintf(
-		/* translators: %s: site name */
-		__( 'New Coming-Soon Sign-Up — %s', 'dtb' ),
-		$site_name
-	);
-
-	$message = sprintf(
-		/* translators: 1: subscriber email, 2: UTC datetime, 3: admin URL */
-		__(
-			"A new visitor just signed up on the coming-soon page.\n\n" .
-			"E-mail:   %1\$s\n" .
-			"Received: %2\$s UTC\n\n" .
-			"View all subscribers:\n%3\$s",
-			'dtb'
-		),
-		$email,
-		gmdate( 'Y-m-d H:i:s' ),
-		admin_url( 'options-general.php?page=dtb-subscribers' )
-	);
-
-	$headers = array(
-		'Content-Type: text/plain; charset=UTF-8',
-		'From: ' . $site_name . ' <' . $from_email . '>',
-	);
-
-	if ( function_exists( 'dtb_send_email' ) ) {
-		dtb_send_email(
-			[
-				'to'           => $admin_email,
-				'subject'      => $subject,
-				'message'      => $message,
-				'headers'      => $headers,
-				'content_type' => 'text/plain',
-				'context'      => [
-					'module' => 'dtb-marketing',
-					'event'  => 'coming-soon-admin-notify',
-				],
-			]
-		);
-	} else {
-		wp_mail( $admin_email, $subject, $message, $headers );
-	}
+ $recipient = sanitize_email( (string) apply_filters( 'dtb_coming_soon_admin_notification_recipient', 'elliott.miller@drywalltoolbox.com' ) );
+ if ( ! is_email( $recipient ) ) { return; }
+ $ref = function_exists( 'dtb_coming_soon_get_referral_context' ) ? dtb_coming_soon_get_referral_context() : [];
+ if ( strtolower( (string) ( $ref['email'] ?? '' ) ) !== strtolower( $email ) ) { $ref = []; }
+ $details = [ 'Email address' => $email, 'Signed up' => wp_date( 'M j, Y, g:i A T' ), 'Referral source' => sanitize_text_field( (string) ( $ref['label'] ?? 'Not provided' ) ) ];
+ if ( ! empty( $ref['name'] ) ) { $details = [ 'Name' => sanitize_text_field( (string) $ref['name'] ) ] + $details; }
+ if ( ! empty( $ref['detail'] ) ) { $details['Referral details'] = sanitize_text_field( (string) $ref['detail'] ); }
+ $url = admin_url( 'options-general.php?page=dtb-subscribers' );
+ $plain = "New Coming Soon subscriber\n\n";
+ foreach ( $details as $label => $value ) { $plain .= $label . ': ' . $value . "\n"; }
+ $plain .= "\nView subscribers: " . $url;
+ $html = function_exists( 'dtb_render_branded_email' ) ? dtb_render_branded_email( [
+  'title' => 'A new subscriber joined', 'preheader' => 'New Coming Soon signup',
+  'greeting' => 'Someone new joined the list.',
+  'intro' => 'A visitor signed up to hear when Drywall Toolbox launches. Here are the details.',
+  'details' => $details, 'cta_label' => 'View subscribers', 'cta_url' => $url,
+  'signoff' => 'Drywall Toolbox', 'footer_note' => 'Internal notification · Coming Soon list'
+ ] ) : '';
+ $host = (string) wp_parse_url( home_url(), PHP_URL_HOST );
+ $args = [ 'to' => $recipient, 'subject' => 'New Coming Soon signup — Drywall Toolbox',
+  'message' => $html ?: $plain, 'headers' => [ 'From: Drywall Toolbox <no-reply@' . $host . '>' ],
+  'is_html' => (bool) $html, 'content_type' => $html ? 'text/html' : 'text/plain',
+  'alt_body' => $html ? $plain : '',
+  'context' => [ 'module' => 'dtb-marketing', 'event' => 'coming-soon-admin-notify' ] ];
+ if ( function_exists( 'dtb_send_email' ) ) { dtb_send_email( $args ); }
+ else { wp_mail( $recipient, $args['subject'], $args['message'], array_merge( $args['headers'], [ 'Content-Type: ' . $args['content_type'] . '; charset=UTF-8' ] ) ); }
 }
 
 /**
@@ -874,9 +853,9 @@ function dtb_send_confirmation_email( string $email ): void {
 	$plain_message = sprintf(
 		__(
 			"Hi there,\n\n" .
-			"Thanks for signing up - you're officially on the list.\n\n" .
-			"We've reserved your spot and will notify you at %s the moment Drywall Toolbox goes live. You'll be among the first to know.\n\n" .
-			"Big things are on the way - the wait won't be long, and it'll be well worth the wait.\n\n" .
+			"Thanks for signing up. We're glad you're here.\n\n" .
+			"When we have a launch update, we'll send it to %s. You don't need to do anything else.\n\n" .
+			"We're getting things ready behind the scenes and will be in touch with launch news.\n\n" .
 			"Talk soon,\n" .
 			"The %s Team\n\n" .
 			"Unsubscribe: %s",
@@ -891,12 +870,12 @@ function dtb_send_confirmation_email( string $email ): void {
 	$html_message = '';
 	if ( function_exists( 'dtb_render_branded_email' ) ) {
 		$html_message = dtb_render_branded_email( [
-			'title'       => 'You\'re on the List!',
-			'preheader'   => 'Thanks for signing up — you\'re officially on the list',
+			'title'       => 'You\'re on the list.',
+			'preheader'   => 'You\'ll be among the first to hear from Drywall Toolbox.',
 			'greeting'    => 'Hi there,',
-			'intro'       => 'Thanks for signing up — you\'re officially on the list.',
+			'intro'       => 'Thanks for signing up. We\'re glad you\'re here.',
 			'body_html'   => sprintf(
-				'<p>We\'ve reserved your spot and will notify you at <strong style="color:#2563eb;">%s</strong> the moment Drywall Toolbox goes live. You\'ll be among the first to know.</p><p>Big things are on the way — the wait won\'t be long, and it\'ll be well worth the wait.</p>',
+				'<p>When we have a launch update, we\'ll send it to <strong style="color:#1769ff;">%s</strong>. You don\'t need to do anything else.</p><p>Big things are on the way — the wait won\'t be long, and it\'ll be well worth the wait.</p>',
 				esc_html( $email )
 			),
 			'signoff'     => 'The Drywall Toolbox Team',
