@@ -131,6 +131,28 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   }, [closeOverlay, onAddToCart]);
   const handleQuickView = useCallback((e) => { e.stopPropagation(); closeOverlay(); onOpenModal?.(); }, [closeOverlay, onOpenModal]);
 
+  // Search suggestions are a navigation utility, not catalog shopping cards.
+  // Reuse the same price, stock, image and route derivation, but omit the
+  // catalog card's reserved SKU, divider and commerce controls.
+  if (variant === 'search') {
+    return (
+      <article className="dtb-search-result" aria-label={name}>
+        <button type="button" className="dtb-search-result__image" onClick={handleImageClick} onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} aria-label={`Quick view ${name}`}>
+          <ProductCardImage product={displayProduct} src={image} srcSet={imageSrcset} sizes="(max-width: 767px) 84px, 108px" alt="" className="dtb-search-result__img" padding="0" fit="contain" preferThumbnail eager={false} />
+        </button>
+        <div className="dtb-search-result__details">
+          {displayProduct.brand ? <span className="dtb-search-result__brand">{displayProduct.brand}</span> : null}
+          <button type="button" className="dtb-search-result__name" onClick={handleTitleClick} onFocus={warmProductRoute} onPointerEnter={handlePointerIntent}>{name}</button>
+          <div className="dtb-search-result__bottom">
+            <strong className="dtb-search-result__price">{priceStr}</strong>
+            {comparePriceStr ? <span className="dtb-search-result__compare">{comparePriceStr}</span> : null}
+            <span className={`dtb-search-result__stock${outOfStock ? ' is-out' : ''}`}>{outOfStock ? 'Out of stock' : 'In stock'}</span>
+          </div>
+        </div>
+      </article>
+    );
+  }
+
   return (
     <article ref={cardRef} className={`dtb-product-card dtb-product-card--${variant} storefront-motion-card${isVariable ? ' dtb-product-card--variable' : ''}`} style={{ '--dtb-card-delay': `${Math.min(index, 8) * 30}ms` }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={openModalFromMobileCard}>
       <div className="dtb-product-card__image">
