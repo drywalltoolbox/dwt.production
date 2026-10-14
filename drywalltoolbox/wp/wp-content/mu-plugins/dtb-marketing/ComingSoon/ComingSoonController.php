@@ -791,33 +791,103 @@ function dtb_save_subscriber( string $email, string $ip ) {
  *
  * @param string $email The new subscriber's e-mail address.
  */
+/**
+ * Render an operator notice within the canonical WooCommerce/DTB HTML shell.
+ * No template sends mail or creates subscriber records.
+ *
+ * @param array<string,string> $details Sanitized subscriber metadata.
+ */
+function dtb_coming_soon_admin_html( array $details, string $url ): string {
+	if ( ! function_exists( 'wc_get_template_html' ) || ! function_exists( 'WC' ) || ! WC() ) {
+		return '';
+	}
+	$email_context = (object) [ 'id' => 'dtb_coming_soon_admin', 'object' => null ];
+	$template_args = [ 'email' => $email_context, 'email_heading' => '' ];
+	$header = wc_get_template_html( 'emails/email-header.php', $template_args );
+	$footer = wc_get_template_html( 'emails/email-footer.php', $template_args );
+	if ( '' === $header || '' === $footer ) {
+		return '';
+	}
+	$rows = '';
+	foreach ( $details as $label => $value ) {
+		if ( '' === trim( $value ) ) {
+			continue;
+		}
+		$rows .= '<tr><td valign="top" style="width:36%;padding:12px 10px 12px 0;border-bottom:1px solid #e6ebf3;color:#64748b;font:600 12px/19px Arial,sans-serif;">' . esc_html( $label ) . '</td>'
+			. '<td valign="top" style="padding:12px 0;border-bottom:1px solid #e6ebf3;color:#071b45;font:600 13px/20px Arial,sans-serif;overflow-wrap:anywhere;">' . esc_html( $value ) . '</td></tr>';
+	}
+	$body = '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;background:#fff;">'
+		. '<tr><td style="padding:35px 38px 14px;">'
+		. '<p style="margin:0 0 9px;color:#1769ff;font:700 11px/17px Arial,sans-serif;letter-spacing:1px;text-transform:uppercase;">COMING SOON / NEW SUBSCRIBER</p>'
+		. '<h1 style="margin:0 0 12px;color:#071b45;font:750 27px/35px Arial,sans-serif;">Someone new joined the list.</h1>'
+		. '<p style="margin:0;color:#52627e;font:400 14px/23px Arial,sans-serif;">A visitor signed up for launch updates. Here are the details they shared.</p>'
+		. '</td></tr><tr><td style="padding:12px 38px 23px;">'
+		. '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;">' . $rows . '</table>'
+		. '</td></tr><tr><td align="center" style="padding:0 38px 34px;">'
+		. '<a href="' . esc_url( $url ) . '" style="display:inline-block;border-radius:7px;padding:14px 24px;background:#1769ff;color:#ffffff!important;text-decoration:none;font:700 14px/20px Arial,sans-serif;">View subscribers</a>'
+		. '<p style="margin:17px 0 0;color:#64748b;font:400 11px/17px Arial,sans-serif;">Internal notification · Drywall Toolbox</p>'
+		. '</td></tr></table>';
+	return $header . $body . $footer;
+}
+
+/**
+ * Send one operator notification containing the actual saved subscriber metadata.
+ */
 function dtb_notify_admin( string $email ): void {
- $recipient = sanitize_email( (string) apply_filters( 'dtb_coming_soon_admin_notification_recipient', 'elliott.miller@drywalltoolbox.com' ) );
- if ( ! is_email( $recipient ) ) { return; }
- $ref = function_exists( 'dtb_coming_soon_get_referral_context' ) ? dtb_coming_soon_get_referral_context() : [];
- if ( strtolower( (string) ( $ref['email'] ?? '' ) ) !== strtolower( $email ) ) { $ref = []; }
- $details = [ 'Email address' => $email, 'Signed up' => wp_date( 'M j, Y, g:i A T' ), 'Referral source' => sanitize_text_field( (string) ( $ref['label'] ?? 'Not provided' ) ) ];
- if ( ! empty( $ref['name'] ) ) { $details = [ 'Name' => sanitize_text_field( (string) $ref['name'] ) ] + $details; }
- if ( ! empty( $ref['detail'] ) ) { $details['Referral details'] = sanitize_text_field( (string) $ref['detail'] ); }
- $url = admin_url( 'options-general.php?page=dtb-subscribers' );
- $plain = "New Coming Soon subscriber\n\n";
- foreach ( $details as $label => $value ) { $plain .= $label . ': ' . $value . "\n"; }
- $plain .= "\nView subscribers: " . $url;
- $html = function_exists( 'dtb_render_branded_email' ) ? dtb_render_branded_email( [
-  'title' => 'A new subscriber joined', 'preheader' => 'New Coming Soon signup',
-  'greeting' => 'Someone new joined the list.',
-  'intro' => 'A visitor signed up to hear when Drywall Toolbox launches. Here are the details.',
-  'details' => $details, 'cta_label' => 'View subscribers', 'cta_url' => $url,
-  'signoff' => 'Drywall Toolbox', 'footer_note' => 'Internal notification · Coming Soon list'
- ] ) : '';
- $host = (string) wp_parse_url( home_url(), PHP_URL_HOST );
- $args = [ 'to' => $recipient, 'subject' => 'New Coming Soon signup — Drywall Toolbox',
-  'message' => $html ?: $plain, 'headers' => [ 'From: Drywall Toolbox <no-reply@' . $host . '>' ],
-  'is_html' => (bool) $html, 'content_type' => $html ? 'text/html' : 'text/plain',
-  'alt_body' => $html ? $plain : '',
-  'context' => [ 'module' => 'dtb-marketing', 'event' => 'coming-soon-admin-notify' ] ];
- if ( function_exists( 'dtb_send_email' ) ) { dtb_send_email( $args ); }
- else { wp_mail( $recipient, $args['subject'], $args['message'], array_merge( $args['headers'], [ 'Content-Type: ' . $args['content_type'] . '; charset=UTF-8' ] ) ); }
+	$recipient = sanitize_email( (string) apply_filters( 'dtb_coming_soon_admin_notification_recipient', 'elliott.miller@drywalltoolbox.com' ) );
+	if ( ! is_email( $recipient ) ) {
+		return;
+	}
+	$context = function_exists( 'dtb_coming_soon_get_referral_context' ) ? dtb_coming_soon_get_referral_context() : [];
+	if ( ! is_array( $context ) || strtolower( (string) ( $context['email'] ?? '' ) ) !== strtolower( $email ) ) {
+		$context = [];
+	}
+	// The stored record is a reliable fallback when hooks executed without request context.
+	$stored = [];
+	foreach ( (array) get_option( DTB_SUBSCRIBERS_OPTION, [] ) as $subscriber ) {
+		if ( is_array( $subscriber ) && strtolower( (string) ( $subscriber['email'] ?? '' ) ) === strtolower( $email ) ) {
+			$stored = $subscriber;
+			break;
+		}
+	}
+	$name = sanitize_text_field( (string) ( $context['name'] ?? $stored['name'] ?? '' ) );
+	$source = sanitize_text_field( (string) ( $context['label'] ?? $stored['referral_label'] ?? 'Not provided' ) );
+	$detail = sanitize_text_field( (string) ( $context['detail'] ?? $stored['referral_detail'] ?? '' ) );
+	$referrer = esc_url_raw( (string) ( $context['page_referrer'] ?? $stored['page_referrer'] ?? '' ) );
+	$landing = esc_url_raw( (string) ( $context['landing_url'] ?? $stored['landing_url'] ?? '' ) );
+	$details = [
+		'Name' => $name ?: 'Not provided',
+		'Email address' => $email,
+		'Received' => wp_date( 'M j, Y · g:i A T' ),
+		'How they heard about us' => $source ?: 'Not provided',
+	];
+	if ( $detail ) { $details['Referral details'] = $detail; }
+	if ( $referrer ) { $details['Page referrer'] = $referrer; }
+	if ( $landing ) { $details['Landing page'] = $landing; }
+	$url = admin_url( 'options-general.php?page=dtb-subscribers' );
+	$plain = "New Coming Soon subscriber\n\n";
+	foreach ( $details as $label => $value ) {
+		$plain .= $label . ': ' . $value . "\n";
+	}
+	$plain .= "\nView subscribers: " . $url;
+	$html = dtb_coming_soon_admin_html( $details, $url );
+	// Do not silently fall back to the older layout if WC is unavailable.
+	$host = (string) wp_parse_url( home_url(), PHP_URL_HOST );
+	$args = [
+		'to' => $recipient,
+		'subject' => 'New Coming Soon signup — Drywall Toolbox',
+		'message' => $html ?: $plain,
+		'headers' => [ 'From: Drywall Toolbox <no-reply@' . $host . '>' ],
+		'content_type' => $html ? 'text/html' : 'text/plain',
+		'is_html' => (bool) $html,
+		'alt_body' => $html ? $plain : '',
+		'context' => [ 'module' => 'dtb-marketing', 'event' => 'coming-soon-admin-notify' ],
+	];
+	if ( function_exists( 'dtb_send_email' ) ) {
+		dtb_send_email( $args );
+	} else {
+		wp_mail( $recipient, $args['subject'], $args['message'], array_merge( $args['headers'], [ 'Content-Type: ' . $args['content_type'] . '; charset=UTF-8' ] ) );
+	}
 }
 
 /**
