@@ -109,7 +109,7 @@ export default function StorefrontSearchOverlay({
           <StorefrontProductTile
             product={product}
             cardProduct={product?.cardProduct || null}
-            variant="list"
+            variant="search"
             index={index}
             onOpenModal={() => openQuickView(product)}
             onAddToCart={() => handleAddToCart(product, 1)}

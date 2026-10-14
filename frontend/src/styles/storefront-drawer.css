@@ -788,12 +788,6 @@
 
 /* Mobile optimizations */
 @media (max-width: 640px) {
-  .storefront-search-overlay__panel {
-    height: min(58dvh, 500px);
-    max-height: min(58dvh, 500px);
-    border-radius: 0 0 var(--dtb-radius-lg) var(--dtb-radius-lg);
-  }
-
   .storefront-search-overlay__body {
     min-height: 0;
   }
