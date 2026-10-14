@@ -33,9 +33,9 @@ a deploy pipeline.
 
 | # | Stage | What it verifies |
 |---|-------|-------------------|
-| 1 | Environment Validation | Site, WordPress REST API, and WooCommerce Store API are reachable; REST credentials are valid; Stripe test mode is confirmed before any checkout simulation runs. Aborts the run on failure. |
+| 1 | Environment Validation | Site, WordPress REST API, and WooCommerce Store API are reachable; REST credentials are valid; WooPayments test mode is confirmed before any checkout simulation runs. Aborts the run on failure. |
 | 2 | Website Crawl | Every essential public page (home, shop, brands, product, cart, checkout, login, register, account, contact, repairs, returns, policies, FAQ) returns success, renders real content, and has no console errors. |
-| 3 | Guest Checkout Simulation | Browse → product → add to cart → cart → checkout → shipping → Stripe payment → order confirmation, as an unauthenticated customer, using a real browser (Playwright). |
+| 3 | Guest Checkout Simulation | Browse → product → add to cart → cart → checkout → shipping → WooPayments payment → order confirmation, as an unauthenticated customer, using a real browser (Playwright). |
 | 4 | Registered Customer Simulation | Register → login → browse → add to cart → checkout → payment → order complete → logout → login again → order history is visible. |
 | 5 | WooCommerce Verification | The placed order exists with a paid-equivalent status, correct customer email, totals, shipping, tax, and captured payment. |
 | 6 | Veeqo Verification | The order synchronized into Veeqo (polls the DTB order-pipeline sync status until terminal or timeout). |
@@ -74,7 +74,7 @@ Both are gitignored — they're run artifacts, not source.
 
 - Stages 3-7 are opt-in (`LAUNCH_ENABLE_CHECKOUT_SIMULATION=true`) because
   they place real orders and charge a real (test-mode) card.
-- The suite refuses to run checkout simulation if the configured Stripe
+- The suite refuses to run checkout simulation if the configured WooPayments
   publishable key is a live key (`pk_live_...`), regardless of the opt-in flag.
 - Stages 1-2 are read-only and safe to run against production at any time.
 

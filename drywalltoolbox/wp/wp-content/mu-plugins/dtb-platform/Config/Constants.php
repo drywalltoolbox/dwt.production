@@ -253,18 +253,6 @@ defined( 'ABSPATH' ) || exit;
  *                    default-src 'self'; script-src 'self' 'unsafe-inline'; ...
  *                  Test in CSP Report-Only mode first if possible.
  *
- * DTB_ENABLE_STRIPE_ADAPTIVE_PRICING
- *   What it does : Allows the official WooCommerce Stripe gateway to use its
- *                  eager Checkout Sessions bootstrap for Adaptive Pricing.
- *   Default      : false. DTB keeps the gateway on its deferred-intent path so
- *                  a failed session bootstrap cannot make checkout payment
- *                  fields unavailable. Optimized and Express Checkout remain
- *                  enabled independently.
- *   Override     : Define as boolean true in wp-config.php only after an
- *                  authenticated live-mode test verifies session creation,
- *                  totals, webhooks, order payment, and redirect completion.
- *                  Do not define this as the string "true".
- *
  * =============================================================================
  * =============================================================================
  * PRODUCT IMAGE SYNC — WORKFLOW

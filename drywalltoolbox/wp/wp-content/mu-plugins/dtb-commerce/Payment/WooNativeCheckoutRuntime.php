@@ -4,7 +4,7 @@
  *
  * The active public theme normally forces frontend requests into the React SPA
  * and strips non-React assets. Checkout is the deliberate exception: WooCommerce
- * must own the server-rendered runtime so Checkout Block and the official Stripe
+ * must own the server-rendered runtime so Checkout Block and WooPayments
  * extension can enqueue their supported assets and execute native endpoint state.
  *
  * Presentation belongs to the active theme's checkout template/assets. This
@@ -122,10 +122,8 @@ final class DTB_WooNativeCheckoutRuntime {
 			return;
 		}
 
-		if (
-			'woo_native_stripe' !== (string) $order->get_meta( '_dtb_checkout_gateway', true ) ||
-			'woo-stripe-v1' !== (string) $order->get_meta( '_dtb_checkout_contract_version', true )
-		) {
+		if ( 'woo_native_woopayments' !== (string) $order->get_meta( '_dtb_checkout_gateway', true )
+			|| 'woopayments-v1' !== (string) $order->get_meta( '_dtb_checkout_contract_version', true ) ) {
 			return;
 		}
 

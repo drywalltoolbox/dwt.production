@@ -165,7 +165,7 @@ class WooCommerceVerificationTests(unittest.TestCase):
             total=100.0,
             shipping_total=0.0,
             total_tax=0.0,
-            payment_method="stripe_upm",
+            payment_method="woocommerce_payments",
             date_paid="2026-07-30T00:00:00",
             billing_email="buyer@example.test",
             customer_id=customer_id,

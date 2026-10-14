@@ -2,6 +2,8 @@
 
 Date: 2026-08-06
 
+> Historical release note for the retired provider stack. See `woopayments-environment-architecture.md` for current payment ownership and staging rules.
+
 ## Scope
 
 This pass fixes seven mobile (390x844) defects confirmed against a live-site runtime diagnostic capture of `/checkout/` taken after v19 shipped. None of these are architecture changes: WooCommerce Checkout Block remains the only order-creation surface, Payment Plugins for Stripe remains the only payment-execution authority, and the wizard/accordion grouping contract documented in `checkout-ui-redesign-v18.md` (Contact / Shipping / Payment, express payment groups with Payment) is unchanged in intent. These are CSS-specificity corrections and two selector-accuracy bugs against the actual rendered WooCommerce 11.0.0 Blocks markup on this install.

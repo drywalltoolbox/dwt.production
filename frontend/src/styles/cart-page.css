@@ -356,18 +356,6 @@
   opacity: 0.6;
 }
 
-.dtb-cart-sheet__express-checkout {
-  margin-top: 1.5rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid #e4e9ef;
-}
-
-.dtb-cart-sheet__express-checkout .dtb-express-checkout-methods__label {
-  color: var(--dtb-muted);
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
 .dtb-cart-empty {
   display: grid;
   place-items: center;

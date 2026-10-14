@@ -1,7 +1,7 @@
 """Shared browser-driven customer actions used by both the guest and
 registered-customer checkout workflows.
 
-Kept in one place so "add a product to the cart" or "pay with the Stripe
+Kept in one place so "add a product to the cart" or "pay with the WooPayments
 test card" is implemented once, not duplicated between the two simulations
 (they differ only in account creation/login around the same checkout core).
 
@@ -246,7 +246,7 @@ def proceed_to_checkout(
 
     page.goto(f"{config.site_url}/checkout/", wait_until="domcontentloaded")
 
-    # Stripe and Woo Blocks keep background connections active, so
+    # WooPayments and Woo Blocks keep background connections active, so
     # `networkidle` is not a reliable checkout-readiness signal.
     page.locator("#email, .wc-block-checkout").first.wait_for(
         state="visible",
@@ -346,12 +346,12 @@ def select_a_shipping_method(page: "Page") -> None:
         pass  # A single free-shipping method may already be pre-selected with no radio group.
 
 
-def pay_with_stripe_test_card(page: "Page", config: "Config") -> None:
-    """Fill the Stripe Payment Element inside its secure iframe with a test card."""
+def pay_with_woopayments_test_card(page: "Page", config: "Config") -> None:
+    """Fill the WooPayments card fields inside its secure iframe with a test card."""
 
     gateway = page.locator(
-        '#radio-control-wc-payment-method-options-stripe_upm, '
-        'input[type="radio"][value="stripe_upm"]'
+        '#radio-control-wc-payment-method-options-woocommerce_payments, '
+        'input[type="radio"][value="woocommerce_payments"]'
     ).first
     try:
         if gateway.count() and not gateway.is_checked():
@@ -369,23 +369,23 @@ def pay_with_stripe_test_card(page: "Page", config: "Config") -> None:
             'input[name="number"], input[autocomplete="cc-number"], input[aria-label*="card number" i]'
         ).first
         number.wait_for(state="visible", timeout=config.browser_timeout_ms)
-        number.fill(config.stripe_test_card_number)
+        number.fill(config.test_card_number)
 
         frame.locator(
             'input[name="expiry"], input[autocomplete="cc-exp"], input[aria-label*="expiration" i]'
-        ).first.fill(config.stripe_test_card_exp)
+        ).first.fill(config.test_card_exp)
         frame.locator(
             'input[name="cvc"], input[autocomplete="cc-csc"], input[aria-label*="security code" i]'
-        ).first.fill(config.stripe_test_card_cvc)
+        ).first.fill(config.test_card_cvc)
         zip_field = frame.locator(
             'input[name="postalCode"], input[autocomplete="postal-code"], '
             'input[aria-label*="postal" i], input[aria-label*="ZIP" i]'
         ).first
         if zip_field.count():
-            zip_field.fill(config.stripe_test_card_zip)
+            zip_field.fill(config.test_card_zip)
     except PlaywrightTimeoutError as exc:
         raise CheckoutFlowError(
-            "Could not fill the Stripe Payment Element — the storefront's Stripe "
+            "Could not fill the WooPayments card fields — the storefront's WooPayments "
             "iframe markup may not match the suite's selectors and needs tuning."
         ) from exc
 

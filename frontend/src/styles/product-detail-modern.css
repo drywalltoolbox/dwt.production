@@ -979,55 +979,6 @@
   flex: 1;
 }
 
-.dtb-pdp-express-checkout {
-  display: inline-flex;
-  width: 100%;
-  min-height: 46px;
-  padding: 0.72rem 1rem;
-  border: 1px solid #cbd5e1;
-  border-radius: 12px;
-  background: #ffffff;
-  color: #0f172a;
-  font-family: var(--font-sans, 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
-  font-size: 0.88rem;
-  font-weight: 650;
-  letter-spacing: 0.01em;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  cursor: pointer;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
-  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease, transform 120ms ease;
-}
-
-.dtb-pdp-express-checkout:hover:not(:disabled) {
-  border-color: #2255ee;
-  background: #eff6ff;
-  color: #2255ee;
-}
-
-.dtb-pdp-express-checkout:active:not(:disabled) {
-  transform: scale(0.99);
-}
-
-.dtb-pdp-express-checkout:focus-visible {
-  outline: 3px solid rgba(34, 85, 238, 0.22);
-  outline-offset: 2px;
-}
-
-.dtb-pdp-express-checkout:disabled {
-  cursor: not-allowed;
-  opacity: 0.55;
-}
-
-.dtb-pdp-express-checkout__note {
-  margin: -0.25rem 0 0;
-  color: #64748b;
-  font-size: 0.76rem;
-  line-height: 1.4;
-  text-align: center;
-}
-
 @media (min-width: 769px) {
   .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__inner {
     gap: 0.85rem;

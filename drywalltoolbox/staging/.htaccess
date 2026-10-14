@@ -67,13 +67,6 @@ ErrorDocument 504 /staging/errors/504.html
   RewriteCond %{HTTP_HOST} ^www\.drywalltoolbox\.com$ [NC]
   RewriteRule ^ https://drywalltoolbox.com%{REQUEST_URI} [R=301,L,NE]
 
-  # Native WooPayments product context for administrator-only staging PDP preview.
-  # WooCommerce product query must initialize before WooPayments enqueues scripts.
-  RewriteRule ^__native-wallet/([1-9][0-9]*)/?$ /wp/index.php?post_type=product&p=$1 [QSA,L]
-
-  # Administrator-only native WooPayments shortcode probe (shared backend, test mode only).
-  RewriteRule ^__wallet-probe-20261013/?$ /wp/index.php?pagename=dtb-staging-wallet-probe-20261013 [QSA,L]
-
   # Staging shares the root WordPress/WooCommerce runtime. These internal
   # aliases preserve same-origin cookies while keeping one REST authority.
   RewriteRule ^wp-json/?$ /wp/index.php?rest_route=/ [QSA,L]
@@ -89,10 +82,8 @@ ErrorDocument 504 /staging/errors/504.html
   RewriteRule ^order-pay/([0-9]+)/?$ /wp/index.php?pagename=checkout&order-pay=$1 [QSA,L]
   RewriteRule ^checkout/order-received/([0-9]+)/?$ /wp/index.php?pagename=checkout&order-received=$1 [QSA,L]
 
-  # Redirect-capable Payment Plugins gateways can return to WooCommerce's
-  # plain checkout-page URL at the staging mount root. Keep that callback in
-  # the shared WordPress runtime so the provider can finalize the order.
-  RewriteCond %{QUERY_STRING} (^|&)_stripe_payment_method=stripe_[^&]+(&|$) [NC]
+  # Redirect-capable provider returns must reach WooCommerce before the React
+  # homepage rule so the native order lifecycle can verify and finalize them.
   RewriteCond %{QUERY_STRING} (^|&)order_id=[0-9]+(&|$) [NC]
   RewriteCond %{QUERY_STRING} (^|&)key=wc_order_[^&]+(&|$) [NC]
   RewriteCond %{QUERY_STRING} (^|&)payment_intent=pi_[^&]+(&|$) [NC]
@@ -136,7 +127,7 @@ ErrorDocument 504 /staging/errors/504.html
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(self \"https://js.stripe.com\" \"https://hooks.stripe.com\" \"https://b.stripecdn.com\" \"https://pay.google.com\"), usb=(), browsing-topics=()"
   Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
 
-  <If "%{REQUEST_URI} =~ m#^/staging/(?:wp-admin|wp-login\.php|wp-json|dtb|wp-cron\.php|xmlrpc\.php|cart|checkout|account|my-account|dashboard|orders|addresses|rewards|login|register|forgot-password|lost-password|reset-password|logout|wc-api)(?:/|$)#i || %{QUERY_STRING} =~ m#(^|&)(?:rest_route=|pay_for_order=true|order-pay=[0-9]+|order-received=[0-9]+|wc-api=|_stripe_payment_method=stripe_)#i || %{HTTP_COOKIE} =~ m#(?:^|;\s*)(?:wordpress_logged_in_|wordpress_sec_|wordpress_test_cookie|wp-settings-|woocommerce_cart_hash|woocommerce_items_in_cart|wp_woocommerce_session_|dtb_auth)#i">
+    <If "%{REQUEST_URI} =~ m#^/staging/(?:wp-admin|wp-login\.php|wp-json|dtb|wp-cron\.php|xmlrpc\.php|cart|checkout|account|my-account|dashboard|orders|addresses|rewards|login|register|forgot-password|lost-password|reset-password|logout|wc-api)(?:/|$)#i || %{QUERY_STRING} =~ m#(^|&)(?:rest_route=|pay_for_order=true|order-pay=[0-9]+|order-received=[0-9]+|wc-api=|order_id=[0-9]+|payment_intent=|key=wc_order_)#i || %{HTTP_COOKIE} =~ m#(?:^|;\s*)(?:wordpress_logged_in_|wordpress_sec_|wordpress_test_cookie|wp-settings-|woocommerce_cart_hash|woocommerce_items_in_cart|wp_woocommerce_session_|dtb_auth)#i">
     Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0, private"
     Header always set Pragma "no-cache"
     Header always set Expires "0"

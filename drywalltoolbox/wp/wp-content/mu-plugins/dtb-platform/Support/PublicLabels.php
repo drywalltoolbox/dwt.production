@@ -3,7 +3,7 @@
  * Customer-facing label normalization.
  *
  * Prevents backend implementation identifiers such as dtb_veeqo_rates:standard,
- * stripe_cc, stripe_upm, or woo_native from appearing in customer emails, order
+ * retired gateway IDs, or woo_native from appearing in customer emails, order
  * totals, and public order views.
  *
  * @package drywall-toolbox
@@ -70,7 +70,7 @@ if ( ! function_exists( 'dtb_public_shipping_method_label' ) ) {
 
 if ( ! function_exists( 'dtb_public_payment_method_label' ) ) {
 	/**
-	 * Convert backend payment gateway identifiers into customer-safe payment labels.
+	 * Convert current and historical gateway identifiers into customer-safe labels.
 	 */
 	function dtb_public_payment_method_label( string $value ): string {
 		$raw = trim( wp_strip_all_tags( $value ) );
@@ -80,6 +80,8 @@ if ( ! function_exists( 'dtb_public_payment_method_label' ) ) {
 
 		$normalized = strtolower( trim( $raw ) );
 		$known      = [
+			'woocommerce_payments' => 'Secure Card Payment',
+			'woo_native_woopayments' => 'Secure Card Payment',
 			'woo_native'           => 'Secure Card Payment',
 			'stripe'               => 'Secure Card Payment',
 			'stripe_cc'            => 'Secure Card Payment',
@@ -88,6 +90,9 @@ if ( ! function_exists( 'dtb_public_payment_method_label' ) ) {
 			'stripe_googlepay'     => 'Google Pay',
 			'stripe_link_checkout' => 'Link',
 		];
+		if ( str_starts_with( $normalized, 'woocommerce_payments_' ) ) {
+			return 'Secure Card Payment';
+		}
 
 		return $known[ $normalized ] ?? $raw;
 	}
@@ -112,6 +117,8 @@ if ( ! function_exists( 'dtb_public_replace_internal_tokens' ) ) {
 			'dtb_veeqo_rates:repair_standard',
 			'dtb_veeqo_rates_repair_standard',
 			'woo_native',
+			'woo_native_woopayments',
+			'woocommerce_payments',
 			'stripe',
 			'stripe_cc',
 			'stripe_upm',

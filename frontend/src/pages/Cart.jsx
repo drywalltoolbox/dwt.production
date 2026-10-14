@@ -7,14 +7,12 @@ import { ShoppingBag, Trash2, Plus, Minus, ArrowRight, ArrowLeft, Lock, Shopping
 
 import SEOHead from '../components/shared/SEOHead';
 import BackButton from '../components/shared/BackButton';
-import ExpressCheckoutMethods from '../components/checkout/ExpressCheckoutMethods.jsx';
 import { Container } from '../components/layout';
 import { useCart } from '../context/CartContext';
 import { useAuthContext } from '../auth/AuthContext.js';
 import { getWooCheckoutUrl } from '../utils/checkoutUrl.js';
 import { beginCheckoutHandoff } from '../utils/checkoutHandoff.js';
 import { useEditableComponent } from '../designer/useEditableComponent.js';
-import useCheckoutReadiness from '../hooks/useCheckoutReadiness.js';
 import '../styles/cart-page.css';
 
 function parseStoreMoney(value, minorUnit) {
@@ -35,7 +33,6 @@ export default function Cart() {
   const { isAuthenticated, ensureNativeCheckoutReady } = useAuthContext();
   const [checkoutPending, setCheckoutPending] = useState(false);
   const [checkoutNotice, setCheckoutNotice] = useState('');
-  const checkoutReadiness = useCheckoutReadiness();
 
   const itemsList = useEditableComponent('cart', 'cart-items-list');
   const orderSummary = useEditableComponent('cart', 'order-summary');
@@ -167,10 +164,6 @@ export default function Cart() {
 
             <a {...checkoutButton.rootProps} href={getWooCheckoutUrl()} onClick={handleCheckout} aria-disabled={checkoutDisabled ? 'true' : undefined} aria-busy={checkoutPending ? 'true' : undefined} style={{ width: checkoutWidth }} className="dtb-cart-sheet__checkout"><Lock size={14} aria-hidden="true" strokeWidth={2.5} />{checkoutPending ? 'Preparing checkout…' : isMutating ? 'Updating cart…' : checkoutNotice ? 'Confirm refreshed cart and checkout' : 'Continue to secure checkout'}<ArrowRight size={14} aria-hidden="true" strokeWidth={2.5} /></a>
 
-            <ExpressCheckoutMethods
-              paymentMethods={checkoutReadiness.paymentMethods}
-              className="dtb-cart-sheet__express-checkout"
-            />
           </div>
         </div>
       </Container>

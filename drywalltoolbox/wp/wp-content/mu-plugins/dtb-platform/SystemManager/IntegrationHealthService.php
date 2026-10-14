@@ -67,9 +67,9 @@ function dtb_integration_health_get(): array {
 			'version' => defined( 'WC_VERSION' ) ? WC_VERSION : 'n/a',
 		],
 		[
-			'name'    => 'Stripe',
-			'ok'      => class_exists( 'WC_Stripe' ) || class_exists( 'WC_Stripe_Payment_Gateway' ),
-			'version' => defined( 'WC_STRIPE_VERSION' ) ? WC_STRIPE_VERSION : 'n/a',
+			'name'    => 'WooPayments',
+			'ok'      => class_exists( 'WC_Payments' ),
+			'version' => defined( 'WCPAY_VERSION_NUMBER' ) ? WCPAY_VERSION_NUMBER : 'n/a',
 		],
 		[
 			'name'    => 'ShipStation',

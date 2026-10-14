@@ -96,12 +96,12 @@ ErrorDocument 511 /errors/511.html
 
   # Canonical host. Redirect only recognized legacy hosts; never reflect an
   # arbitrary Host header into Location. This keeps storefront, Woo session,
-  # DTB auth, checkout, and Stripe return URLs on one origin.
+  # DTB auth, checkout, and payment return URLs on one origin.
   RewriteCond %{HTTP_HOST} ^www\.drywalltoolbox\.com$ [NC]
   RewriteRule ^ https://drywalltoolbox.com%{REQUEST_URI} [R=301,L,NE]
 
-  # Apple Pay / official WooCommerce Stripe gateway domain association.
-  # The official Stripe extension can create the required association file. If
+  # Apple Pay domain association used by WooPayments.
+  # WooPayments can create the required association file. If
   # WordPress writes it below /wp because core lives in that subdirectory, expose
   # the non-empty generated copy at the public domain-root URL Apple verifies.
   RewriteCond %{DOCUMENT_ROOT}/.well-known/apple-developer-merchantid-domain-association -s
@@ -137,8 +137,7 @@ ErrorDocument 511 /errors/511.html
   RewriteRule ^sitemap\.xml$ wp/index.php?dtb_sitemap=index [QSA,L]
   RewriteRule ^sitemaps/([a-z0-9-]+)-([1-9][0-9]*)\.xml$ wp/index.php?dtb_sitemap=$1&dtb_sitemap_page=$2 [QSA,L]
 
-  # WooCommerce/official Stripe callbacks. The official Stripe extension uses
-  # WooCommerce's wc-api callback space (for example ?wc-api=wc_stripe).
+  # WooCommerce payment-provider callbacks can use the wc-api callback space.
   RewriteCond %{QUERY_STRING} (^|&)wc-api= [NC]
   RewriteRule ^(?:index\.php)?$ wp/index.php [QSA,L]
   RewriteRule ^wc-api/?$ wp/index.php [QSA,L]
@@ -158,11 +157,8 @@ ErrorDocument 511 /errors/511.html
   # WooCommerce order-received/thank-you endpoints must also remain in WordPress.
   RewriteRule ^checkout/order-received/([0-9]+)/?$ wp/index.php?pagename=checkout&order-received=$1 [QSA,L]
 
-  # Redirect-capable Payment Plugins gateways can return to WooCommerce's
-  # plain checkout-page URL at the domain root. Route that narrowly identified
-  # order return into WordPress before the React homepage rule so the gateway
-  # can verify the PaymentIntent and complete the native order lifecycle.
-  RewriteCond %{QUERY_STRING} (^|&)_stripe_payment_method=stripe_[^&]+(&|$) [NC]
+  # Redirect-capable provider returns must reach WooCommerce before the React
+  # homepage rule so the native order lifecycle can verify and finalize them.
   RewriteCond %{QUERY_STRING} (^|&)order_id=[0-9]+(&|$) [NC]
   RewriteCond %{QUERY_STRING} (^|&)key=wc_order_[^&]+(&|$) [NC]
   RewriteCond %{QUERY_STRING} (^|&)payment_intent=pi_[^&]+(&|$) [NC]
@@ -188,7 +184,7 @@ ErrorDocument 511 /errors/511.html
   # Prevent SiteGround/nginx and browser caching on admin/auth and
   # customer/session-owned surfaces.
   <IfModule mod_headers.c>
-    <If "%{REQUEST_URI} =~ m#^/(?:wp-admin|wp-login\.php|wp-json|dtb|wp-cron\.php|xmlrpc\.php|cart|checkout|order-tracking|account|my-account|dashboard|orders|addresses|rewards|login|register|forgot-password|lost-password|reset-password|logout|wc-api)(?:/|$)#i || %{REQUEST_URI} =~ m#/checkout/order-pay/#i || %{QUERY_STRING} =~ m#(^|&)(?:rest_route=|pay_for_order=true|order-pay=[0-9]+|order-received=[0-9]+|wc-api=|_stripe_payment_method=stripe_)#i || %{HTTP_COOKIE} =~ m#(?:^|;\s*)(?:wordpress_logged_in_|wordpress_sec_|wordpress_test_cookie|wp-settings-|woocommerce_cart_hash|woocommerce_items_in_cart|wp_woocommerce_session_|dtb_auth)#i">
+    <If "%{REQUEST_URI} =~ m#^/(?:wp-admin|wp-login\.php|wp-json|dtb|wp-cron\.php|xmlrpc\.php|cart|checkout|order-tracking|account|my-account|dashboard|orders|addresses|rewards|login|register|forgot-password|lost-password|reset-password|logout|wc-api)(?:/|$)#i || %{REQUEST_URI} =~ m#/checkout/order-pay/#i || %{QUERY_STRING} =~ m#(^|&)(?:rest_route=|pay_for_order=true|order-pay=[0-9]+|order-received=[0-9]+|wc-api=|order_id=[0-9]+|payment_intent=|key=wc_order_)#i || %{HTTP_COOKIE} =~ m#(?:^|;\s*)(?:wordpress_logged_in_|wordpress_sec_|wordpress_test_cookie|wp-settings-|woocommerce_cart_hash|woocommerce_items_in_cart|wp_woocommerce_session_|dtb_auth)#i">
       Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0, private"
       Header always set Pragma "no-cache"
       Header always set Expires "0"
@@ -243,7 +239,8 @@ ErrorDocument 511 /errors/511.html
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set X-Permitted-Cross-Domain-Policies "none"
-  # Delegate Payment Request only to the official Stripe/Google Pay frame chain.
+  # Keep processor-hosted payment SDK origins and Google Pay allowed here.
+  # WooPayments currently loads its secure payment surface from these origins.
   # Keep this synchronized with dtb_frontend_security_permissions_policy().
   Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), payment=(self \"https://js.stripe.com\" \"https://hooks.stripe.com\" \"https://b.stripecdn.com\" \"https://pay.google.com\"), usb=(), browsing-topics=()"
   Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
@@ -284,7 +281,7 @@ ErrorDocument 511 /errors/511.html
     Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
 
-  # Official Stripe/Apple Pay domain association should be revalidated during gateway/domain setup.
+  # Apple Pay domain association should be revalidated during WooPayments/domain setup.
   <FilesMatch "^apple-developer-merchantid-domain-association$">
     Header set Cache-Control "no-cache, no-store, must-revalidate"
     Header set Pragma "no-cache"

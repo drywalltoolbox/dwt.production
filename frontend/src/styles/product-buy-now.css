@@ -9,10 +9,6 @@
   box-shadow: none;
 }
 
-.dtb-product-buy-now .dtb-express-checkout-methods {
-  gap: 0.58rem;
-}
-
 .dtb-product-buy-now__button {
   position: relative;
   isolation: isolate;

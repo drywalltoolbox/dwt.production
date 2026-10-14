@@ -2,11 +2,17 @@ name: WooPayments backend change validation
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
     branches: [main]
     paths:
       - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/**'
       - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-order-platform/**'
       - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-integrations/OperationalPipeline/**'
+      - 'frontend/tests/woopaymentsCheckoutContract.test.mjs'
+      - 'frontend/src/api/checkoutCapabilities.js'
+      - 'scripts/launch-readiness/tests/native_checkout_mount_contract.php'
+      - 'scripts/launch-readiness/tests/test_routing_contract.py'
+      - 'docs/checkout/**'
       - '.github/workflows/woopayments-backend-validation.yml'
 
 permissions:
@@ -18,15 +24,26 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           persist-credentials: false
-      - name: Lint WooPayments integration and order boundary
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Lint changed PHP files
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           set -euo pipefail
-          for path in \
-            drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/bootstrap.php \
-            drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/Domain/PaymentState.php \
-            drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/Payment/WooPaymentsNativeCheckout.php \
-            drywalltoolbox/wp/wp-content/mu-plugins/dtb-order-platform/Infrastructure/OrderWriteBoundary.php \
-            drywalltoolbox/wp/wp-content/mu-plugins/dtb-integrations/OperationalPipeline/OrderPipelineHookOverrides.php; do
+          while IFS= read -r path; do
+            [[ -f "$path" ]] || continue
             php -l "$path"
-          done
+          done < <(git diff --name-only --diff-filter=ACMRT "$BASE_SHA"...HEAD | grep -E '\.php$' || true)
+      - name: Run WooPayments checkout contract
+        run: node --test frontend/tests/woopaymentsCheckoutContract.test.mjs
+      - name: Run native checkout routing contract
+        run: python3 scripts/launch-readiness/tests/test_routing_contract.py
+      - name: Run native checkout mount behavior
+        run: php scripts/launch-readiness/tests/native_checkout_mount_contract.php

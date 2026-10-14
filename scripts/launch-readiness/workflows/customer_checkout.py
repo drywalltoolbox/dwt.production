@@ -94,7 +94,7 @@ def run(config: "Config", browser: "Browser") -> CustomerCheckoutRun:
         common.proceed_to_checkout(page, config, registered_customer=True)
         common.fill_billing_details(page, email, "Registered", "Contractor")
         common.select_a_shipping_method(page)
-        common.pay_with_stripe_test_card(page, config)
+        common.pay_with_woopayments_test_card(page, config)
         return Status.PASS, "Checkout, shipping, and payment details entered."
 
     tui.run_step(stage, "Checkout, shipping, and payment", step_checkout)

@@ -2,6 +2,12 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Current checkout uses WooPayments. These readers also preserve immutable
+ * pre-migration order contracts and gateway evidence; never use historical
+ * identifiers here to register or execute a payment integration.
+ */
+
 /** @return array<int,string> */
 function dtb_checkout_handoff_supported_contracts(): array {
 	return [
@@ -11,8 +17,9 @@ function dtb_checkout_handoff_supported_contracts(): array {
 	];
 }
 
+
 /** @return array<int,string> */
-function dtb_checkout_handoff_supported_stripe_providers(): array {
+function dtb_checkout_handoff_supported_historical_providers(): array {
 	return [
 		'payment_plugins_stripe',
 		'woocommerce_stripe', // Historical paid-order evidence remains valid.
@@ -45,18 +52,12 @@ function dtb_checkout_handoff_has_gateway_reference( WC_Order $order ): bool {
 }
 
 /**
- * Verify provider evidence written only after a WooCommerce paid lifecycle hook.
- * Raw gateway-ID prefixes are intentionally insufficient because unrelated Stripe
- * extensions may register overlapping IDs.
+ * Verify historical provider evidence written only after a WooCommerce paid
+ * lifecycle hook. Raw gateway IDs alone are not proof of a captured payment.
  */
-function dtb_checkout_handoff_uses_verified_stripe_provider( WC_Order $order ): bool {
+function dtb_checkout_handoff_uses_verified_historical_provider( WC_Order $order ): bool {
 	$provider = sanitize_key( (string) $order->get_meta( '_dtb_payment_provider', true ) );
-	return in_array( $provider, dtb_checkout_handoff_supported_stripe_providers(), true );
-}
-
-/** Historical compatibility name retained for integrations outside this module. */
-function dtb_checkout_handoff_uses_official_stripe_gateway( WC_Order $order ): bool {
-	return dtb_checkout_handoff_uses_verified_stripe_provider( $order );
+	return in_array( $provider, dtb_checkout_handoff_supported_historical_providers(), true );
 }
 
 function dtb_checkout_handoff_has_provider_verified_payment( WC_Order $order ): bool {
@@ -65,7 +66,7 @@ function dtb_checkout_handoff_has_provider_verified_payment( WC_Order $order ): 
 		? ( 'woopayments' === $provider && 'woocommerce_payments' === substr( sanitize_key( (string) $order->get_payment_method() ), 0, 20 ) && in_array( sanitize_key( (string) $order->get_meta( '_wcpay_mode', true ) ), [ 'test', 'prod' ], true )
 			&& 'succeeded' === sanitize_key( (string) $order->get_meta( '_intention_status', true ) )
 			&& '' !== trim( (string) $order->get_meta( '_intent_id', true ) ) )
-		: dtb_checkout_handoff_uses_verified_stripe_provider( $order );
+		: dtb_checkout_handoff_uses_verified_historical_provider( $order );
 	return dtb_checkout_handoff_is_order( $order )
 		&& $verified_provider
 		&& null !== $order->get_date_paid()

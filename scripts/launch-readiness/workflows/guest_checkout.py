@@ -95,8 +95,8 @@ def run(config: "Config", browser: "Browser") -> GuestCheckoutRun:
         return GuestCheckoutRun(stage=stage, order=None, email=email)
 
     def step_payment():
-        common.pay_with_stripe_test_card(page, config)
-        return Status.PASS, "Entered Stripe test card in the Payment Element."
+        common.pay_with_woopayments_test_card(page, config)
+        return Status.PASS, "Entered WooPayments test card in the Payment Element."
 
     tui.run_step(stage, "Enter payment details", step_payment)
     if stage.status is Status.FAIL:

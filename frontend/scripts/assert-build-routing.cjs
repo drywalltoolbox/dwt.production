@@ -98,27 +98,27 @@ if (appEnv === 'production') {
   }
 }
 
-const stripeReturnCondition = 'RewriteCond %{QUERY_STRING} (^|&)_stripe_payment_method=stripe_[^&]+(&|$) [NC]';
-const stripeReturnTarget = appEnv === 'staging'
+const providerReturnCondition = 'RewriteCond %{QUERY_STRING} (^|&)payment_intent=pi_[^&]+(&|$) [NC]';
+const providerReturnTarget = appEnv === 'staging'
   ? 'RewriteRule ^$ /wp/index.php [QSA,L]'
   : 'RewriteRule ^$ wp/index.php [QSA,L]';
 const homepageRule = 'RewriteRule ^$ index.html [L]';
-const stripeReturnPosition = emitted.indexOf(stripeReturnCondition);
-const stripeReturnTargetPosition = emitted.indexOf(stripeReturnTarget, stripeReturnPosition);
+const providerReturnPosition = emitted.indexOf(providerReturnCondition);
+const providerReturnTargetPosition = emitted.indexOf(providerReturnTarget, providerReturnPosition);
 const homepagePosition = emitted.indexOf(homepageRule);
 
 if (
-  stripeReturnPosition < 0 ||
-  stripeReturnTargetPosition < stripeReturnPosition ||
+  providerReturnPosition < 0 ||
+  providerReturnTargetPosition < providerReturnPosition ||
   homepagePosition < 0 ||
-  stripeReturnTargetPosition > homepagePosition
+  providerReturnTargetPosition > homepagePosition
 ) {
-  throw new Error('Stripe query-string payment returns must reach WordPress before the SPA homepage rule.');
+  throw new Error('WooPayments intent returns must reach WordPress before the SPA homepage rule.');
 }
 
 const orderReceivedCondition = 'RewriteCond %{QUERY_STRING} (^|&)order-received=[0-9]+(&|$) [NC]';
 const orderReceivedPosition = emitted.indexOf(orderReceivedCondition);
-const orderReceivedTargetPosition = emitted.indexOf(stripeReturnTarget, orderReceivedPosition);
+const orderReceivedTargetPosition = emitted.indexOf(providerReturnTarget, orderReceivedPosition);
 
 if (
   orderReceivedPosition < 0 ||

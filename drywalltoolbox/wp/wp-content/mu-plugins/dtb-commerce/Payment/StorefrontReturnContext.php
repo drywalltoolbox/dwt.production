@@ -64,8 +64,7 @@ final class DTB_StorefrontReturnContext {
 
 	private static function is_dtb_checkout_order( WC_Order $order ): bool {
 		$contract = (string) $order->get_meta( '_dtb_checkout_contract_version', true );
-		return 'woo_native_stripe' === (string) $order->get_meta( '_dtb_checkout_gateway', true )
-			&& in_array( $contract, [ 'payment-plugins-stripe-v1', 'woo-stripe-v1' ], true );
+		return function_exists( 'dtb_checkout_handoff_is_order' ) && dtb_checkout_handoff_is_order( $order );
 	}
 }
 

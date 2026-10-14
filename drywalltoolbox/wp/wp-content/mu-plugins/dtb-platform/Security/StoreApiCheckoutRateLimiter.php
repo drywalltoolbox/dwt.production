@@ -2,8 +2,8 @@
 /**
  * Rate limit WooCommerce Store API cart/checkout mutations.
  *
- * Provider-specific bypasses are intentionally prohibited. Payment Plugins for
- * Stripe owns its wallet/payment request lifecycle and must use its own verified
+ * Provider-specific bypasses are intentionally prohibited. WooPayments owns its
+ * wallet/payment request lifecycle and must use its own verified
  * endpoints and nonces. Ordinary WooCommerce Store API writes remain subject to
  * this generous per-fingerprint containment boundary.
  *
@@ -33,7 +33,7 @@ function dtb_store_api_checkout_rate_limit( $result, WP_REST_Server $server, WP_
 
 	/**
 	 * Trusted integrations may opt out only through an explicitly reviewed filter.
-	 * No browser-supplied Stripe/wallet header is sufficient for a bypass.
+	 * No browser-supplied provider/wallet header is sufficient for a bypass.
 	 *
 	 * @param bool            $bypass  Whether to skip rate limiting.
 	 * @param WP_REST_Request $request Current request.

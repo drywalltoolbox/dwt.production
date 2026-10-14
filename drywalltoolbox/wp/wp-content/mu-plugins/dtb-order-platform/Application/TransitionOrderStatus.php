@@ -20,7 +20,7 @@ function dtb_order_on_status_changed( int $order_id, string $from_status, string
 
 	if ( $order instanceof WC_Order && function_exists( 'dtb_checkout_handoff_is_unpaid_order' ) && dtb_checkout_handoff_is_unpaid_order( $order ) ) {
 		// Never project a transient processing/completed status as paid. The official
-		// Stripe lifecycle must first provide a captured payment/date-paid state.
+		// The payment provider must first provide captured payment/date-paid state.
 		if ( in_array( $to_status, [ 'processing', 'completed' ], true ) ) {
 			return;
 		}

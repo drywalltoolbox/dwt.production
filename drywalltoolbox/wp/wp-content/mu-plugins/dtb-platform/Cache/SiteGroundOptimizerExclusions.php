@@ -12,7 +12,7 @@
  * file independent of whether the page itself is cached, and they do not consult
  * DONOTCACHEPAGE. Left unexcluded, they can silently rewrite or bundle the checkout
  * presentation handles (`dtb-checkout`, `dtb-checkout-desktop`, `dtb-checkout-order-summary`)
- * or WooCommerce/Payment Plugins for Stripe's own checkout scripts into a combined file
+ * or WooCommerce/WooPayments checkout scripts into a combined file
  * that only regenerates on SG Optimizer's own schedule/purge — reproducing the exact
  * "looks like the fix failed" symptom this file exists to prevent permanently, without
  * anyone needing to remember to purge Site Tools cache after every deploy.

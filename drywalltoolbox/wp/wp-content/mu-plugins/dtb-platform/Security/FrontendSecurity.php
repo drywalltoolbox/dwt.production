@@ -93,7 +93,7 @@ function dtb_frontend_security_headers(): void {
  * Browser capabilities allowed to the storefront and its trusted payment UI.
  *
  * Payment remains denied to every origin except this site and the exact
- * provider origins required by the official WooCommerce Stripe gateway.
+ * provider origins used by the configured WooPayments runtime and eligible wallets.
  */
 function dtb_frontend_security_permissions_policy(): string {
 	return 'geolocation=(), microphone=(), camera=(), payment=(self "https://js.stripe.com" "https://hooks.stripe.com" "https://b.stripecdn.com" "https://pay.google.com"), usb=(), browsing-topics=()';
