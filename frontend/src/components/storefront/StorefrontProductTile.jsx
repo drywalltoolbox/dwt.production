@@ -139,7 +139,6 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
           <button type="button" className="dtb-search-result__image" onClick={handleImageClick} onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} aria-label={`Quick view ${name}`}>
             <ProductCardImage product={displayProduct} src={image} srcSet={imageSrcset} sizes="(max-width: 767px) 84px, 108px" alt="" className="dtb-search-result__img" padding="0" fit="contain" preferThumbnail eager={false} />
           </button>
-          <span className={`dtb-search-result__stock${outOfStock ? ' is-out' : ''}`}>{outOfStock ? 'Out of stock' : 'In stock'}</span>
         </div>
         <div className="dtb-search-result__details">
           {displayProduct.brand ? <span className="dtb-search-result__brand">{displayProduct.brand}</span> : null}
