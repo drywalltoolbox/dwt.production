@@ -699,7 +699,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
 
   return (
     <>
-      <header className="site-header site-header--no-ticker" role="banner">
+      <header className="site-header site-header--no-ticker" data-search-open={searchOverlayOpen ? "true" : "false"} role="banner">
         <div className="dtb-header-utility-bar">
           <span className="dtb-header-utility-bar__announcement"><Truck size={19} strokeWidth={2} aria-hidden="true" />Free shipping on orders $75+</span>
           <div className="dtb-header-utility-bar__links">
