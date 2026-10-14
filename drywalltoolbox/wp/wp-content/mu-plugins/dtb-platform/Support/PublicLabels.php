@@ -3,7 +3,7 @@
  * Customer-facing label normalization.
  *
  * Prevents backend implementation identifiers such as dtb_veeqo_rates:standard,
- * stripe_cc, stripe_upm, or woo_native from appearing in customer emails, order
+ * retired gateway IDs, or woo_native from appearing in customer emails, order
  * totals, and public order views.
  *
  * @package drywall-toolbox

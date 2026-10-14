@@ -24,7 +24,8 @@ Test-mode WooPayments methods are hidden unless the backend explicitly identifie
 - `WP_ENVIRONMENT_TYPE` is `staging`;
 - `DTB_CHECKOUT_ENVIRONMENT` is `staging`;
 - `DTB_WOOPAYMENTS_TEST_CHECKOUT_ENABLED` is boolean `true`;
-- `DTB_PRODUCTION_ORIGIN` is configured, and staging's `home_url()` host differs from its host.
+- `DTB_PRODUCTION_ORIGIN` and `DTB_PRODUCTION_DB_NAME` are configured in staging-only configuration;
+- staging's `home_url()` host and `DB_NAME` both differ from their production counterparts.
 
 The deployment operator may set these only after confirming separate WordPress files/configuration, database, hostname, cookies, WooPayments connection, and downstream integrations. A `/staging/` folder or test-mode toggle on the production installation is not isolation. No WordPress admin authentication is required for ordinary customer checkout. The public capabilities endpoint is advisory and contains no secrets.
 

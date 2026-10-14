@@ -21,9 +21,11 @@ DTB_CHECKOUT_ENVIRONMENT = staging
 DTB_WOOPAYMENTS_TEST_CHECKOUT_ENABLED = true (boolean)
 DTB_PRODUCTION_ORIGIN = https://<production-host>
 staging home_url host != production host
+DTB_PRODUCTION_DB_NAME = <production-database-name>
+staging DB_NAME != DTB_PRODUCTION_DB_NAME
 ```
 
-Set the flag only after verifying that the staging host/database and provider connection are isolated. The repository cannot provision those resources or prove the database separation; this is a deployment contract, not a URL heuristic. Customers do not need a WordPress admin session or REST authorization to check out.
+Set these staging-only values only after verifying that the staging host/database and provider connection are isolated. The runtime checks that the staging host and database name differ from their production counterparts. Customers do not need a WordPress admin session or REST authorization to check out.
 
 ## Cutover gates
 

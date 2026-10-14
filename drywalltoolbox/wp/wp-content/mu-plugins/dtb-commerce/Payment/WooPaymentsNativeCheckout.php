@@ -59,7 +59,7 @@ final class DTB_WooPaymentsNativeCheckout {
 	/**
 	 * Test credentials must never be presented to customers on a shared/live
 	 * host. Staging guests are enabled only by explicit environment config and
-	 * distinct host verification; admin login alone does not change this policy.
+	 * distinct host and database verification; admin login alone does not change this policy.
 	 */
 	public static function filter_storefront_gateways( $gateways ): array {
 		$gateways = is_array( $gateways ) ? $gateways : [];
@@ -85,12 +85,15 @@ final class DTB_WooPaymentsNativeCheckout {
 		if ( ! is_ssl() || ! defined( 'WP_ENVIRONMENT_TYPE' ) || 'staging' !== WP_ENVIRONMENT_TYPE
 			|| ! defined( 'DTB_CHECKOUT_ENVIRONMENT' ) || 'staging' !== DTB_CHECKOUT_ENVIRONMENT
 			|| ! defined( 'DTB_WOOPAYMENTS_TEST_CHECKOUT_ENABLED' ) || true !== DTB_WOOPAYMENTS_TEST_CHECKOUT_ENABLED
-			|| ! defined( 'DTB_PRODUCTION_ORIGIN' ) ) {
+			|| ! defined( 'DTB_PRODUCTION_ORIGIN' ) || ! defined( 'DTB_PRODUCTION_DB_NAME' ) || ! defined( 'DB_NAME' ) ) {
 			return false;
 		}
 		$stage = strtolower( (string) wp_parse_url( home_url( '/' ), PHP_URL_HOST ) );
-		$prod = strtolower( (string) wp_parse_url( DTB_PRODUCTION_ORIGIN, PHP_URL_HOST ) );
-		return '' !== $stage && '' !== $prod && $stage !== $prod;
+		$prod_host = strtolower( (string) wp_parse_url( DTB_PRODUCTION_ORIGIN, PHP_URL_HOST ) );
+		$stage_db  = strtolower( trim( (string) DB_NAME ) );
+		$prod_db   = strtolower( trim( (string) DTB_PRODUCTION_DB_NAME ) );
+		return '' !== $stage && '' !== $prod_host && $stage !== $prod_host
+			&& '' !== $stage_db && '' !== $prod_db && $stage_db !== $prod_db;
 	}
 
 	private static function is_test_mode(): bool {

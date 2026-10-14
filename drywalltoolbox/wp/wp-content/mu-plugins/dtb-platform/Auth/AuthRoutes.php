@@ -869,76 +869,15 @@ function dtb_auth_register( WP_REST_Request $request ): WP_REST_Response {
 	$jwt  = dtb_generate_jwt( $user );
 	dtb_set_auth_cookie( $jwt, 7 * DAY_IN_SECONDS );
 
-	// ── Send professional welcome email ──────────────────────────────────────
-	$site_name    = get_bloginfo( 'name' );
-	$site_name    = ( $site_name && '' !== $site_name ) ? $site_name : 'Drywall Toolbox';
-	$dashboard_url = home_url( '/dashboard' );
-	$shop_url      = home_url( '/shop' );
-	$support_url   = home_url( '/contact' );
-
-	$subject = sprintf( '[%s] Welcome! Your Account is Ready', $site_name );
-
-	// Plain text version for email clients that don't support HTML
-	$message  = sprintf( "Hi %s,\r\n\r\n", $display_name );
-	$message .= "Welcome to Drywall Toolbox! Your account has been created successfully.\r\n\r\n";
-	$message .= "You're already logged in and ready to start shopping. Visit your account dashboard to:\r\n\r\n";
-	$message .= "• View and track your orders\r\n";
-	$message .= "• Manage your addresses and payment methods\r\n";
-	$message .= "• Update your account settings\r\n";
-	$message .= "• Access exclusive rewards and offers\r\n\r\n";
-	$message .= "Get Started:\r\n";
-	$message .= "Dashboard: " . $dashboard_url . "\r\n";
-	$message .= "Shop: " . $shop_url . "\r\n\r\n";
-	$message .= "If you ever need to reset your password, you can do so from the login page.\r\n\r\n";
-	$message .= "Need help? Contact us: " . $support_url . "\r\n\r\n";
-	$message .= '— The ' . $site_name . ' Team';
-
-	// Build branded HTML email if template renderer is available
-	$html_message = '';
-	if ( function_exists( 'dtb_render_branded_email' ) ) {
-		$html_message = dtb_render_branded_email(
-				[
-					'title'       => 'Welcome to ' . $site_name,
-					'preheader'   => 'Your account has been created successfully.',
-					'greeting'    => sprintf( 'Hi %s,', esc_html( $display_name ) ),
-				'intro'       => 'Welcome to Drywall Toolbox! Your account has been created successfully and you\'re already logged in. We\'re excited to have you on board.',
-				'body_html'   => '<p style="margin:0 0 12px;">Visit your account dashboard to:</p>'
-					. '<ul style="margin:0 0 20px;padding-left:20px;">'
-					. '<li style="margin:0 0 8px;">View and track your orders</li>'
-					. '<li style="margin:0 0 8px;">Manage your addresses and payment methods</li>'
-					. '<li style="margin:0 0 8px;">Update your account settings</li>'
-					. '<li style="margin:0;">Access exclusive rewards and offers</li>'
-					. '</ul>',
-				'details'     => [
-					[ 'label' => 'Your Dashboard', 'value' => $dashboard_url ],
-					[ 'label' => 'Shop Now', 'value' => $shop_url ],
-					[ 'label' => 'Need Help?', 'value' => $support_url ],
-				],
-				'cta_url'     => $dashboard_url,
-					'cta_label'   => 'Visit Your Dashboard',
-					'signoff'     => 'The ' . $site_name . ' Team',
-					'footer_note' => 'If you ever need to reset your password, you can do so from the login page.',
-				]
-			);
-	}
-
-	if ( function_exists( 'dtb_send_email' ) ) {
-		dtb_send_email(
-			[
-				'to'           => (string) $user->user_email,
-				'subject'      => $subject,
-				'message'      => '' !== $html_message ? $html_message : $message,
-				'content_type' => '' !== $html_message ? 'text/html' : 'text/plain',
-				'is_html'      => '' !== $html_message,
-				'alt_body'     => '' !== $html_message ? $message : '',
-				'context'      => [
-					'module' => 'dtb-platform-auth',
-					'event'  => 'new-user-welcome',
-				],
-			]
-		);
+	// One notification owner: the WooCommerce customer_new_account email.
+	// wp_insert_user() does not emit woocommerce_created_customer_notification.
+	// Password was supplied by the customer: do not send password-setup credentials.
+	if ( function_exists( 'WC' ) && WC() && class_exists( 'WC_Emails' ) ) {
+		\WC_Emails::instance(); // Registers WooCommerce email listeners.
+		do_action( 'woocommerce_created_customer_notification', $user_id, [], false );
 	} else {
-		wp_mail( $user->user_email, $subject, $message );
+		// Avoid a second legacy welcome template. Registration still succeeds.
+		error_log( '[DTB] WooCommerce account email unavailable after registration for user ' . $user_id );
 	}
 
 	$response = new WP_REST_Response( [

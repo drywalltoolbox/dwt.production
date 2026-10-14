@@ -21,7 +21,7 @@ const forbiddenKeys = new Set([
 const forbiddenArtifactPatterns = [
   ['WooCommerce consumer key', /\bck_[A-Za-z0-9]{24,}\b/],
   ['WooCommerce consumer secret', /\bcs_[A-Za-z0-9]{24,}\b/],
-  ['Stripe secret key', /\bsk_(?:live|test)_[A-Za-z0-9]{16,}\b/],
+  ['payment processor secret key', /\bsk_(?:live|test)_[A-Za-z0-9]{16,}\b/],
   ['Private key material', /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/],
 ];
 
