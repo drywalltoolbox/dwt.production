@@ -9,9 +9,9 @@
 		width: 100%;
 		max-width: var(--dtb-desktop-checkout-width);
 		margin-inline: auto;
-		padding: clamp(24px, 3vw, 40px) clamp(24px, 4vw, 56px) 72px;
+		padding: 8px clamp(24px, 4vw, 56px) 72px;
 	}
-	.dtb-checkout__utility { max-width: var(--dtb-desktop-checkout-width); padding: 18px clamp(24px, 4vw, 56px) 0; }
+	.dtb-checkout__intro { padding: 22px 0 20px; }
 	#primary > .woocommerce,
 	#primary .wp-block-woocommerce-checkout,
 	#primary .wc-block-checkout,
@@ -64,7 +64,23 @@
 	body.woocommerce-checkout .wc-block-components-checkout-step__title { font-size: 21px; font-weight: 700; letter-spacing: -.025em; }
 	body.woocommerce-checkout .wc-block-components-express-payment { margin: 0; padding: 0 0 28px; background: transparent; border: 0; border-bottom: 1px solid var(--dtb-checkout-border); border-radius: 0; box-shadow: none; }
 	body.woocommerce-checkout .wc-block-components-sidebar-layout > .wc-block-components-sidebar,
-	body.woocommerce-checkout .wc-block-components-sidebar-layout > .wc-block-checkout__sidebar { position: sticky; top: 112px; align-self: start; overflow: visible; padding-left: clamp(28px, 3vw, 42px); border-left: 1px solid var(--dtb-checkout-border); }
+	body.woocommerce-checkout .wc-block-components-sidebar-layout > .wc-block-checkout__sidebar { position: sticky; top: 24px; align-self: start; overflow: visible; padding-left: clamp(28px, 3vw, 42px); border-left: 1px solid var(--dtb-checkout-border); }
+	/* Two quiet panels give the native block a consistent editorial hierarchy. */
+	body.woocommerce-checkout .wc-block-components-sidebar-layout > .wc-block-checkout__main {
+		padding: 14px clamp(24px, 3vw, 42px) 36px;
+		border: 1px solid var(--dtb-checkout-border);
+		border-radius: var(--dtb-checkout-radius-lg);
+		background: var(--dtb-checkout-surface);
+		box-shadow: var(--dtb-checkout-shadow-xs);
+	}
+	body.woocommerce-checkout .wc-block-components-sidebar-layout > .wc-block-checkout__sidebar {
+		padding: 14px clamp(20px, 1.6vw, 26px) 20px;
+		border: 1px solid var(--dtb-checkout-border);
+		border-radius: var(--dtb-checkout-radius-lg);
+		background: var(--dtb-checkout-surface);
+		box-shadow: var(--dtb-checkout-shadow-xs);
+	}
+	#primary .wp-block-woocommerce-checkout { background: transparent; border: 0; box-shadow: none; }
 	body.woocommerce-checkout .wc-block-checkout__sidebar > .wp-block-woocommerce-checkout-order-summary-block,
 	body.woocommerce-checkout .wc-block-checkout__sidebar .wc-block-components-checkout-order-summary { width: 100%; min-width: 0; max-width: none; }
 	.wp-block-woocommerce-checkout-order-summary-block { background: transparent; border: 0; border-radius: 0; box-shadow: none; overflow: visible; }
