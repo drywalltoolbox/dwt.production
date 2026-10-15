@@ -1,0 +1,28 @@
+name: DTB cache compatibility
+on:
+  pull_request:
+    paths:
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-platform/Cache/**'
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Infrastructure/CatalogCache.php'
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Services/CatalogFacetService.php'
+      - 'scripts/tests/cache-compatibility.php'
+      - '.github/workflows/cache-compatibility.yml'
+  workflow_dispatch:
+jobs:
+  php-cache-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: PHP syntax validation
+        run: |
+          for file in \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-platform/Cache/CacheKeyBuilder.php \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-platform/Cache/CacheInvalidationService.php \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-platform/Cache/CacheHeaders.php \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Services/CatalogFacetService.php \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Infrastructure/CatalogCache.php \
+            scripts/tests/cache-compatibility.php; do
+              php -l "$file"
+          done
+      - name: Cache behavior smoke tests
+        run: php scripts/tests/cache-compatibility.php
