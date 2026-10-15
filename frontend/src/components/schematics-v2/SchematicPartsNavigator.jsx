@@ -72,6 +72,7 @@ export default function SchematicPartsNavigator({ parts, pages, activePage, acti
   const onPointerDown = (event) => {
     if (event.target.closest('button')) return;
     startY.current = event.clientY;
+    event.currentTarget.setPointerCapture(event.pointerId);
   };
   const onPointerMove = (event) => {
     if (startY.current === null) return;
