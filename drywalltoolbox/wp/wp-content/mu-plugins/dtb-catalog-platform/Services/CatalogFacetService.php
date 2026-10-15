@@ -21,6 +21,7 @@ final class DTB_CatalogFacetService {
 
 	const CACHE_KEY = 'dtb_catalog_facets_v3';
 	const CACHE_TTL = 600; // 10 minutes
+	const CACHE_GENERATION_OPTION = 'dtb_catalog_facets_generation';
 
 	/**
 	 * Return cached facets or rebuild from WC.
@@ -42,20 +43,9 @@ final class DTB_CatalogFacetService {
 		return $facets;
 	}
 
-	/** Invalidate all facets cache variants. */
+	/** Invalidate all facet scopes in database and external object caches. */
 	public static function invalidate(): void {
-		global $wpdb;
-
-		delete_transient( self::CACHE_KEY );
-
-		$like = $wpdb->esc_like( '_transient_' . self::CACHE_KEY . '_' ) . '%';
-		$wpdb->query(
-			$wpdb->prepare(
-				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
-				$like,
-				$wpdb->esc_like( '_transient_timeout_' . self::CACHE_KEY . '_' ) . '%'
-			)
-		);
+		update_option( self::CACHE_GENERATION_OPTION, wp_generate_uuid4(), false );
 	}
 
 	// ── Private ────────────────────────────────────────────────────────────────
@@ -85,10 +75,10 @@ final class DTB_CatalogFacetService {
 	/** @param array<string,string> $scope */
 	private static function cache_key( array $scope ): string {
 		if ( empty( $scope ) ) {
-			return self::CACHE_KEY;
+			return self::CACHE_KEY . '_' . md5( (string) get_option( self::CACHE_GENERATION_OPTION, '1' ) );
 		}
 
-		return self::CACHE_KEY . '_' . md5( wp_json_encode( $scope ) ?: '' );
+		return self::CACHE_KEY . '_' . md5( (string) get_option( self::CACHE_GENERATION_OPTION, '1' ) . '|' . ( wp_json_encode( $scope ) ?: '' ) );
 	}
 
 	/**
