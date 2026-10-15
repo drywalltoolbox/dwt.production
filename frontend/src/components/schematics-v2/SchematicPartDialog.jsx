@@ -165,7 +165,7 @@ export default function SchematicPartDialog({ part, schematicContext, anchorRect
   return (
     <div
       ref={cardRef}
-      className="part-modal part-modal-detached"
+      className={`part-modal part-modal-detached${anchorRect ? '' : ' part-modal--centered'}`}
       role="dialog"
       aria-label={dialogLabel}
       onClick={stopDialogPointerPropagation}
@@ -173,8 +173,7 @@ export default function SchematicPartDialog({ part, schematicContext, anchorRect
       onPointerUp={stopDialogPointerPropagation}
       style={{
         position: 'absolute',
-        top: `${position.top}px`,
-        left: `${position.left}px`,
+        ...(anchorRect ? { top: `${position.top}px`, left: `${position.left}px` } : {}),
         zIndex: 1002,
         pointerEvents: 'auto',
       }}

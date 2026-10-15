@@ -46,7 +46,7 @@ function clampOffset(offset, scale, containerSize, boundsSize) {
   };
 }
 
-export default function DiagramViewer({ page, parts, schematicContext, onSelectPart, activePart, onCloseActivePart }) {
+export default function DiagramViewer({ page, parts, schematicContext, onSelectPart, activePart, onCloseActivePart, activePartRef, selectedFromList, partsTrigger }) {
   const containerRef = useRef(null);
   const wrapRef = useRef(null);
   const imgRef = useRef(null);
@@ -370,6 +370,7 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
               <HotspotLayer
                 hotspotDataset={hotspotDataset}
                 parts={parts}
+                activePartRef={activePartRef}
                 onSelectPart={(partRef, anchor) => {
                   if (Date.now() >= suppressHotspotUntil.current) {
                     setAnchorRect(anchor);
@@ -397,6 +398,8 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
         onReset={resetZoom}
       />
 
+      {partsTrigger}
+
       {activePart && (
         <SchematicPartDialog
           key={activePart.part_ref}
@@ -407,7 +410,7 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
             pageNumber: page?.page_number || '',
             pageLabel: page?.label || '',
           }}
-          anchorRect={anchorRect}
+          anchorRect={selectedFromList ? null : anchorRect}
           wrapRef={wrapRef}
           isMobile={isMobile}
           onClose={onCloseActivePart}

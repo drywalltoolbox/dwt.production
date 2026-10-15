@@ -13,6 +13,7 @@ import SchematicHeader from './SchematicHeader';
 import SchematicPageTabs from './SchematicPageTabs';
 import SchematicVariantPills, { sortVariants } from './SchematicVariantPills';
 import DiagramViewer from './DiagramViewer';
+import SchematicPartsNavigator from './SchematicPartsNavigator';
 
 export default function SchematicViewerPage({
   schematicId,
@@ -25,8 +26,11 @@ export default function SchematicViewerPage({
 }) {
   const { status, detail, error } = useSchematicDetail(schematicId);
   const [activePartRef, setActivePartRef] = useState(null);
+  const [selectedFromList, setSelectedFromList] = useState(false);
+  const [partsOpen, setPartsOpen] = useState(false);
 
   function handleSelectPart(partRef) {
+    setSelectedFromList(false);
     setActivePartRef(partRef);
   }
 
@@ -91,7 +95,19 @@ export default function SchematicViewerPage({
 
   function handleSelectPage(pageId) {
     const page = pages.find((p) => p.page_id === pageId);
-    if (page) onPageChange(page.page_number);
+    if (page) {
+      setActivePartRef(null);
+      setSelectedFromList(false);
+      setPartsOpen(false);
+      onPageChange(page.page_number);
+    }
+  }
+
+  function handleSelectFromList(partRef, pageNumber) {
+    setPartsOpen(false);
+    setSelectedFromList(true);
+    setActivePartRef(partRef);
+    if (pageNumber && pageNumber !== activePage?.page_number) onPageChange(pageNumber);
   }
 
   if (status === 'loading') {
@@ -153,20 +169,38 @@ export default function SchematicViewerPage({
             activePageId={activePage?.page_id}
             onSelectPage={handleSelectPage}
           />
-          <DiagramViewer
-            page={activePage}
-            parts={detail.parts}
-            schematicContext={{
-              id: detail.id,
-              title: detail.title,
-              brand: detail.brand?.name || detail.brand?.id || '',
-              category: detail.category?.name || detail.category?.id || '',
-              variant: variantNavigation.activeId || '',
-            }}
-            onSelectPart={handleSelectPart}
-            activePart={activePart}
-            onCloseActivePart={handleCloseActivePart}
-          />
+          <div className="dtb-schematic-workspace">
+            <DiagramViewer
+              page={activePage}
+              parts={detail.parts}
+              schematicContext={{
+                id: detail.id,
+                title: detail.title,
+                brand: detail.brand?.name || detail.brand?.id || '',
+                category: detail.category?.name || detail.category?.id || '',
+                variant: variantNavigation.activeId || '',
+              }}
+              onSelectPart={handleSelectPart}
+              activePart={activePart}
+              onCloseActivePart={handleCloseActivePart}
+              activePartRef={activePartRef}
+              selectedFromList={selectedFromList}
+              partsTrigger={(
+                <button type="button" className="dtb-schematic-parts-trigger" aria-expanded={partsOpen} aria-controls="dtb-schematic-parts" onClick={() => { handleCloseActivePart(); setPartsOpen(true); }}>
+                  All parts <span>{(detail.parts || []).length}</span>
+                </button>
+              )}
+            />
+            <SchematicPartsNavigator
+              parts={detail.parts || []}
+              pages={pages}
+              activePage={activePage}
+              activePartRef={activePartRef}
+              open={partsOpen}
+              onClose={() => setPartsOpen(false)}
+              onSelect={handleSelectFromList}
+            />
+          </div>
         </>
       )}
     </div>

@@ -70,7 +70,7 @@ function toStyle(coordinates) {
   };
 }
 
-export default function HotspotLayer({ hotspotDataset, parts, onSelectPart }) {
+export default function HotspotLayer({ hotspotDataset, parts, onSelectPart, activePartRef }) {
   const occurrences = useMemo(() => {
     if (!hotspotDataset?.available || !Array.isArray(hotspotDataset.occurrences)) return [];
     return hotspotDataset.occurrences
@@ -98,7 +98,7 @@ export default function HotspotLayer({ hotspotDataset, parts, onSelectPart }) {
         return (
           <div
             key={occurrence.hotspot_id}
-            className={`hotspot hotspot-${shape}${showLinkedProductGlow && isLinkedProduct ? ' hotspot--linked-product' : ''}`}
+            className={`hotspot hotspot-${shape}${showLinkedProductGlow && isLinkedProduct ? ' hotspot--linked-product' : ''}${activePartRef && normalizePartRef(activePartRef) === normalizePartRef(occurrence.part_ref) ? ' hotspot--selected' : ''}`}
             role="button"
             tabIndex={0}
             style={{
