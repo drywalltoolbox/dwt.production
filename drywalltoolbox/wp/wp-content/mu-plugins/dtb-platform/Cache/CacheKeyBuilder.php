@@ -8,7 +8,8 @@ if ( class_exists( 'DTB_CacheKeyBuilder' ) ) {
 final class DTB_CacheKeyBuilder {
 	public static function proxy_key( string $route, array $params ): string {
 		ksort( $params );
-		return 'drywall_cache_' . md5( $route . wp_json_encode( $params ) );
+		$generation = (string) get_option( 'dtb_proxy_cache_generation', '1' );
+		return 'drywall_cache_' . md5( $generation . '|' . $route . '|' . wp_json_encode( $params ) );
 	}
 
 	public static function proxy_ttl( string $route ): int {
@@ -20,6 +21,9 @@ final class DTB_CacheKeyBuilder {
 	}
 
 	public static function ops_key( string $module, string $key ): string {
-		return 'dtb_ops_' . sanitize_key( $module ) . '_' . sanitize_key( $key );
+		$global_generation = (string) get_option( 'dtb_ops_cache_generation', '1' );
+		$module_key        = sanitize_key( $module );
+		$module_generation = (string) get_option( 'dtb_ops_cache_generation_' . $module_key, '1' );
+		return 'dtb_ops_' . md5( $global_generation . '|' . $module_key . '|' . $module_generation . '|' . $key );
 	}
 }

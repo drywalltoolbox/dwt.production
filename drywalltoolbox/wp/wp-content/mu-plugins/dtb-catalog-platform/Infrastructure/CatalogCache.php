@@ -27,5 +27,9 @@ function dtb_catalog_cache_invalidate_toolset(): void {
 function dtb_catalog_cache_invalidate_all( object|int $subject = 0 ): void {
 	dtb_catalog_cache_invalidate_facets();
 	dtb_catalog_cache_invalidate_toolset();
+	// WooCommerce changes must also invalidate the cached WC REST proxy read model.
+	if ( function_exists( 'dtb_invalidate_product_cache' ) ) {
+		dtb_invalidate_product_cache();
+	}
 	do_action( 'dtb_catalog_caches_invalidated', $subject );
 }
