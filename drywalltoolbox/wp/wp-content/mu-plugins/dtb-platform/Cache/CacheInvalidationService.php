@@ -5,40 +5,28 @@ if ( class_exists( 'DTB_CacheInvalidationService' ) ) {
 	return;
 }
 
+/**
+ * Versioned invalidation works with both database transients and persistent object caches.
+ * Old transient entries expire naturally at their original bounded TTL.
+ */
 final class DTB_CacheInvalidationService {
 	public static function invalidate_product_cache(): void {
-		global $wpdb;
-
-		$wpdb->query(
-			$wpdb->prepare(
-				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
-				$wpdb->esc_like( '_transient_drywall_cache_' ) . '%',
-				$wpdb->esc_like( '_transient_timeout_drywall_cache_' ) . '%'
-			)
-		);
-
+		self::bump_generation( 'dtb_proxy_cache_generation' );
 		dtb_log_cache_event( 'cache_invalidated', [] );
 	}
 
 	public static function flush_ops_cache( string $module = '' ): void {
-		global $wpdb;
+		$option = '' !== $module
+			? 'dtb_ops_cache_generation_' . sanitize_key( $module )
+			: 'dtb_ops_cache_generation';
 
-		$prefix = '' !== $module
-			? '_transient_dtb_ops_' . sanitize_key( $module ) . '_'
-			: '_transient_dtb_ops_';
-
-		$timeout_prefix = '' !== $module
-			? '_transient_timeout_dtb_ops_' . sanitize_key( $module ) . '_'
-			: '_transient_timeout_dtb_ops_';
-
-		$wpdb->query(
-			$wpdb->prepare(
-				"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
-				$wpdb->esc_like( $prefix ) . '%',
-				$wpdb->esc_like( $timeout_prefix ) . '%'
-			)
-		);
-
+		self::bump_generation( $option );
 		dtb_log_cache_event( 'ops_cache_flushed', [ 'module' => $module ?: 'all' ] );
+	}
+
+	private static function bump_generation( string $option ): void {
+		// A unique generation prevents a concurrent invalidation from reusing an old
+		// key, even if simultaneous writers read the same previous option value.
+		update_option( $option, wp_generate_uuid4(), false );
 	}
 }
