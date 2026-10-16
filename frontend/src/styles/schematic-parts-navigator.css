@@ -1,0 +1,195 @@
+/* Viewer composition and master parts navigation. All rows consume the public
+   schematic detail response; the rail and sheet share one React tree. */
+.dtb-schematics-page__content--viewer .dtb-schematic-viewer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  gap: 0;
+}
+
+.dtb-schematics-page__content--viewer .dtb-schematic-viewer__header {
+  min-height: 72px;
+  padding: 10px clamp(16px, 2.5vw, 34px);
+  background: #122650;
+  border-bottom: 1px solid rgba(255,255,255,.13);
+  box-shadow: none;
+  color: #fff;
+}
+
+.dtb-schematics-page__content--viewer .dtb-schematic-viewer__title { color: #fff; font-weight: 760; letter-spacing: -.025em; }
+.dtb-schematics-page__content--viewer .dtb-schematic-viewer__subtitle { color: #b9c9ea; }
+.dtb-schematics-page__content--viewer .dtb-schematic-viewer__brand-logo { height: 32px; max-width: 130px; padding: 3px 6px; border-radius: 5px; background: #fff; }
+.dtb-schematics-page__content--viewer .back-button.dtb-schematic-viewer__back { background: rgba(255,255,255,.11); color: #fff; border-color: rgba(255,255,255,.19); box-shadow: none; }
+.dtb-schematics-page__content--viewer .back-button.dtb-schematic-viewer__back:hover { background: rgba(255,255,255,.2); }
+
+.dtb-schematics-page__content--viewer .dtb-schematic-variant-pills,
+.dtb-schematics-page__content--viewer .dtb-schematic-page-tabs {
+  flex: 0 0 auto;
+  border-radius: 0;
+  justify-content: flex-start;
+  padding: 8px clamp(16px, 2.5vw, 34px);
+  background: #0e1d3d;
+  color: #d8e3f7;
+}
+
+.dtb-schematics-page__content--viewer .dtb-schematic-variant-pills__label { color: #b8c8e7; }
+.dtb-schematics-page__content--viewer .dtb-schematic-variant-pill,
+.dtb-schematics-page__content--viewer .dtb-schematic-page-tab { background: #1c315b; border-color: #385080; color: #e5ecfc; }
+.dtb-schematics-page__content--viewer .dtb-schematic-variant-pill--active,
+.dtb-schematics-page__content--viewer .dtb-schematic-page-tab--active { background: #477bf3; border-color: #477bf3; color: #fff; box-shadow: none; }
+
+.dtb-schematic-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(330px, 29vw, 430px);
+  flex: 1 1 auto;
+  min-height: 0;
+  background: #f5f7fa;
+}
+
+.dtb-schematics-page__content--viewer .dtb-schematic-diagram-wrap {
+  min-width: 0;
+  min-height: 0;
+  isolation: isolate;
+}
+
+.dtb-schematics-page__content--viewer .dtb-schematic-diagram {
+  min-height: 0;
+  border: 0;
+  background: #fff;
+}
+
+.dtb-schematic-workspace .dtb-schematic-zoom-controls { top: 14px; left: auto; right: 16px; transform: none; background: rgba(18,38,80,.92); }
+
+.dtb-schematic-parts-trigger { display: none; }
+
+.dtb-parts-nav {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  background: #fff;
+  border-left: 1px solid #e1e7ef;
+  box-shadow: -8px 0 24px rgba(20, 37, 64, .035);
+  color: #152238;
+  z-index: 30;
+}
+
+.dtb-parts-nav__grab-area { padding: 25px 24px 10px; }
+.dtb-parts-nav__grabber { display: none; }
+.dtb-parts-nav__heading-row { display: flex; justify-content: space-between; align-items: start; gap: 12px; }
+.dtb-parts-nav__eyebrow { color: #315bc6; letter-spacing: .13em; font-size: 10px; font-weight: 800; }
+.dtb-parts-nav h2 { margin: 5px 0 0; font: 750 clamp(21px, 2vw, 27px)/1.16 var(--dtb-font-display, var(--dtb-font-ui)); letter-spacing: -.035em; }
+.dtb-parts-nav__count { display: flex; align-items: center; gap: 7px; margin: 13px 0 0; color: #607086; font-size: 12px; font-weight: 600; }
+.dtb-parts-nav__close { display: none; }
+.dtb-parts-nav__search { display: flex; align-items: center; gap: 10px; height: 44px; margin: 10px 20px 15px; padding: 0 14px; border: 1px solid #d9e1ec; border-radius: 12px; color: #63748d; background: #f8fafc; }
+.dtb-parts-nav__search:focus-within { border-color: #2959d3; box-shadow: 0 0 0 3px rgba(41, 89, 211, .12); }
+.dtb-parts-nav__search input { min-width: 0; width: 100%; border: 0; outline: 0; background: transparent; color: #152238; font: 500 14px/1 var(--dtb-font-ui); }
+.dtb-parts-nav__search input::placeholder { color: #8190a3; }
+.dtb-parts-nav__scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.dtb-parts-nav__list { display: grid; gap: 8px; margin: 0; padding: 0 18px 18px; list-style: none; }
+.dtb-parts-nav__item { display: grid; grid-template-columns: 66px minmax(0,1fr) 17px; align-items: center; gap: 12px; width: 100%; min-height: 78px; padding: 6px 11px 6px 6px; border: 1px solid #e5eaf1; border-radius: 12px; background: #fff; color: inherit; text-align: left; cursor: pointer; transition: border-color .16s, background-color .16s, transform .16s; }
+.dtb-parts-nav__item:hover, .dtb-parts-nav__item--selected { border-color: #8aa8ec; background: #f3f7ff; }
+.dtb-parts-nav__item:active { transform: scale(.99); }
+.dtb-parts-nav__item:focus-visible, .dtb-parts-nav__close:focus-visible, .dtb-schematic-parts-trigger:focus-visible { outline: 3px solid #315bc6; outline-offset: 2px; }
+.dtb-parts-nav__item > svg { color: #70819b; }
+.dtb-parts-nav__media { display: grid; place-items: center; position: relative; width: 66px; height: 66px; overflow: hidden; border-radius: 8px; background: #f1f4f8; }
+.dtb-parts-nav__media img { width: 100%; height: 100%; object-fit: contain; }
+.dtb-parts-nav__media-fallback { color: #a1aebf; font-size: 10px; font-weight: 800; letter-spacing: .08em; }
+.dtb-parts-nav__number { position: absolute; top: 4px; left: 4px; max-width: 58px; overflow: hidden; text-overflow: ellipsis; border-radius: 5px; padding: 3px 5px; background: #173878; color: #fff; font-size: 10px; font-weight: 800; line-height: 1; white-space: nowrap; }
+.dtb-parts-nav__item-body { min-width: 0; display: grid; gap: 5px; }
+.dtb-parts-nav__item-body strong { font-size: 13px; line-height: 1.3; font-weight: 750; overflow-wrap: anywhere; }
+.dtb-parts-nav__item-body small { color: #667790; font-size: 11px; line-height: 1.3; }
+.dtb-parts-nav__empty { padding: 24px; text-align: center; color: #63748d; font-size: 14px; }
+.dtb-parts-nav__footer { margin: 0; padding: 12px 24px; border-top: 1px solid #e7ebf1; color: #6d7b8e; font-size: 11px; line-height: 1.4; }
+.hotspot--selected, .hotspot--selected:hover { border-color: #315bc6; background: rgba(49, 91, 198, .16); box-shadow: 0 0 0 4px rgba(49, 91, 198, .15); }
+.part-modal--centered { top: 50%; left: 50%; transform: translate(-50%, -50%); }
+
+@media (max-width: 900px) {
+  .dtb-schematic-workspace { display: flex; }
+  .dtb-schematics-page__content--viewer .dtb-schematic-diagram-wrap { flex: 1 1 auto; }
+  .dtb-schematic-parts-trigger { display: inline-flex; position: absolute; z-index: 25; bottom: max(18px, env(safe-area-inset-bottom)); left: 50%; transform: translateX(-50%); align-items: center; justify-content: center; gap: 11px; min-height: 48px; max-width: calc(100% - 32px); padding: 8px 16px; border: 1px solid rgba(255,255,255,.22); border-radius: 999px; background: #142d60; color: #fff; box-shadow: 0 8px 25px rgba(20,45,96,.3); font-size: 14px; font-weight: 750; white-space: nowrap; cursor: pointer; }
+  .dtb-schematic-parts-trigger span { min-width: 24px; padding: 3px 5px; border-radius: 999px; background: #fff; color: #173878; font-size: 11px; }
+  .dtb-parts-nav__backdrop { position: fixed; inset: 0; z-index: 1000; width: 100%; border: 0; background: rgba(10,24,45,.54); backdrop-filter: blur(3px); }
+  .dtb-parts-nav { position: fixed; z-index: 1001; inset: auto 0 0; height: min(80dvh, 740px); padding-bottom: env(safe-area-inset-bottom); border: 0; border-radius: 22px 22px 0 0; box-shadow: 0 -16px 60px rgba(0,0,0,.22); visibility: hidden; transform: translateY(105%); transition: transform .28s cubic-bezier(.2,.8,.2,1), visibility .28s; }
+  .dtb-parts-nav--open { visibility: visible; transform: translateY(0); }
+  .dtb-parts-nav__grab-area { padding: 9px 18px 9px; touch-action: none; }
+  .dtb-parts-nav__grabber { display: block; width: 38px; height: 5px; margin: 0 auto 16px; border-radius: 99px; background: #c5ceda; }
+  .dtb-parts-nav h2 { font-size: 21px; }
+  .dtb-parts-nav__close { display: grid; place-items: center; width: 40px; height: 40px; border: 0; border-radius: 12px; background: #edf2fa; color: #223a65; cursor: pointer; }
+  .dtb-parts-nav__search { margin: 8px 18px 12px; }
+  .dtb-parts-nav__search input { font-size: 16px; }
+  .dtb-parts-nav__list { padding-inline: 14px; }
+  .dtb-parts-nav__footer { padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+}
+
+@media (max-width: 600px) {
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__header { min-height: 60px; }
+  .dtb-schematics-page__content--viewer .dtb-schematic-variant-pills,
+  .dtb-schematics-page__content--viewer .dtb-schematic-page-tabs { padding: 6px 10px; overflow-x: auto; flex-wrap: nowrap; }
+  .dtb-parts-nav { height: min(83dvh, 700px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dtb-parts-nav, .dtb-parts-nav__item { transition: none; }
+}
+
+/* Compact CodePen-inspired bottom-sheet motion, adapted to DTB's existing
+   accessible React dialog. No third-party menu, font or script dependencies. */
+@media (max-width: 900px) {
+  .dtb-parts-nav__backdrop {
+    animation: dtb-parts-backdrop-in 220ms ease-out both;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .dtb-parts-nav {
+    width: 100%;
+    max-height: calc(100dvh - env(safe-area-inset-top) - 16px);
+    background: #fff;
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -16px 52px rgba(8, 24, 51, .24);
+    transition: transform 310ms cubic-bezier(.22, 1, .36, 1), visibility 310ms;
+    overscroll-behavior: contain;
+  }
+  .dtb-parts-nav__grab-area {
+    flex: 0 0 auto;
+    background: linear-gradient(180deg, #f8faff 0%, #fff 92%);
+    border-radius: 24px 24px 0 0;
+    border-bottom: 1px solid #ecf0f6;
+    touch-action: auto;
+  }
+  .dtb-parts-nav__grabber {
+    width: 44px;
+    height: 5px;
+    background: #bfccdc;
+    cursor: grab;
+    touch-action: none;
+    margin-bottom: 12px;
+  }
+  .dtb-parts-nav__search {
+    flex: 0 0 auto;
+    height: 48px;
+    background: #f5f7fb;
+    border-radius: 12px;
+  }
+  .dtb-parts-nav__scroll {
+    min-height: 0;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .dtb-schematic-parts-trigger {
+    box-shadow: 0 10px 32px rgba(17, 43, 90, .26);
+    transition: background-color 160ms ease, box-shadow 160ms ease, translate 160ms ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .dtb-schematic-parts-trigger:active { translate: 0 2px; box-shadow: 0 4px 15px rgba(17,43,90,.25); }
+  .dtb-parts-nav__item { min-height: 72px; }
+  .dtb-parts-nav__item:active { background: #ebf2ff; }
+}
+@keyframes dtb-parts-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dtb-parts-nav__backdrop { animation: none; }
+  .dtb-schematic-parts-trigger { transition: none; }
+}

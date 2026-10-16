@@ -34,6 +34,7 @@ const DTB_SCHEMATIC_PAGE_STATE_RETIRED       = 'retired';
  *     @type int    $width              Pixel width, 0 if unknown.
  *     @type int    $height             Pixel height, 0 if unknown.
  *     @type array  $sources            Responsive media sources, e.g. [ [ 'url' => ..., 'width' => ... ], ... ].
+ *     @type string[] $part_refs         Explicit page BOM membership, including parts without hotspots.
  *     @type array  $hotspot_dataset    Hotspot dataset relationship for this page (see dtb_schematic_hotspot_dataset_ref_make()).
  *     @type string $lifecycle_state    One of the DTB_SCHEMATIC_PAGE_STATE_* constants.
  * }
@@ -50,6 +51,7 @@ function dtb_schematic_page_make( array $data ): array {
 		'width'           => max( 0, (int) ( $data['width'] ?? 0 ) ),
 		'height'          => max( 0, (int) ( $data['height'] ?? 0 ) ),
 		'sources'         => dtb_schematic_page_normalize_sources( $data['sources'] ?? [] ),
+		'part_refs'       => array_values( array_unique( array_filter( array_map( 'sanitize_key', is_array( $data['part_refs'] ?? null ) ? $data['part_refs'] : [] ) ) ) ),
 		'hotspot_dataset' => dtb_schematic_hotspot_dataset_ref_make( is_array( $data['hotspot_dataset'] ?? null ) ? $data['hotspot_dataset'] : [] ),
 		'lifecycle_state' => dtb_schematic_page_normalize_state( (string) ( $data['lifecycle_state'] ?? '' ) ),
 	];

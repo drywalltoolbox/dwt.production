@@ -70,9 +70,9 @@ function toStyle(coordinates) {
   };
 }
 
-export default function HotspotLayer({ hotspotDataset, parts, onSelectPart }) {
+export default function HotspotLayer({ hotspotDataset, parts, onSelectPart, activePartRef, activeHotspotId }) {
   const occurrences = useMemo(() => {
-    if (!hotspotDataset?.available || !Array.isArray(hotspotDataset.occurrences)) return [];
+    if (!Array.isArray(hotspotDataset?.occurrences)) return [];
     return hotspotDataset.occurrences
       .map((occurrence) => ({ occurrence, style: toStyle(occurrence.coordinates) }))
       .filter((entry) => entry.style !== null);
@@ -92,13 +92,13 @@ export default function HotspotLayer({ hotspotDataset, parts, onSelectPart }) {
         const isLinkedProduct = part?.resolution_state === 'resolved' && part?.product != null;
 
         const activate = (event) => {
-          onSelectPart(occurrence.part_ref, event.currentTarget.getBoundingClientRect());
+          onSelectPart(occurrence.part_ref, event.currentTarget.getBoundingClientRect(), occurrence.hotspot_id);
         };
 
         return (
           <div
             key={occurrence.hotspot_id}
-            className={`hotspot hotspot-${shape}${showLinkedProductGlow && isLinkedProduct ? ' hotspot--linked-product' : ''}`}
+            className={`hotspot hotspot-${shape}${showLinkedProductGlow && isLinkedProduct ? ' hotspot--linked-product' : ''}${(activeHotspotId ? String(activeHotspotId) === String(occurrence.hotspot_id) : activePartRef && normalizePartRef(activePartRef) === normalizePartRef(occurrence.part_ref)) ? ' hotspot--selected' : ''}`}
             role="button"
             tabIndex={0}
             style={{

@@ -1,0 +1,17 @@
+name: Schematic page BOM contract
+on:
+  pull_request:
+    paths:
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-schematics/Domain/SchematicPageDefinition.php'
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-schematics/Application/GenerateSchematicResponse.php'
+      - '.github/workflows/schematic-page-bom.yml'
+  workflow_dispatch:
+jobs:
+  php-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate page BOM PHP syntax
+        run: |
+          php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-schematics/Domain/SchematicPageDefinition.php
+          php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-schematics/Application/GenerateSchematicResponse.php

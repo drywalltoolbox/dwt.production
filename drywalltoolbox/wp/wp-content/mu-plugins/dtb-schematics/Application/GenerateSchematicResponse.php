@@ -215,9 +215,17 @@ function dtb_schematic_generate_detail_response( DTB_Schematic_Record_Entity $re
 			}
 		}
 
+		// Explicit page BOM membership owns reference-only entries; actual page
+		// occurrences supplement membership without leaking other pages' catalog.
+		$page_part_refs = is_array( $page['part_refs'] ?? null ) ? $page['part_refs'] : [];
+		foreach ( $occurrences as $occurrence ) {
+			$page_part_refs[] = $occurrence['part_ref'];
+		}
+		$page_part_refs = array_values( array_unique( array_filter( array_map( 'sanitize_text_field', $page_part_refs ) ) ) );
 		$page_hotspot = is_array( $page['hotspot_dataset'] ?? null ) ? $page['hotspot_dataset'] : [];
 		$serialized = [
 			'page_id'         => sanitize_text_field( (string) ( $page['page_id'] ?? '' ) ),
+			'part_refs'       => $page_part_refs,
 			'page_number'     => (int) ( $page['page_number'] ?? 0 ),
 			'label'           => sanitize_text_field( (string) ( $page['label'] ?? '' ) ),
 			'media_type'      => sanitize_key( (string) ( $page['media_type'] ?? '' ) ),

@@ -35,6 +35,7 @@ import '../styles/schematic-hotspot-card-polish.css';
 import '../styles/schematic-linked-hotspot-glow.css';
 import '../styles/schematics-loading.css';
 import '../styles/schematic-diagram-fit.css';
+import '../styles/schematic-parts-navigator.css';
 
 function SchematicsPageInner() {
   const routeState = useSchematicRouteState();
@@ -105,9 +106,10 @@ function SchematicsPageInner() {
         />
       )}
 
-      <main className="dtb-schematics-page__content">
+      <main className={`dtb-schematics-page__content${isViewer ? ' dtb-schematics-page__content--viewer' : ''}`}>
         {isViewer ? (
           <SchematicViewerPage
+            key={routeState.schematicId}
             schematicId={routeState.schematicId}
             initialPage={routeState.page}
             initialVariant={routeState.variant}

@@ -13,6 +13,7 @@ import SchematicHeader from './SchematicHeader';
 import SchematicPageTabs from './SchematicPageTabs';
 import SchematicVariantPills, { sortVariants } from './SchematicVariantPills';
 import DiagramViewer from './DiagramViewer';
+import SchematicPartsNavigator from './SchematicPartsNavigator';
 
 export default function SchematicViewerPage({
   schematicId,
@@ -25,8 +26,16 @@ export default function SchematicViewerPage({
 }) {
   const { status, detail, error } = useSchematicDetail(schematicId);
   const [activePartRef, setActivePartRef] = useState(null);
+  const [selectedFromList, setSelectedFromList] = useState(false);
+  const [partsOpen, setPartsOpen] = useState(false);
+  const [focusedHotspotId, setFocusedHotspotId] = useState(null);
+  const [selectedHotspotId, setSelectedHotspotId] = useState(null);
+  const [focusRequest, setFocusRequest] = useState(0);
 
-  function handleSelectPart(partRef) {
+  function handleSelectPart(partRef, _anchor, hotspotId) {
+    setSelectedFromList(false);
+    setFocusedHotspotId(null);
+    setSelectedHotspotId(hotspotId || null);
     setActivePartRef(partRef);
   }
 
@@ -91,8 +100,34 @@ export default function SchematicViewerPage({
 
   function handleSelectPage(pageId) {
     const page = pages.find((p) => p.page_id === pageId);
-    if (page) onPageChange(page.page_number);
+    if (page) {
+      setActivePartRef(null);
+      setSelectedFromList(false);
+      setFocusedHotspotId(null);
+      setSelectedHotspotId(null);
+      setPartsOpen(false);
+      onPageChange(page.page_number);
+    }
   }
+
+  // The navigator never navigates across schematic pages. A selected row
+  // explicitly targets one occurrence belonging to the currently active page.
+  function handleSelectFromList(partRef, hotspotId) {
+    setPartsOpen(false);
+    setSelectedFromList(true);
+    setActivePartRef(partRef);
+    setFocusedHotspotId(hotspotId || null);
+    setSelectedHotspotId(hotspotId || null);
+    setFocusRequest((request) => request + 1);
+  }
+
+  const activeOccurrences = Array.isArray(activePage?.hotspot_dataset?.occurrences)
+    ? activePage.hotspot_dataset.occurrences
+    : [];
+  const activePartRefs = new Set((activePage?.part_refs || activeOccurrences.map((spot) => spot.part_ref)).map(normalizePartRef));
+  // Explicit page BOM membership includes reference-only entries. Legacy API
+  // responses remain scoped to current-page hotspot occurrences.
+  const pageParts = (detail?.parts || []).filter((part) => activePartRefs.has(normalizePartRef(part.part_ref)));
 
   if (status === 'loading') {
     return (
@@ -153,20 +188,42 @@ export default function SchematicViewerPage({
             activePageId={activePage?.page_id}
             onSelectPage={handleSelectPage}
           />
-          <DiagramViewer
-            page={activePage}
-            parts={detail.parts}
-            schematicContext={{
-              id: detail.id,
-              title: detail.title,
-              brand: detail.brand?.name || detail.brand?.id || '',
-              category: detail.category?.name || detail.category?.id || '',
-              variant: variantNavigation.activeId || '',
-            }}
-            onSelectPart={handleSelectPart}
-            activePart={activePart}
-            onCloseActivePart={handleCloseActivePart}
-          />
+          <div className="dtb-schematic-workspace">
+            <DiagramViewer
+              page={activePage}
+              parts={detail.parts}
+              schematicContext={{
+                id: detail.id,
+                title: detail.title,
+                brand: detail.brand?.name || detail.brand?.id || '',
+                category: detail.category?.name || detail.category?.id || '',
+                variant: variantNavigation.activeId || '',
+              }}
+              onSelectPart={handleSelectPart}
+              activePart={activePart}
+              onCloseActivePart={handleCloseActivePart}
+              activePartRef={activePartRef}
+              focusedHotspotId={focusedHotspotId}
+              selectedHotspotId={selectedHotspotId}
+              focusRequest={focusRequest}
+              selectedFromList={selectedFromList}
+              partsTrigger={(
+                <button type="button" className="dtb-schematic-parts-trigger" aria-expanded={partsOpen} aria-controls="dtb-schematic-parts" onClick={() => { handleCloseActivePart(); setPartsOpen(true); }}>
+                  All parts <span>{pageParts.length}</span>
+                </button>
+              )}
+            />
+            <SchematicPartsNavigator
+              parts={pageParts}
+              occurrences={activeOccurrences}
+              activePage={activePage}
+              activePartRef={activePartRef}
+              focusedHotspotId={selectedHotspotId}
+              open={partsOpen}
+              onClose={() => setPartsOpen(false)}
+              onSelect={handleSelectFromList}
+            />
+          </div>
         </>
       )}
     </div>
