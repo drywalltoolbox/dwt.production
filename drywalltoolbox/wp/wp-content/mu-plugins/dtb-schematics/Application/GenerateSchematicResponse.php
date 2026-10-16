@@ -221,7 +221,7 @@ function dtb_schematic_generate_detail_response( DTB_Schematic_Record_Entity $re
 		foreach ( $occurrences as $occurrence ) {
 			$page_part_refs[] = $occurrence['part_ref'];
 		}
-		$page_part_refs = array_values( array_unique( array_filter( array_map( 'sanitize_key', $page_part_refs ) ) ) );
+		$page_part_refs = array_values( array_unique( array_filter( array_map( 'sanitize_text_field', $page_part_refs ) ) ) );
 		$page_hotspot = is_array( $page['hotspot_dataset'] ?? null ) ? $page['hotspot_dataset'] : [];
 		$serialized = [
 			'page_id'         => sanitize_text_field( (string) ( $page['page_id'] ?? '' ) ),
