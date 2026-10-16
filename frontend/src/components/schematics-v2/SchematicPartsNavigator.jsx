@@ -69,7 +69,7 @@ export default function SchematicPartsNavigator({ parts, occurrences, activePage
   }, [mobile, open, onClose]);
 
   const onPointerDown = (event) => {
-    if (event.target.closest('button')) return;
+    if (!mobile || !open || !event.target.closest('.dtb-parts-nav__grabber')) return;
     startY.current = event.clientY;
     event.currentTarget.setPointerCapture(event.pointerId);
   };
@@ -78,7 +78,7 @@ export default function SchematicPartsNavigator({ parts, occurrences, activePage
     setDrag(Math.max(0, event.clientY - startY.current));
   };
   const onPointerUp = () => {
-    if (startY.current !== null && drag > 100) onClose();
+    if (startY.current !== null && drag > 96) onClose();
     startY.current = null;
     setDrag(0);
   };
@@ -96,7 +96,7 @@ export default function SchematicPartsNavigator({ parts, occurrences, activePage
         inert={mobile && !open ? true : undefined}
         style={mobile && drag ? { transform: `translateY(${drag}px)`, transition: 'none' } : undefined}
       >
-        <div className="dtb-parts-nav__grab-area" onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp}>
+        <div className="dtb-parts-nav__grab-area" onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={() => { startY.current = null; setDrag(0); }}>
           <span className="dtb-parts-nav__grabber" aria-hidden="true" />
           <div className="dtb-parts-nav__heading-row">
             <div>
