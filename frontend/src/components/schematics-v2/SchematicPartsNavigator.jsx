@@ -4,33 +4,32 @@ import { normalizePartRef } from '../../utils/string.js';
 
 const FOCUSABLE = 'button:not([disabled]), input:not([disabled]), a[href]';
 
-function pageLocations(pages) {
+function pageLocations(occurrences) {
   const locations = new Map();
-  for (const page of pages) {
-    if (!page.hotspot_dataset?.available) continue;
-    for (const occurrence of page.hotspot_dataset.occurrences || []) {
-      const key = normalizePartRef(occurrence.part_ref);
-      if (!key) continue;
-      const existing = locations.get(key) || [];
-      existing.push(page.page_number);
-      locations.set(key, existing);
-    }
+  for (const occurrence of occurrences) {
+    const key = normalizePartRef(occurrence.part_ref);
+    if (!key || !occurrence.hotspot_id) continue;
+    const existing = locations.get(key) || [];
+    existing.push(occurrence.hotspot_id);
+    locations.set(key, existing);
   }
   return locations;
 }
 
-export default function SchematicPartsNavigator({ parts, pages, activePage, activePartRef, open, onClose, onSelect }) {
+export default function SchematicPartsNavigator({ parts, occurrences, activePage, activePartRef, focusedHotspotId, open, onClose, onSelect }) {
   const [query, setQuery] = useState('');
   const [mobile, setMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches);
   const [drag, setDrag] = useState(0);
   const sheetRef = useRef(null);
   const startY = useRef(null);
   const opener = useRef(null);
-  const locations = useMemo(() => pageLocations(pages), [pages]);
+  const locations = useMemo(() => pageLocations(occurrences), [occurrences]);
   const rows = useMemo(() => parts.filter((part) => {
     const value = `${part.part_ref || ''} ${part.title || ''} ${part.sku || ''} ${part.mpn || ''}`.toLocaleLowerCase();
     return value.includes(query.trim().toLocaleLowerCase());
   }), [parts, query]);
+
+  useEffect(() => { setQuery(''); }, [activePage?.page_id]);
 
   useEffect(() => {
     const media = window.matchMedia('(max-width: 900px)');
@@ -106,7 +105,7 @@ export default function SchematicPartsNavigator({ parts, pages, activePage, acti
             </div>
             <button type="button" className="dtb-parts-nav__close" aria-label="Close parts list" onClick={onClose}><X size={20} /></button>
           </div>
-          <p className="dtb-parts-nav__count"><List size={15} aria-hidden="true" /> {parts.length} {parts.length === 1 ? 'part' : 'parts'} across {pages.length} {pages.length === 1 ? 'diagram' : 'diagrams'}</p>
+          <p className="dtb-parts-nav__count"><List size={15} aria-hidden="true" /> {parts.length} {parts.length === 1 ? 'part' : 'parts'} on this page</p>
         </div>
         <label className="dtb-parts-nav__search">
           <Search size={18} aria-hidden="true" />
@@ -117,7 +116,9 @@ export default function SchematicPartsNavigator({ parts, pages, activePage, acti
           {rows.length ? <ol className="dtb-parts-nav__list">
             {rows.map((part, index) => {
               const refs = locations.get(normalizePartRef(part.part_ref)) || [];
-              const targetPage = refs.includes(activePage?.page_number) ? activePage.page_number : refs[0];
+              const focusedIndex = refs.indexOf(focusedHotspotId);
+              const nextIndex = focusedIndex >= 0 ? (focusedIndex + 1) % refs.length : 0;
+              const targetHotspotId = refs[nextIndex] || null;
               const key = part.part_ref || `part-${index}`;
               const selected = activePartRef && normalizePartRef(activePartRef) === normalizePartRef(part.part_ref);
               const image = part.product?.images?.[0];
@@ -125,9 +126,9 @@ export default function SchematicPartsNavigator({ parts, pages, activePage, acti
                 <button
                   type="button"
                   className={`dtb-parts-nav__item${selected ? ' dtb-parts-nav__item--selected' : ''}`}
-                  aria-label={`View ${part.title || 'part'} ${part.part_ref || ''}${targetPage ? ` on page ${targetPage}` : ''}`}
+                  aria-label={`View ${part.title || 'part'} ${part.part_ref || ''}${refs.length > 1 ? ` (${refs.length} locations; select again for next)` : ''}`}
                   aria-current={selected ? 'true' : undefined}
-                  onClick={() => onSelect(part.part_ref, targetPage)}
+                  onClick={() => onSelect(part.part_ref, targetHotspotId)}
                 >
                   <span className="dtb-parts-nav__media">
                     {typeof image === 'string' && image ? <img src={image} alt="" loading="lazy" /> : <span className="dtb-parts-nav__media-fallback" aria-hidden="true">PART</span>}
@@ -135,7 +136,7 @@ export default function SchematicPartsNavigator({ parts, pages, activePage, acti
                   </span>
                   <span className="dtb-parts-nav__item-body">
                     <strong>{part.title || `Part ${part.part_ref || ''}`}</strong>
-                    <small>{targetPage ? `Page ${targetPage} · ${refs.length} ${refs.length === 1 ? 'location' : 'locations'}` : 'Reference only'}{part.product?.id ? ' · Product linked' : ''}</small>
+                    <small>{refs.length ? `${refs.length} ${refs.length === 1 ? 'location' : 'locations'} on page ${activePage?.page_number || ''}` : 'Reference only'}{part.product?.id ? ' · Product linked' : ''}</small>
                   </span>
                   <ChevronRight size={17} aria-hidden="true" />
                 </button>
