@@ -16,7 +16,7 @@
  * wheel scroll) is a prior, intentional UX fix over the legacy version and
  * is preserved as-is — only the rendering/transform target changed.
  */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AlertTriangle, ImageOff } from 'lucide-react';
 import DiagramImage from './DiagramImage';
 import ZoomControls from './ZoomControls';
@@ -46,7 +46,7 @@ function clampOffset(offset, scale, containerSize, boundsSize) {
   };
 }
 
-export default function DiagramViewer({ page, parts, schematicContext, onSelectPart, activePart, onCloseActivePart, activePartRef, selectedFromList, partsTrigger }) {
+export default function DiagramViewer({ page, parts, schematicContext, onSelectPart, activePart, onCloseActivePart, activePartRef, focusedHotspotId, focusRequest, selectedFromList, partsTrigger }) {
   const containerRef = useRef(null);
   const wrapRef = useRef(null);
   const imgRef = useRef(null);
@@ -67,6 +67,7 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
   // `aspect-ratio`, not this state.
   const [boundsSize, setBoundsSize] = useState(null);
   const [anchorRect, setAnchorRect] = useState(null);
+  const [focusTransition, setFocusTransition] = useState(false);
   const [isMobile, setIsMobile] = useState(
     typeof window !== 'undefined' ? window.innerWidth <= 768 : false,
   );
@@ -156,6 +157,43 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
     });
   }, [applyScale, offset, scale]);
 
+  // A navigator selection targets a stable occurrence on the active page.
+  // Use the existing center-origin transform and pan limits: no second camera.
+  useLayoutEffect(() => {
+    if (!focusedHotspotId || !focusRequest || !imageLoaded || !boundsSize) return;
+    const occurrence = page?.hotspot_dataset?.occurrences?.find(
+      (spot) => String(spot.hotspot_id) === String(focusedHotspotId),
+    );
+    const x = Number(occurrence?.coordinates?.x_pct);
+    const y = Number(occurrence?.coordinates?.y_pct);
+    const viewport = containerRef.current;
+    const bounds = imageBoundsRef.current;
+    if (!occurrence || !Number.isFinite(x) || !Number.isFinite(y)
+      || x < 0 || x > 100 || y < 0 || y > 100 || !viewport || !bounds) return;
+
+    const rect = viewport.getBoundingClientRect();
+    const imageRect = bounds.getBoundingClientRect();
+    if (!rect.width || !rect.height || !imageRect.width || !imageRect.height) return;
+    // Current hotspot position is measured in screen space; subtract the
+    // current camera offset before applying the target scale ratio.
+    const hotspotX = imageRect.left + (x / 100) * imageRect.width - rect.left - rect.width / 2;
+    const hotspotY = imageRect.top + (y / 100) * imageRect.height - rect.top - rect.height / 2;
+    const targetScale = clampScale(Math.max(scale, 1.65));
+    const ratio = targetScale / scale;
+    const targetOffset = {
+      x: -(hotspotX - offset.x) * ratio,
+      y: (rect.height * 0.38 - rect.height / 2) - (hotspotY - offset.y) * ratio,
+    };
+    setFocusTransition(true);
+    setScale(targetScale);
+    setOffset(clampOffset(targetOffset, targetScale, {
+      width: rect.width, height: rect.height,
+    }, boundsSize));
+  // Intentionally only run for explicit selection/page/media readiness, not
+  // scale/offset changes caused by this effect or a manual pan.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusedHotspotId, focusRequest, imageLoaded, page?.page_id, boundsSize]);
+
   // Only zoom on ctrl/cmd+wheel (the standard "trackpad pinch sends
   // ctrl+wheel" convention, matching map-style UX). Plain wheel scroll must
   // fall through to normal page scrolling instead of hijacking it — this
@@ -164,11 +202,13 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
   const handleWheel = useCallback((event) => {
     if (!event.ctrlKey && !event.metaKey) return;
     event.preventDefault();
+    setFocusTransition(false);
     const delta = -event.deltaY * 0.0015;
     zoomAtPoint(scale + delta * scale, event.clientX, event.clientY);
   }, [scale, zoomAtPoint]);
 
   const handlePointerDown = useCallback((event) => {
+    setFocusTransition(false);
     if (event.pointerType === 'mouse' && scale <= 1) return;
     // Deliberately do NOT call setPointerCapture here for the single-pointer
     // case. Explicit pointer capture retargets the subsequent compatibility
@@ -287,9 +327,9 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
     }
   }, [offset, scale, zoomAtPoint]);
 
-  const zoomIn = () => applyScale(scale + 0.5);
-  const zoomOut = () => applyScale(scale - 0.5);
-  const resetZoom = () => applyScale(1, { x: 0, y: 0 });
+  const zoomIn = () => { setFocusTransition(false); applyScale(scale + 0.5); };
+  const zoomOut = () => { setFocusTransition(false); applyScale(scale - 0.5); };
+  const resetZoom = () => { setFocusTransition(false); applyScale(1, { x: 0, y: 0 }); };
 
   if (!page) {
     return (
@@ -339,7 +379,7 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
             position: 'relative',
             transform: `scale(${scale}) translate(${scale ? offset.x / scale : 0}px, ${scale ? offset.y / scale : 0}px)`,
             transformOrigin: 'center center',
-            transition: reduceMotion || isGesturing ? 'none' : 'transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            transition: reduceMotion || isGesturing ? 'none' : focusTransition ? 'transform 350ms cubic-bezier(0.22, 1, 0.36, 1)' : 'transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             userSelect: 'none',
             WebkitUserSelect: 'none',
             pointerEvents: 'auto',
