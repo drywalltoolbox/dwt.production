@@ -124,9 +124,9 @@ export default function SchematicViewerPage({
   const activeOccurrences = Array.isArray(activePage?.hotspot_dataset?.occurrences)
     ? activePage.hotspot_dataset.occurrences
     : [];
-  const activePartRefs = new Set(activeOccurrences.map((spot) => normalizePartRef(spot.part_ref)));
-  // The public page payload currently exposes hotspot occurrences, not an
-  // independently authoritative page BOM. Do not leak other pages' global parts.
+  const activePartRefs = new Set((activePage?.part_refs || activeOccurrences.map((spot) => spot.part_ref)).map(normalizePartRef));
+  // Explicit page BOM membership includes reference-only entries. Legacy API
+  // responses remain scoped to current-page hotspot occurrences.
   const pageParts = (detail?.parts || []).filter((part) => activePartRefs.has(normalizePartRef(part.part_ref)));
 
   if (status === 'loading') {
