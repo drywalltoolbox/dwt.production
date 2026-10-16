@@ -72,7 +72,7 @@ function toStyle(coordinates) {
 
 export default function HotspotLayer({ hotspotDataset, parts, onSelectPart, activePartRef, activeHotspotId }) {
   const occurrences = useMemo(() => {
-    if (!hotspotDataset?.available || !Array.isArray(hotspotDataset.occurrences)) return [];
+    if (!Array.isArray(hotspotDataset?.occurrences)) return [];
     return hotspotDataset.occurrences
       .map((occurrence) => ({ occurrence, style: toStyle(occurrence.coordinates) }))
       .filter((entry) => entry.style !== null);
