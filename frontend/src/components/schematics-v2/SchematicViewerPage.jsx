@@ -121,8 +121,8 @@ export default function SchematicViewerPage({
     setFocusRequest((request) => request + 1);
   }
 
-  const activeOccurrences = activePage?.hotspot_dataset?.available
-    ? (activePage.hotspot_dataset.occurrences || [])
+  const activeOccurrences = Array.isArray(activePage?.hotspot_dataset?.occurrences)
+    ? activePage.hotspot_dataset.occurrences
     : [];
   const activePartRefs = new Set(activeOccurrences.map((spot) => normalizePartRef(spot.part_ref)));
   // The public page payload currently exposes hotspot occurrences, not an
