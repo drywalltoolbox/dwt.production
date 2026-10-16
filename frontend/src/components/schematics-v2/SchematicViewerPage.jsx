@@ -29,11 +29,13 @@ export default function SchematicViewerPage({
   const [selectedFromList, setSelectedFromList] = useState(false);
   const [partsOpen, setPartsOpen] = useState(false);
   const [focusedHotspotId, setFocusedHotspotId] = useState(null);
+  const [selectedHotspotId, setSelectedHotspotId] = useState(null);
   const [focusRequest, setFocusRequest] = useState(0);
 
-  function handleSelectPart(partRef) {
+  function handleSelectPart(partRef, _anchor, hotspotId) {
     setSelectedFromList(false);
     setFocusedHotspotId(null);
+    setSelectedHotspotId(hotspotId || null);
     setActivePartRef(partRef);
   }
 
@@ -102,6 +104,7 @@ export default function SchematicViewerPage({
       setActivePartRef(null);
       setSelectedFromList(false);
       setFocusedHotspotId(null);
+      setSelectedHotspotId(null);
       setPartsOpen(false);
       onPageChange(page.page_number);
     }
@@ -114,6 +117,7 @@ export default function SchematicViewerPage({
     setSelectedFromList(true);
     setActivePartRef(partRef);
     setFocusedHotspotId(hotspotId || null);
+    setSelectedHotspotId(hotspotId || null);
     setFocusRequest((request) => request + 1);
   }
 
@@ -200,6 +204,7 @@ export default function SchematicViewerPage({
               onCloseActivePart={handleCloseActivePart}
               activePartRef={activePartRef}
               focusedHotspotId={focusedHotspotId}
+              selectedHotspotId={selectedHotspotId}
               focusRequest={focusRequest}
               selectedFromList={selectedFromList}
               partsTrigger={(
@@ -213,7 +218,7 @@ export default function SchematicViewerPage({
               occurrences={activeOccurrences}
               activePage={activePage}
               activePartRef={activePartRef}
-              focusedHotspotId={focusedHotspotId}
+              focusedHotspotId={selectedHotspotId}
               open={partsOpen}
               onClose={() => setPartsOpen(false)}
               onSelect={handleSelectFromList}
