@@ -133,3 +133,63 @@
 @media (prefers-reduced-motion: reduce) {
   .dtb-parts-nav, .dtb-parts-nav__item { transition: none; }
 }
+
+/* Compact CodePen-inspired bottom-sheet motion, adapted to DTB's existing
+   accessible React dialog. No third-party menu, font or script dependencies. */
+@media (max-width: 900px) {
+  .dtb-parts-nav__backdrop {
+    animation: dtb-parts-backdrop-in 220ms ease-out both;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .dtb-parts-nav {
+    width: 100%;
+    max-height: calc(100dvh - env(safe-area-inset-top) - 16px);
+    background: #fff;
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -16px 52px rgba(8, 24, 51, .24);
+    transition: transform 310ms cubic-bezier(.22, 1, .36, 1), visibility 310ms;
+    overscroll-behavior: contain;
+  }
+  .dtb-parts-nav__grab-area {
+    flex: 0 0 auto;
+    background: linear-gradient(180deg, #f8faff 0%, #fff 92%);
+    border-radius: 24px 24px 0 0;
+    border-bottom: 1px solid #ecf0f6;
+    touch-action: auto;
+  }
+  .dtb-parts-nav__grabber {
+    width: 44px;
+    height: 5px;
+    background: #bfccdc;
+    cursor: grab;
+    touch-action: none;
+    margin-bottom: 12px;
+  }
+  .dtb-parts-nav__search {
+    flex: 0 0 auto;
+    height: 48px;
+    background: #f5f7fb;
+    border-radius: 12px;
+  }
+  .dtb-parts-nav__scroll {
+    min-height: 0;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .dtb-schematic-parts-trigger {
+    box-shadow: 0 10px 32px rgba(17, 43, 90, .26);
+    transition: background-color 160ms ease, box-shadow 160ms ease, translate 160ms ease;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .dtb-schematic-parts-trigger:active { translate: 0 2px; box-shadow: 0 4px 15px rgba(17,43,90,.25); }
+  .dtb-parts-nav__item { min-height: 72px; }
+  .dtb-parts-nav__item:active { background: #ebf2ff; }
+}
+@keyframes dtb-parts-backdrop-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dtb-parts-nav__backdrop { animation: none; }
+  .dtb-schematic-parts-trigger { transition: none; }
+}
