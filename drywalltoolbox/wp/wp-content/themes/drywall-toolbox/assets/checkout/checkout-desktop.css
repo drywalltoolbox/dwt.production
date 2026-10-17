@@ -110,3 +110,36 @@
 }
 @media (min-width: 1440px) { body { --dtb-desktop-sidebar-width: 460px; } }
 @media (min-width: 1800px) { body { --dtb-desktop-checkout-width: 1480px; --dtb-desktop-sidebar-width: 480px; } }
+
+
+/* Premium desktop composition: restrained sheet surfaces and balanced reading widths. */
+@media (min-width: 1024px) {
+	body.woocommerce-checkout {
+		--dtb-desktop-checkout-width: 1360px;
+		--dtb-desktop-sidebar-width: clamp(380px, 30vw, 448px);
+		--dtb-desktop-column-gap: clamp(22px, 2.8vw, 40px);
+	}
+	body.woocommerce-checkout .wc-block-components-sidebar-layout > .wc-block-checkout__main {
+		padding: 16px clamp(26px, 3.1vw, 46px) 34px;
+		border: 1px solid var(--dtb-checkout-border);
+		border-radius: 20px;
+		background: var(--dtb-checkout-surface);
+		box-shadow: var(--dtb-checkout-shadow-sm);
+	}
+	body.woocommerce-checkout .wc-block-components-sidebar-layout > .wc-block-checkout__sidebar {
+		position: sticky;
+		top: 20px;
+		padding: 14px clamp(20px, 2vw, 28px) 20px;
+		border: 1px solid var(--dtb-checkout-border);
+		border-radius: 20px;
+		background: var(--dtb-checkout-surface);
+		box-shadow: var(--dtb-checkout-shadow-sm);
+	}
+	body.woocommerce-checkout .wc-block-checkout__shipping-method-option,
+	body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block .wc-block-components-radio-control-accordion-option {
+		min-height: 66px;
+	}
+	body.woocommerce-checkout .wc-block-components-checkout-step__heading {
+		margin-bottom: 22px;
+	}
+}
