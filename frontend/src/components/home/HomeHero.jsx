@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Gem, Truck, Headset, Pause, Play } from 'lucide-react';
+import { Gem, Truck, Headset } from 'lucide-react';
 import { AnimatePresence, m as Motion, useReducedMotion } from 'framer-motion';
 import HomeHeroBrands from './HomeHeroBrands';
 import HomeHeroButton from './HomeHeroButton';
@@ -38,7 +38,6 @@ export default function HomeHero({ brands = [] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const tabRefs = useRef([]);
-  const [paused, setPaused] = useState(false);
   const [interactionPaused, setInteractionPaused] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
   const swipeStartRef = useRef(null);
@@ -93,13 +92,13 @@ export default function HomeHero({ brands = [] }) {
   }, []);
 
   useEffect(() => {
-    if (paused || interactionPaused || pointerActive || reduceMotion || !pageVisible) return undefined;
+    if (interactionPaused || pointerActive || reduceMotion || !pageVisible) return undefined;
     const interval = window.setInterval(() => {
       setDirection(1);
       setActiveIndex((index) => (index + 1) % HOME_HERO_CAMPAIGN_COUNT);
     }, SLIDE_INTERVAL_MS);
     return () => window.clearInterval(interval);
-  }, [paused, interactionPaused, pointerActive, reduceMotion, pageVisible, activeIndex]);
+  }, [interactionPaused, pointerActive, reduceMotion, pageVisible, activeIndex]);
 
   const handleTabKeyDown = useCallback((event) => {
     let nextIndex = null;
@@ -227,7 +226,7 @@ export default function HomeHero({ brands = [] }) {
 
         <nav className="home-hero-carousel" aria-label="Homepage slides">
           <div className="home-hero-carousel__controls" role="group" aria-label="Choose homepage slide"
-            data-running={!paused && !interactionPaused && !pointerActive && !reduceMotion && pageVisible}
+            data-running={!interactionPaused && !pointerActive && !reduceMotion && pageVisible}
             onMouseEnter={() => setInteractionPaused(true)}
             onMouseLeave={() => setInteractionPaused(false)}>
             {HOME_HERO_CAMPAIGNS.map((campaign, index) => (
@@ -242,12 +241,7 @@ export default function HomeHero({ brands = [] }) {
                 onKeyDown={handleTabKeyDown}
               />
             ))}
-            <button type="button" className="home-hero-carousel__pause"
-              onClick={() => setPaused((current) => !current)}
-              aria-label={paused ? 'Play slideshow' : 'Pause slideshow'}
-              aria-pressed={paused}>
-              {paused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
-            </button>
+
           </div>
         </nav>
       </div>
