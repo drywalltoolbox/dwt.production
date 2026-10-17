@@ -438,3 +438,32 @@
     box-shadow: none;
   }
 }
+
+
+/* Premium light parts index aligned with the unified diagram workspace. */
+@media (min-width: 901px) {
+  .dtb-schematic-workspace { grid-template-columns: minmax(0, 1fr) clamp(340px, 29vw, 480px); }
+  .dtb-parts-nav {
+    background: #fbfcfe;
+    border-left: 1px solid #e0e8f3;
+    box-shadow: none;
+  }
+  .dtb-parts-nav__grab-area { padding: 20px 22px 8px; }
+  .dtb-parts-nav__eyebrow { font-size: 11px; letter-spacing: .1em; color: #2f66d6; }
+  .dtb-parts-nav h2 { font-size: clamp(22px, 1.7vw, 28px); line-height: 1.12; letter-spacing: -.035em; }
+  .dtb-parts-nav__count { margin-top: 9px; font-size: 12px; }
+  .dtb-parts-nav__search { height: 42px; margin: 12px 18px 13px; border-radius: 10px; background: #f5f8fd; }
+  .dtb-parts-nav__list { gap: 8px; padding: 0 15px 15px; }
+  .dtb-parts-nav__item {
+    grid-template-columns: minmax(38px, auto) 48px minmax(0,1fr) 16px;
+    min-height: 70px;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 12px;
+    background: #fff;
+  }
+  .dtb-parts-nav__media { width: 48px; height: 48px; }
+  .dtb-parts-nav__item-body strong { font-size: 12.5px; line-height: 1.3; }
+  .dtb-parts-nav__item-body small { font-size: 11px; }
+  .dtb-parts-nav__footer { padding: 10px 18px; }
+}
