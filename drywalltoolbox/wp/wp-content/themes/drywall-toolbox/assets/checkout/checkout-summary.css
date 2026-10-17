@@ -368,3 +368,11 @@
 		min-height: 56px;
 	}
 }
+
+
+/* Native shipping labels must reserve the radio's entire hit area. */
+@media (max-width: 1023px) {
+	body.woocommerce-checkout .wc-block-checkout__shipping-method-option {
+		padding-inline-start: 46px !important;
+	}
+}

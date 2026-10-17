@@ -143,3 +143,22 @@
 		margin-bottom: 22px;
 	}
 }
+
+
+/* Larger fully contained item thumbnails in the order summary. */
+@media (min-width: 1024px) {
+	body.woocommerce-checkout .wc-block-components-order-summary-item {
+		grid-template-columns: 86px minmax(0, 1fr) minmax(64px, max-content);
+		column-gap: 14px;
+	}
+	body.woocommerce-checkout .wc-block-components-order-summary-item__image,
+	body.woocommerce-checkout .wc-block-components-order-summary-item__image img {
+		width: 86px;
+		max-width: 86px;
+	}
+	body.woocommerce-checkout .wc-block-components-order-summary-item__image img {
+		height: 86px;
+		object-fit: contain;
+		object-position: center;
+	}
+}
