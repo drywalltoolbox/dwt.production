@@ -1,40 +1,56 @@
 /**
- * Checkout order summary: reuse the native WooCommerce disclosure.
- * Never synthesize a second trigger, alter Woo state or move React-managed DOM.
- * If the native title is unavailable, the summary remains inline (fail open).
+ * Native Checkout Block mobile summary presentation.
+ * Never move, clone or replace WooCommerce controls. Fail open to inline summary.
  */
 (() => {
  'use strict';
- const mq = window.matchMedia('(max-width: 767px)');
- const legacyTrigger = document.querySelector('.dtb-mobile-sheet-trigger');
- const legacyBackdrop = document.querySelector('.dtb-mobile-sheet-backdrop');
- if (legacyTrigger) legacyTrigger.hidden = true;
- if (legacyBackdrop) legacyBackdrop.hidden = true;
- document.body.classList.remove('dtb-mobile-sheet-ready', 'dtb-mobile-sheet-open');
+ const mobile = window.matchMedia('(max-width: 767px)');
+ const body = document.body;
  let host = null;
- const clear = () => {
-   if (host) { host.classList.remove('dtb-native-summary-sheet'); host.inert = false; }
+ let observer = null;
+ let retryTimer = 0;
+ let attempts = 0;
+ const reset = () => {
+   if (host) host.classList.remove('dtb-native-summary-sheet');
    host = null;
-   document.body.classList.remove('dtb-native-summary-ready');
+   body.classList.remove('dtb-native-summary-ready');
  };
- const setup = () => {
-   if (!mq.matches) { clear(); return; }
-   // Native Woo title is the sole disclosure authority.
-   const titles = Array.from(document.querySelectorAll('.wc-block-components-checkout-order-summary__title'));
-   const title = titles.find(node => node.closest('.wc-block-components-checkout-order-summary'));
-   const target = title && title.closest('.wc-block-components-checkout-order-summary');
-   if (!target) { clear(); return; }
-   if (host !== target) { clear(); host = target; }
-   host.classList.add('dtb-native-summary-sheet');
-   document.body.classList.add('dtb-native-summary-ready');
+ const sync = () => {
+   if (!mobile.matches) { reset(); return; }
+   const found = document.querySelector(
+     '.wc-block-components-checkout-order-summary, .wp-block-woocommerce-checkout-order-summary-block'
+   );
+   if (!found || !found.isConnected) { reset(); return; }
+   if (host !== found) {
+     reset();
+     host = found;
+     host.classList.add('dtb-native-summary-sheet');
+   }
+   body.classList.add('dtb-native-summary-ready');
  };
- mq.addEventListener('change', setup);
- document.addEventListener('DOMContentLoaded', setup, { once: true });
- // Checkout Blocks hydrate after document ready; bounded retry, no global mutation observer.
- let count = 0;
- const id = window.setInterval(() => {
-   setup();
-   count++;
-   if (host || count >= 40) window.clearInterval(id);
- }, 250);
+ const start = () => {
+   sync();
+   // Checkout Blocks can hydrate after DOMContentLoaded or replace the summary.
+   // Watch only the checkout root; disconnect after a bounded interval.
+   const root = document.querySelector('.wp-block-woocommerce-checkout, #primary');
+   if (root && !observer) {
+     observer = new MutationObserver(() => {
+       if (!host || !host.isConnected) sync();
+     });
+     observer.observe(root, { childList: true, subtree: true });
+   }
+   window.clearInterval(retryTimer);
+   attempts = 0;
+   retryTimer = window.setInterval(() => {
+     sync();
+     if (++attempts >= 120) {
+       window.clearInterval(retryTimer);
+       if (observer) { observer.disconnect(); observer = null; }
+     }
+   }, 250);
+ };
+ mobile.addEventListener('change', () => { reset(); start(); });
+ if (document.readyState === 'loading') {
+   document.addEventListener('DOMContentLoaded', start, { once: true });
+ } else start();
 })();
