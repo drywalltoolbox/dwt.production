@@ -156,8 +156,6 @@ export default function HomeHero({ brands = [] }) {
         <div
           className="home-hero__content-shell"
           id="home-hero-panel"
-          role="tabpanel"
-          aria-labelledby={`home-hero-tab-${activeCampaign.id}`}
           aria-live="off"
         >
           <AnimatePresence initial={false} mode="wait" custom={direction}>
