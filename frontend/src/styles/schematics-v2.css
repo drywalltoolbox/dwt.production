@@ -1332,4 +1332,36 @@
   flex: 0 0 auto;
   min-width: 0;
   min-height: 0;
+  max-height: var(--dtb-schematic-available-height, 100dvh);
+}
+
+/* The controls are fixed rows inside one measured viewer height. The
+   diagram alone receives remaining space, never a minimum page height. */
+@media (max-width: 900px) {
+  .main-content--schematic-viewer {
+    height: auto;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer {
+    height: 100%;
+    max-height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-workspace {
+    flex: 1 1 0;
+    height: 0;
+    min-height: 0;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-diagram-wrap {
+    flex: 1 1 0;
+    height: 100%;
+    min-height: 0;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-diagram {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
 }
