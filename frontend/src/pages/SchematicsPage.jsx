@@ -19,7 +19,7 @@
  * global DOM/history runtimes) has been disconnected from routing in favor
  * of this module. It is left in the repo pending Phase 9 removal.
  */
-import { useCallback, useEffect, useRef } from 'react';
+import { useCallback, useLayoutEffect, useRef } from 'react';
 import AppErrorBoundary from '../components/system/AppErrorBoundary';
 import SEOHead from '../components/shared/SEOHead';
 import InteriorPageHero from '../components/shared/InteriorPageHero.jsx';
@@ -81,29 +81,48 @@ function SchematicsPageInner() {
   // contract so selecting a tool renders its detail view rather than falling
   // back to the catalog selector.
   const isViewer = routeState.view === 'viewer';
-  // Measure available visual viewport below the actual storefront chrome.
-  // Header height is responsive (announcement + navigation + search), so a
-  // hardcoded --header-height offset incorrectly crops the mobile viewer.
-  useEffect(() => {
+  // One viewport authority for the full-screen viewer. The document itself
+  // must not scroll while the schematic camera owns pan/zoom interactions.
+  // Measure from document layout (not the scrolling rect) so viewport updates
+  // cannot feed back into the viewer's own height.
+  useLayoutEffect(() => {
     if (!isViewer || !viewerRootRef.current) return undefined;
     const root = viewerRootRef.current;
+    const html = document.documentElement;
+    const body = document.body;
+    const previousHtmlOverflow = html.style.overflow;
+    const previousBodyOverflow = body.style.overflow;
+    const previousOverscroll = body.style.overscrollBehavior;
+    window.scrollTo(0, 0);
+    html.style.overflow = 'hidden';
+    body.style.overflow = 'hidden';
+    body.style.overscrollBehavior = 'none';
+    let frame = 0;
     const update = () => {
-      const top = Math.max(0, root.getBoundingClientRect().top);
-      const height = Math.max(280, (window.visualViewport?.height || window.innerHeight) - top);
-      root.style.setProperty('--dtb-schematic-available-height', `${height}px`);
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        // Root stays at its document position. Do not observe scrolling.
+        const top = Math.max(0, root.getBoundingClientRect().top + window.scrollY);
+        const viewportHeight = window.visualViewport?.height || window.innerHeight;
+        root.style.setProperty('--dtb-schematic-available-height',
+          `${Math.max(0, viewportHeight - top)}px`);
+      });
     };
     update();
-    const observer = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(update) : null;
-    const header = document.querySelector('header');
-    if (header) observer?.observe(header);
+    const observer = typeof ResizeObserver === 'undefined' ? null : new ResizeObserver(update);
+    const shellHeader = root.parentElement?.previousElementSibling;
+    if (shellHeader) observer?.observe(shellHeader);
     window.addEventListener('resize', update);
-    window.addEventListener('scroll', update, { passive: true });
     window.visualViewport?.addEventListener('resize', update);
     return () => {
+      cancelAnimationFrame(frame);
       observer?.disconnect();
       window.removeEventListener('resize', update);
-      window.removeEventListener('scroll', update);
       window.visualViewport?.removeEventListener('resize', update);
+      root.style.removeProperty('--dtb-schematic-available-height');
+      html.style.overflow = previousHtmlOverflow;
+      body.style.overflow = previousBodyOverflow;
+      body.style.overscrollBehavior = previousOverscroll;
     };
   }, [isViewer]);
 
