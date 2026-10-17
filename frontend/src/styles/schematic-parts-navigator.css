@@ -467,3 +467,19 @@
   .dtb-parts-nav__item-body small { font-size: 11px; }
   .dtb-parts-nav__footer { padding: 10px 18px; }
 }
+
+/* Loaded after schematics-v2.css: keep the new bottom-left control placement
+   authoritative over the legacy top-right diagram-rail rule. */
+@media (min-width: 901px) {
+  .dtb-schematics-page__content--viewer .dtb-schematic-workspace .dtb-schematic-zoom-controls {
+    top: auto;
+    right: auto;
+    bottom: 24px;
+    left: 26px;
+    transform: none;
+    background: rgba(255,255,255,.96);
+    border: 1px solid #dbe5f0;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(19,45,79,.09);
+  }
+}
