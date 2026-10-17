@@ -19,7 +19,7 @@
 
 .dtb-schematics-page__content--viewer .dtb-schematic-viewer__title { color: #fff; font-weight: 760; letter-spacing: -.025em; }
 .dtb-schematics-page__content--viewer .dtb-schematic-viewer__subtitle { color: #b9c9ea; }
-.dtb-schematics-page__content--viewer .dtb-schematic-viewer__brand-logo { height: 32px; max-width: 130px; padding: 3px 6px; border-radius: 5px; background: #fff; }
+.dtb-schematics-page__content--viewer .dtb-schematic-viewer__brand-logo { height: clamp(44px, 5vw, 62px); max-width: min(45vw, 180px); padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; object-fit: contain; }
 .dtb-schematics-page__content--viewer .back-button.dtb-schematic-viewer__back { background: rgba(255,255,255,.11); color: #fff; border-color: rgba(255,255,255,.19); box-shadow: none; }
 .dtb-schematics-page__content--viewer .back-button.dtb-schematic-viewer__back:hover { background: rgba(255,255,255,.2); }
 
@@ -192,4 +192,77 @@
 @media (prefers-reduced-motion: reduce) {
   .dtb-parts-nav__backdrop { animation: none; }
   .dtb-schematic-parts-trigger { transition: none; }
+}
+
+/* The schematic header is brand-native: never wrap supplied logos in a card. */
+.dtb-schematics-page__content--viewer .dtb-schematic-viewer__heading { min-width: 0; }
+.dtb-schematics-page__content--viewer .dtb-schematic-viewer__brand-logo {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+  border-radius: 0;
+}
+
+/* A callout number is primary identification, not an overlay on imagery.
+   Keep the original manufacturer reference legible at narrow widths. */
+.dtb-parts-nav__item {
+  grid-template-columns: minmax(40px, auto) 58px minmax(0, 1fr) 17px;
+  gap: 10px;
+}
+.dtb-parts-nav__reference {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  justify-self: start;
+  max-width: 110px;
+  min-width: 40px;
+  min-height: 30px;
+  padding: 5px 7px;
+  border-radius: 8px;
+  background: #eaf0fc;
+  color: #173878;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  text-align: center;
+}
+.dtb-parts-nav__media { width: 58px; height: 58px; }
+
+@media (max-width: 900px) {
+  /* The sheet must sit above the global storefront header, including on iOS.
+     The page itself must never scroll behind the open modal. */
+  .dtb-parts-nav__backdrop { z-index: 99998; }
+  .dtb-parts-nav {
+    z-index: 99999;
+    height: min(83dvh, 720px);
+    max-height: calc(100dvh - env(safe-area-inset-top) - 12px);
+  }
+  .dtb-parts-nav__grab-area { padding-top: 14px; }
+  .dtb-parts-nav__heading-row { align-items: center; }
+  .dtb-parts-nav__eyebrow { display: block; }
+  .dtb-parts-nav__item {
+    grid-template-columns: minmax(40px, 62px) 52px minmax(0, 1fr) 16px;
+    min-height: 76px;
+    gap: 9px;
+    padding: 8px;
+  }
+  .dtb-parts-nav__reference {
+    min-width: 40px;
+    max-width: 62px;
+    font-size: 11px;
+    padding: 5px 4px;
+  }
+  .dtb-parts-nav__media { width: 52px; height: 52px; }
+  .dtb-parts-nav__item-body strong { font-size: 13px; }
+  .dtb-parts-nav__item-body small { font-size: 11px; }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__brand-logo {
+    height: 46px;
+    max-width: min(54vw, 168px);
+  }
+}
+@media (max-width: 390px) {
+  .dtb-parts-nav__item { grid-template-columns: minmax(36px, 52px) 46px minmax(0, 1fr) 14px; gap: 7px; }
+  .dtb-parts-nav__reference { max-width: 52px; min-width: 36px; font-size: 10px; }
+  .dtb-parts-nav__media { width: 46px; height: 46px; }
 }
