@@ -27,13 +27,13 @@ import '../styles/store-policies.css';
 /* ─── Quick facts shown in the hero panel ────────────────────────────────── */
 const QUICK_FACTS = [
   { Icon: Clock3, label: 'Same-day processing', text: 'In-stock orders placed before 12:00 PM CST ship the same day.' },
-  { Icon: PackageCheck, label: 'Free shipping $75+', text: 'Standard ground shipping is free on qualifying orders.' },
+  { Icon: PackageCheck, label: 'Free shipping $50+', text: 'Standard ground shipping is free on qualifying orders.' },
   { Icon: CheckCircle2, label: 'Tracked every step', text: 'A tracking number is emailed the moment your order ships.' },
 ];
 
 /* ─── Shipping rate table data ───────────────────────────────────────────── */
 const SHIPPING_RATES = [
-  { service: 'Standard Ground', carrier: 'UPS / FedEx', transit: '3–7 business days', price: 'Free on orders $75+', highlight: true },
+  { service: 'Standard Ground', carrier: 'UPS / FedEx', transit: '3–7 business days', price: 'Free on orders $50+', highlight: true },
   { service: 'USPS Priority Mail', carrier: 'USPS', transit: '2–4 business days', price: 'Calculated at checkout', highlight: false },
   { service: 'Expedited 2-Day', carrier: 'UPS / FedEx', transit: '2 business days', price: 'Calculated at checkout', highlight: false },
   { service: 'Overnight / Next Day Air', carrier: 'UPS / FedEx', transit: '1 business day', price: 'Calculated at checkout', highlight: false },
@@ -137,7 +137,7 @@ export default function ShippingPolicy() {
     <div className="store-policy-page">
       <SEOHead
         title="Shipping Policy"
-        description="Drywall Toolbox shipping policy: free shipping on orders over $75, same-day processing by 12 PM CST, UPS, FedEx &amp; USPS service levels, international shipping, and tracking information."
+        description="Drywall Toolbox shipping policy: free shipping on orders $50 or more, same-day processing by 12 PM CST, UPS, FedEx &amp; USPS service levels, international shipping, and tracking information."
         canonical="/shipping-policy"
       />
 
