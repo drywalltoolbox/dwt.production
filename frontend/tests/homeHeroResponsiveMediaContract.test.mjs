@@ -81,7 +81,7 @@ test('campaign navigation is manual, keyboard accessible, touch navigable, and r
   assert.match(source, /window\.clearInterval/);
   assert.match(source, /visibilitychange/);
   assert.match(source, /reduceMotion/);
-  assert.match(source, /aria-pressed=\{paused\}/);
+  assert.doesNotMatch(source, /setPaused/);
 });
 
 test('hero presentation keeps stable media, atmosphere, scrim, content, and navigation layers', async () => {
@@ -137,7 +137,7 @@ test('autoplay is not blocked by hovering the entire hero and transitions overla
   const motion = await readFile(new URL('src/motion/dtbMotion.js', frontendRoot), 'utf8');
   assert.match(source, /mode="popLayout"/);
   assert.doesNotMatch(source, /data-campaign=\{activeCampaign.id\}\s*onMouseEnter=/);
-  assert.match(source, /data-running=\{!paused/);
+  assert.match(source, /data-running=\{!interactionPaused);
   assert.match(desktopCss, /home-hero-slide-progress/);
   assert.match(motion, /duration: 0\.72/);
 });
@@ -151,5 +151,5 @@ test('desktop hover activity pauses carousel only while pointer moves, then resu
   assert.match(source, /window\.clearTimeout\(pointerIdleTimerRef\.current\)/);
   assert.match(source, /setPointerActive\(false\)/);
   assert.match(source, /interactionPaused \|\| pointerActive \|\| reduceMotion/);
-  assert.match(source, /data-running=\{!paused && !interactionPaused && !pointerActive/);
+  assert.match(source, /data-running=\{!interactionPaused && !pointerActive/);
 });
