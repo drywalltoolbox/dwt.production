@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
+import { Gem, Truck, Headset, ArrowUpRight, Wrench, Settings2 } from 'lucide-react';
 import { AnimatePresence, m as Motion, useReducedMotion } from 'framer-motion';
 import HomeHeroBrands from './HomeHeroBrands';
 import HomeHeroButton from './HomeHeroButton';
@@ -164,6 +165,11 @@ export default function HomeHero({ brands = [] }) {
                   {activeCampaign.secondaryAction.label}
                 </HomeHeroButton>
               </Motion.div>
+              <Motion.div className="home-hero__promises" variants={itemVariants} aria-label="Why shop with Drywall Toolbox">
+                <span><Gem aria-hidden="true" size={23} /><span><strong>Pro-Grade Quality</strong><small>Built for the jobsite</small></span></span>
+                <span><Truck aria-hidden="true" size={23} /><span><strong>Fast Shipping</strong><small>Orders $75+</small></span></span>
+                <span><Headset aria-hidden="true" size={23} /><span><strong>Expert Support</strong><small>Real people. Real help.</small></span></span>
+              </Motion.div>
             </Motion.div>
           </AnimatePresence>
         </div>
@@ -194,7 +200,9 @@ export default function HomeHero({ brands = [] }) {
                   <span className="home-hero-campaigns__index" aria-hidden="true">
                     {String(index + 1).padStart(2, '0')}
                   </span>
-                  <span className="home-hero-campaigns__label">{campaign.label}</span>
+                  <span className="home-hero-campaigns__label">{campaign.label}<small className="home-hero-campaigns__description">{campaign.id === 'tools' ? 'Taping, finishing and more' : campaign.id === 'parts' ? 'Keep your tools running' : 'Expert service & support'}</small></span>
+                  <span className="home-hero-campaigns__glyph" aria-hidden="true">{campaign.id === 'tools' ? <Settings2 size={28} /> : campaign.id === 'parts' ? <Wrench size={28} /> : <Headset size={28} />}</span>
+                  <ArrowUpRight className="home-hero-campaigns__arrow" size={20} aria-hidden="true" />
                   <span className="home-hero-campaigns__track" aria-hidden="true">
                     {isActive && (
                       <Motion.span
