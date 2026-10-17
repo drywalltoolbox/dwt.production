@@ -257,3 +257,36 @@
   .home-hero__button { min-height: 51px; }
   .home-hero__promises { margin-top: 18px; }
 }
+
+
+/* Browser-viewport-aware desktop hero, matching the approved photographic POV.
+   Avoid the former forced 710px minimum, which pushed the campaign bar below
+   the fold beneath the full storefront header. */
+@media (min-width:1025px) {
+  .home-hero__stage {
+    height: clamp(600px, calc(100svh - 174px), 790px);
+    min-height: 600px;
+  }
+  .home-hero__media-image { object-position: 61% 50%; }
+  .home-hero__content-shell { bottom: 125px; }
+  .home-hero__eyebrow { margin-bottom: 10px; }
+  .home-hero__title {
+    font-size: clamp(48px,4.05vw,68px);
+    margin-bottom: 13px;
+    line-height: .97;
+  }
+  .home-hero__description {
+    font-size: clamp(14px,1vw,17px);
+    max-width: 570px;
+    margin-bottom: 15px;
+  }
+  .home-hero__button { min-height: 49px; }
+  .home-hero__promises { margin-top: 17px; }
+  .home-hero-campaigns { bottom: 16px; }
+  .home-hero-campaigns__tab { min-height: 83px; padding-block: 9px; }
+}
+@media (min-width:1025px) and (max-height:740px) {
+  .home-hero__stage { min-height: 570px; }
+  .home-hero__title { font-size: clamp(46px,3.7vw,60px); }
+  .home-hero__promises { margin-top: 12px; }
+}

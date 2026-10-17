@@ -1351,3 +1351,43 @@
     min-width: 0;
   }
 }
+
+
+/* Compact mockup-aligned desktop header. The existing search, nav and commerce
+   components remain authoritative; only their presentation is adjusted. */
+@media (min-width: 1025px) {
+  .site-header .site-header-inner {
+    height: 138px !important;
+    min-height: 138px !important;
+    padding-inline: clamp(24px, 3.6vw, 64px) !important;
+  }
+  .site-header .header-desktop-layout {
+    grid-template-columns: clamp(178px, 16vw, 245px) minmax(0,1fr) auto;
+    grid-template-rows: 90px 48px;
+    column-gap: clamp(20px, 2.7vw, 46px);
+    height: 138px;
+    min-height: 138px;
+  }
+  .site-header .header-left { grid-column: 1; grid-row: 1; }
+  .site-header .logo-image {
+    width: auto;
+    max-width: min(100%, 205px);
+    max-height: 58px;
+    object-fit: contain;
+  }
+  .site-header .header-desktop-nav-row {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    height: 48px;
+    min-height: 48px;
+    border-top: 1px solid rgba(113,149,206,.17);
+  }
+  .site-header .dtb-desktop-nav { gap: clamp(12px, 1.8vw, 30px); }
+}
+@media (min-width:1025px) and (max-width:1240px) {
+  .site-header .header-desktop-layout {
+    grid-template-columns: 170px minmax(0,1fr) auto;
+    column-gap: 16px;
+  }
+  .site-header .logo-image { max-width: 165px; }
+}

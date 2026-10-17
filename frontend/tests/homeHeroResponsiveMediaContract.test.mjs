@@ -54,8 +54,8 @@ test('homepage campaigns only promote customer-ready storefront routes', async (
     assert.match(source, new RegExp(route.replaceAll('/', '\\/')));
   }
 
-  assert.match(source, /primaryAction: \{ label: 'Shop Tools', to: '\/all-products' \}/);
-  assert.match(source, /secondaryAction: \{ label: 'Explore Parts', to: '\/parts' \}/);
+  assert.match(source, /primaryAction: \{ label: 'Shop All', to: '\/all-products' \}/);
+  assert.match(source, /secondaryAction: \{ label: 'Shop by Brand', to: '\/products\/brands' \}/);
 
   assert.match(styles, /\.home-hero-campaigns__rail\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3,/);
   assert.doesNotMatch(source, /^\s*(?:price|inventory|order|payment|checkout)\s*:/im);

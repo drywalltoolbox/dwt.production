@@ -6,8 +6,8 @@ export const HOME_HERO_CAMPAIGNS = [
     titleLines: ['A New Standard', 'in Drywall.'],
     accentLine: 1,
     description: 'Everything you need for taping and finishing—from professional tools and parts to expert repair service. Built for pros who demand more.',
-    primaryAction: { label: 'Shop Tools', to: '/all-products' },
-    secondaryAction: { label: 'Explore Parts', to: '/parts' },
+    primaryAction: { label: 'Shop All', to: '/all-products' },
+    secondaryAction: { label: 'Shop by Brand', to: '/products/brands' },
   },
   {
     id: 'parts',
