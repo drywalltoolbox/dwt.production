@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const CART_QTY_SYNC_DELAY_MS = 260;
 const MAX_CART_QUANTITY = 99;
+const FREE_SHIPPING_THRESHOLD = 75;
 const CHECKOUT_HREF = `${ ( process.env.PUBLIC_URL || '' ).replace( /\/+$/, '' ) }/checkout`;
 
 function getCartItemKey(item) {
@@ -245,6 +246,9 @@ export default function StorefrontCartSheet({
     [cartItems, localQuantities]
   );
 
+  const shippingRemaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
+  const shippingProgress = Math.min(100, Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100));
+
   const itemCount = useMemo(
     () => cartItems.reduce((count, item) => count + getDisplayQuantity(item, localQuantities), 0),
     [cartItems, localQuantities]
@@ -294,6 +298,26 @@ export default function StorefrontCartSheet({
             </button>
           </div>
         </header>
+
+        {cartItems.length > 0 && (
+          <div className="scs-shipping-progress">
+            <p className="scs-shipping-progress__message" aria-live="polite">
+              {shippingRemaining > 0
+                ? <><strong>${shippingRemaining.toFixed(2)}</strong> away from free shipping</>
+                : <strong>You've reached the $75 free-shipping threshold</strong>}
+            </p>
+            <div
+              className="scs-shipping-progress__track"
+              role="progressbar"
+              aria-label="Progress toward $75 free shipping"
+              aria-valuemin={0}
+              aria-valuemax={FREE_SHIPPING_THRESHOLD}
+              aria-valuenow={Math.min(FREE_SHIPPING_THRESHOLD, Math.max(0, Number(subtotal.toFixed(2))))}
+            >
+              <span className="scs-shipping-progress__fill" style={{ width: `${shippingProgress}%` }} />
+            </div>
+          </div>
+        )}
 
         <div className="scs-body">
           {cartItems.length === 0 ? (
