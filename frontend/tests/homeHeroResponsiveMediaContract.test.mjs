@@ -64,9 +64,9 @@ test('homepage campaigns only promote customer-ready storefront routes', async (
 test('campaign navigation is manual, keyboard accessible, touch navigable, and reduced-motion aware', async () => {
   const source = await readHeroSource();
 
-  assert.match(source, /role="tablist"/);
-  assert.match(source, /role="tab"/);
-  assert.match(source, /aria-selected=\{isActive\}/);
+  assert.match(source, /role="group"/);
+  assert.match(source, /home-hero-carousel__dot/);
+  assert.match(source, /aria-current=\{index === activeIndex/);
   assert.match(source, /ArrowRight/);
   assert.match(source, /ArrowLeft/);
   assert.match(source, /event\.key === 'Home'/);
@@ -75,9 +75,13 @@ test('campaign navigation is manual, keyboard accessible, touch navigable, and r
   assert.match(source, /useReducedMotion\(\)/);
   assert.match(source, /AnimatePresence/);
 
-  // Campaign content should not rotate behind the shopper or require a
-  // separate pause control. Movement happens only after explicit interaction.
-  assert.doesNotMatch(source, /setInterval|setTimeout\([^)]*selectCampaign|autoplay/i);
+  // Deliberate autoplay with explicit pause controls and accessibility guards.
+  assert.match(source, /SLIDE_INTERVAL_MS = 8500/);
+  assert.match(source, /window\.setInterval/);
+  assert.match(source, /window\.clearInterval/);
+  assert.match(source, /visibilitychange/);
+  assert.match(source, /reduceMotion/);
+  assert.match(source, /aria-pressed=\{paused\}/);
 });
 
 test('hero presentation keeps stable media, atmosphere, scrim, content, and navigation layers', async () => {
