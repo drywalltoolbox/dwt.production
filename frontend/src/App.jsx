@@ -360,6 +360,7 @@ function AppShell({ cartOpen, toggleCart, closeCart }) {
 
   const isHome = location.pathname === '/';
   const minimalChrome = location.pathname === '/checkout';
+  const schematicViewer = location.pathname === '/schematics' && Boolean(new URLSearchParams(location.search).get('schematic'));
 
   useEffect(() => {
     if (previousRouteKeyRef.current === routeKey) return;
@@ -370,11 +371,11 @@ function AppShell({ cartOpen, toggleCart, closeCart }) {
   return (
     <>
       {!minimalChrome && <Header onCartToggle={toggleCart} onMobileMenuOpen={closeCart} />}
-      <main className={!isHome && !minimalChrome ? 'main-content' : minimalChrome ? '' : 'main-content home-main'}>
+      <main className={schematicViewer ? 'main-content main-content--schematic-viewer' : !isHome && !minimalChrome ? 'main-content' : minimalChrome ? '' : 'main-content home-main'}>
         <RouteBackBar />
         <AppRoutes />
       </main>
-      {!minimalChrome && <Footer />}
+      {!minimalChrome && !schematicViewer && <Footer />}
       {!minimalChrome && <CartSidebar isOpen={cartOpen} onClose={closeCart} />}
       <MobileInstallNudge />
       {!minimalChrome && isHome && !user && <HomepageSignupCtaController />}
