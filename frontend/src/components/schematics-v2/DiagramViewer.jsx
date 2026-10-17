@@ -365,7 +365,7 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
         onDoubleClick={(event) => zoomAtPoint(scale > 1 ? 1 : 2, event.clientX, event.clientY)}
-        style={{ touchAction: 'none', cursor: scale > 1 ? (isGesturing ? 'grabbing' : 'grab') : 'default' }}
+        style={{ touchAction: scale > 1 ? 'none' : 'pan-y', cursor: scale > 1 ? (isGesturing ? 'grabbing' : 'grab') : 'default' }}
       >
         {/* Transform wrapper — legacy `.schematic-image-wrapper`. Zoom/pan is a
             single `transform: scale(...) translate(...)` here, center-origin,
