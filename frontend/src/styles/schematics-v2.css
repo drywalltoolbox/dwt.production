@@ -1452,3 +1452,34 @@
     padding-block: 5px;
   }
 }
+
+/* Readable desktop canvas: do not squeeze the drawing into the portion of the
+   first viewport remaining after the global header. The page scrolls to the
+   existing footer; only the master-parts rail scrolls within the workspace. */
+@media (min-width: 901px) {
+  .dtb-schematics-page__content--viewer {
+    height: max(var(--dtb-schematic-available-height, 0px), clamp(560px, 72dvh, 760px));
+    min-height: clamp(560px, 72dvh, 760px);
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer {
+    height: 100%;
+    min-height: 0;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__header {
+    min-height: 66px;
+    padding-block: 6px;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__brand-logo {
+    max-height: 33px;
+    max-width: min(100%, 140px);
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__title {
+    font-size: .93rem;
+    line-height: 1.15;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-workspace {
+    flex: 1 1 0;
+    min-height: 0;
+    height: 0;
+  }
+}

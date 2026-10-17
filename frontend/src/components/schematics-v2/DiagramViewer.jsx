@@ -144,12 +144,12 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
     const viewport = containerRef.current;
     if (!viewport || !page?.width || !page?.height) return undefined;
     const fit = () => {
-      // Desktop uses a deliberate inset so the complete exploded view reads
-      // as an overview at 100%, with room around its outermost callouts.
+      // Desktop fits the complete exploded view with a narrow safety margin;
+      // the page owns a readable minimum canvas height and scrolls to the footer.
       // Keep the mobile fit tight and preserve the shared hotspot plane.
       const desktop = window.matchMedia('(min-width: 901px)').matches;
-      const horizontalInset = desktop ? 96 : 24;
-      const verticalInset = desktop ? 72 : 24;
+      const horizontalInset = desktop ? 36 : 24;
+      const verticalInset = desktop ? 28 : 24;
       const width = Math.max(0, viewport.clientWidth - horizontalInset);
       const height = Math.max(0, viewport.clientHeight - verticalInset);
       if (!width || !height) return;
