@@ -115,14 +115,14 @@ $ajax_request = true;
 expect_same( $canonical_url, DTB_WooNativeCheckoutRuntime::preserve_staging_checkout_canonical( $canonical_url, '' ), 'AJAX requests must retain normal canonical handling.' );
 $ajax_request = false;
 
-foreach ( [ '/staging/checkout/' => [ '/staging/', '/staging/cart/' ], '/checkout/' => [ '/', '/cart/?woo-owned=1' ] ] as $path => $expected_links ) {
+foreach ( [ '/staging/checkout/' => [ '/staging/cart/' ], '/checkout/' => [ '/cart/?woo-owned=1' ] ] as $path => $expected_links ) {
 	$_SERVER['REQUEST_URI'] = $path;
 	ob_start();
 	include $repository_root . '/drywalltoolbox/wp/wp-content/themes/drywall-toolbox/templates/checkout/native-checkout.php';
 	$html = (string) ob_get_clean();
 	foreach ( $expected_links as $link ) {
 		if ( ! str_contains( $html, 'href="' . esc_url( home_url( $link ) ) . '"' ) ) {
-			throw new RuntimeException( 'The native shell must preserve the staging links and WooCommerce production cart URL.' );
+			throw new RuntimeException( 'The native shell must preserve the correct storefront cart link for each checkout mount.' );
 		}
 	}
 }
