@@ -16,6 +16,7 @@ import homeHeroMobileUrl from '@assets/media/home/home-hero-mobile-640.webp';
 
 const SWIPE_THRESHOLD_PX = 44;
 const SLIDE_INTERVAL_MS = 8500;
+const POINTER_IDLE_MS = 3000;
 
 function HeroTitleLines({ campaign }) {
   return (
@@ -41,6 +42,8 @@ export default function HomeHero({ brands = [] }) {
   const [interactionPaused, setInteractionPaused] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
   const swipeStartRef = useRef(null);
+  const pointerIdleTimerRef = useRef(null);
+  const [pointerActive, setPointerActive] = useState(false);
 
   const activeCampaign = HOME_HERO_CAMPAIGNS[activeIndex];
   const contentVariants = reduceMotion ? reducedHomeHeroContentVariants : homeHeroContentVariants;
@@ -58,6 +61,30 @@ export default function HomeHero({ brands = [] }) {
     selectCampaign(activeIndex + delta, delta >= 0 ? 1 : -1);
   }, [activeIndex, selectCampaign]);
 
+  const clearPointerIdleTimer = useCallback(() => {
+    if (pointerIdleTimerRef.current !== null) {
+      window.clearTimeout(pointerIdleTimerRef.current);
+      pointerIdleTimerRef.current = null;
+    }
+  }, []);
+
+  const handleHeroPointerMove = useCallback((event) => {
+    if (event.pointerType !== 'mouse') return;
+    clearPointerIdleTimer();
+    setPointerActive(true);
+    pointerIdleTimerRef.current = window.setTimeout(() => {
+      setPointerActive(false);
+      pointerIdleTimerRef.current = null;
+    }, POINTER_IDLE_MS);
+  }, [clearPointerIdleTimer]);
+
+  const handleHeroPointerLeave = useCallback(() => {
+    clearPointerIdleTimer();
+    setPointerActive(false);
+  }, [clearPointerIdleTimer]);
+
+  useEffect(() => () => clearPointerIdleTimer(), [clearPointerIdleTimer]);
+
   useEffect(() => {
     const updateVisibility = () => setPageVisible(!document.hidden);
     updateVisibility();
@@ -66,13 +93,13 @@ export default function HomeHero({ brands = [] }) {
   }, []);
 
   useEffect(() => {
-    if (paused || interactionPaused || reduceMotion || !pageVisible) return undefined;
+    if (paused || interactionPaused || pointerActive || reduceMotion || !pageVisible) return undefined;
     const interval = window.setInterval(() => {
       setDirection(1);
       setActiveIndex((index) => (index + 1) % HOME_HERO_CAMPAIGN_COUNT);
     }, SLIDE_INTERVAL_MS);
     return () => window.clearInterval(interval);
-  }, [paused, interactionPaused, reduceMotion, pageVisible, activeIndex]);
+  }, [paused, interactionPaused, pointerActive, reduceMotion, pageVisible, activeIndex]);
 
   const handleTabKeyDown = useCallback((event) => {
     let nextIndex = null;
@@ -118,6 +145,8 @@ export default function HomeHero({ brands = [] }) {
       <div
         className="home-hero__stage"
         data-campaign={activeCampaign.id}
+        onPointerMove={handleHeroPointerMove}
+        onPointerLeave={handleHeroPointerLeave}
         onFocusCapture={() => setInteractionPaused(true)}
         onBlurCapture={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget)) setInteractionPaused(false);
@@ -198,7 +227,7 @@ export default function HomeHero({ brands = [] }) {
 
         <nav className="home-hero-carousel" aria-label="Homepage slides">
           <div className="home-hero-carousel__controls" role="group" aria-label="Choose homepage slide"
-            data-running={!paused && !interactionPaused && !reduceMotion && pageVisible}
+            data-running={!paused && !interactionPaused && !pointerActive && !reduceMotion && pageVisible}
             onMouseEnter={() => setInteractionPaused(true)}
             onMouseLeave={() => setInteractionPaused(false)}>
             {HOME_HERO_CAMPAIGNS.map((campaign, index) => (
