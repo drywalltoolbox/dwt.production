@@ -363,11 +363,6 @@ body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block
 	box-sizing: border-box;
 	min-width: 0;
 }
-body.woocommerce-checkout .wc-block-checkout__shipping-method-option-title-wrapper {
-	padding-inline-start: 30px;
-	box-sizing: border-box;
-	min-width: 0;
-}
 
 /* Leave the native radio affordance and keyboard semantics visible. */
 .wc-block-components-radio-control__option:has(input:focus-visible),
@@ -589,7 +584,6 @@ body.woocommerce-checkout .wc-block-checkout__shipping-method-option,
 body.woocommerce-checkout .wc-block-components-radio-control-accordion-option {
 	transition: background-color 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
-body.woocommerce-checkout .wc-block-checkout__shipping-method-option-title-wrapper,
 body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block .wc-block-components-radio-control__label-group {
 	padding-inline-start: 32px;
 	min-width: 0;
@@ -642,17 +636,16 @@ body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block
 	padding: 12px 14px 12px 46px !important;
 }
 body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block
-.wc-block-components-radio-control__option .wc-block-components-radio-control__label-group,
-body.woocommerce-checkout .wc-block-checkout__shipping-method-option-title-wrapper {
+.wc-block-components-radio-control__option .wc-block-components-radio-control__label-group {
 	padding-inline-start: 0 !important;
+}
+/* The title wrapper, not the outer shipping row, owns the radio clearance. */
+body.woocommerce-checkout .wc-block-checkout__shipping-method-option-title-wrapper {
+	box-sizing: border-box;
+	padding-inline-start: 34px !important;
+	min-width: 0;
 }
 body.woocommerce-checkout .wc-block-components-radio-control__input {
 	left: 15px;
 	margin: 0;
-}
-body.woocommerce-checkout .wc-block-checkout__shipping-method-option {
-	padding-inline-start: 46px !important;
-}
-body.woocommerce-checkout .wc-block-checkout__shipping-method-option-title-wrapper {
-	min-width: 0;
 }
