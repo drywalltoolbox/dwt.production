@@ -348,3 +348,25 @@
     overscroll-behavior: contain;
   }
 }
+
+/* Desktop information density without reducing touch targets on mobile. */
+@media (min-width: 901px) {
+  .dtb-parts-nav__grab-area { padding: 17px 18px 6px; }
+  .dtb-parts-nav h2 { font-size: clamp(19px, 1.45vw, 23px); }
+  .dtb-parts-nav__count { margin-top: 8px; }
+  .dtb-parts-nav__search { height: 38px; margin: 8px 16px 10px; padding-inline: 11px; }
+  .dtb-parts-nav__list { gap: 6px; padding: 0 12px 12px; }
+  .dtb-parts-nav__item {
+    min-height: 64px;
+    padding: 5px 8px;
+    gap: 8px;
+    border-radius: 9px;
+  }
+  .dtb-parts-nav__media { width: 46px; height: 46px; }
+  .dtb-parts-nav__item { grid-template-columns: minmax(38px, auto) 46px minmax(0, 1fr) 16px; }
+  .dtb-parts-nav__item-body { gap: 3px; }
+  .dtb-parts-nav__item-body strong { font-size: 12px; }
+  .dtb-parts-nav__item-body small { font-size: 10.5px; }
+  .dtb-parts-nav__footer { padding: 8px 16px; }
+  .dtb-schematic-workspace .dtb-schematic-zoom-controls { top: 10px; right: 12px; }
+}
