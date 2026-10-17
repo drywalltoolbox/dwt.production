@@ -66,6 +66,7 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
   // Only used for pan-clamp math; the div's on-screen size is owned by CSS
   // `aspect-ratio`, not this state.
   const [boundsSize, setBoundsSize] = useState(null);
+  const [fitSize, setFitSize] = useState(null);
   const [anchorRect, setAnchorRect] = useState(null);
   const [focusTransition, setFocusTransition] = useState(false);
   const [isMobile, setIsMobile] = useState(
@@ -135,6 +136,31 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
     window.addEventListener('resize', measureBounds);
     return () => window.removeEventListener('resize', measureBounds);
   }, [measureBounds, page?.page_id, imageLoaded]);
+
+  // Fit the actual diagram coordinate plane into BOTH viewport axes.
+  // The image and hotspots share these exact dimensions; CSS max-width
+  // constraints must not distort their aspect ratio.
+  useEffect(() => {
+    const viewport = containerRef.current;
+    if (!viewport || !page?.width || !page?.height) return undefined;
+    const fit = () => {
+      const width = Math.max(0, viewport.clientWidth - 24);
+      const height = Math.max(0, viewport.clientHeight - 24);
+      if (!width || !height) return;
+      const ratio = Math.min(width / page.width, height / page.height);
+      const next = { width: page.width * ratio, height: page.height * ratio };
+      setFitSize((current) => current && Math.abs(current.width - next.width) < 0.5
+        && Math.abs(current.height - next.height) < 0.5 ? current : next);
+    };
+    fit();
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', fit);
+      return () => window.removeEventListener('resize', fit);
+    }
+    const observer = new ResizeObserver(fit);
+    observer.observe(viewport);
+    return () => observer.disconnect();
+  }, [page?.page_id, page?.width, page?.height]);
 
   const applyScale = useCallback((nextScale, nextOffset) => {
     const container = containerRef.current;
@@ -396,6 +422,7 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
             style={{
               position: 'relative',
               aspectRatio: page.width && page.height ? `${page.width} / ${page.height}` : undefined,
+              ...(fitSize && page.width && page.height ? { width: `${fitSize.width}px`, height: `${fitSize.height}px`, flex: '0 0 auto' } : {}),
             }}
           >
             <DiagramImage
