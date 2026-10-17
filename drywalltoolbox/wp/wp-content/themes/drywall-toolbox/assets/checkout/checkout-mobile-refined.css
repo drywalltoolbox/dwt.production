@@ -433,6 +433,64 @@
   font-size: 13px;
   color: #225ae0;
  }
+ /* Native checkout group surfaces mimic the inset-form sections in the reference. */
+ body.woocommerce-checkout .wc-block-checkout__form .wc-block-components-checkout-step__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+ }
+ body.woocommerce-checkout .wc-block-checkout__form .wc-block-components-checkout-step__heading-content {
+  margin-left: auto;
+  max-width: 100%;
+ }
+ body.woocommerce-checkout .wc-block-components-form .wc-block-components-text-input {
+  margin-bottom: 11px;
+ }
+ body.woocommerce-checkout .wc-block-checkout__form .wc-block-components-text-input input {
+  min-height: 52px;
+  background-color: #fff;
+ }
+ body.woocommerce-checkout .wc-block-checkout__form .wc-block-components-text-input label {
+  color: #707b8f;
+  font-size: 13px;
+ }
+ body.woocommerce-checkout .wc-block-components-totals-item__label,
+ body.woocommerce-checkout .wc-block-components-totals-item__value {
+  font-variant-numeric: tabular-nums;
+ }
+ body.woocommerce-checkout .wc-block-components-checkout-order-summary__title:focus-visible,
+ body.woocommerce-checkout .wc-block-components-totals-coupon-link:focus-visible {
+  outline: 2px solid #215beb;
+  outline-offset: 3px;
+ }
+ body.woocommerce-checkout .wc-block-components-radio-control__option:focus-within,
+ body.woocommerce-checkout .wc-block-checkout__shipping-method-option:focus-within {
+  outline: 2px solid #215beb;
+  outline-offset: -2px;
+ }
+ body.woocommerce-checkout .wc-block-checkout__form .wc-block-components-validation-error {
+  color: #b42318;
+  font-size: 12px;
+  line-height: 1.5;
+ }
+ body.woocommerce-checkout .wc-block-checkout__form .wc-block-components-notice-banner {
+  border-radius: 12px;
+  margin-block: 12px;
+ }
+ body.woocommerce-checkout .wc-block-components-checkbox__label,
+ body.woocommerce-checkout .wc-block-checkout__form .wc-block-components-radio-control__label {
+  line-height: 1.4;
+ }
+ body.woocommerce-checkout .wc-block-components-order-summary-item__total-price {
+  font-weight: 750;
+ }
+ body.woocommerce-checkout .wc-block-components-checkout-step:last-child {
+  border-bottom: 0;
+ }
+ body.woocommerce-checkout .wc-block-checkout__form .wc-block-checkout__actions {
+  padding-bottom: max(14px, env(safe-area-inset-bottom, 0px));
+ }
 }
 @media (max-width: 359px) {
  body.woocommerce-checkout .dtb-checkout__intro { padding-inline: 17px; }
