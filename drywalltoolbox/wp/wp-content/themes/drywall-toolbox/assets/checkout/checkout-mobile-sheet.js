@@ -16,6 +16,7 @@
  const close = (restoreFocus = false) => {
    open = false;
    document.body.classList.remove('dtb-mobile-sheet-open');
+   if (sidebar && media.matches) sidebar.inert = true;
    trigger.setAttribute('aria-expanded', 'false');
    trigger.querySelector('.dtb-mobile-sheet-trigger__label').textContent = 'View order summary';
    if (restoreFocus) trigger.focus({ preventScroll: true });
@@ -25,7 +26,7 @@
      close();
      document.body.classList.remove('dtb-mobile-sheet-ready');
      trigger.hidden = true;
-     if (sidebar) sidebar.removeAttribute('id');
+     if (sidebar) { sidebar.inert = false; sidebar.removeAttribute('id'); }
      sidebar = null;
      return;
    }
@@ -38,6 +39,7 @@
    if (sidebar && sidebar !== found) sidebar.removeAttribute('id');
    sidebar = found;
    sidebar.id = 'dtb-mobile-summary';
+   sidebar.inert = !open;
    trigger.hidden = false;
    document.body.classList.add('dtb-mobile-sheet-ready');
  };
@@ -46,6 +48,7 @@
    if (open) { close(true); return; }
    lastFocused = document.activeElement;
    open = true;
+   sidebar.inert = false;
    document.body.classList.add('dtb-mobile-sheet-open');
    trigger.setAttribute('aria-expanded', 'true');
    trigger.querySelector('.dtb-mobile-sheet-trigger__label').textContent = 'Close order summary';
