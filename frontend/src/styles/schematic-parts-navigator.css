@@ -410,3 +410,31 @@
     box-shadow: none;
   }
 }
+
+/* Mobile: the active callout follows the printed reference, not its hit box.
+   Maintain a generous 40px touch region while keeping the ring unobtrusive
+   under pinch zoom. Percentage-based regions retain their authored geometry. */
+@media (max-width: 900px) {
+  .dtb-schematics-page__content--viewer .hotspot:not(.hotspot-rectangle):not(.hotspot-polygon) {
+    width: 40px;
+    height: 40px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .dtb-schematics-page__content--viewer .hotspot--selected:not(.hotspot-rectangle):not(.hotspot-polygon)::after {
+    width: 13px;
+    height: 13px;
+    box-sizing: border-box;
+    border: 1.5px solid #2563eb;
+    background: rgba(37, 99, 235, .06);
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, .12);
+    pointer-events: none;
+  }
+  .dtb-schematics-page__content--viewer .hotspot--selected:is(.hotspot-rectangle, .hotspot-polygon) {
+    border: 1px solid rgba(37, 99, 235, .75);
+    outline: none;
+    background: rgba(37, 99, 235, .035);
+    box-shadow: none;
+  }
+}
