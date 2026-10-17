@@ -144,8 +144,14 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
     const viewport = containerRef.current;
     if (!viewport || !page?.width || !page?.height) return undefined;
     const fit = () => {
-      const width = Math.max(0, viewport.clientWidth - 24);
-      const height = Math.max(0, viewport.clientHeight - 24);
+      // Desktop uses a deliberate inset so the complete exploded view reads
+      // as an overview at 100%, with room around its outermost callouts.
+      // Keep the mobile fit tight and preserve the shared hotspot plane.
+      const desktop = window.matchMedia('(min-width: 901px)').matches;
+      const horizontalInset = desktop ? 96 : 24;
+      const verticalInset = desktop ? 72 : 24;
+      const width = Math.max(0, viewport.clientWidth - horizontalInset);
+      const height = Math.max(0, viewport.clientHeight - verticalInset);
       if (!width || !height) return;
       const ratio = Math.min(width / page.width, height / page.height);
       const next = { width: page.width * ratio, height: page.height * ratio };
