@@ -130,3 +130,14 @@ test('desktop hero centers outside Framer Motion transform space', async () => {
   assert.match(targetCss, /\.home-hero__content\s*\{\s*position:\s*relative;/);
   assert.match(targetCss, /top:\s*auto;/);
 });
+
+test('autoplay is not blocked by hovering the entire hero and transitions overlap smoothly', async () => {
+  const source = await readHeroSource();
+  const desktopCss = await readFile(new URL('src/styles/home-hero-desktop-target.css', frontendRoot), 'utf8');
+  const motion = await readFile(new URL('src/motion/dtbMotion.js', frontendRoot), 'utf8');
+  assert.match(source, /mode="popLayout"/);
+  assert.doesNotMatch(source, /data-campaign=\{activeCampaign.id\}\s*onMouseEnter=/);
+  assert.match(source, /data-running=\{!paused/);
+  assert.match(desktopCss, /home-hero-slide-progress/);
+  assert.match(motion, /duration: 0\.72/);
+});
