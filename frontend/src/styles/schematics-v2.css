@@ -1370,3 +1370,85 @@
 @media (max-width: 900px) {
   .main-content--schematic-viewer { overflow: visible; }
 }
+
+/* Desktop viewer: contained workspace, but never a clipped document/footer. */
+@media (min-width: 901px) {
+  .main-content--schematic-viewer {
+    overflow: visible;
+    height: auto;
+  }
+  .dtb-schematics-page--viewer,
+  .dtb-schematics-page__content--viewer {
+    overflow: visible;
+  }
+  .main-content--schematic-viewer > .dtb-schematics-page__content--viewer {
+    max-height: none;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer {
+    overflow: visible;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-workspace,
+  .dtb-schematics-page__content--viewer .dtb-schematic-diagram-wrap {
+    overflow: hidden;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__header {
+    display: grid;
+    grid-template-columns: minmax(100px, 1fr) minmax(0, 2fr) minmax(100px, 1fr);
+    align-items: center;
+    box-sizing: border-box;
+    min-height: 94px;
+    padding: 10px clamp(18px, 2.5vw, 36px);
+    overflow: hidden;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__heading {
+    position: static;
+    grid-column: 2;
+    grid-row: 1;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    transform: none;
+    gap: 2px;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__brand-logo {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: min(100%, 180px);
+    max-height: 48px;
+    flex: 0 1 auto;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__title {
+    font-size: clamp(0.94rem, 1.25vw, 1.08rem);
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__back {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+}
+@media (min-width: 901px) and (max-height: 740px) {
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__header {
+    min-height: 78px;
+    padding-block: 6px;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__brand-logo {
+    max-height: 38px;
+  }
+}
+
+/* Distinct diagram reading area at desktop widths, without cropping hotspots. */
+@media (min-width: 901px) {
+  .dtb-schematics-page__content--viewer .dtb-schematic-diagram {
+    background: #fbfcfe;
+  }
+  .dtb-schematics-page__content--viewer .schematic-image-wrapper {
+    padding: 0;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-variant-pills,
+  .dtb-schematics-page__content--viewer .dtb-schematic-page-tabs {
+    padding-block: 5px;
+  }
+}

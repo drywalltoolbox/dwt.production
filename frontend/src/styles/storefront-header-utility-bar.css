@@ -148,3 +148,20 @@
 @media (min-width: 1025px) and (max-width: 1420px) {
   .dtb-header-utility-bar__links { display: none; }
 }
+
+/* Restrained desktop header density; mobile dimensions remain unchanged. */
+@media (min-width: 1025px) {
+  .site-header > .dtb-header-utility-bar {
+    min-height: 46px;
+    padding-block: 7px;
+  }
+  .dtb-header-utility-bar__announcement {
+    font-size: 0.81rem;
+    letter-spacing: 0.04em;
+  }
+  .site-header .header-desktop-layout .logo-image {
+    max-height: 62px;
+    width: auto;
+    object-fit: contain;
+  }
+}
