@@ -19,6 +19,8 @@ $storefront_cart_url = '' !== $storefront_base_path
 	: wc_get_cart_url();
 $summary_style_path  = get_template_directory() . '/assets/checkout/checkout-summary.css';
 $summary_style_ver   = file_exists( $summary_style_path ) ? (string) filemtime( $summary_style_path ) : DTB_VERSION;
+$mobile_refined_path = get_template_directory() . '/assets/checkout/checkout-mobile-refined.css';
+$mobile_refined_ver  = file_exists( $mobile_refined_path ) ? (string) filemtime( $mobile_refined_path ) : DTB_VERSION;
 $desktop_style_path  = get_template_directory() . '/assets/checkout/checkout-desktop.css';
 $desktop_style_ver   = file_exists( $desktop_style_path ) ? (string) filemtime( $desktop_style_path ) : DTB_VERSION;
 
@@ -28,6 +30,14 @@ wp_enqueue_style(
 	[ 'dtb-checkout' ],
 	$summary_style_ver,
 	'(max-width: 1023px)'
+);
+
+wp_enqueue_style(
+	'dtb-checkout-mobile-refined',
+	get_template_directory_uri() . '/assets/checkout/checkout-mobile-refined.css',
+	[ 'dtb-checkout-summary' ],
+	$mobile_refined_ver,
+	'(max-width: 767px)'
 );
 
 wp_enqueue_style(
