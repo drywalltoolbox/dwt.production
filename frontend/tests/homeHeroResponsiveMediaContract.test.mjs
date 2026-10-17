@@ -81,7 +81,7 @@ test('campaign navigation is manual, keyboard accessible, touch navigable, and r
   assert.match(source, /window\.clearInterval/);
   assert.match(source, /visibilitychange/);
   assert.match(source, /reduceMotion/);
-  assert.match(source, /aria-pressed=\{paused\}/);
+  assert.doesNotMatch(source, /setPaused/);
 });
 
 test('hero presentation keeps stable media, atmosphere, scrim, content, and navigation layers', async () => {
@@ -129,4 +129,27 @@ test('desktop hero centers outside Framer Motion transform space', async () => {
   assert.match(targetCss, /justify-content:\s*center;/);
   assert.match(targetCss, /\.home-hero__content\s*\{\s*position:\s*relative;/);
   assert.match(targetCss, /top:\s*auto;/);
+});
+
+test('autoplay is not blocked by hovering the entire hero and transitions overlap smoothly', async () => {
+  const source = await readHeroSource();
+  const desktopCss = await readFile(new URL('src/styles/home-hero-desktop-target.css', frontendRoot), 'utf8');
+  const motion = await readFile(new URL('src/motion/dtbMotion.js', frontendRoot), 'utf8');
+  assert.match(source, /mode="popLayout"/);
+  assert.doesNotMatch(source, /data-campaign=\{activeCampaign.id\}\s*onMouseEnter=/);
+  assert.match(source, /data-running=\{!interactionPaused/);
+  assert.match(desktopCss, /home-hero-slide-progress/);
+  assert.match(motion, /duration: 0\.72/);
+});
+
+test('desktop hover activity pauses carousel only while pointer moves, then resumes after idle', async () => {
+  const source = await readHeroSource();
+  assert.match(source, /POINTER_IDLE_MS = 3000/);
+  assert.match(source, /onPointerMove=\{handleHeroPointerMove\}/);
+  assert.match(source, /onPointerLeave=\{handleHeroPointerLeave\}/);
+  assert.match(source, /event\.pointerType !== 'mouse'/);
+  assert.match(source, /window\.clearTimeout\(pointerIdleTimerRef\.current\)/);
+  assert.match(source, /setPointerActive\(false\)/);
+  assert.match(source, /interactionPaused \|\| pointerActive \|\| reduceMotion/);
+  assert.match(source, /data-running=\{!interactionPaused && !pointerActive/);
 });

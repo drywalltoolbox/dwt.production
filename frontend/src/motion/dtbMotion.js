@@ -249,39 +249,31 @@ export const productModalMobileVariants = {
 export const homeHeroContentVariants = {
   enter: (direction = 1) => ({
     opacity: 0,
-    x: direction >= 0 ? dtbDistance.medium : -dtbDistance.medium,
+    x: direction >= 0 ? 20 : -20,
+    filter: 'blur(3px)',
   }),
   center: {
     opacity: 1,
     x: 0,
+    filter: 'blur(0px)',
     transition: {
-      ...dtbTransition.slow,
-      staggerChildren: 0.05,
-      delayChildren: 0.025,
+      duration: 0.72,
+      ease: [0.22, 1, 0.36, 1],
+      staggerChildren: 0.035,
     },
   },
   exit: (direction = 1) => ({
     opacity: 0,
-    x: direction >= 0 ? -dtbDistance.small : dtbDistance.small,
-    transition: dtbTransition.exit,
+    x: direction >= 0 ? -16 : 16,
+    filter: 'blur(2px)',
+    transition: { duration: 0.5, ease: [0.4, 0, 1, 1] },
   }),
 };
 
 export const homeHeroItemVariants = {
-  enter: {
-    opacity: 0,
-    y: dtbDistance.small,
-  },
-  center: {
-    opacity: 1,
-    y: 0,
-    transition: dtbTransition.emphasized,
-  },
-  exit: {
-    opacity: 0,
-    y: -dtbDistance.micro,
-    transition: dtbTransition.exit,
-  },
+  enter: { opacity: 0, y: 8 },
+  center: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+  exit: { opacity: 0, y: -4, transition: { duration: 0.35 } },
 };
 
 export const reducedHomeHeroContentVariants = {
