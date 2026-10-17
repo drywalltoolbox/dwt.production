@@ -290,3 +290,54 @@
   .home-hero__title { font-size: clamp(46px,3.7vw,60px); }
   .home-hero__promises { margin-top: 12px; }
 }
+
+
+/* Compact slideshow controls replace the full-width campaign cards. */
+.home-hero-carousel {
+  position: absolute;
+  z-index: 4;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+}
+.home-hero-carousel__controls {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 12px;
+  background: rgba(4, 19, 43, .66);
+  border: 1px solid rgba(150, 187, 237, .24);
+  border-radius: 999px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .16);
+  backdrop-filter: blur(14px);
+}
+.home-hero-carousel__dot {
+  width: 10px; height: 10px; min-width: 10px;
+  border: 0; border-radius: 99px; padding: 0;
+  background: rgba(221,235,255,.48);
+  cursor: pointer;
+  transition: width .3s ease, background-color .3s ease;
+}
+.home-hero-carousel__dot.is-active { width: 32px; background: #4384ff; }
+.home-hero-carousel__pause {
+  display: grid; place-items: center;
+  width: 29px; height: 29px;
+  border: 1px solid rgba(180,205,239,.32);
+  border-radius: 50%;
+  color: #fff; background: rgba(15,38,73,.66);
+  cursor: pointer;
+}
+.home-hero-carousel__dot:focus-visible,
+.home-hero-carousel__pause:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+@media (min-width: 901px) {
+  .home-hero__content-shell { bottom: 52px; }
+  .home-hero__stage { min-height: 560px; }
+}
+@media (max-width: 900px) {
+  .home-hero__content-shell { bottom: 64px; }
+  .home-hero-carousel { bottom: max(13px, env(safe-area-inset-bottom)); }
+  .home-hero-carousel__controls { gap: 9px; padding: 7px 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .home-hero-carousel__dot { transition: none; }
+}

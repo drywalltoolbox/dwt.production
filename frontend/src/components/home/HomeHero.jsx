@@ -1,5 +1,5 @@
-import { useCallback, useRef, useState } from 'react';
-import { Gem, Truck, Headset, ArrowUpRight, Wrench, Settings2 } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { Gem, Truck, Headset, Pause, Play } from 'lucide-react';
 import { AnimatePresence, m as Motion, useReducedMotion } from 'framer-motion';
 import HomeHeroBrands from './HomeHeroBrands';
 import HomeHeroButton from './HomeHeroButton';
@@ -15,6 +15,7 @@ import homeHeroDesktopUrl from '@assets/media/home/home-hero-desktop-1600.webp';
 import homeHeroMobileUrl from '@assets/media/home/home-hero-mobile-640.webp';
 
 const SWIPE_THRESHOLD_PX = 44;
+const SLIDE_INTERVAL_MS = 8500;
 
 function HeroTitleLines({ campaign }) {
   return (
@@ -36,6 +37,9 @@ export default function HomeHero({ brands = [] }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(1);
   const tabRefs = useRef([]);
+  const [paused, setPaused] = useState(false);
+  const [interactionPaused, setInteractionPaused] = useState(false);
+  const [pageVisible, setPageVisible] = useState(true);
   const swipeStartRef = useRef(null);
 
   const activeCampaign = HOME_HERO_CAMPAIGNS[activeIndex];
@@ -53,6 +57,22 @@ export default function HomeHero({ brands = [] }) {
   const selectRelativeCampaign = useCallback((delta) => {
     selectCampaign(activeIndex + delta, delta >= 0 ? 1 : -1);
   }, [activeIndex, selectCampaign]);
+
+  useEffect(() => {
+    const updateVisibility = () => setPageVisible(!document.hidden);
+    updateVisibility();
+    document.addEventListener('visibilitychange', updateVisibility);
+    return () => document.removeEventListener('visibilitychange', updateVisibility);
+  }, []);
+
+  useEffect(() => {
+    if (paused || interactionPaused || reduceMotion || !pageVisible) return undefined;
+    const interval = window.setInterval(() => {
+      setDirection(1);
+      setActiveIndex((index) => (index + 1) % HOME_HERO_CAMPAIGN_COUNT);
+    }, SLIDE_INTERVAL_MS);
+    return () => window.clearInterval(interval);
+  }, [paused, interactionPaused, reduceMotion, pageVisible, activeIndex]);
 
   const handleTabKeyDown = useCallback((event) => {
     let nextIndex = null;
@@ -98,6 +118,12 @@ export default function HomeHero({ brands = [] }) {
       <div
         className="home-hero__stage"
         data-campaign={activeCampaign.id}
+        onMouseEnter={() => setInteractionPaused(true)}
+        onMouseLeave={() => setInteractionPaused(false)}
+        onFocusCapture={() => setInteractionPaused(true)}
+        onBlurCapture={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) setInteractionPaused(false);
+        }}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={() => { swipeStartRef.current = null; }}
@@ -130,9 +156,7 @@ export default function HomeHero({ brands = [] }) {
         <div
           className="home-hero__content-shell"
           id="home-hero-panel"
-          role="tabpanel"
-          aria-labelledby={`home-hero-tab-${activeCampaign.id}`}
-          aria-live="polite"
+          aria-live="off"
         >
           <AnimatePresence initial={false} mode="wait" custom={direction}>
             <Motion.div
@@ -174,47 +198,26 @@ export default function HomeHero({ brands = [] }) {
           </AnimatePresence>
         </div>
 
-        <nav className="home-hero-campaigns" aria-label="Homepage highlights">
-          <div
-            className="home-hero-campaigns__rail"
-            role="tablist"
-            aria-label="Choose homepage highlight"
-            onKeyDown={handleTabKeyDown}
-          >
-            {HOME_HERO_CAMPAIGNS.map((campaign, index) => {
-              const isActive = index === activeIndex;
-
-              return (
-                <button
-                  type="button"
-                  key={campaign.id}
-                  ref={(node) => { tabRefs.current[index] = node; }}
-                  id={`home-hero-tab-${campaign.id}`}
-                  className={`home-hero-campaigns__tab${isActive ? ' is-active' : ''}`}
-                  role="tab"
-                  aria-selected={isActive}
-                  aria-controls="home-hero-panel"
-                  tabIndex={isActive ? 0 : -1}
-                  onClick={() => selectCampaign(index)}
-                >
-                  <span className="home-hero-campaigns__index" aria-hidden="true">
-                    {String(index + 1).padStart(2, '0')}
-                  </span>
-                  <span className="home-hero-campaigns__label">{campaign.label}<small className="home-hero-campaigns__description">{campaign.id === 'tools' ? 'Taping, finishing and more' : campaign.id === 'parts' ? 'Keep your tools running' : 'Expert service & support'}</small></span>
-                  <span className="home-hero-campaigns__glyph" aria-hidden="true">{campaign.id === 'tools' ? <Settings2 size={28} /> : campaign.id === 'parts' ? <Wrench size={28} /> : <Headset size={28} />}</span>
-                  <ArrowUpRight className="home-hero-campaigns__arrow" size={20} aria-hidden="true" />
-                  <span className="home-hero-campaigns__track" aria-hidden="true">
-                    {isActive && (
-                      <Motion.span
-                        className="home-hero-campaigns__indicator"
-                        layoutId="home-hero-campaign-indicator"
-                        transition={reduceMotion ? { duration: 0 } : homeHeroNavigationTransition}
-                      />
-                    )}
-                  </span>
-                </button>
-              );
-            })}
+        <nav className="home-hero-carousel" aria-label="Homepage slides">
+          <div className="home-hero-carousel__controls" role="group" aria-label="Choose homepage slide">
+            {HOME_HERO_CAMPAIGNS.map((campaign, index) => (
+              <button
+                type="button"
+                key={campaign.id}
+                ref={(node) => { tabRefs.current[index] = node; }}
+                className={`home-hero-carousel__dot${index === activeIndex ? ' is-active' : ''}`}
+                aria-label={`Show ${campaign.label} slide (${index + 1} of ${HOME_HERO_CAMPAIGN_COUNT})`}
+                aria-current={index === activeIndex ? 'true' : undefined}
+                onClick={() => selectCampaign(index)}
+                onKeyDown={handleTabKeyDown}
+              />
+            ))}
+            <button type="button" className="home-hero-carousel__pause"
+              onClick={() => setPaused((current) => !current)}
+              aria-label={paused ? 'Play slideshow' : 'Pause slideshow'}
+              aria-pressed={paused}>
+              {paused ? <Play size={15} aria-hidden="true" /> : <Pause size={15} aria-hidden="true" />}
+            </button>
           </div>
         </nav>
       </div>

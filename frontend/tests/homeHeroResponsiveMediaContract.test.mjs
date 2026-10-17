@@ -57,16 +57,16 @@ test('homepage campaigns only promote customer-ready storefront routes', async (
   assert.match(source, /primaryAction: \{ label: 'Shop All', to: '\/all-products' \}/);
   assert.match(source, /secondaryAction: \{ label: 'Shop by Brand', to: '\/products\/brands' \}/);
 
-  assert.match(styles, /\.home-hero-campaigns__rail\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3,/);
+  assert.match(await readFile(new URL('src/styles/home-hero-desktop-target.css', frontendRoot), 'utf8'), /\.home-hero-carousel__controls/);
   assert.doesNotMatch(source, /^\s*(?:price|inventory|order|payment|checkout)\s*:/im);
 });
 
 test('campaign navigation is manual, keyboard accessible, touch navigable, and reduced-motion aware', async () => {
   const source = await readHeroSource();
 
-  assert.match(source, /role="tablist"/);
-  assert.match(source, /role="tab"/);
-  assert.match(source, /aria-selected=\{isActive\}/);
+  assert.match(source, /role="group"/);
+  assert.match(source, /home-hero-carousel__dot/);
+  assert.match(source, /aria-current=\{index === activeIndex/);
   assert.match(source, /ArrowRight/);
   assert.match(source, /ArrowLeft/);
   assert.match(source, /event\.key === 'Home'/);
@@ -75,9 +75,13 @@ test('campaign navigation is manual, keyboard accessible, touch navigable, and r
   assert.match(source, /useReducedMotion\(\)/);
   assert.match(source, /AnimatePresence/);
 
-  // Campaign content should not rotate behind the shopper or require a
-  // separate pause control. Movement happens only after explicit interaction.
-  assert.doesNotMatch(source, /setInterval|setTimeout\([^)]*selectCampaign|autoplay/i);
+  // Deliberate autoplay with explicit pause controls and accessibility guards.
+  assert.match(source, /SLIDE_INTERVAL_MS = 8500/);
+  assert.match(source, /window\.setInterval/);
+  assert.match(source, /window\.clearInterval/);
+  assert.match(source, /visibilitychange/);
+  assert.match(source, /reduceMotion/);
+  assert.match(source, /aria-pressed=\{paused\}/);
 });
 
 test('hero presentation keeps stable media, atmosphere, scrim, content, and navigation layers', async () => {
@@ -87,7 +91,7 @@ test('hero presentation keeps stable media, atmosphere, scrim, content, and navi
   assert.match(css, /\.home-hero__ambient\s*\{[\s\S]*?z-index:\s*1;/);
   assert.match(css, /\.home-hero__scrim\s*\{[\s\S]*?z-index:\s*2;/);
   assert.match(css, /\.home-hero__content-shell\s*\{[\s\S]*?z-index:\s*3;/);
-  assert.match(css, /\.home-hero-campaigns\s*\{[\s\S]*?z-index:\s*4;/);
+  assert.match(await readFile(new URL('src/styles/home-hero-desktop-target.css', frontendRoot), 'utf8'), /\.home-hero-carousel\s*\{[\s\S]*?z-index:\s*4;/);
 
   assert.match(css, /\.home-hero__media-image\s*\{[\s\S]*?object-fit:\s*cover;[\s\S]*?object-position:\s*68% 50%;/);
   assert.match(css, /@media \(min-width: 901px\) and \(max-width: 1199px\)[\s\S]*?object-position:\s*72% 50%;/);
@@ -100,7 +104,7 @@ test('hero styling provides fluid desktop/mobile composition and reduced-motion 
 
   assert.match(css, /height:\s*max\(32rem, calc\(100dvh - var\(--header-height/);
   assert.match(css, /height:\s*max\(32rem, calc\(100svh - var\(--header-height/);
-  assert.match(css, /\.home-hero-campaigns__rail\s*\{[\s\S]*?backdrop-filter:\s*blur\(18px\)/);
+  assert.match(await readFile(new URL('src/styles/home-hero-desktop-target.css', frontendRoot), 'utf8'), /\.home-hero-carousel__controls\s*\{[\s\S]*?backdrop-filter:\s*blur\(14px\)/);
   assert.match(css, /@media \(max-width: 1024px\)\s*\{\s*\.home-hero__stage/);
   assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
 });
