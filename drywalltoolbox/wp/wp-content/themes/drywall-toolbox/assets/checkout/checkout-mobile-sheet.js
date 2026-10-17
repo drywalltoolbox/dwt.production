@@ -9,7 +9,7 @@
  const trigger = document.querySelector('.dtb-mobile-sheet-trigger');
  const backdrop = document.querySelector('.dtb-mobile-sheet-backdrop');
  if (!trigger || !backdrop) return;
- const candidates = '.wc-block-checkout__sidebar, .wc-block-components-sidebar-layout__sidebar, .wc-block-checkout__main';
+ const candidates = '.wc-block-checkout__sidebar, .wc-block-components-sidebar-layout__sidebar';
  let sidebar = null;
  let open = false;
  const close = (restoreFocus = false) => {
@@ -30,9 +30,8 @@
      return;
    }
    // Use the actual native summary, not an empty responsive sidebar placeholder.
-   const summaries = [...document.querySelectorAll('.wc-block-components-checkout-order-summary')];
-   const summary = summaries.find(el => el.querySelector('.wc-block-components-order-summary-item, .wc-block-components-totals-footer-item'));
-   const found = summary && (summary.closest('.wc-block-checkout__sidebar, .wc-block-components-sidebar-layout__sidebar') || summary);
+   const summary = document.querySelector('.wc-block-components-checkout-order-summary, .wp-block-woocommerce-checkout-order-summary-block');
+   const found = summary && (summary.closest(candidates) || summary);
    if (!found) {
      if (sidebar) { sidebar.inert = false; sidebar.classList.remove('dtb-mobile-summary-host'); sidebar.removeAttribute('id'); }
      sidebar = null;
