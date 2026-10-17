@@ -1483,3 +1483,219 @@
     height: 0;
   }
 }
+
+/* A single schematic navigation surface on desktop. No standalone brand bar
+   stacked above a second full-width size strip. Preserve mobile composition. */
+@media (min-width: 901px) {
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: clamp(12px, 2vw, 28px);
+    min-height: 62px;
+    padding: 5px clamp(16px, 2.5vw, 34px);
+    background: #122650;
+    border-bottom: 1px solid rgba(255, 255, 255, .14);
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__header {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: clamp(12px, 2vw, 24px);
+    min-width: 0;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    overflow: visible;
+    box-shadow: none;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__heading {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    flex: 1 1 auto;
+    position: static;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    transform: none;
+    text-align: left;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__brand-logo {
+    flex: 0 0 auto;
+    max-height: 34px;
+    max-width: 116px;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__title {
+    min-width: 0;
+    font-size: .96rem;
+    line-height: 1.2;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-variant-pills {
+    display: flex;
+    flex: 0 1 auto;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: nowrap;
+    gap: 7px;
+    min-width: 0;
+    max-width: min(54vw, 540px);
+    padding: 0;
+    background: transparent;
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-variant-pill {
+    flex: 0 0 auto;
+    min-height: 36px;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__back {
+    flex: 0 0 auto;
+  }
+}
+@media (min-width: 901px) and (max-width: 1150px) {
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar {
+    gap: 8px;
+    padding-inline: 12px;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__heading {
+    gap: 7px;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__brand-logo {
+    max-width: 90px;
+  }
+}
+@media (max-width: 900px) {
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar {
+    display: contents;
+  }
+}
+
+
+/* Approved light editorial viewer: desktop only. Mobile sheet/layout remain owned
+   by their existing <=900px rules. */
+@media (min-width: 901px) {
+  .dtb-schematics-page__content--viewer {
+    height: max(var(--dtb-schematic-available-height, 0px), clamp(650px, 80dvh, 880px));
+    min-height: clamp(650px, 80dvh, 880px);
+    background: #f2f6fb;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer {
+    background: #f2f6fb;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    min-height: 72px;
+    padding: 10px clamp(18px, 2.1vw, 32px);
+    background: linear-gradient(180deg,#fbfdff,#f0f5fc);
+    border-bottom: 1px solid #dce5f1;
+    gap: 20px;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__header {
+    background: transparent;
+    gap: clamp(14px, 2vw, 28px);
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .back-button.dtb-schematic-viewer__back {
+    background: #173a72;
+    color: #fff;
+    border: 1px solid #315c92;
+    border-radius: 11px;
+    min-height: 42px;
+    box-shadow: 0 3px 9px rgba(11,33,67,.1);
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .back-button.dtb-schematic-viewer__back:hover {
+    background: #22508f;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__heading {
+    gap: 18px;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__brand-logo {
+    max-height: 42px;
+    max-width: 138px;
+    filter: none;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__brand-logo--inverse {
+    filter: none;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__title {
+    color: #11294c;
+    font-size: clamp(1.1rem, 1.45vw, 1.45rem);
+    font-weight: 800;
+    white-space: nowrap;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-variant-pills {
+    background: transparent;
+    color: #153456;
+    max-width: min(51vw, 570px);
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-variant-pills__label {
+    color: #344f70;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-variant-pill {
+    min-height: 46px;
+    min-width: 65px;
+    border-radius: 11px;
+    border: 1px solid #d7e2ef;
+    background: #fff;
+    color: #193657;
+    box-shadow: none;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-variant-pill--active {
+    background: #377cf5;
+    border-color: #377cf5;
+    color: #fff;
+    box-shadow: 0 5px 14px rgba(42,109,225,.17);
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-page-tabs {
+    background: #edf3fc;
+    border-bottom: 1px solid #dce5f1;
+    color: #18365b;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-workspace {
+    flex: 1 1 0;
+    height: 0;
+    min-height: 0;
+    margin: clamp(10px, 1.25vw, 18px);
+    border: 1px solid #dde6f0;
+    border-radius: 20px;
+    box-shadow: 0 9px 30px rgba(22,49,84,.06);
+    background: #fff;
+    overflow: hidden;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-diagram-wrap {
+    min-width: 0;
+    min-height: 0;
+    padding: 12px;
+    background: #fff;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-diagram {
+    min-height: 0;
+    background: #fff;
+    border: 1px solid #e5ecf5;
+    border-radius: 14px;
+  }
+  .dtb-schematic-workspace .dtb-schematic-zoom-controls {
+    top: auto;
+    right: auto;
+    left: 26px;
+    bottom: 24px;
+    transform: none;
+    background: rgba(255,255,255,.96);
+    border: 1px solid #dbe5f0;
+    color: #14345b;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(19,45,79,.09);
+  }
+  .dtb-schematic-workspace .dtb-schematic-zoom-btn,
+  .dtb-schematic-workspace .dtb-schematic-zoom-value { color: #14345b; }
+}
+@media (min-width:901px) and (max-width:1150px) {
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar { gap: 8px; padding-inline: 12px; }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__heading { gap: 10px; }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__brand-logo { max-width: 95px; }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-variant-pill { min-width: 52px; }
+}

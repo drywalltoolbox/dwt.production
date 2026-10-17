@@ -166,18 +166,19 @@ export default function SchematicViewerPage({
 
   return (
     <div className="dtb-schematic-viewer">
-      <SchematicHeader
-        title={humanizeLabel(detail.title, detail.id)}
-        brandName={humanizeLabel(detail.brand?.name, detail.brand?.id)}
-        categoryName={humanizeLabel(detail.category?.name, detail.category?.id)}
-        onBack={() => onBack(detail.brand?.id, detail.category?.id)}
-      />
-
-      <SchematicVariantPills
-        variants={variantNavigation.items}
-        activeVariantId={variantNavigation.activeId}
-        onSelectVariant={(id) => onSelectVariant({ type: variantNavigation.mode, id })}
-      />
+      <div className="dtb-schematic-viewer__toolbar">
+        <SchematicHeader
+          title={humanizeLabel(detail.title, detail.id)}
+          brandName={humanizeLabel(detail.brand?.name, detail.brand?.id)}
+          categoryName={humanizeLabel(detail.category?.name, detail.category?.id)}
+          onBack={() => onBack(detail.brand?.id, detail.category?.id)}
+        />
+        <SchematicVariantPills
+          variants={variantNavigation.items}
+          activeVariantId={variantNavigation.activeId}
+          onSelectVariant={(id) => onSelectVariant({ type: variantNavigation.mode, id })}
+        />
+      </div>
 
       {pages.length === 0 ? (
         <p className="dtb-schematics-status" role="status">This schematic doesn't have any pages yet.</p>
