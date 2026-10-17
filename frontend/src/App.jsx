@@ -362,6 +362,20 @@ function AppShell({ cartOpen, toggleCart, closeCart }) {
   const minimalChrome = location.pathname === '/checkout';
   const schematicViewer = location.pathname === '/schematics' && Boolean(new URLSearchParams(location.search).get('schematic'));
 
+  // The provider owns conversation state; suppress its launcher only while
+  // high-priority storefront surfaces are active.
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.dtbAiCartOpen = String(cartOpen);
+    root.dataset.dtbAiCheckout = String(minimalChrome);
+    root.dataset.dtbAiProduct = String(/^\/product(?:s)?\//.test(location.pathname));
+    return () => {
+      delete root.dataset.dtbAiCartOpen;
+      delete root.dataset.dtbAiCheckout;
+      delete root.dataset.dtbAiProduct;
+    };
+  }, [cartOpen, minimalChrome, location.pathname]);
+
   useEffect(() => {
     if (previousRouteKeyRef.current === routeKey) return;
     previousRouteKeyRef.current = routeKey;
