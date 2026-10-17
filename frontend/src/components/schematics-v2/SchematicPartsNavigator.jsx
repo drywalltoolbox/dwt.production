@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { ChevronRight, List, Search, X } from 'lucide-react';
 import { normalizePartRef } from '../../utils/string.js';
 
@@ -83,7 +84,7 @@ export default function SchematicPartsNavigator({ parts, occurrences, activePage
     setDrag(0);
   };
 
-  return (
+  const sheet = (
     <>
       {mobile && open && <button type="button" className="dtb-parts-nav__backdrop" aria-label="Close parts list" onClick={onClose} />}
       <aside
@@ -149,4 +150,9 @@ export default function SchematicPartsNavigator({ parts, occurrences, activePage
       </aside>
     </>
   );
+  // Escape the viewer/header stacking contexts on mobile: z-index alone
+  // cannot elevate a fixed sheet whose ancestor creates a stacking context.
+  return mobile && typeof document !== 'undefined'
+    ? createPortal(sheet, document.body)
+    : sheet;
 }

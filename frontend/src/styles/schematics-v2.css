@@ -747,8 +747,8 @@
 /* Viewer mode owns the full storefront viewport below the global header. */
 .dtb-schematics-page--viewer,
 .dtb-schematics-page__content--viewer {
-  height: calc(100dvh - var(--header-height, 72px));
-  min-height: 32rem;
+  height: var(--dtb-schematic-available-height, calc(100dvh - var(--header-height, 72px)));
+  min-height: 0;
 }
 
 .dtb-schematics-page--viewer { overflow: hidden; }
@@ -832,8 +832,8 @@
 
 .dtb-schematics-page__content--viewer .dtb-schematic-diagram {
   flex: 1 1 auto;
-  min-height: 300px;
-  height: auto;
+  min-height: 0;
+  height: 100%;
   border-radius: 0;
 }
 
@@ -858,7 +858,7 @@
     max-width: min(74vw, 18rem);
     max-height: 4rem;
   }
-  .dtb-schematics-page__content--viewer .dtb-schematic-diagram { min-height: 260px; }
+  .dtb-schematics-page__content--viewer .dtb-schematic-diagram { min-height: 0; }
 }
 
 /* ---- Part detail card ("hotspot card") -----------------------------------
@@ -1299,4 +1299,18 @@
   .mobile-part-modal-overlay {
     border: 1px solid CanvasText;
   }
+}
+
+/* Keep the entire viewer inside its measured viewport; the diagram itself
+   handles zoom and pan, never a growing page scroll surface. */
+.dtb-schematics-page__content--viewer {
+  min-height: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+.dtb-schematics-page__content--viewer .dtb-schematic-viewer,
+.dtb-schematics-page__content--viewer .dtb-schematic-workspace,
+.dtb-schematics-page__content--viewer .dtb-schematic-diagram-wrap {
+  min-height: 0;
+  overflow: hidden;
 }

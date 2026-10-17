@@ -266,3 +266,15 @@
   .dtb-parts-nav__reference { max-width: 52px; min-width: 36px; font-size: 10px; }
   .dtb-parts-nav__media { width: 46px; height: 46px; }
 }
+
+/* Columbia's supplied dark mark needs a light treatment against the navy
+   viewer surface; retain the original unboxed source image. */
+.dtb-schematics-page__content--viewer .dtb-schematic-viewer__brand-logo--inverse {
+  filter: brightness(0) invert(1);
+}
+@media (max-width: 900px) {
+  /* The mobile sheet is portalled to body; its fixed positioning and
+     containment no longer depend on the schematic viewer stacking context. */
+  body > .dtb-parts-nav { z-index: 99999; }
+  body > .dtb-parts-nav__backdrop { z-index: 99998; }
+}

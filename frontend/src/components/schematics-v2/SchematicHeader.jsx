@@ -18,7 +18,7 @@ export default function SchematicHeader({ title, brandName, categoryName, onBack
           <img
             src={brandLogo}
             alt={`${brandName} logo`}
-            className="dtb-schematic-viewer__brand-logo"
+            className={`dtb-schematic-viewer__brand-logo${/columbia/i.test(brandName || '') ? ' dtb-schematic-viewer__brand-logo--inverse' : ''}`}
           />
         )}
         <h1 className="dtb-schematic-viewer__title">{title}</h1>
