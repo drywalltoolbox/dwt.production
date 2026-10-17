@@ -370,3 +370,71 @@
   .dtb-parts-nav__footer { padding: 8px 16px; }
   .dtb-schematic-workspace .dtb-schematic-zoom-controls { top: 10px; right: 12px; }
 }
+
+/* The clickable hotspot box is deliberately larger than a manufacturer's
+   printed callout. Never paint that box as the selected marker: zoom scales
+   both its size and its glow, hiding neighboring diagram references.
+   Draw the affordance on a centered, compact pseudo-element instead. */
+.dtb-schematics-page__content--viewer .hotspot--selected,
+.dtb-schematics-page__content--viewer .hotspot--selected:hover {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}
+@media (min-width: 901px) {
+  .dtb-schematics-page__content--viewer .hotspot:not(.hotspot-rectangle):not(.hotspot-polygon) {
+    width: 32px;
+    height: 32px;
+  }
+  .dtb-schematics-page__content--viewer .hotspot--selected:not(.hotspot-rectangle):not(.hotspot-polygon)::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 17px;
+    height: 17px;
+    box-sizing: border-box;
+    transform: translate(-50%, -50%);
+    border: 1.5px solid #2563eb;
+    border-radius: 50%;
+    background: rgba(37, 99, 235, .07);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, .13);
+    pointer-events: none;
+  }
+  /* Authored region geometry uses the actual percent-of-image dimensions.
+     Preserve its dimensions and indicate selection with a hairline outline. */
+  .dtb-schematics-page__content--viewer .hotspot--selected:is(.hotspot-rectangle, .hotspot-polygon) {
+    outline: 1px solid rgba(37, 99, 235, .8);
+    outline-offset: 0;
+    background: rgba(37, 99, 235, .04);
+    box-shadow: none;
+  }
+}
+
+/* Mobile: the active callout follows the printed reference, not its hit box.
+   Maintain a generous 40px touch region while keeping the ring unobtrusive
+   under pinch zoom. Percentage-based regions retain their authored geometry. */
+@media (max-width: 900px) {
+  .dtb-schematics-page__content--viewer .hotspot:not(.hotspot-rectangle):not(.hotspot-polygon) {
+    width: 40px;
+    height: 40px;
+    border: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+  .dtb-schematics-page__content--viewer .hotspot--selected:not(.hotspot-rectangle):not(.hotspot-polygon)::after {
+    width: 13px;
+    height: 13px;
+    box-sizing: border-box;
+    border: 1.5px solid #2563eb;
+    background: rgba(37, 99, 235, .06);
+    box-shadow: 0 0 0 1px rgba(37, 99, 235, .12);
+    pointer-events: none;
+  }
+  .dtb-schematics-page__content--viewer .hotspot--selected:is(.hotspot-rectangle, .hotspot-polygon) {
+    border: 1px solid rgba(37, 99, 235, .75);
+    outline: none;
+    background: rgba(37, 99, 235, .035);
+    box-shadow: none;
+  }
+}
