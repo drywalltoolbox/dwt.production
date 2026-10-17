@@ -112,14 +112,14 @@ function dtb_commerce_register_shipping_method(): void {
 				$is_domestic = ( 'US' === $country );
 
 				if ( $is_domestic ) {
-					$standard = $subtotal >= 75.0 ? 0.00
+					$standard = $subtotal >= 50.0 ? 0.00
 						: ( $total_weight <= 1.0 ? 7.99
 							: ( $total_weight <= 5.0 ? 12.99
 								: ( $total_weight <= 15.0 ? 19.99 : 29.99 ) ) );
 
 					$this->add_rate( [
 						'id'    => $this->get_rate_id( 'standard' ),
-						'label' => $subtotal >= 75.0
+						'label' => $subtotal >= 50.0
 							? __( 'Free Standard Shipping (5–7 business days)', 'woocommerce' )
 							: __( 'Standard Shipping (5–7 business days)', 'woocommerce' ),
 						'cost'  => $standard,
