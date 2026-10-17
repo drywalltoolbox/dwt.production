@@ -639,11 +639,15 @@ body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block
 .wc-block-components-radio-control__option .wc-block-components-radio-control__label-group {
 	padding-inline-start: 0 !important;
 }
-/* The title wrapper, not the outer shipping row, owns the radio clearance. */
+/* WooCommerce shipping text occupies the first row track beside the
+ * absolutely positioned native radio. The visible title needs its own inset;
+ * wrapper-only padding did not move the title in the rendered checkout. */
 body.woocommerce-checkout .wc-block-checkout__shipping-method-option-title-wrapper {
-	box-sizing: border-box;
-	padding-inline-start: 34px !important;
 	min-width: 0;
+}
+body.woocommerce-checkout .wc-block-checkout__shipping-method-option-title {
+	box-sizing: border-box;
+	padding-inline-start: 32px !important;
 }
 body.woocommerce-checkout .wc-block-components-radio-control__input {
 	left: 15px;
