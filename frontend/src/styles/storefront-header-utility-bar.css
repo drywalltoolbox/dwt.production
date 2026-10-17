@@ -165,3 +165,14 @@
     object-fit: contain;
   }
 }
+
+
+/* All storefront pages retain their existing header composition and actions;
+   trim only desktop density to release more room for content. */
+@media (min-width: 1025px) {
+  .site-header > .dtb-header-utility-bar { min-height: 38px; padding-block: 5px; }
+  .dtb-header-utility-bar__announcement { font-size: .75rem; letter-spacing: .035em; }
+  .dtb-header-utility-bar__links { gap: 14px; }
+  .dtb-header-utility-bar__item { font-size: .77rem; }
+  .site-header .header-desktop-layout .logo-image { max-height: 52px; width: auto; object-fit: contain; }
+}
