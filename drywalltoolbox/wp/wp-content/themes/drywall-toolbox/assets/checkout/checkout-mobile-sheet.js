@@ -9,10 +9,9 @@
  const trigger = document.querySelector('.dtb-mobile-sheet-trigger');
  const backdrop = document.querySelector('.dtb-mobile-sheet-backdrop');
  if (!trigger || !backdrop) return;
- const candidates = '.wc-block-checkout__sidebar, .wc-block-components-sidebar-layout__sidebar';
+ const candidates = '.wc-block-checkout__sidebar, .wc-block-components-sidebar-layout__sidebar, .wc-block-checkout__main';
  let sidebar = null;
  let open = false;
- let lastFocused = null;
  const close = (restoreFocus = false) => {
    open = false;
    document.body.classList.remove('dtb-mobile-sheet-open');
@@ -26,18 +25,24 @@
      close();
      document.body.classList.remove('dtb-mobile-sheet-ready');
      trigger.hidden = true;
-     if (sidebar) { sidebar.inert = false; sidebar.removeAttribute('id'); }
+     if (sidebar) { sidebar.inert = false; sidebar.classList.remove('dtb-mobile-summary-host'); sidebar.removeAttribute('id'); }
      sidebar = null;
      return;
    }
-   const found = document.querySelector(candidates);
-   if (!found || !found.querySelector('.wc-block-components-checkout-order-summary, .wp-block-woocommerce-checkout-order-summary-block')) {
-     document.body.classList.remove('dtb-mobile-sheet-ready');
+   // Use the actual native summary, not an empty responsive sidebar placeholder.
+   const summaries = [...document.querySelectorAll('.wc-block-components-checkout-order-summary')];
+   const summary = summaries.find(el => el.querySelector('.wc-block-components-order-summary-item, .wc-block-components-totals-footer-item'));
+   const found = summary && (summary.closest('.wc-block-checkout__sidebar, .wc-block-components-sidebar-layout__sidebar') || summary);
+   if (!found) {
+     if (sidebar) { sidebar.inert = false; sidebar.classList.remove('dtb-mobile-summary-host'); sidebar.removeAttribute('id'); }
+     sidebar = null;
+     document.body.classList.remove('dtb-mobile-sheet-ready', 'dtb-mobile-sheet-open');
      trigger.hidden = true;
      return;
    }
-   if (sidebar && sidebar !== found) sidebar.removeAttribute('id');
+   if (sidebar && sidebar !== found) { sidebar.inert = false; sidebar.classList.remove('dtb-mobile-summary-host'); sidebar.removeAttribute('id'); }
    sidebar = found;
+   sidebar.classList.add('dtb-mobile-summary-host');
    sidebar.id = 'dtb-mobile-summary';
    sidebar.inert = !open;
    trigger.hidden = false;
@@ -46,7 +51,6 @@
  trigger.addEventListener('click', () => {
    if (!sidebar || !media.matches) return;
    if (open) { close(true); return; }
-   lastFocused = document.activeElement;
    open = true;
    sidebar.inert = false;
    document.body.classList.add('dtb-mobile-sheet-open');
