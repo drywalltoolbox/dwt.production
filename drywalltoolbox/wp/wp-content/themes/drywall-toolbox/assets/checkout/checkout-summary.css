@@ -340,7 +340,6 @@
 		min-width: 0;
 		overflow: visible;
 	}
-	body.woocommerce-checkout .wc-block-checkout__shipping-method-option-title-wrapper,
 	body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block .wc-block-components-radio-control__label-group {
 		padding-inline-start: 32px;
 		min-width: 0;
@@ -370,9 +369,3 @@
 }
 
 
-/* Native shipping labels must reserve the radio's entire hit area. */
-@media (max-width: 1023px) {
-	body.woocommerce-checkout .wc-block-checkout__shipping-method-option {
-		padding-inline-start: 46px !important;
-	}
-}
