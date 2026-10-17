@@ -587,3 +587,40 @@
   ) { transition: transform 220ms cubic-bezier(.2,.8,.2,1), visibility 220ms; }
  }
 }
+
+
+/* Correct the sheet host selector: Woo can render native summary outside its
+   responsive sidebar. Only the JS-verified summary host is ever repositioned. */
+@media (max-width: 767px) {
+ body.woocommerce-checkout.dtb-mobile-sheet-ready .dtb-mobile-summary-host {
+  position: fixed !important;
+  z-index: 999;
+  inset: auto 0 calc(69px + env(safe-area-inset-bottom, 0px)) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: min(70dvh, 640px) !important;
+  max-height: calc(100dvh - 110px);
+  overflow: auto !important;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(calc(100% + 90px));
+  margin: 0 !important;
+  padding: 12px 18px 20px !important;
+  border: 1px solid #dfe6f2 !important;
+  border-radius: 22px 22px 0 0 !important;
+  background: #fff !important;
+  box-shadow: 0 -16px 36px rgb(13 32 65 / 14%) !important;
+ }
+ body.woocommerce-checkout.dtb-mobile-sheet-open .dtb-mobile-summary-host {
+  visibility: visible;
+  pointer-events: auto;
+  transform: none;
+ }
+ body.woocommerce-checkout.dtb-mobile-sheet-ready .dtb-mobile-summary-host .wc-block-components-checkout-order-summary__content {
+  display: block;
+ }
+ body.woocommerce-checkout.dtb-mobile-sheet-ready .dtb-mobile-summary-host .wc-block-components-checkout-order-summary {
+  width: 100%;
+  min-height: auto;
+ }
+}
