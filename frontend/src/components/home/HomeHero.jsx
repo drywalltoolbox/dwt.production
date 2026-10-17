@@ -118,8 +118,6 @@ export default function HomeHero({ brands = [] }) {
       <div
         className="home-hero__stage"
         data-campaign={activeCampaign.id}
-        onMouseEnter={() => setInteractionPaused(true)}
-        onMouseLeave={() => setInteractionPaused(false)}
         onFocusCapture={() => setInteractionPaused(true)}
         onBlurCapture={(event) => {
           if (!event.currentTarget.contains(event.relatedTarget)) setInteractionPaused(false);
@@ -158,7 +156,7 @@ export default function HomeHero({ brands = [] }) {
           id="home-hero-panel"
           aria-live="off"
         >
-          <AnimatePresence initial={false} mode="wait" custom={direction}>
+          <AnimatePresence initial={false} mode="popLayout" custom={direction}>
             <Motion.div
               className="home-hero__content"
               custom={direction}
@@ -199,7 +197,10 @@ export default function HomeHero({ brands = [] }) {
         </div>
 
         <nav className="home-hero-carousel" aria-label="Homepage slides">
-          <div className="home-hero-carousel__controls" role="group" aria-label="Choose homepage slide">
+          <div className="home-hero-carousel__controls" role="group" aria-label="Choose homepage slide"
+            data-running={!paused && !interactionPaused && !reduceMotion && pageVisible}
+            onMouseEnter={() => setInteractionPaused(true)}
+            onMouseLeave={() => setInteractionPaused(false)}>
             {HOME_HERO_CAMPAIGNS.map((campaign, index) => (
               <button
                 type="button"
