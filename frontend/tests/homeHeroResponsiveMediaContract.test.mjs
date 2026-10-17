@@ -50,9 +50,12 @@ test('homepage campaigns only promote customer-ready storefront routes', async (
 
   assert.doesNotMatch(source, /id: 'builder'|label: 'Builder'|\/toolset-builder/);
 
-  for (const route of ['/all-products', '/products/brands', '/parts', '/schematics', '/repairs/start', '/repairs']) {
+  for (const route of ['/all-products', '/parts', '/schematics', '/repairs/start', '/repairs']) {
     assert.match(source, new RegExp(route.replaceAll('/', '\\/')));
   }
+
+  assert.match(source, /primaryAction: \{ label: 'Shop Tools', to: '\/all-products' \}/);
+  assert.match(source, /secondaryAction: \{ label: 'Explore Parts', to: '\/parts' \}/);
 
   assert.match(styles, /\.home-hero-campaigns__rail\s*\{[\s\S]*?grid-template-columns:\s*repeat\(3,/);
   assert.doesNotMatch(source, /^\s*(?:price|inventory|order|payment|checkout)\s*:/im);
