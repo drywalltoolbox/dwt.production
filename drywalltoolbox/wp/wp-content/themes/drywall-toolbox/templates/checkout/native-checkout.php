@@ -73,7 +73,7 @@ wp_enqueue_style(
 		</div>
 	</header>
 	<main id="primary" role="main">
-		<div class="dtb-checkout__intro"><span class="dtb-checkout__eyebrow"><?php esc_html_e( 'Drywall Toolbox', 'drywall-toolbox' ); ?></span><h1><?php esc_html_e( 'Checkout', 'drywall-toolbox' ); ?></h1><p><?php esc_html_e( 'Your tools are almost on their way.', 'drywall-toolbox' ); ?></p></div>
+		<div class="dtb-checkout__intro"><span class="dtb-checkout__eyebrow"><?php esc_html_e( 'Drywall Toolbox', 'drywall-toolbox' ); ?></span><h1><?php esc_html_e( 'Complete your order', 'drywall-toolbox' ); ?></h1><p><?php esc_html_e( 'Your tools are almost on their way.', 'drywall-toolbox' ); ?></p></div>
 		<?php
 		if ( have_posts() ) {
 			while ( have_posts() ) {
