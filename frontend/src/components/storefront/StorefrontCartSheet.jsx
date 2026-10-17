@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 const CART_QTY_SYNC_DELAY_MS = 260;
 const MAX_CART_QUANTITY = 99;
-const FREE_SHIPPING_THRESHOLD = 75;
+const FREE_SHIPPING_THRESHOLD = 50;
 const CHECKOUT_HREF = `${ ( process.env.PUBLIC_URL || '' ).replace( /\/+$/, '' ) }/checkout`;
 
 function getCartItemKey(item) {
@@ -304,7 +304,7 @@ export default function StorefrontCartSheet({
             <p className="scs-shipping-progress__message" aria-live="polite">
               {shippingRemaining > 0
                 ? <><strong>${shippingRemaining.toFixed(2)}</strong> away from free shipping</>
-                : <strong>You've reached the $75 free-shipping threshold</strong>}
+                : <strong>You've reached the $50 free-shipping threshold</strong>}
             </p>
             <div
               className="scs-shipping-progress__track"
