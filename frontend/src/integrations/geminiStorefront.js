@@ -44,11 +44,36 @@ export function initializeGeminiStorefront() {
     style.href = data.styleUrl;
     document.head.appendChild(style);
 
+    // Scope overrides to the launcher, never the provider-owned conversation
+    // widget. A suspended launcher must not reset the active Gemini session.
+    const launcherStyle = document.createElement('style');
+    launcherStyle.id = 'dtb-gemini-launcher-layout';
+    launcherStyle.textContent = `
+      #dtb-gemini-storefront > .gecx-floating-button-container {
+        transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
+        transform-origin: right bottom;
+      }
+      html[data-dtb-ai-product="true"] #dtb-gemini-storefront > .gecx-floating-button-container {
+        transform: scale(.88);
+      }
+      html[data-dtb-ai-cart-open="true"] #dtb-gemini-storefront > .gecx-floating-button-container,
+      html[data-dtb-ai-navigation-open="true"] #dtb-gemini-storefront > .gecx-floating-button-container,
+      html[data-dtb-ai-checkout="true"] #dtb-gemini-storefront > .gecx-floating-button-container {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #dtb-gemini-storefront > .gecx-floating-button-container { transition: none; }
+      }
+    `;
+    document.head.appendChild(launcherStyle);
+
     const container = document.createElement('div');
     container.id = 'dtb-gemini-storefront';
     const launcher = document.createElement('div');
     launcher.className = 'gecx-floating-button-container gecx-floating-button-container--bottom-right';
-    launcher.style.cssText = 'position:fixed;bottom:calc(20px + env(safe-area-inset-bottom, 0px));right:20px;z-index:99999';
+    launcher.style.cssText = 'position:fixed;bottom:calc(12px + env(safe-area-inset-bottom, 0px));right:12px;z-index:9999';
     // Generated and escaped by Google's own public get_agent_button_html().
     launcher.innerHTML = data.config.markup.button;
     container.appendChild(launcher);
