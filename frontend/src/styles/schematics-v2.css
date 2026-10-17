@@ -1365,3 +1365,8 @@
     overflow: hidden;
   }
 }
+
+/* Do not clip the document scroll chain around the mobile schematic viewer. */
+@media (max-width: 900px) {
+  .main-content--schematic-viewer { overflow: visible; }
+}
