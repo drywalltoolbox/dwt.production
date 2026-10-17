@@ -71,7 +71,7 @@ final class DTB_WooPaymentsNativeCheckout {
 				unset( $gateways[ $id ] );
 			}
 		}
-		if ( self::is_test_mode() && ! self::is_isolated_test_environment() ) {
+		if ( self::is_test_mode() && ! self::is_isolated_test_environment() && ! self::is_authorized_production_test_window() ) {
 			foreach ( array_keys( $gateways ) as $id ) {
 				if ( self::is_gateway( (string) $id ) ) {
 					unset( $gateways[ $id ] );
@@ -79,6 +79,28 @@ final class DTB_WooPaymentsNativeCheckout {
 			}
 		}
 		return $gateways;
+	}
+
+	/**
+	 * Production testing is opt-in, administrator-only, and expires absolutely.
+	 * A fixed UTC Unix timestamp in private wp-config.php is required; accepting
+	 * request parameters, admin cookies alone, or a relative TTL is prohibited.
+	 * Never permit a live-mode provider through this exception.
+	 */
+	private static function is_authorized_production_test_window(): bool {
+		if ( ! self::is_test_mode()
+			|| ! is_ssl()
+			|| ! defined( 'WP_ENVIRONMENT_TYPE' )
+			|| 'production' !== WP_ENVIRONMENT_TYPE
+			|| ! defined( 'DTB_WOOPAYMENTS_PRODUCTION_TEST_UNTIL' )
+			|| ! is_user_logged_in()
+			|| ! current_user_can( 'manage_woocommerce' )
+		) {
+			return false;
+		}
+		$until = filter_var( constant( 'DTB_WOOPAYMENTS_PRODUCTION_TEST_UNTIL' ), FILTER_VALIDATE_INT );
+		$now = time();
+		return false !== $until && $until > $now && $until <= $now + HOUR_IN_SECONDS;
 	}
 
 	public static function is_isolated_test_environment(): bool {
