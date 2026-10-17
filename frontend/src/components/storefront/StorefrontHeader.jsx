@@ -159,6 +159,12 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
   const [desktopSearchOpen, setDesktopSearchOpen] = useState(false);
   const [desktopSearchQuery, setDesktopSearchQuery] = useState('');
   const [searchOverlayOpen, setSearchOverlayOpen] = useState(false);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    root.dataset.dtbAiNavigationOpen = String(mobileMenuOpen || searchOverlayOpen || accountHubOpen);
+    return () => { delete root.dataset.dtbAiNavigationOpen; };
+  }, [mobileMenuOpen, searchOverlayOpen, accountHubOpen]);
   const [mobileSearchQuery, setMobileSearchQuery] = useState('');
   const [mobileSearchResults, setMobileSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
