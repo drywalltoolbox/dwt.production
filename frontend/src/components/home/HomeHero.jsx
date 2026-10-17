@@ -115,29 +115,43 @@ export default function HomeHero({ brands = [] }) {
     tabRefs.current[nextIndex]?.focus();
   }, [activeIndex, selectCampaign]);
 
+  // One pointer-gesture implementation for touch, pen and primary mouse drag.
+  // Keep vertical page gestures native and never intercept links or controls.
   const handlePointerDown = useCallback((event) => {
-    if (event.pointerType !== 'touch' && event.pointerType !== 'pen') return;
-    if (event.target.closest('a, button')) return;
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    if (event.target.closest('a, button, input, textarea, select, [contenteditable="true"]')) return;
+    if (swipeStartRef.current) return;
 
     swipeStartRef.current = {
       pointerId: event.pointerId,
       x: event.clientX,
       y: event.clientY,
     };
+    // Pointer capture keeps desktop release reliable after dragging outside
+    // the stage; it does not cancel native vertical touch scrolling.
+    if (event.pointerType === 'mouse') {
+      event.currentTarget.setPointerCapture?.(event.pointerId);
+    }
   }, []);
 
   const handlePointerUp = useCallback((event) => {
     const start = swipeStartRef.current;
+    if (!start || start.pointerId !== event.pointerId) return;
     swipeStartRef.current = null;
 
-    if (!start || start.pointerId !== event.pointerId) return;
-
+    if (event.currentTarget.hasPointerCapture?.(event.pointerId)) {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    }
     const deltaX = event.clientX - start.x;
     const deltaY = event.clientY - start.y;
 
-    if (Math.abs(deltaX) < SWIPE_THRESHOLD_PX || Math.abs(deltaX) <= Math.abs(deltaY)) return;
+    if (Math.abs(deltaX) < SWIPE_THRESHOLD_PX || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) return;
     selectRelativeCampaign(deltaX < 0 ? 1 : -1);
   }, [selectRelativeCampaign]);
+
+  const handlePointerCancel = useCallback(() => {
+    swipeStartRef.current = null;
+  }, []);
 
   return (
     <section className="home-hero" aria-labelledby="home-hero-title">
@@ -152,7 +166,7 @@ export default function HomeHero({ brands = [] }) {
         }}
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
-        onPointerCancel={() => { swipeStartRef.current = null; }}
+        onPointerCancel={handlePointerCancel}
       >
         <picture className="home-hero__media" aria-hidden="true">
           <source

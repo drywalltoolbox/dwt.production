@@ -153,3 +153,14 @@ test('desktop hover activity pauses carousel only while pointer moves, then resu
   assert.match(source, /interactionPaused \|\| pointerActive \|\| reduceMotion/);
   assert.match(source, /data-running=\{!interactionPaused && !pointerActive/);
 });
+
+test('hero supports primary mouse drag and touch swipe without stealing vertical scrolling or CTAs', async () => {
+  const source = await readHeroSource();
+  assert.match(source, /event\.pointerType === 'mouse' && event\.button !== 0/);
+  assert.match(source, /event\.target\.closest\('a, button, input, textarea, select/);
+  assert.match(source, /setPointerCapture/);
+  assert.match(source, /releasePointerCapture/);
+  assert.match(source, /Math\.abs\(deltaY\) \* 1\.2/);
+  assert.match(source, /selectRelativeCampaign\(deltaX < 0 \? 1 : -1\)/);
+  assert.match(source, /onPointerCancel=\{handlePointerCancel\}/);
+});
