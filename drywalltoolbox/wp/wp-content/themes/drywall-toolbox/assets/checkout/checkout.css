@@ -504,6 +504,37 @@ body.woocommerce-checkout :where(
 }
 
 
+/*
+ * Native checkout component integrity. Preserve Blocks-owned inputs, layout
+ * semantics and provider secure fields; style only their surrounding surfaces.
+ */
+body.woocommerce-checkout .wc-block-components-radio-control__option,
+body.woocommerce-checkout .wc-block-checkout__shipping-method-option,
+body.woocommerce-checkout .wc-block-components-radio-control-accordion-option {
+	box-sizing: border-box;
+	min-width: 0;
+}
+body.woocommerce-checkout .wc-block-components-radio-control__label-group,
+body.woocommerce-checkout .wc-block-checkout__shipping-method-option-title-wrapper {
+	max-width: 100%;
+}
+body.woocommerce-checkout .wc-block-components-radio-control__option:focus-within,
+body.woocommerce-checkout .wc-block-checkout__shipping-method-option:focus-within,
+body.woocommerce-checkout .wc-block-components-radio-control-accordion-option:focus-within {
+	outline: 2px solid var(--dtb-checkout-blue-600);
+	outline-offset: -2px;
+}
+body.woocommerce-checkout .wc-block-components-validation-error {
+	margin-block-start: 6px;
+	font-size: 12px;
+	line-height: 1.45;
+	overflow-wrap: anywhere;
+}
+body.woocommerce-checkout .wc-block-components-checkout-place-order-button:disabled {
+	cursor: not-allowed;
+	box-shadow: none;
+}
+
 /* Premium checkout surface system — presentation only, native Blocks remain interactive. */
 body.woocommerce-checkout {
 	--dtb-checkout-canvas: #f5f7fb;
