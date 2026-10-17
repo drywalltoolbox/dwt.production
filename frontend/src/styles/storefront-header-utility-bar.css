@@ -176,3 +176,18 @@
   .dtb-header-utility-bar__item { font-size: .77rem; }
   .site-header .header-desktop-layout .logo-image { max-height: 52px; width: auto; object-fit: contain; }
 }
+
+
+/* Design-reference navy: continuous low-chroma ink across utility/main/nav. */
+@media (min-width:1025px) {
+  .site-header {
+    background: linear-gradient(180deg, #03142e 0%, #061b3b 60%, #071d3e 100%);
+  }
+  .site-header > .dtb-header-utility-bar {
+    min-height: 36px;
+    padding-block: 4px;
+    background: #03132b;
+    border-bottom: 1px solid rgba(72,129,213,.24);
+  }
+  .dtb-header-utility-bar__announcement { font-size: .76rem; }
+}
