@@ -32,10 +32,11 @@ class RoutingContractTests(unittest.TestCase):
     def test_native_checkout_mount_behavior(self) -> None:
         result = subprocess.run(
             ["php", str(Path(__file__).with_name("native_checkout_mount_contract.php"))],
-            check=True,
+            check=False,
             capture_output=True,
             text=True,
         )
+        self.assertEqual(0, result.returncode, result.stdout + "\n" + result.stderr)
         self.assertIn("native checkout mount contract passed", result.stdout)
 
     def test_production_build_selects_the_canonical_root_htaccess(self) -> None:

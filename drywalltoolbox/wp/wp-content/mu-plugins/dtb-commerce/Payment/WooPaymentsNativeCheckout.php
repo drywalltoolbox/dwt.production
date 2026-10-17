@@ -15,6 +15,7 @@ final class DTB_WooPaymentsNativeCheckout {
 
 	public static function register(): void {
 		add_action( 'rest_api_init', [ __CLASS__, 'register_rest_routes' ] );
+		add_filter( 'rest_pre_dispatch', [ __CLASS__, 'guard_production_test_checkout_submission' ], -200, 3 );
 		add_filter( 'woocommerce_available_payment_gateways', [ __CLASS__, 'filter_storefront_gateways' ], 1000 );
 		add_action( 'woocommerce_checkout_create_order', [ __CLASS__, 'tag_checkout' ], 20 );
 		add_action( 'woocommerce_store_api_checkout_order_processed', [ __CLASS__, 'observe_order' ], 10 );
@@ -50,7 +51,7 @@ final class DTB_WooPaymentsNativeCheckout {
 				'gateway_enabled' => $enabled,
 				'provider_test_mode' => $test_mode,
 				'isolated_test_environment' => self::is_isolated_test_environment(),
-				'test_checkout_available' => $test_mode && self::is_isolated_test_environment(),
+				'test_checkout_available' => $test_mode && ( self::is_isolated_test_environment() || self::is_authorized_production_test_window() ),
 				'payment_execution_authority' => self::PROVIDER,
 			],
 		] );
@@ -63,7 +64,7 @@ final class DTB_WooPaymentsNativeCheckout {
 	 */
 	public static function filter_storefront_gateways( $gateways ): array {
 		$gateways = is_array( $gateways ) ? $gateways : [];
-		if ( is_admin() || self::is_order_transaction_endpoint() ) {
+		if ( ( is_admin() || self::is_order_transaction_endpoint() ) && ! ( self::is_test_mode() && ! self::is_isolated_test_environment() ) ) {
 			return $gateways;
 		}
 		foreach ( array_keys( $gateways ) as $id ) {
@@ -71,7 +72,7 @@ final class DTB_WooPaymentsNativeCheckout {
 				unset( $gateways[ $id ] );
 			}
 		}
-		if ( self::is_test_mode() && ! self::is_isolated_test_environment() ) {
+		if ( self::is_test_mode() && ! self::is_isolated_test_environment() && ! self::is_authorized_production_test_window() ) {
 			foreach ( array_keys( $gateways ) as $id ) {
 				if ( self::is_gateway( (string) $id ) ) {
 					unset( $gateways[ $id ] );
@@ -79,6 +80,52 @@ final class DTB_WooPaymentsNativeCheckout {
 			}
 		}
 		return $gateways;
+	}
+
+	/**
+	 * Enforce the storefront test gateway rule at the actual Store API order
+	 * submission boundary. This must not rely on hiding payment methods in UI.
+	 * Use a normal REST permission response and preserve production/live flow.
+	 */
+	public static function guard_production_test_checkout_submission( $result, $server, $request ) {
+		if ( null !== $result || ! $request instanceof WP_REST_Request
+			|| 'POST' !== strtoupper( (string) $request->get_method() )
+			|| ! preg_match( '#^/wc/store/v[0-9]+/checkout/?$#', (string) $request->get_route() )
+			|| ! self::is_test_mode()
+			|| self::is_isolated_test_environment()
+		) {
+			return $result;
+		}
+		if ( self::is_authorized_production_test_window() ) {
+			return $result;
+		}
+		return new WP_Error(
+			'dtb_production_test_checkout_restricted',
+			'Checkout is temporarily unavailable while payment testing is configured.',
+			[ 'status' => 403 ]
+		);
+	}
+
+	/**
+	 * Production testing is opt-in, administrator-only, and expires absolutely.
+	 * A fixed UTC Unix timestamp in private wp-config.php is required; accepting
+	 * request parameters, admin cookies alone, or a relative TTL is prohibited.
+	 * Never permit a live-mode provider through this exception.
+	 */
+	private static function is_authorized_production_test_window(): bool {
+		if ( ! self::is_test_mode()
+			|| ! is_ssl()
+			|| ! defined( 'WP_ENVIRONMENT_TYPE' )
+			|| 'production' !== WP_ENVIRONMENT_TYPE
+			|| ! defined( 'DTB_WOOPAYMENTS_PRODUCTION_TEST_UNTIL' )
+			|| ! is_user_logged_in()
+			|| ! current_user_can( 'manage_woocommerce' )
+		) {
+			return false;
+		}
+		$until = filter_var( constant( 'DTB_WOOPAYMENTS_PRODUCTION_TEST_UNTIL' ), FILTER_VALIDATE_INT );
+		$now = time();
+		return false !== $until && $until > $now && $until <= $now + HOUR_IN_SECONDS;
 	}
 
 	public static function is_isolated_test_environment(): bool {
