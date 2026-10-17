@@ -122,6 +122,7 @@ export default function SchematicPartsNavigator({ parts, occurrences, activePage
               const key = part.part_ref || `part-${index}`;
               const selected = activePartRef && normalizePartRef(activePartRef) === normalizePartRef(part.part_ref);
               const image = part.product?.images?.[0];
+              const calloutLabel = occurrences.find((spot) => normalizePartRef(spot.part_ref) === normalizePartRef(part.part_ref))?.part_ref || part.mpn || part.part_ref;
               return <li key={key}>
                 <button
                   type="button"
@@ -130,9 +131,9 @@ export default function SchematicPartsNavigator({ parts, occurrences, activePage
                   aria-current={selected ? 'true' : undefined}
                   onClick={() => onSelect(part.part_ref, targetHotspotId)}
                 >
+                  <span className="dtb-parts-nav__reference" aria-hidden="true">{calloutLabel || '—'}</span>
                   <span className="dtb-parts-nav__media">
                     {typeof image === 'string' && image ? <img src={image} alt="" loading="lazy" /> : <span className="dtb-parts-nav__media-fallback" aria-hidden="true">PART</span>}
-                    <span className="dtb-parts-nav__number">{part.part_ref || '—'}</span>
                   </span>
                   <span className="dtb-parts-nav__item-body">
                     <strong>{part.title || `Part ${part.part_ref || ''}`}</strong>
@@ -142,7 +143,7 @@ export default function SchematicPartsNavigator({ parts, occurrences, activePage
                 </button>
               </li>;
             })}
-          </ol> : <p className="dtb-parts-nav__empty" role="status">No matching parts. Try another name or number.</p>}
+          </ol> : <p className="dtb-parts-nav__empty" role="status">{parts.length === 0 && !query ? 'No parts are assigned to this schematic page.' : 'No matching parts. Try another name or number.'}</p>}
         </div>
         <p className="dtb-parts-nav__footer">Select a part to view its details and diagram location.</p>
       </aside>
