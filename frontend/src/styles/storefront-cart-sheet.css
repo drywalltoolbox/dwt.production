@@ -540,3 +540,151 @@
    below 47.99rem and min(420px, 100vw) at wider widths, so the drawer's
    own content here uses fluid flex/percentage sizing and needs no
    additional fixed-width breakpoint overrides. */
+
+
+/* Premium mini-cart — reference-inspired editorial layout using DTB tokens.
+   WooCommerce Store API remains the sole cart/subtotal authority. */
+.storefront-cart-sheet--premium {
+  --scs-edge: #e8edf4;
+  --scs-subtle: #f5f8fc;
+  --scs-ink: var(--dtb-text, #17243a);
+  width: min(460px, 100vw);
+  max-width: 100vw;
+  height: 100%;
+  max-height: 100dvh;
+  background: #fff;
+  box-shadow: -22px 0 65px rgb(14 30 56 / 13%);
+}
+.storefront-cart-sheet--premium .scs-header {
+  position: relative;
+  min-height: 76px;
+  padding: 16px clamp(18px, 4vw, 28px);
+  border-bottom: 1px solid var(--scs-edge);
+  gap: 12px;
+}
+.storefront-cart-sheet--premium .scs-header-icon {
+  width: 42px; height: 42px; min-width: 42px; min-height: 42px;
+  background: #eff4fb; color: #203b62; border-radius: 12px;
+}
+.storefront-cart-sheet--premium .scs-header-left,
+.storefront-cart-sheet--premium .scs-header-actions { min-width: 0; gap: 10px; }
+.storefront-cart-sheet--premium .scs-title {
+  font-size: 14px; font-weight: 800; letter-spacing: -.01em;
+  color: var(--scs-ink); white-space: nowrap;
+}
+.storefront-cart-sheet--premium .scs-count {
+  min-width: 23px; height: 23px; padding-inline: 6px;
+  font-size: 12px; background: var(--dtb-primary, #2457de);
+}
+.storefront-cart-sheet--premium .scs-clear-cart {
+  min-height: 40px; padding: 0 12px;
+  background: #f8fafc; border: 1px solid var(--scs-edge);
+  color: #56647b; font-size: 12px;
+}
+.storefront-cart-sheet--premium .scs-close {
+  width: 42px; height: 42px; min-width: 42px;
+  background: #f8fafc; border: 1px solid var(--scs-edge);
+}
+.storefront-cart-sheet--premium .scs-body { flex: 1 1 auto; min-height: 0; overscroll-behavior: contain; }
+.storefront-cart-sheet--premium .scs-item-list { padding: 4px 0 24px; }
+.storefront-cart-sheet--premium .scs-item {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  align-items: start;
+  gap: 15px;
+  padding: 22px clamp(18px, 4vw, 28px);
+  border-bottom: 1px solid var(--scs-edge);
+}
+.storefront-cart-sheet--premium .scs-item:hover { background: #fbfcff; }
+.storefront-cart-sheet--premium .scs-item-img {
+  width: 84px; height: 96px;
+  border-radius: 12px; border: 1px solid var(--scs-edge);
+  background: #f7f9fc;
+}
+.storefront-cart-sheet--premium .scs-item-img img {
+  width: 100%; height: 100%; padding: 7px;
+  object-fit: contain; object-position: center;
+}
+.storefront-cart-sheet--premium .scs-item-body { gap: 8px; }
+.storefront-cart-sheet--premium .scs-item-top { gap: 8px; }
+.storefront-cart-sheet--premium .scs-item-name {
+  display: block; overflow: visible;
+  font-size: 14px; line-height: 1.4;
+  letter-spacing: -.015em; font-weight: 730;
+  color: var(--scs-ink);
+}
+.storefront-cart-sheet--premium .scs-item-sku {
+  font-size: 11px; font-family: inherit; color: #728098;
+  letter-spacing: .01em; white-space: normal;
+}
+.storefront-cart-sheet--premium .scs-item-remove {
+  width: 36px; height: 36px; min-width: 36px;
+  border-radius: 9px; color: #8894a7;
+  background: #f8fafc;
+}
+.storefront-cart-sheet--premium .scs-item-bottom {
+  align-items: center; margin-top: 5px; flex-wrap: wrap; gap: 10px;
+}
+.storefront-cart-sheet--premium .scs-item-qty-row {
+  background: #fff; border: 1px solid #dce4ef;
+  border-radius: 11px; overflow: hidden;
+}
+.storefront-cart-sheet--premium .scs-qty-btn {
+  width: 44px; height: 44px; min-width: 44px;
+  color: #2f4160;
+}
+.storefront-cart-sheet--premium .scs-qty-display {
+  min-width: 28px; font-size: 13px; color: var(--scs-ink);
+}
+.storefront-cart-sheet--premium .scs-item-line-total {
+  font-size: 15px; letter-spacing: -.02em;
+  font-weight: 800; color: var(--scs-ink);
+}
+.storefront-cart-sheet--premium .scs-footer {
+  position: relative;
+  z-index: 2;
+  gap: 10px;
+  padding: 20px clamp(18px, 4vw, 28px) calc(18px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--scs-edge);
+  background: #fff;
+  box-shadow: 0 -12px 35px rgb(14 30 56 / 4%);
+}
+.storefront-cart-sheet--premium .scs-subtotal-row {
+  padding: 0 0 10px; align-items: baseline;
+}
+.storefront-cart-sheet--premium .scs-subtotal-label {
+  font-size: 14px; font-weight: 650; color: #485771;
+}
+.storefront-cart-sheet--premium .scs-subtotal-hint {
+  font-size: 11px; line-height: 1.45;
+  color: #7a889d;
+}
+.storefront-cart-sheet--premium .scs-subtotal-amount {
+  font-size: 23px; font-weight: 800; letter-spacing: -.035em;
+}
+.storefront-cart-sheet--premium .scs-checkout-btn {
+  min-height: 54px;
+  border-radius: 12px; font-size: 15px;
+  background: linear-gradient(105deg, #193a67, var(--dtb-primary, #2457de));
+  box-shadow: 0 8px 20px rgb(27 72 175 / 17%);
+}
+.storefront-cart-sheet--premium .scs-view-cart-btn {
+  min-height: 48px; border-radius: 12px; border: 1px solid var(--scs-edge);
+}
+.storefront-cart-sheet--premium :is(a, button):focus-visible {
+  outline: 3px solid var(--dtb-primary, #2457de);
+  outline-offset: 3px;
+}
+@media (max-width: 480px) {
+  .storefront-cart-sheet--premium .scs-header { min-height: 68px; padding-inline: 16px; }
+  .storefront-cart-sheet--premium .scs-header-icon { display: none; }
+  .storefront-cart-sheet--premium .scs-item { grid-template-columns: 72px minmax(0, 1fr); gap: 12px; padding: 18px 16px; }
+  .storefront-cart-sheet--premium .scs-item-img { width: 72px; height: 84px; }
+  .storefront-cart-sheet--premium .scs-footer { padding-inline: 16px; }
+  .storefront-cart-sheet--premium .scs-clear-cart { padding-inline: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .storefront-cart-sheet--premium .scs-item,
+  .storefront-cart-sheet--premium .scs-checkout-btn,
+  .storefront-cart-sheet--premium .scs-qty-btn { transition: none; }
+}
