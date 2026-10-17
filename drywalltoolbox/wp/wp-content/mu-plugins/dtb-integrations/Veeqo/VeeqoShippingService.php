@@ -15,7 +15,7 @@
  *
  * `DTB_Shipping_Method::calculate_shipping()` (mu-plugins/dtb-commerce/Shipping/DTBShippingMethod.php)
  * is the only caller. It always keeps its own local policy tiers as the
- * fallback (and as the sole source of the $75+ free-shipping subsidy, which
+ * fallback (and as the sole source of the $50+ free-shipping subsidy, which
  * is a DTB merchant policy, not a carrier rate Veeqo can quote) whenever live
  * rates are unavailable — not configured, API error, incomplete address, no
  * usable quotes, or a non-US destination (the Rate Shopping API is
