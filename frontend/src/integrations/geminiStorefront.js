@@ -50,11 +50,25 @@ export function initializeGeminiStorefront() {
     launcherStyle.id = 'dtb-gemini-launcher-layout';
     launcherStyle.textContent = `
       #dtb-gemini-storefront > .gecx-floating-button-container {
-        transition: opacity 160ms ease, transform 160ms ease, visibility 160ms ease;
-        transform-origin: right bottom;
+        /* Keep the provider's actual button at least 44px: never scale the hit target. */
+        transition: opacity 160ms ease, visibility 160ms ease;
+        -webkit-tap-highlight-color: transparent;
       }
-      html[data-dtb-ai-product="true"] #dtb-gemini-storefront > .gecx-floating-button-container {
-        transform: scale(.88);
+      #dtb-gemini-storefront > .gecx-floating-button-container :focus-visible {
+        outline: 2px solid #2255ee;
+        outline-offset: 4px;
+      }
+      @media (max-width: 640px) {
+        #dtb-gemini-storefront > .gecx-floating-button-container {
+          bottom: calc(10px + env(safe-area-inset-bottom, 0px)) !important;
+          right: calc(10px + env(safe-area-inset-right, 0px)) !important;
+        }
+        /* Limit the custom-element box without touching Google's internal
+           conversation layout or constraining a closed shadow tree. */
+        #dtb-gemini-storefront > gecx-woocommerce-chat-widget {
+          max-inline-size: 100vw;
+          max-block-size: 100dvh;
+        }
       }
       html[data-dtb-ai-cart-open="true"] #dtb-gemini-storefront > .gecx-floating-button-container,
       html[data-dtb-ai-navigation-open="true"] #dtb-gemini-storefront > .gecx-floating-button-container,
