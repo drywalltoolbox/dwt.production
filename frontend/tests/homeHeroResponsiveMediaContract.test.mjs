@@ -137,7 +137,7 @@ test('autoplay is not blocked by hovering the entire hero and transitions overla
   const motion = await readFile(new URL('src/motion/dtbMotion.js', frontendRoot), 'utf8');
   assert.match(source, /mode="popLayout"/);
   assert.doesNotMatch(source, /data-campaign=\{activeCampaign.id\}\s*onMouseEnter=/);
-  assert.match(source, /data-running=\{!interactionPaused);
+  assert.match(source, /data-running=\{!interactionPaused/);
   assert.match(desktopCss, /home-hero-slide-progress/);
   assert.match(motion, /duration: 0\.72/);
 });
