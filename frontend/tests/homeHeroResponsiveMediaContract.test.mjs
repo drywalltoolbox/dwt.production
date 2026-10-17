@@ -141,3 +141,15 @@ test('autoplay is not blocked by hovering the entire hero and transitions overla
   assert.match(desktopCss, /home-hero-slide-progress/);
   assert.match(motion, /duration: 0\.72/);
 });
+
+test('desktop hover activity pauses carousel only while pointer moves, then resumes after idle', async () => {
+  const source = await readHeroSource();
+  assert.match(source, /POINTER_IDLE_MS = 3000/);
+  assert.match(source, /onPointerMove=\{handleHeroPointerMove\}/);
+  assert.match(source, /onPointerLeave=\{handleHeroPointerLeave\}/);
+  assert.match(source, /event\.pointerType !== 'mouse'/);
+  assert.match(source, /window\.clearTimeout\(pointerIdleTimerRef\.current\)/);
+  assert.match(source, /setPointerActive\(false\)/);
+  assert.match(source, /interactionPaused \|\| pointerActive \|\| reduceMotion/);
+  assert.match(source, /data-running=\{!paused && !interactionPaused && !pointerActive/);
+});
