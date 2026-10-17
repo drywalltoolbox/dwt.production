@@ -329,3 +329,21 @@
     box-shadow: none;
   }
 }
+
+/* Keep the master list as an independently scrolling desktop rail. */
+@media (min-width: 901px) {
+  .dtb-schematic-workspace {
+    grid-template-columns: minmax(0, 1fr) clamp(320px, 28vw, 430px);
+    min-width: 0;
+  }
+  .dtb-parts-nav {
+    height: 100%;
+    max-height: 100%;
+    overflow: hidden;
+  }
+  .dtb-parts-nav__list {
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}
