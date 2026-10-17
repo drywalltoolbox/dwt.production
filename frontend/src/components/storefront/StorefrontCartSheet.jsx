@@ -259,7 +259,7 @@ export default function StorefrontCartSheet({
       inert={!isOpen ? true : undefined}
     >
       <aside
-        className="cart-panel dtb-side-sheet__panel storefront-cart-sheet"
+        className="cart-panel dtb-side-sheet__panel storefront-cart-sheet storefront-cart-sheet--premium"
         onClick={(event) => event.stopPropagation()}
         role="dialog"
         aria-modal={isOpen ? 'true' : 'false'}
@@ -402,7 +402,7 @@ export default function StorefrontCartSheet({
             <div className="scs-subtotal-row">
               <div className="scs-subtotal-info">
                 <span className="scs-subtotal-label">Subtotal</span>
-                <span className="scs-subtotal-hint">Shipping &amp; taxes at checkout</span>
+                <span className="scs-subtotal-hint">Shipping &amp; taxes calculated at checkout</span>
               </div>
               <strong className="scs-subtotal-amount">
                 ${subtotal.toFixed(2)}
