@@ -351,6 +351,24 @@ body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block .wc-block
 	background: transparent !important;
 	box-shadow: none !important;
 }
+/*
+ * WooCommerce Blocks positions native radio inputs independently of the label.
+ * DTB's flattened payment rows remove the stock option inset, which otherwise
+ * leaves text underneath the radio. Restore a dedicated label lane without
+ * modifying the input or the provider-owned card fields.
+ */
+body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block
+.wc-block-components-radio-control__option .wc-block-components-radio-control__label-group {
+	padding-inline-start: 30px;
+	box-sizing: border-box;
+	min-width: 0;
+}
+body.woocommerce-checkout .wc-block-checkout__shipping-method-option-title-wrapper {
+	padding-inline-start: 30px;
+	box-sizing: border-box;
+	min-width: 0;
+}
+
 /* Leave the native radio affordance and keyboard semantics visible. */
 .wc-block-components-radio-control__option:has(input:focus-visible),
 .wc-block-checkout__shipping-method-option:has(input:focus-visible),
