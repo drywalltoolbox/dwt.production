@@ -81,22 +81,11 @@ function SchematicsPageInner() {
   // contract so selecting a tool renders its detail view rather than falling
   // back to the catalog selector.
   const isViewer = routeState.view === 'viewer';
-  // One viewport authority for the full-screen viewer. The document itself
-  // must not scroll while the schematic camera owns pan/zoom interactions.
-  // Measure from document layout (not the scrolling rect) so viewport updates
-  // cannot feed back into the viewer's own height.
+  // Measure the schematic viewport on resize without taking ownership of
+  // document scrolling. Normal iOS page scroll must remain available.
   useLayoutEffect(() => {
     if (!isViewer || !viewerRootRef.current) return undefined;
     const root = viewerRootRef.current;
-    const html = document.documentElement;
-    const body = document.body;
-    const previousHtmlOverflow = html.style.overflow;
-    const previousBodyOverflow = body.style.overflow;
-    const previousOverscroll = body.style.overscrollBehavior;
-    window.scrollTo(0, 0);
-    html.style.overflow = 'hidden';
-    body.style.overflow = 'hidden';
-    body.style.overscrollBehavior = 'none';
     let frame = 0;
     const update = () => {
       cancelAnimationFrame(frame);
@@ -120,9 +109,6 @@ function SchematicsPageInner() {
       window.removeEventListener('resize', update);
       window.visualViewport?.removeEventListener('resize', update);
       root.style.removeProperty('--dtb-schematic-available-height');
-      html.style.overflow = previousHtmlOverflow;
-      body.style.overflow = previousBodyOverflow;
-      body.style.overscrollBehavior = previousOverscroll;
     };
   }, [isViewer]);
 
