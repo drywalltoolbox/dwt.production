@@ -1438,3 +1438,17 @@
     max-height: 38px;
   }
 }
+
+/* Distinct diagram reading area at desktop widths, without cropping hotspots. */
+@media (min-width: 901px) {
+  .dtb-schematics-page__content--viewer .dtb-schematic-diagram {
+    background: #fbfcfe;
+  }
+  .dtb-schematics-page__content--viewer .schematic-image-wrapper {
+    padding: 0;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-variant-pills,
+  .dtb-schematics-page__content--viewer .dtb-schematic-page-tabs {
+    padding-block: 5px;
+  }
+}
