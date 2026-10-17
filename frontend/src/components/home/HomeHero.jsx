@@ -41,6 +41,7 @@ export default function HomeHero({ brands = [] }) {
   const [interactionPaused, setInteractionPaused] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
   const swipeStartRef = useRef(null);
+  const touchStartRef = useRef(null);
   const pointerIdleTimerRef = useRef(null);
   const [pointerActive, setPointerActive] = useState(false);
 
@@ -118,6 +119,7 @@ export default function HomeHero({ brands = [] }) {
   // One pointer-gesture implementation for touch, pen and primary mouse drag.
   // Keep vertical page gestures native and never intercept links or controls.
   const handlePointerDown = useCallback((event) => {
+    if (event.pointerType === 'touch') return; // Native touch gestures use the fallback below.
     if (event.pointerType === 'mouse' && event.button !== 0) return;
     if (event.target.closest('a, button, input, textarea, select, [contenteditable="true"]')) return;
     if (swipeStartRef.current) return;
@@ -153,6 +155,30 @@ export default function HomeHero({ brands = [] }) {
     swipeStartRef.current = null;
   }, []);
 
+  // Touch Events avoid pointercancel when mobile browsers arbitrate native
+  // vertical scrolling. Never preventDefault: page scroll remains native.
+  const handleTouchStart = useCallback((event) => {
+    if (event.touches.length !== 1 ||
+      event.target.closest('a, button, input, textarea, select, [contenteditable="true"]')) {
+      touchStartRef.current = null;
+      return;
+    }
+    const touch = event.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  }, []);
+
+  const handleTouchEnd = useCallback((event) => {
+    const start = touchStartRef.current;
+    touchStartRef.current = null;
+    if (!start || !event.changedTouches.length) return;
+    const touch = event.changedTouches[0];
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    if (Math.abs(dx) >= SWIPE_THRESHOLD_PX && Math.abs(dx) > Math.abs(dy) * 1.2) {
+      selectRelativeCampaign(dx < 0 ? 1 : -1);
+    }
+  }, [selectRelativeCampaign]);
+
   return (
     <section className="home-hero" aria-labelledby="home-hero-title">
       <div
@@ -167,6 +193,9 @@ export default function HomeHero({ brands = [] }) {
         onPointerDown={handlePointerDown}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerCancel}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+        onTouchCancel={() => { touchStartRef.current = null; }}
       >
         <picture className="home-hero__media" aria-hidden="true">
           <source
