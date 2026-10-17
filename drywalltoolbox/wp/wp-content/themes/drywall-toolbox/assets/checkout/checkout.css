@@ -358,8 +358,6 @@ body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block .wc-block
  * modifying the input or the provider-owned card fields.
  */
 body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block
-.wc-block-components-radio-control__option .wc-block-components-radio-control__label,
-body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block
 .wc-block-components-radio-control__option .wc-block-components-radio-control__label-group {
 	padding-inline-start: 30px;
 	box-sizing: border-box;
