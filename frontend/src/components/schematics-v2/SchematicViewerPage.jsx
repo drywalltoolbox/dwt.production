@@ -41,6 +41,9 @@ export default function SchematicViewerPage({
 
   function handleCloseActivePart() {
     setActivePartRef(null);
+    setSelectedHotspotId(null);
+    setFocusedHotspotId(null);
+    setSelectedFromList(false);
   }
 
   const variantNavigation = useMemo(() => {
