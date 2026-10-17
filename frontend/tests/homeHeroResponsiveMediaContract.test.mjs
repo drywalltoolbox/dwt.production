@@ -116,3 +116,13 @@ test('compressed responsive hero assets remain bounded for above-the-fold delive
   assert.ok(desktop.size <= 250_000, `desktop hero is unexpectedly large: ${desktop.size} bytes`);
   assert.ok(mobile.size <= 250_000, `mobile hero is unexpectedly large: ${mobile.size} bytes`);
 });
+
+
+test('desktop hero centers outside Framer Motion transform space', async () => {
+  const targetCss = await readFile(new URL('src/styles/home-hero-desktop-target.css', frontendRoot), 'utf8');
+  assert.match(targetCss, /Motion-safe desktop composition/);
+  assert.match(targetCss, /\.home-hero__content-shell\s*\{\s*display:\s*flex;/);
+  assert.match(targetCss, /justify-content:\s*center;/);
+  assert.match(targetCss, /\.home-hero__content\s*\{\s*position:\s*relative;/);
+  assert.match(targetCss, /top:\s*auto;/);
+});
