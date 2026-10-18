@@ -1,0 +1,9 @@
+/* Native scroll remains authoritative on touch/wheel/trackpad. */
+.dtb-scroll-progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:1100;pointer-events:none;background:transparent}
+.dtb-scroll-progress>div{height:100%;width:100%;background:#315be9;transform-origin:0 50%;will-change:transform}
+.dtb-scroll-to-top{position:fixed;right:clamp(14px,3vw,26px);bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:75;width:44px;height:44px;border:1px solid #dce5f3;border-radius:14px;background:#fff;color:#1b3f8f;box-shadow:0 9px 24px rgba(14,32,71,.12);display:grid;place-items:center;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
+.dtb-scroll-to-top:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(14,32,71,.17)}
+.dtb-scroll-to-top:focus-visible{outline:3px solid #315be9;outline-offset:3px}
+html:has([role="dialog"][aria-modal="true"]) .dtb-scroll-to-top,html:has(.product-image-gallery__lightbox) .dtb-scroll-to-top,html[data-dtb-ai-cart-open="true"] .dtb-scroll-to-top{display:none}
+@media(max-width:767px){.dtb-scroll-to-top{right:14px;bottom:calc(80px + env(safe-area-inset-bottom,0px))}}
+@media(prefers-reduced-motion:reduce){.dtb-scroll-to-top{transition:none}}
