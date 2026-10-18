@@ -2,10 +2,38 @@ let navigationPending = false;
 
 function resetDocumentTransition() {
   navigationPending = false;
+  hideCheckoutHandoff();
   if (typeof document !== 'undefined') {
     document.documentElement.classList.remove('dtb-document-transition-active');
     document.documentElement.classList.remove('dtb-checkout-handoff-active');
   }
+}
+
+/**
+ * Durable visual bridge from React cart to the native Woo checkout document.
+ * Overlay is presentation-only; never changes the Store API handoff.
+ */
+export function showCheckoutHandoff() {
+  if (typeof document === 'undefined') return;
+  let overlay = document.getElementById('dtb-checkout-transition');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'dtb-checkout-transition';
+    overlay.className = 'dtb-checkout-transition';
+    overlay.setAttribute('role', 'status');
+    overlay.setAttribute('aria-live', 'polite');
+    overlay.setAttribute('aria-label', 'Preparing secure checkout');
+    overlay.innerHTML = '<div class="dtb-checkout-transition__panel"><div class="dtb-checkout-transition__mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="11" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><span class="dtb-checkout-transition__spinner" aria-hidden="true"></span><strong>Preparing your secure checkout</strong><p>Connecting your cart securely…</p></div>';
+    document.body.appendChild(overlay);
+  }
+  document.documentElement.classList.add('dtb-checkout-handoff-active');
+  window.requestAnimationFrame(() => overlay.classList.add('dtb-checkout-transition--visible'));
+}
+export function hideCheckoutHandoff() {
+  if (typeof document === 'undefined') return;
+  document.documentElement.classList.remove('dtb-checkout-handoff-active');
+  const overlay = document.getElementById('dtb-checkout-transition');
+  if (overlay) overlay.remove();
 }
 
 if (typeof window !== 'undefined') {
