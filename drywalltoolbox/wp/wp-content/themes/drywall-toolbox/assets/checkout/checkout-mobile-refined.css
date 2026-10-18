@@ -497,55 +497,48 @@
  body.woocommerce-checkout .wc-block-checkout__main,
  body.woocommerce-checkout .wc-block-checkout__sidebar { padding-inline: 12px !important; }
 }
-/* Native WC summary is the sole mobile sheet and disclosure: no proxy toggle. */
+/* Checkout native summary sheet — CSS-first so hydration timing cannot hide it.
+   Native Woo title remains the only disclosure control. */
 @media (max-width: 767px) {
- body.woocommerce-checkout.dtb-native-summary-ready {
-  padding-bottom: calc(94px + env(safe-area-inset-bottom, 0px));
- }
+ body.woocommerce-checkout { padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); }
  body.woocommerce-checkout .dtb-mobile-sheet-trigger,
  body.woocommerce-checkout .dtb-mobile-sheet-backdrop { display: none !important; }
- body.woocommerce-checkout .dtb-native-summary-sheet {
+ body.woocommerce-checkout :is(.wc-block-components-checkout-order-summary, .wp-block-woocommerce-checkout-order-summary-block) {
   position: fixed !important;
   inset: auto 0 0 !important;
   z-index: 995 !important;
   box-sizing: border-box !important;
   width: 100% !important;
-  min-width: 0 !important;
   max-width: 100% !important;
-  max-height: min(78dvh, 700px) !important;
+  height: auto !important;
+  max-height: min(72dvh, 610px) !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
   margin: 0 !important;
-  padding: 0 18px max(12px, env(safe-area-inset-bottom, 0px)) !important;
+  padding: 0 18px max(10px, env(safe-area-inset-bottom, 0px)) !important;
   border: 1px solid #dce4f0 !important;
   border-bottom: 0 !important;
   border-radius: 22px 22px 0 0 !important;
-  background: #fff !important;
-  box-shadow: 0 -10px 36px rgb(13 32 65 / 16%) !important;
+  background: white !important;
+  box-shadow: 0 -10px 32px rgb(13 32 65 / 13%) !important;
   visibility: visible !important;
   transform: none !important;
-  pointer-events: auto !important;
  }
- body.woocommerce-checkout .dtb-native-summary-sheet .wc-block-components-checkout-order-summary__title {
+ body.woocommerce-checkout .wc-block-components-checkout-order-summary__title {
   position: sticky;
   top: 0;
-  z-index: 1;
-  min-height: 64px;
+  z-index: 2;
+  min-height: 58px;
+  margin: 0 !important;
+  padding: 12px 0 !important;
   background: #fff !important;
-  padding: 14px 0 !important;
-  font-weight: 750;
+  font-weight: 700;
  }
- body.woocommerce-checkout .dtb-native-summary-sheet .wc-block-components-checkout-order-summary__title-text {
-  font-size: 16px;
- }
- /* Improve compactness without constraining provider-owned wallet controls. */
+ body.woocommerce-checkout .wc-block-components-checkout-order-summary__title-text { font-size: 16px; }
  body.woocommerce-checkout .wc-block-checkout__form .wc-block-components-checkout-step { padding: 17px 0 !important; }
  body.woocommerce-checkout .wc-block-components-checkout-step__title { font-size: 16px; }
  body.woocommerce-checkout .wc-block-components-checkout-step__heading { margin-bottom: 10px; }
  body.woocommerce-checkout .wc-block-components-form .wc-block-components-text-input { margin-bottom: 8px; }
  body.woocommerce-checkout .wc-block-checkout__form .wc-block-components-text-input input { min-height: 48px; font-size: 16px; }
  body.woocommerce-checkout .wc-block-components-checkbox { min-height: 44px; padding-block: 6px; }
- body.woocommerce-checkout .wc-block-components-express-payment { padding: 11px 0 14px; }
 }
