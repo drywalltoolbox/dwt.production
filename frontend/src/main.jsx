@@ -30,6 +30,7 @@ import './styles/global-loading.css';
 import './styles/cart-interaction-feedback.css';
 import './styles/add-to-cart-button.css';
 import './styles/loading-transitions.css';
+import './styles/checkout-handoff-transition.css';
 import './styles/global-typography.css';
 
 /* Shared timing/easing authority loads after feature appearance styles so
