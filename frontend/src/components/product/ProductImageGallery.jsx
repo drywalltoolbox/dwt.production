@@ -688,7 +688,7 @@ export default function ProductImageGallery({ product }) {
               </button>
 
               <div className="product-image-gallery__counter absolute bottom-3 right-3 z-10 flex items-center pointer-events-none">
-                {activeIndex + 1} / {stableImages.length}
+                {String(activeIndex + 1).padStart(2, '0')} <span aria-hidden="true">/</span> {String(stableImages.length).padStart(2, '0')}
               </div>
 
               {stableImages.length <= 8 && (
