@@ -1,52 +1,43 @@
-/* Drywall Toolbox: branded cross-document checkout handoff.
-   One overlay only. CSS motion never gates navigation or WooCommerce readiness. */
+/* DTB native-checkout handoff — Framer logo-fill reference adapted as CSS,
+ * using the existing official /logos/logo-white.svg, without Framer runtime.
+ * Indeterminate visual progress; it never claims a percent or delays navigation. */
 .dtb-checkout-transition {
- position:fixed;inset:0;z-index:2147483000;
- display:grid;place-items:center;padding:24px;
- background:radial-gradient(ellipse at 50% 32%,#203c7a 0%,#101e40 46%,#0b1632 100%);
- color:#fff;font-family:'Geist Variable','Geist',-apple-system,BlinkMacSystemFont,sans-serif;
- opacity:0;transition:opacity 230ms cubic-bezier(.2,.8,.2,1);pointer-events:auto;
+ position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;
+ padding:24px;background:#0a1124;color:#fff;
+ font-family:'Geist Variable','Geist',-apple-system,BlinkMacSystemFont,sans-serif;
+ opacity:0;transition:opacity 260ms cubic-bezier(.22,1,.36,1);
 }
 .dtb-checkout-transition--visible {opacity:1}
 .dtb-checkout-transition__panel {
  display:flex;flex-direction:column;align-items:center;text-align:center;
- width:min(100%,350px);gap:12px;transform:translateY(7px);
- transition:transform 300ms cubic-bezier(.2,.8,.2,1);
+ width:min(100%,360px);gap:12px;transform:translateY(7px);
+ transition:transform 350ms cubic-bezier(.22,1,.36,1);
 }
-.dtb-checkout-transition--visible .dtb-checkout-transition__panel {transform:translateY(0)}
+.dtb-checkout-transition--visible .dtb-checkout-transition__panel {transform:none}
 .dtb-checkout-transition__logo {
- position:relative;display:grid;place-items:center;isolation:isolate;
- width:min(76vw,256px);min-height:93px;margin-bottom:17px;
- overflow:hidden;border-radius:14px;
+ position:relative;width:min(76vw,274px);aspect-ratio:3000/917;
+ margin-bottom:28px;isolation:isolate;
 }
-.dtb-checkout-transition__logo img {
- width:100%;height:auto;max-height:83px;object-fit:contain;
- filter:drop-shadow(0 4px 12px rgb(0 0 0 / 12%));
- animation:dtb-checkout-logo-arrive 600ms cubic-bezier(.2,.8,.2,1) both;
+.dtb-checkout-transition__logo-base,
+.dtb-checkout-transition__logo-fill img {
+ display:block;width:100%;height:100%;object-fit:contain;
 }
-.dtb-checkout-transition__logo-shine {
- position:absolute;inset:0;pointer-events:none;
- background:linear-gradient(110deg,transparent 33%,rgb(255 255 255 / 11%) 49%,transparent 65%);
- transform:translateX(-125%);animation:dtb-checkout-logo-shine 2100ms ease-in-out 450ms infinite;
+.dtb-checkout-transition__logo-base {opacity:.2;filter:grayscale(1)}
+.dtb-checkout-transition__logo-fill {
+ position:absolute;inset:0;overflow:hidden;clip-path:inset(100% 0 0 0);
+ animation:dtb-logo-fill-rise 2200ms cubic-bezier(.4,0,.2,1) infinite;
 }
-.dtb-checkout-transition__progress {
- width:104px;height:3px;border-radius:999px;overflow:hidden;
- background:rgb(255 255 255 / 15%);margin:0 0 10px;
+.dtb-checkout-transition__logo-fill img {filter:drop-shadow(0 0 12px rgb(95 141 255 / 16%))}
+.dtb-checkout-transition strong {font-size:18px;font-weight:700;letter-spacing:-.03em;line-height:1.32}
+.dtb-checkout-transition p {margin:0;color:#a7b5d0;font-size:13px;line-height:1.5}
+.dtb-checkout-transition__trust {margin-top:16px;color:#8497bd;font-size:10px;font-weight:650;letter-spacing:.15em}
+@keyframes dtb-logo-fill-rise {
+ 0%,8% {clip-path:inset(100% 0 0 0)}
+ 65%,82% {clip-path:inset(0 0 0 0)}
+ 100% {clip-path:inset(100% 0 0 0)}
 }
-.dtb-checkout-transition__progress span {
- display:block;width:38%;height:100%;border-radius:inherit;
- background:#4b79ff;box-shadow:0 0 9px rgb(99 151 255 / 55%);
- animation:dtb-checkout-progress 1500ms ease-in-out infinite;
-}
-.dtb-checkout-transition strong {font-size:18px;font-weight:700;letter-spacing:-.035em;line-height:1.3}
-.dtb-checkout-transition p {margin:0;color:#acb9d6;font-size:13px;line-height:1.5}
-.dtb-checkout-transition__trust {margin-top:22px;color:#8498be;font-size:10px;font-weight:650;letter-spacing:.21em}
-@keyframes dtb-checkout-logo-arrive {from {opacity:0;transform:translateY(6px) scale(.98)}to {opacity:1;transform:none}}
-@keyframes dtb-checkout-logo-shine {0%,18% {transform:translateX(-125%)}72%,100% {transform:translateX(125%)}}
-@keyframes dtb-checkout-progress {0% {transform:translateX(-110%)}50% {transform:translateX(120%)}100% {transform:translateX(300%)}}
 @media(prefers-reduced-motion:reduce) {
  .dtb-checkout-transition,.dtb-checkout-transition__panel {transition:none;transform:none}
- .dtb-checkout-transition__logo img,.dtb-checkout-transition__logo-shine,.dtb-checkout-transition__progress span {animation:none}
- .dtb-checkout-transition__logo-shine {display:none}
- .dtb-checkout-transition__progress span {width:100%;transform:none}
+ .dtb-checkout-transition__logo-base {opacity:0}
+ .dtb-checkout-transition__logo-fill {animation:none;clip-path:inset(0 0 0 0)}
 }
