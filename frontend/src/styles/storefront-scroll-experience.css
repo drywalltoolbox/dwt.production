@@ -1,9 +1,65 @@
-/* Native scroll remains authoritative on touch/wheel/trackpad. */
-.dtb-scroll-progress{position:fixed;top:0;left:0;right:0;height:2px;z-index:1100;pointer-events:none;background:transparent}
-.dtb-scroll-progress>div{height:100%;width:100%;background:#315be9;transform-origin:0 50%;will-change:transform}
-.dtb-scroll-to-top{position:fixed;right:clamp(14px,3vw,26px);bottom:calc(22px + env(safe-area-inset-bottom,0px));z-index:75;width:44px;height:44px;border:1px solid #dce5f3;border-radius:14px;background:#fff;color:#1b3f8f;box-shadow:0 9px 24px rgba(14,32,71,.12);display:grid;place-items:center;cursor:pointer;transition:transform .18s ease,box-shadow .18s ease}
-.dtb-scroll-to-top:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(14,32,71,.17)}
-.dtb-scroll-to-top:focus-visible{outline:3px solid #315be9;outline-offset:3px}
-html:has([role="dialog"][aria-modal="true"]) .dtb-scroll-to-top,html:has(.product-image-gallery__lightbox) .dtb-scroll-to-top,html[data-dtb-ai-cart-open="true"] .dtb-scroll-to-top{display:none}
-@media(max-width:767px){.dtb-scroll-to-top{right:14px;bottom:calc(80px + env(safe-area-inset-bottom,0px))}}
-@media(prefers-reduced-motion:reduce){.dtb-scroll-to-top{transition:none}}
+/*
+ * Shared storefront native-scroll presentation. Browser owns touch/wheel
+ * momentum; App.jsx owns route restoration. No scroll-behavior on html/body.
+ */
+.dtb-scroll-progress {
+ position:fixed;inset:0 0 auto;height:2px;
+ z-index:var(--dtb-z-sticky,200);
+ pointer-events:none;overflow:hidden;
+}
+.dtb-scroll-progress > div {
+ width:100%;height:100%;
+ background:var(--dtb-primary,#2255ee);
+ transform:scaleX(0);transform-origin:0 50%;
+}
+.dtb-scroll-to-top {
+ position:fixed;right:clamp(14px,3vw,26px);
+ bottom:calc(24px + env(safe-area-inset-bottom,0px));
+ z-index:var(--dtb-z-sticky,200);
+ width:44px;height:44px;display:grid;place-items:center;
+ border:1px solid var(--dtb-border,#dbe3f1);
+ border-radius:14px;background:var(--dtb-surface,#fff);
+ color:var(--dtb-primary,#2255ee);
+ box-shadow:0 8px 22px rgba(15,23,42,.12);
+ cursor:pointer;
+ transition:transform var(--dtb-motion-fast,180ms ease),
+            box-shadow var(--dtb-motion-fast,180ms ease);
+}
+@media (hover:hover) and (pointer:fine) {
+ .dtb-scroll-to-top:hover {
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(15,23,42,.16);
+ }
+}
+.dtb-scroll-to-top:focus-visible {
+ outline:3px solid var(--dtb-focus,#2255ee);outline-offset:3px;
+}
+/* Keep the persistent help launcher and all modal surfaces unobstructed. */
+html[data-dtb-ai-cart-open="true"] .dtb-scroll-to-top,
+html:has([aria-modal="true"]) .dtb-scroll-to-top,
+html:has(.product-image-gallery__lightbox) .dtb-scroll-to-top {
+ display:none;
+}
+/* Opt-in editorial text only. Essential controls/product cards never
+   become invisible or wait on an observer to be usable. */
+.dtb-home-page [data-dtb-scroll-reveal][data-dtb-reveal-state="waiting"] {
+ opacity:.9;transform:translateY(8px);
+}
+.dtb-home-page [data-dtb-scroll-reveal][data-dtb-reveal-state="visible"] {
+ opacity:1;transform:none;
+ transition:opacity var(--dtb-motion-duration-normal,320ms) var(--dtb-motion-ease-standard,ease),
+            transform var(--dtb-motion-duration-normal,320ms) var(--dtb-motion-ease-standard,ease);
+}
+@media (max-width:767px) {
+ /* The help launcher occupies the opposite lower corner on mobile. */
+ .dtb-scroll-to-top {
+  right:auto;left:14px;
+  bottom:calc(84px + env(safe-area-inset-bottom,0px));
+ }
+}
+@media (prefers-reduced-motion:reduce) {
+ .dtb-scroll-to-top {transition:none;}
+ .dtb-home-page [data-dtb-scroll-reveal] {
+  opacity:1 !important;transform:none !important;transition:none !important;
+ }
+}
