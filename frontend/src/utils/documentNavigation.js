@@ -23,7 +23,7 @@ export function showCheckoutHandoff() {
     overlay.setAttribute('role', 'status');
     overlay.setAttribute('aria-live', 'polite');
     overlay.setAttribute('aria-label', 'Preparing secure checkout');
-    overlay.innerHTML = '<div class="dtb-checkout-transition__panel"><div class="dtb-checkout-transition__mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="11" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><span class="dtb-checkout-transition__spinner" aria-hidden="true"></span><strong>Preparing your secure checkout</strong><p>Connecting your cart securely…</p></div>';
+    overlay.innerHTML = '<div class="dtb-checkout-transition__panel"><div class="dtb-checkout-transition__logo" aria-hidden="true"><img src="/logos/logo-white.svg" alt="" width="260" height="80" decoding="async"/><span class="dtb-checkout-transition__logo-shine"></span></div><div class="dtb-checkout-transition__progress" aria-hidden="true"><span></span></div><strong>Preparing your secure checkout</strong><p>Connecting your cart securely…</p><span class="dtb-checkout-transition__trust">SECURE CHECKOUT</span></div>';
     document.body.appendChild(overlay);
   }
   // Do not activate the legacy #dtb-checkout-route-loader: one overlay only.
