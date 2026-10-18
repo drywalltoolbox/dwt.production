@@ -503,7 +503,7 @@
  body.woocommerce-checkout { padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); }
  body.woocommerce-checkout .dtb-mobile-sheet-trigger,
  body.woocommerce-checkout .dtb-mobile-sheet-backdrop { display: none !important; }
- body.woocommerce-checkout :is(.wc-block-components-checkout-order-summary, .wp-block-woocommerce-checkout-order-summary-block) {
+ body.woocommerce-checkout :is(.wc-block-components-checkout-order-summary, .wp-block-woocommerce-checkout-order-summary-block:not(:has(.wc-block-components-checkout-order-summary))) {
   position: fixed !important;
   inset: auto 0 0 !important;
   z-index: 995 !important;
