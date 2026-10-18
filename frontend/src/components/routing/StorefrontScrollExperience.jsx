@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ArrowUp } from 'lucide-react';
 import { isDocumentScrollLocked, isScrollExperienceEnabled, scrollMetrics } from '../../utils/scrollExperiencePolicy.js';
@@ -18,11 +18,12 @@ export default function StorefrontScrollExperience() {
   const progressRef = useRef(null);
   const [showTop, setShowTop] = useState(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!enabled) return undefined;
 
     let frame = 0;
     let resizeObserver;
+    let lockObserver;
     const update = () => {
       frame = 0;
       const root = document.documentElement;
@@ -55,6 +56,14 @@ export default function StorefrontScrollExperience() {
       resizeObserver.observe(document.body);
     }
 
+    // Drawers can acquire/release body overflow locks without emitting scroll.
+    // Attribute observation is narrowly restricted to the two document roots.
+    if (typeof MutationObserver !== 'undefined' && document.body) {
+      lockObserver = new MutationObserver(schedule);
+      lockObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['style', 'data-dtb-ai-cart-open'] });
+      lockObserver.observe(document.body, { attributes: true, attributeFilter: ['style'] });
+    }
+
     update();
     return () => {
       window.removeEventListener('scroll', schedule);
@@ -62,6 +71,7 @@ export default function StorefrontScrollExperience() {
       window.removeEventListener('pageshow', schedule);
       document.removeEventListener('visibilitychange', onVisibility);
       if (resizeObserver) resizeObserver.disconnect();
+      if (lockObserver) lockObserver.disconnect();
       if (frame) window.cancelAnimationFrame(frame);
     };
   }, [enabled, pathname, search]);
