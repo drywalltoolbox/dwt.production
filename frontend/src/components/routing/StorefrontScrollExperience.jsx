@@ -64,7 +64,9 @@ export default function StorefrontScrollExperience() {
       lockObserver.observe(document.body, { attributes: true, attributeFilter: ['style'] });
     }
 
-    update();
+    // Compute in the first pre-paint frame; do not synchronously set React
+    // state within a layout effect during navigation commit.
+    schedule();
     return () => {
       window.removeEventListener('scroll', schedule);
       window.removeEventListener('resize', schedule);
