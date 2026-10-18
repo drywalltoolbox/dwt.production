@@ -41,3 +41,39 @@
  .dtb-checkout-transition__logo-base {opacity:0}
  .dtb-checkout-transition__logo-fill {animation:none;clip-path:inset(0 0 0 0)}
 }
+
+/* The same brand preloader serves React Suspense lazy-route readiness.
+ * It unmounts when React has resolved and committed the target route.
+ * Never use a fixed delay to claim complete remote-data or image readiness. */
+.dtb-route-brand-preloader {
+ position:fixed;inset:0;z-index:1200;display:grid;place-items:center;
+ padding:24px;background:#0a1124;color:#fff;
+ font-family:'Geist Variable','Geist',-apple-system,BlinkMacSystemFont,sans-serif;
+ animation:dtb-route-loader-enter 180ms ease-out both;
+}
+.dtb-route-brand-preloader__content {
+ display:flex;flex-direction:column;align-items:center;gap:22px;
+ text-align:center;
+}
+.dtb-route-brand-preloader__logo {
+ position:relative;width:min(76vw,274px);aspect-ratio:3000/917;
+}
+.dtb-route-brand-preloader__base,
+.dtb-route-brand-preloader__fill img {
+ display:block;width:100%;height:100%;object-fit:contain;
+}
+.dtb-route-brand-preloader__base {opacity:.2;filter:grayscale(1)}
+.dtb-route-brand-preloader__fill {
+ position:absolute;inset:0;overflow:hidden;
+ clip-path:inset(100% 0 0);
+ animation:dtb-logo-fill-rise 2200ms cubic-bezier(.4,0,.2,1) infinite;
+}
+.dtb-route-brand-preloader p {
+ margin:0;color:#acb9d6;font-size:13px;font-weight:600;letter-spacing:.01em;
+}
+@keyframes dtb-route-loader-enter {from {opacity:0}to {opacity:1}}
+@media(prefers-reduced-motion:reduce) {
+ .dtb-route-brand-preloader {animation:none}
+ .dtb-route-brand-preloader__base {opacity:0}
+ .dtb-route-brand-preloader__fill {animation:none;clip-path:inset(0)}
+}
