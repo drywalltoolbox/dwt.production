@@ -19,7 +19,6 @@ import Footer from './components/shell/Footer';
 import CartSidebar from './components/shell/CartSidebar';
 import ProtectedRoute from './components/routing/ProtectedRoute';
 import HomepageSignupCTA from './components/cta/HomepageSignupCTA.jsx';
-import MobileInstallNudge from './components/pwa/MobileInstallNudge.jsx';
 import SmartBackButton from './components/navigation/SmartBackButton.jsx';
 import { isRewardsEnabled } from './utils/featureFlags.js';
 import { initializeWebpackPublicPath } from './setWebpackPublicPath.js';
@@ -391,7 +390,6 @@ function AppShell({ cartOpen, toggleCart, closeCart }) {
       </main>
       {!minimalChrome && !schematicViewer && <Footer />}
       {!minimalChrome && <CartSidebar isOpen={cartOpen} onClose={closeCart} />}
-      <MobileInstallNudge />
       {!minimalChrome && isHome && !user && <HomepageSignupCtaController />}
     </>
   );
