@@ -90,6 +90,7 @@ export default function Home() {
             {/* ── New Arrivals ── */}
             <StorefrontSection
               eyebrow="Just In"
+              revealHeading
               title="New Arrivals"
               viewAllHref="/products?sort=newest"
             >
@@ -99,6 +100,7 @@ export default function Home() {
             {/* ── Shop by Brand ── */}
             <StorefrontSection
               eyebrow="Brands"
+              revealHeading
               title="Shop by Brand"
               viewAllHref="/products/brands"
               viewAllLabel="All brands"
