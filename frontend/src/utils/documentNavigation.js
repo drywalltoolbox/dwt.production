@@ -26,7 +26,7 @@ export function showCheckoutHandoff() {
     overlay.innerHTML = '<div class="dtb-checkout-transition__panel"><div class="dtb-checkout-transition__mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="5" y="10" width="14" height="11" rx="3" stroke="currentColor" stroke-width="1.8"/><path d="M8 10V7a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></div><span class="dtb-checkout-transition__spinner" aria-hidden="true"></span><strong>Preparing your secure checkout</strong><p>Connecting your cart securely…</p></div>';
     document.body.appendChild(overlay);
   }
-  document.documentElement.classList.add('dtb-checkout-handoff-active');
+  // Do not activate the legacy #dtb-checkout-route-loader: one overlay only.
   window.requestAnimationFrame(() => overlay.classList.add('dtb-checkout-transition--visible'));
 }
 export function hideCheckoutHandoff() {
