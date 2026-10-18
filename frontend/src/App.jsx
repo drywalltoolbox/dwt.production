@@ -4,6 +4,7 @@ import { LazyMotion } from 'framer-motion';
 import loadMotionFeatures from './motion/asyncFeatures.js';
 import PageTransition from './components/routing/PageTransition';
 import RouteIntentPreloader from './components/routing/RouteIntentPreloader.jsx';
+import StorefrontScrollExperience from './components/routing/StorefrontScrollExperience.jsx';
 import RouteLoadingSurface from './components/routing/RouteLoadingSurface.jsx';
 import { createLazyRoute } from './routing/routeModules.js';
 import { CartProvider } from './context/CartContext';
@@ -338,6 +339,7 @@ function App() {
                   <Router basename={basename}>
                     <ScrollToTop />
                     <RouteIntentPreloader />
+                    <StorefrontScrollExperience />
                     <AppShell cartOpen={cartOpen} toggleCart={toggleCart} closeCart={closeCart} />
                   </Router>
                 </WorkflowTransitionProvider>
