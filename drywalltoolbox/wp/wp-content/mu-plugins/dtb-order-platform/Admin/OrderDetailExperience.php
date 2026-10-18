@@ -43,6 +43,9 @@ function dtb_order_detail_is_current_screen(): bool {
 function dtb_order_detail_admin_body_class( string $classes ): string {
 	if ( dtb_order_detail_is_current_screen() ) {
 		$classes .= ' dtb-order-detail-screen';
+		if ( ! function_exists( 'dtb_feature_enabled' ) || dtb_feature_enabled( 'DTB_ORDER_DETAIL_REFINEMENT', true ) ) {
+			$classes .= ' dtb-order-detail-refined';
+		}
 	}
 
 	return $classes;

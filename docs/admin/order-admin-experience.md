@@ -20,7 +20,9 @@ It adds `dtb-order-detail-screen` only to valid WooCommerce order-edit requests 
 drywalltoolbox/wp/wp-content/mu-plugins/dtb-order-platform/Admin/assets/order-detail.css
 ```
 
-The stylesheet does not replace WooCommerce templates, controls, save handlers, or metabox callbacks. It establishes a restrained card system, responsive two-column workspace, compact sticky operational rail, modernized fields and buttons, denser order-item and notes presentation, and scoped DTB timeline/integration/action styling.
+The stylesheet does not replace WooCommerce templates, controls, save handlers, or metabox callbacks. It refines BrikPanel's existing tabbed workspace and two-column grid: a wider operational rail on desktop, compact order-item presentation, clearer notes and totals, modernized controls, and scoped DTB timeline/integration/action styling. BrikPanel continues to own the tab behavior and placement of native WooCommerce metaboxes.
+
+The visual refinement is controlled by `DTB_ORDER_DETAIL_REFINEMENT` (enabled by default and overridable through the central `dtb_feature_enabled()` helper). Setting the constant to `false` removes the refinement scope class and restores BrikPanel's original order layout styling without disabling WooCommerce or BrikPanel functionality.
 
 ## BrikPanel custom CSS contract
 
@@ -39,10 +41,10 @@ The order screen must remain usable and visually complete when the BrikPanel cus
 ## Security and ownership
 
 - Assets load only on order-edit requests.
-- The module requires order-edit capability before enqueueing.
+- The module requires order-edit capability before enqueueing. The feature flag controls only DTB's scoped visual refinement.
 - No REST route, AJAX action, nonce, order mutation, queue behavior, integration state, or external API call is added or changed.
 - No payment, refund, fulfillment, accounting, or tracking authority is moved into the browser.
-- JavaScript failure cannot affect the presentation layer because this revision introduces no JavaScript.
+- No JavaScript, structural DOM relocation, REST route, AJAX action, nonce, order mutation, queue behavior, integration state, or external API call is added or changed.
 
 ## Validation
 

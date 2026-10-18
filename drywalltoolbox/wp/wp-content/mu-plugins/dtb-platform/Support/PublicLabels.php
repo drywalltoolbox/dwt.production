@@ -189,6 +189,11 @@ add_filter(
 	static function ( $display_key ) {
 		$key = strtolower( trim( wp_strip_all_tags( (string) $display_key ) ) );
 		if ( str_starts_with( $key, '_dtb_' ) || str_starts_with( $key, 'dtb_' ) ) {
+			// Internal provenance is rendered once in the DTB order-item summary
+			// in wp-admin. Keep storefront/email metadata labels meaningful.
+			if ( function_exists( 'is_admin' ) && is_admin() && function_exists( 'dtb_order_readability_screen' ) && dtb_order_readability_screen() ) {
+				return '';
+			}
 			return 'Store Reference';
 		}
 
