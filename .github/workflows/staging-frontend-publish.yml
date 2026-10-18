@@ -50,6 +50,10 @@ jobs:
         working-directory: frontend
         run: npm ci --no-audit --no-fund
 
+      - name: Verify shared scroll experience contract
+        working-directory: frontend
+        run: node --test tests/scrollExperienceContract.test.mjs
+
       - name: Assert staging configuration exists
         run: |
           set -euo pipefail
