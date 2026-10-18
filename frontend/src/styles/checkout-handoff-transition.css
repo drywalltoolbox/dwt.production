@@ -1,0 +1,19 @@
+/* One presentation bridge for React -> native WooCommerce checkout. */
+.dtb-checkout-transition {
+ position:fixed;inset:0;z-index:2147483000;
+ display:grid;place-items:center;padding:24px;
+ background:linear-gradient(145deg,#f8faff 0%,#eef3fc 100%);
+ color:#111827;font-family:'Geist Variable','Geist',-apple-system,BlinkMacSystemFont,sans-serif;
+ opacity:0;transition:opacity 240ms cubic-bezier(.2,.8,.2,1);
+ pointer-events:auto;
+}
+.dtb-checkout-transition--visible {opacity:1;}
+.dtb-checkout-transition__panel {display:flex;flex-direction:column;align-items:center;text-align:center;max-width:320px;gap:12px;transform:translateY(7px);transition:transform 250ms cubic-bezier(.2,.8,.2,1);}
+.dtb-checkout-transition--visible .dtb-checkout-transition__panel {transform:translateY(0);}
+.dtb-checkout-transition__mark {display:grid;place-items:center;width:68px;height:68px;border-radius:21px;color:white;background:linear-gradient(145deg,#142b63,#315be9);box-shadow:0 12px 27px rgb(38 79 180 / 16%);}
+.dtb-checkout-transition__mark svg {width:30px;height:30px;}
+.dtb-checkout-transition__spinner {width:23px;height:23px;border:2px solid #d7e2fb;border-top-color:#315be9;border-radius:50%;animation:dtb-checkout-bridge-spin .75s linear infinite;margin-block:9px 2px;}
+.dtb-checkout-transition strong {font-size:19px;font-weight:750;line-height:1.25;letter-spacing:-.03em;}
+.dtb-checkout-transition p {margin:0;font-size:13px;line-height:1.5;color:#667085;}
+@keyframes dtb-checkout-bridge-spin {to {transform:rotate(360deg);}}
+@media(prefers-reduced-motion:reduce){.dtb-checkout-transition,.dtb-checkout-transition__panel{transition:none;transform:none}.dtb-checkout-transition__spinner{animation:none;border-top-color:#315be9;}}
