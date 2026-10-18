@@ -1,6 +1,6 @@
 import { getCart } from '../api/cart.js';
 import { getWooCheckoutUrl } from './checkoutUrl.js';
-import { navigateDocument } from './documentNavigation.js';
+import { navigateDocument, showCheckoutHandoff, hideCheckoutHandoff } from './documentNavigation.js';
 
 const DEFAULT_SETTLE_DELAY_MS = 350;
 const DEFAULT_MUTATION_WAIT_MS = 8000;
@@ -127,8 +127,10 @@ async function executeCheckoutHandoff({
 export function beginCheckoutHandoff(options = {}) {
   if (activeHandoffPromise) return activeHandoffPromise;
 
+  showCheckoutHandoff();
   activeHandoffPromise = executeCheckoutHandoff(options)
     .catch((error) => {
+      hideCheckoutHandoff();
       if (error instanceof CheckoutHandoffError) throw error;
       throw new CheckoutHandoffError(
         error?.code || 'checkout_handoff_failed',
