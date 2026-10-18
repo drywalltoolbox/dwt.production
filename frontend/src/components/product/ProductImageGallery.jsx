@@ -206,12 +206,12 @@ function collectVariationImageMeta(product = {}) {
 
   // Path 2 — WooCommerce persisted images[] on the variation object itself.
   // Keep the primary image first, then append the persisted gallery.
-  if (Array.isArray(product?.images) && product.stableImages.length > 0) {
+  if (Array.isArray(product?.images) && product.images.length > 0) {
     pushPrimary();
     product.images.forEach((image) => push(image));
     if (out.length > 0) return out;
   }
-  if (Array.isArray(product?.media?.images) && product.media.stableImages.length > 0) {
+  if (Array.isArray(product?.media?.images) && product.media.images.length > 0) {
     pushPrimary();
     product.media.images.forEach((image) => push(image));
     if (out.length > 0) return out;
