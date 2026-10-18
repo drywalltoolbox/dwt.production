@@ -70,6 +70,20 @@ Checkout retains its dedicated document-level handoff. `dtb-checkout-route-booti
 
 The boot watchdog remains the failure authority when the entry bundle does not mount. Before showing its recovery UI it removes the static boot shell, ensuring a failed boot cannot leave the recovery action obscured.
 
+## Shared native scroll experience (October 2026)
+
+`StorefrontScrollExperience.jsx` is the **single shared document-scroll enhancement owner**, mounted once inside React Router. It provides a blue reading-progress line, a contextual 44 px back-to-top control, and one IntersectionObserver for explicitly opted-in **homepage editorial headings**. It does **not** replace native wheel/touch momentum and never intercepts pointer or wheel input. Its helper policy lives in `utils/scrollExperiencePolicy.js`; styling is in `styles/storefront-scroll-experience.css`.
+
+- **Browser owns scrolling:** iOS/Android momentum, overscroll, keyboard/focus scroll and nested rails remain native. Smooth motion is requested only on the deliberate back-to-top click, and is disabled under reduced motion. Do not apply `scroll-behavior: smooth` to `html`/`body`, which would conflict with route/history restoration.
+- **React Router owns restoration:** `App.jsx` retains history-key positions, immediate PUSH resets, POP restoration and anchor navigation. The progress indicator reads current geometry and does not write route scroll positions.
+- **Height changes:** passive `scroll`/`resize` listeners and a body `ResizeObserver` feed a single animation-frame measurement. The progress bar is updated by a transform ref; React state changes only when the back-to-top threshold is crossed.
+- **Locked surfaces:** body/document inline overflow locks suppress the back-to-top control. The stylesheet also hides it for an active modal, quick-view lightbox or cart drawer. No motion controller runs against nested drawers, thumbnail rails, tool dialogs, or payment UI.
+- **Exclusions:** full-document checkout and interactive schematic viewer do not receive this overlay. The non-interactive schematics landing page retains native reading progress.
+- **Editorial-only reveals:** only the two homepage `StorefrontSection` headings explicitly set `revealHeading`. Content remains at least 90% opaque in a small 8 px pre-reveal offset; product grids, cards, filters, pricing, links and cart actions are never gated. MutationObserver attaches late-mounted opt-in headings, and IntersectionObserver marks them visible once. All observers/listeners disconnect on route change. Reduced motion stays fully visible.
+- **Inertia policy:** no desktop virtual-scroll engine or Lenis is installed. Custom wheel inertia is deferred until measured browser/device validation; any future integration must be routed through `StorefrontScrollExperience` and suspend for scroll locks, route restoration, keyboard navigation, and nested gesture surfaces. Native mobile touch inertia remains the baseline.
+
+**Verification:** `frontend/tests/scrollExperienceContract.test.mjs` checks exclusions, progress bounds, lock policy and the no-wheel-interception contract. Before release, run the frontend lint and source tests, locked build, and real iOS Safari/Android/desktop tests of fling inertia, focus/keyboard, drawer lock/unlock, POP restoration, dynamic catalog heights, reduced motion and active schematic gestures. GitHub source commits are not evidence of a deployed build or physical-device QA.
+
 ## History scroll restoration
 
 `ScrollToTop` remains the sole route viewport authority. It sets native `history.scrollRestoration` to `manual` while the SPA is mounted and stores window scroll positions by React Router history `location.key`.
