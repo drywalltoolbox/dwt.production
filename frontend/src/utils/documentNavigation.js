@@ -23,7 +23,9 @@ export function showCheckoutHandoff() {
     overlay.setAttribute('role', 'status');
     overlay.setAttribute('aria-live', 'polite');
     overlay.setAttribute('aria-label', 'Preparing secure checkout');
-    overlay.innerHTML = '<div class="dtb-checkout-transition__panel"><div class="dtb-checkout-transition__logo" aria-hidden="true"><img src="/logos/logo-white.svg" alt="" width="260" height="80" decoding="async"/><span class="dtb-checkout-transition__logo-shine"></span></div><div class="dtb-checkout-transition__progress" aria-hidden="true"><span></span></div><strong>Preparing your secure checkout</strong><p>Connecting your cart securely…</p><span class="dtb-checkout-transition__trust">SECURE CHECKOUT</span></div>';
+    // Adaptation of the supplied Framer logo-fill preloader: a subdued logo
+    // under a bottom-to-top reveal of the same DTB brand asset.
+    overlay.innerHTML = '<div class="dtb-checkout-transition__panel"><div class="dtb-checkout-transition__logo" aria-hidden="true"><img class="dtb-checkout-transition__logo-base" src="/logos/logo-white.svg" alt="" width="260" height="80"/><div class="dtb-checkout-transition__logo-fill"><img src="/logos/logo-white.svg" alt="" width="260" height="80"/></div></div><strong>Preparing your secure checkout</strong><p>Connecting your cart securely…</p><span class="dtb-checkout-transition__trust">DRYWALL TOOLBOX · SECURE CHECKOUT</span></div>';
     document.body.appendChild(overlay);
   }
   // Do not activate the legacy #dtb-checkout-route-loader: one overlay only.
