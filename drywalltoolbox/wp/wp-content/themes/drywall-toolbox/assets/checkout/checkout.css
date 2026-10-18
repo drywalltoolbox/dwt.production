@@ -655,3 +655,16 @@ body.woocommerce-checkout .wc-block-components-radio-control__input {
 	left: 15px;
 	margin: 0;
 }
+
+
+/* Native document arrival: complements React's handoff overlay without delaying
+ * WooCommerce rendering or animating provider payment controls. */
+@media (prefers-reduced-motion: no-preference) {
+ body.woocommerce-checkout .dtb-checkout__intro {
+  animation: dtb-native-checkout-arrive 280ms cubic-bezier(.2,.8,.2,1) both;
+ }
+ @keyframes dtb-native-checkout-arrive {
+  from { opacity:.72; transform:translateY(5px); }
+  to { opacity:1; transform:translateY(0); }
+ }
+}
