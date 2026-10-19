@@ -115,10 +115,46 @@ export function resolveRouteModuleKey(input) {
   return null;
 }
 
+// Speculative imports are bounded; actual React.lazy navigation bypasses this
+// queue via loadModule() so an activated route never waits behind hover work.
+const MAX_SPECULATIVE_IMPORTS = 2;
+const speculativeQueue = [];
+const speculativeRequests = new Map();
+let activeSpeculativeImports = 0;
+
+function drainSpeculativeQueue() {
+  while (activeSpeculativeImports < MAX_SPECULATIVE_IMPORTS && speculativeQueue.length) {
+    const task = speculativeQueue.shift();
+    activeSpeculativeImports += 1;
+    loadModule(task.key)
+      .then(task.resolve, () => task.resolve(null))
+      .finally(() => {
+        activeSpeculativeImports -= 1;
+        speculativeRequests.delete(task.key);
+        drainSpeculativeQueue();
+      });
+  }
+}
+
 export function preloadRoute(input) {
   const key = resolveRouteModuleKey(input);
-  if (!key) return Promise.resolve(null);
-  return loadModule(key).catch(() => null);
+  if (!key || key === 'checkout' || key === 'checkoutReturn') return Promise.resolve(null);
+
+  // Speculation is optional. Save-Data must never block an actual route load.
+  if (typeof navigator !== 'undefined') {
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (connection?.saveData) return Promise.resolve(null);
+  }
+
+  if (modulePromises.has(key)) return modulePromises.get(key).catch(() => null);
+  if (speculativeRequests.has(key)) return speculativeRequests.get(key);
+
+  const promise = new Promise((resolve) => {
+    speculativeQueue.push({ key, resolve });
+  });
+  speculativeRequests.set(key, promise);
+  drainSpeculativeQueue();
+  return promise;
 }
 
 function withChunkReload(key) {
