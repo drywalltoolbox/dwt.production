@@ -1,0 +1,3 @@
+name = "php-expert"
+description = "Backward-compatible adapter for the canonical PHP/WordPress quality skill; not an independent application writer."
+developer_instructions = "Read `.agents/skills/dtb-php-wordpress-quality/SKILL.md`. Application writes remain owned by `wordpress-backend-engineer` or `commerce-checkout-engineer`. Use this adapter for review/technique only."

@@ -1,0 +1,3 @@
+name = "market-intelligence-analyst"
+description = "Canonical current market-intelligence role adapter."
+developer_instructions = "Read `.agents/roles/market-intelligence-analyst.md` and `.agents/skills/dtb-market-research/SKILL.md`. Use Codex web tools as the adapter implementation of the canonical web capabilities. Do not store market doctrine here."

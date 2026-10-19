@@ -252,6 +252,7 @@ function RouteBackBar() {
 
 function AppRoutes() {
   const location = useLocation();
+  const [initialPathname] = useState(location.pathname);
   const rewardsEnabled = isRewardsEnabled();
   const productSelectorElement = <Products title="Products" isPartsFilter={0} />;
   const routes = (
@@ -316,7 +317,10 @@ function AppRoutes() {
   if (location.pathname === '/checkout') return routes;
 
   return (
-    <PageTransition>
+    <PageTransition
+      key={location.pathname}
+      animate={initialPathname !== location.pathname}
+    >
       {routes}
     </PageTransition>
   );

@@ -1,0 +1,3 @@
+name = "web-template-architect"
+description = "Backward-compatible adapter for canonical DTB module-architecture method."
+developer_instructions = "Read `AGENTS.md`, `.agents/roles/architect.md`, and `.agents/skills/dtb-module-architecture/SKILL.md`. Produce evidence-based architecture decisions without creating a parallel model-specific architecture."

@@ -4,10 +4,40 @@ BrikPanel 3.3.34 owns the current WooCommerce admin theme. WooCommerce owns orde
 
 ## Scope and boundaries
 - `Orders/ReadableOrderItems.php`: WooCommerce order-item provenance rendering via public hooks; data stays unchanged.
+- `Orders/QuickViewExperience.php` and `Orders/QuickViewRenderer.php`: optional, read-only composition of WooCommerce's native order-preview markup. The Backbone template, AJAX data source, footer actions, modal lifecycle, and order authority remain WooCommerce-owned.
+- `Orders/assets/order-quick-view.css`: scoped styling for the native preview modal. It is enqueued on the order list only when `DTB_ORDER_QUICK_VIEW_V2` is enabled.
 - Future `Products/` extensions must use supported WordPress/BrikPanel hooks or bounded UI assets, never vendor file replacements.
 - Do not duplicate BrikPanel page routing, save handlers, WooCommerce product mutation, or order/payment APIs.
 - Scope selectors/hooks to the specific admin screen and preserve keyboard access/responsive layouts.
 - Preserve existing third-party BrikPanel files during plugin updates.
+
+## Order Quick View V2
+
+V2 is enabled by default through `DTB_ORDER_QUICK_VIEW_V2` and can be disabled
+through the central feature flag. When
+enabled, the existing `woocommerce_admin_order_preview_get_order_details`
+filter wraps WooCommerce's generated item HTML with order context and a
+WooCommerce-backed summary/customer sidebar. A scoped observer moves the
+already-rendered native address, items, summary, and customer nodes into the
+responsive layout; it does not replace the Backbone template, modal lifecycle,
+AJAX endpoint, or order data. The native Edit action remains the only
+order-management action in the preview.
+
+Turn V2 off by defining `DTB_ORDER_QUICK_VIEW_V2` as `false` (or returning
+`false` from `dtb_feature_enabled_DTB_ORDER_QUICK_VIEW_V2`). This restores the
+existing preview presentation immediately. Risk details are not shown unless
+a verified read-only provider source is added.
+
+## Full order-edit workspace V2
+
+`Orders/OrderEditExperience.php` and its co-located CSS/JS are enabled by
+default through `DTB_ORDER_EDIT_WORKSPACE_V2` and can be disabled through the
+central feature flag. The adapter moves WooCommerce's existing order-data
+postbox above BrikPanel's existing tabs and the native notes postbox into the
+right rail after order actions. Item, customer, More-tab and summary postboxes
+retain their native nodes, callbacks, and tab behavior. It does not render
+replacement fields, intercept saves, or create order mutations. Totals remain
+within WooCommerce's native items postbox.
 
 ## Product editor migration gate
 Live active BrikPanel plugin at `wp-content/plugins/brikpanel-admin-panel-dashboard-for-woocommerce` currently contains substantial product editor source: `front-end/products/brikpanel-product-editor.php`, `.js`, `.css`, as well as product list screens. Before extracting DTB edits:

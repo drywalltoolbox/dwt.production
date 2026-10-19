@@ -599,10 +599,14 @@ export default function ProductImageGallery({ product }) {
   // load state by index made the replacement inherit the previous image's
   // loaded state, then briefly expose an unpainted layer during the transition.
   const isActiveImageLoaded = Boolean(imgLoaded[activeImageKey]);
-  const galleryVariants = direction === 0 ? fadeVariants : slideVariants;
+  // Keep the inline viewer on an opacity-only swap. Translating a large,
+  // object-contained image between composited layers can expose a frame of the
+  // stage background in some browsers, especially while adjacent media loads.
+  const galleryVariants = fadeVariants;
   const galleryTransition = reduceMotion
     ? { duration: 0.01, ease: 'linear' }
-    : (direction === 0 ? fadeTransition : slideTransition);
+    : fadeTransition;
+  const hasLoadedGalleryImage = Object.values(imgLoaded).some(Boolean);
 
   return (
     <>
@@ -624,7 +628,7 @@ export default function ProductImageGallery({ product }) {
           }}
         >
           <AnimatePresence>
-            {!isActiveImageLoaded && (
+            {!isActiveImageLoaded && !hasLoadedGalleryImage && (
               <Motion.div
                 key={`skeleton-${activeImageKey}`}
                 className="product-image-gallery__skeleton absolute inset-0"
@@ -645,8 +649,7 @@ export default function ProductImageGallery({ product }) {
               alt={`${product?.name || 'Product'} — image ${activeIndex + 1} of ${stableImages.length}`}
               custom={direction}
               variants={galleryVariants}
-              // Do not animate an undecoded image from transparent: the media bed
-              // remains painted until loading has finished, including cache hits.
+              // Avoid a transparent entrance for a source that has not loaded.
               initial={isActiveImageLoaded ? 'enter' : false}
               animate="center"
               exit="exit"

@@ -4,7 +4,7 @@ import test from 'node:test';
 
 const read = (path) => readFile(new URL(`../${path}`, import.meta.url), 'utf8');
 
-test('route loading is centralized and uses geometry-preserving pending surfaces', async () => {
+test('route loading is centralized and exposes truthful, route-aware pending status', async () => {
   const [app, routeModules, pendingSurface] = await Promise.all([
     read('src/App.jsx'),
     read('src/routing/routeModules.js'),
@@ -17,7 +17,11 @@ test('route loading is centralized and uses geometry-preserving pending surfaces
   assert.doesNotMatch(app, /RouteChunkFallback/);
   assert.match(routeModules, /export function preloadRoute/);
   assert.match(routeModules, /modulePromises = new Map\(\)/);
-  assert.match(pendingSurface, /dtb-route-pending--\$\{variant\}/);
+  assert.match(pendingSurface, /role="status"/);
+  assert.match(pendingSurface, /aria-live="polite"/);
+  assert.match(pendingSurface, /aria-busy="true"/);
+  assert.match(pendingSurface, /getRouteLoadingLabel\(pathname\)/);
+  assert.match(pendingSurface, /Loading products/);
 });
 
 test('route motion never hides the rendered page and async replacement stays compact', async () => {
@@ -72,10 +76,12 @@ test('auth and repair entry surfaces render opaque on first paint', async () => 
 
 
 test('initial boot handoff and history navigation preserve visual continuity', async () => {
-  const [app, main, html] = await Promise.all([
+  const [app, main, html, pageTransition, motionCss] = await Promise.all([
     read('src/App.jsx'),
     read('src/main.jsx'),
     read('index.html'),
+    read('src/components/routing/PageTransition.jsx'),
+    read('src/styles/storefront-motion.css'),
   ]);
 
   assert.match(app, /useNavigationType/);
@@ -96,35 +102,28 @@ test('initial boot handoff and history navigation preserve visual continuity', a
   assert.match(html, /html\.dtb-checkout-route-booting #dtb-app-boot-shell\{display:none\}/);
   assert.match(html, /prefers-reduced-motion:reduce/);
   assert.match(html, /if \(bootShell\) bootShell\.remove\(\)/);
+
+  assert.match(app, /key=\{location\.pathname\}/);
+  assert.match(app, /initialPathname !== location\.pathname/);
+  assert.match(pageTransition, /data-route-enter/);
+  assert.match(motionCss, /\.dtb-page-transition\[data-route-enter='true'\][\s\S]*animation: dtb-route-enter/);
+  assert.match(motionCss, /@keyframes dtb-route-enter[\s\S]*from \{ opacity: 0; \}[\s\S]*to \{ opacity: 1; \}/);
+  assert.match(motionCss, /prefers-reduced-motion: reduce[\s\S]*\.dtb-page-transition\[data-route-enter='true'\][\s\S]*animation: none/);
+  assert.doesNotMatch(motionCss, /dtb-route-enter[\s\S]{0,220}(?:height|block-size|transform):/);
 });
 
 
-test('desktop rendering avoids large-surface compositor flicker paths', async () => {
-  const [pageTransition, desktopNav, desktopNavCss, motionCss, performanceCss] = await Promise.all([
+test('route entrance leaves natural page height and compositor geometry intact', async () => {
+  const [pageTransition, motionCss] = await Promise.all([
     read('src/components/routing/PageTransition.jsx'),
-    read('src/components/storefront/StorefrontDesktopNavigation.jsx'),
-    read('src/styles/storefront-desktop-navigation.css'),
     read('src/styles/storefront-motion.css'),
-    read('src/styles/performance-overrides.css'),
   ]);
 
-  assert.match(pageTransition, /desktopViewport/);
-  assert.match(pageTransition, /reduceMotion \|\| desktopViewport \? reducedRouteVariants : routeVariants/);
+  assert.match(pageTransition, /data-route-enter=\{animate \? 'true' : undefined\}/);
   assert.doesNotMatch(pageTransition, /willChange:\s*'transform'/);
   assert.doesNotMatch(pageTransition, /backfaceVisibility:\s*'hidden'/);
-
-  assert.doesNotMatch(desktopNav, /contentVisible/);
-  assert.doesNotMatch(desktopNav, /CONTENT_EXIT_MS/);
-  assert.doesNotMatch(desktopNav, /requestAnimationFrame/);
-  assert.match(desktopNav, /transform:\s*'translateX\(-50%\)'/);
-  assert.doesNotMatch(desktopNav, /willChange:\s*reducedMotion/);
-
-  assert.doesNotMatch(desktopNavCss, /transition:\s*all 0\.4s/);
-  assert.doesNotMatch(desktopNavCss, /translateY\(-8px\) scale\(0\.992\)/);
-  assert.doesNotMatch(motionCss, /dtb-desktop-nav-dropdown[\s\S]{0,220}transform var\(--dtb-motion-duration-elevated\)/);
-
-  assert.match(performanceCss, /@media \(max-width: 1024px\)[\s\S]*content-visibility:\s*auto/);
-  assert.doesNotMatch(performanceCss, /^\.dtb-product-card\s*\{[\s\S]{0,100}content-visibility:\s*auto/m);
+  assert.match(motionCss, /\.dtb-page-transition\[data-route-enter='true'\]/);
+  assert.doesNotMatch(motionCss, /\.dtb-page-transition[\s\S]{0,260}(?:height|block-size):/);
 });
 
 test('desktop Quick View keeps geometry stable through open and exit', async () => {

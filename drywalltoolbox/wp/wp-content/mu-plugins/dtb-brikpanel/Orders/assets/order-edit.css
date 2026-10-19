@@ -1,0 +1,238 @@
+/* Component styling for the WooCommerce order workspace. The page grid is
+   owned by dtb-order-platform/Admin/assets/order-detail.css. */
+body.dtb-order-edit-workspace-enabled.dtb-order-edit-workspace-mounted {
+	--dtb-edit-bg: #f3f5f8;
+	--dtb-edit-border: #dce2ea;
+	--dtb-edit-ink: #17212f;
+	--dtb-edit-muted: #637083;
+	--dtb-edit-blue: #1769d2;
+}
+
+body.dtb-order-edit-workspace-enabled.dtb-order-edit-workspace-mounted #wpbody-content {
+	background: var(--dtb-edit-bg);
+}
+
+.dtb-order-edit-workspace,
+.dtb-order-edit-workspace__details,
+.dtb-order-edit-workspace__content {
+	width: 100%;
+	min-width: 0;
+	max-width: 100%;
+	box-sizing: border-box;
+}
+
+.dtb-order-edit-workspace {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr);
+	gap: clamp(12px, 1.5vw, 18px);
+	margin: 0 0 16px;
+}
+
+body.dtb-order-edit-workspace-enabled.dtb-order-edit-workspace-mounted #side-sortables > .postbox,
+.dtb-order-edit-workspace__details > .postbox,
+.dtb-order-edit-workspace__content > .bp-otabs {
+	min-width: 0;
+	margin: 0 0 14px;
+	border: 1px solid var(--dtb-edit-border);
+	border-radius: 10px;
+	background: #fff;
+	box-shadow: 0 2px 5px rgb(16 24 40 / 4%);
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.dtb-order-edit-workspace__details > .postbox .postbox-header,
+.dtb-order-edit-workspace__details > .postbox > h2.hndle,
+body.dtb-order-edit-workspace-enabled.dtb-order-edit-workspace-mounted #side-sortables > .postbox .postbox-header,
+body.dtb-order-edit-workspace-enabled.dtb-order-edit-workspace-mounted #side-sortables > .postbox > h2.hndle {
+	min-height: 44px;
+	padding: 10px 14px 0;
+	border-bottom: 1px solid #e8ecf1;
+	color: var(--dtb-edit-ink);
+	font-size: 13px;
+	font-weight: 650;
+}
+
+.dtb-order-edit-workspace__details > .postbox > .inside,
+body.dtb-order-edit-workspace-enabled.dtb-order-edit-workspace-mounted #side-sortables > .postbox > .inside {
+	margin: 0;
+	padding: clamp(12px, 1.4vw, 18px);
+	color: var(--dtb-edit-ink);
+}
+
+body.dtb-order-edit-workspace-enabled.dtb-order-edit-workspace-mounted #woocommerce-order-data .order_data_column_container {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: clamp(12px, 1.5vw, 22px);
+}
+
+body.dtb-order-edit-workspace-enabled.dtb-order-edit-workspace-mounted #woocommerce-order-data .order_data_column {
+	float: none;
+	width: auto;
+	min-width: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+.dtb-order-edit-workspace__details #woocommerce-order-data h3,
+.dtb-order-edit-workspace__details #woocommerce-order-data h4 {
+	color: var(--dtb-edit-ink);
+}
+
+.dtb-order-edit-workspace__content .bp-otabs {
+	margin-top: 2px;
+}
+
+.dtb-order-edit-workspace__content .bp-otabs__bar {
+	gap: 4px;
+	padding: 6px 10px;
+	border-bottom: 1px solid #e8ecf1;
+	background: #fff;
+}
+
+.dtb-order-edit-workspace__content .bp-otabs__tab {
+	min-height: 40px;
+}
+
+.dtb-order-edit-workspace__content .bp-otabs__panel {
+	min-width: 0;
+	padding: 0;
+}
+
+.dtb-order-edit-workspace__content #woocommerce-order-items {
+	min-width: 0;
+}
+
+.dtb-order-edit-workspace__content #woocommerce-order-items .woocommerce_order_items {
+	max-width: 100%;
+	border: 1px solid #e4e9ef;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.dtb-order-edit-workspace__content #woocommerce-order-items .woocommerce_order_items thead th {
+	padding: 11px 10px;
+	background: #f6f8fb !important;
+	color: #5d6b7d !important;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: .035em;
+	text-transform: uppercase;
+}
+
+.dtb-order-edit-workspace__content #woocommerce-order-items .woocommerce_order_items tbody td {
+	padding: 12px 10px;
+	border-bottom-color: #e9edf2;
+	color: #354255;
+	vertical-align: top;
+}
+
+.dtb-order-edit-workspace__content #woocommerce-order-items .woocommerce_order_items .thumb img {
+	width: 48px;
+	height: 48px;
+	border: 1px solid #e0e6ed;
+	border-radius: 7px;
+	object-fit: contain;
+}
+
+.dtb-order-edit-workspace__content #woocommerce-order-items .dtb-order-item-details {
+	max-width: 680px;
+	margin-top: 7px;
+	color: var(--dtb-edit-muted);
+	font-size: 11px;
+	line-height: 1.5;
+	overflow-wrap: anywhere;
+}
+
+.dtb-order-edit-workspace__content #woocommerce-order-items .dtb-order-item-facts {
+	gap: 5px 7px;
+	margin: 7px 0;
+}
+
+.dtb-order-edit-workspace__content #woocommerce-order-items .wc-order-totals-items {
+	width: min(100%, 520px);
+	max-width: 100%;
+	margin: 14px 0 0 auto;
+	border: 1px solid var(--dtb-edit-border);
+	border-radius: 8px;
+	background: #f8fafc !important;
+	box-sizing: border-box;
+}
+
+body.dtb-order-edit-workspace-enabled.dtb-order-edit-workspace-mounted #woocommerce-order-notes textarea {
+	width: 100%;
+	min-height: 72px;
+	border-color: #cfd7e1;
+	border-radius: 7px;
+	box-sizing: border-box;
+}
+
+body.dtb-order-edit-workspace-enabled.dtb-order-edit-workspace-mounted #woocommerce-order-notes ul.order_notes {
+	max-height: 340px;
+	overflow: auto;
+}
+
+.dtb-order-edit-workspace #woocommerce-order-notes ul.order_notes li .note_content {
+	border: 1px solid #e5e9ef;
+	border-radius: 8px;
+}
+
+body.dtb-order-edit-workspace-enabled .bp-otabs__tab[hidden],
+body.dtb-order-edit-workspace-enabled [role="tabpanel"][hidden] {
+	display: none !important;
+}
+
+body.dtb-order-edit-workspace-enabled :is(input, select, textarea, button, a):focus-visible {
+	outline: 2px solid var(--dtb-edit-blue);
+	outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+	body.dtb-order-edit-workspace-enabled.dtb-order-edit-workspace-mounted #woocommerce-order-data .order_data_column_container {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 12px;
+	}
+
+	.dtb-order-edit-workspace__content .bp-otabs__bar {
+		max-width: 100%;
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		overflow-y: hidden;
+		overscroll-behavior-x: contain;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.dtb-order-edit-workspace__content .bp-otabs__tab {
+		flex: 0 0 auto;
+	}
+
+	.dtb-order-edit-workspace__content #woocommerce-order-items .woocommerce_order_items {
+		display: block;
+		width: 100%;
+		overflow-x: auto;
+		overflow-y: hidden;
+		overscroll-behavior-x: contain;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.dtb-order-edit-workspace__content #woocommerce-order-items .woocommerce_order_items table {
+		min-width: 680px;
+		max-width: none;
+	}
+}
+
+@media (max-width: 480px) {
+	.dtb-order-edit-workspace__details > .postbox > .inside,
+	body.dtb-order-edit-workspace-enabled.dtb-order-edit-workspace-mounted #side-sortables > .postbox > .inside {
+		padding: 10px;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	body.dtb-order-edit-workspace-enabled *,
+	body.dtb-order-edit-workspace-enabled *::before,
+	body.dtb-order-edit-workspace-enabled *::after {
+		animation-duration: .01ms !important;
+		transition-duration: .01ms !important;
+	}
+}

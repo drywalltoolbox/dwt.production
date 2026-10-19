@@ -79,7 +79,7 @@ add_filter( 'woocommerce_order_item_get_formatted_meta_data', static function ( 
     $hidden = array_fill_keys( dtb_order_readability_hidden_keys(), true );
     foreach ( $formatted_meta as $index => $meta ) {
         $key = isset( $meta->key ) ? (string) $meta->key : '';
-        if ( isset( $hidden[ $key ] ) || '' === $key || str_starts_with( $key, '_' ) || str_starts_with( $key, 'dtb_' ) ) {
+        if ( isset( $hidden[ $key ] ) || 'store_reference' === sanitize_key( $key ) || '' === $key || str_starts_with( $key, '_' ) || str_starts_with( $key, 'dtb_' ) ) {
             unset( $formatted_meta[ $index ] );
         }
     }
@@ -152,7 +152,17 @@ function dtb_order_readability_render_details( WC_Order_Item_Product $item, bool
             $values[ $key ] = (string) $value;
         }
     }
-    if ( ! $values ) { return ''; }
+    $store_references = [];
+    foreach ( $item->get_meta_data() as $meta ) {
+        $meta_data = is_object( $meta ) && method_exists( $meta, 'get_data' ) ? $meta->get_data() : [];
+        $meta_key  = isset( $meta_data['key'] ) ? (string) $meta_data['key'] : '';
+        $meta_value = $meta_data['value'] ?? null;
+        if ( 'store_reference' === sanitize_key( $meta_key ) && is_scalar( $meta_value ) && '' !== trim( (string) $meta_value ) ) {
+            $store_references[] = sanitize_text_field( (string) $meta_value );
+        }
+    }
+    $store_references = array_values( array_unique( $store_references ) );
+    if ( ! $values && ! $store_references ) { return ''; }
 
     $brand = $values['_dtb_ordered_brand'] ?? '';
     $kind = $values['_dtb_ordered_product_kind'] ?? '';
@@ -161,27 +171,6 @@ function dtb_order_readability_render_details( WC_Order_Item_Product $item, bool
     $sku = $values['_dtb_ordered_sku'] ?? '';
     $components = dtb_order_readability_components( $values['_dtb_toolset_components_json'] ?? '' );
     $html = '<section class="dtb-order-item-details" aria-label="' . esc_attr__( 'Order item details', 'drywall-toolbox' ) . '">';
-    if ( $preview ) {
-        $product = $item->get_product();
-        $variation_id = absint( $item->get_variation_id() );
-        $weight = '';
-        if ( $product && $product->has_weight() ) {
-            $weight_value = wc_format_decimal( $product->get_weight() );
-            $weight = function_exists( 'brikpanel_order_weight_text' )
-                ? brikpanel_order_weight_text( (float) $weight_value )
-                : wc_format_weight( $weight_value );
-        }
-        if ( $product || $variation_id || $weight ) {
-            $html .= '<div class="dtb-order-preview-context">';
-            if ( $product ) {
-                $html .= '<span class="dtb-order-preview-image">' . wp_kses_post( $product->get_image( 'thumbnail', [ 'alt' => '' ] ) ) . '</span>';
-            }
-            $html .= '<span class="dtb-order-preview-context-facts">';
-            if ( $variation_id ) { $html .= '<span><strong>' . esc_html__( 'Variation ID:', 'drywall-toolbox' ) . '</strong> ' . esc_html( $variation_id ) . '</span>'; }
-            if ( $weight ) { $html .= '<span><strong>' . esc_html__( 'Weight:', 'drywall-toolbox' ) . '</strong> ' . esc_html( $weight ) . '</span>'; }
-            $html .= '</span></div>';
-        }
-    }
     $html .= '<div class="dtb-order-item-facts">';
     if ( $brand ) { $html .= '<span class="dtb-order-chip">' . esc_html( $brand ) . '</span>'; }
     if ( $kind ) { $html .= '<span class="dtb-order-chip">' . esc_html( ucwords( str_replace( [ '-', '_' ], ' ', $kind ) ) ) . '</span>'; }
@@ -205,6 +194,9 @@ function dtb_order_readability_render_details( WC_Order_Item_Product $item, bool
     $html .= '<details class="dtb-order-tech"><summary>' . esc_html__( 'Technical metadata', 'drywall-toolbox' ) . '</summary><dl>';
     foreach ( $values as $key => $value ) {
         $html .= '<dt>' . esc_html( $key ) . '</dt><dd><code>' . esc_html( $value ) . '</code></dd>';
+    }
+    foreach ( $store_references as $value ) {
+        $html .= '<dt>' . esc_html__( 'Store reference', 'drywall-toolbox' ) . '</dt><dd><code>' . esc_html( $value ) . '</code></dd>';
     }
     return $html . '</dl></details></section>';
 }
@@ -239,7 +231,12 @@ add_filter( 'woocommerce_admin_order_preview_get_order_details', static function
             $item_html = substr_replace( $item_html, $rendered, $cell_end, 0 );
         }
     }
-    $details['item_html'] = $item_html . dtb_order_readability_preview_summary( $order );
+    // V2 renders this same WooCommerce-backed summary in its sidebar; keep the
+    // legacy preview summary in its original location when V2 is disabled.
+    $summary = function_exists( 'dtb_order_quick_view_v2_enabled' ) && dtb_order_quick_view_v2_enabled()
+        ? ''
+        : dtb_order_readability_preview_summary( $order );
+    $details['item_html'] = $item_html . $summary;
     return $details;
 }, 30, 2 );
 
@@ -258,15 +255,19 @@ function dtb_order_readability_preview_summary( WC_Order $order ): string {
     if ( dtb_order_readability_cogs_enabled() && method_exists( $order, 'get_cogs_total_value_html' ) ) {
         $rows[] = [ __( 'Cost total', 'woocommerce' ), $order->get_cogs_total_value_html() ];
     }
-    if ( $order->is_paid() ) {
-        $paid = __( 'Paid', 'woocommerce' );
-        if ( $order->get_date_paid() ) {
-            $paid .= ' · ' . wc_format_datetime( $order->get_date_paid() );
-        }
-        if ( $order->get_payment_method_title() ) {
-            $paid .= ' · ' . $order->get_payment_method_title();
-        }
-        $rows[] = [ $paid, wc_price( $order->get_total(), $currency ) ];
+    $date_paid = $order->get_date_paid();
+    $payment_state = $date_paid ? __( 'Paid', 'woocommerce' ) : __( 'Payment not recorded', 'drywall-toolbox' );
+    if ( $date_paid ) {
+        $payment_state .= ' · ' . wc_format_datetime( $date_paid );
+    }
+    if ( $order->get_payment_method_title() ) {
+        $payment_state .= ' · ' . $order->get_payment_method_title();
+    }
+    $rows[] = [ __( 'Payment', 'woocommerce' ), $payment_state ];
+
+    $refunded = abs( (float) $order->get_total_refunded() );
+    if ( $refunded > 0 ) {
+        $rows[] = [ __( 'Refunded', 'woocommerce' ), wc_price( $refunded, $currency ) ];
     }
 
     $transaction_fee = $order->get_meta( '_wcpay_transaction_fee', true );
@@ -294,6 +295,14 @@ function dtb_order_readability_preview_summary( WC_Order $order ): string {
 
 add_action( 'admin_enqueue_scripts', static function () {
     if ( ! dtb_order_readability_screen() ) { return; }
+    // Quick View V2 has a dedicated stylesheet. Do not print the legacy modal
+    // rules on the orders list where they could compete with its layout.
+    if ( function_exists( 'dtb_order_quick_view_v2_enabled' )
+        && dtb_order_quick_view_v2_enabled()
+        && function_exists( 'dtb_order_quick_view_is_orders_list_screen' )
+        && dtb_order_quick_view_is_orders_list_screen() ) {
+        return;
+    }
     wp_register_style( 'dtb-readable-order-items', false, [], '1.0.0' );
     wp_enqueue_style( 'dtb-readable-order-items' );
     wp_add_inline_style( 'dtb-readable-order-items', '

@@ -1,0 +1,3 @@
+name = "pdp-conversion-specialist"
+description = "Canonical PDP merchandising/content role adapter."
+developer_instructions = "Read `AGENTS.md` and `.agents/roles/pdp-conversion-specialist.md`. Follow the canonical role; this adapter contains no independent catalog or UI authority."

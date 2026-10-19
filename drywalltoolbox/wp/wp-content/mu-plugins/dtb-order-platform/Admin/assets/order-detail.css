@@ -370,10 +370,105 @@
 
 @media screen and (max-width: 850px) {
 	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #poststuff #post-body {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: auto auto;
 		row-gap: 12px;
+		width: 100%;
+		min-width: 0;
+		box-sizing: border-box;
+	}
+
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #post-body > #postbox-container-2 {
+		grid-column: 1;
+		grid-row: 1;
+		position: static;
+		float: none;
+		width: auto;
+		min-width: 0;
+		margin: 0;
+		box-sizing: border-box;
 	}
 
 	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #post-body > #postbox-container-1 {
+		grid-column: 1;
+		grid-row: 2;
 		position: static;
+		float: none;
+		width: auto;
+		min-width: 0;
+		margin: 0;
+		box-sizing: border-box;
+	}
+
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #post-body > #postbox-container-1,
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #post-body > #postbox-container-2,
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #post-body > #postbox-container-1 > .meta-box-sortables,
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #post-body > #postbox-container-2 > .meta-box-sortables {
+		width: 100%;
+		max-width: 100%;
+		min-width: 0;
+	}
+
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #poststuff #post-body #woocommerce-order-data .order_data_column_container {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 12px;
+	}
+
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #poststuff #post-body #woocommerce-order-data .order_data_column {
+		float: none;
+		width: 100%;
+		max-width: 100%;
+		min-width: 0;
+		margin: 0;
+		box-sizing: border-box;
+	}
+
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs .bp-otabs__bar {
+		max-width: 100%;
+		flex-wrap: nowrap;
+		overflow-x: auto;
+		overflow-y: hidden;
+		overscroll-behavior-x: contain;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs .bp-otabs__tab {
+		flex: 0 0 auto;
+		min-height: 44px;
+	}
+
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		overflow-x: auto;
+		overflow-y: hidden;
+		overscroll-behavior-x: contain;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items table {
+		min-width: 680px;
+		max-width: none;
+	}
+
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .wc-order-totals-items {
+		width: min(100%, 520px);
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-notes textarea {
+		width: 100%;
+		min-height: 96px;
+		box-sizing: border-box;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #post-body > #postbox-container-1 .postbox > .inside,
+	.dtb-order-detail-refined.brikpanel-modern-edit.bp-order-tabs #post-body > #postbox-container-2 .postbox > .inside {
+		padding: 12px;
 	}
 }

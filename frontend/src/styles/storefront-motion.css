@@ -13,6 +13,18 @@
   --dtb-document-fade-duration: var(--dtb-motion-duration-fast);
 }
 
+/* Route entry feedback. Opacity does not change document flow, so pages with
+   different natural heights do not animate the footer or move the scrollbar. */
+.dtb-page-transition[data-route-enter='true'] {
+  animation: dtb-route-enter var(--dtb-document-fade-duration, 160ms)
+    var(--dtb-motion-ease-standard, ease) both;
+}
+
+@keyframes dtb-route-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* Shared async/skeleton replacement. */
 .dtb-card-loading-transition__skeleton,
 .dtb-card-loading-transition__content {
@@ -167,6 +179,10 @@
     transition-duration: 1ms !important;
     transition-delay: 0ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .dtb-page-transition[data-route-enter='true'] {
+    animation: none;
   }
 
   html:focus-within {
