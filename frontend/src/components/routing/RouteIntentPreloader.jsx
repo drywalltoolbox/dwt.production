@@ -17,7 +17,6 @@ function preloadDestinationData(pathname) {
   }
 }
 
-
 function getEligibleAnchor(target) {
   if (!(target instanceof Element)) return null;
   const anchor = target.closest('a[href]');
@@ -54,12 +53,12 @@ export default function RouteIntentPreloader() {
         hoverTimers.delete(anchor);
       }
     };
-    const warm = (target) => {
+    const warm = (target, { preloadData = false } = {}) => {
       if (shouldDeferSpeculation()) return;
       const route = getEligibleAnchor(target);
       if (route) {
         void preloadRoute(route.pathname);
-        preloadDestinationData(route.pathname);
+        if (preloadData) preloadDestinationData(route.pathname);
       }
     };
     const onPointerOver = (event) => {
@@ -78,9 +77,9 @@ export default function RouteIntentPreloader() {
     };
     const onPointerDown = (event) => {
       if (event.button !== 0 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
-      warm(event.target);
+      warm(event.target, { preloadData: true });
     };
-    const onFocusIn = (event) => warm(event.target);
+    const onFocusIn = (event) => warm(event.target, { preloadData: true });
 
     document.addEventListener('pointerover', onPointerOver, { passive: true });
     document.addEventListener('pointerout', onPointerOut, { passive: true });
