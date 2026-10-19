@@ -71,11 +71,12 @@ export function preloadProductDetail(slug) {
 function reducer(_state, action) {
   switch (action.type) {
     case 'reset':
-      return { ...INIT, status: 'loading' };
+      return { ...INIT, routeSlug: action.routeSlug, status: 'loading' };
     case 'idle':
-      return { ...INIT, status: 'idle' };
+      return { ...INIT, routeSlug: action.routeSlug, status: 'idle' };
     case 'ready':
       return {
+        routeSlug: action.routeSlug,
         product: action.product,
         variations: action.variations,
         relatedProducts: action.relatedProducts,
@@ -84,9 +85,9 @@ function reducer(_state, action) {
         error: null,
       };
     case 'not_found':
-      return { ...INIT, status: 'not_found', error: action.error || null };
+      return { ...INIT, routeSlug: action.routeSlug, status: 'not_found', error: action.error || null };
     case 'error':
-      return { ...INIT, status: 'error', error: action.error };
+      return { ...INIT, routeSlug: action.routeSlug, status: 'error', error: action.error };
     default:
       return _state;
   }
@@ -107,11 +108,15 @@ function initialStateForSlug(slug) {
 }
 
 export function useProductDetail(slug) {
-  const [state, dispatch] = useReducer(reducer, slug, initialStateForSlug);
+  const [state, dispatch] = useReducer(reducer, slug, (initialSlug) => ({ ...initialStateForSlug(initialSlug), routeSlug: cacheKey(initialSlug) }));
+  // On slug changes, never render the previous product while the new request starts.
+  const currentState = state.routeSlug === cacheKey(slug)
+    ? state
+    : { ...initialStateForSlug(slug), routeSlug: cacheKey(slug) };
 
   useEffect(() => {
     if (!slug) {
-      dispatch({ type: 'idle' });
+      dispatch({ type: 'idle', routeSlug: cacheKey(slug) });
       return;
     }
 
@@ -120,13 +125,14 @@ export function useProductDetail(slug) {
     if (cached?.product) {
       dispatch({
         type: 'ready',
+        routeSlug: cacheKey(slug),
         product: cached.product,
         variations: Array.isArray(cached.variations) ? cached.variations : [],
         relatedProducts: Array.isArray(cached.relatedProducts) ? cached.relatedProducts : [],
         computed: cached.computed ?? null,
       });
     } else {
-      dispatch({ type: 'reset' });
+      dispatch({ type: 'reset', routeSlug: cacheKey(slug) });
     }
 
     preloadProductDetail(slug)
@@ -134,12 +140,13 @@ export function useProductDetail(slug) {
         if (cancelled) return;
         if (!data || !data.product) {
           if (cached?.product) return;
-          dispatch({ type: 'not_found', error: 'Product not found.' });
+          dispatch({ type: 'not_found', routeSlug: cacheKey(slug), error: 'Product not found.' });
           return;
         }
         setCachedDetail(slug, data);
         dispatch({
           type: 'ready',
+          routeSlug: cacheKey(slug),
           product: data.product,
           variations: Array.isArray(data.variations) ? data.variations : [],
           relatedProducts: Array.isArray(data.relatedProducts) ? data.relatedProducts : [],
@@ -150,13 +157,13 @@ export function useProductDetail(slug) {
         if (cancelled) return;
         if (cached?.product) return;
         const is404 = err?.status === 404 || /404/.test(err?.message || '');
-        dispatch({ type: is404 ? 'not_found' : 'error', error: err?.message || 'Failed to load product.' });
+        dispatch({ type: is404 ? 'not_found' : 'error', routeSlug: cacheKey(slug), error: err?.message || 'Failed to load product.' });
       });
 
     return () => { cancelled = true; };
   }, [slug]);
 
-  return state;
+  return currentState;
 }
 
 export default useProductDetail;
