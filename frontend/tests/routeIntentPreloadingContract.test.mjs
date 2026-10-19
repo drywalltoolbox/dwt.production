@@ -28,3 +28,34 @@ test('speculative chunks are bounded and navigation bypasses the queue', async (
   assert.match(source, /return lazy\(\(\) => withChunkReload\(key\)\)/);
   assert.match(source, /speculativeRequests\.delete\(task\.key\)/);
 });
+
+test('slow lazy routes show geometry-preserving pending surfaces without transient spinner screens', async () => {
+  const [fallback, app, productDetail, globalLoading] = await Promise.all([
+    read('src/components/routing/RouteLoadingSurface.jsx'),
+    read('src/App.jsx'),
+    read('src/pages/ProductDetailPage.jsx'),
+    read('src/styles/global-loading.css'),
+  ]);
+  assert.match(app, /<Suspense fallback={<RouteLoadingSurface pathname=\{location\.pathname\} \/>}>/);
+  assert.match(fallback, /PENDING_ANNOUNCEMENT_DELAY_MS = 200/);
+  assert.match(fallback, /clearTimeout\(timer\)/);
+  assert.match(fallback, /dtb-route-pending--\$\{variant\}/);
+  assert.match(fallback, /role="status" aria-live="polite"/);
+  assert.match(globalLoading, /dtb-route-pending__product/);
+  assert.match(globalLoading, /dtb-route-pending__catalog/);
+  assert.match(productDetail, /<RouteLoadingSurface pathname=\{location\.pathname\} label="Loading product" \/>/);
+  assert.ok(productDetail.indexOf("if (status === 'error')") < productDetail.indexOf("if (status === 'not_found'"));
+});
+
+test('product detail warms through the canonical cache and retains cancellation safeguards', async () => {
+  const [intent, detail] = await Promise.all([
+    read('src/components/routing/RouteIntentPreloader.jsx'),
+    read('src/hooks/useProductDetail.js'),
+  ]);
+  assert.match(intent, /preloadDestinationData\(route\.pathname\)/);
+  assert.match(intent, /import\('\.\.\/\.\.\/hooks\/useProductDetail\.js'\)/);
+  assert.match(intent, /preloadProductDetail\(slug\)/);
+  assert.match(detail, /detailInflight = new Map\(\)/);
+  assert.match(detail, /DETAIL_CACHE_TTL/);
+  assert.match(detail, /if \(cancelled\) return/);
+});
