@@ -47,7 +47,7 @@ export default function RouteIntentPreloader() {
     const onPointerOver = (event) => {
       if (event.pointerType === 'touch' || shouldDeferSpeculation()) return;
       const route = getEligibleAnchor(event.target);
-      if (!route || route.anchor.contains(event.relatedTarget)) return;
+      if (!route || (event.relatedTarget instanceof Node && route.anchor.contains(event.relatedTarget))) return;
       clearHover(route.anchor);
       hoverTimers.set(route.anchor, setTimeout(() => {
         hoverTimers.delete(route.anchor);
@@ -56,7 +56,7 @@ export default function RouteIntentPreloader() {
     };
     const onPointerOut = (event) => {
       const anchor = event.target instanceof Element ? event.target.closest('a[href]') : null;
-      if (anchor && !anchor.contains(event.relatedTarget)) clearHover(anchor);
+      if (anchor && !(event.relatedTarget instanceof Node && anchor.contains(event.relatedTarget))) clearHover(anchor);
     };
     const onPointerDown = (event) => {
       if (event.button !== 0 || event.ctrlKey || event.metaKey || event.altKey || event.shiftKey) return;
