@@ -59,3 +59,11 @@ test('product detail warms through the canonical cache and retains cancellation 
   assert.match(detail, /DETAIL_CACHE_TTL/);
   assert.match(detail, /if \(cancelled\) return/);
 });
+
+test('product detail state is tied to the requested slug across rapid navigation', async () => {
+  const source = await read('src/hooks/useProductDetail.js');
+  assert.match(source, /state\.routeSlug === cacheKey\(slug\)/);
+  assert.match(source, /\.\.\.initialStateForSlug\(slug\)/);
+  assert.match(source, /return currentState/);
+  assert.match(source, /routeSlug: cacheKey\(slug\)/);
+});
