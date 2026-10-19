@@ -3,6 +3,21 @@ import { preloadRoute, resolveRouteModuleKey } from '../../routing/routeModules.
 
 const HOVER_DWELL_MS = 110;
 
+function preloadDestinationData(pathname) {
+  const match = /^\/products\/([^/]+)(?:\/variations\/[^/]+)?\/?$/.exec(pathname);
+  if (!match || match[1] === 'brands') return;
+  try {
+    const slug = decodeURIComponent(match[1]);
+    // Product detail uses this same cache when the route mounts.
+    void import('../../hooks/useProductDetail.js')
+      .then(({ preloadProductDetail }) => preloadProductDetail(slug))
+      .catch(() => null);
+  } catch {
+    // Invalid URI encoding must never interrupt navigation.
+  }
+}
+
+
 function getEligibleAnchor(target) {
   if (!(target instanceof Element)) return null;
   const anchor = target.closest('a[href]');
@@ -42,7 +57,10 @@ export default function RouteIntentPreloader() {
     const warm = (target) => {
       if (shouldDeferSpeculation()) return;
       const route = getEligibleAnchor(target);
-      if (route) void preloadRoute(route.pathname);
+      if (route) {
+        void preloadRoute(route.pathname);
+        preloadDestinationData(route.pathname);
+      }
     };
     const onPointerOver = (event) => {
       if (event.pointerType === 'touch' || shouldDeferSpeculation()) return;
