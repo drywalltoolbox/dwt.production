@@ -31,7 +31,7 @@ import { buildBreadcrumbSchema, buildProductSchema, stripHtml } from '../utils/s
 import ProductDetail from '../components/product/ProductDetail';
 import SEOHead from '../components/shared/SEOHead';
 import Breadcrumb from '../components/shared/Breadcrumb.jsx';
-import LoadingSpinner from '../components/shared/LoadingSpinner';
+import RouteLoadingSurface from '../components/routing/RouteLoadingSurface.jsx';
 import Toast from '../components/ui/Toast';
 import StorefrontRail from '../components/storefront/StorefrontRail';
 import StorefrontProductTile from '../components/storefront/StorefrontProductTile';
@@ -179,8 +179,21 @@ export default function ProductDetailPage() {
     return (
       <>
         <SEOHead noindex title="Loading product…" />
-        <LoadingSpinner fullPage size="lg" label="Loading product" />
+        <RouteLoadingSurface pathname={location.pathname} label="Loading product" />
       </>
+    );
+  }
+
+  if (status === 'error') {
+    return (
+      <div className="min-h-screen dtb-container dtb-container--wide py-16">
+        <SEOHead noindex title="Error loading product" />
+        <div className="text-center">
+          <h2 className="text-2xl font-bold mb-4">Unable to load product</h2>
+          <p className="text-gray-600 mb-6">{error || 'Something went wrong.'}</p>
+          <button onClick={() => navigate(-1)} className="px-4 py-2 bg-gray-200 rounded">Go Back</button>
+        </div>
+      </div>
     );
   }
 
@@ -195,19 +208,6 @@ export default function ProductDetailPage() {
             <button onClick={() => navigate(-1)} className="px-4 py-2 bg-gray-200 rounded">Go Back</button>
             <Link to="/products" className="px-4 py-2 bg-primary-600 text-white rounded">Browse Products</Link>
           </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (status === 'error') {
-    return (
-      <div className="min-h-screen dtb-container dtb-container--wide py-16">
-        <SEOHead noindex title="Error loading product" />
-        <div className="text-center">
-          <h2 className="text-2xl font-bold mb-4">Unable to load product</h2>
-          <p className="text-gray-600 mb-6">{error || 'Something went wrong.'}</p>
-          <button onClick={() => navigate(-1)} className="px-4 py-2 bg-gray-200 rounded">Go Back</button>
         </div>
       </div>
     );
