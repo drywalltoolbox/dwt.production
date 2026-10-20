@@ -1141,7 +1141,7 @@ export default function ProductDetail({
               <div className="dtb-pdp-mobile-post-purchase">
                 {partsUrl ? (
                   <Link to={partsUrl} className="dtb-pdp-parts-link dtb-pdp-parts-link--mobile">
-                    View compatible schematics and parts
+                    View associated schematic and part numbers
                   </Link>
                 ) : null}
               </div>
@@ -1161,7 +1161,7 @@ export default function ProductDetail({
 
           <div className="dtb-pdp-browse-parts-row">
             <Link to={browsePartsUrl} className="dtb-pdp-browse-parts-row__link">
-              Browse all compatible parts &amp; schematics
+              {partsUrl ? 'View schematic and part numbers' : 'Browse replacement parts'}
             </Link>
           </div>
 

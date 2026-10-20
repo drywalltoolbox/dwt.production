@@ -18,7 +18,7 @@ export default function ProductInformationAccordion({ description, features, spe
     { key: 'features', title: 'Features', content: features || <p>Product features are not separately listed.</p> },
     { key: 'specs', title: 'Specifications', content: specs || <p>No additional specifications are listed.</p> },
     { key: 'parts', title: 'Parts & Schematics', content: (
-      <p>Confirm compatibility before ordering replacement parts. <Link to={partsUrl}>Browse compatible parts and schematics</Link>.</p>
+      <p>Use the model diagram and part number to identify a replacement, then confirm fit before ordering. <Link to={partsUrl}>Browse parts and schematics</Link>.</p>
     ) },
     { key: 'shipping', title: 'Shipping & Returns', content: (
       <p>Shipping charges are calculated at checkout. <Link to="/shipping-policy">Shipping policy</Link> · <Link to="/return-policy">Returns policy</Link></p>

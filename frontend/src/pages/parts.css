@@ -2,6 +2,42 @@
   background: #fff;
 }
 
+.dtb-parts-discovery {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+  padding: 1rem var(--dtb-viewport-gutter);
+  border-bottom: 1px solid #dce6f2;
+  background: #f7faff;
+  color: #183858;
+}
+
+.dtb-parts-discovery p { margin: 0; }
+
+.dtb-parts-discovery__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  flex-shrink: 0;
+}
+
+.dtb-parts-discovery__links a {
+  color: #075bb8;
+  font-weight: 650;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.dtb-parts-discovery__links a:focus-visible {
+  outline: 2px solid #075bb8;
+  outline-offset: 3px;
+}
+
+@media (max-width: 760px) {
+  .dtb-parts-discovery { align-items: flex-start; flex-direction: column; }
+}
+
 .dtb-parts-page > .page-wrapper > .dtb-container > .mb-5:has(.dtb-listing-heading--standard) {
   display: none;
 }
