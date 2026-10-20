@@ -56,7 +56,7 @@
 			transactions: '<button class="button" data-qbo-control="dry_run">Dry-run order</button>',
 			exceptions: '<button class="button button-primary" data-qbo-control="reconcile">Queue selected reconciliation</button>',
 			tax: '<button class="button" data-qbo-control="review_exemption">Review exemption</button>',
-			settlement: '<button class="button button-primary" data-qbo-control="settlement">Import payouts</button>',
+			settlement: '<p class="description">Legacy Stripe payout imports are disabled. WooPayments is the active gateway; historical Stripe rows remain read-only.</p>',
 			reports: '<button class="button" data-qbo-control="reports">Refresh QBO reports</button><button class="button button-primary" data-qbo-control="close_period">Close period</button>',
 			rules: '<button class="button" data-qbo-action="discover">Discover service items</button><button class="button button-primary" data-qbo-control="save_rules">Approve mappings</button>',
 			automation: '<button class="button" data-qbo-action="queue">Queue eligible orders</button>',
@@ -72,7 +72,7 @@
 			metricsHost.hidden = false;
 			metricsHost.innerHTML = kpis([
 				['Sales', money(m.sales), 'last 30 days'], ['Refunds', money(m.refunds), 'concrete refunds'],
-				['Tax liability', money(m.tax_collected), 'net collected'], ['Stripe fees', money(m.fees), 'observed payouts'],
+				['Tax liability', money(m.tax_collected), 'net collected'], ['Historical processor fees', money(m.fees), 'legacy Stripe payout records'],
 				['Reconciled', m.reconciled_count || 0, 'exact QBO matches'], ['Exceptions', m.exception_count || 0, 'requires review'],
 			]);
 			const connection = data.connection || {};
@@ -99,7 +99,7 @@
 				${['tax_code','deposit_account','clearing_account','fee_account','bank_account'].map((key) => `<label><span>${esc(key.replaceAll('_',' '))}</span><input data-policy="${key}_id" value="${esc(p[`${key}_id`] || '')}" placeholder="QuickBooks ID"><input data-policy="${key}_name" value="${esc(p[`${key}_name`] || '')}" placeholder="Approved name"></label>`).join('')}
 				<p class="description">Changes are versioned and stamped with the approving administrator. Remote records are never auto-created.</p></div>`;
 		} else if (view === 'automation') {
-			host.innerHTML = `<div class="dtb-qbo-health-grid"><article><span>Order queue</span><strong>${data.sync?.ready ? 'Ready' : 'Blocked'}</strong><small>${esc((data.sync?.blockers || []).join(' ') || 'dtb-orders queue is available.')}</small></article><article><span>QBO change capture</span><strong>${esc(data.cdc?.state || 'never run')}</strong><small>${esc(data.cdc?.checkedAt || 'Daily webhook backstop')}</small></article><article><span>Settlement import</span><strong>${esc(data.settlement?.state || 'never run')}</strong><small>${esc(data.settlement?.checkedAt || '')}</small></article></div>`;
+			host.innerHTML = `<div class="dtb-qbo-health-grid"><article><span>Order queue</span><strong>${data.sync?.ready ? 'Ready' : 'Blocked'}</strong><small>${esc((data.sync?.blockers || []).join(' ') || 'dtb-orders queue is available.')}</small></article><article><span>QBO change capture</span><strong>${esc(data.cdc?.state || 'never run')}</strong><small>${esc(data.cdc?.checkedAt || 'Daily webhook backstop')}</small></article><article><span>Legacy Stripe settlement import</span><strong>Disabled</strong><small>WooPayments is the active gateway. Historical records remain available.</small></article></div>`;
 		}
 		actions(view);
 		q('[data-qbo-last-refresh]').textContent = `Updated ${date(payload.generatedAt || new Date().toISOString())}`;

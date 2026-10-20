@@ -59,6 +59,13 @@ final class DTB_QuickBooksSyncAdminController {
 
 	public static function queue( WP_REST_Request $request ): WP_REST_Response|WP_Error {
 		$readiness = self::read_model();
+		if ( ! empty( $readiness['exports_paused'] ) ) {
+			return new WP_Error(
+				'qbo_sync_disabled',
+				__( 'DTB QuickBooks exports are disabled; WooCommerce sales sync is managed by the Intuit connector.', 'drywall-toolbox' ),
+				[ 'status' => 409, 'blockers' => $readiness['blockers'] ]
+			);
+		}
 		if ( empty( $readiness['ready'] ) ) {
 			return new WP_Error(
 				'qbo_sync_not_ready',
@@ -112,6 +119,11 @@ final class DTB_QuickBooksSyncAdminController {
 		$mapped    = class_exists( 'DTB_QuickBooksItemMappingService' ) && DTB_QuickBooksItemMappingService::ready();
 		$queue     = function_exists( 'dtb_operational_pipeline_queue_qbo_sync_orders' );
 		$policy    = class_exists( 'DTB_QBO_AccountingLedger' ) ? DTB_QBO_AccountingLedger::policy() : [];
+		$exports_paused = ! function_exists( 'dtb_qbo_exports_paused' ) || dtb_qbo_exports_paused();
+
+		if ( $exports_paused ) {
+			$blockers[] = __( 'DTB QuickBooks writes are disabled while the Intuit WooCommerce Connector owns WooCommerce sales sync.', 'drywall-toolbox' );
+		}
 
 		if ( ! $connected ) {
 			$blockers[] = __( 'QuickBooks is not connected.', 'drywall-toolbox' );
@@ -142,6 +154,7 @@ final class DTB_QuickBooksSyncAdminController {
 		return [
 			'ok'                    => true,
 			'ready'                 => empty( $blockers ),
+			'exports_paused'        => $exports_paused,
 			'connected'             => $connected,
 			'items_verified'        => $mapped,
 			'queue_available'       => $queue,
@@ -149,7 +162,7 @@ final class DTB_QuickBooksSyncAdminController {
 			'placeholder_constants' => $placeholder_constants,
 			'last_queued_at'        => sanitize_text_field( (string) get_option( 'dtb_qbo_last_sync_queued_at', '' ) ),
 			'last_queued_count'     => absint( get_option( 'dtb_qbo_last_sync_queued_count', 0 ) ),
-			'execution'             => 'queued',
+			'execution'             => $exports_paused ? 'disabled' : 'queued',
 			'queue_group'           => 'dtb-orders',
 			'hook'                  => 'dtb_order_sync_quickbooks',
 		];

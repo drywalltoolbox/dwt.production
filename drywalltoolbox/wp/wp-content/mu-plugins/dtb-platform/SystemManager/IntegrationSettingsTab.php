@@ -112,7 +112,6 @@ function dtb_integration_settings_render_quickbooks_card(): void {
 	$environment_constant = defined( 'DTB_QBO_ENVIRONMENT' );
 	$client_id_constant = defined( 'DTB_QBO_CLIENT_ID' );
 	$client_secret_constant = defined( 'DTB_QBO_CLIENT_SECRET' );
-	$stripe_key_constant = defined( 'DTB_STRIPE_ACCOUNTING_RESTRICTED_KEY' );
 	$stripe_key_set = '' !== ( function_exists( 'dtb_qbo_stripe_restricted_key' ) ? dtb_qbo_stripe_restricted_key() : '' );
 	$active_webhook_set = class_exists( 'DTB_QuickBooksWebhookController' ) && DTB_QuickBooksWebhookController::verifier_configured();
 
@@ -161,17 +160,14 @@ function dtb_integration_settings_render_quickbooks_card(): void {
 	if ( $production_webhook_constant ) {
 		$fields .= dtb_integration_settings_managed_hint( 'production_webhook_verifier_token' );
 	}
-	$fields .= dtb_integration_settings_field( __( 'Stripe Restricted Reporting Key', 'drywall-toolbox' ), 'stripe_restricted_key', (string) ( $stored['stripe_restricted_key'] ?? '' ), true, '', $stripe_key_constant, $stripe_key_set );
-	if ( $stripe_key_constant ) {
-		$fields .= dtb_integration_settings_managed_hint( 'stripe_restricted_key' );
-	}
+	$fields .= dtb_integration_settings_field( __( 'Legacy Stripe Reporting Key (Unused)', 'drywall-toolbox' ), 'stripe_restricted_key', (string) ( $stored['stripe_restricted_key'] ?? '' ), true, '', true, $stripe_key_set );
 
 	$help = sprintf(
 		/* translators: %s: realm ID or em dash */
 		esc_html__( 'Realm ID (set automatically after Connect, via the Overview tab): %s. Any field left blank here keeps its current value.', 'drywall-toolbox' ),
 		'<code>' . esc_html( '' !== $cfg['realm_id'] ? $cfg['realm_id'] : '—' ) . '</code>'
 	);
-	$help .= ' ' . esc_html__( 'The Stripe restricted reporting key is only used by settlement import; it is separate from QuickBooks connection and webhook readiness.', 'drywall-toolbox' );
+	$help .= ' ' . esc_html__( 'WooPayments is the active gateway. The legacy Stripe settlement importer is disabled; any previously stored Stripe reporting key is retained but unused.', 'drywall-toolbox' );
 
 	dtb_integration_settings_card_shell( 'quickbooks', __( 'QuickBooks', 'drywall-toolbox' ), $badge, $fields, $help );
 }

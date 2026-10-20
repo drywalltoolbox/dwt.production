@@ -145,7 +145,7 @@ final class DTB_QuickBooksEnterpriseController {
 		return [
 			'policy'     => DTB_QBO_AccountingLedger::policy(),
 			'sync'       => DTB_QuickBooksSyncAdminController::read_model(),
-			'settlement' => (array) get_option( 'dtb_qbo_stripe_settlement_status', [ 'state' => 'never_run' ] ),
+			'settlement' => (array) get_option( 'dtb_qbo_stripe_settlement_status', [ 'state' => 'disabled', 'message' => 'Legacy Stripe settlement import is retired; WooPayments is the active gateway.' ] ),
 			'cdc'        => (array) get_option( dtb_qbo_option_name( 'accounting_cdc_status' ), [ 'state' => 'never_run' ] ),
 			'queueGroup' => 'dtb-orders',
 		];

@@ -203,8 +203,14 @@ final class DTB_QuickBooksWebhookController {
 			'meta_value' => $entity_id,
 		] );
 		if ( 1 !== count( $orders ) || ! $orders[0] instanceof WC_Order ) {
-			self::audit( 'qbo_sales_receipt_webhook_unmapped', $event + [ 'operation' => $operation ] );
-			return false;
+			$ambiguous = count( $orders ) > 1;
+			self::audit(
+				$ambiguous ? 'qbo_sales_receipt_webhook_ambiguous_ignored' : 'qbo_sales_receipt_webhook_unmapped_ignored',
+				$event + [ 'operation' => $ambiguous ? 'ambiguous_ignored' : 'unmapped_ignored' ]
+			);
+			// There is no safe order identity to reconcile. Acknowledge and retain
+			// the audit record instead of retrying an event the worker cannot map.
+			return true;
 		}
 		$order = $orders[0];
 		$order->update_meta_data( '_dtb_qbo_last_webhook_event_id', sanitize_text_field( (string) $event['id'] ) );

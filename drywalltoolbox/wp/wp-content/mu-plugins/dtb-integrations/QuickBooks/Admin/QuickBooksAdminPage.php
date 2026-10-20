@@ -119,7 +119,7 @@ function dtb_qbo_admin_tab_description( string $view ): string {
 		'transactions' => __( 'Full-range sales, refunds, and accounting documents with QBO comparison.', 'drywall-toolbox' ),
 		'exceptions'   => __( 'Failed invariants, remote mismatches, and retryable operational failures.', 'drywall-toolbox' ),
 		'tax'          => __( 'Jurisdiction, rate, liability, exemption, and refund-reversal visibility.', 'drywall-toolbox' ),
-		'settlement'   => __( 'Stripe fees, payouts, clearing, deposits, and bank reconciliation evidence.', 'drywall-toolbox' ),
+		'settlement'   => __( 'Historical Stripe payout records only. New imports are disabled; WooPayments is the active gateway.', 'drywall-toolbox' ),
 		'reports'      => __( 'Read-only QuickBooks reports, period close, and accountant exports.', 'drywall-toolbox' ),
 		'rules'        => __( 'Accountant-approved tax, item, clearing, fee, deposit, and bank mappings.', 'drywall-toolbox' ),
 		'automation'   => __( 'Queue schedules, report refresh, settlement import, and health controls.', 'drywall-toolbox' ),

@@ -128,6 +128,9 @@ final class DTB_QuickBooksAdminController {
 			return new WP_REST_Response( [ 'ok' => true, 'policy' => $policy ], 200 );
 		}
 		if ( in_array( $action, [ 'reports', 'settlement' ], true ) ) {
+			if ( 'settlement' === $action && ( ! function_exists( 'dtb_qbo_exports_paused' ) || dtb_qbo_exports_paused() ) ) {
+				return new WP_Error( 'qbo_settlement_disabled', 'The legacy Stripe settlement importer is disabled. WooPayments is the active gateway.', [ 'status' => 409 ] );
+			}
 			$job = DTB_QBO_AccountingOperations::enqueue( $action );
 			return $job ? new WP_REST_Response( [ 'ok' => true, 'queued' => true, 'actionId' => $job ], 202 ) : new WP_Error( 'qbo_queue_unavailable', 'Action Scheduler is unavailable.', [ 'status' => 503 ] );
 		}

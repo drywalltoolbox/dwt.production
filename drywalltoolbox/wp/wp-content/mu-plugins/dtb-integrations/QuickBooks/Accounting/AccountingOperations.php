@@ -1,6 +1,6 @@
 <?php
 /**
- * Queue-owned accounting operations: reports, tax preferences, and Stripe settlements.
+ * Queue-owned accounting operations: reports, tax preferences, and legacy Stripe settlements.
  *
  * @package drywall-toolbox
  */
@@ -25,6 +25,9 @@ final class DTB_QBO_AccountingOperations {
 	}
 
 	public static function enqueue( string $operation ): int|string|false {
+		if ( 'settlement' === sanitize_key( $operation ) && ( ! function_exists( 'dtb_qbo_exports_paused' ) || dtb_qbo_exports_paused() ) ) {
+			return false;
+		}
 		$hook = match ( sanitize_key( $operation ) ) {
 			'reports'    => 'dtb_qbo_refresh_accounting_reports',
 			'settlement' => 'dtb_qbo_sync_stripe_settlements',
@@ -199,6 +202,10 @@ final class DTB_QBO_AccountingOperations {
 	 * No payment, capture, refund, or checkout behavior is changed.
 	 */
 	public static function sync_settlements(): void {
+		if ( ! function_exists( 'dtb_qbo_exports_paused' ) || dtb_qbo_exports_paused() ) {
+			update_option( 'dtb_qbo_stripe_settlement_status', [ 'state' => 'disabled', 'message' => 'DTB QuickBooks settlement posting is disabled while the Intuit WooCommerce Connector owns transaction synchronization.', 'checkedAt' => gmdate( 'c' ) ], false );
+			return;
+		}
 		if ( ! function_exists( 'dtb_qbo_stripe_restricted_key' ) || '' === dtb_qbo_stripe_restricted_key() ) {
 			update_option( 'dtb_qbo_stripe_settlement_status', [ 'state' => 'disabled', 'message' => 'Restricted Stripe reporting key is not configured.', 'checkedAt' => gmdate( 'c' ) ], false );
 			return;

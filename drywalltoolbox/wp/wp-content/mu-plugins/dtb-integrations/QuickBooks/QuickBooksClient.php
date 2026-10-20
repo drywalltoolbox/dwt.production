@@ -277,8 +277,10 @@ function dtb_qbo_get_access_token(): string {
 }
 
 /**
- * Prelaunch accounting-write pause. Changing this to false requires a reviewed
- * deployment after checkout validation. Read-only connection diagnostics remain.
+ * DTB QuickBooks mutations are disabled while WooCommerce sales sync is owned
+ * by the official Intuit WooCommerce Connector. Keep this fail-closed until a
+ * reviewed architecture change explicitly transfers that ownership again.
+ * Read-only connection diagnostics remain available.
  */
 function dtb_qbo_exports_paused(): bool {
 	return true;
@@ -286,7 +288,7 @@ function dtb_qbo_exports_paused(): bool {
 
 function dtb_qbo_request( string $method, string $path, array $params = [], array $body = [], bool $retry_auth = true ): array {
 	if ( dtb_qbo_exports_paused() && ! in_array( strtoupper( $method ), [ 'GET', 'HEAD', 'OPTIONS' ], true ) ) {
-		return [ 'ok' => false, 'status' => 0, 'data' => null, 'error' => 'QuickBooks writes temporarily paused during checkout validation.', 'retryable' => false ];
+		return [ 'ok' => false, 'status' => 0, 'data' => null, 'error' => 'DTB QuickBooks writes are disabled; WooCommerce sales sync is managed by the Intuit connector.', 'retryable' => false ];
 	}
 
 	$config = dtb_qbo_config();

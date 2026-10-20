@@ -39,6 +39,9 @@ if ( ! function_exists( 'dtb_operational_pipeline_queue_qbo_sync_orders' ) ) {
 	 * @return array{queued:int,skipped:int,order_ids:int[],error:string}
 	 */
 	function dtb_operational_pipeline_queue_qbo_sync_orders( int $limit = 100, string $trigger = 'manual' ): array {
+		if ( ! function_exists( 'dtb_qbo_exports_paused' ) || dtb_qbo_exports_paused() ) {
+			return [ 'queued' => 0, 'skipped' => 0, 'order_ids' => [], 'error' => 'DTB QuickBooks exports are disabled; WooCommerce sales sync is managed by the Intuit connector.' ];
+		}
 		if ( ! function_exists( 'dtb_qbo_enabled' ) || ! dtb_qbo_enabled() ) {
 			return [ 'queued' => 0, 'skipped' => 0, 'order_ids' => [], 'error' => 'QuickBooks integration is not configured.' ];
 		}

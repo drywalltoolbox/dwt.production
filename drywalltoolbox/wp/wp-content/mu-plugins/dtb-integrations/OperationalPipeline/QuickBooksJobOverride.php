@@ -67,6 +67,24 @@ if ( ! function_exists( 'dtb_operational_pipeline_job_sync_quickbooks' ) ) {
 			'handler'   => 'accounting_pipeline',
 			'refund_id' => $refund_id ?: null,
 		];
+		if ( ! function_exists( 'dtb_qbo_exports_paused' ) || dtb_qbo_exports_paused() ) {
+			if ( function_exists( 'dtb_order_update_integration_state' ) ) {
+				dtb_order_update_integration_state( $order_id, 'quickbooks', [
+					'status'  => 'disabled',
+					'error'   => 'DTB QuickBooks writes are disabled; WooCommerce sales sync is managed by the Intuit connector.',
+					'attempt' => $attempt,
+				] );
+			}
+			if ( function_exists( 'dtb_order_append_event' ) ) {
+				dtb_order_append_event( $order_id, 'integration.quickbooks.skipped', [
+					'source'     => 'cron',
+					'actor_type' => 'system',
+					'visibility' => 'operator',
+					'payload'    => $event_context + [ 'reason' => 'quickbooks_exports_paused' ],
+				] );
+			}
+			return;
+		}
 		if ( function_exists( 'dtb_order_append_event' ) ) {
 			dtb_order_append_event( $order_id, 'integration.quickbooks.queued', [
 				'source'     => 'cron',

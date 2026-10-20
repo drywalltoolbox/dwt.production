@@ -245,7 +245,7 @@ function dtb_order_job_sync_quickbooks( int $order_id, array $args = [] ): void 
 		return;
 	}
 	if ( dtb_qbo_exports_paused() ) {
-		dtb_order_update_integration_state( $order_id, 'quickbooks', [ 'status' => 'disabled', 'error' => 'QuickBooks exports paused for checkout validation.' ] );
+		dtb_order_update_integration_state( $order_id, 'quickbooks', [ 'status' => 'disabled', 'error' => 'DTB QuickBooks writes are disabled; WooCommerce sales sync is managed by the Intuit connector.' ] );
 		dtb_order_append_event( $order_id, 'integration.quickbooks.skipped', [ 'source' => 'cron', 'actor_type' => 'system', 'visibility' => 'operator', 'payload' => [ 'reason' => 'quickbooks_exports_paused' ] ] );
 		return;
 	}
