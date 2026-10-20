@@ -47,7 +47,9 @@ Automatic-finishing child categories do not render a standalone workflow-orienta
 
 Tool Sets are treated as a high-consideration buying context, not as a separate product authority. The storefront may explain purchasing intents such as complete automatic systems, taping sets, flat-finishing sets, corner-finishing sets, starter systems, and production systems.
 
-These intent cards are informational unless they resolve to an authoritative category route. They do not implement product comparison, synthetic filters, inferred set membership, or frontend-owned bundle composition.
+The Tool Sets page links workflow choices to existing catalog routes where a matching category exists. Hand finishing currently has no dedicated catalog category, so its entry points to the general product catalog without claiming a curated hand-tool assortment. The full-system entry points to an on-page comparison of currently returned Tool Set products.
+
+The comparison uses only the returned catalog products and structured included-item metadata. It shows exact listed contents and extracts named taper, loading, flat-box, handle, and corner items for scanning; a missing row means “not listed in set contents,” not proof of absence. Current price comes from the live catalog projection. Warranty terms are not present in the compared set data and are shown as unspecified with a support path. Parts and repair links are service navigation, not claims that every component is stocked, compatible, or repairable. The comparison does not create synthetic filters, inferred set membership, or frontend-owned bundle composition.
 
 Product cards may summarize set contents only from the structured `_includes_<n>_name` / `_includes_<n>_sku` metadata already carried by the canonical catalog DTO. `frontend/src/utils/productMerchandising.js` parses that structured metadata and refuses to infer set contents from product names, descriptions, brand, or category proximity. If structured includes data is absent, no set-content claim is rendered.
 

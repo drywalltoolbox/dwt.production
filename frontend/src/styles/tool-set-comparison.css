@@ -1,0 +1,17 @@
+.dtb-set-comparison { margin-top: 2rem; border-top: 1px solid #dae4ef; padding-top: 1.5rem; }
+.dtb-set-comparison__intro { max-width: 52rem; }
+.dtb-set-comparison__eyebrow { margin: 0 0 .4rem; color: #1265f4; font-size: .72rem; font-weight: 850; letter-spacing: .12em; text-transform: uppercase; }
+.dtb-set-comparison h2 { margin: 0; color: #061b42; font-size: clamp(1.55rem, 2.2vw, 2.15rem); line-height: 1.1; }
+.dtb-set-comparison__intro > p:last-child { margin: .65rem 0 1rem; color: #496486; line-height: 1.5; }
+.dtb-set-comparison__scroll { overflow-x: auto; border: 1px solid #dae4ef; border-radius: 10px; }
+.dtb-set-comparison__scroll:focus-visible { outline: 3px solid #1265f4; outline-offset: 3px; }
+.dtb-set-comparison table { width: 100%; min-width: 760px; border-collapse: collapse; text-align: left; }
+.dtb-set-comparison th, .dtb-set-comparison td { width: 25%; padding: .85rem; border-bottom: 1px solid #e4ebf4; vertical-align: top; font-size: .85rem; line-height: 1.45; }
+.dtb-set-comparison thead th { background: #f4f8fe; color: #061b42; }
+.dtb-set-comparison tbody th { background: #f9fbff; color: #183858; font-weight: 800; }
+.dtb-set-comparison tr:last-child th, .dtb-set-comparison tr:last-child td { border-bottom: 0; }
+.dtb-set-comparison thead label, .dtb-set-comparison thead select, .dtb-set-comparison thead a { display: block; }
+.dtb-set-comparison thead label { margin-bottom: .35rem; font-size: .72rem; font-weight: 800; }
+.dtb-set-comparison select { width: 100%; max-width: 19rem; margin-bottom: .5rem; padding: .4rem; border: 1px solid #b9cce5; border-radius: 5px; background: #fff; color: #061b42; }
+.dtb-set-comparison a { color: #075bb8; text-underline-offset: .2em; }
+.dtb-set-comparison a:focus-visible, .dtb-set-comparison select:focus-visible { outline: 2px solid #1265f4; outline-offset: 2px; }

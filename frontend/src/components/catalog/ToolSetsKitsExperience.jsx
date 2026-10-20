@@ -1,17 +1,16 @@
-import { ArrowRight, Settings2, ShieldCheck, ShoppingCart, UsersRound } from 'lucide-react';
+import { ArrowRight, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getBrandLogo } from '../../utils/brandAssets.js';
 import ProductRating from '../product/ProductRating.jsx';
+import ToolSetComparison from './ToolSetComparison.jsx';
 import '../../styles/tool-sets-kits-experience.css';
 
 const IMAGE_ROOT = 'https://drywalltoolbox.com/wp/wp-content/uploads/2026/categories/thumbnails';
-const SYSTEMS = [
-  ['Complete Automatic Systems', 'Taping, loading, flat finishing, and corner finishing in one coordinated setup.'],
-  ['Taping Sets', 'Automatic taper plus the equipment required to load and run it.'],
-  ['Flat Finishing Sets', 'Finishing boxes, compatible handles, and loading equipment.'],
-  ['Corner Finishing Sets', 'Rollers, applicators, corner finishers, and compatible handles.'],
-  ['Starter / Upgrade Sets', 'Focused systems for contractors moving beyond hand tools.'],
-  ['Production Crew Sets', 'Broader systems for high-volume professional finishing.'],
+const WORKFLOWS = [
+  { title: 'Hand finishing', description: 'Browse individual tools and get help choosing a setup before moving to powered or automatic equipment.', to: '/products', action: 'Browse tools' },
+  { title: 'Semi-auto upgrade', description: 'Start with banjo tapers and semi-automatic tools while keeping familiar finishing methods.', to: '/products?display_category=semi-automatic-tapers-banjos', action: 'Shop semi-auto tapers' },
+  { title: 'Flat-box setup', description: 'Compare flat boxes first, then check the required handle and loading equipment.', to: '/products?display_category=flat-boxes', action: 'Shop flat boxes' },
+  { title: 'Full automatic system', description: 'Compare listed taping, loading, flat, and corner tools in the sets below.', to: '#dtb-set-comparison-title', action: 'Compare sets' },
 ];
 
 function productImage(product) {
@@ -43,12 +42,7 @@ export default function ToolSetsKitsExperience({ category, breadcrumbs = [], pro
         <div className="dtb-toolsets-hero__copy">
           <p>Taping &amp; Finishing Tools</p>
           <h1>{category.label}</h1>
-          <div>Complete drywall tool sets built for higher productivity, better finishes, and a more efficient workflow. From full automatic systems to starter kits, find the right set for your crew.</div>
-          <ul>
-            <li><ShieldCheck aria-hidden="true" /><span>Pro-grade tools</span></li>
-            <li><Settings2 aria-hidden="true" /><span>Complete workflow solutions</span></li>
-            <li><UsersRound aria-hidden="true" /><span>Trusted by professionals</span></li>
-          </ul>
+          <div>Choose tools by the work you perform, then compare the exact items listed in each set. Review current price and product details before ordering.</div>
         </div>
       </div>
 
@@ -56,15 +50,19 @@ export default function ToolSetsKitsExperience({ category, breadcrumbs = [], pro
         <header className="dtb-toolsets-section-head">
           <p>Choose a system</p>
           <h2>Start with the work your crew performs.</h2>
-          <span>Find the right tool set for your crew, your workflow, and your finish goals.</span>
+          <span>Start with individual tools, an upgrade path, or a complete set.</span>
         </header>
         <div className="dtb-toolsets-system-grid">
-          {SYSTEMS.map(([title, description]) => (
-            <a className="dtb-toolsets-system" href="#dtb-category-filters" key={title}>
-              <div className="dtb-toolsets-system__body"><div className="dtb-toolsets-system__copy"><h3>{title}</h3><p>{description}</p></div><span className="dtb-toolsets-system__action"><ArrowRight aria-hidden="true" /></span></div>
-            </a>
+          {WORKFLOWS.map(({ title, description, to, action }) => (
+            to.startsWith('#') ? <a className="dtb-toolsets-system" href={to} key={title}>
+              <div className="dtb-toolsets-system__body"><div className="dtb-toolsets-system__copy"><h3>{title}</h3><p>{description}</p><span className="dtb-toolsets-system__destination">{action}</span></div><span className="dtb-toolsets-system__action"><ArrowRight aria-hidden="true" /></span></div>
+            </a> : <Link className="dtb-toolsets-system" to={to} key={title}>
+              <div className="dtb-toolsets-system__body"><div className="dtb-toolsets-system__copy"><h3>{title}</h3><p>{description}</p><span className="dtb-toolsets-system__destination">{action}</span></div><span className="dtb-toolsets-system__action"><ArrowRight aria-hidden="true" /></span></div>
+            </Link>
           ))}
         </div>
+
+        <ToolSetComparison products={products} />
 
         <div className="dtb-toolsets-featured-head">
           <div><h2>Featured Tool Sets &amp; Kits</h2><span>Explore available systems selected for professional drywall work.</span></div>
