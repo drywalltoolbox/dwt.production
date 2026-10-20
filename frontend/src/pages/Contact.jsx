@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowRight, Check, Clock3, Mail, Phone } from 'lucide-react';
 import SEOHead from '../components/shared/SEOHead';
 import Dropdown from '../components/ui/Dropdown';
@@ -16,12 +16,22 @@ const inquiryTypes = [
 ];
 
 export default function Contact() {
+  const [searchParams] = useSearchParams();
   const inquiryRef = useRef(null);
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    inquiryType: '',
-    message: ''
+  const [formData, setFormData] = useState(() => {
+    const requestedInquiry = searchParams.get('inquiry') || '';
+    const sku = (searchParams.get('sku') || '').trim();
+    const handFinishing = searchParams.get('topic') === 'hand-finishing';
+    return {
+      name: '',
+      email: '',
+      inquiryType: inquiryTypes.includes(requestedInquiry) ? requestedInquiry : '',
+      message: handFinishing
+        ? 'I need help choosing a hand-finishing setup. My typical work is: '
+        : sku && /^[A-Za-z0-9._-]{1,80}$/.test(sku)
+          ? `I am considering tool set ${sku}. My question is: `
+          : '',
+    };
   });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess]       = useState(false);

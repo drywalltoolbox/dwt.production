@@ -7,7 +7,7 @@ import '../../styles/tool-sets-kits-experience.css';
 
 const IMAGE_ROOT = 'https://drywalltoolbox.com/wp/wp-content/uploads/2026/categories/thumbnails';
 const WORKFLOWS = [
-  { title: 'Hand finishing', description: 'Browse individual tools and get help choosing a setup before moving to powered or automatic equipment.', to: '/products', action: 'Browse tools' },
+  { title: 'Hand finishing', description: 'Tell our team what you finish by hand. We will help identify a suitable setup while the catalog has no dedicated hand-tool range.', to: '/contact?inquiry=General%20Question&topic=hand-finishing', action: 'Ask for setup help' },
   { title: 'Semi-auto upgrade', description: 'Start with banjo tapers and semi-automatic tools while keeping familiar finishing methods.', to: '/products?display_category=semi-automatic-tapers-banjos', action: 'Shop semi-auto tapers' },
   { title: 'Flat-box setup', description: 'Compare flat boxes first, then check the required handle and loading equipment.', to: '/products?display_category=flat-boxes', action: 'Shop flat boxes' },
   { title: 'Full automatic system', description: 'Compare listed taping, loading, flat, and corner tools in the sets below.', to: '#dtb-set-comparison-title', action: 'Compare sets' },
