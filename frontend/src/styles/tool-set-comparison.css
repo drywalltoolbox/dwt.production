@@ -15,3 +15,10 @@
 .dtb-set-comparison select { width: 100%; max-width: 19rem; margin-bottom: .5rem; padding: .4rem; border: 1px solid #b9cce5; border-radius: 5px; background: #fff; color: #061b42; }
 .dtb-set-comparison a { color: #075bb8; text-underline-offset: .2em; }
 .dtb-set-comparison a:focus-visible, .dtb-set-comparison select:focus-visible { outline: 2px solid #1265f4; outline-offset: 2px; }
+.dtb-set-comparison__set-sku, .dtb-set-comparison__note { display: block; margin-top: .3rem; color: #496486; font-size: .75rem; }
+.dtb-set-comparison__items { margin: .4rem 0 0; padding-left: 1.1rem; }
+.dtb-set-comparison__items li + li { margin-top: .35rem; }
+.dtb-set-comparison__items small { display: block; color: #496486; font-size: .72rem; }
+.dtb-set-comparison__not-listed { color: #496486; }
+.dtb-set-comparison summary { cursor: pointer; color: #075bb8; font-weight: 700; }
+.dtb-set-comparison summary:focus-visible { outline: 2px solid #1265f4; outline-offset: 2px; }

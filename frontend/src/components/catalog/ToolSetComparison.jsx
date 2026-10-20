@@ -5,11 +5,11 @@ import warrantyEvidence from '../../../../products/launch/official/toolset_warra
 import '../../styles/tool-set-comparison.css';
 
 const GROUPS = [
-  { label: 'Taping tools', pattern: /\btaper\b|\bbanjo\b/i },
+  { label: 'Taping tools', pattern: /\btaper\b|\bbanjo\b|\btaping\b/i },
   { label: 'Loading equipment', pattern: /\bpump\b|\bgooseneck\b|\bfiller\b/i },
-  { label: 'Flat boxes and sizes', pattern: /\bflat box\b|\bfinishing box\b/i },
+  { label: 'Flat boxes and sizes', pattern: /\bflat (?:finishing )?box\b|\bfinishing box\b/i },
   { label: 'Handles', pattern: /\bhandle\b|\bextension\b/i },
-  { label: 'Corner tools', pattern: /\bcorner\b|\bangle head\b|\bflusher\b/i },
+  { label: 'Corner tools', pattern: /\bcorner\b|\bangle (?:head|box)\b|\bflusher\b/i },
 ];
 
 function productUrl(product) {
@@ -23,9 +23,9 @@ function priceLabel(product) {
     : 'See product details';
 }
 
-function includedNames(product, pattern) {
-  const matches = getStructuredIncludedItems(product).filter((item) => pattern.test(item.name));
-  return matches.length ? matches.map((item) => item.name).join('; ') : 'Not listed in set contents';
+function IncludedItems({ items }) {
+  if (!items.length) return <span className="dtb-set-comparison__not-listed">Not listed in set contents</span>;
+  return <ul className="dtb-set-comparison__items">{items.map((item, index) => <li key={`${item.sku || item.name}-${index}`}>{item.name}{item.sku && <small>SKU {item.sku}</small>}</li>)}</ul>;
 }
 
 function helpUrl(product, inquiry) {
@@ -70,14 +70,18 @@ export default function ToolSetComparison({ products = [] }) {
                 {sets.map((option, index) => <option key={option.sku || option.id} value={index} disabled={selection.some((chosen, chosenSlot) => chosenSlot !== slot && chosen === index)}>{option.name}</option>)}
               </select>
               <Link to={productUrl(product)}>{product.name}</Link>
+              {product.sku && <small className="dtb-set-comparison__set-sku">Set SKU {product.sku}</small>}
             </th>
           ))}</tr></thead>
           <tbody>
             <tr><th scope="row">Brand</th>{selected.map((product, index) => <td key={index}>{product.brand || 'See product details'}</td>)}</tr>
             <tr><th scope="row">Current price</th>{selected.map((product, index) => <td key={index}>{priceLabel(product)}</td>)}</tr>
             <tr><th scope="row">Stock status</th>{selected.map((product, index) => <td key={index}>{availabilityLabel(product)}</td>)}</tr>
-            <tr><th scope="row">Listed items</th>{selected.map((product, index) => <td key={index}>{getStructuredIncludedItems(product).map((item) => item.name).join('; ')}</td>)}</tr>
-            {GROUPS.map(({ label, pattern }) => <tr key={label}><th scope="row">{label}</th>{selected.map((product, index) => <td key={index}>{includedNames(product, pattern)}</td>)}</tr>)}
+            <tr><th scope="row">All listed items</th>{selected.map((product, index) => {
+              const items = getStructuredIncludedItems(product);
+              return <td key={index}><details><summary>{items.length} listed {items.length === 1 ? 'item' : 'items'}</summary><IncludedItems items={items} /></details></td>;
+            })}</tr>
+            {GROUPS.map(({ label, pattern }) => <tr key={label}><th scope="row">{label}</th>{selected.map((product, index) => <td key={index}><IncludedItems items={getStructuredIncludedItems(product).filter((item) => pattern.test(item.name))} /></td>)}</tr>)}
             <tr><th scope="row">Manufacturer warranty</th>{selected.map((product, index) => {
               const evidence = warrantyFor(product);
               return <td key={index}>
@@ -88,8 +92,8 @@ export default function ToolSetComparison({ products = [] }) {
                 {' · '}<Link to={helpUrl(product, 'Returns & Warranty')}>Ask about this set</Link>
               </td>;
             })}</tr>
-            <tr><th scope="row">Parts access</th>{selected.map((product, index) => <td key={index}><Link to="/parts">Browse parts</Link> · <Link to={helpUrl(product, 'Parts Availability')}>Ask about this set</Link></td>)}</tr>
-            <tr><th scope="row">Support and repair</th>{selected.map((product, index) => <td key={index}><Link to={helpUrl(product, 'Technical Support')}>Ask for help</Link> · <Link to="/repairs">Repair service</Link></td>)}</tr>
+            <tr><th scope="row">Parts access</th>{selected.map((product, index) => <td key={index}><Link to="/parts">Browse replacement parts</Link> · <Link to={helpUrl(product, 'Parts Availability')}>Ask us to identify the exact part</Link><small className="dtb-set-comparison__note">Confirm model and component fit before ordering.</small></td>)}</tr>
+            <tr><th scope="row">Support and repair</th>{selected.map((product, index) => <td key={index}><Link to={helpUrl(product, 'Technical Support')}>Get set-specific help</Link> · <Link to="/repairs">Request repair service</Link></td>)}</tr>
           </tbody>
         </table>
       </div>
