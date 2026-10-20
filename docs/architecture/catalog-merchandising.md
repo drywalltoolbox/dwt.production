@@ -55,6 +55,14 @@ Actual set contents, current price, availability, savings, warranty, and compati
 
 ## Compatibility-aware PDP merchandising
 
+### Public compatibility lookup contract
+
+`GET /dtb/v1/products/{sku}/compatible-parts` and `GET /dtb/v1/parts/{sku}/compatible-tools` accept one URL path segment containing letters, digits, periods, underscores, and hyphens. This includes catalog SKUs such as `CP-26`. The route validates that syntax; WooCommerce remains the source of product identity.
+
+The product-to-parts lookup uses a bounded metadata search only to find candidates. It decodes each candidate's stored compatibility list and requires exact, case-insensitive SKU membership before returning a product. Comma-separated text, JSON arrays, and WordPress array metadata are supported. A substring hit is never fitment evidence.
+
+An empty compatibility response means no published matching relationship was found in the current metadata. It does not establish that a part cannot fit a tool. Customer-facing fitment claims require verified canonical relationships and a visible product projection; schematic brand/group metadata alone is insufficient.
+
 The existing product-detail `relatedProducts` rail remains the single PDP recommendation surface.
 
 `dtb-catalog-platform` now prioritizes products that are explicitly connected through canonical compatibility metadata before falling back to the existing WooCommerce upsell/related-product relationships. It does not infer compatibility from product names, brands, descriptions, taxonomy proximity, or fuzzy matching.

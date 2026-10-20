@@ -1,0 +1,1103 @@
+{
+  "audited_at_utc": "2026-10-20T09:09:42+00:00",
+  "api_root": "https://drywalltoolbox.com/wp-json/dtb/v1",
+  "method": "Public GET endpoints only; no compatibility inferred from identifiers or titles.",
+  "catalog": {
+    "published_parent_products": 464,
+    "retrieved_parent_products": 464,
+    "nonempty_skus": 464,
+    "hyphenated_skus": 141,
+    "published_parts": 332,
+    "retrieved_parts": 332,
+    "parts_with_compatible_tool_skus": 0,
+    "parts_with_replacement_part_for": 0,
+    "parts_with_schematic_brand_and_group": 312
+  },
+  "schematics": {
+    "published_count": 90,
+    "retrieved_details": 90,
+    "brand_counts": {
+      "Asgard": 25,
+      "Columbia Taping Tools": 28,
+      "Dura-Stilts": 1,
+      "Level5": 14,
+      "Platinum Drywall Tools": 8,
+      "TapeTech": 14
+    },
+    "total_part_references": 2138,
+    "linked_product_references": 424,
+    "available_part_references": 424,
+    "resolution_states": {
+      "resolved": 539,
+      "unresolved": 1599
+    },
+    "by_schematic": [
+      {
+        "id": "asgard-10-inch-maxxbox-finishing-box-ehc10-ad-sch",
+        "title": "10\" MaxxBox Finishing Box",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-angle-head-2-5-ah25-ad-adapters-fa01-ad-sch",
+        "title": "2.5\" Angle Head Adapter",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-angle-head-2-5-ah25-ad-angleheads-ah25-ad-sch",
+        "title": "2.5\" Angle Head",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-angle-head-3-5-ah35-ad-sch",
+        "title": "3.5\" Angle Head",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-angle-head-3-ah30-ad-sch",
+        "title": "3\" Angle Head",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-angle-head-adapter-cfa-ad-sch",
+        "title": "Angle Head Adapter",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-brakeless-box-extendable-handle-38-60-bbhe-ad-sch",
+        "title": "Brakeless Box Extendable Handle 38\"–60\"",
+        "brand": "Asgard",
+        "pages": 2,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-brakeless-box-handle-34-bbh-ad-sch",
+        "title": "Brakeless Box Handle 34\"",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-ca08-ad-applicator-box-head-sch",
+        "title": "Applicator Box Head",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-extendable-finishing-box-handle-41-63-fbhe-ad-sch",
+        "title": "Extendable Finishing Box Handle 41\"–63\"",
+        "brand": "Asgard",
+        "pages": 2,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-fh-ad-fiberglass-handle-43-sch",
+        "title": "Fiberglass Handle 43\"",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-finishing-box-10-ez10-ad-sch",
+        "title": "Finishing Box 10\"",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-finishing-box-12-ez12-ad-sch",
+        "title": "Finishing Box 12\"",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-finishing-box-7-ez07-ad-sch",
+        "title": "Finishing Box 7\"",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-hammer-automatic-taper-at01-ad-sch",
+        "title": "Hammer Automatic Taper",
+        "brand": "Asgard",
+        "pages": 12,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-inside-corner-roller-cr01-ad-sch",
+        "title": "Inside Corner Roller",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-loading-pump-lp01-ad-sch",
+        "title": "Loading Pump",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-maxxbox-finishing-box-12-ehc12-ad-sch",
+        "title": "MaxxBox Finishing Box 12\"",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-maxxbox-finishing-box-7-ehc07-ad-sch",
+        "title": "MaxxBox Finishing Box 7\"",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-mud-pumps-gn01-ad-sch",
+        "title": "Mud Pump GN01",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-nail-spotter-head-only-ns03-ad-sch",
+        "title": "Nail Spotter Head Only",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-power-assist-maxxbox-10-pa10-ad-sch",
+        "title": "Power Assist MaxxBox 10\"",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-power-assist-maxxbox-12-pa12-ad-sch",
+        "title": "Power Assist MaxxBox 12\"",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-power-assist-maxxbox-7-pa07-ad-sch",
+        "title": "Power Assist MaxxBox 7\"",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "asgard-xh-ad-extension-support-handle-43-76-sch",
+        "title": "Extension Support Handle 43\"–76\"",
+        "brand": "Asgard",
+        "pages": 1,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "columbia-2-way-internal-corner",
+        "title": "2-Way Internal Corner Applicator",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 4,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "resolved": 1,
+          "unresolved": 3
+        }
+      },
+      {
+        "id": "columbia-angle-head",
+        "title": "Angle Head",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 28,
+        "linked_products": 18,
+        "available_parts": 18,
+        "resolution_states": {
+          "resolved": 18,
+          "unresolved": 10
+        }
+      },
+      {
+        "id": "columbia-automatic-flat-box",
+        "title": "Automatic Flat Box",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 62,
+        "linked_products": 24,
+        "available_parts": 24,
+        "resolution_states": {
+          "resolved": 27,
+          "unresolved": 35
+        }
+      },
+      {
+        "id": "columbia-box-filler",
+        "title": "Box Filler",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 6,
+        "linked_products": 1,
+        "available_parts": 1,
+        "resolution_states": {
+          "resolved": 1,
+          "unresolved": 5
+        }
+      },
+      {
+        "id": "columbia-cam-lock-tube",
+        "title": "Cam Lock Tube",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 25,
+        "linked_products": 6,
+        "available_parts": 6,
+        "resolution_states": {
+          "resolved": 6,
+          "unresolved": 19
+        }
+      },
+      {
+        "id": "columbia-closet-monster-flat-box-handle",
+        "title": "Closet Monster Flat Box Handle",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 13,
+        "linked_products": 8,
+        "available_parts": 8,
+        "resolution_states": {
+          "resolved": 8,
+          "unresolved": 5
+        }
+      },
+      {
+        "id": "columbia-combo-flusher",
+        "title": "Combo Flusher",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 18,
+        "linked_products": 6,
+        "available_parts": 6,
+        "resolution_states": {
+          "resolved": 7,
+          "unresolved": 11
+        }
+      },
+      {
+        "id": "columbia-compound-tube",
+        "title": "Compound Tube",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 21,
+        "linked_products": 7,
+        "available_parts": 7,
+        "resolution_states": {
+          "resolved": 8,
+          "unresolved": 13
+        }
+      },
+      {
+        "id": "columbia-corner-cobra",
+        "title": "Corner Cobra",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 16,
+        "linked_products": 1,
+        "available_parts": 1,
+        "resolution_states": {
+          "resolved": 1,
+          "unresolved": 15
+        }
+      },
+      {
+        "id": "columbia-direct-corner-flusher",
+        "title": "Direct Corner Flusher",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 24,
+        "linked_products": 8,
+        "available_parts": 8,
+        "resolution_states": {
+          "resolved": 10,
+          "unresolved": 14
+        }
+      },
+      {
+        "id": "columbia-external-corner-applicator",
+        "title": "External Corner Applicator",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 4,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "resolved": 1,
+          "unresolved": 3
+        }
+      },
+      {
+        "id": "columbia-fat-boy-box",
+        "title": "Fat Boy Box",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 45,
+        "linked_products": 24,
+        "available_parts": 24,
+        "resolution_states": {
+          "resolved": 26,
+          "unresolved": 19
+        }
+      },
+      {
+        "id": "columbia-flat-box",
+        "title": "Flat Box",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 52,
+        "linked_products": 30,
+        "available_parts": 30,
+        "resolution_states": {
+          "resolved": 35,
+          "unresolved": 17
+        }
+      },
+      {
+        "id": "columbia-flat-box-handle",
+        "title": "Flat Box Handle",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 21,
+        "linked_products": 19,
+        "available_parts": 19,
+        "resolution_states": {
+          "resolved": 20,
+          "unresolved": 1
+        }
+      },
+      {
+        "id": "columbia-gooseneck-adapter",
+        "title": "Gooseneck Adapter",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 4,
+        "linked_products": 1,
+        "available_parts": 1,
+        "resolution_states": {
+          "resolved": 1,
+          "unresolved": 3
+        }
+      },
+      {
+        "id": "columbia-inside-corner-applicator",
+        "title": "Inside Corner Applicator",
+        "brand": "Columbia Taping Tools",
+        "pages": 2,
+        "parts": 7,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 7
+        }
+      },
+      {
+        "id": "columbia-inside-corner-roller",
+        "title": "Inside Corner Roller",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 11,
+        "linked_products": 9,
+        "available_parts": 9,
+        "resolution_states": {
+          "resolved": 9,
+          "unresolved": 2
+        }
+      },
+      {
+        "id": "columbia-long-extendable-handle",
+        "title": "Long Extendable Handle",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 14,
+        "linked_products": 9,
+        "available_parts": 9,
+        "resolution_states": {
+          "resolved": 9,
+          "unresolved": 5
+        }
+      },
+      {
+        "id": "columbia-matrix",
+        "title": "Predator Matrix Handle",
+        "brand": "Columbia Taping Tools",
+        "pages": 5,
+        "parts": 50,
+        "linked_products": 41,
+        "available_parts": 41,
+        "resolution_states": {
+          "resolved": 41,
+          "unresolved": 9
+        }
+      },
+      {
+        "id": "columbia-mud-pump",
+        "title": "Mud Pump",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 49,
+        "linked_products": 33,
+        "available_parts": 33,
+        "resolution_states": {
+          "resolved": 35,
+          "unresolved": 14
+        }
+      },
+      {
+        "id": "columbia-nailspotter",
+        "title": "Nailspotter",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 41,
+        "linked_products": 29,
+        "available_parts": 29,
+        "resolution_states": {
+          "resolved": 30,
+          "unresolved": 11
+        }
+      },
+      {
+        "id": "columbia-one",
+        "title": "Columbia One",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 4,
+        "linked_products": 1,
+        "available_parts": 1,
+        "resolution_states": {
+          "resolved": 1,
+          "unresolved": 3
+        }
+      },
+      {
+        "id": "columbia-predator-taper",
+        "title": "Predator Taper",
+        "brand": "Columbia Taping Tools",
+        "pages": 2,
+        "parts": 201,
+        "linked_products": 75,
+        "available_parts": 75,
+        "resolution_states": {
+          "resolved": 96,
+          "unresolved": 105
+        }
+      },
+      {
+        "id": "columbia-semi-automatic-taper",
+        "title": "Semi-Automatic Taper",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 36,
+        "linked_products": 6,
+        "available_parts": 6,
+        "resolution_states": {
+          "resolved": 7,
+          "unresolved": 29
+        }
+      },
+      {
+        "id": "columbia-standard-corner-flusher",
+        "title": "Standard Corner Flusher",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 14,
+        "linked_products": 5,
+        "available_parts": 5,
+        "resolution_states": {
+          "resolved": 7,
+          "unresolved": 7
+        }
+      },
+      {
+        "id": "columbia-standard-outside-corner-roller",
+        "title": "Standard Outside Corner Roller",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 17,
+        "linked_products": 15,
+        "available_parts": 15,
+        "resolution_states": {
+          "resolved": 16,
+          "unresolved": 1
+        }
+      },
+      {
+        "id": "columbia-tall-boy-mud-pump",
+        "title": "Tall Boy Mud Pump",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 49,
+        "linked_products": 24,
+        "available_parts": 24,
+        "resolution_states": {
+          "resolved": 26,
+          "unresolved": 23
+        }
+      },
+      {
+        "id": "columbia-throttle-box",
+        "title": "Throttle Box",
+        "brand": "Columbia Taping Tools",
+        "pages": 1,
+        "parts": 40,
+        "linked_products": 23,
+        "available_parts": 23,
+        "resolution_states": {
+          "resolved": 26,
+          "unresolved": 14
+        }
+      },
+      {
+        "id": "dura-stilts-dura-iii",
+        "title": "DURA III",
+        "brand": "Dura-Stilts",
+        "pages": 3,
+        "parts": 0,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {}
+      },
+      {
+        "id": "level5-10-inch-flat-box-4-765",
+        "title": "10\" Flat Box",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 47,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 47
+        }
+      },
+      {
+        "id": "level5-10-inch-mega-flat-box-4-768",
+        "title": "10\" Mega Flat Box",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 47,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 47
+        }
+      },
+      {
+        "id": "level5-12-inch-flat-box-4-766",
+        "title": "12\" Flat Box",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 47,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 47
+        }
+      },
+      {
+        "id": "level5-12-inch-mega-box-4-769",
+        "title": "12\" Mega Flat Box",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 47,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 47
+        }
+      },
+      {
+        "id": "level5-4-734-3-5-corner-finisher",
+        "title": "3.5\" Corner Finisher",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 25,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 25
+        }
+      },
+      {
+        "id": "level5-7-inch-flat-box-4-764",
+        "title": "7\" Flat Box",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 47,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 47
+        }
+      },
+      {
+        "id": "level5-7-inch-mega-flat-box-4-767",
+        "title": "7\" Mega Flat Box",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 47,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 47
+        }
+      },
+      {
+        "id": "level5-7097-drive-dog-assembly",
+        "title": "Level5 7097 Drive Dog Assembly",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 6,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 6
+        }
+      },
+      {
+        "id": "level5-7218-taper-wheel-assembly",
+        "title": "Level5 7218 Taper Wheel Assembly",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 5,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 5
+        }
+      },
+      {
+        "id": "level5-7293-gooser-assembly",
+        "title": "Level5 7293 Gooser Assembly",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 10,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 10
+        }
+      },
+      {
+        "id": "level5-7377-cover-plate-assembly-old-style",
+        "title": "Level5 7377 Cover Plate Assembly Old Style",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 14,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 14
+        }
+      },
+      {
+        "id": "level5-9333-cutter-chain-assembly",
+        "title": "Level5 9333 Cutter Chain Assembly",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 10,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 10
+        }
+      },
+      {
+        "id": "level5-compound-pump-4-771",
+        "title": "Compound Pump",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 48,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 48
+        }
+      },
+      {
+        "id": "level5-corner-roller-4-707",
+        "title": "Corner Roller",
+        "brand": "Level5",
+        "pages": 1,
+        "parts": 14,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 14
+        }
+      },
+      {
+        "id": "platinum-compound-pump",
+        "title": "Compound Pump",
+        "brand": "Platinum Drywall Tools",
+        "pages": 1,
+        "parts": 46,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 46
+        }
+      },
+      {
+        "id": "platinum-corner-applicator-handle",
+        "title": "Platinum Corner Applicator Handle",
+        "brand": "Platinum Drywall Tools",
+        "pages": 1,
+        "parts": 4,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 4
+        }
+      },
+      {
+        "id": "platinum-corner-finisher",
+        "title": "Corner Finisher",
+        "brand": "Platinum Drywall Tools",
+        "pages": 1,
+        "parts": 16,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 16
+        }
+      },
+      {
+        "id": "platinum-corner-finisher-handle",
+        "title": "Platinum Corner Finisher Handle",
+        "brand": "Platinum Drywall Tools",
+        "pages": 1,
+        "parts": 5,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 5
+        }
+      },
+      {
+        "id": "platinum-corner-roller-handle",
+        "title": "Corner Roller Handle",
+        "brand": "Platinum Drywall Tools",
+        "pages": 1,
+        "parts": 4,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 4
+        }
+      },
+      {
+        "id": "platinum-flat-box",
+        "title": "Flat Box",
+        "brand": "Platinum Drywall Tools",
+        "pages": 1,
+        "parts": 40,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 40
+        }
+      },
+      {
+        "id": "platinum-flat-box-handle",
+        "title": "Platinum Flat Box Handle",
+        "brand": "Platinum Drywall Tools",
+        "pages": 1,
+        "parts": 21,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 21
+        }
+      },
+      {
+        "id": "platinum-outside-corner-roller",
+        "title": "Outside Corner Roller",
+        "brand": "Platinum Drywall Tools",
+        "pages": 1,
+        "parts": 9,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 9
+        }
+      },
+      {
+        "id": "tapetech-07tt",
+        "title": "TapeTech EasyClean® Automatic Taper",
+        "brand": "TapeTech",
+        "pages": 4,
+        "parts": 190,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 190
+        }
+      },
+      {
+        "id": "tapetech-17tt",
+        "title": "Corner Roller - Outside Corner (17TT)",
+        "brand": "TapeTech",
+        "pages": 1,
+        "parts": 19,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "resolved": 1,
+          "unresolved": 18
+        }
+      },
+      {
+        "id": "tapetech-42tt",
+        "title": "Corner Finisher - 2.5\" (42TT)",
+        "brand": "TapeTech",
+        "pages": 1,
+        "parts": 23,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "resolved": 5,
+          "unresolved": 18
+        }
+      },
+      {
+        "id": "tapetech-48tt",
+        "title": "Corner Finisher - 3\" EasyRoll Adjustable (48TT)",
+        "brand": "TapeTech",
+        "pages": 1,
+        "parts": 28,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 28
+        }
+      },
+      {
+        "id": "tapetech-76tt",
+        "title": "TapeTech EasyClean® Pump - Standard",
+        "brand": "TapeTech",
+        "pages": 1,
+        "parts": 33,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "resolved": 7,
+          "unresolved": 26
+        }
+      },
+      {
+        "id": "tapetech-80xxtt",
+        "title": "TapeTech Finishing Box Handle Assemblies (80XXTT)",
+        "brand": "TapeTech",
+        "pages": 1,
+        "parts": 30,
+        "linked_products": 1,
+        "available_parts": 1,
+        "resolution_states": {
+          "resolved": 8,
+          "unresolved": 22
+        }
+      },
+      {
+        "id": "tapetech-85t",
+        "title": "TapeTech Gooseneck - Standard",
+        "brand": "TapeTech",
+        "pages": 1,
+        "parts": 4,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "resolved": 1,
+          "unresolved": 3
+        }
+      },
+      {
+        "id": "tapetech-88tte",
+        "title": "TapeTech Box XTender Handle",
+        "brand": "TapeTech",
+        "pages": 1,
+        "parts": 23,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "resolved": 4,
+          "unresolved": 19
+        }
+      },
+      {
+        "id": "tapetech-90t",
+        "title": "TapeTech Filler Adapter",
+        "brand": "TapeTech",
+        "pages": 1,
+        "parts": 5,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "resolved": 2,
+          "unresolved": 3
+        }
+      },
+      {
+        "id": "tapetech-easyclean-finishing-box",
+        "title": "EasyClean® Finishing Box",
+        "brand": "TapeTech",
+        "pages": 4,
+        "parts": 81,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "unresolved": 81
+        }
+      },
+      {
+        "id": "tapetech-maxxbox-ehc",
+        "title": "MaxxBox® High Capacity Finishing Box",
+        "brand": "TapeTech",
+        "pages": 3,
+        "parts": 110,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "resolved": 8,
+          "unresolved": 102
+        }
+      },
+      {
+        "id": "tapetech-power-assist-maxxbox",
+        "title": "Power Assist® MaxxBox® Finishing Box",
+        "brand": "TapeTech",
+        "pages": 3,
+        "parts": 103,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "resolved": 22,
+          "unresolved": 81
+        }
+      },
+      {
+        "id": "tapetech-quickbox-qsx",
+        "title": "QuickBox® QSX Finishing Box",
+        "brand": "TapeTech",
+        "pages": 2,
+        "parts": 36,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "resolved": 4,
+          "unresolved": 32
+        }
+      },
+      {
+        "id": "tapetech-xhtt",
+        "title": "TapeTech Support Handle - Extension",
+        "brand": "TapeTech",
+        "pages": 1,
+        "parts": 18,
+        "linked_products": 0,
+        "available_parts": 0,
+        "resolution_states": {
+          "resolved": 4,
+          "unresolved": 14
+        }
+      }
+    ]
+  }
+}

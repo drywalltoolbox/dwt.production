@@ -30,28 +30,29 @@
 defined( 'ABSPATH' ) || exit;
 
 final class DTB_CompatiblePartsController {
+	private const SKU_SEGMENT_PATTERN = '[A-Za-z0-9._-]+';
 
 	public static function register_routes(): void {
-		register_rest_route( 'dtb/v1', '/products/(?P<sku>[A-Z0-9]+)/compatible-parts', [
+		register_rest_route( 'dtb/v1', '/products/(?P<sku>' . self::SKU_SEGMENT_PATTERN . ')/compatible-parts', [
 			'methods'             => 'GET',
 			'callback'            => [ self::class, 'handle_compatible_parts' ],
 			'permission_callback' => '__return_true',
 			'args'                => [
 				'sku' => [
 					'sanitize_callback' => 'sanitize_text_field',
-					'validate_callback' => static fn( $v ) => preg_match( '/^[A-Z0-9]+$/', $v ),
+					'validate_callback' => static fn( $v ) => self::is_valid_sku( $v ),
 				],
 			],
 		] );
 
-		register_rest_route( 'dtb/v1', '/parts/(?P<sku>[A-Z0-9]+)/compatible-tools', [
+		register_rest_route( 'dtb/v1', '/parts/(?P<sku>' . self::SKU_SEGMENT_PATTERN . ')/compatible-tools', [
 			'methods'             => 'GET',
 			'callback'            => [ self::class, 'handle_compatible_tools' ],
 			'permission_callback' => '__return_true',
 			'args'                => [
 				'sku' => [
 					'sanitize_callback' => 'sanitize_text_field',
-					'validate_callback' => static fn( $v ) => preg_match( '/^[A-Z0-9]+$/', $v ),
+					'validate_callback' => static fn( $v ) => self::is_valid_sku( $v ),
 				],
 			],
 		] );
@@ -124,8 +125,8 @@ final class DTB_CompatiblePartsController {
 			);
 		}
 
-		$compatible_raw = (string) get_post_meta( $part_post, DTB_ProductMeta::COMPATIBLE_TOOL_SKUS, true );
-		$replacement_raw = (string) get_post_meta( $part_post, DTB_ProductMeta::REPLACEMENT_PART_FOR, true );
+		$compatible_raw = get_post_meta( $part_post, DTB_ProductMeta::COMPATIBLE_TOOL_SKUS, true );
+		$replacement_raw = get_post_meta( $part_post, DTB_ProductMeta::REPLACEMENT_PART_FOR, true );
 
 		$tool_skus = array_filter( array_unique( array_merge(
 			self::decode_sku_list( $compatible_raw ),
@@ -223,6 +224,10 @@ final class DTB_CompatiblePartsController {
 
 	// ── Private helpers ────────────────────────────────────────────────────────
 
+	private static function is_valid_sku( mixed $sku ): bool {
+		return is_string( $sku ) && 1 === preg_match( '/^' . self::SKU_SEGMENT_PATTERN . '$/D', $sku );
+	}
+
 	/**
 	 * Find all published product IDs that contain the given SKU in any of the
 	 * specified meta keys (comma-separated or serialized array values).
@@ -247,9 +252,17 @@ final class DTB_CompatiblePartsController {
 					],
 				],
 			] );
-			$ids = array_merge( $ids, (array) $found );
+			foreach ( $found as $product_id ) {
+				$stored_skus = self::decode_sku_list( get_post_meta( $product_id, $key, true ) );
+				foreach ( $stored_skus as $stored_sku ) {
+					if ( 0 === strcasecmp( $sku, $stored_sku ) ) {
+						$ids[] = (int) $product_id;
+						break;
+					}
+				}
+			}
 		}
-		return array_unique( array_map( 'intval', $ids ) );
+		return array_values( array_unique( $ids ) );
 	}
 
 	/**
@@ -306,23 +319,13 @@ final class DTB_CompatiblePartsController {
 	}
 
 	/**
-	 * Decode a comma-separated or serialized-array meta value into a list of SKUs.
+	 * Decode the catalog's comma-separated, JSON, or WordPress array meta value.
 	 *
-	 * @param  string $raw
+	 * @param  mixed $raw
 	 * @return string[]
 	 */
-	private static function decode_sku_list( string $raw ): array {
-		if ( '' === $raw ) {
-			return [];
-		}
-
-		// Try unserialize first (WP serialized arrays).
-		$unserialized = @unserialize( $raw );
-		if ( is_array( $unserialized ) ) {
-			return array_map( 'trim', array_filter( array_map( 'strval', $unserialized ) ) );
-		}
-
-		// Comma-separated plain text.
-		return array_filter( array_map( 'trim', explode( ',', $raw ) ) );
+	private static function decode_sku_list( mixed $raw ): array {
+		$values = DTB_CatalogProductNormalizer::decode_csv_or_array( $raw );
+		return array_values( array_filter( array_map( 'trim', $values ), static fn( $value ) => '' !== $value ) );
 	}
 }
