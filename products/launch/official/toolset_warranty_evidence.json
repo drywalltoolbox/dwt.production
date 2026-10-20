@@ -1,0 +1,50 @@
+{
+  "reviewed_at": "2026-10-20",
+  "scope": "Manufacturer warranty evidence for listed tool-set SKUs. Coverage belongs to eligible included tools, not a separate bundle guarantee. Verify purchase region, registration, exclusions, and claim process in the linked manufacturer terms.",
+  "sets": {
+    "SACS": {
+      "status": "manufacturer_terms",
+      "summary": "Columbia semi-automatic line: 90-day manufacturer warranty. Confirm coverage of each included item.",
+      "sources": ["https://www.columbiatools.com/warranty/"]
+    },
+    "LV5-ENTRY-FINISHING-SET": {
+      "status": "manufacturer_terms",
+      "summary": "Eligible LEVEL5 automatic tools: 7-year limited warranty for the original owner in the USA, Canada, Australia, UK and Europe; 1 year elsewhere. See exclusions.",
+      "sources": ["https://www.level5tools.com/drywall-finishing-set/"]
+    },
+    "4-630": {
+      "status": "manufacturer_terms",
+      "summary": "Eligible LEVEL5 automatic tools: 7-year limited warranty for the original owner in the USA, Canada, Australia, UK and Europe; 1 year elsewhere. See exclusions.",
+      "sources": ["https://www.level5tools.com/custom-automatic-tool-set/"]
+    },
+    "4-677P": {
+      "status": "manufacturer_terms",
+      "summary": "Eligible LEVEL5 automatic tools: 7-year limited warranty for the original owner in the USA, Canada, Australia, UK and Europe; 1 year elsewhere. See exclusions.",
+      "sources": ["https://www.level5tools.com/ultimate-drywall-taping-tool-set-minishot/"]
+    },
+    "PT-FIN": {
+      "status": "advertised_term",
+      "summary": "Platinum advertises a 5-year USA warranty for its drywall tools. Set-component terms and exclusions need confirmation.",
+      "sources": ["https://platinumdrywalltools.com/"]
+    },
+    "TTBBS": { "status": "source_conflict" },
+    "TTBTS": { "status": "source_conflict" },
+    "TTCFS": { "status": "source_conflict" },
+    "TTCFS-M": { "status": "source_conflict" },
+    "TTPFB": { "status": "source_conflict" },
+    "TTPPS-EF": { "status": "source_conflict" },
+    "TTPPS": { "status": "source_conflict" },
+    "TTPSS": { "status": "source_conflict" },
+    "TTSFS": { "status": "source_conflict" },
+    "TTSFS-2": { "status": "source_conflict" }
+  },
+  "conflicts": {
+    "source_conflict": {
+      "summary": "TapeTech's official warranty page says 10 years, while its terms of sale say 5 years with timely registration. Confirm the current terms for each included tool before ordering.",
+      "sources": [
+        "https://tapetech.com/support/warranty/",
+        "https://tapetech.com/terms-and-conditions-of-sale/"
+      ]
+    }
+  }
+}

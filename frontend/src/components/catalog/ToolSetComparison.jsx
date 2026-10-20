@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getStructuredIncludedItems, isToolSetProduct } from '../../utils/productMerchandising.js';
+import warrantyEvidence from '../../../../products/launch/official/toolset_warranty_evidence.json';
 import '../../styles/tool-set-comparison.css';
 
 const GROUPS = [
@@ -40,6 +41,11 @@ function availabilityLabel(product) {
   return 'Check product details';
 }
 
+function warrantyFor(product) {
+  const entry = warrantyEvidence.sets[String(product?.sku || '').trim()];
+  return entry?.status === 'source_conflict' ? warrantyEvidence.conflicts.source_conflict : entry;
+}
+
 export default function ToolSetComparison({ products = [] }) {
   const sets = products.filter((product) => isToolSetProduct(product) && getStructuredIncludedItems(product).length > 0);
   const [selection, setSelection] = useState([0, 1, 2]);
@@ -53,7 +59,7 @@ export default function ToolSetComparison({ products = [] }) {
       <div className="dtb-set-comparison__intro">
         <p className="dtb-set-comparison__eyebrow">Compare actual sets</p>
         <h2 id="dtb-set-comparison-title">See what each set includes.</h2>
-        <p>Choose up to three sets from the current catalog results. Contents come from each product’s listed items. Ask us about exact warranty terms and accessory fit before ordering.</p>
+        <p>Choose up to three sets from the current catalog results. Contents come from each product’s listed items. Warranty information comes from linked manufacturer sources reviewed October 20, 2026; confirm coverage for each included tool and accessory fit before ordering.</p>
       </div>
       <div className="dtb-set-comparison__scroll" role="region" aria-label="Tool set comparison" tabIndex={0}>
         <table>
@@ -72,7 +78,16 @@ export default function ToolSetComparison({ products = [] }) {
             <tr><th scope="row">Stock status</th>{selected.map((product, index) => <td key={index}>{availabilityLabel(product)}</td>)}</tr>
             <tr><th scope="row">Listed items</th>{selected.map((product, index) => <td key={index}>{getStructuredIncludedItems(product).map((item) => item.name).join('; ')}</td>)}</tr>
             {GROUPS.map(({ label, pattern }) => <tr key={label}><th scope="row">{label}</th>{selected.map((product, index) => <td key={index}>{includedNames(product, pattern)}</td>)}</tr>)}
-            <tr><th scope="row">Warranty</th>{selected.map((product, index) => <td key={index}>Term not in catalog · <Link to={helpUrl(product, 'Returns & Warranty')}>Ask about this set</Link></td>)}</tr>
+            <tr><th scope="row">Manufacturer warranty</th>{selected.map((product, index) => {
+              const evidence = warrantyFor(product);
+              return <td key={index}>
+                {evidence ? <>
+                  {evidence.summary}
+                  {' · '}{evidence.sources.map((url, sourceIndex) => <span key={url}>{sourceIndex > 0 && ' / '}<a href={url} target="_blank" rel="noopener noreferrer">Manufacturer source {sourceIndex + 1}</a></span>)}
+                </> : 'No verified manufacturer term available.'}
+                {' · '}<Link to={helpUrl(product, 'Returns & Warranty')}>Ask about this set</Link>
+              </td>;
+            })}</tr>
             <tr><th scope="row">Parts access</th>{selected.map((product, index) => <td key={index}><Link to="/parts">Browse parts</Link> · <Link to={helpUrl(product, 'Parts Availability')}>Ask about this set</Link></td>)}</tr>
             <tr><th scope="row">Support and repair</th>{selected.map((product, index) => <td key={index}><Link to={helpUrl(product, 'Technical Support')}>Ask for help</Link> · <Link to="/repairs">Repair service</Link></td>)}</tr>
           </tbody>
