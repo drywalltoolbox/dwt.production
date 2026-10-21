@@ -1,2 +1,4 @@
 .browser-profile/
 .tsw-cookies.json
+# Session-scoped USG supplier evidence and local audit artifacts; never commit account-specific costs.
+/results/cost/usg*
