@@ -519,8 +519,8 @@ export default function StorefrontDesktopNavigation({ items, openMenuId, onOpen,
   const shellTransition = reducedMotion
     ? 'none'
     : shellOpen
-      ? 'opacity var(--dtb-motion-duration-elevated, 360ms) var(--dtb-motion-ease-emphasized), visibility 0s linear 0s'
-      : 'opacity var(--dtb-motion-duration-fast, 180ms) var(--dtb-motion-ease-exit), visibility 0s linear var(--dtb-motion-duration-fast, 180ms)';
+      ? 'opacity var(--dtb-motion-duration-overlay, 400ms) var(--dtb-motion-ease-emphasized), transform 480ms cubic-bezier(.2, .75, .15, 1), visibility 0s linear 0s'
+      : 'opacity var(--dtb-motion-duration-fast, 180ms) var(--dtb-motion-ease-exit), transform 260ms cubic-bezier(.4, 0, .7, .2), visibility 0s linear var(--dtb-motion-duration-fast, 180ms)';
 
   return (
     <nav
@@ -563,6 +563,7 @@ export default function StorefrontDesktopNavigation({ items, openMenuId, onOpen,
           <section
             id={panelId}
             className={`dtb-desktop-nav-dropdown dtb-desktop-nav-dropdown--shared dtb-desktop-nav-dropdown--${renderedItem.id} dtb-desktop-nav-dropdown--${renderedItem.size || 'medium'}`}
+            data-open={sheetVisible && shellOpen ? 'true' : 'false'}
             aria-label={`${renderedItem.label} navigation`}
             aria-busy={CATALOG_BACKED_DROPDOWN_IDS.has(renderedItem.id) && !renderedItem.items?.length ? true : undefined}
             onPointerEnter={cancelPendingClose}
@@ -578,7 +579,9 @@ export default function StorefrontDesktopNavigation({ items, openMenuId, onOpen,
               opacity: sheetVisible && shellOpen ? 1 : 0,
               visibility: shellOpen ? 'visible' : 'hidden',
               pointerEvents: shellOpen ? 'auto' : 'none',
-              transform: 'translateX(-50%)',
+              transform: sheetVisible && shellOpen
+                ? 'translateX(-50%) translateY(0) scale(1)'
+                : 'translateX(-50%) translateY(-9px) scale(.985)',
               transition: shellTransition,
             }}
           >
