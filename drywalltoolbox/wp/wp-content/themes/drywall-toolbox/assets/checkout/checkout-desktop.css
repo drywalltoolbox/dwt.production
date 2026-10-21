@@ -172,3 +172,20 @@
 		object-position: center;
 	}
 }
+
+
+/* Unboxed desktop form column, matching the reference checkout composition. */
+@media (min-width: 1024px) {
+	body.woocommerce-checkout .wc-block-components-sidebar-layout > .wc-block-checkout__main {
+		padding: 0 0 36px;
+		border: 0;
+		border-radius: 0;
+		background: transparent;
+		box-shadow: none;
+	}
+	body.woocommerce-checkout .wc-block-checkout__form {
+		width: 100%;
+		max-width: 500px;
+		margin-inline: auto;
+	}
+}
