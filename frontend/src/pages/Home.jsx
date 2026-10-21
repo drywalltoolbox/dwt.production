@@ -68,7 +68,7 @@ export default function Home() {
     to: brand.to,
   })).concat({
     name: 'USG Sheetrock Tools',
-    src: '/brands/USG-Sheetrock-Tools/usg-sheetrock-tools.svg',
+    src: getBrandLogo('USG Sheetrock Tools'),
     to: '/products/brands/usg-sheetrock-tools',
   }), [brands]);
 
