@@ -713,9 +713,9 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
             <MessageSquareText size={18} strokeWidth={1.9} aria-hidden="true" />
             Expert Support
           </Link>
-          <a href="tel:+16098665269" className="dtb-header-utility-bar__item dtb-header-utility-bar__phone">
+          <a href="tel:+16129781007" className="dtb-header-utility-bar__item dtb-header-utility-bar__phone">
             <Phone size={17} strokeWidth={2} aria-hidden="true" />
-            <span className="dtb-header-utility-bar__phone-copy"><strong>(609) 866-5269</strong><small>Mon–Fri 8AM–5PM EST</small></span>
+            <span className="dtb-header-utility-bar__phone-copy"><strong>612-978-1007</strong><small>Mon–Fri 8AM–5PM EST</small></span>
           </a>
           </div>
         </div>

@@ -72,7 +72,7 @@ export default function Contact() {
       setSuccess(true);
       setFormData({ name: '', email: '', inquiryType: '', message: '' });
     } catch (err) {
-      setError(err?.message || 'Unable to send your message. Please call us directly at (609) 866-5269.');
+      setError(err?.message || 'Unable to send your message. Please call us directly at 612-978-1007.');
     } finally {
       setSubmitting(false);
     }
@@ -102,11 +102,11 @@ export default function Contact() {
           <div className="dtb-contact__details">
             <div className="dtb-contact__detail">
               <span className="dtb-contact__detail-icon"><Phone size={23} strokeWidth={1.9} aria-hidden="true" /></span>
-              <div><span className="dtb-contact__detail-label">Phone</span><a href="tel:+16098665269">(609) 866-5269</a></div>
+              <div><span className="dtb-contact__detail-label">Phone</span><a href="tel:+16129781007">612-978-1007</a></div>
             </div>
             <div className="dtb-contact__detail">
               <span className="dtb-contact__detail-icon"><Mail size={23} strokeWidth={1.9} aria-hidden="true" /></span>
-              <div><span className="dtb-contact__detail-label">Email</span><a href="mailto:support@drywalltoolbox.com">support@drywalltoolbox.com</a></div>
+              <div><span className="dtb-contact__detail-label">Email</span><a href="mailto:dtb@drywalltoolbox.com">dtb@drywalltoolbox.com</a></div>
             </div>
             <div className="dtb-contact__detail">
               <span className="dtb-contact__detail-icon"><Clock3 size={23} strokeWidth={1.9} aria-hidden="true" /></span>
