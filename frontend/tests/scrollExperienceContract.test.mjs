@@ -61,7 +61,7 @@ test('editorial motion is explicitly opted in; essential storefront surfaces rem
   const css = read('styles/storefront-scroll-experience.css');
   const scroll = read('components/routing/StorefrontScrollExperience.jsx');
   assert.match(sections, /data-dtb-scroll-reveal=\{revealHeading/);
-  assert.equal((home.match(/revealHeading/g) || []).length, 2);
+  assert.equal((home.match(/revealHeading/g) || []).length, 3);
   assert.match(scroll, /IntersectionObserver/);
   assert.match(scroll, /observer\.disconnect\(\)/);
   assert.match(scroll, /mutations\.disconnect\(\)/);
