@@ -7,25 +7,41 @@ import { apiClient } from '../api/client';
 import './contact.css';
 
 const inquiryTypes = [
-  'Technical Support',
-  'Bulk Order Inquiry',
-  'Returns & Warranty',
-  'Parts Availability',
-  'Custom Fabrication',
-  'General Question',
+  { value: 'orders_shipping', label: 'Orders, Shipping & Delivery' },
+  { value: 'product_guidance', label: 'Product Questions & Technical Support' },
+  { value: 'parts_compatibility', label: 'Replacement Parts & Compatibility' },
+  { value: 'repairs_service', label: 'Repairs & Service' },
+  { value: 'returns_warranty', label: 'Returns & Warranty' },
+  { value: 'business_orders', label: 'Bulk & Business Orders' },
+  { value: 'other', label: 'Other' },
 ];
+
+const legacyInquiryTypes = {
+  'Technical Support': 'product_guidance',
+  'Bulk Order Inquiry': 'business_orders',
+  'Returns & Warranty': 'returns_warranty',
+  'Parts Availability': 'parts_compatibility',
+  'Custom Fabrication': 'product_guidance',
+  'General Question': 'other',
+};
+
+function resolveInquiryType(value) {
+  const requested = String(value || '').trim();
+  if (inquiryTypes.some((type) => type.value === requested)) return requested;
+  return legacyInquiryTypes[requested] || '';
+}
 
 export default function Contact() {
   const [searchParams] = useSearchParams();
   const inquiryRef = useRef(null);
   const [formData, setFormData] = useState(() => {
-    const requestedInquiry = searchParams.get('inquiry') || '';
+    const requestedInquiry = resolveInquiryType(searchParams.get('inquiry'));
     const sku = (searchParams.get('sku') || '').trim();
     const handFinishing = searchParams.get('topic') === 'hand-finishing';
     return {
       name: '',
       email: '',
-      inquiryType: inquiryTypes.includes(requestedInquiry) ? requestedInquiry : '',
+      inquiryType: requestedInquiry,
       message: handFinishing
         ? 'I need help choosing a hand-finishing setup. My typical work is: '
         : sku && /^[A-Za-z0-9._-]{1,80}$/.test(sku)
@@ -58,7 +74,7 @@ export default function Contact() {
         body: JSON.stringify({
           name:    formData.name,
           email:   formData.email,
-          subject: formData.inquiryType || 'General Question',
+          subject: inquiryTypes.find((type) => type.value === formData.inquiryType)?.label || 'Other',
           message: formData.message,
           type:    'contact',
           website: '', // honeypot — intentionally blank
@@ -155,7 +171,7 @@ export default function Contact() {
                   triggerRef={inquiryRef}
                   value={formData.inquiryType}
                   onChange={(value) => { setFormData((current) => ({ ...current, inquiryType: value })); setError(''); }}
-                  options={inquiryTypes.map((type) => ({ value: type, label: type }))}
+                  options={inquiryTypes}
                   placeholder="Select an inquiry type"
                   required
                   fitViewport

@@ -89,11 +89,11 @@ export default function ToolSetComparison({ products = [] }) {
                   {evidence.summary}
                   {' · '}{evidence.sources.map((url, sourceIndex) => <span key={url}>{sourceIndex > 0 && ' / '}<a href={url} target="_blank" rel="noopener noreferrer">Manufacturer source {sourceIndex + 1}</a></span>)}
                 </> : 'No verified manufacturer term available.'}
-                {' · '}<Link to={helpUrl(product, 'Returns & Warranty')}>Ask about this set</Link>
+                {' · '}<Link to={helpUrl(product, 'returns_warranty')}>Ask about this set</Link>
               </td>;
             })}</tr>
-            <tr><th scope="row">Parts access</th>{selected.map((product, index) => <td key={index}><Link to="/parts">Browse replacement parts</Link> · <Link to={helpUrl(product, 'Parts Availability')}>Ask us to identify the exact part</Link><small className="dtb-set-comparison__note">Confirm model and component fit before ordering.</small></td>)}</tr>
-            <tr><th scope="row">Support and repair</th>{selected.map((product, index) => <td key={index}><Link to={helpUrl(product, 'Technical Support')}>Get set-specific help</Link> · <Link to="/repairs">Request repair service</Link></td>)}</tr>
+            <tr><th scope="row">Parts access</th>{selected.map((product, index) => <td key={index}><Link to="/parts">Browse replacement parts</Link> · <Link to={helpUrl(product, 'parts_compatibility')}>Ask us to identify the exact part</Link><small className="dtb-set-comparison__note">Confirm model and component fit before ordering.</small></td>)}</tr>
+            <tr><th scope="row">Support and repair</th>{selected.map((product, index) => <td key={index}><Link to={helpUrl(product, 'product_guidance')}>Get set-specific help</Link> · <Link to="/repairs">Request repair service</Link></td>)}</tr>
           </tbody>
         </table>
       </div>
