@@ -94,6 +94,9 @@ final class DTB_CatalogProductRepository {
 		}
 
 		$args = array_merge( $args, self::sort_args( $sort ) );
+		// Keep replacement parts after primary tools across every catalog page,
+		// while preserving the selected sort within each group.
+		$args['dtb_parts_first'] = true;
 
 		$meta_query = [ 'relation' => 'AND' ];
 
@@ -329,7 +332,23 @@ final class DTB_CatalogProductRepository {
 			$args['meta_query'] = $meta_query;
 		}
 
-		$query = new WP_Query( $args );
+		global $wpdb;
+		$parts_first_orderby = static function ( string $orderby, WP_Query $query ) use ( $wpdb ): string {
+			if ( empty( $query->query['dtb_parts_first'] ) ) {
+				return $orderby;
+			}
+
+			$parts_meta_key = esc_sql( DTB_ProductMeta::IS_PARTS );
+			$parts_rank     = "CASE WHEN EXISTS (SELECT 1 FROM {$wpdb->postmeta} AS dtb_catalog_part_order WHERE dtb_catalog_part_order.post_id = {$wpdb->posts}.ID AND dtb_catalog_part_order.meta_key = '{$parts_meta_key}' AND dtb_catalog_part_order.meta_value = '1') THEN 1 ELSE 0 END ASC";
+
+			return $parts_rank . ( '' !== $orderby ? ', ' . $orderby : '' );
+		};
+		add_filter( 'posts_orderby', $parts_first_orderby, 10, 2 );
+		try {
+			$query = new WP_Query( $args );
+		} finally {
+			remove_filter( 'posts_orderby', $parts_first_orderby, 10 );
+		}
 
 		$ids         = array_values( array_map( 'absint', $query->posts ?? [] ) );
 		$total       = absint( $query->found_posts );
