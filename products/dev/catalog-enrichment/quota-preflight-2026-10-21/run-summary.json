@@ -1,0 +1,37 @@
+{
+  "schema_version": 6,
+  "status": "failed",
+  "started_at": "2026-10-21T19:31:18.0206973Z",
+  "completed_at": "2026-10-21T19:31:18.6882441Z",
+  "repository_commit": "2034e6ef4496c4169196d5fd2e6dd4aef8c7e526",
+  "catalog": "products/launch/official/dtb_official_catalog.csv",
+  "catalog_sha256_before": "4abd88853245e9a162d7b612f378778290dc47c74484a5e2507d76900b6b78f2",
+  "catalog_sha256_after": "4abd88853245e9a162d7b612f378778290dc47c74484a5e2507d76900b6b78f2",
+  "scope": "all",
+  "mutates_catalog": false,
+  "mutation_committed": false,
+  "rollback": null,
+  "stages": [
+    {
+      "name": "validate",
+      "status": "failed",
+      "exit_code": 1,
+      "started_at": "2026-10-21T19:31:18.1108843Z",
+      "completed_at": "2026-10-21T19:31:18.5346515Z"
+    }
+  ],
+  "outputs": {
+    "seo_canonical_safe_fixes": null,
+    "taxonomy_safe_fixes": null,
+    "audit": null,
+    "remediation": null,
+    "seo_pre_generation": null
+  },
+  "safe_fixes": {
+    "seo_canonical": null,
+    "taxonomy": null
+  },
+  "catalog_quality": null,
+  "seo": null,
+  "failure": "Catalog enrichment stage failed: validate (D:\\AMD\\projects\\dwt.production\\scripts\\catalog\\validate_official_catalog.py, exit 1)."
+}

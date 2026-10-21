@@ -1,0 +1,61 @@
+{
+  "blocking_findings": 0,
+  "evidence_coverage": {
+    "B": 759,
+    "C": 375
+  },
+  "findings_by_severity": {
+    "high": 84,
+    "low": 1340,
+    "medium": 1509
+  },
+  "findings_by_workflow": {
+    "accuracy_review": 874,
+    "editorial_review": 1681,
+    "evidence_review": 378
+  },
+  "generation_eligible": 484,
+  "outputs": {
+    "findings": "products/dev/catalog-enrichment/quota-preflight-2026-10-21/seo-pre-generation/pre-generation-findings.csv",
+    "generation_packets": "products/dev/catalog-enrichment/quota-preflight-2026-10-21/seo-pre-generation/generation-packets.jsonl",
+    "summary": "products/dev/catalog-enrichment/quota-preflight-2026-10-21/seo-pre-generation/pre-generation-summary.json"
+  },
+  "product_classes": {
+    "automatic_equipment": 30,
+    "commodity_hardware": 249,
+    "general_product": 144,
+    "kit_set": 17,
+    "primary_finishing_tool": 170,
+    "replacement_assembly": 33,
+    "replacement_component": 370,
+    "stilts": 38,
+    "tool_accessory": 83
+  },
+  "rows": 1134,
+  "schema_version": 2,
+  "source_catalog": "products/launch/official/dtb_official_catalog.csv",
+  "source_mutated": false,
+  "source_sha256": "4abd88853245e9a162d7b612f378778290dc47c74484a5e2507d76900b6b78f2",
+  "top_finding_codes": {
+    "claim_needs_evidence:guarantee": 168,
+    "claim_needs_evidence:industrial_grade": 209,
+    "claim_needs_evidence:material_quality": 187,
+    "claim_needs_evidence:performance_superlative": 54,
+    "claim_needs_evidence:precision_manufacturing": 205,
+    "claim_needs_evidence:productivity_claim": 51,
+    "description_long_for_class": 517,
+    "description_thin": 110,
+    "missing_focus_keyword": 40,
+    "missing_seo_description": 40,
+    "missing_seo_title": 40,
+    "no_structured_specs": 378,
+    "repetitive_language:demanding_environment": 29,
+    "repetitive_language:downtime": 193,
+    "repetitive_language:job_site": 300,
+    "repetitive_language:peak_performance": 14,
+    "repetitive_language:professional_drywall": 164,
+    "repetitive_language:vital": 102,
+    "seo_description_long": 22,
+    "seo_title_long": 90
+  }
+}

@@ -148,6 +148,48 @@ final class DTB_BrandNormalizer {
 		return '';
 	}
 
+	/**
+	 * Return exact legacy and canonical meta values for a canonical brand slug.
+	 *
+	 * Older catalog imports stored brand keys with underscores or stored an
+	 * accepted alias as the brand label. Keep those records discoverable through
+	 * the canonical storefront brand route without rewriting protected catalog
+	 * identity in place.
+	 *
+	 * @param  string $slug Canonical brand slug.
+	 * @return array{keys:string[],labels:string[]}
+	 */
+	public static function meta_query_candidates( string $slug ): array {
+		$label = self::label_from_slug( $slug );
+		if ( '' === $label ) {
+			return [
+				'keys'   => [ sanitize_key( $slug ) ],
+				'labels' => [],
+			];
+		}
+
+		$keys   = [ $slug, str_replace( '-', '_', $slug ) ];
+		$labels = [ $label ];
+
+		foreach ( self::BRAND_ALIASES as $alias => $canonical_label ) {
+			if ( $canonical_label !== $label ) {
+				continue;
+			}
+
+			$alias_key = sanitize_title( $alias );
+			if ( '' !== $alias_key ) {
+				$keys[] = $alias_key;
+				$keys[] = str_replace( '-', '_', $alias_key );
+			}
+			$labels[] = $alias;
+		}
+
+		return [
+			'keys'   => array_values( array_unique( array_filter( $keys ) ) ),
+			'labels' => array_values( array_unique( array_filter( $labels ) ) ),
+		];
+	}
+
 	/** Returns true when $slug is a known canonical brand slug. */
 	public static function is_known_slug( string $slug ): bool {
 		$slug = strtolower( trim( $slug ) );

@@ -101,17 +101,18 @@ final class DTB_CatalogProductRepository {
 		if ( '' !== $brand ) {
 			$label = DTB_BrandNormalizer::label_from_slug( $brand );
 			if ( '' !== $label ) {
+				$brand_values = DTB_BrandNormalizer::meta_query_candidates( $brand );
 				$meta_query[] = [
 					'relation' => 'OR',
 					[
 						'key'     => DTB_ProductMeta::BRAND_KEY,
-						'value'   => $brand,
-						'compare' => '=',
+						'value'   => $brand_values['keys'],
+						'compare' => 'IN',
 					],
 					[
 						'key'     => DTB_ProductMeta::BRAND_LABEL,
-						'value'   => $label,
-						'compare' => '=',
+						'value'   => $brand_values['labels'],
+						'compare' => 'IN',
 					],
 				];
 			} else {
