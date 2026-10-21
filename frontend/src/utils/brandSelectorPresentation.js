@@ -1,7 +1,11 @@
 import { normalizeBrandAssetKey, resolveBrandLogo } from './brandLogoAssets.js';
 import asgardSelectorLogo from '/brands/Asgard/asgard_logo2.svg';
-
-const sitegroundLogoAsset = (filename) => `/logos/${filename}`;
+import columbiaSelectorLogo from '/brands/Columbia/columbia_logo_white.svg';
+import level5SelectorLogo from '/brands/Level5/Level5-white.svg';
+import level5SelectorBackground from '/brands/Level5/level5-background.webp';
+import surproSelectorLogo from '/brands/SurPro/surpro_logo_white.svg';
+import usgSelectorLogo from '/brands/USG-Sheetrock-Tools/usg-sheetrock-tools-transparent.svg';
+import usgSelectorBackground from '/brands/USG-Sheetrock-Tools/USG-background.webp';
 
 export const FEATURED_BRAND_PRESENTATION = {
   asgard: {
@@ -33,7 +37,7 @@ export const FEATURED_BRAND_PRESENTATION = {
     },
   },
   columbia: {
-    logo: sitegroundLogoAsset('columbia_logo_white.svg'),
+    logo: columbiaSelectorLogo,
     className: 'products-brand-selector__card--columbia',
     cardStyle: {
       background: '#080808',
@@ -61,11 +65,11 @@ export const FEATURED_BRAND_PRESENTATION = {
     },
   },
   level5: {
-    logo: sitegroundLogoAsset('Level5-white.svg'),
+    logo: level5SelectorLogo,
     className: 'products-brand-selector__card--level5',
     cardStyle: {
       backgroundColor: '#b5121b',
-      backgroundImage: `url("${sitegroundLogoAsset('level5-background.webp')}")`,
+      backgroundImage: `url("${level5SelectorBackground}")`,
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',
@@ -93,7 +97,7 @@ export const FEATURED_BRAND_PRESENTATION = {
     },
   },
   surpro: {
-    logo: sitegroundLogoAsset('surpro_logo_white.svg'),
+    logo: surproSelectorLogo,
     className: 'products-brand-selector__card--surpro',
     cardStyle: {
       backgroundColor: 'rgb(255, 102, 0)',
@@ -109,11 +113,11 @@ export const FEATURED_BRAND_PRESENTATION = {
   usgsheetrocktools: {
     // Selector artwork is intentionally separate from the canonical USG logo
     // used by headers and other storefront surfaces.
-    logo: sitegroundLogoAsset('usg-sheetrock-tools-transparent.svg'),
+    logo: usgSelectorLogo,
     className: 'products-brand-selector__card--usg',
     cardStyle: {
       backgroundColor: '#00843d',
-      backgroundImage: `url("${sitegroundLogoAsset('USG-background.webp')}")`,
+      backgroundImage: `url("${usgSelectorBackground}")`,
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
       backgroundSize: 'cover',

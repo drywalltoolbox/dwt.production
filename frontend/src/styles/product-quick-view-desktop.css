@@ -331,44 +331,6 @@
     font-weight: 720;
   }
 
-  /* Payment confidence ------------------------------------------------ */
-  .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-payment-confidence {
-    width: 100%;
-    margin-top: 24px;
-    padding-top: 16px;
-    border-top: 1px solid #e1e7ef;
-  }
-
-  .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-secure-checkout {
-    gap: 7px;
-    color: #1c2940;
-    font-size: 13px;
-    font-weight: 700;
-  }
-
-  .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-secure-checkout svg {
-    width: 18px;
-    height: 18px;
-  }
-
-  .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-payment-methods {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    width: 100%;
-    margin-top: 17px;
-    padding: 0 8px;
-  }
-
-  .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-payment-methods__logo {
-    width: auto;
-    height: 23px;
-    max-width: 68px;
-    object-fit: contain;
-    flex: 0 1 auto;
-  }
-
   /* Complete lower ProductDetail experience -------------------------- */
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-sections {
     display: block !important;

@@ -9,8 +9,6 @@ import StorefrontBrandTile from '../components/storefront/StorefrontBrandTile';
 import StorefrontProductRail from '../components/storefront/StorefrontProductRail';
 import { useCatalogFacets } from '../hooks/useCatalogFacets.js';
 import { getBrandLogo } from '../utils/brandAssets.js';
-import columbiaHeroLogo from '/brands/Columbia/columbia_taping_tools_logo.svg';
-import platinumHeroLogo from '/brands/Platinum/platinum_logo.svg';
 import { mapCatalogBrands } from '../utils/catalogFacets.js';
 
 const MAX_HOME_BRANDS = 6;
@@ -62,9 +60,7 @@ export default function Home() {
   }, [facets]);
   const heroBrands = useMemo(() => brands.map((brand) => ({
     name: brand.name,
-    src: /columbia/i.test(brand.name)
-      ? columbiaHeroLogo
-      : (/platinum/i.test(brand.name) ? platinumHeroLogo : brand.logo),
+    src: brand.logo,
     to: brand.to,
   })).concat({
     name: 'USG Sheetrock Tools',
@@ -72,7 +68,7 @@ export default function Home() {
     to: '/products/brands/usg-sheetrock-tools',
   }, {
     name: 'Asgard',
-    src: '/logos/asgard_logo.svg',
+    src: getBrandLogo('Asgard'),
     to: '/products/brands/asgard',
   }), [brands]);
 

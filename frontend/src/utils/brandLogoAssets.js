@@ -6,8 +6,7 @@ import gracoLogo from '/brands/Graco/graco_logo.svg';
 import platinumLogo from '/brands/Platinum/platinum_logo.svg';
 import duraStiltsLogo from '/brands/Dura-Stilts/dura-stilts-logo.svg';
 import level5Logo from '/brands/Level5/Level5.svg';
-
-const USG_SHEETROCK_TOOLS_LOGO = '/logos/usg-sheetrock-tools.svg';
+import usgSheetrockToolsLogo from '/brands/USG-Sheetrock-Tools/usg-sheetrock-tools.svg';
 
 /*
  * Product brand discovery intentionally preserves the exact asset mapping that
@@ -27,10 +26,10 @@ const PRODUCT_BRAND_LOGOS = {
   'Dura-Stilts': duraStiltsLogo,
   Level5: level5Logo,
   'Level 5': level5Logo,
-  'USG Sheetrock® Tools': USG_SHEETROCK_TOOLS_LOGO,
-  'USG Sheetrock Tools': USG_SHEETROCK_TOOLS_LOGO,
-  USG: USG_SHEETROCK_TOOLS_LOGO,
-  'usg-sheetrock-tools': USG_SHEETROCK_TOOLS_LOGO,
+  'USG Sheetrock® Tools': usgSheetrockToolsLogo,
+  'USG Sheetrock Tools': usgSheetrockToolsLogo,
+  USG: usgSheetrockToolsLogo,
+  'usg-sheetrock-tools': usgSheetrockToolsLogo,
 };
 
 const BRAND_LOGO_MATCHERS = [
@@ -42,7 +41,7 @@ const BRAND_LOGO_MATCHERS = [
   { test: /graco/, logo: gracoLogo },
   { test: /platinum/, logo: platinumLogo },
   { test: /level5/, logo: level5Logo },
-  { test: /usgsheetrocktools|usgsheetrock|^usg$/, logo: USG_SHEETROCK_TOOLS_LOGO },
+  { test: /usgsheetrocktools|usgsheetrock|^usg$/, logo: usgSheetrockToolsLogo },
 ];
 
 export function normalizeBrandAssetKey(value = '') {
@@ -59,9 +58,9 @@ export function normalizeBrandAssetKey(value = '') {
  */
 export function resolveProductBrandLogo(brand = {}) {
   if (!brand || typeof brand !== 'object') return '';
-  return brand.logo
-    || PRODUCT_BRAND_LOGOS[brand.label]
+  return PRODUCT_BRAND_LOGOS[brand.label]
     || PRODUCT_BRAND_LOGOS[brand.key]
+    || brand.logo
     || '';
 }
 
@@ -70,10 +69,6 @@ export function resolveProductBrandLogo(brand = {}) {
  * where REST brand names can vary in punctuation and casing.
  */
 export function resolveBrandLogo(brandOrName) {
-  if (brandOrName && typeof brandOrName === 'object' && brandOrName.logo) {
-    return brandOrName.logo;
-  }
-
   const candidates = brandOrName && typeof brandOrName === 'object'
     ? [brandOrName.label, brandOrName.name, brandOrName.key, brandOrName.slug, brandOrName.id]
     : [brandOrName];
@@ -83,6 +78,10 @@ export function resolveBrandLogo(brandOrName) {
     if (!normalized) continue;
     const match = BRAND_LOGO_MATCHERS.find(({ test }) => test.test(normalized));
     if (match) return match.logo;
+  }
+
+  if (brandOrName && typeof brandOrName === 'object' && brandOrName.logo) {
+    return brandOrName.logo;
   }
 
   return '';

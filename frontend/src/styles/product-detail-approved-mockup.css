@@ -299,47 +299,6 @@
   outline-offset: 2px;
 }
 
-.dtb-product-page-shell .dtb-pdp-payment-confidence {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: .68rem;
-}
-
-.dtb-product-page-shell .dtb-pdp-secure-checkout {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: .4rem;
-  margin: 0;
-  color: #26344a;
-  font-size: .8rem;
-  font-weight: 680;
-  line-height: 1.25;
-  text-align: center;
-}
-
-.dtb-product-page-shell .dtb-pdp-payment-methods {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(42px, 1fr));
-  align-items: center;
-  justify-items: center;
-  gap: .48rem .62rem;
-  width: 100%;
-  margin-top: .55rem;
-  overflow: visible;
-}
-
-.dtb-product-page-shell .dtb-pdp-payment-methods__logo {
-  display: block;
-  width: auto;
-  height: 17px;
-  max-width: 48px;
-  object-fit: contain;
-  object-position: center;
-}
-
 .dtb-product-page-shell .dtb-pdp-set-summary {
   display: flex;
   align-items: center;
@@ -575,25 +534,6 @@
   .dtb-product-page-shell .dtb-pdp-add-to-cart,
   .dtb-product-page-shell .dtb-product-buy-now__button {
     font-size: .9rem;
-  }
-
-  .dtb-product-page-shell .dtb-pdp-payment-confidence {
-    margin-top: .46rem;
-  }
-
-  .dtb-product-page-shell .dtb-pdp-secure-checkout {
-    font-size: .76rem;
-  }
-
-  .dtb-product-page-shell .dtb-pdp-payment-methods {
-    grid-template-columns: repeat(auto-fit, minmax(38px, 1fr));
-    gap: .4rem .48rem;
-    margin-top: .42rem;
-  }
-
-  .dtb-product-page-shell .dtb-pdp-payment-methods__logo {
-    height: 15px;
-    max-width: 44px;
   }
 
   .dtb-product-page-shell .dtb-pdp-set-summary {

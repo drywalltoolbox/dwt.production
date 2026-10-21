@@ -1,12 +1,5 @@
-import { Minus, Plus, ShieldCheck } from 'lucide-react';
-import { PAYMENT_CARD_NETWORK_ASSETS } from '../../assets/payment-methods/index.js';
+import { Minus, Plus } from 'lucide-react';
 import AddToCartButton from '../ui/AddToCartButton.jsx';
-
-const PDP_PAYMENT_METHODS = Object.freeze([
-  PAYMENT_CARD_NETWORK_ASSETS.visa,
-  PAYMENT_CARD_NETWORK_ASSETS.mastercard,
-  PAYMENT_CARD_NETWORK_ASSETS.americanExpress,
-].filter(Boolean));
 
 export default function ProductPurchasePanel({
   quantity,
@@ -112,25 +105,6 @@ export default function ProductPurchasePanel({
       </div>
 
       {expressCheckout}
-
-      <div className="dtb-pdp-payment-confidence" role="note" aria-label="Secure checkout and accepted payment methods">
-        <div className="dtb-pdp-secure-checkout">
-          <ShieldCheck size={18} strokeWidth={2} aria-hidden="true" />
-          <span>Secure Checkout</span>
-        </div>
-        <div className="dtb-pdp-payment-methods" aria-label="Accepted payment methods">
-          {PDP_PAYMENT_METHODS.map(({ id, label, src }) => (
-            <img
-              key={id}
-              src={src}
-              alt={label}
-              className="dtb-pdp-payment-methods__logo"
-              loading="eager"
-              decoding="async"
-            />
-          ))}
-        </div>
-      </div>
     </div>
   );
 }
