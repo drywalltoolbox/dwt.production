@@ -5,6 +5,8 @@ import {
   addToCart as storeAddToCart,
   updateCartItem,
   removeCartItem,
+  applyCoupon as applyStoreCoupon,
+  removeCoupon as removeStoreCoupon,
   clearStoreCart,
 } from '../api/cart.js';
 import { trackAddToCart, trackRemoveFromCart } from '../analytics/ecommerceEvents.js';
@@ -549,6 +551,52 @@ export function CartProvider({ children }) {
     }
   }, [applyOrRefreshServerCart, beginMutation, cart, enqueueMutation, finishMutation, isLatestMutation, removeFromCart, restoreAfterMutationFailure]);
 
+  const applyCartCoupon = useCallback(async (code) => {
+    const normalizedCode = String(code || '').trim();
+    if (!normalizedCode) return null;
+
+    const mutationId = beginMutation();
+    setError(null);
+    const previousItems = cartItemsRef.current;
+    const previousCart = cart;
+    try {
+      const nextCart = await enqueueMutation(() => applyStoreCoupon(normalizedCode));
+      await applyOrRefreshServerCart(nextCart, mutationId);
+      return nextCart;
+    } catch (err) {
+      if (isLatestMutation(mutationId)) {
+        restoreAfterMutationFailure(previousCart, previousItems, mutationId, err);
+        setError(err?.message || 'Could not apply coupon.');
+      }
+      throw err;
+    } finally {
+      finishMutation();
+    }
+  }, [applyOrRefreshServerCart, beginMutation, cart, enqueueMutation, finishMutation, isLatestMutation, restoreAfterMutationFailure]);
+
+  const removeCartCoupon = useCallback(async (code) => {
+    const normalizedCode = String(code || '').trim();
+    if (!normalizedCode) return null;
+
+    const mutationId = beginMutation();
+    setError(null);
+    const previousItems = cartItemsRef.current;
+    const previousCart = cart;
+    try {
+      const nextCart = await enqueueMutation(() => removeStoreCoupon(normalizedCode));
+      await applyOrRefreshServerCart(nextCart, mutationId);
+      return nextCart;
+    } catch (err) {
+      if (isLatestMutation(mutationId)) {
+        restoreAfterMutationFailure(previousCart, previousItems, mutationId, err);
+        setError(err?.message || 'Could not remove coupon.');
+      }
+      throw err;
+    } finally {
+      finishMutation();
+    }
+  }, [applyOrRefreshServerCart, beginMutation, cart, enqueueMutation, finishMutation, isLatestMutation, restoreAfterMutationFailure]);
+
   const clearCart = useCallback(async () => {
     const mutationId = beginMutation();
     setError(null);
@@ -595,6 +643,8 @@ export function CartProvider({ children }) {
     addToCart,
     removeFromCart,
     updateQuantity,
+    applyCoupon: applyCartCoupon,
+    removeCoupon: removeCartCoupon,
     clearCart,
     refreshCart,
     getCartTotal,
@@ -609,6 +659,8 @@ export function CartProvider({ children }) {
     addToCart,
     removeFromCart,
     updateQuantity,
+    applyCartCoupon,
+    removeCartCoupon,
     clearCart,
     refreshCart,
     getCartTotal,
