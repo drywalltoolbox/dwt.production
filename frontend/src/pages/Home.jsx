@@ -41,6 +41,12 @@ const HOME_TRUST_BRANDS = HOME_TRUST_BRAND_NAMES.map((brandName) => {
   };
 });
 
+const HOME_BRAND_PRODUCT_SECTIONS = HOME_BRAND_ORDER.map((brandName) => ({
+  brand: brandName,
+  name: getHomeBrandDisplayName(brandName),
+  to: `/products/brands/${brandToSlug(brandName)}`,
+}));
+
 const HOME_SHOP_BRANDS = HOME_BRAND_ORDER.map((brandName) => {
   const name = getHomeBrandDisplayName(brandName);
   return {
@@ -79,6 +85,24 @@ export default function Home() {
             >
               <StorefrontProductRail sort="newest" maxItems={10} label="New arrivals" />
             </StorefrontSection>
+
+            {/* ── Brand-specific product collections ── */}
+            {HOME_BRAND_PRODUCT_SECTIONS.map(({ brand, name, to }) => (
+              <StorefrontSection
+                key={`brand-products-${brand}`}
+                eyebrow="Shop by brand"
+                revealHeading
+                title={name}
+                viewAllHref={to}
+                viewAllLabel={`Shop all ${name}`}
+              >
+                <StorefrontProductRail
+                  brand={brand}
+                  maxItems={8}
+                  label={`${name} products`}
+                />
+              </StorefrontSection>
+            ))}
 
             {/* ── Shop by Brand ── */}
             <StorefrontSection
