@@ -1,10 +1,11 @@
 import { normalizeBrandAssetKey, resolveBrandLogo } from './brandLogoAssets.js';
+import asgardSelectorLogo from '/brands/Asgard/asgard_logo2.svg';
 
 const sitegroundLogoAsset = (filename) => `/logos/${filename}`;
 
 export const FEATURED_BRAND_PRESENTATION = {
   asgard: {
-    logo: resolveBrandLogo('Asgard'),
+    logo: asgardSelectorLogo,
     className: 'products-brand-selector__card--asgard',
     cardStyle: {
       backgroundColor: 'rgba(0, 116, 191, 1)',
