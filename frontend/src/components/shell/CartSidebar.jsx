@@ -7,7 +7,7 @@ import { beginCheckoutHandoff, isCheckoutHandoffTarget } from '../../utils/check
 const CART_DEBOUNCE_DRAIN_MS = 350;
 
 export default function CartSidebar({ isOpen, onClose }) {
-  const { cartItems, removeFromCart, updateQuantity, clearCart, refreshCart, getCartTotal, isMutating } = useCart();
+  const { cart, cartItems, removeFromCart, updateQuantity, applyCoupon, removeCoupon, clearCart, refreshCart, getCartTotal, isMutating } = useCart();
   const { isAuthenticated, ensureNativeCheckoutReady } = useAuthContext();
   const isMutatingRef = useRef(isMutating);
   const checkoutPendingRef = useRef(false);
@@ -70,7 +70,10 @@ export default function CartSidebar({ isOpen, onClose }) {
     <StorefrontCartSheet
       isOpen={isOpen}
       onClose={onClose}
+      cart={cart}
       cartItems={cartItems}
+      applyCoupon={applyCoupon}
+      removeCoupon={removeCoupon}
       removeFromCart={removeFromCart}
       updateQuantity={updateQuantity}
       clearCart={clearCart}
