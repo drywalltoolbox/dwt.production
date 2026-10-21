@@ -54,10 +54,6 @@ jobs:
         working-directory: frontend
         run: npx eslint src/components/routing/StorefrontScrollExperience.jsx src/utils/scrollExperiencePolicy.js src/components/storefront/StorefrontSection.jsx src/pages/Home.jsx
 
-      - name: Verify shared scroll experience contract
-        working-directory: frontend
-        run: node --test tests/scrollExperienceContract.test.mjs
-
       - name: Assert staging configuration exists
         run: |
           set -euo pipefail

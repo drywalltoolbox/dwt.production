@@ -44,7 +44,6 @@ The frontend must not:
 - `frontend/src/features/toolset-builder/useToolsetBuilderCatalog.js` — request lifecycle and stale-response containment.
 - `frontend/src/api/toolsetBuilderApi.js` — narrow builder adapter over canonical catalog endpoints.
 - `frontend/src/styles/toolset-builder.css` — feature presentation authority.
-- `frontend/tests/toolsetBuilderFrontendContract.test.mjs` — frontend architecture contract test.
 
 ## Data path
 
@@ -147,23 +146,4 @@ Implemented behavior includes:
 
 ## Verification
 
-Source-level contract test:
-
-```text
-npm run test:toolset-builder
-```
-
-The test protects the following invariants:
-
-- initial-launch `App.jsx` does not register `/toolset-builder`;
-- initial-launch `routeModules.js` does not preload or resolve the builder route;
-- storefront navigation does not point to the route;
-- catalog reads use the canonical catalog layer and require `product_kind=tool` for selectable builder products;
-- the legacy `/toolsets` API is not introduced as frontend authority;
-- workflow presentation does not contain shipping/discount/pricing authority;
-- the workspace does not import or call cart mutation APIs;
-- final cart action remains disabled until server validation exists;
-- exact variations are loaded through the canonical variation endpoint;
-- feature CSS uses DTB class names, responsive behavior, and reduced motion.
-
-A local build/test was not executed in the implementation session because the available runtime could not resolve GitHub to check out the branch. Do not treat source review as a passing build.
+No automated frontend contract suite is currently maintained. Use the staging build and review the route, catalog selection, responsive behavior, reduced-motion behavior, and disabled final cart action before enabling this post-launch workflow.

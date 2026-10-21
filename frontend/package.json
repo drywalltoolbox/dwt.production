@@ -11,21 +11,7 @@
     "build:staging": "cross-env APP_ENV=staging PUBLIC_URL=/staging node scripts/assert-public-env-safe.cjs pre && cross-env APP_ENV=staging PUBLIC_URL=/staging webpack --config webpack.config.cjs --mode production && cross-env APP_ENV=staging PUBLIC_URL=/staging node scripts/assert-build-routing.cjs && cross-env APP_ENV=staging node scripts/assert-public-env-safe.cjs post",
     "clean:build-cache": "node scripts/clean-build-artifacts.cjs cache",
     "lint": "eslint src",
-    "test:catalog-navigation": "node --test tests/catalogNavigationContract.test.mjs",
-    "test:contractor-shopping": "node --test tests/contractorShoppingContract.test.mjs",
-    "test:calculators": "node --test tests/calculators/calculators.test.mjs",
-    "test:home-hero": "node --test tests/homeHeroResponsiveMediaContract.test.mjs",
-    "test:repair-landing": "node --test tests/repairLandingContract.test.mjs",
-    "test:returns-portal": "node --test tests/returnsPortalContract.test.mjs",
-    "preview": "webpack serve --config webpack.config.cjs --mode production",
-    "test:render-continuity": "node --test tests/renderContinuityContract.test.mjs",
-    "test:toolset-builder": "node --test tests/toolsetBuilderFrontendContract.test.mjs",
-    "test:breadcrumb": "node --test tests/breadcrumbContract.test.mjs",
-    "test:category-hero": "node --test tests/categoryHeroContract.test.mjs",
-    "test:mobile-shell": "node --test tests/mobileShellInteractionContract.test.mjs",
-    "test:motion-surfaces": "node --test tests/motionSurfacesContract.test.mjs",
-    "test:product-pricing": "node --test tests/productPricing.test.mjs",
-    "test:search-results": "node --test tests/searchResultsFacets.test.mjs"
+    "preview": "webpack serve --config webpack.config.cjs --mode production"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

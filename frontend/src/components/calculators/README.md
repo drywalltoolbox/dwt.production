@@ -6,7 +6,6 @@ The Calculator Hub is a lightweight storefront utility for conventional drywall 
 
 - React UI: `frontend/src/components/calculators/`
 - Pure calculation utilities: `frontend/src/lib/calculators/index.js`
-- Regression tests: `frontend/tests/calculators/calculators.test.mjs`
 - Report presentation model: `frontend/src/components/calculators/report/calculatorReportModel.js`
 
 Calculator components collect inputs and render results. Authoritative arithmetic belongs in the pure calculation utilities so it can be regression-tested independently of React. The Summary and PDF report consume calculator outputs and must not recalculate quantities.
@@ -108,26 +107,6 @@ This is intentionally local-only. Calculator state is not an authoritative custo
 `calculatorReportModel.js` is the canonical presentation mapper. The report displays required/purchase distinctions, estimator allowances, synchronization sources, and the Calculator Hub scope disclaimer.
 
 PDF export remains browser-local through the dedicated print preview and browser **Save as PDF** workflow. No calculator data is sent to WordPress or an external PDF service.
-
-## Tests
-
-Run:
-
-```bash
-npm run test:calculators
-```
-
-The regression suite covers:
-
-- installed vs purchase sheet quantities;
-- purchasing-allowance invariants;
-- the 0.37 tape fallback;
-- separated tape geometry;
-- manufacturer-based compound planning coverage;
-- separate Level 5 skim allowance;
-- measured arch bead footage;
-- installed-sheet fastener calculations;
-- wall vs ceiling fastener density.
 
 ## Scope boundary
 

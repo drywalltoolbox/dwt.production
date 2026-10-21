@@ -44,12 +44,6 @@ The UI remains under:
 frontend/src/components/calculators/
 ```
 
-Regression coverage remains under:
-
-```text
-frontend/tests/calculators/
-```
-
 No backend calculator service, rules engine, provider abstraction, assembly registry, server persistence, Action Scheduler workflow, WooCommerce authority, or DTB MU-plugin calculator domain is introduced.
 
 ### 2.2 Calculation contract
@@ -270,33 +264,7 @@ The canonical report model now displays:
 
 PDF export remains browser-local through the existing print-preview / Save as PDF workflow.
 
-## 13. Tests
-
-Regression tests live at:
-
-```text
-frontend/tests/calculators/calculators.test.mjs
-```
-
-Run:
-
-```text
-npm run test:calculators
-```
-
-Coverage includes:
-
-- installed vs purchase sheets;
-- purchasing-allowance invariants;
-- 0.37 tape fallback;
-- separated tape geometry;
-- manufacturer-based compound planning coverage;
-- separate Level 5 skim allowance;
-- measured curved bead footage;
-- installed-sheet fastener calculations;
-- wall vs ceiling fastener density.
-
-## 14. Production definition
+## 13. Production definition
 
 For this storefront utility, "production ready" means:
 
@@ -309,12 +277,11 @@ For this storefront utility, "production ready" means:
 - unsupported specialty/rated configurations are scoped clearly;
 - local persistence remains compatible;
 - report output consumes the same canonical calculator results;
-- regression tests cover the calculation contracts;
 - the Hub remains fast and understandable for ordinary customers and contractors.
 
 It deliberately does **not** mean turning Drywall Toolbox into a full construction-estimating software platform.
 
-## 15. Implemented files
+## 14. Implemented files
 
 Calculation authority:
 
@@ -340,10 +307,8 @@ frontend/src/components/calculators/report/calculatorReportModel.js
 frontend/src/components/calculators/report/README.md
 ```
 
-Tests/documentation:
+Documentation:
 
 ```text
-frontend/tests/calculators/calculators.test.mjs
 frontend/src/components/calculators/README.md
-frontend/package.json
 ```

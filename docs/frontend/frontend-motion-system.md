@@ -82,7 +82,7 @@ The boot watchdog remains the failure authority when the entry bundle does not m
 - **Editorial-only reveals:** only the two homepage `StorefrontSection` headings explicitly set `revealHeading`. Content remains at least 90% opaque in a small 8 px pre-reveal offset; product grids, cards, filters, pricing, links and cart actions are never gated. MutationObserver attaches late-mounted opt-in headings, and IntersectionObserver marks them visible once. All observers/listeners disconnect on route change. Reduced motion stays fully visible.
 - **Inertia policy:** no desktop virtual-scroll engine or Lenis is installed. Custom wheel inertia is deferred until measured browser/device validation; any future integration must be routed through `StorefrontScrollExperience` and suspend for scroll locks, route restoration, keyboard navigation, and nested gesture surfaces. Native mobile touch inertia remains the baseline.
 
-**Verification:** `frontend/tests/scrollExperienceContract.test.mjs` checks exclusions, progress bounds, lock policy and the no-wheel-interception contract. Before release, run the frontend lint and source tests, locked build, and real iOS Safari/Android/desktop tests of fling inertia, focus/keyboard, drawer lock/unlock, POP restoration, dynamic catalog heights, reduced motion and active schematic gestures. GitHub source commits are not evidence of a deployed build or physical-device QA.
+**Verification:** No automated frontend source contract suite is currently maintained. Before release, run the frontend lint and staging build, then review real iOS Safari, Android and desktop behavior for fling inertia, focus and keyboard use, drawer lock/unlock, history restoration, dynamic catalog heights, reduced motion and active schematic gestures. GitHub source commits are not evidence of a deployed build or physical-device QA.
 
 ## History scroll restoration
 
@@ -258,11 +258,9 @@ Reduced motion removes nonessential transforms, smooth scrolling, shimmer animat
 - Browser-history restoration must remain synchronous in the layout phase and must not add delayed corrective scroll writes.
 - Keep `LazyMotion` strict; new animated components use `m` under the shared async feature provider rather than importing the full `motion` component.
 
-## Regression contract
+## Route continuity
 
-`frontend/tests/renderContinuityContract.test.mjs` statically protects the critical continuity rules: centralized route loading, no legacy route spinner, opaque route motion, the 220 ms async replacement token, absence of root fades on the specifically remediated cart/repair/order-tracking surfaces, history-aware POP restoration, strict LazyMotion usage, the initial HTML-to-React boot handoff, static desktop route composition, atomic desktop mega-menu switching, bounded navigation transitions, desktop product-card paint continuity, and geometry-stable Quick View open/close lifecycle.
-
-This test supplements browser profiling; it does not prove runtime frame pacing. Lighthouse/Chrome Performance traces remain required when changing startup providers, global CSS, large navigation surfaces, or animation-heavy components.
+Preserve centralized route loading, visible page content during transitions, history-aware restoration, strict LazyMotion usage, the initial HTML-to-React boot handoff, stable desktop route composition and geometry-stable Quick View behavior. Browser profiling remains necessary for runtime frame pacing when changing startup providers, global CSS, large navigation surfaces or animation-heavy components.
 
 ## Implementation rules
 
@@ -280,7 +278,7 @@ Motion is bounded to the campaign content and active navigation indicator. The s
 
 The current responsive artwork remains the LCP authority until campaign-specific media is produced. Future hero assets must preserve browser-native `<picture>` art direction, a stable text-safe composition, compressed responsive sources, and the existing media/content layer separation rather than introducing JavaScript viewport branching.
 
-`frontend/tests/homeHeroResponsiveMediaContract.test.mjs` protects this contract, including responsive art direction, LCP priority, explicit manual navigation semantics, reduced-motion support, layer ordering, and compressed asset bounds.
+Review responsive art direction, LCP priority, manual navigation semantics, reduced-motion support, layer ordering and compressed asset bounds when changing the hero.
 
 
 ### Mobile scroll and input responsiveness (October 2026)
@@ -289,7 +287,7 @@ The browser owns the vertical page scroll, horizontal rail inertia, axis arbitra
 
 Product rail cards do **not** initiate speculative PDP and quick-view fetches on touch `pointerdown`: initial contact can be the start of an inertial swipe. Preserve the existing intent preloading on focus and mouse/pen pointer entry; actual taps still open the existing product interaction. This keeps touch input handling lightweight without changing catalog, cart, modal, or checkout authorities.
 
-Performance acceptance must use production-build mobile traces for interaction delay, main-thread long tasks, stable layout and actual touch frame pacing. The static source contracts are guardrails, not replacements for Safari/Chrome device measurements. Reference material: MDN CSS Scroll Snap, MDN touch-action and overscroll-behavior, and web.dev Interaction to Next Paint optimization guidance.
+Performance acceptance must use production-build mobile traces for interaction delay, main-thread long tasks, stable layout and actual touch frame pacing. Source review does not replace Safari/Chrome device measurements. Reference material: MDN CSS Scroll Snap, MDN touch-action and overscroll-behavior, and web.dev Interaction to Next Paint optimization guidance.
 
 
 ### Cart motion consistency refinement (October 2026)
