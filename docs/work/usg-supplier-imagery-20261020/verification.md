@@ -23,3 +23,13 @@
 
 ## Rollback
 Use the previous WordPress attachment ID to revert an individual product image. Restore its `Images` CSV value from the verified pre-optimization backup when necessary. Do not delete old attachments before checking references.
+
+## Follow-on upscale — 2026-10-20
+
+- User authorized scaling the remaining **71** sub-600 px original supplier pictures. Derived images were created from the **existing supplier photographs**, not generated or retouched representations of different replacement parts.
+- Applied source-preserving Lanczos resize with a bounded 4x magnification and mild unsharp masking (radius 1.25, percent 78, threshold 3). Output: **63 images at 1200×1200**, **7 at 1222×1200**, and **1 at 1279×1200**, retaining native image aspect ratios.
+- Output encoded as WebP (quality 88, method 6); created 71 SKU-named image files totaling ~1.32 MB. **These are computationally upscaled images, not genuine 1200px photographic originals**; claims of recovered original optical detail would be incorrect.
+- All 71 processed image attachments were uploaded and assigned to their corresponding simple WooCommerce **draft** products using exact mapped product IDs; the prior native-resolution WebP attachments remain available for rollback.
+- Canonical catalog source: precisely 71 additional `Images` cells were updated in `products/launch/official/dtb_official_catalog.csv`. A SHA-256 checked backup was made and a full row-by-row comparison confirmed no other column changed (1,134 catalog rows).
+- Raw inputs, source provenance, pixel dimensions, per-file SHA-256 digests, and output manifest are retained locally under the ignored `scripts/supplier-catalog/results/cost/usg*` paths. No confidential supplier costs/cookies are committed.
+- **Quality caveat:** upscaling increases display dimensions and may improve interpolation/edge rendition, but cannot replace missing actual product detail from original 300×300 imagery. Keep the original photos and treat manufacturer-native high-resolution replacements as the ultimate quality objective.
