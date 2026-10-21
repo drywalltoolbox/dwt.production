@@ -27,10 +27,18 @@ function formatStoreMoney(value, currency = 'USD') {
       currency: /^[A-Z]{3}$/.test(currency) ? currency : 'USD',
     }).format(safeAmount);
   } catch {
-    return '
-  return String(item?.cartKey || item?.key || item?.id || '');
+    return '$' + safeAmount.toFixed(2);
+  }
 }
 
+function getCouponCode(coupon) {
+  if (typeof coupon === 'string') return coupon;
+  return String(coupon?.code || coupon?.name || '').trim();
+}
+
+function getCartItemKey(item) {
+  return String(item?.cartKey || item?.key || item?.id || '');
+}
 function getDisplayQuantity(item, localQuantities) {
   const key = getCartItemKey(item);
   const localQty = Number(localQuantities[key]);
