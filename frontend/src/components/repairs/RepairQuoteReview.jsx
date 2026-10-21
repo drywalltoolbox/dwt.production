@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { m as motion } from 'framer-motion';
 import { Handshake, ClipboardList, FileText, Check, X } from 'lucide-react';
 import { acceptRepairQuote, declineRepairQuote } from '../../api/repairs.js';
+import { dtbTransition } from '../../motion/dtbMotion.js';
 
 export default function RepairQuoteReview( { repairId, token, onAccepted, onDeclined } ) {
   const [ acting,    setActing    ] = useState( null ); // 'accept' | 'decline' | null
@@ -54,13 +55,13 @@ export default function RepairQuoteReview( { repairId, token, onAccepted, onDecl
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.35, ease: 'easeOut' }}
+        transition={dtbTransition.standard}
         className="bg-green-50 border border-green-200 rounded-2xl p-6 text-center"
       >
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 280, damping: 20, delay: 0.1 }}
+          transition={{ ...dtbTransition.emphasized, delay: 0.1 }}
           className="w-12 h-12 rounded-xl bg-green-100 flex items-center justify-center mx-auto mb-3"
         >
           <Handshake size={ 24 } className="text-green-600" strokeWidth={ 1.75 } />
@@ -78,13 +79,13 @@ export default function RepairQuoteReview( { repairId, token, onAccepted, onDecl
       <motion.div
         initial={{ opacity: 0, scale: 0.96 }}
         animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.35, ease: 'easeOut' }}
+        transition={dtbTransition.standard}
         className="bg-neutral-50 border border-neutral-200 rounded-2xl p-6 text-center"
       >
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 280, damping: 20, delay: 0.1 }}
+          transition={{ ...dtbTransition.emphasized, delay: 0.1 }}
           className="w-12 h-12 rounded-xl bg-neutral-100 flex items-center justify-center mx-auto mb-3"
         >
           <ClipboardList size={ 24 } className="text-neutral-500" strokeWidth={ 1.75 } />
@@ -102,7 +103,7 @@ export default function RepairQuoteReview( { repairId, token, onAccepted, onDecl
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, ease: 'easeOut' }}
+      transition={dtbTransition.standard}
       className="bg-yellow-50 border border-yellow-200 rounded-2xl p-6 space-y-4"
     >
       <div className="flex items-center gap-3">

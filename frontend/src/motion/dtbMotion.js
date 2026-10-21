@@ -159,6 +159,19 @@ export const surfaceVariants = {
   },
 };
 
+// Shared entrance for account/dashboard panels. A custom value supplies only
+// a small cascade delay; movement and easing stay consistent across tabs.
+export const dashboardRevealTransition = dtbTransition.standard;
+
+export const dashboardRevealVariants = {
+  hidden: { opacity: 0, y: dtbDistance.medium },
+  visible: (delay = 0) => ({
+    opacity: 1,
+    y: 0,
+    transition: { ...dashboardRevealTransition, delay },
+  }),
+};
+
 export const reducedSurfaceVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: { duration: dtbDuration.instant } },
@@ -194,8 +207,8 @@ export const productModalTransition = {
 };
 
 export const productModalBackdropTransition = {
-  duration: dtbDuration.fast,
-  ease: dtbEase.exit,
+  duration: dtbDuration.normal,
+  ease: dtbEase.emphasized,
 };
 
 // Desktop Quick View covers a large portion of the viewport. Keep its outer
@@ -212,16 +225,18 @@ export const productModalDesktopVariants = {
 // presentation motion so the storefront is never seen through a translucent
 // white dialog during close.
 export const productModalDesktopCardVariants = {
-  hidden: { opacity: 0, y: dtbDistance.micro },
+  hidden: { opacity: 0, y: dtbDistance.small, scale: 0.99 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: dtbTransition.fast,
+    scale: 1,
+    transition: dtbTransition.standard,
   },
   exit: {
-    opacity: 1,
+    opacity: 0,
     y: dtbDistance.micro,
-    transition: dtbTransition.fast,
+    scale: 0.995,
+    transition: dtbTransition.exit,
   },
 };
 

@@ -4,21 +4,13 @@ import { m as Motion } from 'framer-motion';
 import { ArrowRight, Loader, Package, RotateCcw } from 'lucide-react';
 import { getCustomerReturns } from '../../api/returns.js';
 import { buildAccountActivity, normalizeReturns } from '../../utils/accountActivity.js';
+import { dashboardRevealVariants } from '../../motion/dtbMotion.js';
 
 const CARD = {
   background: 'white',
   border: '1px solid rgba(15,23,42,0.08)',
   borderRadius: '12px',
   boxShadow: '0 2px 12px rgba(15,23,42,0.05)',
-};
-
-const fadeUp = {
-  hidden: { opacity: 0, y: 12 },
-  visible: (d) => ({
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.34, ease: [0.16, 1, 0.3, 1], delay: d ?? 0 },
-  }),
 };
 
 async function fetchReturns() {
@@ -74,7 +66,7 @@ export default function ReturnsTab() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
-      <Motion.div custom={0.05} variants={fadeUp} initial="hidden" animate="visible" style={{ ...CARD, padding: '18px 20px' }}>
+      <Motion.div custom={0.05} variants={dashboardRevealVariants} initial="hidden" animate="visible" style={{ ...CARD, padding: '18px 20px' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{ width: '34px', height: '34px', borderRadius: '8px', background: '#f5f3ff', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>

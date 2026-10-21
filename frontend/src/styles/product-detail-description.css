@@ -427,8 +427,8 @@
 }
 
 /* Accordion open/close motion is shared by the full PDP and Quick View. The
- * grid track reveal keeps the inline details flow intact while the content
- * uses the reference's restrained staggered blur and lift entrance. */
+ * grid track reveal keeps the inline details flow intact while its content
+ * follows the common eased lift/fade motion without blur. */
 .dtb-pdp-info-accordion__panel-motion {
   display: grid;
   grid-template-rows: 0fr;
@@ -436,10 +436,9 @@
   transform: translateY(-5px);
   pointer-events: none;
   transition:
-    grid-template-rows 480ms cubic-bezier(.2, .75, .15, 1),
-    opacity 280ms ease,
-    transform 400ms cubic-bezier(.2, .75, .15, 1),
-    filter 360ms ease;
+    grid-template-rows var(--dtb-motion-duration-overlay) var(--dtb-motion-ease-emphasized),
+    opacity var(--dtb-motion-duration-async) var(--dtb-motion-ease-standard),
+    transform var(--dtb-motion-duration-elevated) var(--dtb-motion-ease-emphasized);
 }
 .dtb-pdp-info-accordion__panel-motion[data-open="true"] {
   grid-template-rows: 1fr;
@@ -458,7 +457,7 @@
 .dtb-pdp-info-accordion__panel-motion[data-open="true"] .dtb-pdp-info-accordion__panel > * {
   opacity: 1;
   transform: translateY(0);
-  animation: dtb-pdp-detail-item-enter 340ms cubic-bezier(.2, .75, .15, 1) both;
+  animation: dtb-pdp-detail-item-enter var(--dtb-motion-emphasized) both;
 }
 .dtb-pdp-info-accordion__panel-motion[data-open="true"] .dtb-pdp-info-accordion__panel > :nth-child(1) { animation-delay: 35ms; }
 .dtb-pdp-info-accordion__panel-motion[data-open="true"] .dtb-pdp-info-accordion__panel > :nth-child(2) { animation-delay: 80ms; }

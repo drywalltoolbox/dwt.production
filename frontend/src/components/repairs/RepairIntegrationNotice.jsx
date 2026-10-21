@@ -11,6 +11,7 @@
  */
 
 import { m as motion } from 'framer-motion';
+import { dtbTransition } from '../../motion/dtbMotion.js';
 
 // ─── Per-status customer messaging ───────────────────────────────────────────
 
@@ -72,7 +73,7 @@ export default function RepairIntegrationNotice( { status, integrationState } ) 
     <motion.div
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.35, ease: 'easeOut' }}
+      transition={dtbTransition.standard}
       className={ `rounded-xl border px-4 py-3 ${ colors.wrapper }` }
       role="status"
       aria-live="polite"

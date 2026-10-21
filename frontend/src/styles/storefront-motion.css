@@ -173,11 +173,22 @@
 
 .storefront-search-overlay {
   transition:
-    opacity var(--dtb-motion-fast),
-    visibility 0s linear var(--dtb-motion-duration-normal);
+    opacity var(--dtb-motion-overlay),
+    visibility 0s linear var(--dtb-motion-duration-overlay);
 }
 
 .storefront-search-overlay[data-open="true"] {
+  transition-delay: 0s;
+}
+
+.storefront-search-overlay__panel {
+  transition:
+    opacity var(--dtb-motion-elevated),
+    transform var(--dtb-motion-elevated),
+    visibility 0s linear var(--dtb-motion-duration-elevated);
+}
+
+.storefront-search-overlay[data-open="true"] .storefront-search-overlay__panel {
   transition-delay: 0s;
 }
 

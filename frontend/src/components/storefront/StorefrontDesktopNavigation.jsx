@@ -519,8 +519,8 @@ export default function StorefrontDesktopNavigation({ items, openMenuId, onOpen,
   const shellTransition = reducedMotion
     ? 'none'
     : shellOpen
-      ? 'opacity var(--dtb-motion-duration-overlay, 400ms) var(--dtb-motion-ease-emphasized), transform 480ms cubic-bezier(.2, .75, .15, 1), visibility 0s linear 0s'
-      : 'opacity var(--dtb-motion-duration-fast, 180ms) var(--dtb-motion-ease-exit), transform 260ms cubic-bezier(.4, 0, .7, .2), visibility 0s linear var(--dtb-motion-duration-fast, 180ms)';
+      ? 'opacity var(--dtb-motion-overlay), transform var(--dtb-motion-overlay), visibility 0s linear 0s'
+      : 'opacity var(--dtb-motion-exit), transform var(--dtb-motion-exit), visibility 0s linear var(--dtb-motion-duration-fast)';
 
   return (
     <nav

@@ -245,6 +245,9 @@ export default function ProductModal({ isOpen, product, onClose, children }) {
             >
               <Motion.div
                 className="product-modal-card-shell dtb-product-page-shell w-full max-w-6xl"
+                initial={isMobile ? undefined : 'hidden'}
+                animate={isMobile ? undefined : 'visible'}
+                exit={isMobile ? undefined : 'exit'}
                 variants={
                   isMobile
                     ? undefined

@@ -11,6 +11,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { m as motion, AnimatePresence } from 'framer-motion';
 import { Camera, ImagePlus, MessageSquare, Send, X } from 'lucide-react';
 import { submitRepairComment, uploadRepairMedia } from '../../api/repairs.js';
+import { dtbTransition } from '../../motion/dtbMotion.js';
 
 const MAX_CHARS = 600;
 const MAX_FILES = 5;
@@ -182,7 +183,7 @@ export default function RepairUpdateComposer( { repairId, token, onSubmitted } )
                   initial={{ opacity: 0, y: -6, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -4, scale: 0.98 }}
-                  transition={{ duration: 0.16, ease: 'easeOut' }}
+                  transition={dtbTransition.fast}
                   className="absolute right-0 top-full mt-2 z-40 w-52 origin-top-right rounded-xl border border-neutral-200 bg-white shadow-xl overflow-hidden"
                   role="menu"
                   aria-label="Photo options"

@@ -15,14 +15,7 @@ import { buildAccountActivity } from '../../utils/accountActivity.js';
 import { ORDER_TERMINAL_STATUSES } from '../../api/orders.js';
 import { TERMINAL_STATUSES as REPAIR_TERMINAL_STATUSES } from '../../api/repairs.js';
 import { RETURN_TERMINAL_STATUSES, SUPPORT_TERMINAL_STATUSES } from '../../api/statusTracking.js';
-
-const fadeUp = {
-  hidden:  { opacity: 0, y: 14 },
-  visible: ( d ) => ( {
-    opacity: 1, y: 0,
-    transition: { duration: 0.38, ease: [ 0.16, 1, 0.3, 1 ], delay: d ?? 0 },
-  } ),
-};
+import { dashboardRevealVariants } from '../../motion/dtbMotion.js';
 
 const CARD = {
   background:   'white',
@@ -34,7 +27,7 @@ const CARD = {
 function StatCard( { icon, label, value, color, bg, delay, onClick } ) {
   const Icon = icon;
   return (
-    <Motion.button type="button" custom={ delay } variants={ fadeUp } initial="hidden" animate="visible"
+    <Motion.button type="button" custom={ delay } variants={ dashboardRevealVariants } initial="hidden" animate="visible"
       whileHover={ { y: -2 } } whileTap={ { scale: 0.98 } } onClick={ onClick }
       className="account-overview-stat"
       style={ { ...CARD, padding: '16px 18px', display: 'flex', alignItems: 'center', gap: '12px' } }
@@ -65,7 +58,7 @@ function isRepairOrder( order ) {
 
 function ActivitySection({ title, icon: Icon, color, bg, items, emptyText, onViewAll, loading, delay }) {
   return (
-    <Motion.section custom={delay} variants={fadeUp} initial="hidden" animate="visible" style={{ ...CARD, padding: '18px 20px' }}>
+    <Motion.section custom={delay} variants={dashboardRevealVariants} initial="hidden" animate="visible" style={{ ...CARD, padding: '18px 20px' }}>
       <div className="account-overview-section__header">
         <div className="account-overview-section__title">
           <span style={{ background: bg, color }}><Icon size={16} /></span>
@@ -121,7 +114,7 @@ export default function OverviewTab( { user, orders, repairs = [], returns = [],
       </div>
 
       {/* Account info */}
-      <Motion.div custom={ 0.3 } variants={ fadeUp } initial="hidden" animate="visible"
+      <Motion.div custom={ 0.3 } variants={ dashboardRevealVariants } initial="hidden" animate="visible"
         style={ { ...CARD, padding: '18px 20px' } }
       >
         <div style={ { display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' } }>
@@ -148,7 +141,7 @@ export default function OverviewTab( { user, orders, repairs = [], returns = [],
       </Motion.div>
 
       {/* Quick links */}
-      <Motion.div custom={ 0.36 } variants={ fadeUp } initial="hidden" animate="visible"
+      <Motion.div custom={ 0.36 } variants={ dashboardRevealVariants } initial="hidden" animate="visible"
         style={ { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '10px' } }
       >
         { [

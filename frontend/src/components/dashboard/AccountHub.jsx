@@ -19,7 +19,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { m as Motion, useReducedMotion } from 'framer-motion';
-import { dtbTransition, reducedTransition } from '../../motion/dtbMotion.js';
+import { dashboardRevealTransition, reducedTransition } from '../../motion/dtbMotion.js';
 import {
   Headphones, LayoutDashboard, Package, Wrench, RotateCcw, Settings, LogOut, User,
 } from 'lucide-react';
@@ -53,8 +53,8 @@ const BASE_TABS = [
 // ─── Animation variants ───────────────────────────────────────────────────────
 
 const tabTransition = {
-  initial: { opacity: 1, y: 4 },
-  animate: { opacity: 1, y: 0, transition: dtbTransition.fast },
+  initial: { opacity: 1, y: 8 },
+  animate: { opacity: 1, y: 0, transition: dashboardRevealTransition },
 };
 
 // Dot-grid hero overlay

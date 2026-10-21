@@ -4,7 +4,7 @@
   --dtb-loading-highlight: #f8fafc;
   --dtb-loading-crossfade-duration: var(--dtb-motion-duration-async, 220ms);
   --dtb-loading-ease: var(--dtb-motion-ease-standard);
-  --dtb-document-fade-duration: 180ms;
+  --dtb-document-fade-duration: var(--dtb-motion-duration-normal, 320ms);
 }
 
 .dtb-card-loading-transition {

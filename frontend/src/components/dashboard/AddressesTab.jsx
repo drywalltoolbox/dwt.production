@@ -6,14 +6,7 @@
 
 import { m as Motion } from 'framer-motion';
 import { Home, Truck, MapPin, Plus, Edit3 } from 'lucide-react';
-
-const fadeUp = {
-  hidden:  { opacity: 0, y: 12 },
-  visible: ( d ) => ( {
-    opacity: 1, y: 0,
-    transition: { duration: 0.36, ease: [ 0.16, 1, 0.3, 1 ], delay: d ?? 0 },
-  } ),
-};
+import { dashboardRevealVariants } from '../../motion/dtbMotion.js';
 
 const CARD = {
   background:   'white',
@@ -33,7 +26,7 @@ function AddressCard( { type, address, delay } ) {
   const isEmpty = ! address?.first_name && ! address?.address_1;
 
   return (
-    <Motion.div custom={ delay } variants={ fadeUp } initial="hidden" animate="visible" style={ CARD }>
+    <Motion.div custom={ delay } variants={ dashboardRevealVariants } initial="hidden" animate="visible" style={ CARD }>
       <div style={ { display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '16px 18px', borderBottom: '1px solid rgba(15,23,42,0.07)' } }>
         <div style={ { display: 'flex', alignItems: 'center', gap: '10px' } }>
           <div style={ { width: '34px', height: '34px', borderRadius: '8px', background: bg, display: 'flex', alignItems: 'center', justifyContent: 'center' } }>
@@ -99,7 +92,7 @@ export default function AddressesTab( { user } ) {
       <AddressCard type="shipping" address={ shipping } delay={ 0.06 } />
 
       {/* Coming-soon multi-address placeholder */}
-      <Motion.div custom={ 0.12 } variants={ fadeUp } initial="hidden" animate="visible"
+      <Motion.div custom={ 0.12 } variants={ dashboardRevealVariants } initial="hidden" animate="visible"
         style={ { display: 'flex', alignItems: 'center', gap: '10px', padding: '14px 18px', background: '#f8fafc', border: '1.5px dashed rgba(15,23,42,0.1)', borderRadius: '10px' } }
       >
         <Plus size={ 16 } style={ { color: 'rgba(15,23,42,0.28)', flexShrink: 0 } } />
