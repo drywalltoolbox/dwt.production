@@ -136,7 +136,7 @@ export default function TrendingProducts() {
   if (!loading && products.length === 0) return null;
 
   return (
-    <StorefrontSection eyebrow="Featured" title="Trending Products" viewAllHref="/products?sort=popular">
+    <StorefrontSection eyebrow="Featured" revealHeading title="Trending Products" viewAllHref="/products?sort=popular">
       <div ref={railRef}>
         <LoadingCardTransition
           loading={loading}

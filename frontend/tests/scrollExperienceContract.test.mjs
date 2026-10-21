@@ -58,10 +58,11 @@ test('shared controller never intercepts touch/wheel or overrides Router scroll 
 test('editorial motion is explicitly opted in; essential storefront surfaces remain unblocked', () => {
   const sections = read('components/storefront/StorefrontSection.jsx');
   const home = read('pages/Home.jsx');
+  const trending = read('components/catalog/TrendingProducts.jsx');
   const css = read('styles/storefront-scroll-experience.css');
   const scroll = read('components/routing/StorefrontScrollExperience.jsx');
   assert.match(sections, /data-dtb-scroll-reveal=\{revealHeading/);
-  assert.equal((home.match(/revealHeading/g) || []).length, 3);
+  assert.equal((home.match(/revealHeading/g) || []).length + (trending.match(/revealHeading/g) || []).length, 3);
   assert.match(scroll, /IntersectionObserver/);
   assert.match(scroll, /observer\.disconnect\(\)/);
   assert.match(scroll, /mutations\.disconnect\(\)/);
