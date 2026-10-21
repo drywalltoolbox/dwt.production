@@ -434,7 +434,6 @@
   grid-template-rows: 0fr;
   opacity: 0;
   transform: translateY(-5px);
-  filter: blur(5px);
   pointer-events: none;
   transition:
     grid-template-rows 480ms cubic-bezier(.2, .75, .15, 1),
@@ -446,7 +445,6 @@
   grid-template-rows: 1fr;
   opacity: 1;
   transform: translateY(0);
-  filter: blur(0);
   pointer-events: auto;
 }
 .dtb-pdp-info-accordion__panel-clip {
@@ -455,12 +453,10 @@
 }
 .dtb-pdp-info-accordion__panel-motion .dtb-pdp-info-accordion__panel > * {
   opacity: 0;
-  filter: blur(5px);
   transform: translateY(8px);
 }
 .dtb-pdp-info-accordion__panel-motion[data-open="true"] .dtb-pdp-info-accordion__panel > * {
   opacity: 1;
-  filter: blur(0);
   transform: translateY(0);
   animation: dtb-pdp-detail-item-enter 340ms cubic-bezier(.2, .75, .15, 1) both;
 }
@@ -472,15 +468,14 @@
 .dtb-pdp-info-accordion__panel-motion[data-open="true"] .dtb-pdp-info-accordion__panel > :nth-child(n + 6) { animation-delay: 260ms; }
 
 @keyframes dtb-pdp-detail-item-enter {
-  from { opacity: 0; filter: blur(5px); transform: translateY(8px); }
-  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .dtb-pdp-info-accordion__panel-motion,
   .dtb-pdp-info-accordion__panel-motion .dtb-pdp-info-accordion__panel > * {
     transition: none;
-    filter: none;
     transform: none;
     animation: none;
     opacity: 1;
