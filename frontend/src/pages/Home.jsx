@@ -66,7 +66,11 @@ export default function Home() {
       ? columbiaHeroLogo
       : (/platinum/i.test(brand.name) ? platinumHeroLogo : brand.logo),
     to: brand.to,
-  })), [brands]);
+  })).concat({
+    name: 'USG Sheetrock Tools',
+    src: '/brands/USG-Sheetrock-Tools/usg-sheetrock-tools.svg',
+    to: '/products/brands/usg-sheetrock-tools',
+  }), [brands]);
 
   return (
     <>
