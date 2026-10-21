@@ -70,6 +70,10 @@ export default function Home() {
     name: 'USG Sheetrock Tools',
     src: getBrandLogo('USG Sheetrock Tools'),
     to: '/products/brands/usg-sheetrock-tools',
+  }, {
+    name: 'Asgard',
+    src: '/logos/asgard_logo.svg',
+    to: '/products/brands/asgard',
   }), [brands]);
 
   return (
