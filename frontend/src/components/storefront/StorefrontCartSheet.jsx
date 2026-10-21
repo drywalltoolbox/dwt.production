@@ -346,7 +346,7 @@ export default function StorefrontCartSheet({
             <div className="scs-header-icon">
               <ShoppingCart size={15} strokeWidth={2.3} />
             </div>
-            <h3 className="scs-title">Your Toolbox</h3>
+            <h3 className="scs-title">Your cart</h3>
             {itemCount > 0 && (
               <span className="scs-count">{itemCount}</span>
             )}
@@ -381,7 +381,7 @@ export default function StorefrontCartSheet({
             <div
               className="scs-shipping-progress__track"
               role="progressbar"
-              aria-label="Progress toward $75 free shipping"
+              aria-label={`Progress toward ${FREE_SHIPPING_THRESHOLD} free shipping`}
               aria-valuemin={0}
               aria-valuemax={FREE_SHIPPING_THRESHOLD}
               aria-valuenow={Math.min(FREE_SHIPPING_THRESHOLD, Math.max(0, Number(subtotal.toFixed(2))))}
@@ -529,7 +529,7 @@ export default function StorefrontCartSheet({
                       className="scs-coupon-toggle"
                       type="button"
                       onClick={() => { setCouponOpen(true); setCouponError(''); setCouponMessage(''); }}
-                      aria-expanded="false"
+                      aria-expanded={couponOpen}
                     >
                       <Tag size={15} aria-hidden="true" />
                       <span>Add a discount code</span>
