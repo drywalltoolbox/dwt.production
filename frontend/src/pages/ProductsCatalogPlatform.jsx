@@ -262,7 +262,7 @@ function toBrandFacet(rawBrand = {}) {
     key: rawBrand.key || slug,
     label,
     slug,
-    logo: rawBrand.logo || rawBrand.image || rawBrand.imageUrl || getBrandLogo(label || slug),
+    logo: getBrandLogo(label || slug) || rawBrand.logo || rawBrand.image || rawBrand.imageUrl || '',
     productCount: rawBrand.productCount || rawBrand.count || 0,
   };
 }

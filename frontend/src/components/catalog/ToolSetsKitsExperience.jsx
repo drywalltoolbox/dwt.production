@@ -25,7 +25,7 @@ function productPrice(product) {
 export default function ToolSetsKitsExperience({ category, breadcrumbs = [], products = [], brands = [], onAddToCart, onOpenProduct }) {
   const featured = products.slice(0, 4);
   const trustedBrands = brands
-    .map((brand) => ({ name: brand.name || brand.label, src: brand.logo || getBrandLogo(brand.name || brand.label), to: `/products/brands/${brand.slug}` }))
+    .map((brand) => ({ name: brand.name || brand.label, src: getBrandLogo(brand.name || brand.label) || brand.logo, to: `/products/brands/${brand.slug}` }))
     .filter((brand) => brand.name && brand.src && brand.to)
     .slice(0, 7);
   return (

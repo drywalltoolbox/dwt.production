@@ -108,6 +108,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--login", action="store_true", help="open TSW login and save a local browser session")
     parser.add_argument("--brands-file", type=Path, default=DEFAULT_SOURCES, help="JSON catalog source configuration")
+    parser.add_argument("--only-source", action="append", default=[], help="scrape only the named configured source (repeatable)")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--cookies-file", type=Path, default=DEFAULT_COOKIES)
     parser.add_argument("--profile-dir", type=Path, default=DEFAULT_PROFILE)
@@ -115,6 +116,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--delay-seconds", type=float, default=0.5, help="pause between individual product requests")
     parser.add_argument("--timeout-seconds", type=float, default=30.0)
     parser.add_argument("--allow-missing-prices", action="store_true")
+    parser.add_argument("--full-evidence", action="store_true", help="include source URLs, image URLs, price units and provenance in CSV")
+    parser.add_argument("--include-excluded-names", action="store_true", help="include product names normally excluded from cost-only exports")
     args = parser.parse_args()
     if args.delay_seconds < 0 or args.timeout_seconds <= 0:
         parser.error("timeouts must be positive and delay must not be negative")
@@ -432,21 +435,21 @@ def compact_csv_text(value: object) -> str:
     return " ".join(str(value or "").replace("\r", " ").replace("\n", " ").split())
 
 
-def write_output_atomic(path: Path, rows: list[dict[str, object]]) -> None:
+def write_output_atomic(path: Path, rows: list[dict[str, object]], fields: list[str] = OUTPUT_FIELDS) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     fd, temp_name = tempfile.mkstemp(prefix=f".{path.name}.", suffix=".tmp", dir=path.parent)
     try:
         with os.fdopen(fd, "w", encoding="utf-8", newline="") as handle:
             writer = csv.DictWriter(
                 handle,
-                fieldnames=OUTPUT_FIELDS,
+                fieldnames=fields,
                 extrasaction="ignore",
                 quoting=csv.QUOTE_NONNUMERIC,
                 lineterminator="\n",
             )
             writer.writeheader()
             for row in rows:
-                exported = {field: compact_csv_text(row.get(field, "")) for field in OUTPUT_FIELDS}
+                exported = {field: compact_csv_text(row.get(field, "")) for field in fields}
                 cost = exported["supplier_cost"]
                 if cost:
                     exported["supplier_cost"] = float(Decimal(cost).quantize(Decimal("0.01")))
@@ -514,6 +517,17 @@ def main() -> int:
     fingerprint = config_fingerprint(args.brands_file)
     checkpoint = checkpoint_path(args.output)
     brands = load_brands(args.brands_file)
+    if args.only_source:
+        wanted = {value.strip().casefold() for value in args.only_source}
+        available = {brand.source_name.casefold() for brand in brands}
+        unknown = wanted - available
+        if unknown:
+            raise ScrapeError(f"Unknown configured sources: {', '.join(sorted(unknown))}")
+        brands = [brand for brand in brands if brand.source_name.casefold() in wanted]
+    if args.only_source or args.include_excluded_names:
+        variant = json.dumps({"sources": [brand.source_name for brand in brands], "include_excluded_names": args.include_excluded_names}, sort_keys=True)
+        fingerprint = hashlib.sha256(f"{fingerprint}:{variant}".encode("utf-8")).hexdigest()
+    export_fields = FIELDNAMES if args.full_evidence else OUTPUT_FIELDS
     items = load_checkpoint(checkpoint, fingerprint)
 
     with sync_playwright() as playwright:
@@ -558,12 +572,12 @@ def main() -> int:
                             continue
                         print(f"  {product.listing_sku}")
                         row = scrape_product_detail(page, brand, product, timeout_ms, scraped_at)
-                        if excluded_by_name(brand, str(row["product_name"])):
+                        if not args.include_excluded_names and excluded_by_name(brand, str(row["product_name"])):
                             items[key] = {"status": "excluded", "row": None}
                         else:
                             items[key] = {"status": "included", "row": row}
                         save_checkpoint(checkpoint, fingerprint, items)
-                        write_output_atomic(args.output, included_rows(items))
+                        write_output_atomic(args.output, included_rows(items), export_fields)
                         if args.delay_seconds:
                             page.wait_for_timeout(int(args.delay_seconds * 1000))
                         page.goto(catalog_url, wait_until="domcontentloaded", timeout=timeout_ms)
@@ -572,7 +586,7 @@ def main() -> int:
 
     rows = included_rows(items)
     validate_rows(rows, args.allow_missing_prices)
-    write_output_atomic(args.output, rows)
+    write_output_atomic(args.output, rows, export_fields)
     try:
         checkpoint.unlink()
     except FileNotFoundError:

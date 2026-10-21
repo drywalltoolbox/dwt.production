@@ -8,7 +8,7 @@ function normalizeBrands(brands) {
   return brands
     .map((brand) => {
       const name = String(brand?.name || '').trim();
-      const src = String(brand?.src || brand?.logo || getBrandLogo(name) || '').trim();
+      const src = String(getBrandLogo(name) || brand?.src || brand?.logo || '').trim();
       const to = String(brand?.to || brand?.href || '').trim();
       return { name, src, to };
     })
@@ -18,7 +18,7 @@ function normalizeBrands(brands) {
 function BrandItem({ brand, clone = false }) {
   const content = (
     <>
-      {brand.src ? <img src={brand.src} alt={clone ? '' : brand.name} width="160" height="48" loading="lazy" decoding="async" /> : <span>{brand.name}</span>}
+      {brand.src ? <img src={brand.src} alt={clone ? '' : brand.name} width="160" height="48" loading={clone ? 'lazy' : 'eager'} decoding="async" /> : <span>{brand.name}</span>}
     </>
   );
   const itemProps = {

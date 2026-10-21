@@ -224,3 +224,54 @@ not a physical shipping specification. Negative, nonnumeric, or nonfinite
 measurements, duplicate targets, or missing targets stop the run. The audit also
 reports catalog rows with no confirmed TSW identity match, by brand. An audit
 report is written to `results/shipping/tsw-shipping-spec-migration-report.json`.
+
+## Scoped USG draft-product enrichment evidence
+
+For USG-only collection, use the existing tracked source definition instead of
+scraping all configured brands. The `--full-evidence` option retains the exact
+supplier product URL, image URL, price unit, currency, description HTML, and
+UTC observation time in addition to the existing cost-export fields.
+`--include-excluded-names` is explicit because the standard *cost-only*
+workflow intentionally excludes knives, trowels, kits, sanding items, and
+similar products. The default export behavior remains unchanged.
+
+```powershell
+scripts\supplier-catalog\.venv\Scripts\python scripts\supplier-catalog\scrape_tsw_catalog.py `
+  --only-source "USG Sheetrock Tools" `
+  --full-evidence --include-excluded-names `
+  --output scripts\supplier-catalog\results\cost\usg-refresh.csv
+```
+
+Supplier authentication is required for account-specific costs. If the session
+has expired, reauthenticate with `--login`; do not bypass login or infer a
+current cost from public retail prices. The supplier output must be reconciled
+by exact, brand-compatible SKU against existing WooCommerce draft products and
+their variation SKUs. Parent product SKUs are not substitutes for variation
+manufacturer part numbers. Check image URLs can be downloaded by WordPress
+before linking/importing media. Treat missing supplier images, costs, or
+descriptions as unresolved evidence, not as blank values to overwrite.
+Preserve existing SKU/MPN/GTIN, retail pricing, inventory, publication status,
+and all protected catalog identities. Generated USG account evidence under
+`results/cost/usg*` is ignored and must never be committed to Git.
+
+The public image-reference harvester works without TSW account access and does
+**not** retrieve or infer wholesale costs. It lists every configured USG brand
+catalog page and records supplier image and detail URLs, normalized by the
+existing explicit `USG` prefix rule:
+
+```powershell
+python scripts\supplier-catalog\scrape_tsw_public_images.py `
+  --source-name "USG Sheetrock Tools"
+```
+
+This writes `results/cost/usg-public-images.csv`. In the 2026-10-20 USG
+reconciliation, the public brand listing exposed 126 supplier SKUs, and
+81 source images uniquely matched the 81 existing simple WooCommerce draft
+products. All 81 image URLs were independently checked for HTTP 200 and an
+image content type. Existing stilt parent and variation galleries were retained.
+The official launch catalog's `Images` field was reconciled by exact SKU to
+the **WooCommerce-hosted** imported media URLs, not third-party hotlinks.
+The preexisting long-form catalog descriptions for all 81 simple products
+were independently compared against the live public TSW descriptions and
+found text-equivalent; those long descriptions were intentionally preserved.
+No supplier cost update was attempted with expired authentication evidence.
