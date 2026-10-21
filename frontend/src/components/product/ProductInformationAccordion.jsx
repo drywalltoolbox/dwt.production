@@ -5,13 +5,21 @@ import { ChevronDown } from 'lucide-react';
 /** Full-page PDP information only; product, variation and cart state stay upstream. */
 export default function ProductInformationAccordion({ description, features, specs, partsUrl, specificationsRequest = 0 }) {
   const [openKeys, setOpenKeys] = useState([]);
+  const [renderedKeys, setRenderedKeys] = useState([]);
   useEffect(() => {
     if (!specificationsRequest) return;
+    setRenderedKeys((current) => current.includes('specs') ? current : [...current, 'specs']);
     setOpenKeys((current) => current.includes('specs') ? current : [...current, 'specs']);
   }, [specificationsRequest]);
-  const toggle = (key) => setOpenKeys((current) => current.includes(key)
-    ? current.filter((item) => item !== key)
-    : [...current, key]);
+  const toggle = (key) => {
+    if (openKeys.includes(key)) {
+      setOpenKeys((current) => current.filter((item) => item !== key));
+      return;
+    }
+
+    setRenderedKeys((current) => current.includes(key) ? current : [...current, key]);
+    setOpenKeys((current) => current.includes(key) ? current : [...current, key]);
+  };
 
   const sections = [
     { key: 'description', title: 'Description', content: description },
@@ -34,7 +42,19 @@ export default function ProductInformationAccordion({ description, features, spe
               <span>{title}</span><ChevronDown size={17} aria-hidden="true" className={openKeys.includes(key) ? 'is-open' : ''} />
             </button>
           </h2>
-          {openKeys.includes(key) && <div id={`dtb-pdp-detail-${key}`} className="dtb-pdp-info-accordion__panel">{content}</div>}
+          <div
+            id={`dtb-pdp-detail-${key}`}
+            className="dtb-pdp-info-accordion__panel-motion"
+            data-open={openKeys.includes(key)}
+            aria-hidden={!openKeys.includes(key)}
+            inert={!openKeys.includes(key)}
+          >
+            <div className="dtb-pdp-info-accordion__panel-clip">
+              {renderedKeys.includes(key) && (
+                <div className="dtb-pdp-info-accordion__panel">{content}</div>
+              )}
+            </div>
+          </div>
         </div>
       ))}
     </section>

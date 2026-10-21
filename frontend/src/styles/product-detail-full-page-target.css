@@ -346,7 +346,7 @@
 }
 .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading svg {
   flex-shrink: 0;
-  transition: transform 160ms ease;
+  transition: transform 320ms cubic-bezier(.2, .75, .15, 1);
 }
 .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading svg.is-open { transform: rotate(180deg); }
 .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__panel {

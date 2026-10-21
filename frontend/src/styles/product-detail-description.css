@@ -426,6 +426,67 @@
   }
 }
 
+/* Accordion open/close motion is shared by the full PDP and Quick View. The
+ * grid track reveal keeps the inline details flow intact while the content
+ * uses the reference's restrained staggered blur and lift entrance. */
+.dtb-pdp-info-accordion__panel-motion {
+  display: grid;
+  grid-template-rows: 0fr;
+  opacity: 0;
+  transform: translateY(-5px);
+  filter: blur(5px);
+  pointer-events: none;
+  transition:
+    grid-template-rows 480ms cubic-bezier(.2, .75, .15, 1),
+    opacity 280ms ease,
+    transform 400ms cubic-bezier(.2, .75, .15, 1),
+    filter 360ms ease;
+}
+.dtb-pdp-info-accordion__panel-motion[data-open="true"] {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  pointer-events: auto;
+}
+.dtb-pdp-info-accordion__panel-clip {
+  min-height: 0;
+  overflow: hidden;
+}
+.dtb-pdp-info-accordion__panel-motion .dtb-pdp-info-accordion__panel > * {
+  opacity: 0;
+  filter: blur(5px);
+  transform: translateY(8px);
+}
+.dtb-pdp-info-accordion__panel-motion[data-open="true"] .dtb-pdp-info-accordion__panel > * {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+  animation: dtb-pdp-detail-item-enter 340ms cubic-bezier(.2, .75, .15, 1) both;
+}
+.dtb-pdp-info-accordion__panel-motion[data-open="true"] .dtb-pdp-info-accordion__panel > :nth-child(1) { animation-delay: 35ms; }
+.dtb-pdp-info-accordion__panel-motion[data-open="true"] .dtb-pdp-info-accordion__panel > :nth-child(2) { animation-delay: 80ms; }
+.dtb-pdp-info-accordion__panel-motion[data-open="true"] .dtb-pdp-info-accordion__panel > :nth-child(3) { animation-delay: 125ms; }
+.dtb-pdp-info-accordion__panel-motion[data-open="true"] .dtb-pdp-info-accordion__panel > :nth-child(4) { animation-delay: 170ms; }
+.dtb-pdp-info-accordion__panel-motion[data-open="true"] .dtb-pdp-info-accordion__panel > :nth-child(5) { animation-delay: 215ms; }
+.dtb-pdp-info-accordion__panel-motion[data-open="true"] .dtb-pdp-info-accordion__panel > :nth-child(n + 6) { animation-delay: 260ms; }
+
+@keyframes dtb-pdp-detail-item-enter {
+  from { opacity: 0; filter: blur(5px); transform: translateY(8px); }
+  to { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dtb-pdp-info-accordion__panel-motion,
+  .dtb-pdp-info-accordion__panel-motion .dtb-pdp-info-accordion__panel > * {
+    transition: none;
+    filter: none;
+    transform: none;
+    animation: none;
+    opacity: 1;
+  }
+}
+
 /* Accordion document flow: imported WooCommerce markup may contain floats,
  * fixed widths and tables from legacy descriptions. Scope normalization to
  * product-information panels, not product data or global typography. */

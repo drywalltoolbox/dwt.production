@@ -1,5 +1,4 @@
 import TrendingProducts from '../components/catalog/TrendingProducts';
-import { useMemo } from 'react';
 import HomeHero from '../components/home/HomeHero';
 import SEOHead from '../components/shared/SEOHead';
 import { buildOrganizationSchema, buildSiteLinksSearchBoxSchema } from '../utils/schema';
@@ -7,27 +6,13 @@ import StorefrontSection from '../components/storefront/StorefrontSection';
 import StorefrontRail from '../components/storefront/StorefrontRail';
 import StorefrontBrandTile from '../components/storefront/StorefrontBrandTile';
 import StorefrontProductRail from '../components/storefront/StorefrontProductRail';
-import { useCatalogFacets } from '../hooks/useCatalogFacets.js';
 import { getBrandLogo } from '../utils/brandAssets.js';
 import { brandToSlug } from '../utils/catalogUrlState.js';
-import { mapCatalogBrands } from '../utils/catalogFacets.js';
 
-const MAX_HOME_BRANDS = 6;
-const HOME_BRAND_ORDER = ['TapeTech', 'Columbia Tools', 'Platinum Drywall Tools', 'Level5', 'SurPro', 'DuraStilts'];
+const HOME_BRAND_ORDER = ['TapeTech', 'Columbia Tools', 'Platinum Drywall Tools', 'Level 5', 'SurPro', 'Dura-Stilts'];
 
 function normalizeHomeBrandName(value = '') {
   return String(value).toLowerCase().replace(/[^a-z0-9]/g, '');
-}
-
-function getHomeBrandOrderIndex(value = '') {
-  const normalized = normalizeHomeBrandName(value);
-  if (normalized.includes('tapetech')) return 0;
-  if (normalized.includes('columbia')) return 1;
-  if (normalized.includes('platinum')) return 2;
-  if (normalized.includes('level5')) return 3;
-  if (normalized.includes('surpro')) return 4;
-  if (normalized.includes('durastilts')) return 5;
-  return Number.POSITIVE_INFINITY;
 }
 
 function getHomeBrandDisplayName(value = '') {
@@ -56,24 +41,16 @@ const HOME_TRUST_BRANDS = HOME_TRUST_BRAND_NAMES.map((brandName) => {
   };
 });
 
+const HOME_SHOP_BRANDS = HOME_BRAND_ORDER.map((brandName) => {
+  const name = getHomeBrandDisplayName(brandName);
+  return {
+    name,
+    logo: getBrandLogo(brandName),
+    to: `/products/brands/${brandToSlug(brandName)}`,
+  };
+});
+
 export default function Home() {
-  const { facets } = useCatalogFacets();
-  const brands = useMemo(() => {
-    const mapped = mapCatalogBrands(facets?.brands);
-    return mapped
-      .filter((brand) => Number.isFinite(getHomeBrandOrderIndex(brand.name)))
-      .sort((a, b) => getHomeBrandOrderIndex(a.name) - getHomeBrandOrderIndex(b.name))
-      .slice(0, MAX_HOME_BRANDS)
-      .map((brand) => {
-        const name = getHomeBrandDisplayName(brand.name);
-        const logo = getBrandLogo(brand.name) || getBrandLogo(name);
-        return {
-          name,
-          logo,
-          to: `/products/brands/${brand.slug}`,
-        };
-      });
-  }, [facets]);
   return (
     <>
       <SEOHead
@@ -112,7 +89,7 @@ export default function Home() {
               viewAllLabel="All brands"
             >
               <StorefrontRail label="Brands" className="storefront-rail--brand">
-                {brands.map((brand) => (
+                {HOME_SHOP_BRANDS.map((brand) => (
                   <StorefrontBrandTile key={brand.name} {...brand} />
                 ))}
               </StorefrontRail>

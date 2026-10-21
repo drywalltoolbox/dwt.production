@@ -2600,7 +2600,7 @@
 }
 .dtb-pdp--modal .dtb-pdp-info-accordion__heading button:hover { background: #f8faff; }
 .dtb-pdp--modal .dtb-pdp-info-accordion__heading button:focus-visible { outline: 2px solid #1f55ee; outline-offset: -3px; }
-.dtb-pdp--modal .dtb-pdp-info-accordion__heading svg { flex: 0 0 auto; transition: transform 160ms ease; }
+.dtb-pdp--modal .dtb-pdp-info-accordion__heading svg { flex: 0 0 auto; transition: transform 320ms cubic-bezier(.2, .75, .15, 1); }
 .dtb-pdp--modal .dtb-pdp-info-accordion__heading svg.is-open { transform: rotate(180deg); }
 .dtb-pdp--modal .dtb-pdp-info-accordion__panel {
   min-width: 0;
