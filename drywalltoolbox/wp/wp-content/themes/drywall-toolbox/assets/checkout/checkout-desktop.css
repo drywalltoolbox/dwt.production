@@ -1,3 +1,13 @@
+/**
+ * Keep the summary sticky to the viewport. The base checkout stylesheet clips
+ * horizontal overflow on body and #primary with hidden; that creates an ancestor
+ * scroll container and prevents position: sticky from following the page scroll.
+ * clip masks horizontal paint without creating a scrolling ancestor.
+ */
+@media (min-width: 1024px) {
+	body, #primary { overflow-x: clip; }
+}
+
 /** Drywall Toolbox — desktop checkout layout authority (>=1024px). */
 @media (min-width: 1024px) {
 	body {
