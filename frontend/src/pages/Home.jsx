@@ -9,6 +9,7 @@ import StorefrontBrandTile from '../components/storefront/StorefrontBrandTile';
 import StorefrontProductRail from '../components/storefront/StorefrontProductRail';
 import { useCatalogFacets } from '../hooks/useCatalogFacets.js';
 import { getBrandLogo } from '../utils/brandAssets.js';
+import { brandToSlug } from '../utils/catalogUrlState.js';
 import { mapCatalogBrands } from '../utils/catalogFacets.js';
 
 const MAX_HOME_BRANDS = 6;
@@ -40,6 +41,21 @@ function getHomeBrandDisplayName(value = '') {
   return value;
 }
 
+const HOME_TRUST_BRAND_NAMES = [
+  ...HOME_BRAND_ORDER,
+  'USG Sheetrock Tools',
+  'Asgard',
+];
+
+const HOME_TRUST_BRANDS = HOME_TRUST_BRAND_NAMES.map((brandName) => {
+  const name = getHomeBrandDisplayName(brandName);
+  return {
+    name,
+    src: getBrandLogo(brandName),
+    to: `/products/brands/${brandToSlug(brandName)}`,
+  };
+});
+
 export default function Home() {
   const { facets } = useCatalogFacets();
   const brands = useMemo(() => {
@@ -58,20 +74,6 @@ export default function Home() {
         };
       });
   }, [facets]);
-  const heroBrands = useMemo(() => brands.map((brand) => ({
-    name: brand.name,
-    src: brand.logo,
-    to: brand.to,
-  })).concat({
-    name: 'USG Sheetrock Tools',
-    src: getBrandLogo('USG Sheetrock Tools'),
-    to: '/products/brands/usg-sheetrock-tools',
-  }, {
-    name: 'Asgard',
-    src: getBrandLogo('Asgard'),
-    to: '/products/brands/asgard',
-  }), [brands]);
-
   return (
     <>
       <SEOHead
@@ -83,7 +85,7 @@ export default function Home() {
       />
 
       <div className="page-wrapper dtb-home-page storefront-shell">
-        <HomeHero brands={heroBrands} />
+        <HomeHero brands={HOME_TRUST_BRANDS} />
 
         <div className="dtb-home-storefront">
           <div className="dtb-container dtb-container--fluid pb-4">
