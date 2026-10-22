@@ -186,6 +186,11 @@
   line-height: 1.6;
 }
 
+.dtb-pdp-description-content--rich .dtb-pdp-description-card > p :is(strong, b) {
+  color: #172033;
+  font-weight: 750;
+}
+
 .dtb-pdp-description-content p + p,
 .dtb-pdp-description-content--rich .dtb-pdp-description-card > p + p {
   margin-top: .62rem;
