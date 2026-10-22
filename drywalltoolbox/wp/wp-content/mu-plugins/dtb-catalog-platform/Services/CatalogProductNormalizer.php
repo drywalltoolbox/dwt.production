@@ -279,9 +279,17 @@ final class DTB_CatalogProductNormalizer {
 	/** Determine whether this product is a replacement part. */
 	private static function extract_is_parts( array $meta, array $wc_categories ): bool {
 		$explicit = $meta[ DTB_ProductMeta::IS_PARTS ] ?? null;
-		if ( null !== $explicit ) {
-			return (bool) $explicit;
+		$value    = is_scalar( $explicit ) ? strtolower( trim( (string) $explicit ) ) : '';
+
+		// Empty and unrecognized legacy values are not authoritative. Let the
+		// Replacement Parts taxonomy supply the compatibility fallback.
+		if ( in_array( $value, [ '1', 'true', 'yes', 'on' ], true ) ) {
+			return true;
 		}
+		if ( in_array( $value, [ '0', 'false', 'no', 'off' ], true ) ) {
+			return false;
+		}
+
 		foreach ( $wc_categories as $cat ) {
 			$name = strtolower( (string) ( $cat['name'] ?? '' ) );
 			if ( preg_match( '/parts|repair|replacement/i', $name ) ) {
