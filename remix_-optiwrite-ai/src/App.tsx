@@ -34,6 +34,7 @@ import {
   processBulkDescriptions,
   shouldResearchSparseItem,
   willUseOnlineResearch,
+  DEFAULT_ONLINE_RESEARCH_PRODUCT_CAP,
   type EnhancedDescription,
   type EnhanceOptions
 } from './services/aiService';
@@ -129,7 +130,7 @@ export default function App() {
   const [generateFeatures, setGenerateFeatures] = useState(true);
   const [generateSpecifications, setGenerateSpecifications] = useState(true);
   const [generateSeo, setGenerateSeo] = useState(true);
-  const [researchMode, setResearchMode] = useState<'off' | 'sparse' | 'all'>('sparse');
+  const [researchMode, setResearchMode] = useState<'off' | 'sparse' | 'all'>('off');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -154,6 +155,7 @@ export default function App() {
     generateSeo,
     enableWebSearch: researchMode === 'all',
     researchSparseOnly: researchMode === 'sparse',
+    maxOnlineResearchProducts: DEFAULT_ONLINE_RESEARCH_PRODUCT_CAP,
     competitorContext: competitorContext.trim() || undefined,
     inventory: bulkItems,
     storefrontProductPathPrefix: '/products',
@@ -898,7 +900,7 @@ export default function App() {
                           <div>
                             <p className="font-semibold">{bulkItems.length.toLocaleString()} Rows Loaded</p>
                             <p className="text-xs text-brand-secondary">{bulkItems.filter(isBulkGenerationTarget).length.toLocaleString()} published/draft rows targeted; {bulkItems.filter(item => !isBulkGenerationTarget(item)).length.toLocaleString()} other-status rows held unchanged</p>
-                            <p className="text-xs text-brand-secondary">Online research planned after manufacturer catalog lookup: {bulkItems.filter(item => isBulkGenerationTarget(item) && willUseOnlineResearch(item, researchMode, bulkItems)).length.toLocaleString()} products; search queries per product may vary.</p>
+                            <p className="text-xs text-brand-secondary">Online research planned after manufacturer catalog lookup: {Math.min(DEFAULT_ONLINE_RESEARCH_PRODUCT_CAP, bulkItems.filter(item => isBulkGenerationTarget(item) && willUseOnlineResearch(item, researchMode, bulkItems)).length).toLocaleString()} products maximum per run; {DEFAULT_ONLINE_RESEARCH_PRODUCT_CAP} product cap protects the research budget.</p>
                           </div>
                         </div>
                         <button onClick={() => { setBulkItems([]); setBulkResults([]); setProgress({ current: 0, total: 0 }); }} className="p-2 text-gray-400 hover:text-red-500 transition-colors"><Trash2 className="w-5 h-5" /></button>
@@ -1187,7 +1189,7 @@ export default function App() {
                 <div className="pt-6 border-t border-gray-100">
                   <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Optional Generation Context</h3>
                   <div className="space-y-4">
-                    <label className="flex flex-col gap-2"><span className="text-sm font-medium text-brand-secondary">Official-source research</span><select value={researchMode} onChange={event => setResearchMode(event.target.value as 'off' | 'sparse' | 'all')} className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none text-sm bg-white"><option value="off">Manufacturer PDFs and catalog only</option><option value="sparse">Manufacturer PDFs, then research sparse products</option><option value="all">Manufacturer PDFs, then research remaining products</option></select><span className="text-xs text-gray-500">The four manufacturer PDFs are indexed locally and read first. Online research is skipped when a specific catalog excerpt is available. Sparse mode considers identifiable products with little detail{bulkItems.length ? ` (${bulkItems.filter(item => isBulkGenerationTarget(item) && shouldResearchSparseItem(item)).length.toLocaleString()} sparse rows)` : ''}. An optional “Official source URL” uses URL Context; otherwise Google Search may run multiple billable queries per selected product.</span></label>
+                    <label className="flex flex-col gap-2"><span className="text-sm font-medium text-brand-secondary">Official-source research</span><select value={researchMode} onChange={event => setResearchMode(event.target.value as 'off' | 'sparse' | 'all')} className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none text-sm bg-white"><option value="off">Manufacturer PDFs and catalog only (recommended)</option><option value="sparse">Manufacturer PDFs, then research sparse products (max {DEFAULT_ONLINE_RESEARCH_PRODUCT_CAP})</option><option value="all">Manufacturer PDFs, then research remaining products (max {DEFAULT_ONLINE_RESEARCH_PRODUCT_CAP})</option></select><span className="text-xs text-gray-500">The four manufacturer PDFs are indexed locally and read first. Online research is disabled by default and capped at {DEFAULT_ONLINE_RESEARCH_PRODUCT_CAP} products per run when enabled. An optional “Official source URL” uses URL Context; otherwise Google Search may run multiple billable queries per selected product.</span></label>
                     <label className="flex flex-col gap-2"><span className="text-sm font-medium text-brand-secondary">Global Competitor Context</span><textarea value={competitorContext} onChange={event => setCompetitorContext(event.target.value)} placeholder="Optional URL or text. Used only as untrusted market-language context." className="w-full h-20 p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition-all resize-none text-sm bg-white" /></label>
                   </div>
                 </div>

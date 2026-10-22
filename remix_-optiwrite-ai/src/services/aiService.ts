@@ -17,6 +17,8 @@ const DEFAULT_MAX_ATTEMPTS = 3;
 const DEFAULT_TIMEOUT_MS = 60_000;
 const GROUNDED_TIMEOUT_MS = 120_000;
 const DEFAULT_REPAIR_PASS = true;
+/** Conservative per-run cap for billable online research. Local manufacturer evidence is unlimited. */
+export const DEFAULT_ONLINE_RESEARCH_PRODUCT_CAP = 10;
 
 const DEFAULT_MODEL = "gemini-3.1-flash-lite";
 
@@ -147,6 +149,9 @@ export interface EnhanceOptions {
   generateSeo: boolean;
   enableWebSearch: boolean;
   researchSparseOnly?: boolean;
+  /** Set internally by the bulk planner; false prevents Google/URL research for this item. */
+  onlineResearchAllowed?: boolean;
+  maxOnlineResearchProducts?: number;
   competitorContext?: string;
   inventory?: any[];
   abortSignal?: AbortSignal;
@@ -301,6 +306,15 @@ function copyIncludesExactProductName(productName: string, copy: string): boolea
   return Boolean(normalizedName && normalizeSearchText(copy).includes(normalizedName));
 }
 
+function copyIncludesCompactSeoIdentity(productName: string, copy: string): boolean {
+  const expected = normalizeSearchText(productName).split(/\s+/)
+    .filter(token => token.length > 1 && !/^(?:the|and|for|with|x)$/.test(token));
+  const actual = new Set(normalizeSearchText(copy).split(/\s+/));
+  const overlap = expected.filter(token => actual.has(token) || actual.has(token.replace(/s$/, "")));
+  const required = Math.min(expected.length, Math.max(3, Math.ceil(expected.length * 0.5)));
+  return expected.length > 0 && overlap.length >= required;
+}
+
 function countWords(value: string): number {
   const plain = stripHtml(value);
   return plain ? plain.split(/\s+/).filter(Boolean).length : 0;
@@ -331,11 +345,23 @@ interface ManufacturerEvidence {
   officialSku: string;
 }
 
+const manufacturerEvidenceCache = new Map<string, ManufacturerEvidence[]>();
+
+function clearManufacturerEvidenceCache(): void {
+  manufacturerEvidenceCache.clear();
+}
+
 /** Resolve a bounded evidence packet; the full extracted PDF text never enters a model request. */
 function manufacturerEvidenceFor(raw: Record<string, any>, variations: VariationSummary[] = []): ManufacturerEvidence[] {
+  const cacheKey = stableFingerprint({ raw: relevantCatalogData(raw), variations });
+  const cached = manufacturerEvidenceCache.get(cacheKey);
+  if (cached) return cached;
   const brandText = normalizeSearchText(getValue(raw, "Brands", "Brand", "Meta: schema_brand", "Meta: _dtb_brand_label"));
   const brand = Object.keys(manufacturerCatalogIndex.products).find(key => normalizeSearchText(key) === brandText);
-  if (!brand) return [];
+  if (!brand) {
+    manufacturerEvidenceCache.set(cacheKey, []);
+    return [];
+  }
   const catalog = manufacturerCatalogIndex.products[brand as keyof typeof manufacturerCatalogIndex.products] as Record<string, {
     catalogName: string;
     matches: Array<{ page: number; match: "sku" | "name"; detail: "specific" | "listing"; excerpt: string }>;
@@ -366,6 +392,7 @@ function manufacturerEvidenceFor(raw: Record<string, any>, variations: Variation
     selected.push(candidate);
     if (selected.length === 3) break;
   }
+  manufacturerEvidenceCache.set(cacheKey, selected);
   return selected;
 }
 
@@ -503,6 +530,14 @@ function sanitizeHtmlAllowlist(input: string): string {
     .trim();
 
   return value;
+}
+
+function emphasizeProductName(description: string, productName: string): string {
+  const plainName = cleanText(productName);
+  if (!description || !plainName) return description;
+  const withoutStrong = description.replace(/<\/?strong>/gi, "");
+  const escaped = plainName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return withoutStrong.replace(new RegExp(escaped, "i"), match => `<strong>${match}</strong>`);
 }
 
 export const sanitizeGeneratedContent = (text: string | undefined): string | undefined => {
@@ -1144,6 +1179,9 @@ const RELATIONSHIP_POLICY: Record<RelationshipType, string[]> = {
   ],
   variation_child: [
     "Write strictly for this single product variation (configuration/size/option).",
+    "Use the same variation layout for every child: description_full contains exactly two concise <p> paragraphs when a full description is requested; paragraph one identifies the exact variation and documented role, paragraph two explains the documented variation-specific size/configuration and use.",
+    "Variation overview paragraphs wrap the exact product name in <strong> once, consistently for every child. Do not bold other sentences or labels; frontend styling supplies the rest of the visual hierarchy.",
+    "Keep features as 3–5 short, parallel entries when supported, and keep specifications as separate factual entries. Do not move specification values into prose merely to make one variation sound different.",
     "CRITICAL DISTINCTION: This is an individual product variation with specific attributes (Variation Specs), NOT a bundle, toolkit, or combo set.",
     "NEVER use bundle/toolkit terminology (such as 'this kit includes', 'complete set', 'toolkit', 'bundle', 'all-in-one set').",
     "NEVER insert a 'Set Includes' or 'Kit Includes' section. Specific attributes (e.g. 7\", 10\", 12\" width, handle reach, or blade size) are Variation Specifications, NOT kit contents.",
@@ -1237,10 +1275,11 @@ WRITING STANDARD
 - Do not use empty marketing language such as essential tool, standout choice, experience the difference, perfect results, upgrade your toolkit, game-changer, revolutionary, elevate, unleash, next-level, or cutting-edge.
 - Do not use unsupported claim language such as precision-machined, professional-grade, industrial-grade, guaranteed fit, peak performance, maximum durability, reduces downtime, or boosts productivity unless authoritative evidence explicitly supports the claim.
 - Do not convert a specification into a fabricated benefit.
+- Every generated full description must bold the exact catalog product name once with <strong>. Do not bold other sentences or labels; the frontend uses this consistent product-identity treatment for every product type.
 
 PDP FIELD CONTRACT
 - The active PDP renders Description, Features, and Specifications as separate accordion panels backed by separate catalog fields.
-- description_full is the Overview/Description panel only. Return concise, useful paragraphs using only <p>, <strong>, and <br>. Never put feature lists, specification lists, compatibility claims, or package contents in this field; those have separate owners/fields.
+- description_full is the Overview/Description panel only. Return concise, useful paragraphs using only <p>, <strong>, and <br>. For variation children, wrap the exact product name in <strong> once and do not bold other sentences. Never put feature lists, specification lists, compatibility claims, or package contents in this field; those have separate owners/fields.
 - features is the separate Features panel. Generate distinct, useful features from the product's structured data and documented catalog copy. Each entry has a plain-text label, concise description, and source field names. Do not restate the specification list as features or turn dimensions into benefits.
 - specifications is the separate Specifications panel and WooCommerce _dtb_specs_json proposal. Preserve exact source values and units. Use structured specifications, attributes, dimensions, and precise facts in the catalog copy. Each entry has a label plus either value or verified items. Do not add inferred material, dimensions, ratings, capacity, compatibility, warranty, package contents, or other facts.
 - For a variable parent, use verified child variations' official SKU values for configuration identifiers. Never use the parent's storefront SKU as an item's SKU, part number, specification, or customer-facing identifier.
@@ -1251,7 +1290,7 @@ PDP FIELD CONTRACT
 - shortDescription is plain text without HTML, normally one or two useful contractor-oriented sentences for the above-the-fold PDP summary.
 
 SEO CONTRACT
-- seo_title: maximum ${SEO_TITLE_MAX} characters. Include the exact product name; shorten secondary wording to fit.
+- seo_title: maximum ${SEO_TITLE_MAX} characters. Include a compact identity containing the brand and the product's distinguishing name, type, size, and configuration tokens; the full catalog name may be shortened only when the character limit makes it impossible.
 - seo_description: maximum ${SEO_DESCRIPTION_MAX} characters. Include the exact product name; shorten secondary wording to fit.
 - Be product-specific; shorter is acceptable when stronger.
 - Focus keyword: one primary query target.
@@ -1557,7 +1596,10 @@ function normalizeModelOutput(raw: any, options: EnhanceOptions, context: Produc
   const result: ModelOutput = {};
   if (options.generateBrand) result.brand = cleanText(raw.brand);
   if (options.generateName) result.name = cleanText(raw.name);
-  if (options.generateFullDesc) result.description_full = sanitizeHtmlAllowlist(cleanText(raw.description_full));
+  if (options.generateFullDesc) {
+    const description = sanitizeHtmlAllowlist(cleanText(raw.description_full));
+    result.description_full = emphasizeProductName(description, cleanText(context.authoritativeFacts.identity?.name));
+  }
   if (options.generateShortDesc) result.shortDescription = stripHtml(cleanText(raw.shortDescription));
   const evidenceFields = generationEvidenceFields(context);
   if (options.generateFeatures) result.features = normalizeFeatureProposals(raw.features, evidenceFields);
@@ -1607,7 +1649,10 @@ function validateModelOutput(
     const plain = stripHtml(value);
     if (!plain) continue;
     const exactName = cleanText(context.authoritativeFacts.identity?.name);
-    if (exactName && !copyIncludesExactProductName(exactName, plain)) {
+    const identitySatisfied = field === "seo_title" && exactName.length > SEO_TITLE_MAX && plain.length <= SEO_TITLE_MAX
+      ? copyIncludesCompactSeoIdentity(exactName, plain)
+      : copyIncludesExactProductName(exactName, plain);
+    if (exactName && !identitySatisfied) {
       push("error", "missing_product_identity_in_copy", field, "Generated copy must identify the exact catalog product by name.", true);
     }
     // Product claims are governed by the concise evidence instructions, not
@@ -1640,6 +1685,14 @@ function validateModelOutput(
 
 function hasErrors(issues: GenerationIssue[]): boolean {
   return issues.some(issue => issue.severity === "error");
+}
+
+function isSeoIssue(issue: GenerationIssue): boolean {
+  return /^(?:seo(?:Meta)?(?:\.|$)|seo_)/i.test(issue.field);
+}
+
+function hasCoreErrors(issues: GenerationIssue[]): boolean {
+  return issues.some(issue => issue.severity === "error" && !isSeoIssue(issue));
 }
 
 function modelForTier(_tier?: ModelTier): string {
@@ -1909,6 +1962,13 @@ function buildGenerationUserPayload(context: ProductContext): string {
     verified_bundle_components: context.bundleComponents,
     verified_child_variations: context.variationSummaries,
     parent_context: context.parentContext || null,
+    variation_style: context.relationshipType === "variation_child" ? {
+      description_paragraphs: 2,
+      paragraph_1: "exact variation identity plus documented role or fitment",
+      paragraph_2: "documented variation size/configuration and use",
+      feature_entries: "3-5 parallel entries when supported",
+      specifications: "separate factual accordion entries"
+    } : null,
     note: "Use all concrete product details in the official catalog row as source evidence. Write new customer-facing content from those facts while preserving exact product identity and identifiers."
   };
 
@@ -1925,7 +1985,7 @@ ${JSON.stringify(output, null, 2)}
 REQUIRED CORRECTIONS:
 ${JSON.stringify(repairable, null, 2)}
 
-Correct only the listed issue. Include the exact catalog product name in each requested copy field, keep SEO title and description within their stated character limits, and preserve all supported source facts. Do not add new claims. Return the complete JSON object.`;
+Correct only the listed issue. Include the exact catalog product name in descriptions and shortDescription. For seo_title, preserve a compact identity with the brand and distinguishing product, type, size, and configuration terms when the full name cannot fit the character limit. Keep SEO title and description within their stated character limits, and preserve all supported source facts. Do not add new claims. Return the complete JSON object.`;
 }
 
 function composeEnhancedResult(
@@ -2029,7 +2089,8 @@ export const enhanceDescription = async (
   }
 
   const context = contextFromInput(input, options);
-  const researchRequested = (options.enableWebSearch || Boolean(options.researchSparseOnly && shouldResearchSparseItem(context.raw))) &&
+  const researchRequested = options.onlineResearchAllowed !== false &&
+    (options.enableWebSearch || Boolean(options.researchSparseOnly && shouldResearchSparseItem(context.raw))) &&
     !hasSpecificManufacturerEvidence(context.manufacturerEvidence);
   const sourceUrlInput = cleanText(getValue(context.raw, "Official source URL"));
   const validSourceUrl = officialSourceUrl(context.raw);
@@ -2037,6 +2098,11 @@ export const enhanceDescription = async (
   const generationOptions = { ...options, enableWebSearch: researchAttempted };
 
   const warnings: string[] = [];
+  const researchEligible = (options.enableWebSearch || Boolean(options.researchSparseOnly && shouldResearchSparseItem(context.raw))) &&
+    !hasSpecificManufacturerEvidence(context.manufacturerEvidence);
+  if (options.onlineResearchAllowed === false && researchEligible) {
+    warnings.push("Online research skipped because the configured per-run research cap was reached; generation used catalog evidence only.");
+  }
   if (researchRequested && sourceUrlInput && !validSourceUrl) {
     warnings.push("The supplied Official source URL is not a usable public HTTPS URL; online research was skipped for this product.");
   }
@@ -2097,6 +2163,15 @@ export const enhanceDescription = async (
   const modelVersion = cleanText(first.response?.modelVersion || finalResponse?.modelVersion) || undefined;
   const responseId = cleanText(first.response?.responseId || finalResponse?.responseId) || undefined;
 
+  const seoValidationIssues = validation.issues.filter(issue => issue.severity === "error" && isSeoIssue(issue));
+  if (seoValidationIssues.length) {
+    warnings.push("SEO metadata was incomplete or invalid; core product content remains usable and the SEO issue is recorded for follow-up.");
+    validation = {
+      ...validation,
+      issues: validation.issues.map(issue => isSeoIssue(issue) && issue.severity === "error" ? { ...issue, severity: "warning" } : issue)
+    };
+  }
+
   const audit: GenerationAudit = {
     policyVersion: POLICY_VERSION,
     generationId: generationId(context, generationOptions, first.modelName),
@@ -2119,7 +2194,7 @@ export const enhanceDescription = async (
     warnings
   };
 
-  if (hasErrors(validation.issues)) {
+  if (hasCoreErrors(validation.issues)) {
     const summary = validation.issues
       .filter(issue => issue.severity === "error")
       .map(issue => `${issue.field}: ${issue.message}`)
@@ -2148,7 +2223,8 @@ export function isGenerationComplete(result: any, options: EnhanceOptions): bool
   if (options.generateShortDesc && !cleanText(result.description_short || result.shortDescription)) return false;
   if (options.generateFeatures && !Array.isArray(result.features)) return false;
   if (options.generateSpecifications && !Array.isArray(result.specifications)) return false;
-  if (options.generateSeo && !result.seoMeta?.seo_title) return false;
+  const coreRequested = options.generateBrand || options.generateName || options.generateFullDesc || options.generateShortDesc || options.generateFeatures || options.generateSpecifications;
+  if (options.generateSeo && !coreRequested && !result.seoMeta?.seo_title) return false;
   return true;
 }
 
@@ -2212,6 +2288,7 @@ export function buildItemGenerationInput(items: any[], results: any[], index: nu
         contentClass: classifyContent(parentOriginal),
         catalogKind: normalizeCatalogKind(parentOriginal),
         authoritativeParentFacts: buildAuthoritativeFacts(parentOriginal),
+        authoritativeParentName: cleanText(getValue(parentOriginal, "Name")),
         verifiedParentIncludes: extractStructuredIncludes(parentOriginal)
       };
     }
@@ -2245,7 +2322,8 @@ function hydrateInitialResults(items: any[], initialResults: any[], options: Enh
     if (candidate?.audit?.policyVersion && candidate.audit.policyVersion !== POLICY_VERSION) return;
     const sourceUrlInput = cleanText(getValue(item, "Official source URL"));
     const variations = classifyRelationship(item) === "variable_parent" ? buildVariationSummaries(items, cleanText(getValue(item, "SKU"))) : [];
-    const researchRequested = (options.enableWebSearch || Boolean(options.researchSparseOnly && shouldResearchSparseItem(item))) &&
+    const researchRequested = options.onlineResearchAllowed !== false &&
+      (options.enableWebSearch || Boolean(options.researchSparseOnly && shouldResearchSparseItem(item))) &&
       !hasSpecificManufacturerEvidence(manufacturerEvidenceFor(item, variations)) &&
       (!sourceUrlInput || Boolean(officialSourceUrl(item)));
     if (researchRequested && candidate?.audit?.researchAttempted !== true) return;
@@ -2297,9 +2375,17 @@ export const processBulkDescriptions = async (
 ): Promise<any[]> => {
   if (!Array.isArray(items) || items.length === 0) return [];
 
+  clearManufacturerEvidenceCache();
   const results = hydrateInitialResults(items, initialResults, options);
   const order = orderedIndices(items);
   const targetSet = new Set(targetIndices || items.map((_, index) => index));
+  const researchMode = options.enableWebSearch ? "all" : options.researchSparseOnly ? "sparse" : "off";
+  const researchCap = Math.max(0, Math.floor(options.maxOnlineResearchProducts ?? DEFAULT_ONLINE_RESEARCH_PRODUCT_CAP));
+  const researchAllowed = new Set(
+    [...targetSet]
+      .filter(index => willUseOnlineResearch(items[index], researchMode, items))
+      .slice(0, researchCap)
+  );
   for (let index = 0; index < items.length; index++) {
     if (!targetSet.has(index)) results[index] = { ...items[index], _isSkipped: true };
   }
@@ -2308,8 +2394,9 @@ export const processBulkDescriptions = async (
   let finishedCount = targetList.filter(index =>
     isGenerationComplete(results[index], options) || !!results[index]?.error
   ).length;
-  let concurrency = options.modelTier === "flash" ? 4 : 2;
-  const maxConcurrency = concurrency;
+  const initialConcurrency = options.modelTier === "flash" ? 4 : 2;
+  const maxConcurrency = options.modelTier === "flash" ? 6 : 3;
+  let concurrency = initialConcurrency;
   let globalCooldownUntil = 0;
   let consecutiveSuccesses = 0;
   let fatalAuthError = false;
@@ -2351,6 +2438,10 @@ export const processBulkDescriptions = async (
         await delay(Math.min(globalCooldownUntil - Date.now(), 1_000));
         continue;
       }
+      if (workerId > concurrency) {
+        await delay(100);
+        continue;
+      }
 
       const index = claimNext();
       if (index === null) {
@@ -2368,6 +2459,7 @@ export const processBulkDescriptions = async (
         const competitorValue = getContainsKeyValue(item, "competitor");
         const itemOptions: EnhanceOptions = {
           ...options,
+          onlineResearchAllowed: researchAllowed.has(index),
           competitorContext: cleanText(competitorValue) || options.competitorContext,
           inventory: items,
           abortSignal
