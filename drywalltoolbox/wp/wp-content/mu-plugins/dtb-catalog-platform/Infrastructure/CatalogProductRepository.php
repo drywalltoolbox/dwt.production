@@ -194,11 +194,7 @@ final class DTB_CatalogProductRepository {
 			$display_category_key  = str_replace( '-', '_', $display_category_slug );
 			if ( '' !== $display_category_slug ) {
 				if ( self::is_parts_display_category( $display_category_slug ) ) {
-					$meta_query[] = [
-						'key'     => DTB_ProductMeta::IS_PARTS,
-						'value'   => '1',
-						'compare' => '=',
-					];
+					self::intersect_post_ids( $args, self::replacement_part_product_ids() );
 					$is_parts_constrained = true;
 				} else {
 					// Resolve to canonical slug and expand to all known raw DB forms so
@@ -294,12 +290,10 @@ final class DTB_CatalogProductRepository {
 
 		if ( ! $is_parts_constrained && isset( $filters['is_parts'] ) && null !== $filters['is_parts'] ) {
 			if ( (int) $filters['is_parts'] ) {
-				// Requesting parts: require the flag to be explicitly set to '1'.
-				$meta_query[] = [
-					'key'     => DTB_ProductMeta::IS_PARTS,
-					'value'   => '1',
-					'compare' => '=',
-				];
+				// Include explicitly flagged parts and legacy parts-category records
+				// whose import left the DTB flag blank or absent.
+				self::intersect_post_ids( $args, self::replacement_part_product_ids() );
+				$is_parts_constrained = true;
 			} else {
 				// Requesting non-parts: include products whose meta is absent
 				// (legacy imports) as well as those explicitly set to a non-'1' value.
@@ -372,6 +366,75 @@ final class DTB_CatalogProductRepository {
 	}
 
 	/**
+	 * Resolve explicit replacement-part flags plus legacy products assigned to
+	 * WooCommerce's Replacement Parts category with no meaningful DTB flag.
+	 *
+	 * Explicit 0 remains authoritative, so accidentally categorized tools do
+	 * not enter the parts catalog. This preserves a single shared rule for the
+	 * Parts route, display-category facet, and scoped facet counts.
+	 *
+	 * @return int[]
+	 */
+	private static function replacement_part_product_ids(): array {
+		static $resolved_ids = null;
+		if ( null !== $resolved_ids ) {
+			return $resolved_ids;
+		}
+
+		$base_args = [
+			'post_type'              => 'product',
+			'post_status'            => 'publish',
+			'fields'                 => 'ids',
+			'posts_per_page'         => -1,
+			'no_found_rows'          => true,
+			'ignore_sticky_posts'    => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
+		];
+
+		$ids = [];
+		self::merge_query_ids( $ids, array_merge( $base_args, [
+			'meta_query' => [
+				[
+					'key'     => DTB_ProductMeta::IS_PARTS,
+					'value'   => '1',
+					'compare' => '=',
+				],
+			],
+		] ) );
+
+		$parts_term = get_term_by( 'slug', 'replacement-parts', 'product_cat' );
+		if ( $parts_term instanceof WP_Term ) {
+			self::merge_query_ids( $ids, array_merge( $base_args, [
+				'tax_query' => [
+					[
+						'taxonomy'         => 'product_cat',
+						'field'            => 'term_id',
+						'terms'            => [ (int) $parts_term->term_id ],
+						'include_children' => true,
+						'operator'         => 'IN',
+					],
+				],
+				'meta_query' => [
+					'relation' => 'OR',
+					[
+						'key'     => DTB_ProductMeta::IS_PARTS,
+						'compare' => 'NOT EXISTS',
+					],
+					[
+						'key'     => DTB_ProductMeta::IS_PARTS,
+						'value'   => '',
+						'compare' => '=',
+					],
+				],
+			] ) );
+		}
+
+		$resolved_ids = array_values( array_unique( array_filter( array_map( 'absint', $ids ) ) ) );
+		return $resolved_ids;
+	}
+
+	/**
 	 * Resolve the full set of product IDs matching a single display-category
 	 * slug, applying the same alias/raw-form expansion, parts-bucket, and
 	 * compound-tube special-case rules as the single-value filter path.
@@ -401,17 +464,7 @@ final class DTB_CatalogProductRepository {
 		];
 
 		if ( self::is_parts_display_category( $display_category_slug ) ) {
-			$query = new WP_Query( array_merge( $base_args, [
-				'meta_query' => [
-					[
-						'key'     => DTB_ProductMeta::IS_PARTS,
-						'value'   => '1',
-						'compare' => '=',
-					],
-				],
-			] ) );
-
-			return array_map( 'absint', $query->posts ?? [] );
+			return self::replacement_part_product_ids();
 		}
 
 		$display_category_key = str_replace( '-', '_', $display_category_slug );
