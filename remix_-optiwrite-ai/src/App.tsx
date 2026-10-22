@@ -23,6 +23,7 @@ import Papa from 'papaparse';
 import localforage from 'localforage';
 import { marked } from 'marked';
 import { cn } from './lib/utils';
+import { CATALOG_CONTENT_FIELDS, serializeFeatures, serializeSpecifications } from './services/catalogFields';
 import {
   buildItemGenerationInput,
   enhanceDescription,
@@ -123,6 +124,8 @@ export default function App() {
   const [generateName, setGenerateName] = useState(false);
   const [generateFullDesc, setGenerateFullDesc] = useState(true);
   const [generateShortDesc, setGenerateShortDesc] = useState(true);
+  const [generateFeatures, setGenerateFeatures] = useState(true);
+  const [generateSpecifications, setGenerateSpecifications] = useState(true);
   const [generateSeo, setGenerateSeo] = useState(true);
   const [enableWebSearch, setEnableWebSearch] = useState(false);
   const [enableRepairPass, setEnableRepairPass] = useState(true);
@@ -145,6 +148,8 @@ export default function App() {
     generateName,
     generateFullDesc,
     generateShortDesc,
+    generateFeatures,
+    generateSpecifications,
     generateSeo,
     enableWebSearch,
     enableRepairPass,
@@ -158,6 +163,8 @@ export default function App() {
     generateName,
     generateFullDesc,
     generateShortDesc,
+    generateFeatures,
+    generateSpecifications,
     generateSeo,
     enableWebSearch,
     enableRepairPass,
@@ -165,7 +172,7 @@ export default function App() {
     bulkItems
   ]);
 
-  const hasGenerationSelection = generateBrand || generateName || generateFullDesc || generateShortDesc || generateSeo;
+  const hasGenerationSelection = generateBrand || generateName || generateFullDesc || generateShortDesc || generateFeatures || generateSpecifications || generateSeo;
 
   useEffect(() => {
     const loadData = async () => {
@@ -356,12 +363,6 @@ export default function App() {
       alert('No published or draft products were found. Rows with private or unsupported status are excluded.');
       return;
     }
-    if (!window.confirm(
-      `Generate content for ${targetIndices.length.toLocaleString()} published or draft rows? ` +
-      `This uses Gemini quota. Transient retries and automatic validation repair can make additional requests. ` +
-      `Other rows will stay unchanged and remain in the exported catalog.`
-    )) return;
-
     const controller = new AbortController();
     setAbortController(controller);
     setLoading(true);
@@ -605,13 +606,11 @@ export default function App() {
       const mapped: Record<string, any> = { ...item };
       if (isProcessed) {
         if (generateFullDesc && processed.description_full) {
-          const existing = findExistingKey(mapped, ['Description']);
-          mapped[existing || 'Description'] = formatToCleanHtml(processed.description_full, false);
+          mapped[CATALOG_CONTENT_FIELDS.description] = formatToCleanHtml(processed.description_full, false);
         }
         const shortDesc = processed.description_short || processed.shortDescription;
         if (generateShortDesc && shortDesc) {
-          const existing = findExistingKey(mapped, ['Short description']);
-          mapped[existing || 'Short description'] = formatToCleanHtml(shortDesc, true);
+          mapped[CATALOG_CONTENT_FIELDS.shortDescription] = formatToCleanHtml(shortDesc, true);
         }
         if (generateName && processed.name) {
           const existing = findExistingKey(mapped, ['Name']);
@@ -635,6 +634,25 @@ export default function App() {
 
           // Protected routing/indexation fields are intentionally NOT overwritten:
           // Slug, canonical, robots, product_family, series and model remain source-controlled.
+        }
+
+        if (generateFeatures && Array.isArray(processed.features)) {
+          const features = serializeFeatures(processed.features);
+          const versionKey = findExistingKey(mapped, [CATALOG_CONTENT_FIELDS.contentVersion]);
+          const parsedFeatures = JSON.parse(features);
+          if (parsedFeatures.features.length) {
+            const currentVersion = versionKey ? String(mapped[versionKey] || '').trim() : '';
+            if (currentVersion && currentVersion !== '2') {
+              alert(`Export stopped: SKU ${getItemSku(item)} has unsupported existing content schema version ${currentVersion}.`);
+              return null;
+            }
+            mapped[CATALOG_CONTENT_FIELDS.features] = features;
+            mapped[versionKey || CATALOG_CONTENT_FIELDS.contentVersion] = '2';
+          }
+        }
+
+        if (generateSpecifications && Array.isArray(processed.specifications)) {
+          mapped[CATALOG_CONTENT_FIELDS.specifications] = serializeSpecifications(processed.specifications);
         }
       }
 
@@ -876,7 +894,7 @@ export default function App() {
         <AnimatePresence>
           {result && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="space-y-8 mb-12">
-              <div className="flex items-center gap-3"><div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center text-green-600"><ShieldCheck className="w-5 h-5" /></div><h2 className="text-2xl font-bold">Generated Proposal</h2></div>
+              <div className="flex items-center gap-3"><div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center text-green-600"><ShieldCheck className="w-5 h-5" /></div><h2 className="text-2xl font-bold">Generated Product Fields</h2></div>
               {renderAudit(result.audit)}
               <div className={cn("grid gap-8", generateSeo && result.seoMeta ? "grid-cols-1 md:grid-cols-3" : "grid-cols-1")}>
                 <div className={cn("space-y-6", generateSeo && result.seoMeta ? "md:col-span-2" : "")}>
@@ -887,6 +905,8 @@ export default function App() {
                     {result.shortDescription && <div className="mb-8 p-4 bg-blue-50/50 rounded-xl border border-blue-100"><p className="text-xs font-bold text-brand-accent uppercase tracking-widest mb-2">Short Description</p><p className="text-brand-primary font-medium leading-relaxed">{result.shortDescription}</p></div>}
                     {result.description_full && <ProductDescriptionPreview content={result.description_full} productName={result.name} />}
                   </div>
+                  {Array.isArray(result.features) && <div className="glass-card p-6"><h3 className="text-lg font-bold mb-4">Features accordion data</h3>{result.features.length ? <ul className="space-y-3">{result.features.map((feature, index) => <li key={`${feature.label}-${index}`} className="border-b border-gray-100 pb-3"><strong>{feature.label}:</strong> {feature.description}<p className="mt-1 text-xs text-gray-500">Evidence: {feature.evidenceSources.join(', ') || 'No source field matched'}</p></li>)}</ul> : <p className="text-sm text-brand-secondary">No separate features are supported by the supplied product evidence.</p>}</div>}
+                  {Array.isArray(result.specifications) && <div className="glass-card p-6"><h3 className="text-lg font-bold mb-4">Specifications accordion data</h3>{result.specifications.length ? <div className="space-y-2">{result.specifications.map((specification, index) => <div key={`${specification.label}-${index}`} className="grid grid-cols-1 sm:grid-cols-[minmax(8rem,0.4fr)_1fr] gap-2 border-b border-gray-100 pb-2"><strong>{specification.label}</strong><span>{specification.value || (specification.items || []).map(item => `${item.name}${item.sku ? ` (${item.sku})` : ''}`).join(', ')}</span><span className="sm:col-start-2 text-xs text-gray-500">Evidence: {specification.evidenceSources.join(', ') || 'No source field matched'}</span></div>)}</div> : <p className="text-sm text-brand-secondary">No structured specifications are supported by the supplied product evidence.</p>}</div>}
                 </div>
                 {generateSeo && result.seoMeta && seoCard(result.seoMeta, result.audit)}
               </div>
@@ -895,7 +915,7 @@ export default function App() {
 
           {bulkItems.length > 0 && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="glass-card overflow-hidden">
-              <div className="p-6 border-b border-gray-100 flex items-center justify-between"><h2 className="text-xl font-bold">{loading ? 'Processing Products...' : 'Catalog Review Queue'}</h2><span className="text-xs font-mono text-brand-secondary">{bulkItems.length} items</span></div>
+                <div className="p-6 border-b border-gray-100 flex items-center justify-between"><h2 className="text-xl font-bold">{loading ? 'Generating Product Fields...' : 'Catalog Output'}</h2><span className="text-xs font-mono text-brand-secondary">{bulkItems.length} items</span></div>
               <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
                 <table className="w-full text-sm text-left">
                   <thead className="bg-gray-50 text-brand-secondary uppercase text-[10px] font-bold tracking-wider sticky top-0 z-10">
@@ -913,10 +933,10 @@ export default function App() {
                       const display = processed || originalItem;
                       const opts = generationOptions();
                       const targeted = isBulkGenerationTarget(originalItem);
-                      const status = !targeted ? 'Excluded' : processed?._isRetrying ? 'Retrying...' : processed?.error ? 'Failed' : processed?._isProcessing ? 'Processing...' : isGenerationComplete(processed, opts) ? (processed?.audit?.validationIssues?.length ? 'Review' : 'Optimized') : loading ? 'Pending' : 'Ready';
+          const status = !targeted ? 'Excluded' : processed?._isRetrying ? 'Retrying...' : processed?.error ? 'Failed' : processed?._isProcessing ? 'Processing...' : isGenerationComplete(processed, opts) ? (processed?.audit?.validationIssues?.length ? 'Quality checked' : 'Optimized') : loading ? 'Pending' : 'Ready';
                       const statusStyles: Record<string, string> = {
                         Optimized: 'bg-green-50 text-green-600',
-                        Review: 'bg-amber-50 text-amber-700',
+                        'Quality checked': 'bg-amber-50 text-amber-700',
                         Failed: 'bg-red-50 text-red-600',
                         'Retrying...': 'bg-amber-50 text-amber-600 animate-pulse',
                         'Processing...': 'bg-blue-50 text-blue-600 animate-pulse',
@@ -941,7 +961,7 @@ export default function App() {
                   </tbody>
                 </table>
               </div>
-              {bulkItems.length > 100 && <div className="p-4 text-center bg-gray-50 text-xs text-brand-secondary border-t border-gray-100">Showing first 100 items. Export to review all {bulkItems.length} rows.</div>}
+              {bulkItems.length > 100 && <div className="p-4 text-center bg-gray-50 text-xs text-brand-secondary border-t border-gray-100">Showing first 100 items. Export to include all {bulkItems.length} rows.</div>}
             </motion.div>
           )}
         </AnimatePresence>
@@ -1027,6 +1047,8 @@ export default function App() {
                       </div>
                     </div>
                   )}
+                  {Array.isArray(selectedBulkItem.features) && <div className="glass-card p-6 mt-6"><h3 className="text-lg font-bold mb-4">Features accordion data</h3>{selectedBulkItem.features.length ? <ul className="space-y-3">{selectedBulkItem.features.map((feature: any, index: number) => <li key={`${feature.label}-${index}`} className="border-b border-gray-100 pb-3"><strong>{feature.label}:</strong> {feature.description}</li>)}</ul> : <p className="text-sm text-brand-secondary">No separate features are supported by the supplied product evidence.</p>}</div>}
+                  {Array.isArray(selectedBulkItem.specifications) && <div className="glass-card p-6 mt-6"><h3 className="text-lg font-bold mb-4">Specifications accordion data</h3>{selectedBulkItem.specifications.length ? <div className="space-y-2">{selectedBulkItem.specifications.map((specification: any, index: number) => <div key={`${specification.label}-${index}`} className="grid grid-cols-1 sm:grid-cols-[minmax(8rem,0.4fr)_1fr] gap-2 border-b border-gray-100 pb-2"><strong>{specification.label}</strong><span>{specification.value || (specification.items || []).map((item: any) => `${item.name}${item.sku ? ` (${item.sku})` : ''}`).join(', ')}</span></div>)}</div> : <p className="text-sm text-brand-secondary">No structured specifications are supported by the supplied product evidence.</p>}</div>}
                 </div>
               </motion.div>
             </div>
@@ -1034,7 +1056,7 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      <footer className="border-t border-gray-200 py-12 px-4 mt-24"><div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8"><div className="flex items-center gap-2"><div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center text-white"><Sparkles className="w-4 h-4" /></div><span className="font-bold">OptiWrite AI</span></div><p className="text-sm text-brand-secondary">© 2026 OptiWrite AI. Review-first catalog optimization.</p><div className="flex gap-6 text-sm text-brand-secondary"><a href="#" className="hover:text-brand-primary">Privacy</a><a href="#" className="hover:text-brand-primary">Terms</a><a href="#" className="hover:text-brand-primary">API</a></div></div></footer>
+      <footer className="border-t border-gray-200 py-12 px-4 mt-24"><div className="max-w-5xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8"><div className="flex items-center gap-2"><div className="w-8 h-8 bg-brand-primary rounded-lg flex items-center justify-center text-white"><Sparkles className="w-4 h-4" /></div><span className="font-bold">OptiWrite AI</span></div><p className="text-sm text-brand-secondary">© 2026 OptiWrite AI. First-pass catalog generation.</p><div className="flex gap-6 text-sm text-brand-secondary"><a href="#" className="hover:text-brand-primary">Privacy</a><a href="#" className="hover:text-brand-primary">Terms</a><a href="#" className="hover:text-brand-primary">API</a></div></div></footer>
 
       <AnimatePresence>
         {isSettingsOpen && (
@@ -1059,8 +1081,10 @@ export default function App() {
                     {[
                       ['Generate Brand Proposal', generateBrand, setGenerateBrand],
                       ['Generate Name Proposal', generateName, setGenerateName],
-                      ['Generate Full Description', generateFullDesc, setGenerateFullDesc],
+                      ['Generate Overview / Description', generateFullDesc, setGenerateFullDesc],
                       ['Generate Short Description', generateShortDesc, setGenerateShortDesc],
+                      ['Generate Structured Features', generateFeatures, setGenerateFeatures],
+                      ['Generate Structured Specifications', generateSpecifications, setGenerateSpecifications],
                       ['Generate SEO Editorial Fields', generateSeo, setGenerateSeo]
                     ].map(([label, checked, setter]) => (
                       <label key={String(label)} className="flex items-center justify-between cursor-pointer group">

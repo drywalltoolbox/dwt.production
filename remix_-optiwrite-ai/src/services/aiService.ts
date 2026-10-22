@@ -1,22 +1,14 @@
-import { GoogleGenAI, ThinkingLevel, Type } from "@google/genai";
+import { ThinkingLevel, Type } from "@google/genai";
 import { buildCatalogEditorKnowledge } from "../drywall-knowledge/integration";
 
 /**
  * Production Gemini orchestration for Drywall Toolbox catalog copy/SEO proposals with deterministic drywall-domain knowledge-base integration.
  *
- * IMPORTANT SECURITY BOUNDARY
- * ---------------------------
- * The Gemini API key must remain server-side in a production deployment.
- * This module preserves the existing process.env.GEMINI_API_KEY connection so
- * the current Google AI Studio workflow continues to function, but production
- * builds should invoke this service from a trusted server/API route rather than
- * ship the API key to an untrusted browser bundle.
+ * Requests use the local Vite development proxy. The API key is read by the
+ * Node-side Vite config and is never injected into the browser bundle.
  */
 
-const POLICY_VERSION = "dtb-catalog-generation-v9-knowledgebase";
-const STRICT_MODEL = "gemini-3.1-flash-lite";
-const DEFAULT_FLASH_MODEL = STRICT_MODEL;
-const DEFAULT_PRO_MODEL = STRICT_MODEL;
+const POLICY_VERSION = "dtb-catalog-generation-v10-structured-pdp-fields";
 const DEFAULT_PRODUCT_PATH_PREFIX = "/products";
 const SEO_TITLE_MAX = 60;
 const SEO_DESCRIPTION_MAX = 160;
@@ -25,29 +17,7 @@ const DEFAULT_TIMEOUT_MS = 60_000;
 const GROUNDED_TIMEOUT_MS = 120_000;
 const DEFAULT_REPAIR_PASS = true;
 
-const env = typeof process !== "undefined" ? process.env || {} : {};
-let aiClient: GoogleGenAI | null = null;
-let browserSecurityWarningEmitted = false;
-
-function getAiClient(): GoogleGenAI {
-  if (aiClient) return aiClient;
-
-  const apiKey = String(env.GEMINI_API_KEY || "").trim();
-  if (!apiKey) {
-    throw new Error("GEMINI_API_KEY is not configured.");
-  }
-
-  if (typeof window !== "undefined" && !browserSecurityWarningEmitted) {
-    browserSecurityWarningEmitted = true;
-    console.warn(
-      "OptiWrite security notice: Gemini is being invoked from a browser runtime. " +
-      "For production, proxy generation through a trusted server so GEMINI_API_KEY is never exposed client-side."
-    );
-  }
-
-  aiClient = new GoogleGenAI({ apiKey });
-  return aiClient;
-}
+const DEFAULT_MODEL = "gemini-3.1-flash-lite";
 
 export type ModelTier = "flash" | "pro";
 export type RelationshipType = "simple" | "variable_parent" | "variation_child";
@@ -215,8 +185,23 @@ export interface EnhancedDescription {
   name?: string;
   description_full?: string;
   shortDescription?: string;
+  features?: ProductFeatureProposal[];
+  specifications?: ProductSpecificationProposal[];
   seoMeta?: SeoMeta;
   audit?: GenerationAudit;
+}
+
+export interface ProductFeatureProposal {
+  label: string;
+  description: string;
+  evidenceSources: string[];
+}
+
+export interface ProductSpecificationProposal {
+  label: string;
+  value?: string;
+  items?: Array<{ name: string; sku?: string }>;
+  evidenceSources: string[];
 }
 
 export interface EnhanceOptions {
@@ -225,6 +210,8 @@ export interface EnhanceOptions {
   generateName: boolean;
   generateFullDesc: boolean;
   generateShortDesc: boolean;
+  generateFeatures: boolean;
+  generateSpecifications: boolean;
   generateSeo: boolean;
   enableWebSearch: boolean;
   competitorContext?: string;
@@ -298,6 +285,8 @@ interface ModelOutput {
   name?: string;
   description_full?: string;
   shortDescription?: string;
+  features?: ProductFeatureProposal[];
+  specifications?: ProductSpecificationProposal[];
   seoMeta?: ModelSeoOutput;
 }
 
@@ -377,7 +366,12 @@ function countWords(value: string): number {
 }
 
 function stableFingerprint(value: unknown): string {
-  const text = typeof value === "string" ? value : JSON.stringify(value, Object.keys(value as any || {}).sort());
+  const canonicalize = (input: any): any => {
+    if (Array.isArray(input)) return input.map(canonicalize);
+    if (input && typeof input === "object") return Object.fromEntries(Object.keys(input).sort().map(key => [key, canonicalize(input[key])]));
+    return input;
+  };
+  const text = typeof value === "string" ? value : JSON.stringify(canonicalize(value));
   let hash = 0x811c9dc5;
   for (let i = 0; i < text.length; i++) {
     hash ^= text.charCodeAt(i);
@@ -1310,7 +1304,7 @@ function buildProductContext(
     relationshipType,
     contentClass,
     catalogKind,
-    sourceFingerprint: stableFingerprint(protectedIdentity),
+    sourceFingerprint: stableFingerprint(relevantCatalogData(raw)),
     protectedIdentity,
     authoritativeFacts,
     referenceCopy: {
@@ -1548,8 +1542,10 @@ function buildSystemInstruction(context: ProductContext, options: EnhanceOptions
   const tasks = [
     options.generateBrand ? "brand proposal" : "",
     options.generateName ? "product display-name proposal" : "",
-    options.generateFullDesc ? "customer-facing full description" : "",
+    options.generateFullDesc ? "customer-facing overview description" : "",
     options.generateShortDesc ? "short description" : "",
+    options.generateFeatures ? "structured PDP feature proposals" : "",
+    options.generateSpecifications ? "structured PDP specification proposals" : "",
     options.generateSeo ? "SEO title, meta description, and keyword suggestions" : ""
   ].filter(Boolean).join(", ");
 
@@ -1625,16 +1621,7 @@ EVIDENCE PROFILE
 - Available domains: ${context.evidenceProfile.domainsAvailable.join(", ") || "identity only"}
 
 EDITORIAL SUFFICIENCY PLAN
-- Qualitative depth signal: ${context.editorialPlan.depth}. This is guidance only, never a length quota.
-- Candidate sections: ${context.editorialPlan.candidateSections.join(", ") || "Overview"}
-- Key Features: ${context.editorialPlan.featureSectionRecommended ? "recommended when it improves scanning; choose the natural number of distinct evidence-backed items" : "optional; omit if it would add little information"}
-- Application/capabilities: ${context.editorialPlan.applicationSectionRecommended ? "recommended when it adds information distinct from ordinary features" : "optional; omit if redundant"}
-- Compatibility: ${context.editorialPlan.compatibilitySectionRecommended ? "recommended when it materially helps selection" : "optional; do not force a separate section"}
-- Feature spotlight(s): ${context.editorialPlan.featureSpotlights.length ? context.editorialPlan.featureSpotlights.map(item => `${item.name} (${item.facts.length} supporting facts)`).join("; ") : "none required"}
-- Variation section: ${context.editorialPlan.variationSectionRequired ? "required because this parent has verified child options/configurations" : "do not add unless explicitly justified"}
-- Package contents: ${context.editorialPlan.includesSectionRequired ? `required under "${context.editorialPlan.includesHeading}" using only verified contents` : "do not add"}
-- Priority evidence domains: ${context.editorialPlan.priorityDomains.join(", ") || "identity"}
-${context.editorialPlan.guidance.map(rule => `- ${rule}`).join("\n")}
+- Evidence-led depth: ${context.editorialPlan.depth}; use the supplied priority evidence domains ${context.editorialPlan.priorityDomains.join(", ") || "identity"}.
 WRITING STANDARD
 - Write like a senior specialist merchandiser for professional drywall finishing and taping equipment: technically literate, contractor-oriented, precise, natural, and easy to scan.
 - Prioritize the domain knowledge base's professional buyer questions and evidence priorities, but answer them only when the exact product evidence supports an answer.
@@ -1650,40 +1637,15 @@ WRITING STANDARD
 - Do not use unsupported claim language such as precision-machined, professional-grade, industrial-grade, guaranteed fit, peak performance, maximum durability, reduces downtime, or boosts productivity unless authoritative evidence explicitly supports the claim.
 - Do not convert a specification into a fabricated benefit.
 
-FEATURE DEVELOPMENT
-- A feature bullet should normally contain a specific supported feature plus useful supported operational relevance.
-- Do not merely rewrite a specification as “Label: Value” when additional supported context is available.
-- Do not invent a benefit because one sounds plausible.
-- Avoid repeating a fact already fully explained in the opening paragraphs unless brief repetition materially improves scanning.
-- Prefer distinct feature domains over multiple bullets describing the same concept.
-- Application/capability statements belong in an Application/Capabilities section when that separation improves scanning; do not duplicate them as generic Key Features.
-- When a named feature system has multiple independent authoritative facts, give it proportional treatment. A supported spotlight may receive its own <h3> section and paragraph rather than being flattened into one bullet.
-- Do not create a feature spotlight from a single marketing phrase or one unsupported claim.
-
-PACKAGE CONTENTS VS. VARIATION SPECS (CRITICAL DISTINCTION)
-- Strictly differentiate between multi-item bundles ('Set Includes' / 'Kit Includes') and individual product variations with specific attributes ('Variation Specs').
-- Simple Product Variations: An individual option of a tool (such as a 7", 8", 10", or 12" flat box, a 3" or 3.5" flusher, a 42"-63" extendable handle, or a replacement blade) is a SINGLE TOOL VARIATION. It is NOT a bundle, toolkit, combo, or kit.
-- FORBIDDEN BUNDLE LANGUAGE: Never use bundle, kit, combo, or toolkit language for simple variations. Do not write phrases such as "this set includes", "this kit features", "complete toolkit", "outfitted bundle", "all-in-one kit", or "everything you need in one set" when generating copy for a product variation.
-- Variation Specs Are Not Included Items: Attribute values like width, size, length, angle, or blade thickness are Variation Specifications describing this exact unit. They belong in the opening overview or Key Features bullets. They MUST NEVER be formatted as 'Set Includes', 'Kit Includes', or package components.
-- Heading Rules:
-  * <h3>Set Includes</h3> or <h3>Kit Includes</h3>: May ONLY be used for verified multi-item sets (contentClass='kit_set' or isBundle=true with verified structured component membership).
-  * <h3>Includes</h3>: May ONLY be used for a standalone tool that verifiedly ships with separate included accessory items (e.g. a mud pump shipping with a filler nozzle).
-  * Simple product variations with no separate included accessories must NEVER contain an 'Includes', 'Set Includes', or 'Kit Includes' heading.
-- Never infer included items from upsells, cross-sells, prose mentions, sibling products, parent descriptions, or general knowledge.
-
-HTML CONTRACT & DRYWALL TOOLBOX PDP ACCORDION ARCHITECTURE
-- description_full must strictly conform to the verified Drywall Toolbox Product Detail Page (PDP) accordion layout.
-- Use ONLY clean semantic HTML tags: <p>, <h3>, <ul>, <ol>, <li>, <strong>, <br>. No <div>, <span>, style attributes, or classes.
-- Start directly with product copy in <p> paragraphs (this serves as the "Overview" accordion panel). NEVER output an H1, H2, or product title heading.
-- Each distinct topic MUST be introduced with an <h3> heading, which WooCommerce and DTB scripts parse into accordion panels:
-  * <h3>Key Features</h3>: Core operational and functional advantages with <ul><li><strong>Feature Label:</strong> Contextual trade benefit...</li></ul>.
-  * <h3>Specifications</h3> (or <h3>Specifications & Dimensions</h3>): Supported technical parameters, dimensions, materials, capacities, and variation specs.
-  * <h3>Compatibility</h3>: Verified handle mounts, pump adapters, box attachments, or tool system interchangeability.
-  * <h3>Includes</h3> / <h3>Set Includes</h3>: Verified packaged contents (strictly reserved for verified kits or tools with separate accessories).
-  * <h3>Available Options</h3>: Configuration and size breakdown for variable parent products.
-  * <h3>Maintenance & Care</h3>: Cleaning, seal lubrication, and service procedures when supported by authoritative evidence.
-- Omit any section that lacks authoritative supporting evidence. Never create empty headings or placeholder sections.
-- shortDescription is plain text without HTML, normally one or two punchy contractor-oriented sentences for the above-the-fold PDP summary.
+PDP FIELD CONTRACT
+- The active PDP renders Description, Features, and Specifications as separate accordion panels backed by separate catalog fields.
+- description_full is the Overview/Description panel only. Return concise, useful paragraphs using only <p>, <strong>, and <br>. Never put feature lists, specification lists, compatibility claims, or package contents in this field; those have separate owners/fields.
+- features is the separate Features panel. Return only distinct, product-specific facts supported by this exact product's authoritative evidence. Each entry has a plain-text label, concise description, and evidence_sources containing exact non-empty input field names. Do not restate the specification list as features or turn dimensions into benefits.
+- specifications is the separate Specifications panel and WooCommerce _dtb_specs_json proposal. Preserve exact source values and units. Each entry has a label plus either value or verified items. Each entry must include evidence_sources containing exact non-empty input field names. Do not add inferred material, dimensions, ratings, capacity, compatibility, warranty, package contents, or other facts.
+- Never put evidence_sources into the catalog JSON values; they are audit provenance only.
+- Return empty arrays when the source contains no supported feature or specification. Never create empty headings, filler, or guessed values.
+- Do not repeat feature or specification facts in description_full. Product data is rendered in separate frontend accordion panels.
+- shortDescription is plain text without HTML, normally one or two useful contractor-oriented sentences for the above-the-fold PDP summary.
 
 SEO CONTRACT
 - seo_title: maximum ${SEO_TITLE_MAX} characters.
@@ -1735,6 +1697,57 @@ function buildResponseSchema(options: EnhanceOptions): any {
       description: "Concise plain-text merchandising summary, normally one or two sentences."
     };
     required.push("shortDescription");
+  }
+
+  if (options.generateFeatures) {
+    properties.features = {
+      type: Type.ARRAY,
+      items: {
+        type: Type.OBJECT,
+        properties: {
+          label: { type: Type.STRING },
+          description: { type: Type.STRING },
+          evidence_sources: { type: Type.ARRAY, items: { type: Type.STRING }, maxItems: "6" }
+        },
+        required: ["label", "description", "evidence_sources"],
+        propertyOrdering: ["label", "description", "evidence_sources"]
+      },
+      maxItems: "50",
+      description: "Distinct customer-facing feature records for the DTB Features accordion. Cite exact source field names for each feature."
+    };
+    required.push("features");
+  }
+
+  if (options.generateSpecifications) {
+    properties.specifications = {
+      type: Type.ARRAY,
+      items: {
+        type: Type.OBJECT,
+        properties: {
+          label: { type: Type.STRING },
+          value: { type: Type.STRING },
+          items: {
+            type: Type.ARRAY,
+            items: {
+              type: Type.OBJECT,
+              properties: {
+                name: { type: Type.STRING },
+                sku: { type: Type.STRING }
+              },
+              required: ["name"],
+              propertyOrdering: ["name", "sku"]
+            },
+            maxItems: "50"
+          },
+          evidence_sources: { type: Type.ARRAY, items: { type: Type.STRING }, maxItems: "6" }
+        },
+        required: ["label", "evidence_sources"],
+        propertyOrdering: ["label", "value", "items", "evidence_sources"]
+      },
+      maxItems: "100",
+      description: "Customer-facing specification records for the DTB Specifications accordion. Keep source labels, values, units, and verified item identities exact."
+    };
+    required.push("specifications");
   }
 
   if (options.generateSeo) {
@@ -1821,7 +1834,48 @@ function sanitizeKeywordArray(value: unknown, max = 12): string[] {
   return result;
 }
 
-function normalizeModelOutput(raw: any, options: EnhanceOptions): ModelOutput {
+function sanitizeEvidenceSources(value: unknown, raw: Record<string, any>): string[] {
+  const requested = Array.isArray(value) ? value : [];
+  const known = new Map(Object.keys(raw || {}).map(key => [normalizeKey(key), key]));
+  const result: string[] = [];
+  for (const source of requested) {
+    const key = known.get(normalizeKey(cleanText(source)));
+    if (!key || !cleanText(raw[key]) || result.includes(key)) continue;
+    result.push(key);
+    if (result.length >= 6) break;
+  }
+  return result;
+}
+
+function normalizeFeatureProposals(value: unknown, raw: Record<string, any>): ProductFeatureProposal[] {
+  if (!Array.isArray(value)) return [];
+  return value.slice(0, 50).flatMap((item: any) => {
+    const label = cleanText(item?.label);
+    const description = stripHtml(cleanText(item?.description));
+    const evidenceSources = sanitizeEvidenceSources(item?.evidence_sources, raw);
+    return label && description && evidenceSources.length ? [{ label, description, evidenceSources }] : [];
+  });
+}
+
+function normalizeSpecificationProposals(value: unknown, raw: Record<string, any>): ProductSpecificationProposal[] {
+  if (!Array.isArray(value)) return [];
+  return value.slice(0, 100).flatMap((item: any) => {
+    const label = cleanText(item?.label);
+    const valueText = cleanText(item?.value);
+    const items = Array.isArray(item?.items)
+      ? item.items.slice(0, 50).flatMap((entry: any) => {
+          const name = cleanText(entry?.name);
+          const sku = cleanText(entry?.sku);
+          return name ? [{ name, ...(sku ? { sku } : {}) }] : [];
+        })
+      : [];
+    const evidenceSources = sanitizeEvidenceSources(item?.evidence_sources, raw);
+    if (!label || (!valueText && !items.length) || !evidenceSources.length) return [];
+    return [{ label, ...(valueText ? { value: valueText } : {}), ...(items.length ? { items } : {}), evidenceSources }];
+  });
+}
+
+function normalizeModelOutput(raw: any, options: EnhanceOptions, source: Record<string, any>): ModelOutput {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
     throw new Error("Gemini returned a non-object response.");
   }
@@ -1831,6 +1885,8 @@ function normalizeModelOutput(raw: any, options: EnhanceOptions): ModelOutput {
   if (options.generateName) result.name = cleanText(raw.name);
   if (options.generateFullDesc) result.description_full = sanitizeHtmlAllowlist(cleanText(raw.description_full));
   if (options.generateShortDesc) result.shortDescription = stripHtml(cleanText(raw.shortDescription));
+  if (options.generateFeatures) result.features = normalizeFeatureProposals(raw.features, source);
+  if (options.generateSpecifications) result.specifications = normalizeSpecificationProposals(raw.specifications, source);
 
   if (options.generateSeo) {
     const meta = raw.seoMeta && typeof raw.seoMeta === "object" ? raw.seoMeta : {};
@@ -2125,149 +2181,15 @@ function validateModelOutput(
 
   const full = output.description_full || "";
   let metrics: ContentMetrics | undefined;
-
-  if (full) {
-    if (context.contentClass === "commodity_hardware" && /<h3>|<ul>|<ol>/i.test(full)) {
-      push("warning", "overstructured_hardware_copy", "description_full", "Commodity hardware normally should not require headings or feature lists.");
-    }
-
-    if (!context.isBundle && /<h3>\s*(?:set|kit)\s+includes/i.test(full)) {
-      push(
-        "error",
-        "invalid_kit_section",
-        "description_full",
-        "A Set/Kit Includes heading was generated for a standalone product; use Includes when verified package contents exist.",
-        true
-      );
-    }
-
-    if (
-      context.packageContents.length > 0 &&
-      context.relationshipType !== "variable_parent" &&
-      !/<h3>\s*(?:(?:set|kit)\s+)?includes/i.test(full)
-    ) {
-      push(
-        "warning",
-        context.isBundle ? "kit_missing_includes_section" : "missing_package_contents",
-        "description_full",
-        context.isBundle
-          ? "This exact set/kit has verified structured contents but no includes section."
-          : "This standalone product has verified package contents but no Includes section.",
-        true
-      );
-    }
-
-    if (context.relationshipType === "variation_child" &&
-        /<h3>\s*available\s+(?:sizes|options|configurations|variants)/i.test(full)) {
-      push("error", "variation_lists_siblings", "description_full", "Variation child must not list sibling sizes/options.", true);
-    }
-
-    if (context.relationshipType === "variation_child" && context.contentClass !== "kit_set") {
-      if (/<h3>\s*(?:set|kit)\s+includes/i.test(full)) {
-        push(
-          "error",
-          "variation_invalid_set_includes",
-          "description_full",
-          "A variation product was given a Set/Kit Includes section. Individual variations have Variation Specs, not Set Includes.",
-          true
-        );
-      }
-
-      if (/\b(?:this\s+(?:[a-z0-9_-]+\s+)?(?:kit|toolkit|set|bundle)\s+(?:includes|contains|features|comes\s+with)|complete\s+(?:[a-z0-9_-]+\s+)?(?:toolkit|kit|set|bundle)|all-in-one\s+(?:[a-z0-9_-]+\s+)?(?:kit|set|toolkit|bundle))\b/i.test(full)) {
-        push(
-          "error",
-          "variation_bundle_language",
-          "description_full",
-          "Generated copy used kit/bundle/toolkit language for a simple product variation. Describe this as an individual tool variation with specific specs.",
-          true
-        );
-      }
-
-      if (context.packageContents.length === 0 && /<h3>\s*(?:(?:set|kit)\s+)?includes/i.test(full)) {
-        push(
-          "error",
-          "variation_unsupported_includes",
-          "description_full",
-          "Variation child has no separate packaged accessories; omit the Includes section and treat dimensions/attributes as Variation Specs.",
-          true
-        );
-      }
-    }
-
-    if (context.relationshipType === "variable_parent" &&
-        context.variationSummaries.length > 0 &&
-        !/available\s+(?:sizes|options|configurations|variants)/i.test(full)) {
-      push("warning", "parent_missing_variations", "description_full", "Variable parent has verified child variations but no concise available-options section.", true);
-    }
-
-    metrics = buildContentMetrics(context, full);
-    const substantial = ["primary_finishing_tool", "automatic_equipment", "stilts", "kit_set"].includes(context.contentClass);
-
-    if (context.evidenceProfile.richness === "rich" && metrics.evidenceUtilizationScore < 55) {
-      push("warning", "low_evidence_utilization", "description_full",
-        `Rich evidence is available but priority evidence utilization is only ${metrics.evidenceUtilizationScore}%. Omitted: ${metrics.omittedPriorityDomains.join(", ") || "unknown"}.`, true);
-    } else if (context.evidenceProfile.richness === "standard" && substantial && metrics.evidenceUtilizationScore < 45) {
-      push("warning", "low_evidence_utilization", "description_full",
-        `Standard evidence supports more development; priority evidence utilization is ${metrics.evidenceUtilizationScore}%.`, true);
-    }
-
-    if (
-      context.evidenceProfile.richness === "rich" &&
-      metrics.meaningfulFactCoverageScore < 45
-    ) {
-      push(
-        "warning",
-        "low_fact_coverage",
-        "description_full",
-        `Rich evidence is available but meaningful fact coverage is only ${metrics.meaningfulFactCoverageScore}%. Unused facts include: ${metrics.omittedMeaningfulFacts.slice(0, 5).join(" | ") || "not resolved"}.`,
-        true
-      );
-    }
-
-    if (
-      context.editorialPlan.featureSpotlights.length > 0 &&
-      metrics.spotlightCoverageScore < 50
-    ) {
-      push(
-        "warning",
-        "low_spotlight_coverage",
-        "description_full",
-        `A named feature system has multiple authoritative facts, but spotlight coverage is only ${metrics.spotlightCoverageScore}%.`,
-        true
-      );
-    }
-
-    if (metrics.redundancyScore >= 35) {
-      push("warning", "severe_content_redundancy", "description_full",
-        `Description sections are highly repetitive (redundancy score ${metrics.redundancyScore}).`, true);
-    }
-
-    if (
-      context.editorialPlan.featureSectionRecommended &&
-      context.evidenceProfile.richness !== "sparse" &&
-      metrics.featureCount === 0 &&
-      !/<h3>\s*(?:key\s+)?features?/i.test(full) &&
-      metrics.evidenceUtilizationScore < 65
-    ) {
-      push(
-        "warning",
-        "missing_key_features",
-        "description_full",
-        "Several distinct feature domains are available and overall evidence utilization is low; consider a Key Features section or equivalent developed feature treatment.",
-        true
-      );
-    }
-
-    if (metrics.featureCount >= 3) {
-      const bullets = extractFeatureItems(full);
-      const specOnly = bullets.filter(item => /^[^:]{1,40}:\s*[^.!?]{1,80}\.?$/i.test(item));
-      if (specOnly.length / bullets.length >= 0.75) {
-        push("warning", "specification_only_features", "description_full",
-          "Most feature bullets are simple label/value restatements rather than developed supported product information.", true);
-      }
-    }
+  const generatedText = [full, output.shortDescription || "", ...(output.features || []).flatMap(feature => [feature.label, feature.description]), ...(output.specifications || []).flatMap(spec => [spec.label, spec.value || "", ...(spec.items || []).flatMap(item => [item.name, item.sku || ""])])].join(" ");
+  if (context.relationshipType === "variation_child" && context.contentClass !== "kit_set" && /\b(?:this\s+(?:[a-z0-9_-]+\s+)?(?:kit|toolkit|set|bundle)\s+(?:includes|contains|features|comes\s+with)|complete\s+(?:[a-z0-9_-]+\s+)?(?:toolkit|kit|set|bundle)|all-in-one\s+(?:[a-z0-9_-]+\s+)?(?:kit|set|toolkit|bundle))\b/i.test(generatedText)) {
+    push("error", "variation_bundle_language", "product_content", "Generated copy describes a standalone variation as a kit or bundle.", true);
   }
-
+  if (full && /<h[1-6]|<ul|<ol|<li/i.test(full)) {
+    push("error", "description_field_structure", "description_full", "Overview must be paragraph copy; features and specifications have separate PDP fields.", true);
+  }
+  metrics = buildContentMetrics(context, generatedText);
+  metrics.featureCount = (output.features || []).length;
   return { issues, output, metrics };
 }
 
@@ -2278,7 +2200,7 @@ function hasErrors(issues: GenerationIssue[]): boolean {
 function modelForTier(_tier?: ModelTier): string {
   // Preserve the known-working connection by default. A deployment may opt in
   // to a different validated model through GEMINI_MODEL without changing code.
-  return cleanText(env.GEMINI_MODEL) || STRICT_MODEL;
+  return DEFAULT_MODEL;
 }
 
 function thinkingLevelFor(context: ProductContext, options: EnhanceOptions): ThinkingLevel {
@@ -2391,7 +2313,6 @@ async function callGemini(
   options: EnhanceOptions,
   isRepair: boolean
 ): Promise<{ output: ModelOutput; response: any; modelName: string; parserFallbackUsed: boolean }> {
-  const client = getAiClient();
   const modelName = modelForTier(options.modelTier);
   const schema = buildResponseSchema(options);
   const { tools, competitorUrls } = toolsFor(options);
@@ -2425,15 +2346,14 @@ async function callGemini(
         repair: isRepair
       });
 
-      const response = await client.models.generateContent({
-        model: modelName,
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: `${userText}${competitorText}` }]
-          }
-        ],
-        config: {
+      const httpResponse = await fetch("/api/optiwrite/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: options.abortSignal,
+        body: JSON.stringify({
+          model: modelName,
+          contents: [{ role: "user", parts: [{ text: `${userText}${competitorText}` }] }],
+          config: {
           systemInstruction: buildSystemInstruction(context, options, isRepair),
           temperature: isRepair ? 0.15 : temperatureFor(context),
           responseMimeType: "application/json",
@@ -2443,10 +2363,14 @@ async function callGemini(
             includeThoughts: false
           },
           ...(tools.length ? { tools, toolConfig: { includeServerSideToolInvocations: true } } : {}),
-          abortSignal: options.abortSignal,
-          httpOptions: { timeout: timeoutMs }
-        }
+          }
+        })
       });
+      if (!httpResponse.ok) {
+        const errorBody = await httpResponse.json().catch(() => ({}));
+        throw Object.assign(new Error(errorBody?.error || `Generation service returned HTTP ${httpResponse.status}.`), { status: httpResponse.status });
+      }
+      const response = await httpResponse.json();
 
       const rawText = cleanText(response?.text || "");
       if (!rawText) throw new Error("Gemini returned an empty response.");
@@ -2460,7 +2384,7 @@ async function callGemini(
         parserFallbackUsed = true;
       }
 
-      return { output: normalizeModelOutput(parsed, options), response, modelName, parserFallbackUsed };
+      return { output: normalizeModelOutput(parsed, options, context.raw), response, modelName, parserFallbackUsed };
     } catch (error: any) {
       lastError = error;
       const classification = classifyError(error);
@@ -2491,6 +2415,8 @@ function generationId(context: ProductContext, options: EnhanceOptions, modelNam
     Number(options.generateName),
     Number(options.generateFullDesc),
     Number(options.generateShortDesc),
+    Number(options.generateFeatures),
+    Number(options.generateSpecifications),
     Number(options.generateSeo),
     Number(options.enableWebSearch)
   ].join(":");
@@ -2508,6 +2434,7 @@ function buildGenerationUserPayload(context: ProductContext): string {
     content_class: context.contentClass,
     catalog_kind: context.catalogKind,
     authoritative_facts: context.authoritativeFacts,
+    source_catalog_fields: context.raw,
     normalized_evidence_domains: evidenceDomains,
     evidence_profile: {
       richness: context.evidenceProfile.richness,
@@ -2632,7 +2559,7 @@ export const enhanceDescription = async (
   if (!input.trim()) throw new Error("Product input is empty.");
 
   if (!options.generateBrand && !options.generateName && !options.generateFullDesc &&
-      !options.generateShortDesc && !options.generateSeo) {
+      !options.generateShortDesc && !options.generateFeatures && !options.generateSpecifications && !options.generateSeo) {
     throw new Error("No generation options selected.");
   }
 
@@ -2650,11 +2577,11 @@ export const enhanceDescription = async (
         : ""
     ].filter(Boolean).join("; ");
 
-    warnings.push(`Drywall knowledge classification review advisory: ${detail}`);
+    warnings.push(`Drywall knowledge classification confidence is limited: ${detail}`);
   }
 
   if (confidence === "R") {
-    warnings.push("Core product identity is incomplete; this output should not be published without catalog review.");
+    warnings.push("Core product identity is incomplete; unsupported product-specific fields are omitted.");
   }
   if (context.evidenceProfile.richness === "sparse") {
     warnings.push("Verified product evidence is sparse; unsupported product-specific details will be omitted rather than inferred.");
@@ -2757,7 +2684,7 @@ export const enhanceDescription = async (
 };
 
 function sourceFingerprintForItem(item: any): string {
-  return stableFingerprint(buildProtectedIdentity(relevantCatalogData(item || {})));
+  return stableFingerprint(relevantCatalogData(item || {}));
 }
 
 export function isGenerationComplete(result: any, options: EnhanceOptions): boolean {
@@ -2766,6 +2693,8 @@ export function isGenerationComplete(result: any, options: EnhanceOptions): bool
   if (options.generateName && !cleanText(result.name)) return false;
   if (options.generateFullDesc && !cleanText(result.description_full)) return false;
   if (options.generateShortDesc && !cleanText(result.description_short || result.shortDescription)) return false;
+  if (options.generateFeatures && !Array.isArray(result.features)) return false;
+  if (options.generateSpecifications && !Array.isArray(result.specifications)) return false;
   if (options.generateSeo && !result.seoMeta?.seo_title) return false;
   return true;
 }
@@ -2792,6 +2721,8 @@ export function mergeEnhancedResult(item: any, enhanced: EnhancedDescription, op
     ...(options.generateName && enhanced.name ? { name: enhanced.name } : {}),
     ...(options.generateFullDesc && enhanced.description_full ? { description_full: enhanced.description_full } : {}),
     ...(options.generateShortDesc && enhanced.shortDescription ? { description_short: enhanced.shortDescription } : {}),
+    ...(options.generateFeatures && Array.isArray(enhanced.features) ? { features: enhanced.features } : {}),
+    ...(options.generateSpecifications && Array.isArray(enhanced.specifications) ? { specifications: enhanced.specifications } : {}),
     ...(options.generateSeo && enhanced.seoMeta ? { seoMeta: enhanced.seoMeta } : {}),
     ...(enhanced.audit ? { audit: enhanced.audit } : {})
   };
