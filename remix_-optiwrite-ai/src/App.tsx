@@ -32,6 +32,8 @@ import {
   isGenerationComplete,
   mergeEnhancedResult,
   processBulkDescriptions,
+  shouldResearchSparseItem,
+  willUseOnlineResearch,
   type EnhancedDescription,
   type EnhanceOptions
 } from './services/aiService';
@@ -75,8 +77,8 @@ function getValue(obj: any, ...aliases: string[]): any {
 function sameProduct(left: any, right: any): boolean {
   if (!left || !right) return false;
   if (left === right) return true;
-  const leftSku = String(getValue(left, 'SKU', 'sku', 'MPN', 'mpn', 'id', 'ID') || '').trim().toLowerCase();
-  const rightSku = String(getValue(right, 'SKU', 'sku', 'MPN', 'mpn', 'id', 'ID') || '').trim().toLowerCase();
+  const leftSku = String(getValue(left, 'SKU', 'sku', 'id', 'ID') || '').trim().toLowerCase();
+  const rightSku = String(getValue(right, 'SKU', 'sku', 'id', 'ID') || '').trim().toLowerCase();
   if (leftSku && rightSku && leftSku === rightSku) return true;
   const leftName = String(getValue(left, 'Name', 'name', 'Title', 'title') || '').trim().toLowerCase();
   const rightName = String(getValue(right, 'Name', 'name', 'Title', 'title') || '').trim().toLowerCase();
@@ -127,8 +129,7 @@ export default function App() {
   const [generateFeatures, setGenerateFeatures] = useState(true);
   const [generateSpecifications, setGenerateSpecifications] = useState(true);
   const [generateSeo, setGenerateSeo] = useState(true);
-  const [enableWebSearch, setEnableWebSearch] = useState(false);
-  const [enableRepairPass, setEnableRepairPass] = useState(true);
+  const [researchMode, setResearchMode] = useState<'off' | 'sparse' | 'all'>('sparse');
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -151,8 +152,8 @@ export default function App() {
     generateFeatures,
     generateSpecifications,
     generateSeo,
-    enableWebSearch,
-    enableRepairPass,
+    enableWebSearch: researchMode === 'all',
+    researchSparseOnly: researchMode === 'sparse',
     competitorContext: competitorContext.trim() || undefined,
     inventory: bulkItems,
     storefrontProductPathPrefix: '/products',
@@ -166,13 +167,43 @@ export default function App() {
     generateFeatures,
     generateSpecifications,
     generateSeo,
-    enableWebSearch,
-    enableRepairPass,
+    researchMode,
     competitorContext,
     bulkItems
   ]);
 
   const hasGenerationSelection = generateBrand || generateName || generateFullDesc || generateShortDesc || generateFeatures || generateSpecifications || generateSeo;
+
+  const bulkDiagnostics = bulkItems.flatMap((item, index) => {
+    const result = bulkResults[index];
+    if (!result) return [];
+    const validationIssues = Array.isArray(result.audit?.validationIssues) ? result.audit.validationIssues : [];
+    const errors = validationIssues.filter((issue: any) => issue?.severity === 'error');
+    if (!result.error && errors.length === 0) return [];
+    return [{ index, item, result, validationIssues, errors }];
+  });
+
+  const handleExportDiagnostics = () => {
+    if (!bulkDiagnostics.length) return;
+    const report = bulkDiagnostics.map(({ index, item, result, validationIssues }) => ({
+      row: index + 1,
+      sku: getValue(item, 'SKU', 'sku') || '',
+      name: getValue(item, 'Name', 'name', 'Title', 'title') || '',
+      type: getValue(item, 'Type', 'type') || '',
+      categories: getValue(item, 'Categories', 'categories') || '',
+      error: String(result.error || ''),
+      failedGenerationOutput: result.failedGenerationOutput || null,
+      validationIssues,
+      audit: result.audit || null
+    }));
+    const blob = new Blob([JSON.stringify({ exportedAt: new Date().toISOString(), failedProductCount: report.length, products: report }, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'optiwrite-run-diagnostics.json';
+    link.click();
+    URL.revokeObjectURL(url);
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -332,7 +363,7 @@ export default function App() {
     } catch (error: any) {
       console.error(`Retry failed for item ${index + 1}`, error);
       const friendlyMessage = formatErrorMessage(error);
-      const failed = { ...item, error: friendlyMessage, audit: error?.audit };
+      const failed = { ...item, error: friendlyMessage, audit: error?.audit, failedGenerationOutput: error?.generatedOutput };
       setBulkResults(previous => {
         const next = [...previous];
         next[index] = failed;
@@ -665,8 +696,9 @@ export default function App() {
     }
 
     // Preserve the source header order and append only newly created allowed fields.
-    const sourceHeaders = Object.keys(bulkItems[0] || {});
-    const extras = Object.keys(exportData[0]).filter(key => !sourceHeaders.includes(key));
+    const isResearchInput = (key: string) => cleanKey(key).toLowerCase() === 'official source url';
+    const sourceHeaders = Object.keys(bulkItems[0] || {}).filter(key => !isResearchInput(key));
+    const extras = Object.keys(exportData[0]).filter(key => !sourceHeaders.includes(key) && !isResearchInput(key));
     const csv = Papa.unparse({ fields: [...sourceHeaders, ...extras], data: exportData });
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
@@ -711,13 +743,17 @@ export default function App() {
         <div className="flex items-center justify-between gap-4 mb-3">
           <div className="flex items-center gap-2">
             <ShieldCheck className="w-4 h-4 text-amber-700" />
-            <p className="text-xs font-bold uppercase tracking-widest text-amber-800">Generation Audit</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-amber-800">Generation Details</p>
           </div>
-          <span className="text-[10px] font-mono text-amber-700">{audit.productClass} · confidence {audit.evidenceConfidence}</span>
+          <span className="text-[10px] font-mono text-amber-700">{audit.productClass}</span>
         </div>
         <div className="text-xs text-amber-900 space-y-1">
-          <p>Model: {audit.modelVersion || audit.modelRequested}{audit.repaired ? ' · repaired' : ''}</p>
+          <p>Model: {audit.modelVersion || audit.modelRequested}</p>
           <p>Canonical: {String(audit.canonicalAction || 'preserve')}</p>
+          {Array.isArray(audit.manufacturerSources) && audit.manufacturerSources.length > 0 && (
+            <p>Manufacturer catalogs: {audit.manufacturerSources.map((source: any) => `${source.file}, PDF p. ${source.page} (${source.match}, ${source.detail})`).join('; ')}</p>
+          )}
+          {audit.researchAttempted && <p>Research: {audit.researchMethod === 'official_url' ? 'supplied official URL' : 'Google Search'}; {audit.searchQueries?.length || 0} search queries; {audit.sourceUrls?.length || 0} linked sources</p>}
           {warnings.map((warning: string, index: number) => <p key={`w-${index}`}>• {warning}</p>)}
           {issues.map((issue: any, index: number) => (
             <p key={`i-${index}`} className={issue.severity === 'error' ? 'text-red-700' : ''}>• {issue.field}: {issue.message}</p>
@@ -797,7 +833,7 @@ export default function App() {
             Product Content <br /><span className="text-brand-accent italic">Optimization</span>
           </motion.h1>
           <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="text-xl text-brand-secondary max-w-2xl mx-auto">
-            Evidence-aware product descriptions and SEO proposals with protected catalog identity, validation, grounding, and repair controls.
+            Product-specific descriptions, separate PDP details, and SEO metadata from your catalog and optional official-source research.
           </motion.p>
         </div>
 
@@ -862,6 +898,7 @@ export default function App() {
                           <div>
                             <p className="font-semibold">{bulkItems.length.toLocaleString()} Rows Loaded</p>
                             <p className="text-xs text-brand-secondary">{bulkItems.filter(isBulkGenerationTarget).length.toLocaleString()} published/draft rows targeted; {bulkItems.filter(item => !isBulkGenerationTarget(item)).length.toLocaleString()} other-status rows held unchanged</p>
+                            <p className="text-xs text-brand-secondary">Online research planned after manufacturer catalog lookup: {bulkItems.filter(item => isBulkGenerationTarget(item) && willUseOnlineResearch(item, researchMode, bulkItems)).length.toLocaleString()} products; search queries per product may vary.</p>
                           </div>
                         </div>
                         <button onClick={() => { setBulkItems([]); setBulkResults([]); setProgress({ current: 0, total: 0 }); }} className="p-2 text-gray-400 hover:text-red-500 transition-colors"><Trash2 className="w-5 h-5" /></button>
@@ -884,6 +921,52 @@ export default function App() {
                         </div>
                       </div>
                     </div>
+                  )}
+                  {bulkDiagnostics.length > 0 && (
+                    <section aria-label="Bulk run diagnostics" className="glass-card border border-red-200 overflow-hidden">
+                      <div className="p-5 bg-red-50/70 border-b border-red-100 flex flex-wrap items-center justify-between gap-3">
+                        <div className="flex items-start gap-3">
+                          <AlertTriangle className="w-5 h-5 text-red-600 mt-0.5 shrink-0" />
+                          <div>
+                            <h2 className="font-bold text-red-900">Run Diagnostics</h2>
+                            <p className="text-sm text-red-800">{bulkDiagnostics.length} product{bulkDiagnostics.length === 1 ? '' : 's'} failed or returned validation errors. Select a row to inspect its full audit and source data.</p>
+                          </div>
+                        </div>
+                        <button onClick={handleExportDiagnostics} className="btn-secondary flex items-center gap-2 border-red-200 text-red-800 hover:bg-red-100">
+                          <Download className="w-4 h-4" /> Export Error Report
+                        </button>
+                      </div>
+                      <div className="max-h-[420px] overflow-y-auto divide-y divide-red-100">
+                        {bulkDiagnostics.map(({ index, item, result, validationIssues, errors }) => {
+                          const sku = String(getValue(item, 'SKU', 'sku') || 'No SKU');
+                          const name = String(getValue(item, 'Name', 'name', 'Title', 'title') || 'Unnamed product');
+                          const reasons = [
+                            ...(result.error ? [String(result.error)] : []),
+                            ...errors.map((issue: any) => `${issue.field}: ${issue.message}`)
+                          ];
+                          const warnings = validationIssues.filter((issue: any) => issue?.severity !== 'error');
+                          return (
+                            <button
+                              key={`diagnostic-${index}-${sku}`}
+                              type="button"
+                              onClick={() => setSelectedBulkItem(result)}
+                              className="w-full text-left p-4 hover:bg-red-50/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-red-500"
+                            >
+                              <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                                <span className="font-semibold text-brand-primary">{name}</span>
+                                <span className="text-xs font-mono text-brand-secondary">{sku}</span>
+                                <span className="text-[10px] uppercase tracking-wide text-red-700">Row {index + 1}</span>
+                              </div>
+                              <ul className="mt-2 space-y-1 text-sm text-red-800">
+                                {reasons.map((reason, reasonIndex) => <li key={`reason-${reasonIndex}`}>• {reason}</li>)}
+                              </ul>
+                              {warnings.length > 0 && <p className="mt-2 text-xs text-amber-800">Additional validation notes: {warnings.map((issue: any) => `${issue.field}: ${issue.message}`).join(' · ')}</p>}
+                              {result.audit?.warnings?.length > 0 && <p className="mt-1 text-xs text-amber-800">Audit warnings: {result.audit.warnings.join(' · ')}</p>}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </section>
                   )}
                 </motion.div>
               )}
@@ -933,10 +1016,9 @@ export default function App() {
                       const display = processed || originalItem;
                       const opts = generationOptions();
                       const targeted = isBulkGenerationTarget(originalItem);
-          const status = !targeted ? 'Excluded' : processed?._isRetrying ? 'Retrying...' : processed?.error ? 'Failed' : processed?._isProcessing ? 'Processing...' : isGenerationComplete(processed, opts) ? (processed?.audit?.validationIssues?.length ? 'Quality checked' : 'Optimized') : loading ? 'Pending' : 'Ready';
+          const status = !targeted ? 'Excluded' : processed?._isRetrying ? 'Retrying...' : processed?.error ? 'Failed' : processed?._isProcessing ? 'Processing...' : isGenerationComplete(processed, opts) ? 'Optimized' : loading ? 'Pending' : 'Ready';
                       const statusStyles: Record<string, string> = {
                         Optimized: 'bg-green-50 text-green-600',
-                        'Quality checked': 'bg-amber-50 text-amber-700',
                         Failed: 'bg-red-50 text-red-600',
                         'Retrying...': 'bg-amber-50 text-amber-600 animate-pulse',
                         'Processing...': 'bg-blue-50 text-blue-600 animate-pulse',
@@ -945,7 +1027,7 @@ export default function App() {
                         Ready: 'bg-gray-50 text-gray-500'
                       };
                       const headers = Object.keys(bulkItems[0] || {}).slice(0, 4);
-                      const itemSku = String(getValue(originalItem, 'SKU', 'sku', 'id', 'ID', 'MPN', 'mpn') || '');
+                      const itemSku = String(getValue(originalItem, 'SKU', 'sku', 'id', 'ID') || '');
                       return (
                         <tr key={`item-row-${index}-${itemSku}`} onClick={() => setSelectedBulkItem(processed || originalItem)} className="transition-colors hover:bg-gray-50 cursor-pointer">
                           {headers.map((header, colIdx) => (
@@ -1005,6 +1087,13 @@ export default function App() {
                     </div>
                   )}
                   {renderAudit(selectedBulkItem.audit)}
+                  {selectedBulkItem.failedGenerationOutput && (
+                    <section className="glass-card p-5 border border-red-200" aria-label="Rejected generated content">
+                      <h3 className="font-bold text-red-900 mb-2">Rejected Draft</h3>
+                      <p className="text-sm text-red-800 mb-3">This is the model output captured before validation rejected the product. Compare it with the validation findings above.</p>
+                      <pre className="max-h-96 overflow-auto rounded-lg bg-gray-950 p-4 text-xs leading-relaxed text-gray-100 whitespace-pre-wrap break-words">{JSON.stringify(selectedBulkItem.failedGenerationOutput, null, 2)}</pre>
+                    </section>
+                  )}
                   {(selectedBulkItem.description_full || selectedBulkItem.description_short || selectedBulkItem.shortDescription) ? (
                     <div className={cn("grid gap-8", generateSeo && selectedBulkItem.seoMeta ? "grid-cols-1 md:grid-cols-3" : "grid-cols-1")}>
                       <div className={cn("space-y-6", generateSeo && selectedBulkItem.seoMeta ? "md:col-span-2" : "")}>
@@ -1096,10 +1185,9 @@ export default function App() {
                 </div>
 
                 <div className="pt-6 border-t border-gray-100">
-                  <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Quality Controls</h3>
+                  <h3 className="text-sm font-bold uppercase tracking-widest text-gray-400 mb-4">Optional Generation Context</h3>
                   <div className="space-y-4">
-                    <label className="flex items-center justify-between cursor-pointer group"><div className="flex flex-col pr-4"><span className="text-sm font-medium text-brand-secondary">Enable Web Search Grounding</span><span className="text-xs text-gray-400">Verifies exact products; adds latency and tool usage</span></div><div className="relative"><input type="checkbox" className="sr-only" checked={enableWebSearch} onChange={event => setEnableWebSearch(event.target.checked)} /><div className={cn("block w-10 h-6 rounded-full transition-colors", enableWebSearch ? "bg-brand-accent" : "bg-gray-300")} /><div className={cn("absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform", enableWebSearch ? "translate-x-4" : "")} /></div></label>
-                    <label className="flex items-center justify-between cursor-pointer group"><div className="flex flex-col pr-4"><span className="text-sm font-medium text-brand-secondary">Automatic Validation Repair</span><span className="text-xs text-gray-400">Runs one constrained repair pass when generated output violates hard rules</span></div><div className="relative"><input type="checkbox" className="sr-only" checked={enableRepairPass} onChange={event => setEnableRepairPass(event.target.checked)} /><div className={cn("block w-10 h-6 rounded-full transition-colors", enableRepairPass ? "bg-brand-accent" : "bg-gray-300")} /><div className={cn("absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform", enableRepairPass ? "translate-x-4" : "")} /></div></label>
+                    <label className="flex flex-col gap-2"><span className="text-sm font-medium text-brand-secondary">Official-source research</span><select value={researchMode} onChange={event => setResearchMode(event.target.value as 'off' | 'sparse' | 'all')} className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none text-sm bg-white"><option value="off">Manufacturer PDFs and catalog only</option><option value="sparse">Manufacturer PDFs, then research sparse products</option><option value="all">Manufacturer PDFs, then research remaining products</option></select><span className="text-xs text-gray-500">The four manufacturer PDFs are indexed locally and read first. Online research is skipped when a specific catalog excerpt is available. Sparse mode considers identifiable products with little detail{bulkItems.length ? ` (${bulkItems.filter(item => isBulkGenerationTarget(item) && shouldResearchSparseItem(item)).length.toLocaleString()} sparse rows)` : ''}. An optional “Official source URL” uses URL Context; otherwise Google Search may run multiple billable queries per selected product.</span></label>
                     <label className="flex flex-col gap-2"><span className="text-sm font-medium text-brand-secondary">Global Competitor Context</span><textarea value={competitorContext} onChange={event => setCompetitorContext(event.target.value)} placeholder="Optional URL or text. Used only as untrusted market-language context." className="w-full h-20 p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-accent focus:border-transparent outline-none transition-all resize-none text-sm bg-white" /></label>
                   </div>
                 </div>
