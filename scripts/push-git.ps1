@@ -1,3 +1,3 @@
 git add .
 git commit -m "UPDATE - CHECKPOINT"
-git push --force
+git push origin main
