@@ -1123,13 +1123,14 @@ export default function ProductDetail({
                   description={descriptionNode}
                   features={structuredFeatures !== null
                     ? (structuredFeatures.length ? (
-                      <ul className="dtb-pdp-structured-features">
+                      <dl className="dtb-pdp-structured-features">
                         {structuredFeatures.map((feature, index) => (
-                          <li key={`${index}-${feature.label}`}>
-                            <strong>{feature.label}:</strong> {feature.description}
-                          </li>
+                          <div className="dtb-pdp-structured-features__row" key={`${index}-${feature.label}`}>
+                            <dt>{feature.label}</dt>
+                            <dd>{feature.description}</dd>
+                          </div>
                         ))}
-                      </ul>
+                      </dl>
                     ) : null)
                     : featuresNode}
                   specs={!specTable.hidden ? <ProductSpecTable specs={productSpecifications} /> : null}

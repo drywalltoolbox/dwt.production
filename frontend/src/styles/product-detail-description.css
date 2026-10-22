@@ -238,6 +238,45 @@
   font-weight: 700;
 }
 
+.dtb-pdp-structured-features {
+  width: 100%;
+  max-width: 70ch;
+  margin: .55rem 0 0;
+  padding: 0;
+  border-top: 1px solid #e3e9f1;
+}
+
+.dtb-pdp-structured-features__row {
+  display: grid;
+  grid-template-columns: minmax(10rem, 12.5rem) minmax(0, 1fr);
+  column-gap: clamp(1.1rem, 2.2vw, 2rem);
+  align-items: start;
+  padding: .72rem 0;
+  border-bottom: 1px solid #e3e9f1;
+}
+
+.dtb-pdp-structured-features__row dt {
+  color: #172033;
+  font-size: clamp(.9rem, .18vw + .88rem, .96rem);
+  font-weight: 700;
+  line-height: 1.52;
+}
+
+.dtb-pdp-structured-features__row dd {
+  margin: 0;
+  color: #40516a;
+  font-size: clamp(.9rem, .18vw + .88rem, .96rem);
+  font-weight: 430;
+  line-height: 1.52;
+}
+
+@media (max-width: 560px) {
+  .dtb-pdp-structured-features__row {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: .2rem;
+  }
+}
+
 /* Feature lists use clean definition rows rather than cards. */
 .dtb-product-page-shell .dtb-pdp-description-content--rich
   .dtb-pdp-description-card > :is(h2, h3, h4) + :is(ul, ol) {
