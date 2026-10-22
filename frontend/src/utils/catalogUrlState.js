@@ -123,6 +123,9 @@ export const CATEGORY_LABELS = {
   stilts: 'Stilts',
   texture: 'Texture Tools',
   parts: 'Replacement Parts',
+  hand_tools: 'Drywall Hand Tools',
+  fasteners: 'Drywall Screws & Fasteners',
+  sealants: 'Drywall Sealants',
   services: 'Repair Services',
 };
 

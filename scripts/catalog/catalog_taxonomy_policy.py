@@ -141,8 +141,13 @@ COMPATIBILITY_BY_TAXON: dict[str, tuple[str, str]] = {
     "automatic_handles_extensions": ("handles", "handles"),
     "automatic_tool_sets": ("taping", "toolsets"),
     "tool_storage_cases": ("accessories", "tool_storage_cases"),
+    "bead_tools": ("finishing", "bead_tools"),
     "replacement_parts": ("parts", "parts"),
     "stilts": ("stilts", "stilts"),
+    "stilt_parts": ("parts", "parts"),
+    "drywall_hand_tools": ("hand_tools", "drywall_hand_tools"),
+    "drywall_screws_fasteners": ("fasteners", "drywall_screws_fasteners"),
+    "drywall_sealants": ("sealants", "drywall_sealants"),
 }
 
 
@@ -208,6 +213,12 @@ for legacy_suffix, target_key in LEGACY_PATH_TARGETS.items():
     for legacy_root in ("Drywall Finishing Tools", DRYWALL_ROOT):
         PATH_ALIASES[normalize_key(f"{legacy_root} > {legacy_suffix}")] = normalize_key(target.path)
 PATH_ALIASES[normalize_key("Drywall Finishing Tools > Parts")] = normalize_key("Replacement Parts")
+PATH_ALIASES[normalize_key("Taping & Finishing Tools > Goosenecks")] = normalize_key(
+    "Taping & Finishing Tools > Goosenecks, Box Fillers & Adapters"
+)
+PATH_ALIASES[normalize_key("Box Fillers & Adapters")] = normalize_key(
+    "Taping & Finishing Tools > Goosenecks, Box Fillers & Adapters"
+)
 
 LEAF_ALIASES = {
     "angle_heads": "corner_finishers",

@@ -123,6 +123,34 @@ def test_reviewed_assignment_requires_an_exact_owner_path() -> None:
     assert parse_assignments([f"OWNER={path}"], by_sku) == {"OWNER": path}
 
 
+def test_new_catalog_paths_resolve_to_complete_taxonomy_tuples() -> None:
+    cases = {
+        "Drywall Hand Tools": ("hand_tools", "drywall_hand_tools"),
+        "Drywall Screws & Fasteners": ("fasteners", "drywall_screws_fasteners"),
+        "Drywall Sealants": ("sealants", "drywall_sealants"),
+        "Taping & Finishing Tools > Bead Tools": ("finishing", "bead_tools"),
+        "Taping & Finishing Tools > Goosenecks": ("mudboxes", "automatic_goosenecks_box_fillers"),
+    }
+    for path, (category_key, display_key) in cases.items():
+        row = {
+            "SKU": path,
+            "Type": "simple",
+            "Categories": path,
+            "Meta: _dtb_product_kind": "tool",
+            "Meta: _dtb_category_key": "",
+            "Meta: _dtb_display_category_key": "",
+        }
+        changes, unresolved = build_changes([row])
+        assert not unresolved, path
+        expected_changes = {
+            ("Meta: _dtb_category_key", category_key),
+            ("Meta: _dtb_display_category_key", display_key),
+        }
+        if path.endswith("Goosenecks"):
+            expected_changes.add(("Categories", r"Taping & Finishing Tools > Goosenecks\, Box Fillers & Adapters"))
+        assert {(change["field"], change["expected"]) for change in changes} == expected_changes
+
+
 def test_taxonomy_state_reports_raw_and_normalized_values() -> None:
     state = taxonomy_state(
         product_kind="Toolset",

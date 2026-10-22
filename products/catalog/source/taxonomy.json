@@ -3,7 +3,10 @@
   "root_taxa": [
     "taping_finishing_tools",
     "replacement_parts",
-    "stilts_accessories"
+    "stilts_accessories",
+    "drywall_hand_tools",
+    "drywall_screws_fasteners",
+    "drywall_sealants"
   ],
   "taxa": [
     {"key": "taping_finishing_tools", "parent_key": null, "label": "Taping & Finishing Tools", "slug": "taping-finishing-tools", "sort": 100, "publish_when_empty": false},
@@ -24,8 +27,13 @@
     {"key": "automatic_continuous_flow_tools", "parent_key": "taping_finishing_tools", "label": "Continuous Flow Tools", "slug": "continuous-flow-tools", "sort": 250, "publish_when_empty": false},
     {"key": "automatic_tool_sets", "parent_key": "taping_finishing_tools", "label": "Tool Sets & Kits", "slug": "tool-sets-kits", "sort": 260, "publish_when_empty": false},
     {"key": "tool_storage_cases", "parent_key": "taping_finishing_tools", "label": "Tool Storage & Cases", "slug": "tool-storage-cases", "sort": 270, "publish_when_empty": false},
+    {"key": "bead_tools", "parent_key": "taping_finishing_tools", "label": "Bead Tools", "slug": "bead-tools", "sort": 280, "publish_when_empty": false},
     {"key": "replacement_parts", "parent_key": null, "label": "Replacement Parts", "slug": "replacement-parts", "sort": 300, "publish_when_empty": false},
     {"key": "stilts_accessories", "parent_key": null, "label": "Stilts & Accessories", "slug": "stilts-accessories", "sort": 400, "publish_when_empty": false},
-    {"key": "stilts", "parent_key": "stilts_accessories", "label": "Stilts", "slug": "stilts", "sort": 410, "publish_when_empty": false}
+    {"key": "stilts", "parent_key": "stilts_accessories", "label": "Stilts", "slug": "stilts", "sort": 410, "publish_when_empty": false},
+    {"key": "stilt_parts", "parent_key": "stilts_accessories", "label": "Parts", "slug": "stilt-parts", "sort": 420, "publish_when_empty": false},
+    {"key": "drywall_hand_tools", "parent_key": null, "label": "Drywall Hand Tools", "slug": "drywall-hand-tools", "sort": 500, "publish_when_empty": false},
+    {"key": "drywall_screws_fasteners", "parent_key": null, "label": "Drywall Screws & Fasteners", "slug": "drywall-screws-fasteners", "sort": 600, "publish_when_empty": false},
+    {"key": "drywall_sealants", "parent_key": null, "label": "Drywall Sealants", "slug": "drywall-sealants", "sort": 700, "publish_when_empty": false}
   ]
 }

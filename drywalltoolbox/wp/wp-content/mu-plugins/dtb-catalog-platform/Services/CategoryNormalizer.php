@@ -26,6 +26,9 @@ final class DTB_CategoryNormalizer {
 		'stilts'      => 'Stilts',
 		'texture'     => 'Texture Tools',
 		'parts'       => 'Replacement Parts',
+		'hand_tools'  => 'Drywall Hand Tools',
+		'fasteners'   => 'Drywall Screws & Fasteners',
+		'sealants'    => 'Drywall Sealants',
 		'services'    => 'Repair Services',
 	];
 
@@ -73,6 +76,10 @@ final class DTB_CategoryNormalizer {
 		'stilts'                               => 'stilts',
 		'parts'                                => 'parts',
 		'replacement parts'                    => 'parts',
+		'drywall hand tools'                  => 'hand_tools',
+		'drywall screws & fasteners'          => 'fasteners',
+		'drywall sealants'                    => 'sealants',
+		'bead tools'                          => 'finishing',
 	];
 
 	const CATEGORY_KEY_ALIASES = [
@@ -107,6 +114,10 @@ final class DTB_CategoryNormalizer {
 		'semi_automatic_tapers_banjos'              => 'Semi-Automatic Tapers & Banjos',
 		'tool_storage_cases'                        => 'Tool Storage & Cases',
 		'parts'                                     => 'Parts',
+		'bead_tools'                                => 'Bead Tools',
+		'drywall_hand_tools'                        => 'Drywall Hand Tools',
+		'drywall_screws_fasteners'                  => 'Drywall Screws & Fasteners',
+		'drywall_sealants'                          => 'Drywall Sealants',
 		'stilts'                                    => 'Stilts',
 		// Legacy compatibility value retained until all historical product meta is migrated.
 		'automatic_compound_applicators'            => 'Compound Applicators',
@@ -190,6 +201,10 @@ final class DTB_CategoryNormalizer {
 		'smoothing_blade'                           => 'smoothing_blades',
 		'skimming_blade'                            => 'smoothing_blades',
 		'parts'                                     => 'parts',
+		'bead_tools'                                => 'bead_tools',
+		'drywall_hand_tools'                        => 'drywall_hand_tools',
+		'drywall_screws_fasteners'                  => 'drywall_screws_fasteners',
+		'drywall_sealants'                          => 'drywall_sealants',
 		'part'                                      => 'parts',
 		'replacement_parts'                         => 'parts',
 		'stilts'                                    => 'stilts',
