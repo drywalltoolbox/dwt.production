@@ -50,8 +50,13 @@ export default defineConfig(({mode}) => {
           res.statusCode = 200;
           res.end(JSON.stringify({ text: result.text || '', candidates: result.candidates || [] }));
         } catch (error: any) {
+          const status = Number(error?.status || error?.statusCode || 0);
+          const message = String(error?.message || 'Gemini generation failed.')
+            .replaceAll(env.GEMINI_API_KEY, '[redacted]')
+            .slice(0, 500);
+          console.error('OptiWrite Gemini request failed', { status, message });
           res.statusCode = 502;
-          res.end(JSON.stringify({ error: String(error?.message || 'Gemini generation failed.').slice(0, 500) }));
+          res.end(JSON.stringify({ error: message, upstreamStatus: status || undefined }));
         }
       });
     }
