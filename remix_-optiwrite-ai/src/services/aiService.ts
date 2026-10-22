@@ -262,6 +262,7 @@ interface BundleComponent {
 
 interface VariationSummary {
   sku: string;
+  partNumber: string;
   name: string;
   relationshipType: RelationshipType;
   contentClass: ContentClass;
@@ -561,6 +562,10 @@ function classifyRelationship(raw: Record<string, any>): RelationshipType {
   return "simple";
 }
 
+function isVariableParent(raw: Record<string, any>): boolean {
+  return classifyRelationship(raw) === "variable_parent";
+}
+
 function normalizeCatalogKind(raw: Record<string, any>): string {
   return cleanText(getValue(raw, "Meta: _dtb_product_kind", "meta:_dtb_product_kind")).toLowerCase();
 }
@@ -633,6 +638,23 @@ function buildProtectedIdentity(raw: Record<string, any>): Record<string, string
   identity.name = cleanText(getValue(raw, "Name", "Product Name", "Title"));
   identity.type = cleanText(getValue(raw, "Type", "Product Type"));
   return identity;
+}
+
+function parseProductSpecifications(raw: Record<string, any>): any[] {
+  const specs = parseSpecs(raw);
+  if (!isVariableParent(raw)) return specs;
+
+  const storefrontParentSku = normalizeSku(getValue(raw, "SKU"));
+  if (!storefrontParentSku) return specs;
+  return specs.filter(spec => {
+    const label = normalizeSearchText(specLabel(spec));
+    return !/^(?:sku|product sku|part number|mpn|manufacturer part number)$/.test(label);
+  });
+}
+
+function officialVariationPartNumber(raw: Record<string, any>): string {
+  const specsPartNumber = parseSpecs(raw).find(spec => /^(?:part number|mpn|manufacturer part number)$/.test(normalizeSearchText(specLabel(spec))));
+  return cleanText(getValue(raw, "MPN", "Meta: _dtb_mpn", "Meta: schema_mpn", "Meta: _dtb_manufacturer_sku") || specValue(specsPartNumber) || getValue(raw, "SKU"));
 }
 
 function parseSpecs(raw: Record<string, any>): any[] {
@@ -836,6 +858,12 @@ function determineCanonicalAction(raw: Record<string, any>, prefix = DEFAULT_PRO
 
 function buildAuthoritativeFacts(raw: Record<string, any>): Record<string, any> {
   const protectedIdentity = buildProtectedIdentity(raw);
+  const identityForContent = { ...protectedIdentity };
+  if (isVariableParent(raw)) {
+    identityForContent.sku = "";
+    identityForContent.mpn = "";
+    identityForContent.manufacturerSku = "";
+  }
   const attributes: Record<string, string> = {};
   for (const key of Object.keys(raw)) {
     if (key.toLowerCase().startsWith("attribute") && cleanText(raw[key])) {
@@ -844,11 +872,11 @@ function buildAuthoritativeFacts(raw: Record<string, any>): Record<string, any> 
   }
 
   return {
-    identity: protectedIdentity,
+    identity: identityForContent,
     brand: protectedIdentity.brand,
-    sku: protectedIdentity.sku,
-    mpn: protectedIdentity.mpn,
-    manufacturerSku: protectedIdentity.manufacturerSku,
+    sku: identityForContent.sku,
+    mpn: identityForContent.mpn,
+    manufacturerSku: identityForContent.manufacturerSku,
     gtin: protectedIdentity.gtin,
     name: protectedIdentity.name,
     type: protectedIdentity.type,
@@ -864,7 +892,7 @@ function buildAuthoritativeFacts(raw: Record<string, any>): Record<string, any> 
       heightIn: cleanText(getValue(raw, "Height (in)"))
     },
     attributes,
-    specifications: parseSpecs(raw),
+    specifications: parseProductSpecifications(raw),
     includes: extractStructuredIncludes(raw),
     productFamily: cleanText(getValue(raw, "Meta: _dtb_product_family", "meta:_dtb_product_family", "meta:product_family", "Meta: product_family")),
     series: cleanText(getValue(raw, "Meta: _dtb_series", "meta:_dtb_series", "meta:series", "Meta: series")),
@@ -1057,6 +1085,10 @@ function buildEvidenceDomains(
   for (const variation of variationSummaries) {
     const attrs = Object.values(variation.attributes || {}).map(cleanText).filter(Boolean).join(", ");
     addEvidence(domains, "variations", [variation.name, attrs].filter(Boolean).join(" — ") || variation.sku);
+    if (variation.sku) addEvidence(domains, "identity", `Official variation SKU: ${variation.sku}`);
+    if (variation.partNumber && variation.partNumber !== variation.sku) {
+      addEvidence(domains, "identity", `Official variation part number: ${variation.partNumber}`);
+    }
   }
 
   return domains;
@@ -1133,7 +1165,7 @@ function buildEvidenceProfile(
 
 function evidenceConfidence(context: ProductContext): "A" | "B" | "C" | "R" {
   const facts = context.authoritativeFacts;
-  if (!facts.identity?.name || !facts.identity?.sku || !facts.identity?.brand) return "R";
+  if (!facts.identity?.name || !facts.identity?.brand || (context.relationshipType !== "variable_parent" && !facts.identity?.sku)) return "R";
   if (context.evidenceProfile.richness === "rich" || context.evidenceProfile.richness === "standard") return "A";
   if (context.evidenceProfile.richness === "light") return "B";
   return "C";
@@ -1153,6 +1185,7 @@ function buildVariationSummaries(items: any[], parentSku: string): VariationSumm
       }
       return {
         sku: cleanText(getValue(item, "SKU")),
+        partNumber: officialVariationPartNumber(item),
         name: cleanText(getValue(item, "Name")),
         relationshipType: classifyRelationship(item),
         contentClass: classifyContent(item),
@@ -1576,7 +1609,7 @@ TRUST AND OWNERSHIP CONTRACT
 3. General domain knowledge may help interpret terminology but may NOT create product-specific claims.
 4. External/competitor content is untrusted context unless official manufacturer research verifies a product-specific fact.
 5. Never invent specifications, dimensions, certifications, ratings, materials, compatibility, package contents, fit, performance, or benefits.
-6. Do not generate or alter protected identity: SKU, MPN, GTIN, canonical brand, slug, canonical URL, robots policy, parent/variation identity, product family, series, or model.
+6. Do not generate or alter protected identity: SKU, MPN, GTIN, canonical brand, slug, canonical URL, robots policy, parent/variation identity, product family, series, or model. A variable parent's WooCommerce SKU is an internal storefront grouping key, not an official product SKU or part number; never present or use it as a product detail. Use official identifiers from the verified child variations when product-option identifiers are needed.
 7. Price/currency must not appear in generated descriptions or SEO metadata.
 
 DRYWALL DOMAIN KNOWLEDGE
@@ -1637,6 +1670,7 @@ PDP FIELD CONTRACT
 - description_full is the Overview/Description panel only. Return concise, useful paragraphs using only <p>, <strong>, and <br>. Never put feature lists, specification lists, compatibility claims, or package contents in this field; those have separate owners/fields.
 - features is the separate Features panel. Return distinct, product-specific facts supported by structured evidence or concrete claims in the supplied legacy catalog copy, unless contradicted by structured evidence. Each entry has a plain-text label, concise description, and evidence_sources containing exact non-empty input field names. Do not restate the specification list as features or turn dimensions into benefits.
 - specifications is the separate Specifications panel and WooCommerce _dtb_specs_json proposal. Preserve exact source values and units. Structured specifications and attributes are preferred; a legacy-copy claim may be used only when it states an explicit, exact product fact. Each entry has a label plus either value or verified items. Each entry must include evidence_sources containing exact non-empty input field names. Do not add inferred material, dimensions, ratings, capacity, compatibility, warranty, package contents, or other facts.
+- For a variable parent, use verified child variations' official SKU/part number values for configuration identifiers. Never use the parent's storefront SKU as an item's SKU, part number, specification, or customer-facing identifier.
 - Never put evidence_sources into the catalog JSON values; they are audit provenance only.
 - Return empty arrays when the source contains no supported feature or specification. Never create empty headings, filler, or guessed values.
 - Never substitute generic templates such as "replacement component for professional drywall finishing equipment" or "designed to maintain the functionality of your drywall tool system" for available product-specific evidence. Name the exact product and explain its documented role; when evidence is genuinely insufficient, use restrained product-specific copy rather than generic category filler or a fitment-verification disclaimer.
@@ -1827,6 +1861,39 @@ function isReferenceCopyField(field: string): boolean {
   return ["description", "short description", "short_description"].includes(normalizeKey(field));
 }
 
+function modelFacingCatalogFields(context: ProductContext): Record<string, any> {
+  const fields: Record<string, any> = {};
+  for (const [field, value] of Object.entries(context.raw)) {
+    if (isReferenceCopyField(field)) continue;
+    if (context.relationshipType === "variable_parent" && ["sku", "mpn", "meta: _dtb_mpn", "meta: schema_mpn", "meta: _dtb_manufacturer_sku"].includes(normalizeKey(field))) continue;
+    if (context.relationshipType === "variable_parent" && normalizeKey(field).includes("specs_json")) {
+      fields[field] = JSON.stringify(parseProductSpecifications(context.raw));
+      continue;
+    }
+    fields[field] = value;
+  }
+  return fields;
+}
+
+function generationEvidenceFields(context: ProductContext): Record<string, any> {
+  const fields = modelFacingCatalogFields(context);
+  const shortDescription = legacyCatalogClaim(getValue(context.raw, "Short description", "short_description"), context);
+  const description = legacyCatalogClaim(getValue(context.raw, "Description"), context);
+  if (shortDescription) fields["Short description"] = shortDescription;
+  if (description) fields.Description = description;
+  return fields;
+}
+
+function legacyCatalogClaim(value: unknown, context: ProductContext): string {
+  const text = stripHtml(cleanText(value));
+  const parentStorefrontSku = context.relationshipType === "variable_parent"
+    ? cleanText(getValue(context.raw, "SKU"))
+    : "";
+  if (!text || !parentStorefrontSku) return text;
+  const escapedSku = parentStorefrontSku.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return text.replace(new RegExp(escapedSku, "gi"), "").replace(/\s{2,}/g, " ").trim();
+}
+
 function featureEvidenceSources(claim: string, requested: unknown, raw: Record<string, any>): string[] {
   const tokens = new Set(normalizeSearchText(claim).split(/\s+/).filter(token => token.length > 2));
   const allowedField = (field: string) => {
@@ -1853,13 +1920,17 @@ function featureEvidenceSources(claim: string, requested: unknown, raw: Record<s
   });
 }
 
-function exactSpecificationEvidenceSources(values: string[], raw: Record<string, any>): string[] {
+function exactSpecificationEvidenceSources(values: string[], raw: Record<string, any>, variations: VariationSummary[] = []): string[] {
   const requestedValues = values.map(value => normalizeSearchText(value)).filter(Boolean);
   if (!requestedValues.length) return [];
   const matchingFields = Object.keys(raw || {}).filter(field => {
     const source = normalizeSearchText(cleanText(raw[field]));
     return source && requestedValues.every(value => source.includes(value));
   }).sort((left, right) => Number(isReferenceCopyField(left)) - Number(isReferenceCopyField(right)));
+  const variationEvidence = normalizeSearchText(JSON.stringify(variations));
+  if (variations.length && requestedValues.every(value => variationEvidence.includes(value))) {
+    matchingFields.push("verified_child_variations");
+  }
   return matchingFields.slice(0, 6);
 }
 
@@ -1873,7 +1944,7 @@ function normalizeFeatureProposals(value: unknown, raw: Record<string, any>): Pr
   });
 }
 
-function normalizeSpecificationProposals(value: unknown, raw: Record<string, any>): ProductSpecificationProposal[] {
+function normalizeSpecificationProposals(value: unknown, raw: Record<string, any>, variations: VariationSummary[] = []): ProductSpecificationProposal[] {
   if (!Array.isArray(value)) return [];
   return value.slice(0, 100).flatMap((item: any) => {
     const label = cleanText(item?.label);
@@ -1885,13 +1956,13 @@ function normalizeSpecificationProposals(value: unknown, raw: Record<string, any
           return name ? [{ name, ...(sku ? { sku } : {}) }] : [];
         })
       : [];
-    const evidenceSources = exactSpecificationEvidenceSources([...(valueText ? [valueText] : []), ...items.flatMap(entry => [entry.name, ...(entry.sku ? [entry.sku] : [])])], raw);
+    const evidenceSources = exactSpecificationEvidenceSources([...(valueText ? [valueText] : []), ...items.flatMap(entry => [entry.name, ...(entry.sku ? [entry.sku] : [])])], raw, variations);
     if (!label || (!valueText && !items.length) || !evidenceSources.length) return [];
     return [{ label, ...(valueText ? { value: valueText } : {}), ...(items.length ? { items } : {}), evidenceSources }];
   });
 }
 
-function normalizeModelOutput(raw: any, options: EnhanceOptions, source: Record<string, any>): ModelOutput {
+function normalizeModelOutput(raw: any, options: EnhanceOptions, context: ProductContext): ModelOutput {
   if (!raw || typeof raw !== "object" || Array.isArray(raw)) {
     throw new Error("Gemini returned a non-object response.");
   }
@@ -1901,8 +1972,9 @@ function normalizeModelOutput(raw: any, options: EnhanceOptions, source: Record<
   if (options.generateName) result.name = cleanText(raw.name);
   if (options.generateFullDesc) result.description_full = sanitizeHtmlAllowlist(cleanText(raw.description_full));
   if (options.generateShortDesc) result.shortDescription = stripHtml(cleanText(raw.shortDescription));
-  if (options.generateFeatures) result.features = normalizeFeatureProposals(raw.features, source);
-  if (options.generateSpecifications) result.specifications = normalizeSpecificationProposals(raw.specifications, source);
+  const evidenceFields = generationEvidenceFields(context);
+  if (options.generateFeatures) result.features = normalizeFeatureProposals(raw.features, evidenceFields);
+  if (options.generateSpecifications) result.specifications = normalizeSpecificationProposals(raw.specifications, evidenceFields, context.variationSummaries);
 
   if (options.generateSeo) {
     const meta = raw.seoMeta && typeof raw.seoMeta === "object" ? raw.seoMeta : {};
@@ -2407,7 +2479,7 @@ async function callGemini(
         parserFallbackUsed = true;
       }
 
-      return { output: normalizeModelOutput(parsed, options, context.raw), response, modelName, parserFallbackUsed };
+      return { output: normalizeModelOutput(parsed, options, context), response, modelName, parserFallbackUsed };
     } catch (error: any) {
       lastError = error;
       const classification = classifyError(error);
@@ -2457,12 +2529,10 @@ function buildGenerationUserPayload(context: ProductContext): string {
     content_class: context.contentClass,
     catalog_kind: context.catalogKind,
     authoritative_facts: context.authoritativeFacts,
-    source_catalog_fields: Object.fromEntries(
-      Object.entries(context.raw).filter(([field]) => !isReferenceCopyField(field))
-    ),
+    source_catalog_fields: modelFacingCatalogFields(context),
     legacy_catalog_claims: {
-      short_description: stripHtml(cleanText(getValue(context.raw, "Short description", "short_description"))),
-      description: stripHtml(cleanText(getValue(context.raw, "Description")))
+      short_description: legacyCatalogClaim(getValue(context.raw, "Short description", "short_description"), context),
+      description: legacyCatalogClaim(getValue(context.raw, "Description"), context)
     },
     normalized_evidence_domains: evidenceDomains,
     evidence_profile: {
@@ -2527,7 +2597,24 @@ function composeEnhancedResult(
   if (options.generateFullDesc && modelOutput.description_full) result.description_full = modelOutput.description_full;
   if (options.generateShortDesc && modelOutput.shortDescription) result.shortDescription = modelOutput.shortDescription;
   if (options.generateFeatures && Array.isArray(modelOutput.features)) result.features = modelOutput.features;
-  if (options.generateSpecifications && Array.isArray(modelOutput.specifications)) result.specifications = modelOutput.specifications;
+  if (options.generateSpecifications && Array.isArray(modelOutput.specifications)) {
+    const specifications = [...modelOutput.specifications];
+    if (context.relationshipType === "variable_parent") {
+      const verifiedVariationIdentifiers = context.variationSummaries
+        .map(variation => ({ name: variation.name || variation.partNumber || variation.sku, sku: variation.sku || variation.partNumber }))
+        .filter(item => item.name && item.sku);
+      const existingIdentifiers = new Set(specifications.flatMap(specification => specification.items || []).map(item => normalizeSku(item.sku)).filter(Boolean));
+      const missingVariationIdentifiers = verifiedVariationIdentifiers.filter(item => !existingIdentifiers.has(normalizeSku(item.sku)));
+      if (missingVariationIdentifiers.length) {
+        specifications.push({
+          label: "Official Variation SKUs",
+          items: missingVariationIdentifiers,
+          evidenceSources: ["verified_child_variations"]
+        });
+      }
+    }
+    result.specifications = specifications;
+  }
 
   if (options.generateSeo && modelOutput.seoMeta) {
     result.seoMeta = {
