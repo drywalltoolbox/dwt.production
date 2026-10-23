@@ -1,0 +1,306 @@
+/**
+ * DTB order admin visual compatibility layer.
+ *
+ * BrikPanel and WooCommerce own order behavior and markup; this stylesheet
+ * improves presentation on the order editor and order-preview modal only.
+ */
+
+body.brikpanel-modern-edit.bp-order-tabs {
+	--dtb-order-ink: #15263d;
+	--dtb-order-muted: #5e6f84;
+	--dtb-order-line: #dce4ee;
+	--dtb-order-canvas: #f4f7fb;
+	--dtb-order-accent: #1769e0;
+	--dtb-order-accent-soft: #edf4ff;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs .bp-otabs {
+	overflow: visible !important;
+	border: 1px solid var(--dtb-order-line);
+	border-radius: 16px;
+	background: #fff;
+	box-shadow: 0 8px 24px rgba(20, 42, 72, .07);
+}
+
+body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__bar {
+	top: var(--bp-otabs-top, 104px);
+	z-index: 30;
+	gap: 6px;
+	padding: 10px 12px;
+	border-bottom: 1px solid var(--dtb-order-line);
+	border-radius: 16px 16px 0 0;
+	background: rgba(248, 250, 253, .96);
+	box-shadow: 0 8px 16px -16px rgba(15, 35, 60, .4);
+	backdrop-filter: blur(12px);
+}
+
+body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__tab {
+	min-height: 38px;
+	padding: 0 14px;
+	border: 1px solid transparent;
+	border-radius: 10px;
+	color: var(--dtb-order-muted);
+	font-size: 13px;
+	font-weight: 650;
+	transition: color .15s ease, background-color .15s ease, border-color .15s ease;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__tab:hover {
+	border-color: #d8e5f8;
+	background: #fff;
+	color: var(--dtb-order-ink);
+}
+
+body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__tab[aria-selected="true"] {
+	border-color: #cfe0fb;
+	background: var(--dtb-order-accent-soft);
+	color: var(--dtb-order-accent);
+}
+
+body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__tab:focus-visible {
+	outline: 3px solid rgba(23, 105, 224, .28);
+	outline-offset: 2px;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__count {
+	background: #e7edf6;
+	color: #52657d;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__tab[aria-selected="true"] .bp-otabs__count {
+	background: #d9e9ff;
+	color: #1559bf;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs .bp-osummary,
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-actions {
+	border: 1px solid var(--dtb-order-line);
+	border-radius: 16px;
+	background: #fff;
+	box-shadow: 0 8px 24px rgba(20, 42, 72, .06);
+}
+
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items > .inside {
+	padding: 0 !important;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items thead th {
+	padding: 13px 14px;
+	background: #f5f8fc;
+	color: #52657d;
+	font-size: 10px;
+	font-weight: 750;
+	letter-spacing: .075em;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody td {
+	padding: 16px 14px;
+	border-bottom-color: #e8edf4 !important;
+	color: var(--dtb-order-ink);
+	vertical-align: middle;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .wc-order-totals-items {
+	border-color: var(--dtb-order-line);
+	border-radius: 0 0 14px 14px;
+	background: #f7f9fc !important;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .wc-order-data-row {
+	padding: 16px 20px !important;
+	border-top-color: var(--dtb-order-line) !important;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-data,
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-notes,
+body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__panel > .postbox {
+	border-color: var(--dtb-order-line) !important;
+	border-radius: 14px !important;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-data .order_data_column > h3,
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-data .order_data_column > h4 {
+	color: var(--dtb-order-ink);
+	font-size: 12px !important;
+	font-weight: 750 !important;
+	letter-spacing: .035em;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-data .order_data_column .address {
+	color: #354961;
+	font-size: 13px;
+	line-height: 1.65;
+}
+
+body.brikpanel-modern-edit.bp-order-tabs .brikpanel-order-header {
+	z-index: 120;
+	border-bottom-color: var(--dtb-order-line);
+	box-shadow: 0 5px 18px rgba(20, 42, 72, .08);
+}
+
+body.bp-orders-compact .wc-backbone-modal {
+	z-index: 100000 !important;
+}
+
+body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-content {
+	box-sizing: border-box;
+	width: min(1480px, calc(100vw - 48px)) !important;
+	height: min(820px, calc(100dvh - 48px)) !important;
+	max-width: calc(100vw - 48px) !important;
+	max-height: calc(100dvh - 48px) !important;
+	overflow: hidden;
+	border: 1px solid #dce4ee;
+	border-radius: 18px;
+	background: #fff;
+	box-shadow: 0 28px 90px rgba(9, 25, 48, .28);
+}
+
+body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-main {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	max-height: calc(100dvh - 48px);
+	flex-direction: column;
+	overflow: hidden;
+}
+
+body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-main > header {
+	position: relative;
+	z-index: 2;
+	flex: 0 0 auto;
+	padding: 18px 26px;
+	border-bottom: 1px solid #e4eaf2;
+	background: #fff;
+	color: #15263d;
+}
+
+body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-main > header h1,
+body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-main > header h2,
+body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-main > header h3 {
+	margin: 0;
+	color: #15263d;
+	font-size: 20px;
+	font-weight: 750;
+	letter-spacing: -.025em;
+}
+
+body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-main > article {
+	min-height: 0;
+	flex: 1 1 auto;
+	overflow: auto;
+	padding: 22px 26px;
+	background: #f4f7fb;
+}
+
+body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-main > footer {
+	position: relative;
+	z-index: 2;
+	flex: 0 0 auto;
+	padding: 14px 20px;
+	border-top: 1px solid #e4eaf2;
+	background: rgba(255, 255, 255, .98);
+	box-shadow: 0 -8px 20px rgba(20, 42, 72, .04);
+}
+
+body.bp-orders-compact .wc-backbone-modal .order_data_column_container {
+	display: grid;
+	gap: 14px;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+body.bp-orders-compact .wc-backbone-modal .order_data_column {
+	min-width: 0;
+	padding: 18px;
+	border: 1px solid #e1e8f1;
+	border-radius: 14px;
+	background: #fff;
+	box-shadow: 0 4px 14px rgba(20, 42, 72, .04);
+}
+
+body.bp-orders-compact .wc-backbone-modal .order_data_column > h3,
+body.bp-orders-compact .wc-backbone-modal .order_data_column > h4 {
+	margin: 0 0 12px;
+	color: #15263d;
+	font-size: 12px;
+	font-weight: 750;
+	letter-spacing: .04em;
+	text-transform: uppercase;
+}
+
+body.bp-orders-compact .wc-backbone-modal #woocommerce-order-items,
+body.bp-orders-compact .wc-backbone-modal .woocommerce_order_items_wrapper,
+body.bp-orders-compact .wc-backbone-modal .wc-order-preview-table {
+	max-width: 100%;
+	overflow-x: auto;
+}
+
+body.bp-orders-compact .wc-backbone-modal .woocommerce_order_items thead th,
+body.bp-orders-compact .wc-backbone-modal .wc-order-preview-table thead th {
+	padding: 12px 14px;
+	background: #f5f8fc;
+	color: #52657d;
+	font-size: 10px;
+	font-weight: 750;
+	letter-spacing: .075em;
+	text-transform: uppercase;
+}
+
+body.bp-orders-compact .wc-backbone-modal .woocommerce_order_items tbody td,
+body.bp-orders-compact .wc-backbone-modal .wc-order-preview-table tbody td {
+	padding: 14px;
+	border-bottom: 1px solid #e8edf4;
+	color: #243951;
+	vertical-align: middle;
+}
+
+body.bp-orders-compact .wc-backbone-modal .wc-order-totals-items,
+body.bp-orders-compact .wc-backbone-modal .wc-order-preview-table tfoot {
+	background: #f7f9fc;
+}
+
+body.bp-orders-compact .wc-backbone-modal a:focus-visible,
+body.bp-orders-compact .wc-backbone-modal button:focus-visible {
+	outline: 3px solid rgba(23, 105, 224, .28);
+	outline-offset: 2px;
+}
+
+@media screen and (max-width: 850px) {
+	body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__bar {
+		padding: 8px;
+	}
+
+	body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__tab {
+		min-height: 36px;
+		padding: 0 11px;
+	}
+
+	body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-content {
+		width: calc(100vw - 24px) !important;
+		max-width: calc(100vw - 24px) !important;
+		height: calc(100dvh - 24px) !important;
+		max-height: calc(100dvh - 24px) !important;
+		border-radius: 14px;
+	}
+
+	body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-main {
+		max-height: calc(100dvh - 24px);
+	}
+
+	body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-main > header {
+		padding: 15px 18px;
+	}
+
+	body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-main > article {
+		padding: 16px;
+	}
+
+	body.bp-orders-compact .wc-backbone-modal .order_data_column_container {
+		grid-template-columns: 1fr;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__tab {
+		transition: none;
+	}
+}
