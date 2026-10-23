@@ -16,6 +16,9 @@ const DTB_VEEQO_INVENTORY_RECURRING_HOOK = 'dtb_veeqo_inventory_reconcile_recurr
 remove_action( 'init', 'dtb_veeqo_inventory_schedule_recurring', 40 );
 
 function dtb_veeqo_inventory_schedule_recurring_trigger(): void {
+	if ( defined( 'DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED' ) && DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED ) {
+		return;
+	}
 	if ( ! function_exists( 'dtb_veeqo_inventory_readiness' ) || empty( dtb_veeqo_inventory_readiness()['ready'] ) || ! function_exists( 'as_schedule_recurring_action' ) ) {
 		return;
 	}
@@ -36,6 +39,9 @@ function dtb_veeqo_inventory_schedule_recurring_trigger(): void {
 add_action( 'init', 'dtb_veeqo_inventory_schedule_recurring_trigger', 40 );
 
 function dtb_veeqo_inventory_run_recurring_trigger(): void {
+	if ( defined( 'DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED' ) && DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED ) {
+		return;
+	}
 	// Run inside Action Scheduler, never in an interactive request.
 	dtb_veeqo_inventory_scheduled_run( 0 );
 }
