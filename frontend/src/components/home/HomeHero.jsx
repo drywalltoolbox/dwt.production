@@ -11,6 +11,7 @@ import {
 } from '../../motion/dtbMotion.js';
 import homeHeroDesktopUrl from '@assets/media/home/home-hero-desktop-1600.webp';
 import homeHeroMobileUrl from '@assets/media/home/home-hero-mobile-640.webp';
+import homeRepairsHeroDesktopUrl from '@assets/media/home/home-repairs-hero-desktop.webp';
 
 const SWIPE_THRESHOLD_PX = 44;
 const SLIDE_INTERVAL_MS = 8500;
@@ -44,6 +45,10 @@ export default function HomeHero({ brands = [] }) {
   const [pointerActive, setPointerActive] = useState(false);
 
   const activeCampaign = HOME_HERO_CAMPAIGNS[activeIndex];
+  const desktopHeroUrl = activeCampaign.id === 'repairs' ? homeRepairsHeroDesktopUrl : homeHeroDesktopUrl;
+  const desktopHeroDimensions = activeCampaign.id === 'repairs'
+    ? { width: 1672, height: 941 }
+    : { width: 1600, height: 640 };
   const contentVariants = reduceMotion ? reducedHomeHeroContentVariants : homeHeroContentVariants;
   const itemVariants = reduceMotion ? reducedHomeHeroItemVariants : homeHeroItemVariants;
 
@@ -205,9 +210,9 @@ export default function HomeHero({ brands = [] }) {
           />
           <img
             className="home-hero__media-image"
-            src={homeHeroDesktopUrl}
-            width="1600"
-            height="640"
+            src={desktopHeroUrl}
+            width={desktopHeroDimensions.width}
+            height={desktopHeroDimensions.height}
             sizes="100vw"
             alt=""
             decoding="async"

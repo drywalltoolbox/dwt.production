@@ -103,9 +103,8 @@
 	.wc-block-components-totals-footer-item { padding-top: 16px; border-top: 1px solid var(--dtb-checkout-border); }
 	body.woocommerce-checkout .wc-block-components-address-card { padding: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
 	body.woocommerce-checkout .wc-block-checkout__shipping-method .wc-block-checkout__shipping-method-container { gap: 0; padding: 0; background: transparent; border: 0; border-radius: 0; box-shadow: none; }
-	body.woocommerce-checkout .wc-block-checkout__shipping-method .wc-block-checkout__shipping-method-option { min-height: 64px; margin: 0; padding: 12px 16px; border: 0 !important; border-right: 1px solid var(--dtb-checkout-border) !important; border-radius: 0; box-shadow: none; }
-	body.woocommerce-checkout .wc-block-checkout__shipping-method .wc-block-checkout__shipping-method-option:last-child { border-right: 0 !important; }
-	body.woocommerce-checkout .wc-block-checkout__shipping-method .wc-block-checkout__shipping-method-option--selected { background: var(--dtb-checkout-blue-50) !important; box-shadow: inset 3px 0 0 var(--dtb-checkout-blue-600) !important; }
+	body.woocommerce-checkout .wc-block-checkout__shipping-method .wc-block-checkout__shipping-method-option { min-height: 64px; }
+	body.woocommerce-checkout .wc-block-checkout__shipping-method .wc-block-checkout__shipping-method-option--selected { border-color: var(--dtb-checkout-blue-600) !important; background: var(--dtb-checkout-blue-50) !important; }
 	body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block .wc-block-components-radio-control { border: 0; border-radius: 0; overflow: visible; }
 	body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block .wc-block-components-radio-control-accordion-content { width: 100%; margin: 0 0 16px; padding: 16px 0 4px; border: 0; border-radius: 0; background: transparent; }
 	.wc-block-components-order-summary-item { grid-template-columns: 58px minmax(0, 1fr) minmax(64px, max-content); gap: 12px; padding-block: 14px; }

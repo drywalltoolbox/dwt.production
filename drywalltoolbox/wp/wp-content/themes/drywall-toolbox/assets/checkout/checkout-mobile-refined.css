@@ -170,10 +170,6 @@
   border-color:#315be9;box-shadow:0 0 0 3px rgb(49 91 233 / 13%);
  }
  body.woocommerce-checkout .wc-block-components-checkbox {min-height:44px;padding-block:6px;align-items:center;}
- body.woocommerce-checkout :is(
-   .wp-block-woocommerce-checkout-shipping-method-block,
-   .wp-block-woocommerce-checkout-shipping-methods-block
- ) .wc-block-components-radio-control,
  body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block .wc-block-components-radio-control {
   border:1px solid var(--dtb-checkout-border-strong) !important;
   border-radius:13px !important;overflow:hidden !important;
@@ -183,20 +179,20 @@
    .wp-block-woocommerce-checkout-shipping-method-block,
    .wp-block-woocommerce-checkout-shipping-methods-block
  ) :is(.wc-block-components-radio-control__option,.wc-block-checkout__shipping-method-option) {
-  min-height:54px;margin:0 !important;
+  min-height:54px;margin:6px 0 !important;
   padding:11px 13px !important;
-  border:0 !important;border-bottom:1px solid var(--dtb-checkout-border) !important;
-  border-radius:0 !important;background:#fff !important;box-shadow:none !important;
+  border:1px solid var(--dtb-checkout-border-strong) !important;
+  border-radius:var(--dtb-checkout-radius-md) !important;
+  background:var(--dtb-checkout-surface-subtle) !important;
+  box-shadow:var(--dtb-checkout-shadow-xs) !important;
  }
  body.woocommerce-checkout :is(
    .wp-block-woocommerce-checkout-shipping-method-block,
    .wp-block-woocommerce-checkout-shipping-methods-block
- ) :is(.wc-block-components-radio-control__option,.wc-block-checkout__shipping-method-option):last-child {border-bottom:0 !important;}
- body.woocommerce-checkout :is(
-   .wp-block-woocommerce-checkout-shipping-method-block,
-   .wp-block-woocommerce-checkout-shipping-methods-block
  ) :is(.wc-block-components-radio-control__option,.wc-block-checkout__shipping-method-option):has(input:checked) {
-  background:#eef3ff !important;box-shadow:inset 3px 0 0 #315be9 !important;
+  border-color:var(--dtb-checkout-blue-600) !important;
+  background:var(--dtb-checkout-blue-50) !important;
+  box-shadow:0 0 0 2px rgb(49 91 233 / 8%) !important;
  }
  body.woocommerce-checkout .wc-block-checkout__shipping-method-option-title {
   font-size:13px;line-height:1.4;font-weight:650;overflow-wrap:anywhere;

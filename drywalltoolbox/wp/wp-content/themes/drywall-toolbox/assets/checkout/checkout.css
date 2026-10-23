@@ -269,7 +269,7 @@ body.woocommerce-checkout .wc-block-checkout__form .wc-blocks-components-select_
 /*
  * WooCommerce draws shipping selection borders directly and payment frames with
  * generated `::after` layers. Keep the native controls and state, but present both
- * groups as an open ledger: quiet row dividers and a restrained selected accent.
+ * groups as individual rounded choices, matching the address-field surfaces.
  */
 body.woocommerce-checkout :where(
 	.wp-block-woocommerce-checkout-shipping-method-block,
@@ -287,13 +287,14 @@ body.woocommerce-checkout :where(
 	.wp-block-woocommerce-checkout-shipping-methods-block
 ) :where(.wc-block-components-radio-control__option, .wc-block-checkout__shipping-method-option) {
 	min-height: 58px;
-	margin: 0 !important;
+	margin: 6px 0 !important;
 	padding: 14px 16px !important;
-	border: 0 !important;
-	border-radius: 0 !important;
+	border: 1px solid var(--dtb-checkout-border-strong) !important;
+	border-radius: var(--dtb-checkout-radius-md) !important;
 	outline: 0 !important;
-	background: transparent !important;
-	box-shadow: none !important;
+	background: var(--dtb-checkout-surface-subtle) !important;
+	box-shadow: var(--dtb-checkout-shadow-xs) !important;
+	transition: background-color 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
 }
 body.woocommerce-checkout :where(
 	.wp-block-woocommerce-checkout-shipping-method-block,
@@ -303,8 +304,9 @@ body.woocommerce-checkout :where(
 	.wc-block-checkout__shipping-method-option:has(input:checked),
 	.wc-block-checkout__shipping-method-option--selected
 ) {
+	border-color: var(--dtb-checkout-blue-600) !important;
 	background: var(--dtb-checkout-blue-50) !important;
-	box-shadow: inset 3px 0 0 var(--dtb-checkout-blue-600) !important;
+	box-shadow: 0 0 0 2px rgb(49 91 233 / 8%) !important;
 }
 body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block .wc-block-components-radio-control--highlight-checked::after,
 body.woocommerce-checkout .wp-block-woocommerce-checkout-payment-block .wc-block-components-radio-control__option::after,
