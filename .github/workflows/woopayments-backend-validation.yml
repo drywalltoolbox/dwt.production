@@ -12,6 +12,8 @@ on:
       - 'scripts/launch-readiness/tests/native_checkout_mount_contract.php'
       - 'scripts/launch-readiness/tests/test_routing_contract.py'
       - 'docs/checkout/**'
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-integrations/Veeqo/VeeqoShippingService.php'
+      - 'scripts/launch-readiness/tests/veeqo_shipping_contract.php'
       - '.github/workflows/woopayments-backend-validation.yml'
 
 permissions:
@@ -40,6 +42,8 @@ jobs:
             [[ -f "$path" ]] || continue
             php -l "$path"
           done < <(git diff --name-only --diff-filter=ACMRT "$BASE_SHA"...HEAD | grep -E '\.php$' || true)
+      - name: Verify Veeqo shipping carton and carrier-rate contract
+        run: php scripts/launch-readiness/tests/veeqo_shipping_contract.php
       - name: Run native checkout routing contract
         run: python3 scripts/launch-readiness/tests/test_routing_contract.py
       - name: Run native checkout mount behavior
