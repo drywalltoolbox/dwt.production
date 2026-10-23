@@ -299,6 +299,9 @@ function ProductDescriptionContent({ html, text }) {
   const shouldFormatPlainText = !hasHtmlMarkup(html) || (
     plainHtmlText
     && plainHtmlText.length > 260
+    // Keep authored inline semantics (especially the bold product-name lead)
+    // intact. Flattening these descriptions to text silently removes them.
+    && !/<\s*(?:strong|b|em|i|a|span)\b/i.test(html)
     && !/<\s*(ul|ol|li|table|h[1-6]|blockquote)\b/i.test(html)
   );
   const content = shouldFormatPlainText ? (plainHtmlText || sourceText) : '';
