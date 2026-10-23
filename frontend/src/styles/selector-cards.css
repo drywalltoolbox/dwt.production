@@ -263,6 +263,7 @@
 }
 
 .dtb-selector-card--brand.products-brand-selector__card--surpro,
+.dtb-selector-card--brand.products-brand-selector__card--columbia,
 .dtb-selector-card--brand.products-brand-selector__card--asgard,
 .dtb-selector-card--brand.products-brand-selector__card--tapetech,
 .dtb-selector-card--brand.products-brand-selector__card--dura-stilts,
@@ -272,6 +273,7 @@
 }
 
 .dtb-selector-card--brand.products-brand-selector__card--surpro .dtb-selector-card__brand-meta,
+.dtb-selector-card--brand.products-brand-selector__card--columbia .dtb-selector-card__brand-meta,
 .dtb-selector-card--brand.products-brand-selector__card--asgard .dtb-selector-card__brand-meta,
 .dtb-selector-card--brand.products-brand-selector__card--tapetech .dtb-selector-card__brand-meta,
 .dtb-selector-card--brand.products-brand-selector__card--dura-stilts .dtb-selector-card__brand-meta,
@@ -282,6 +284,48 @@
   right: 1rem;
   color: rgba(255, 255, 255, 0.78);
   text-align: center;
+}
+
+.dtb-selector-card--brand.products-brand-selector__card--columbia::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.045) 0,
+      rgba(255, 255, 255, 0.045) 1px,
+      rgba(0, 0, 0, 0.12) 1px,
+      rgba(0, 0, 0, 0.12) 5px
+    ),
+    radial-gradient(ellipse at 50% 38%, rgba(255, 255, 255, 0.12), transparent 58%),
+    linear-gradient(145deg, #171717 0%, #050505 62%, #101010 100%);
+  z-index: 0;
+}
+
+.dtb-selector-card--brand.products-brand-selector__card--columbia .dtb-selector-card__brand-logo {
+  filter: drop-shadow(0 2px 7px rgba(0, 0, 0, 0.42));
+}
+
+.dtb-selector-card--brand.products-brand-selector__card--surpro::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.09) 0,
+      rgba(255, 255, 255, 0.09) 1px,
+      rgba(150, 54, 0, 0.08) 1px,
+      rgba(150, 54, 0, 0.08) 5px
+    ),
+    radial-gradient(ellipse at 50% 38%, rgba(255, 190, 128, 0.2), transparent 58%),
+    linear-gradient(145deg, rgba(255, 132, 46, 0.28), rgba(204, 67, 0, 0.18));
+  z-index: 0;
+}
+
+.dtb-selector-card--brand.products-brand-selector__card--surpro .dtb-selector-card__brand-logo {
+  filter: drop-shadow(0 2px 8px rgba(112, 39, 0, 0.28));
 }
 
 .dtb-selector-card--brand.products-brand-selector__card--dura-stilts::before {
