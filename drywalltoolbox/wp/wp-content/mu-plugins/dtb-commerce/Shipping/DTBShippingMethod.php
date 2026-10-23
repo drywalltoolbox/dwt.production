@@ -167,6 +167,23 @@ function dtb_commerce_register_shipping_method(): void {
 	}
 }
 
+/**
+ * Woo shipping rates are cached per cart-package hash without a TTL. Embed
+ * a bounded 10-minute epoch so live Veeqo quote prices cannot remain frozen
+ * across a long-lived cart session; stable service IDs preserve selection.
+ */
+add_filter( 'woocommerce_cart_shipping_packages', 'dtb_commerce_stamp_shipping_quote_epoch', 30 );
+function dtb_commerce_stamp_shipping_quote_epoch( array $packages ): array {
+	$epoch = (int) floor( time() / 600 );
+	foreach ( $packages as &$package ) {
+		if ( is_array( $package ) && 'US' === strtoupper( (string) ( $package['destination']['country'] ?? '' ) ) ) {
+			$package['dtb_veeqo_rate_epoch'] = $epoch;
+		}
+	}
+	unset( $package );
+	return $packages;
+}
+
 add_filter( 'woocommerce_shipping_methods', function ( array $methods ): array {
 	$methods[ DTB_SHIPPING_METHOD_ID ] = 'DTB_Shipping_Method';
 	return $methods;
