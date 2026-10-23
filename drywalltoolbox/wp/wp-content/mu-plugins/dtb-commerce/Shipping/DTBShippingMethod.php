@@ -15,12 +15,10 @@ defined( 'DTB_SHIPPING_ZONE_BOOTSTRAP_VERSION' ) || define( 'DTB_SHIPPING_ZONE_B
 // For a domestic (US) destination it is a policy method *and* a live Veeqo
 // carrier-rating adapter: the free/discounted Standard tier is always DTB's
 // own merchant policy (Veeqo has no concept of a subsidized "free" rate),
-// but Express/Overnight are live carrier quotes from Veeqo's Rate Shopping
-// API (see DTB_VeeqoShippingService::live_domestic_rates() in
-// mu-plugins/dtb-integrations/Veeqo/VeeqoShippingService.php) whenever
-// Veeqo is configured and reachable, falling back to the local weight-tiered
-// estimates otherwise. International destinations remain entirely local
-// policy — the Rate Shopping API is documented as US-only.
+// but paid shipping upgrades require an actual Veeqo carrier quote using
+// an explicitly verified outbound carton. Unknown/multi-box packages never
+// receive invented expedited rates. The international shipping policy is
+// currently local and not carrier-verified.
 // =============================================================================
 
 add_action( 'woocommerce_shipping_init', 'dtb_commerce_register_shipping_method' );
@@ -31,8 +29,7 @@ function dtb_commerce_register_shipping_method(): void {
 		/**
 		 * WooCommerce shipping method: DTB Shipping Policy.
 		 *
-		 * Shows Standard, Express, and Overnight options calculated from the
-		 * cart total and total weight. Free standard shipping is applied
+		 * Shows DTB Standard and verified carrier-quoted expedited options. Free standard shipping is applied
 		 * automatically for domestic orders >= $50.
 		 */
 		class DTB_Shipping_Method extends WC_Shipping_Method {
