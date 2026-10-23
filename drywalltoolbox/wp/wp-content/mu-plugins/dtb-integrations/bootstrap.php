@@ -9,6 +9,10 @@
 
 defined( 'ABSPATH' ) || exit;
 
+if ( ! defined( 'DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED' ) ) {
+	define( 'DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED', true );
+}
+
 if ( ! function_exists( 'dtb_integrations_require_files' ) ) {
 	function dtb_integrations_require_files( array $relative_paths ): void {
 		foreach ( $relative_paths as $path ) {
