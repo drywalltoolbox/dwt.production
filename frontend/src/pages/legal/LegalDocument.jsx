@@ -6,7 +6,7 @@ import './legal-document.css';
 
 const anchor = (heading, index) => `legal-section-${index + 1}-${heading.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')}`;
 
-export default function LegalDocument({ title, description, canonical, eyebrow = 'Legal', introduction, sections }) {
+export default function LegalDocument({ title, description, canonical, eyebrow = 'Legal', introduction, lastUpdated, sections }) {
   const { hash } = useLocation();
   const selectId = useId();
   const [active, setActive] = useState('');
@@ -46,6 +46,7 @@ export default function LegalDocument({ title, description, canonical, eyebrow =
           <span className="store-policy-pill">{eyebrow}</span>
           <h1>{title}</h1>
           <p>{introduction}</p>
+          {lastUpdated && <p className="dtb-legal-dates">Last revised: {lastUpdated}</p>}
         </div>
       </header>
       <div className="dtb-legal-layout">
@@ -66,17 +67,26 @@ export default function LegalDocument({ title, description, canonical, eyebrow =
         </aside>
         <main className="store-policy-content dtb-legal-document" id="main-content">
           <article aria-label={title}>
-            {entries.map(({ heading, paragraphs = [], bullets = [], id }) => (
+            {entries.map(({ heading, paragraphs = [], bullets = [], links = [], id }) => (
               <section className="dtb-legal-document__section" id={id} key={id} aria-labelledby={`${id}-heading`}>
                 <h2 id={`${id}-heading`}>{heading}</h2>
                 {paragraphs.map((paragraph, index) => <p key={index}>{paragraph}</p>)}
                 {bullets.length > 0 && <ul>{bullets.map((bullet, index) => <li key={index}>{bullet}</li>)}</ul>}
+                {links.length > 0 && (
+                  <ul className="dtb-legal-document__resources" aria-label="Related resources">
+                    {links.map(({ label, to, href }) => (
+                      <li key={to || href}>
+                        {to ? <Link to={to}>{label}</Link> : <a href={href} target="_blank" rel="noopener noreferrer">{label} (opens in a new tab)</a>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </section>
             ))}
           </article>
           <nav className="dtb-legal-document__links" aria-label="Related legal information">
             <Link to="/privacy-policy/">Privacy Policy</Link>
-            <Link to="/terms-of-service/">Terms of Service &amp; EULA</Link>
+            <Link to="/terms-of-service/">Terms of Service</Link>
             <Link to="/policies">Store policies</Link>
             <Link to="/contact">Contact Drywall Toolbox</Link>
           </nav>

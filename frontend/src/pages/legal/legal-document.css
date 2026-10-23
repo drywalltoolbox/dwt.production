@@ -175,3 +175,19 @@
   .dtb-legal-layout { display: block; width: 100%; padding: 0; }
   .dtb-legal-document__section { break-inside: avoid-page; }
 }
+
+/* Contextual links inside legal sections, separate from the footer navigation. */
+.dtb-legal-document__resources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  padding-left: 1.35rem;
+  margin-top: 16px;
+}
+.dtb-legal-document__resources li { line-height: 1.6; }
+.dtb-legal-document__resources a { color: #1748cc; font-weight: 650; }
+.dtb-legal-dates { color: #52647c; font-weight: 600; }
+@media (max-width: 760px) {
+  .dtb-legal-document__resources { display: block; }
+  .dtb-legal-document__resources li + li { margin-top: 8px; }
+}
