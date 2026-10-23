@@ -10,8 +10,8 @@
  * wp --require=scripts/wordpress/migrate-native-shipping.php dtb shipping migrate
  *
  * Apply only after the checkout rates, destination coverage, $50 free-shipping
- * eligibility, and oversize exceptions have been verified:
- * wp --require=scripts/wordpress/migrate-native-shipping.php dtb shipping migrate --apply --allow-production --coverage-confirmed --free-shipping-reviewed --oversized-exceptions-reviewed
+ * eligibility has been verified for all carts, including oversized items:
+ * wp --require=scripts/wordpress/migrate-native-shipping.php dtb shipping migrate --apply --allow-production --coverage-confirmed --free-shipping-reviewed
  */
 if ( ! defined( 'WP_CLI' ) || ! WP_CLI ) {
 	return;
@@ -140,9 +140,9 @@ final class DTB_Native_Shipping_Cutover_Command {
 			WP_CLI::success( 'Read-only preview. No methods or migration markers were changed.' );
 			return;
 		}
-		foreach ( [ 'coverage-confirmed', 'free-shipping-reviewed', 'oversized-exceptions-reviewed' ] as $required ) {
+		foreach ( [ 'coverage-confirmed', 'free-shipping-reviewed' ] as $required ) {
 			if ( ! isset( $assoc_args[ $required ] ) ) {
-				WP_CLI::error( 'Apply requires --coverage-confirmed, --free-shipping-reviewed, and --oversized-exceptions-reviewed after reviewing the active WooCommerce settings and product-class assignments.' );
+				WP_CLI::error( 'Apply requires --coverage-confirmed and --free-shipping-reviewed after reviewing active WooCommerce destination and $50 free-shipping settings.' );
 			}
 		}
 
