@@ -237,6 +237,9 @@ function dtb_commerce_zone_shipping_method_enabled( WC_Shipping_Zone $zone ): bo
  * @return array<string,WC_Shipping_Rate>
  */
 function dtb_commerce_add_policy_rates_when_missing( array $rates, array $package ): array {
+	if ( '1' === (string) get_option( 'dtb_native_shipping_migration_version', '' ) ) {
+		return $rates;
+	}
 	foreach ( $rates as $rate ) {
 		$method_id = is_object( $rate ) && method_exists( $rate, 'get_method_id' )
 			? (string) $rate->get_method_id()
@@ -433,6 +436,10 @@ add_action( 'init', 'dtb_bootstrap_shipping_zones', 20 );
 add_action( 'admin_notices', 'dtb_commerce_render_shipping_method_disabled_notice', 1 );
 
 function dtb_bootstrap_shipping_zones(): void {
+	// Once native shipping is active, never recreate legacy zone methods.
+	if ( '1' === (string) get_option( 'dtb_native_shipping_migration_version', '' ) ) {
+		return;
+	}
 	if ( ! class_exists( 'WC_Shipping_Zones' ) || ! class_exists( 'WC_Shipping_Zone' ) ) {
 		return;
 	}
@@ -569,3 +576,34 @@ function dtb_commerce_render_shipping_method_disabled_notice(): void {
 		'instead of Standard/Express/Overnight. Enable it under WooCommerce → Settings → Shipping → United States.'
 	);
 }
+
+// During the approved cutover the legacy instance stays registered for
+// historical order references, but native WooCommerce owns all new quotes.
+// Do not hide Flat Rate until the native migration marker has been written.
+function dtb_commerce_hide_redundant_standard_when_free( array $rates, array $package ): array {
+    if ( '1' !== (string) get_option( 'dtb_native_shipping_migration_version', '' ) ) {
+        return $rates;
+    }
+    $standard_id = (int) get_option( 'dtb_native_shipping_standard_instance_id', 0 );
+    if ( $standard_id <= 0 ) {
+        return $rates;
+    }
+    $free = false;
+    foreach ( $rates as $rate ) {
+        if ( $rate instanceof WC_Shipping_Rate && 'free_shipping' === $rate->get_method_id() ) {
+            $free = true;
+            break;
+        }
+    }
+    if ( $free ) {
+        foreach ( $rates as $key => $rate ) {
+            if ( $rate instanceof WC_Shipping_Rate
+                && 'flat_rate' === $rate->get_method_id()
+                && $standard_id === (int) $rate->get_instance_id() ) {
+                unset( $rates[ $key ] );
+            }
+        }
+    }
+    return $rates;
+}
+add_filter( 'woocommerce_package_rates', 'dtb_commerce_hide_redundant_standard_when_free', 120, 2 );

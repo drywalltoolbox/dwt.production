@@ -228,3 +228,19 @@ Do not expose the Veeqo API key, circumvent this service through the native Veeq
 Operational verification: discover the three abilities through the WordPress Abilities API; inspect each schema; test invalid preview payloads for a 400 rejection; preview a reviewed, known-good parent and its components; obtain explicit approval; convert exactly once; inspect the resulting native kit and its component quantities in Veeqo. Neither discovery nor an invalid-payload test proves conversion readiness or authorizes a provider write.
 
 The official Veeqo MCP's separately connected tool namespace is consumed directly by ChatGPT for Veeqo-owned operations; it is not technically possible for a WordPress Abilities registration to re-publish third-party MCP tools automatically. Do not route official provider mutations through a generic forwarding endpoint. The extracted tool catalog and DTB ownership policy are documented in `docs/integrations/official-veeqo-mcp-tool-routing.md`.
+
+## WooCommerce-native checkout shipping transition (2026-10-23)
+
+Checkout shipping policy and methods are WooCommerce native Flat Rate and Free
+Shipping. The DTB `dtb_veeqo_rates` shipping method and its Checkout Block-time
+Veeqo Rate Shopping API calls are retired **after** a guarded migration and
+shipping-zone verification. `VeeqoShippingService.php` remains loaded only as
+a legacy/compatibility facade while its remaining consumers are assessed;
+it must not be presented as WooCommerce shipping authority.
+
+Veeqo continues to own allocation, actual carrier shopping, label purchase,
+fulfillment and tracking *after* WooCommerce payment/order capture.
+The current Veeqo order payload uses one configured delivery method ID, so a
+paid expedited storefront option must not be advertised until explicit
+per-order service-level mapping and fulfillment enforcement are verified.
+See `docs/checkout/native-woocommerce-shipping.md`.
