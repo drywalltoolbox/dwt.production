@@ -3,7 +3,7 @@
 defined( 'ABSPATH' ) || exit;
 
 defined( 'DTB_SHIPPING_METHOD_ID' ) || define( 'DTB_SHIPPING_METHOD_ID', 'dtb_veeqo_rates' );
-defined( 'DTB_SHIPPING_ZONE_BOOTSTRAP_VERSION' ) || define( 'DTB_SHIPPING_ZONE_BOOTSTRAP_VERSION', '4' );
+defined( 'DTB_SHIPPING_ZONE_BOOTSTRAP_VERSION' ) || define( 'DTB_SHIPPING_ZONE_BOOTSTRAP_VERSION', '5' );
 
 // =============================================================================
 // SERVER-AUTHORITATIVE WOOCOMMERCE SHIPPING METHOD
@@ -125,39 +125,29 @@ function dtb_commerce_register_shipping_method(): void {
 						'cost'  => $standard,
 					] );
 
-					// Live carrier quotes (Veeqo's Rate Shopping API — see
-					// DTB_VeeqoShippingService::live_domestic_rates()) replace the
-					// synthetic Express/Overnight estimates below whenever they're
-					// available. The free/discounted Standard tier above is a DTB
-					// merchant policy, not a carrier rate, so it always stays as-is
-					// regardless of live-rate availability.
+					// Only eligible, physically verified Veeqo carrier quotes are
+					// presented. The merchant-owned Standard tier is independent.
 					$live_rates = class_exists( 'DTB_VeeqoShippingService' )
-						? DTB_VeeqoShippingService::live_domestic_rates( $destination, $total_weight )
+						? DTB_VeeqoShippingService::live_domestic_rates( $destination, $total_weight, $package )
 						: [ 'ok' => false, 'quotes' => [] ];
 
 					if ( ! empty( $live_rates['ok'] ) && ! empty( $live_rates['quotes'] ) ) {
 						foreach ( $live_rates['quotes'] as $quote ) {
+							// Merchant-subsidized Standard remains the customer's free
+							// choice; only show actual paid upgrades for eligible carts.
+							if ( 0.0 === $standard && 'standard' === ( $quote['tier'] ?? '' ) ) {
+								continue;
+							}
 							$this->add_rate( [
-								'id'    => $this->get_rate_id( 'veeqo_' . $quote['id'] ),
-								'label' => sprintf( '%s — %s', $quote['carrier'], $quote['service'] ),
-								'cost'  => $quote['cost'],
+								'id'        => $this->get_rate_id( 'veeqo_' . $quote['id'] ),
+								'label'     => sprintf( '%s — %s', $quote['carrier'], $quote['service'] ),
+								'cost'      => $quote['cost'],
+								'meta_data' => [ 'dtb_quote_source' => 'veeqo', 'dtb_service_tier' => $quote['tier'] ?? 'standard' ],
 							] );
 						}
 					} else {
-						// Live rates unavailable (Veeqo not configured, API error,
-						// incomplete address, non-US, or no usable quotes) — fall back
-						// to the local weight-tiered estimates so checkout always shows
-						// expedited options.
-						$this->add_rate( [
-							'id'    => $this->get_rate_id( 'express' ),
-							'label' => __( 'Express Shipping (2–3 business days)', 'woocommerce' ),
-							'cost'  => max( 0.00, $standard + 10.00 ),
-						] );
-						$this->add_rate( [
-							'id'    => $this->get_rate_id( 'overnight' ),
-							'label' => __( 'Overnight Shipping (next business day)', 'woocommerce' ),
-							'cost'  => max( 0.00, $standard + 30.00 ),
-						] );
+						// Verified carton/carrier quotes unavailable: keep DTB's
+						// standard merchant rate, never fabricate an expedited quote.
 					}
 				} else {
 					$base = $total_weight <= 2.0 ? 29.99 : ( $total_weight <= 10.0 ? 49.99 : 79.99 );
@@ -568,4 +558,61 @@ function dtb_commerce_render_shipping_method_disabled_notice(): void {
 		'Customers only see whatever other method is enabled there (e.g. a flat Free Shipping rate) ' .
 		'instead of Standard/Express/Overnight. Enable it under WooCommerce → Settings → Shipping → United States.'
 	);
+}
+
+/**
+ * Single-carton Veeqo rate eligibility. These values describe the actual
+ * merchant-packed outbound carton, not manufacturer product dimensions.
+ * Only an operator can verify them; unknown/multi-carton kits are not quoted.
+ */
+add_action( 'woocommerce_product_options_shipping', 'dtb_commerce_shipping_carton_fields' );
+function dtb_commerce_shipping_carton_fields(): void {
+	if ( ! function_exists( 'woocommerce_wp_text_input' ) || ! function_exists( 'woocommerce_wp_checkbox' ) ) {
+		return;
+	}
+	$product_id = (int) get_the_ID();
+	echo '<div class="options_group">';
+	echo '<p class="form-field"><strong>Veeqo carrier rating — packed carton</strong><br />Enter the measured outbound carton, not loose-product dimensions. For single-carton products only. Multi-box sets require a separate packing workflow.</p>';
+	foreach ( [ 'weight_lb' => 'Packed weight (lb)', 'length_in' => 'Carton length (in)', 'width_in' => 'Carton width (in)', 'height_in' => 'Carton height (in)' ] as $key => $label ) {
+		woocommerce_wp_text_input( [
+			'id'                => 'dtb_shipping_box_' . $key,
+			'label'             => $label,
+			'value'             => (string) get_post_meta( $product_id, '_dtb_shipping_box_' . $key, true ),
+			'type'              => 'number',
+			'custom_attributes' => [ 'min' => '0', 'step' => '0.01' ],
+		] );
+	}
+	woocommerce_wp_checkbox( [
+		'id'          => 'dtb_shipping_box_verified',
+		'label'       => 'Carrier rating approved',
+		'description' => 'I verified the measured packaging and confirmed this SKU ships in exactly one carton.',
+		'value'       => (string) get_post_meta( $product_id, '_dtb_shipping_box_verified', true ),
+	] );
+	wp_nonce_field( 'dtb_shipping_box_save', 'dtb_shipping_box_nonce' );
+	echo '</div>';
+}
+
+add_action( 'woocommerce_admin_process_product_object', 'dtb_commerce_save_shipping_carton_fields' );
+function dtb_commerce_save_shipping_carton_fields( $product ): void {
+	if ( ! $product instanceof WC_Product || ! current_user_can( 'edit_post', $product->get_id() ) ) {
+		return;
+	}
+	if ( ! isset( $_POST['dtb_shipping_box_nonce'] ) ||
+		! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['dtb_shipping_box_nonce'] ) ), 'dtb_shipping_box_save' ) ) {
+		return;
+	}
+	$complete = true;
+	foreach ( [ 'weight_lb', 'length_in', 'width_in', 'height_in' ] as $key ) {
+		$field = 'dtb_shipping_box_' . $key;
+		$value = isset( $_POST[ $field ] ) && is_scalar( $_POST[ $field ] )
+			? wc_format_decimal( wp_unslash( $_POST[ $field ] ) ) : '';
+		if ( '' === $value || ! is_numeric( $value ) || (float) $value <= 0 || ! is_finite( (float) $value ) ) {
+			$complete = false;
+			$value = '';
+		}
+		$product->update_meta_data( '_dtb_shipping_box_' . $key, $value );
+	}
+	$approved = isset( $_POST['dtb_shipping_box_verified'] ) && 'yes' === sanitize_text_field( wp_unslash( $_POST['dtb_shipping_box_verified'] ) );
+	$product->update_meta_data( '_dtb_shipping_box_verified', $approved && $complete ? 'yes' : 'no' );
+	dtb_commerce_bump_shipping_cache_version();
 }
