@@ -1,0 +1,45 @@
+{
+  "script_version": "1.0.0",
+  "input_file": "C:\\Users\\AMD\\Downloads\\DTB-shipping-audit\\dtb_official_catalog.csv",
+  "input_sha256": "0ef1b7d45c0114f77a6a6a9db5ee08e2f97bcd97db1fd8436fcba13c4c07b64a",
+  "rows": 1134,
+  "column_count": 151,
+  "product_types": {
+    "variable": 106,
+    "variation": 314,
+    "simple": 714
+  },
+  "unique_skus": 1134,
+  "severity_counts": {
+    "warning": 1134
+  },
+  "proposed_class_counts": {
+    "unclassified": 291,
+    "small-parts": 726,
+    "long-bulky-tools": 104,
+    "complete-toolsets": 13
+  },
+  "current_class_counts": {
+    "unassigned": 1134
+  },
+  "issue_counts": {
+    "missing_weight": 455,
+    "missing_length": 744,
+    "missing_width": 744,
+    "missing_height": 744,
+    "unassigned_shipping_class": 1134,
+    "classification_requires_manual_review": 291,
+    "variation_inheritance_and_carton_review": 420,
+    "physical_packaging_must_be_verified": 117,
+    "long_product_check_outbound_carton": 35
+  },
+  "carrier_rates_derived": false,
+  "shipping_classes_applied": false,
+  "catalog_mutated": false,
+  "limitations": [
+    "CSV product measurements are not confirmed outbound cartons.",
+    "Classification proposals are non-authoritative.",
+    "Variations may inherit attributes; missing direct fields require parent resolution.",
+    "Free shipping and carrier prices require merchant approval."
+  ]
+}
