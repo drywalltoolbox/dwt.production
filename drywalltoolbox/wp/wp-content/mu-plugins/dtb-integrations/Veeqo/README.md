@@ -167,7 +167,7 @@ No full-catalog write or external order mutation runs in an interactive REST req
 - Never bypass exact SKU, order, customer, or allocation ownership validation.
 - Never restore `dtb_veeqo_inventory_sync` WP-Cron authority.
 - Never activate inbound webhooks until Veeqo authentication and replay protection are explicitly verified.
-- Never describe DTB's local weight/subtotal shipping-policy tiers (the free-shipping-over-$50 Standard rate, and the Express/Overnight fallback used when live rates are unavailable) as live Veeqo carrier rating — they aren't. Domestic (US) Express/Overnight options themselves *are* live Veeqo Rate Shopping API quotes (`POST /shipping/api/v1/rates`, `DTB_VeeqoShippingService::live_domestic_rates()`) when Veeqo is configured and reachable; that boundary — which rate came from Veeqo versus which is DTB policy — must stay accurate in any description of checkout shipping.
+- Never describe DTB's Standard/free-shipping merchant policy as a live Veeqo carrier quote. Synthetic Express/Overnight fallbacks are prohibited. Actual paid service options require verified single-carton packing data and an eligible carrier quote (`POST /shipping/api/v1/rates`, `DTB_VeeqoShippingService::live_domestic_rates()`). Unknown or multi-carton packing fails closed to merchant Standard.
 - Live rate shopping only ever *quotes* Veeqo (`GET`-equivalent, read-only against `/shipping/api/v1/rates`); it never books a shipment or purchases a label from checkout. Label purchase/booking (`POST /shipping/api/v1/shipments`) stays entirely inside Veeqo's own native fulfillment workflow.
 - Never invent provider write endpoints from UI behavior or historical comments.
 
