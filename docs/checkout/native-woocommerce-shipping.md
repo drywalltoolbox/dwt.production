@@ -1,61 +1,56 @@
 # WooCommerce shipping and supplier-direct fulfillment
 
-## Authority and launch model
+## System ownership
 
-WooCommerce owns shipping zones, methods, rate calculation, cart totals, customer selection, native Checkout Block, payment/order state, and order shipping lines. DTB owns the payment-gated order event ledger, Action Scheduler orchestration, order management, tracking records, and customer support. For launch, staff manually place supplier-direct orders after WooCommerce records captured payment; suppliers ship to customers. Veeqo remains available for inventory and future stocked-item fulfillment, but storefront orders must not be created in Veeqo automatically during manual supplier-direct launch.
+- WooCommerce owns checkout, shipping zones and methods, displayed rates, order totals, payment state, and the shipping lines saved on the order.
+- DTB owns the payment-gated order ledger, Action Scheduler orchestration, order management, tracking records, and customer support.
+- Launch fulfillment is manual supplier-direct: after WooCommerce records captured payment, staff place the supplier order; the supplier ships to the customer.
+- Veeqo remains connected for inventory and future stocked-item operations. Supplier-direct orders must not be created in Veeqo automatically.
+- Do not calculate checkout rates through Veeqo, add a competing checkout/rate engine, or promise services the fulfillment workflow does not support.
 
-Do not call Veeqo for checkout rates. Flexible Shipping is the only intended checkout rate authority. Do not add a parallel checkout, shipping engine, carrier rate adapter, or supplier order automation.
+## Production readback — 2026-10-23
 
-## Production evidence — 2026-10-23
+MCP DTB confirmed production at `https://drywalltoolbox.com` (WordPress 7.1.3, WooCommerce 11.2.1, PHP 8.2.35).
 
-MCP DTB confirmed the production site is `https://drywalltoolbox.com` (WordPress 7.1.3, WooCommerce 11.2.1, PHP 8.2.35). Flexible Shipping 6.13.5 and WooCommerce Shipping 2.4.3 are active.
+Flexible Shipping 6.13.5 was active during inspection, but its plugin has since been deactivated through MCP DTB. No order, payment, product, shipping-method setting, or provider configuration was changed.
 
-- United States zone 1 has three enabled methods: DTB legacy instance 1, native WooCommerce Free Shipping instance 3 (minimum amount $50), and Flexible Shipping single-method instance 4 (title “Standard Shipping”).
-- Flexible Shipping instance 4 reports a $50 free-shipping threshold. The returned configuration included a weight rule from 0 to 1 at $7.99; the API response was truncated before all rules could be independently read back. Treat the other historical tier amounts as unverified until a complete settings readback.
-- Rest-of-World zone 0 has only enabled DTB legacy instance 2. It has no Flexible Shipping fallback.
-- Veeqo integration health reports enabled and inventory-ready. Webhook registration is disabled. The active order workflow enqueues `dtb_order_sync_veeqo` through Action Scheduler after the payment-gated order lifecycle.
-- The production catalog shipping-class assignments, complete Flexible Shipping rules, and current WooCommerce destination options were not fully verified in this session.
+- US zone 1 currently exposes enabled legacy DTB shipping instance 1 and WooCommerce Free Shipping instance 3, configured with a $50 minimum. The Free Shipping method is active alongside the legacy service.
+- Rest-of-World zone 0 currently exposes only enabled legacy DTB shipping instance 2.
+- No native core Flat Rate replacement has been verified in either zone. The legacy method is still the paid checkout path. Its source includes estimated weight tiers and synthetic Express and Overnight options; these are not verified supplier or carrier charges and do not establish delivery guarantees.
+- The complete destination-country policy, product shipping-class assignments, and package measurements were not verified.
+- Veeqo reports enabled and inventory-ready. The payment-gated order workflow currently queues Veeqo order sync through Action Scheduler. The fail-closed launch guard is present in PR #136 but has not been deployed.
 
-No live zone, rate, product, order, payment, label, or provider settings were changed during this inspection.
+## Required shipping policy
 
-## Rate and eligibility policy
+Use preconfigured WooCommerce methods as the checkout authority. Standard charges must be merchant-approved customer prices grounded in current supplier/packaging and fulfillment data. Do not treat historical DTB estimates as carrier quotes or copy them into native methods without approval. Do not invent package dimensions, weights, oversized charges, or delivery dates.
 
-Keep existing customer-facing charges only when they are verified as configured merchant checkout prices. The historical DTB source contains domestic weight tiers of $7.99, $12.99, $19.99, and $29.99, but these are not evidence of carrier cost, packaging cost, or measured parcel eligibility. Do not describe them as carrier quotes or copy unverified tiers into Flexible Shipping. Do not invent package weights, dimensions, freight prices, or delivery dates.
+The existing $50 free-shipping threshold is the current US merchant policy. Oversized, long-tool, complete-kit, freight, and mixed-cart exceptions need explicit SKU/variation eligibility based on verified product and supplier data. WooCommerce shipping classes can support class-specific Flat Rate charges. Core WooCommerce Free Shipping does not exclude shipping classes, so a core-only configuration cannot enforce “free at $50 except oversized classes.” Do not disable the legacy method until an approved, supported way to enforce that exception is configured and verified.
 
-The existing $50 free-shipping policy must be represented once in the active checkout method. The US zone currently has two possible free options: the native Free Shipping method and Flexible Shipping's built-in threshold. Before retiring legacy shipping, verify the Flexible Shipping threshold and disable the duplicate native free method only after the intended free-shipping rules are confirmed.
+No expedited, overnight, same-day, Saturday, freight, or delivery-window choice should be shown unless an active WooCommerce rate and the fulfillment process both support it. A transit estimate is not a delivery guarantee.
 
-Long tools, complete toolsets, mixed carts, freight, and repair/service lines need explicit exceptions. Shipping classes alone do not define parcel dimensions or shipping charges. Do not grant free shipping to a special-handling item unless the business policy explicitly makes it eligible. Do not assign classes from product names or guessed dimensions. Build SKU/variation assignments from verified packaging and supplier data, then configure and read back the matching Flexible Shipping and free-shipping exclusions.
+## Manual fulfillment and Veeqo boundary
 
-Do not offer expedited, overnight, Saturday, same-day, freight, or delivery-window services unless an actual configured checkout method supports the service and the fulfillment workflow honors the selected service. No delivery date is guaranteed by a transit estimate.
+WooCommerce remains authoritative for the customer order and captured payment. DTB records payment-gated lifecycle events and schedules its existing jobs. During manual supplier-direct launch, staff place supplier orders and enter tracking for customer support.
 
-## Supplier-direct fulfillment safety
+PR #136 adds a default-off gate in the Veeqo order-sync Action Scheduler handler. Without explicit `DTB_ORDER_VEEQO_SYNC_ENABLED` configuration, it records a skipped integration state/event and does not call the Veeqo order-creation adapter, including for previously queued jobs. The gate does not disable Veeqo inventory sync. This code is not deployed to production yet.
 
-The paid WooCommerce order and captured payment remain authoritative. Staff place the supplier order manually and enter supplier/carrier tracking into DTB's existing order workflow for customer support.
+## Migration source and operational boundary
 
-PR #136 adds a fail-closed guard in the `dtb_order_sync_veeqo` Action Scheduler handler. Unless `DTB_ORDER_VEEQO_SYNC_ENABLED` is explicitly enabled in site configuration, the worker records a skipped Veeqo integration state and event without creating a Veeqo order. This leaves the payment ledger, Action Scheduler, inventory integration, and Veeqo's future stocked-inventory capability available. The guard also applies to already queued Veeqo order-sync jobs. This repository change has not yet been deployed to production.
+`scripts/wordpress/migrate-native-shipping.php` is an explicit WP-CLI preview/apply command for preconfigured WooCommerce core Flat Rate and Free Shipping methods. It does not set prices, create methods, assign product classes, change destination policy, or alter orders. It requires one enabled US Flat Rate and one enabled US Free Shipping method at $50, plus a non-US Flat Rate if non-US shipping remains enabled. Apply also requires explicit coverage, free-shipping, and oversized-exception review flags.
 
-## Migration command
+The flags are operator attestations, not automated proof that product assignments or core Free Shipping eligibility enforce oversized exclusions. Do not run apply until that policy gap is resolved and rates are confirmed in checkout. Never run this command from a request/page load or emulate shipping-method changes with direct database writes.
 
-`scripts/wordpress/migrate-native-shipping.php` is an explicit WP-CLI cutover command. It does not create shipping prices, methods, classes, product assignments, or country policy. It requires one enabled Flexible Shipping method in the US zone and, while non-US destinations remain supported, an enabled Flexible Shipping method in Rest of World. Production execution requires explicit production, destination-coverage, and free-shipping review flags. On successful cutover it disables the legacy DTB zone instances and writes `dtb_native_shipping_migration_version=1` to stop legacy rate fallback and zone self-repair.
+MCP DTB in this session supports shipping-zone/method reads and guarded managed-file writes, but exposes no shipping-method create/update action or WP-CLI execution action. Plugin deactivation is reversible. No live rate cutover was performed.
 
-Preview and cutover are separate operations. Never set the migration marker by hand. Keep backups and read back both zone method states and checkout rates after a cutover.
+## Remaining launch gates
 
-## Current cutover blockers
-
-The current production configuration is not ready for a safe cutover:
-
-1. Zone 0 has no Flexible Shipping method, while the last documented WooCommerce country policy allows all countries. Reconfirm the live country policy and either configure verified destination rates or intentionally narrow the supported destinations under an approved business policy.
-2. The production Flexible Shipping method's complete rate table was not returned by MCP DTB. Verify every weight tier and its WooCommerce weight unit before relying on it.
-3. The native and Flexible Shipping $50 free-shipping paths are both enabled. Confirm and retain only one customer-facing free option.
-4. Oversized, long-tool, complete-kit, and freight exclusions are not verified. Obtain supplier/package measurements and SKU-level class assignments before enabling the $50 offer for those carts.
-5. PR #136 must pass PHP lint and the existing repository checks, then be merged and deployed. Deployment does not execute the WP-CLI migration; the migration must be run through an authorized server-side WP-CLI path after all configuration readbacks.
-
-MCP DTB exposed shipping-zone and method reads, guarded managed-file writes, and non-sensitive option reads, but did not expose zone-method create/update or a WP-CLI execution action during this session. Do not emulate those operations with direct database writes or a page-load migration.
+1. Approve real standard customer charges and identify the supported destinations.
+2. Choose an approved way to enforce the $50 free-shipping threshold with oversized exclusions; core Free Shipping does not provide that class exclusion.
+3. Verify product/variation class eligibility against supplier measurements and packaging. Product catalog dimensions alone are not outbound carton measurements.
+4. Configure and read back native WooCommerce methods in each supported zone, while preserving an available paid method at checkout.
+5. Remove the legacy method and its synthetic expedited options only after the replacement rates and eligibility rules are live and verified.
+6. Run existing repository PHP checks and a staging checkout review. Deploy the Veeqo order-sync guard before accepting supplier-direct launch orders.
 
 ## Rollback
 
-If a cutover fails, restore the backed-up zone method statuses and the pre-cutover DTB shipping source. Restore DTB legacy shipping before re-enabling its zone instances. Clear the WooCommerce shipping cache version only after the intended method set has been read back. Do not roll back WooCommerce orders, customers, payments, or refunds.
-
-## Historical context
-
-The catalog audit in `docs/checkout/shipping-catalog-readiness-20261023.md` describes the official source CSV, not a complete live WooCommerce catalog read. It must not be used as proof that every live product has the same weight, dimensions, or shipping-class state.
+Flexible Shipping can be reactivated from plugin management if required, though it was not the only currently active checkout method. Keep the legacy method enabled until a supported replacement is ready. Do not roll back WooCommerce orders, customers, or payments. Before a future rate cutover, capture method settings and zone states, then verify checkout rates and saved order shipping lines after the change.
