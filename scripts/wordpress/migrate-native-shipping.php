@@ -84,7 +84,7 @@ final class DTB_Flexible_Shipping_Cutover_Command {
             : ( '' === $ship_to && 'specific' === $selling
                 && ! array_diff( (array) get_option( 'woocommerce_specific_allowed_countries', [] ), [ 'US' ] ) );
 
-        if ( ! $domestic_only && ! isset( $flexible_enabled[0] ] ) ) {
+        if ( ! $domestic_only && ! isset( $flexible_enabled[0] ) ) {
             WP_CLI::error( 'Worldwide checkout remains enabled and Rest of World has no active Flexible Shipping method. Set an approved country policy or configure a real ROW shipping method first.' );
         }
 
