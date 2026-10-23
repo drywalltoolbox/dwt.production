@@ -180,3 +180,11 @@ disable external label purchase/tracking. Live Veeqo account status alone is
 not evidence that checkout quote services work. No extension is installed by
 this PR. Fulfillment service-level mapping to Veeqo is required before any
 paid expedited delivery promise is enabled.
+
+## Execution evidence: 2026-10-23
+
+- Production MCP DTB confirmed site `https://drywalltoolbox.com` with US zone 1 (legacy instance 1 enabled) and ROW zone 0 (legacy instance 2 enabled), **no native replacement methods**. An in-place PHP deployment removing the legacy method would leave shipping without an enabled calculator.
+- The connected Windows computer `DESKTOP-7CFR9JU` exposes an SSH alias `dtb-siteground`, but connection failed at DNS resolution for the configured SiteGround host. Thus no WP-CLI migration was run; no server file writes, zone changes, product writes or payments occurred.
+- The 1,134-row official CSV was successfully audited on the Windows device in a separate, read-only script; every source row has an empty Shipping class and many records have incomplete dimensions. That source fact must not be interpreted as the current live Woo catalog state.
+- `frontend/src/pages/ShippingPolicy.jsx` previously advertised overnight, Saturday, specific international services, same-day cutoff and calculated freight without verified eligible Woo rate instances. Source-only copy was adjusted to avoid promising unconfigured services. The actual native Checkout Block still owns rate selection and totals.
+- Production migration is explicitly blocked until verified country coverage, carrier/fulfillment service choices, SKU packaging and class policy, approved merchant flat rate, isolated Store API tests, and usable WP-CLI/SiteGround access.
