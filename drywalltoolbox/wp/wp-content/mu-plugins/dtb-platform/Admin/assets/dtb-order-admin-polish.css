@@ -781,3 +781,255 @@ body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .wc-order-tota
 	width: min(100%, 520px);
 	margin: 0 0 0 auto;
 }
+
+
+/* Structure model attributes and price cells as part of one readable item row. */
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody tr.item td.item_cost_of_goods,
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody tr.item td.item_cost,
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody tr.item td.quantity,
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody tr.item td.line_cost,
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody tr.item td.line_tax {
+	padding-top: 22px !important;
+	vertical-align: top !important;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody tr.item .view table.display_meta {
+	display: block;
+	width: 100%;
+	margin: 10px 0 0;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody tr.item .view table.display_meta tbody {
+	display: block;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody tr.item .view table.display_meta tr {
+	display: grid;
+	grid-template-columns: 76px minmax(0, 1fr);
+	gap: 8px;
+	align-items: baseline;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody tr.item .view table.display_meta th,
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody tr.item .view table.display_meta td {
+	display: block;
+	width: auto;
+	padding: 2px 0 !important;
+	border: 0 !important;
+	text-align: left;
+	font-size: 13px;
+	line-height: 1.5;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody tr.item .view table.display_meta th {
+	color: #5b6f86;
+	font-weight: 650;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody tr.item .view table.display_meta td p {
+	margin: 0;
+	color: #203750;
+	font-size: 14px;
+	font-weight: 600;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-preview-table tbody tr.wc-order-preview-table__item td {
+	padding-top: 20px;
+	vertical-align: top;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-qv-product {
+	width: 100%;
+	grid-template-columns: 58px minmax(0, 1fr);
+	gap: 14px;
+	align-items: start;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-qv-product__image {
+	width: 58px;
+	height: 58px;
+	align-self: start;
+	border: 1px solid #dce5ef;
+	border-radius: 11px;
+	background: #fff;
+	box-shadow: 0 3px 9px rgba(20, 42, 72, .055);
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-qv-product__image img {
+	width: 52px;
+	max-width: 100%;
+	height: 52px;
+	object-fit: contain;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-qv-product__content {
+	min-width: 0;
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.5;
+	color: #14263d;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-qv-product__content > .wc-order-item-sku {
+	display: inline-flex;
+	margin: 6px 0 8px;
+	padding: 3px 8px;
+	border: 1px solid #e1e8f1;
+	border-radius: 7px;
+	background: #f5f8fc;
+	color: #53677f;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: .025em;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-item-meta {
+	display: block;
+	width: 100%;
+	margin: 8px 0 0;
+	border: 0;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-item-meta tbody {
+	display: block;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-item-meta tr {
+	display: grid;
+	grid-template-columns: 82px minmax(0, 1fr);
+	gap: 8px;
+	align-items: baseline;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-item-meta th,
+body.bp-orders-compact .wc-backbone-modal .wc-order-item-meta td {
+	display: block;
+	width: auto;
+	padding: 2px 0 !important;
+	border: 0 !important;
+	text-align: left;
+	font-size: 13px;
+	line-height: 1.5;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-item-meta th {
+	color: #5b6f86;
+	font-weight: 650;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-item-meta td {
+	color: #203750;
+	font-size: 14px;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-item-meta td p {
+	display: inline;
+	margin: 0;
+	font-size: inherit;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-item-details {
+	width: 100%;
+	margin: 10px 0 0;
+	font-size: 13px;
+	line-height: 1.5;
+	color: #53677f;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-item-facts {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+	align-items: center;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-chip {
+	padding: 4px 9px;
+	border: 1px solid #dce5ef;
+	border-radius: 999px;
+	background: #f6f8fb;
+	color: #3e5874;
+	font-size: 12px;
+	font-weight: 650;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-identifier {
+	font-size: 12px;
+	color: #62768d;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-identifier code {
+	margin-left: 4px;
+	padding: 2px 6px;
+	border-radius: 5px;
+	background: #edf2f8;
+	color: #29425e;
+	font-size: 12px;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-muted {
+	font-size: 12px;
+	color: #62768d;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-tech {
+	margin-top: 8px;
+	font-size: 12px;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-tech summary {
+	color: #48627e;
+	font-weight: 650;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-tech dl {
+	margin: 8px 0 0;
+	padding: 10px 12px;
+	border: 1px solid #e5ebf2;
+	border-radius: 9px;
+	background: #f8fafc;
+	font-size: 12px;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-tech dt {
+	color: #65798e;
+	font-weight: 600;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-tech dd {
+	margin: 2px 0 7px;
+	color: #2b435e;
+	font-size: 12px;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-preview-table tbody tr.wc-order-preview-table__item td:not(.wc-order-preview-table__column--product) {
+	padding-top: 22px;
+	font-size: 14px;
+	font-weight: 600;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-preview-summary {
+	max-width: 1040px;
+	margin: 0 auto;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-preview-summary dl {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 8px 12px;
+	margin: 0;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-preview-summary dl > div {
+	display: flex;
+	min-width: 0;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	padding: 11px 14px;
+	border: 1px solid #e5ebf2;
+	border-radius: 10px;
+	background: #fbfcfe;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-preview-summary dl > div.dtb-order-preview-summary-total {
+	grid-column: 1 / -1;
+	padding: 15px 17px;
+	border-color: #cbdcf4;
+	background: linear-gradient(100deg, #edf4ff 0%, #f8fbff 100%);
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-preview-summary dt {
+	min-width: 0;
+	font-size: 13px;
+	font-weight: 600;
+	color: #60738a;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-preview-summary dd {
+	margin: 0;
+	text-align: right;
+	font-size: 14px;
+	font-weight: 650;
+	color: #203750;
+}
+body.bp-orders-compact .wc-backbone-modal .dtb-order-preview-summary-total dt,
+body.bp-orders-compact .wc-backbone-modal .dtb-order-preview-summary-total dd {
+	font-size: 16px;
+	font-weight: 750;
+	color: #15345a;
+}
+@media screen and (max-width: 850px) {
+	body.bp-orders-compact .wc-backbone-modal .dtb-order-preview-summary dl {
+		grid-template-columns: 1fr;
+	}
+	body.bp-orders-compact .wc-backbone-modal .dtb-order-preview-summary dl > div.dtb-order-preview-summary-total {
+		grid-column: auto;
+	}
+	body.bp-orders-compact .wc-backbone-modal .wc-order-item-meta tr {
+		grid-template-columns: 70px minmax(0, 1fr);
+	}
+}
