@@ -121,7 +121,8 @@ function dtb_order_job_should_skip_order_side_effects( $order ): bool {
  * eligibility and fulfillment policy are approved.
  */
 function dtb_order_veeqo_order_sync_enabled(): bool {
-	return defined( 'DTB_ORDER_VEEQO_SYNC_ENABLED' )
+	return ! ( defined( 'DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED' ) && DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED )
+		&& defined( 'DTB_ORDER_VEEQO_SYNC_ENABLED' )
 		&& filter_var( DTB_ORDER_VEEQO_SYNC_ENABLED, FILTER_VALIDATE_BOOLEAN );
 }
 
