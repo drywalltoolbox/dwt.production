@@ -18,7 +18,7 @@ Flexible Shipping 6.13.5 was active during inspection, but its plugin has since 
 - Rest-of-World zone 0 currently exposes only enabled legacy DTB shipping instance 2.
 - No native core Flat Rate replacement has been verified in either zone. The legacy method is still the paid checkout path. Its source includes estimated weight tiers and synthetic Express and Overnight options; these are not verified supplier or carrier charges and do not establish delivery guarantees.
 - The complete destination-country policy, product shipping-class assignments, and package measurements were not verified.
-- Veeqo reports enabled and inventory-ready. The payment-gated order workflow currently queues Veeqo order sync through Action Scheduler. The fail-closed launch guard is present in PR #136 but has not been deployed.
+- Before the launch gate was applied, Veeqo reported enabled and inventory-ready, and paid orders queued Veeqo order sync through Action Scheduler. Production now defines `DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED=true`; Veeqo API requests return before network access, the recurring inventory schedule/runner exits, and the order-sync handler records skipped state/events. The integration remains installed for future reactivation.
 
 ## Required shipping policy
 
@@ -32,7 +32,7 @@ No expedited, overnight, same-day, Saturday, freight, or delivery-window choice 
 
 WooCommerce remains authoritative for the customer order and captured payment. DTB records payment-gated lifecycle events and schedules its existing jobs. During manual supplier-direct launch, staff place supplier orders and enter tracking for customer support.
 
-PR #136 adds a default-off gate in the Veeqo order-sync Action Scheduler handler. Without explicit `DTB_ORDER_VEEQO_SYNC_ENABLED` configuration, it records a skipped integration state/event and does not call the Veeqo order-creation adapter, including for previously queued jobs. The gate does not disable Veeqo inventory sync. This code is not deployed to production yet.
+Production launch mode is active through `DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED=true` in the integrations bootstrap. Veeqo order sync is skipped, outbound Veeqo API calls are blocked, and the recurring inventory scheduling/runner is paused. QuickBooks order/refund writes were already paused; launch mode now blocks all authenticated QuickBooks API requests and OAuth token exchange. Credentials and tokens are retained for later integration work. WooCommerce payment/order authority, DTB’s payment ledger, and unrelated Action Scheduler jobs remain active. The corresponding source changes are in draft PR #136.
 
 ## Migration source and operational boundary
 
@@ -49,7 +49,7 @@ MCP DTB in this session supports shipping-zone/method reads and guarded managed-
 3. Verify product/variation class eligibility against supplier measurements and packaging. Product catalog dimensions alone are not outbound carton measurements.
 4. Configure and read back native WooCommerce methods in each supported zone, while preserving an available paid method at checkout.
 5. Remove the legacy method and its synthetic expedited options only after the replacement rates and eligibility rules are live and verified.
-6. Run existing repository PHP checks and a staging checkout review. Deploy the Veeqo order-sync guard before accepting supplier-direct launch orders.
+6. Run the repository’s existing PHP checks and a staging checkout review before merging the launch-mode source changes. PHP CLI and PR-triggered workflow checks were unavailable in this session.
 
 ## Rollback
 
