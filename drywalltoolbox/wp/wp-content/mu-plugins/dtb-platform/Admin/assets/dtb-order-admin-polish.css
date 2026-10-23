@@ -1033,3 +1033,59 @@ body.bp-orders-compact .wc-backbone-modal .dtb-order-preview-summary-total dd {
 		grid-template-columns: 70px minmax(0, 1fr);
 	}
 }
+
+
+/* Style the live quickview address components (the custom v2 markup). */
+body.bp-orders-compact .wc-backbone-modal .wc-order-preview-addresses {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 18px;
+	align-items: start;
+	margin: 0 0 16px;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-preview-addresses .wc-order-preview-address {
+	min-width: 0;
+	padding: 22px 24px;
+	border: 1px solid #dce5ef;
+	border-radius: 18px;
+	background: #fff;
+	box-shadow: 0 8px 22px rgba(24, 46, 76, .055);
+	color: #344a63;
+	font-size: 14px;
+	line-height: 1.65;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-preview-addresses .wc-order-preview-address h2 {
+	margin: 0 0 14px;
+	padding-bottom: 12px;
+	border-bottom: 1px solid #e8edf4;
+	color: #14263d;
+	font-size: 16px;
+	font-weight: 750;
+	letter-spacing: -.015em;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-preview-addresses .wc-order-preview-address strong {
+	display: block;
+	margin: 13px 0 3px;
+	color: #61758c;
+	font-size: 11px;
+	font-weight: 750;
+	letter-spacing: .055em;
+	line-height: 1.4;
+	text-transform: uppercase;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-preview-addresses .wc-order-preview-address a {
+	color: #1769e0;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	overflow-wrap: anywhere;
+}
+body.bp-orders-compact .wc-backbone-modal .wc-order-preview-addresses .wc-order-preview-address a:hover {
+	color: #0d4faf;
+	text-decoration: underline;
+}
+@media screen and (max-width: 850px) {
+	body.bp-orders-compact .wc-backbone-modal .wc-order-preview-addresses {
+		grid-template-columns: 1fr;
+	}
+}
