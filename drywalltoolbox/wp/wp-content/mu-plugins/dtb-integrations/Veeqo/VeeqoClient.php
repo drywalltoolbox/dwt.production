@@ -87,6 +87,9 @@ function dtb_veeqo_config(): array {
  * Return true when Veeqo integration is configured (API key present).
  */
 function dtb_veeqo_enabled(): bool {
+	if ( defined( 'DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED' ) && DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED ) {
+		return false;
+	}
 	$cfg = dtb_veeqo_config();
 	return '' !== $cfg['api_key'];
 }
@@ -101,6 +104,9 @@ function dtb_veeqo_enabled(): bool {
  * @return array{ok: bool, status: int, data: mixed, error: string}
  */
 function dtb_veeqo_request( string $method, string $path, array $params = [], array $body = [] ): array {
+	if ( defined( 'DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED' ) && DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED ) {
+		return [ 'ok' => false, 'status' => 0, 'data' => null, 'error' => 'Veeqo integration is paused for launch.' ];
+	}
 	$cfg = dtb_veeqo_config();
 
 	if ( '' === $cfg['api_key'] ) {
