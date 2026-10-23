@@ -2,6 +2,7 @@
 """V2 column migration and feature metadata contract checks."""
 import csv
 import importlib.util
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -48,7 +49,29 @@ class V2CatalogTests(unittest.TestCase):
             rows = list(reader)
         self.assertEqual(len(rows), 1134)
         self.assertEqual(len({r["SKU"] for r in rows}), 1134)
-        self.assertTrue(all(not r["Meta: _dtb_features_json"] and not r["Meta: _dtb_content_schema_version"] for r in rows))
+        populated = 0
+        legacy = 0
+        for row in rows:
+            features_json = row["Meta: _dtb_features_json"]
+            content_version = row["Meta: _dtb_content_schema_version"]
+            if not features_json and not content_version:
+                legacy += 1
+                continue
+
+            self.assertTrue(features_json, f"{row['SKU']}: v2 version without features")
+            self.assertEqual(content_version, "2", f"{row['SKU']}: populated features need v2 marker")
+            doc = json.loads(features_json)
+            self.assertIsInstance(doc, dict, row["SKU"])
+            self.assertEqual(doc.get("schema_version"), 1, row["SKU"])
+            self.assertIsInstance(doc.get("features"), list, row["SKU"])
+            for feature in doc["features"]:
+                self.assertIsInstance(feature, dict, row["SKU"])
+                self.assertIsInstance(feature.get("label"), str, row["SKU"])
+                self.assertIsInstance(feature.get("description"), str, row["SKU"])
+            populated += 1
+
+        self.assertEqual(populated + legacy, len(rows))
+        self.assertGreater(populated, 0, "canonical v2 content must not be silently cleared")
 
 
 if __name__ == "__main__":
