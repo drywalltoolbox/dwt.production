@@ -56,7 +56,7 @@ final class DTB_VeeqoShippingService {
 	 * @param float                $weight_lb   Total parcel weight in pounds.
 	 * @return array{ok:bool,quotes:array<int,array{id:string,carrier:string,service:string,cost:float}>,error:string}
 	 */
-	public static function live_domestic_rates( array $destination, float $weight_lb ): array {
+	public static function live_domestic_rates( array $destination, float $weight_lb, array $package = [] ): array {
 		if ( ! function_exists( 'dtb_veeqo_enabled' ) || ! dtb_veeqo_enabled() || ! function_exists( 'dtb_veeqo_request' ) ) {
 			return [ 'ok' => false, 'quotes' => [], 'error' => 'Veeqo not configured.' ];
 		}
@@ -75,8 +75,11 @@ final class DTB_VeeqoShippingService {
 			return [ 'ok' => false, 'quotes' => [], 'error' => 'Incomplete destination address.' ];
 		}
 
-		if ( $weight_lb <= 0.0 ) {
-			$weight_lb = 0.5; // Matches the local-policy fallback's per-item default weight.
+		// Carrier quotes require a merchant-verified physical shipping carton.
+		// Product/kit weight alone cannot establish the box size or parcel count.
+		$parcel = self::verified_single_carton( $package );
+		if ( null === $parcel ) {
+			return [ 'ok' => false, 'quotes' => [], 'error' => 'Verified single-carton packing data required.' ];
 		}
 
 		$to_address = [
@@ -96,12 +99,9 @@ final class DTB_VeeqoShippingService {
 		$body = [
 			'to_address'                 => $to_address,
 			'from_address'               => $from_address,
-			'parcels'                    => [
-				[
-					'weight'      => round( $weight_lb, 2 ),
-					'weight_unit' => 'lb',
-				],
-			],
+			'parcels'                    => [ $parcel ],
+			'customer_reference'         => 'DTB-RATE-' . wp_generate_uuid4(),
+			'is_amazon_order'            => false,
 			'include_unavailable_quotes' => false,
 		];
 
@@ -112,49 +112,127 @@ final class DTB_VeeqoShippingService {
 		}
 
 		$quotes     = is_array( $result['data']['quotes'] ?? null ) ? $result['data']['quotes'] : [];
-		$normalized = self::normalize_quotes( $quotes );
-
+		$normalized = self::normalize_quotes( $quotes, $parcel );
 		if ( empty( $normalized ) ) {
-			return [ 'ok' => false, 'quotes' => [], 'error' => 'No usable quotes returned.' ];
+			return [ 'ok' => false, 'quotes' => [], 'error' => 'No eligible carrier services for verified carton.' ];
 		}
 
+		// Cheapest valid quote per tier, never the four globally cheapest quotes.
 		usort( $normalized, static fn( array $a, array $b ): int => $a['cost'] <=> $b['cost'] );
-
-		// Cap to a manageable number of checkout options; cheapest first so a
-		// hard cap never silently drops the most relevant (lowest) prices.
-		return [ 'ok' => true, 'quotes' => array_slice( $normalized, 0, 4 ), 'error' => '' ];
+		$selected = [];
+		foreach ( [ 'standard', 'express', 'overnight' ] as $tier ) {
+			foreach ( $normalized as $quote ) {
+				if ( $quote['tier'] === $tier ) {
+					$selected[] = $quote;
+					break;
+				}
+			}
+		}
+		return [ 'ok' => true, 'quotes' => $selected, 'error' => '' ];
 	}
 
 	/**
-	 * @param array<int,mixed> $quotes Raw `quotes[]` from the Rate Shopping API response.
-	 * @return array<int,array{id:string,carrier:string,service:string,cost:float}>
+	 * Quotes must be for actual eligible services, not document-only postage,
+	 * cubic/flat-rate/One Rate packaging, or unspecified carrier products.
+	 * Veeqo's rate id is an expiring quote token; shipping method IDs use
+	 * stable carrier+service identity, never the short-lived token.
 	 */
-	private static function normalize_quotes( array $quotes ): array {
+	private static function normalize_quotes( array $quotes, array $parcel ): array {
 		$normalized = [];
-
-		foreach ( $quotes as $index => $quote ) {
-			if ( ! is_array( $quote ) ) {
+		foreach ( $quotes as $quote ) {
+			if ( ! is_array( $quote ) || false === ( $quote['available'] ?? true ) ) {
 				continue;
 			}
-
-			$cost = (float) ( $quote['total_charge'] ?? $quote['base_rate'] ?? 0 );
-			if ( $cost <= 0.0 ) {
+			$cost = (float) ( $quote['total_charge'] ?? $quote['totalCharge'] ?? $quote['base_rate'] ?? 0 );
+			if ( ! is_finite( $cost ) || $cost <= 0 || $cost > 10000 ) {
 				continue;
 			}
-
-			$rate_id = (string) ( $quote['rate_id'] ?? ( 'veeqo_quote_' . $index ) );
-			$slug    = substr( sanitize_key( $rate_id ), 0, 40 );
-
+			$carrier = sanitize_text_field( (string) ( $quote['carrier_nice_name'] ?? $quote['carrier'] ?? '' ) );
+			$service = sanitize_text_field( (string) ( $quote['service_name'] ?? $quote['serviceName'] ?? '' ) );
+			if ( '' === $carrier || '' === $service || ! self::service_eligible_for_carton( $carrier, $service, $parcel ) ) {
+				continue;
+			}
+			$tier = self::classify_service( $service );
+			if ( 'unknown' === $tier ) {
+				continue;
+			}
 			$normalized[] = [
-				'id'      => '' !== $slug ? $slug : ( 'veeqo_quote_' . $index ),
-				'carrier' => sanitize_text_field( (string) ( $quote['carrier_nice_name'] ?? $quote['carrier'] ?? 'Carrier' ) ),
-				'service' => sanitize_text_field( (string) ( $quote['service_name'] ?? 'Shipping' ) ),
+				'id'      => substr( hash( 'sha256', strtolower( $carrier . '|' . $service ) ), 0, 18 ),
+				'carrier' => $carrier,
+				'service' => $service,
+				'tier'    => $tier,
 				'cost'    => round( $cost, 2 ),
 			];
 		}
-
 		return $normalized;
 	}
+
+	private static function classify_service( string $service ): string {
+		$name = strtolower( $service );
+		if ( preg_match( '/\\b(overnight|next[ -]?day|next day air|1[ -]?day|one[ -]?day)\\b/', $name ) ) {
+			return 'overnight';
+		}
+		if ( preg_match( '/\\b(2[ -]?day|two[ -]?day|second[ -]?day|2nd day|3[ -]?day|three[ -]?day|3 day|express|expedited|priority mail|priority|express saver)\\b/', $name ) ) {
+			return 'express';
+		}
+		if ( preg_match( '/\\b(ground|standard|economy|parcel select|home delivery)\\b/', $name ) ) {
+			return 'standard';
+		}
+		return 'unknown';
+	}
+
+	private static function service_eligible_for_carton( string $carrier, string $service, array $parcel ): bool {
+		$name = strtolower( $carrier . ' ' . $service );
+		// These services require document contents or carrier-specific packaging
+		// which a merchant-owned generic carton cannot truthfully satisfy.
+		if ( preg_match( '/bound printed matter|media mail|first.class|flat.rate|envelope|cubic|one.rate|simple.rate|postcard|letter/', $name ) ) {
+			return false;
+		}
+		$longest = max( (float) $parcel['length'], (float) $parcel['width'], (float) $parcel['height'] );
+		$girth = array_sum( [ (float) $parcel['length'], (float) $parcel['width'], (float) $parcel['height'] ] ) - $longest;
+		$length_plus_girth = $longest + 2 * $girth;
+		if ( str_contains( $name, 'usps' ) && ( (float) $parcel['weight'] > 70 || $length_plus_girth > 130 ) ) {
+			return false;
+		}
+		return $longest <= 108 && $length_plus_girth <= 165 && (float) $parcel['weight'] <= 150;
+	}
+
+	/**
+	 * One declared/verified physical shipping carton only. Multi-item carts,
+	 * multi-carton kits, virtual combinations, and missing measurements are
+	 * deliberately not collapsed into a fictitious single parcel.
+	 * Units here are explicit lb/in regardless of WooCommerce display units.
+	 */
+	public static function verified_single_carton( array $package ): ?array {
+		$items = is_array( $package['contents'] ?? null ) ? $package['contents'] : [];
+		if ( 1 !== count( $items ) ) {
+			return null;
+		}
+		$item = reset( $items );
+		if ( ! is_array( $item ) || 1 !== (int) ( $item['quantity'] ?? 0 ) ) {
+			return null;
+		}
+		$product = $item['data'] ?? null;
+		if ( ! is_object( $product ) || ! method_exists( $product, 'get_meta' ) ||
+			'yes' !== $product->get_meta( '_dtb_shipping_box_verified', true ) ) {
+			return null;
+		}
+		$dimensions = [];
+		foreach ( [ 'weight', 'length', 'width', 'height' ] as $field ) {
+			$value = $product->get_meta( '_dtb_shipping_box_' . $field . ( 'weight' === $field ? '_lb' : '_in' ), true );
+			if ( ! is_numeric( $value ) || (float) $value <= 0 || ! is_finite( (float) $value ) ) {
+				return null;
+			}
+			$dimensions[ $field ] = round( (float) $value, 2 );
+		}
+		$longest = max( $dimensions['length'], $dimensions['width'], $dimensions['height'] );
+		$girth = $dimensions['length'] + $dimensions['width'] + $dimensions['height'] - $longest;
+		if ( $dimensions['weight'] > 150 || $longest > 108 || $longest + 2 * $girth > 165 ) {
+			return null;
+		}
+		return $dimensions + [ 'weight_unit' => 'lb', 'dimension_unit' => 'in' ];
+	}
+
 
 	/**
 	 * Best-effort customer display name for the Rate Shopping API's required
