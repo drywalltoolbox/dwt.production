@@ -397,7 +397,7 @@
 		html += '</div></section>';
 		html += '<section class="dtb-repair-modal-card"><header><h3>Shipping</h3></header><div class="dtb-repair-modal-card__body">';
 		html += detailRows( [
-			[ 'Inbound Method', sh.inbound_method ],
+			[ 'Inbound Shipping Responsibility', sh.inbound_method === 'customer_pays_carrier' ? 'Customer arranges and pays carrier' : ( sh.inbound_method === 'local_pickup_dropoff' ? 'Free local pickup / drop-off' : ( sh.inbound_method ? 'Legacy record: ' + sh.inbound_method : '' ) ) ],
 			[ 'Return Preference', sh.return_preference ],
 			[ 'Return Address', formatAddress( sh.return_address ) ],
 			[ 'Shipping Rate ID', sh.rate_id ],

@@ -89,7 +89,7 @@ const BLANK_FORM = {
   warrantyRequested: 'no',
   purchaseDate: '',
   oldPartsReturn: 'discard',
-  inboundShippingMethod: 'ship_to_dtb',
+  inboundShippingMethod: 'customer_pays_carrier',
   returnShippingPreference: 'standard',
   contactPreference: 'email',
   // Shipping fields (Step 4)
@@ -307,14 +307,14 @@ export const PRICING_TAB_DATA = [
         features: ['Full declared value coverage'],
       },
       {
-        id: 'pk', name: 'Packaging Kit (Pre-Paid)', price: '$12 credit', badge: null,
+        id: 'pk', name: 'Packaging Kit', price: '$12 credit', badge: null,
         target: 'Ideal for first-time shippers',
-        features: ['Pre-paid packaging supplied', '$12 credited toward repair'],
+        features: ['Protective packaging supplied', '$12 credited toward repair'],
       },
       {
-        id: 'ldp', name: 'Local Drop-Off / Pick-Up', price: 'FREE', badge: 'Free',
+        id: 'ldp', name: 'Local Pickup / Drop-Off', price: 'FREE', badge: 'Free',
         target: 'Available to local customers',
-        features: ['No shipping required', 'Fastest turnaround option'],
+        features: ['Free local pickup or drop-off', 'No carrier charge'],
       },
     ],
   },
@@ -1589,9 +1589,9 @@ export function RepairStartExperience() {
                   <h4 className="dtb-success-sheet__checklist-title">What Happens Next</h4>
                   <ol className="dtb-success-sheet__checklist-list">
                     {[
-                      { step: '1', text: 'Our team reviews your request and emails you a prepaid inbound shipping label within 1 business day.' },
-                      { step: '2', text: 'Pack your tool in bubble wrap inside a sturdy box. Include a printed copy of this request if possible.' },
-                      { step: '3', text: 'Ship with USPS, FedEx, or UPS using the provided label. Keep your tracking number.' },
+                      { step: '1', text: 'Our team reviews your request and confirms the next steps and repair-center shipping address.' },
+                      { step: '2', text: 'Pack each tool securely in a sturdy box. Include a printed copy of this request if possible.' },
+                      { step: '3', text: formData.inboundShippingMethod === 'local_pickup_dropoff' ? 'Use the free local pickup or drop-off arrangement confirmed by our team.' : 'Arrange and pay for shipment of each tool to us. Use a carrier and service that meet your needs, and keep your tracking number.' },
                       { step: '4', text: 'We diagnose your tool and send you a quote. No work begins until you approve pricing.' },
                       { step: '5', text: 'Repaired tool ships back to you within 1–3 weeks depending on parts availability.' },
                     ].map((item) => (
@@ -2247,11 +2247,16 @@ export function RepairStartExperience() {
                 {step === 4 && (
                   <div>
                     <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: 'black', margin: '0 0 6px 0' }}>
-                      Return Shipping
+                      Shipping & Return Delivery
                     </h3>
-                    <p style={{ fontSize: '0.825rem', color: 'rgba(15,23,42,0.5)', margin: '0 0 28px 0' }}>
-                      Enter the address where we should return your repaired tool. We'll email you a prepaid inbound
-                      shipping label, and the selected option covers return delivery.
+                    <div role="note" style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '12px', padding: '14px 16px', marginBottom: '20px' }}>
+                      <p style={{ color: '#1e3a8a', fontWeight: 700, margin: '0 0 4px' }}>Getting your tool to our repair center</p>
+                      <p style={{ color: '#334155', fontSize: '0.875rem', lineHeight: 1.55, margin: 0 }}>
+                        Choose free local pickup/drop-off, or arrange and pay a carrier to ship your tool. We do not provide or pay for inbound carrier labels.
+                      </p>
+                    </div>
+                    <p style={{ fontSize: '0.825rem', color: 'rgba(15,23,42,0.65)', margin: '0 0 20px 0' }}>
+                      Enter the address where we should return your tool. Return delivery is quoted separately.
                     </p>
 
                     <div style={{
@@ -2263,9 +2268,8 @@ export function RepairStartExperience() {
                         <Dropdown
                           value={formData.inboundShippingMethod}
                           options={[
-                            { value: 'ship_to_dtb', label: 'Ship with a prepaid label' },
-                            { value: 'local_dropoff', label: 'Local drop-off' },
-                            { value: 'partner_dropoff', label: 'Partner drop-off' },
+                            { value: 'customer_pays_carrier', label: 'I will ship it and pay the carrier' },
+                            { value: 'local_pickup_dropoff', label: 'Free local pickup / drop-off' },
                           ]}
                           fullWidth
                           onChange={(value) => setFormData((prev) => ({ ...prev, inboundShippingMethod: value }))}
@@ -2648,14 +2652,14 @@ export function RepairStartExperience() {
                         textTransform: 'uppercase', letterSpacing: '0.1em',
                         color: 'var(--primary-600)', marginBottom: '8px',
                       }}>
-                        Return Shipping
+                        Shipping & Return Delivery
                       </div>
                       <ReviewRow label="Address"    value={formData.address} />
                       <ReviewRow label="City"       value={formData.city} />
                       <ReviewRow label="State"      value={formData.state} />
                       <ReviewRow label="ZIP"        value={formData.zip} />
                       <ReviewRow label="Country"    value={formData.country} />
-                      <ReviewRow label="Inbound"    value={formData.inboundShippingMethod === 'local_dropoff' ? 'Local drop-off' : formData.inboundShippingMethod === 'partner_dropoff' ? 'Partner drop-off' : 'Ship to our repair center'} />
+                      <ReviewRow label="Get tool to us" value={formData.inboundShippingMethod === 'local_pickup_dropoff' ? 'Free local pickup / drop-off' : 'Customer arranges and pays carrier directly'} />
                       <ReviewRow label="Return"     value={formData.returnShippingPreference === 'expedited' ? 'Expedited if available' : formData.returnShippingPreference === 'hold_for_pickup' ? 'Hold for pickup' : 'Standard return shipping'} />
                       <ReviewRow label="Old Parts"  value={formData.oldPartsReturn === 'return' ? 'Return replaced parts' : 'Recycle or discard'} />
                       <ReviewRow

@@ -19,7 +19,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { m as Motion, useReducedMotion } from 'framer-motion';
-import { dashboardRevealTransition, reducedTransition } from '../../motion/dtbMotion.js';
+import { dashboardRevealTransition, dtbTransition, reducedTransition } from '../../motion/dtbMotion.js';
 import {
   Headphones, LayoutDashboard, Package, Wrench, RotateCcw, Settings, LogOut, User,
 } from 'lucide-react';

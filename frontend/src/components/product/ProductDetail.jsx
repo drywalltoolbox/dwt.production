@@ -642,11 +642,11 @@ export default function ProductDetail({
   const specTable = useEditableComponent('product-detail', 'spec-table');
   const [quantity, setQuantity] = useState(1);
   const [isWishlisted, setIsWishlisted] = useState(false);
-  const [activeTab, setActiveTab] = useState('description');
   const [specificationsRequest, setSpecificationsRequest] = useState(0);
   const [addToCartError, setAddToCartError] = useState('');
   const [addToCartState, setAddToCartState] = useState('idle');
   const [buyNowState, setBuyNowState] = useState('idle');
+  const reviewsRef = useRef(null);
   const addToCartFeedbackTimerRef = useRef(null);
   const buyNowRedirectTimerRef = useRef(null);
   const seededVariations = buildSeedVariations(initialVariations, initialResolvedVariation);
@@ -1017,6 +1017,11 @@ export default function ProductDetail({
     });
   };
 
+  const handleViewReviews = () => {
+    reviewsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    reviewsRef.current?.focus({ preventScroll: true });
+  };
+
   return (
     <div className={`dtb-pdp${onClose ? ' dtb-pdp--modal' : ''} w-full max-w-6xl mx-auto flex flex-col relative`}>
       {onClose ? (
@@ -1052,7 +1057,9 @@ export default function ProductDetail({
                   pricePrefix={pricePrefix}
                   compareAt={compareAt}
                   rawPrice={rawPrice}
-                  onReviewsClick={() => setActiveTab('reviews')}
+                  onReviewsClick={handleViewReviews}
+                  rating={effectiveProduct.average_rating ?? effectiveProduct.rating ?? product.average_rating ?? product.rating}
+                  ratingCount={effectiveProduct.rating_count ?? effectiveProduct.reviews ?? product.rating_count ?? product.reviews}
                   money={money}
                   reviewsClassName="dtb-pdp-mobile-relocate"
                 />
@@ -1113,7 +1120,7 @@ export default function ProductDetail({
                   partsUrl={partsUrl}
                   setSummary={!detailTabs.hidden ? setSummary : null}
                   onViewIncludes={handleViewIncludes}
-                  reviewNode={<ProductReviewsButton onClick={() => setActiveTab('reviews')} className="dtb-pdp-header__reviews--mobile-inline" rating={effectiveProduct.average_rating ?? effectiveProduct.rating ?? product.average_rating ?? product.rating} ratingCount={effectiveProduct.rating_count ?? effectiveProduct.reviews ?? product.rating_count ?? product.reviews} />}
+                  reviewNode={<ProductReviewsButton onClick={handleViewReviews} className="dtb-pdp-header__reviews--mobile-inline" rating={effectiveProduct.average_rating ?? effectiveProduct.rating ?? product.average_rating ?? product.rating} ratingCount={effectiveProduct.rating_count ?? effectiveProduct.reviews ?? product.rating_count ?? product.reviews} />}
                 />
 
                 {addToCartError ? (
@@ -1168,6 +1175,11 @@ export default function ProductDetail({
               {partsUrl ? 'View schematic and part numbers' : 'Browse replacement parts'}
             </Link>
           </div>
+
+          <section ref={reviewsRef} id="product-reviews" className="dtb-pdp-reviews" tabIndex={-1} aria-labelledby="product-reviews-title">
+            <h2 id="product-reviews-title">Customer reviews</h2>
+            <Reviews key={effectiveProduct.id || product.id} productId={effectiveProduct.id || product.id} />
+          </section>
 
         </div>
       </div>

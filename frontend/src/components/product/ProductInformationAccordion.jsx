@@ -1,19 +1,18 @@
 import { Link } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 /** Full-page PDP information only; product, variation and cart state stay upstream. */
 export default function ProductInformationAccordion({ description, features, specs, partsUrl, specificationsRequest = 0 }) {
   const [openKeys, setOpenKeys] = useState([]);
   const [renderedKeys, setRenderedKeys] = useState([]);
-  useEffect(() => {
-    if (!specificationsRequest) return;
-    setRenderedKeys((current) => current.includes('specs') ? current : [...current, 'specs']);
-    setOpenKeys((current) => current.includes('specs') ? current : [...current, 'specs']);
-  }, [specificationsRequest]);
+  const [dismissedSpecsRequest, setDismissedSpecsRequest] = useState(0);
+  const requestedSpecsOpen = specificationsRequest > 0 && dismissedSpecsRequest !== specificationsRequest;
+  const isOpen = (key) => openKeys.includes(key) || (key === 'specs' && requestedSpecsOpen);
   const toggle = (key) => {
-    if (openKeys.includes(key)) {
+    if (isOpen(key)) {
       setOpenKeys((current) => current.filter((item) => item !== key));
+      if (key === 'specs' && requestedSpecsOpen) setDismissedSpecsRequest(specificationsRequest);
       return;
     }
 
@@ -38,19 +37,19 @@ export default function ProductInformationAccordion({ description, features, spe
       {sections.map(({ key, title, content }) => (
         <div className="dtb-pdp-info-accordion__item" key={key}>
           <h2 className="dtb-pdp-info-accordion__heading">
-            <button type="button" aria-expanded={openKeys.includes(key)} aria-controls={`dtb-pdp-detail-${key}`} data-pdp-section={key} onClick={() => toggle(key)}>
-              <span>{title}</span><ChevronDown size={17} aria-hidden="true" className={openKeys.includes(key) ? 'is-open' : ''} />
+            <button type="button" aria-expanded={isOpen(key)} aria-controls={`dtb-pdp-detail-${key}`} data-pdp-section={key} onClick={() => toggle(key)}>
+              <span>{title}</span><ChevronDown size={17} aria-hidden="true" className={isOpen(key) ? 'is-open' : ''} />
             </button>
           </h2>
           <div
             id={`dtb-pdp-detail-${key}`}
             className="dtb-pdp-info-accordion__panel-motion"
-            data-open={openKeys.includes(key)}
-            aria-hidden={!openKeys.includes(key)}
-            inert={!openKeys.includes(key)}
+            data-open={isOpen(key)}
+            aria-hidden={!isOpen(key)}
+            inert={!isOpen(key)}
           >
             <div className="dtb-pdp-info-accordion__panel-clip">
-              {renderedKeys.includes(key) && (
+              {(renderedKeys.includes(key) || (key === 'specs' && specificationsRequest > 0)) && (
                 <div className="dtb-pdp-info-accordion__panel">{content}</div>
               )}
             </div>

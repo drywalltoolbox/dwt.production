@@ -9,6 +9,7 @@ import { useMemo, useState } from 'react';
 import { AlertTriangle } from 'lucide-react';
 import { useSchematicDetail } from '../../hooks/useSchematicDetail';
 import { humanizeLabel, normalizePartRef } from '../../utils/string.js';
+import { canonicalizeSchematicBrandId } from '../../data/schematicBrands.js';
 import SchematicHeader from './SchematicHeader';
 import SchematicPageTabs from './SchematicPageTabs';
 import SchematicVariantPills, { sortVariants } from './SchematicVariantPills';
@@ -166,6 +167,18 @@ export default function SchematicViewerPage({
   }
 
   if (!detail) return null;
+
+  // Keep direct/bookmarked URLs aligned with the temporary catalog suppression.
+  if (canonicalizeSchematicBrandId(detail.brand?.id || '') === 'asgard') {
+    return (
+      <div className="dtb-schematic-viewer">
+        <SchematicHeader title="Schematic temporarily unavailable" onBack={onBack} />
+        <p className="dtb-schematics-status" role="status">
+          This brand’s schematics are temporarily unavailable. Please check back soon.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="dtb-schematic-viewer">

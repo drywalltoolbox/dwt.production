@@ -37,6 +37,7 @@ const FAQ_CATEGORIES = [
     questions: [
       { q: 'How do I submit a repair request?', a: 'Go to the Repair Services page and complete the request form. You can describe your tool and issue, upload photos, and choose a service path.' },
       { q: 'Is there a diagnostic or bench fee?', a: 'Diagnostic fees generally cover inspection and a written quote. If you approve the work, eligible diagnostic fees may be credited toward the repair cost.' },
+      { q: 'Who pays to ship a tool for repair?', a: 'If you ship the tool, you arrange and pay the carrier directly; we do not provide or pay for inbound shipping labels. Free local pickup/drop-off is also available. Return shipping is quoted separately.' },
       { q: 'What happens if I decline the repair after the quote?', a: 'You pay the diagnostic fee and return shipping, if applicable. No additional parts or labor are charged unless you approve the work.' },
       { q: 'How long does a typical repair take?', a: 'Most standard rebuilds complete within 5–7 business days after quote approval. Heavy-damage repairs and parts delays can extend turnaround.' },
       { q: 'What brands do you repair?', a: 'We service major drywall finishing tool brands including TapeTech, Columbia, Asgard, Graco, Level 5, Platinum, SurPro, and Dura-Stilts. Contact us if your brand is not listed.' },

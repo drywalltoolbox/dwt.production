@@ -58,11 +58,7 @@ export default function PageTransition({ children, animate = true }) {
   const [showLoader, setShowLoader] = useState(animate);
 
   useEffect(() => {
-    if (!animate) {
-      setReady(true);
-      setShowLoader(false);
-      return undefined;
-    }
+    if (!animate) return undefined;
 
     let cancelled = false;
     const deadline = Date.now() + ROUTE_READY_TIMEOUT_MS;
@@ -103,7 +99,7 @@ export default function PageTransition({ children, animate = true }) {
   }, [animate]);
 
   return (
-    <div className="dtb-page-transition" data-route-ready={ready ? 'true' : 'false'}>
+    <div className="dtb-page-transition" data-route-ready={!animate || ready ? 'true' : 'false'}>
       <div className="dtb-page-transition__content" data-route-enter={animate && ready ? 'true' : undefined}>
         {children}
       </div>

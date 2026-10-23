@@ -18,7 +18,10 @@ function pageLocations(occurrences) {
 }
 
 export default function SchematicPartsNavigator({ parts, occurrences, activePage, activePartRef, focusedHotspotId, open, onClose, onSelect }) {
-  const [query, setQuery] = useState('');
+  const pageId = activePage?.page_id;
+  const [searchState, setSearchState] = useState({ pageId, query: '' });
+  if (searchState.pageId !== pageId) setSearchState({ pageId, query: '' });
+  const query = searchState.pageId === pageId ? searchState.query : '';
   const [mobile, setMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 900px)').matches);
   const [drag, setDrag] = useState(0);
   const sheetRef = useRef(null);
@@ -29,8 +32,6 @@ export default function SchematicPartsNavigator({ parts, occurrences, activePage
     const value = `${part.part_ref || ''} ${part.title || ''} ${part.sku || ''} ${part.mpn || ''}`.toLocaleLowerCase();
     return value.includes(query.trim().toLocaleLowerCase());
   }), [parts, query]);
-
-  useEffect(() => { setQuery(''); }, [activePage?.page_id]);
 
   useEffect(() => {
     const media = window.matchMedia('(max-width: 900px)');
@@ -111,7 +112,7 @@ export default function SchematicPartsNavigator({ parts, occurrences, activePage
         <label className="dtb-parts-nav__search">
           <Search size={18} aria-hidden="true" />
           <span className="sr-only">Search parts by name or number</span>
-          <input type="search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search name or part number" />
+          <input type="search" value={query} onChange={(event) => setSearchState((current) => ({ ...current, query: event.target.value }))} placeholder="Search name or part number" />
         </label>
         <div className="dtb-parts-nav__scroll">
           {rows.length ? <ol className="dtb-parts-nav__list">

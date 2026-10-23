@@ -478,6 +478,7 @@
 		var addr = sh.return_address || {};
 		var current = ( d.record || {} ).status || '';
 		target.innerHTML = '<div class="dtb-repair-workbench-grid">' +
+			'<p class="description">Mailed tools are shipped at the customer’s expense; free local pickup/drop-off may be selected. DTB does not provide or pay for inbound carrier labels. Return shipping is quoted separately.</p>' +
 			section( 'Return address', '<div class="dtb-repair-form-grid">' +
 				field( 'Line 1', input( 'line1', addr.line1 || '', 'text' ) ) +
 				field( 'City', input( 'city', addr.city || '', 'text' ) ) +

@@ -114,7 +114,7 @@ function normalizeRepairSubmitPayload( payload = {} ) {
     warranty_requested: pickRepairField( payload, [ 'warranty_requested', 'warrantyRequested' ], 'no' ),
     purchase_date: pickRepairField( payload, [ 'purchase_date', 'purchaseDate' ] ),
     old_parts_return: pickRepairField( payload, [ 'old_parts_return', 'oldPartsReturn' ], 'discard' ),
-    inbound_shipping_method: pickRepairField( payload, [ 'inbound_shipping_method', 'inboundShippingMethod' ], 'ship_to_dtb' ),
+    inbound_shipping_method: pickRepairField( payload, [ 'inbound_shipping_method', 'inboundShippingMethod' ], 'customer_pays_carrier' ),
     return_shipping_preference: pickRepairField( payload, [ 'return_shipping_preference', 'returnShippingPreference' ], 'standard' ),
     priority: pickRepairField( payload, [ 'priority' ] ),
     issue_start: pickRepairField( payload, [ 'issue_start', 'issueStart' ] ),

@@ -85,7 +85,10 @@ $preapproval_limit = (string) (float) dtb_repair_pick_submission_value( $data, [
 $warranty_requested = sanitize_key( dtb_repair_pick_submission_text( $data, [ 'warranty_requested', 'warrantyRequested' ], 'no' ) );
 $purchase_date   = sanitize_text_field( dtb_repair_pick_submission_text( $data, [ 'purchase_date', 'purchaseDate' ] ) );
 $old_parts_return = sanitize_key( dtb_repair_pick_submission_text( $data, [ 'old_parts_return', 'oldPartsReturn' ], 'discard' ) );
-$inbound_shipping_method = sanitize_key( dtb_repair_pick_submission_text( $data, [ 'inbound_shipping_method', 'inboundShippingMethod' ], 'ship_to_dtb' ) );
+$inbound_shipping_method = sanitize_key( dtb_repair_pick_submission_text( $data, [ 'inbound_shipping_method', 'inboundShippingMethod' ], 'customer_pays_carrier' ) );
+if ( ! in_array( $inbound_shipping_method, [ 'customer_pays_carrier', 'local_pickup_dropoff' ], true ) ) {
+	$inbound_shipping_method = 'customer_pays_carrier';
+}
 $return_shipping_preference = sanitize_key( dtb_repair_pick_submission_text( $data, [ 'return_shipping_preference', 'returnShippingPreference' ], 'standard' ) );
 $priority        = sanitize_text_field( dtb_repair_pick_submission_text( $data, [ 'priority' ] ) );
 $issue_start     = sanitize_text_field( dtb_repair_pick_submission_text( $data, [ 'issue_start', 'issueStart' ] ) );

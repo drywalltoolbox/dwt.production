@@ -58,8 +58,10 @@ function dtb_repair_normalize_shipping_destination( array $raw ): array|WP_Error
  *
  * This intentionally mirrors the current DTB launch shipping-policy tiers for
  * the server-owned 5 lb repair shipment profile, but is not coupled to a cart.
- * The inbound prepaid-label workflow is separate; these rates represent return
- * delivery after service. Pickup remains available as a zero-cost option.
+ * Customers arrange and pay for inbound carrier shipping; free local
+ * pickup/drop-off remains a separate intake option.
+ * These rates represent return delivery after service. Pickup remains available
+ * as a zero-cost option.
  *
  * @param array<string,string> $destination Normalized destination.
  * @return array<int,array{id:string,name:string,price:float,currency:string}>

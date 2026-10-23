@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { decodeHtmlEntities } from '../../utils/string';
 import { shouldShowCompareAtPrice } from '../../utils/productPricing.js';
+import ProductRating from './ProductRating.jsx';
 import '../../styles/product-detail-overview-refinements.css';
 import '../../styles/product-detail-brand-refinements.css';
 
@@ -41,6 +42,10 @@ export default function ProductDetailHeader({
   rawPrice,
   money,
   onProductTitleClick,
+  onReviewsClick,
+  rating = 0,
+  ratingCount = 0,
+  reviewsClassName = '',
 }) {
   const productUrl = productUrlOverride || getProductUrl(product);
   const title = effectiveName || product.sku || product.part_number;
@@ -105,6 +110,14 @@ export default function ProductDetailHeader({
       </div>
 
       {summary ? <p className="dtb-pdp-header__summary">{summary}</p> : null}
+      <button
+        type="button"
+        onClick={onReviewsClick}
+        className={`dtb-pdp-header__reviews ${reviewsClassName}`.trim()}
+        aria-label="View product reviews"
+      >
+        <ProductRating rating={rating} ratingCount={ratingCount} />
+      </button>
     </header>
   );
 }

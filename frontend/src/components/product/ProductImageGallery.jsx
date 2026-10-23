@@ -306,28 +306,24 @@ export default function ProductImageGallery({ product }) {
     () => mergeImageSets(baseImageMeta, isVariationProduct ? [] : parentImageMeta),
     [baseImageMeta, isVariationProduct, parentImageMeta]
   );
-  const images = useMemo(() => imageMeta.map((image) => image.src), [imageMeta]);
-  const imageSetKey = useMemo(() => images.map((image) => imageIdentity(image)).join('|'), [images]);
   const resetKey = `${product?.id ?? ''}|${product?.sku ?? ''}|${parentId ?? ''}`;
-  const stableGalleryRef = useRef({ resetKey, images: imageMeta });
+  const [stableGallery, setStableGallery] = useState(() => ({ resetKey, images: imageMeta }));
   const stableGalleryHasOnlyPlaceholder = (
-    stableGalleryRef.current.images.length === 1
-    && imageIdentity(stableGalleryRef.current.images[0]?.src) === imageIdentity(PLACEHOLDER_IMAGE)
+    stableGallery.images.length === 1
+    && imageIdentity(stableGallery.images[0]?.src) === imageIdentity(PLACEHOLDER_IMAGE)
   );
   const nextGalleryHasRealImage = (
     imageMeta.length > 0
     && imageIdentity(imageMeta[0]?.src) !== imageIdentity(PLACEHOLDER_IMAGE)
   );
 
-  if (stableGalleryRef.current.resetKey !== resetKey) {
-    stableGalleryRef.current = { resetKey, images: imageMeta };
-  } else if (stableGalleryHasOnlyPlaceholder && nextGalleryHasRealImage) {
+  if (stableGallery.resetKey !== resetKey || (stableGalleryHasOnlyPlaceholder && nextGalleryHasRealImage)) {
     // A placeholder is not a valid painted media contract. Permit the first
     // real image to replace it, then freeze the gallery for this identity.
-    stableGalleryRef.current = { resetKey, images: imageMeta };
+    setStableGallery({ resetKey, images: imageMeta });
   }
 
-  const stableImageMeta = stableGalleryRef.current.images;
+  const stableImageMeta = stableGallery.images;
 
   const stableImages = useMemo(
     () => stableImageMeta.map((image) => image.src),

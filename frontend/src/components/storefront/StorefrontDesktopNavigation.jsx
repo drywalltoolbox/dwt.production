@@ -491,22 +491,10 @@ export default function StorefrontDesktopNavigation({ items, openMenuId, onOpen,
     }, POINTER_CLOSE_DELAY_MS);
   };
 
-  useEffect(() => {
-    if (!openMenuId) return;
-    rememberMountedMenu(openMenuId);
-    if (!renderedMenuId) {
-      setRenderedMenuId(openMenuId);
-    }
-  }, [openMenuId, renderedMenuId]);
-
   // A newly mounted panel must paint one hidden frame before opening.
   // Switching taxonomy while already open does not restart the entrance.
   useEffect(() => {
-    if (!shellOpen) {
-      setSheetVisible(false);
-      return undefined;
-    }
-    const frame = window.requestAnimationFrame(() => setSheetVisible(true));
+    const frame = window.requestAnimationFrame(() => setSheetVisible(shellOpen));
     return () => window.cancelAnimationFrame(frame);
   }, [shellOpen]);
 

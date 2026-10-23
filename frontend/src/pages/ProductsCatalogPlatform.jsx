@@ -352,8 +352,6 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
     ),
     [facets]
   );
-  const brands = useMemo(() => brandFacets.map((brand) => brand.label), [brandFacets]);
-
   const selectedBrandFacet = useMemo(() => {
     if (!selectedBrand) return null;
     const selectedSlug = brandToSlug(selectedBrand);

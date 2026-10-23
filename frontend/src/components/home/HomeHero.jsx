@@ -6,7 +6,6 @@ import { HOME_HERO_CAMPAIGNS, HOME_HERO_CAMPAIGN_COUNT } from './homeHeroCampaig
 import {
   homeHeroContentVariants,
   homeHeroItemVariants,
-  homeHeroNavigationTransition,
   reducedHomeHeroContentVariants,
   reducedHomeHeroItemVariants,
 } from '../../motion/dtbMotion.js';

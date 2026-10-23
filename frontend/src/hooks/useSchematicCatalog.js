@@ -11,6 +11,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { fetchSchematicsCollection, SchematicApiError } from '../api/schematicsApi.js';
 import { humanizeLabel, humanizeSchematicCategoryLabel } from '../utils/string.js';
+import { canonicalizeSchematicBrandId } from '../data/schematicBrands.js';
+
+// Temporary storefront suppression. Remove `asgard` to restore its catalog
+// entries without changing the authoritative schematic records.
+const HIDDEN_SCHEMATIC_BRAND_IDS = new Set(['asgard']);
 
 const CATEGORY_PREVIEW_OVERRIDES = new Map([
   [
@@ -48,7 +53,11 @@ export function useSchematicCatalog() {
       .then((body) => {
         if (controller.signal.aborted) return;
         const normalizedItems = Array.isArray(body.items)
-          ? body.items.map((item) => ({
+          ? body.items
+            .filter((item) => !HIDDEN_SCHEMATIC_BRAND_IDS.has(
+              canonicalizeSchematicBrandId(item?.brand?.id || ''),
+            ))
+            .map((item) => ({
               ...item,
               title: humanizeLabel(item?.title, item?.id),
               brand: item?.brand

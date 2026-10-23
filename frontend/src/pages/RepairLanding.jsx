@@ -15,7 +15,7 @@ import '../styles/repair-service-cards-mobile.css';
 
 const PROCESS_STEPS = [
   { title: 'Identify the tool', description: 'Tell us the brand, tool family, model, symptoms, and service goal. Photos can be added during intake.' },
-  { title: 'Choose service and shipping', description: 'Select a repair package or diagnostic path, then choose how the tool gets to DTB and how it should return.' },
+  { title: 'Get your tool to us', description: 'Choose free local pickup/drop-off or arrange and pay a carrier to ship each tool to our repair center. Return delivery is quoted separately.' },
   { title: 'Inspect and approve', description: 'We inspect the tool and follow the approval rules you select. Additional quote-first work waits for your approval.' },
   { title: 'Repair and service', description: 'Approved repair, rebuild, calibration, and service work is completed against the inspected scope.' },
   { title: 'Return to you', description: 'Repair status remains available through return shipping so the same request follows the tool back to you.' },
@@ -40,7 +40,7 @@ const FAQ_GROUPS = [
     { question: 'What happens if the repair does not make practical sense?', answer: 'Inspection findings are presented before additional quote-first work is authorized, so you can decide how to proceed instead of automatically adding repair work.' },
   ] },
   { title: 'Shipping', items: [
-    { question: 'How do I get the tool to DTB?', answer: 'Choose shipping or an eligible drop-off option during intake. You will also select your return delivery preference.' },
+    { question: 'Who pays to ship the tool to you?', answer: 'If you ship the tool, you arrange and pay the carrier directly; we do not provide or pay for inbound shipping labels. Free local pickup/drop-off is also available. Return delivery is quoted separately during intake.' },
     { question: 'How should I prepare the tool for shipping?', answer: 'Clean excess compound, secure loose parts, protect vulnerable surfaces, use a rigid carton, and pack the tool so it cannot move freely in transit.' },
   ] },
   { title: 'Service Priority', items: [
