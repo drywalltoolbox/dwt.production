@@ -1089,3 +1089,8 @@ body.bp-orders-compact .wc-backbone-modal .wc-order-preview-addresses .wc-order-
 		grid-template-columns: 1fr;
 	}
 }
+
+
+body.bp-orders-compact .wc-backbone-modal .dtb-order-preview-summary dl > div:nth-child(3) {
+	grid-column: 1 / -1;
+}
