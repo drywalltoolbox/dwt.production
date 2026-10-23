@@ -272,6 +272,16 @@
   .home-hero__title { font-size: clamp(46px,3.7vw,60px); }
 }
 
+/* Keep the complete desktop/tablet campaign artwork visible instead of cropping
+   each image to cover the wide hero frame. */
+@media (min-width: 641px) {
+  .home-hero__media-image {
+    object-fit: contain;
+    object-position: right center;
+    transform: none;
+  }
+}
+
 
 /* Compact slideshow controls replace the full-width campaign cards. */
 .home-hero-carousel {
