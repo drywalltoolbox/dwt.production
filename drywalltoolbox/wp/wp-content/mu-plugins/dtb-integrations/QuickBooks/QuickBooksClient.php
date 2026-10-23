@@ -86,6 +86,9 @@ function dtb_qbo_api_base(): string {
 }
 
 function dtb_qbo_enabled(): bool {
+	if ( defined( 'DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED' ) && DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED ) {
+		return false;
+	}
 	$config = dtb_qbo_config();
 	$tokens = dtb_qbo_load_tokens();
 	return '' !== $config['client_id']
@@ -204,6 +207,9 @@ function dtb_qbo_fault_message( int $status, mixed $data ): string {
 }
 
 function dtb_qbo_token_request( array $body ): array|WP_Error {
+	if ( defined( 'DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED' ) && DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED ) {
+		return new WP_Error( 'qbo_integration_paused', 'QuickBooks integration is paused for launch.' );
+	}
 	$config = dtb_qbo_config();
 	if ( '' === $config['client_id'] || '' === $config['client_secret'] ) {
 		return new WP_Error( 'qbo_credentials_missing', 'QuickBooks credentials are not configured.' );
@@ -287,6 +293,9 @@ function dtb_qbo_exports_paused(): bool {
 }
 
 function dtb_qbo_request( string $method, string $path, array $params = [], array $body = [], bool $retry_auth = true ): array {
+	if ( defined( 'DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED' ) && DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED ) {
+		return [ 'ok' => false, 'status' => 0, 'data' => null, 'error' => 'QuickBooks integration is paused for launch.', 'retryable' => false ];
+	}
 	if ( dtb_qbo_exports_paused() && ! in_array( strtoupper( $method ), [ 'GET', 'HEAD', 'OPTIONS' ], true ) ) {
 		return [ 'ok' => false, 'status' => 0, 'data' => null, 'error' => 'DTB QuickBooks writes are disabled; WooCommerce sales sync is managed by the Intuit connector.', 'retryable' => false ];
 	}

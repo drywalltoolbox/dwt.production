@@ -114,6 +114,18 @@ function dtb_order_job_should_skip_order_side_effects( $order ): bool {
 		&& dtb_order_write_boundary_order_should_skip_side_effects( $order );
 }
 
+/**
+ * Storefront Veeqo order creation is deliberately off for the manual
+ * supplier-direct launch. Inventory services remain available; enabling
+ * order sync later requires an explicit site constant after stocked-order
+ * eligibility and fulfillment policy are approved.
+ */
+function dtb_order_veeqo_order_sync_enabled(): bool {
+	return ! ( defined( 'DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED' ) && DTB_LAUNCH_EXTERNAL_INTEGRATIONS_DISABLED )
+		&& defined( 'DTB_ORDER_VEEQO_SYNC_ENABLED' )
+		&& filter_var( DTB_ORDER_VEEQO_SYNC_ENABLED, FILTER_VALIDATE_BOOLEAN );
+}
+
 add_action( 'dtb_order_sync_veeqo', 'dtb_order_job_sync_veeqo', 10, 2 );
 function dtb_order_job_sync_veeqo( int $order_id, array $args = [] ): void {
 	$attempt = isset( $args['attempt'] ) ? max( 1, (int) $args['attempt'] ) : 1;
@@ -131,6 +143,26 @@ function dtb_order_job_sync_veeqo( int $order_id, array $args = [] ): void {
 	}
 	if ( dtb_order_job_should_skip_order_side_effects( $order ) ) {
 		dtb_order_append_event( $order_id, 'integration.veeqo.skipped_duplicate', [ 'source' => 'cron', 'actor_type' => 'system', 'visibility' => 'operator', 'payload' => [ 'reason' => 'order_write_boundary' ] ] );
+		return;
+	}
+
+	if ( ! dtb_order_veeqo_order_sync_enabled() ) {
+		$message = 'Veeqo order creation is disabled for manual supplier-direct fulfillment.';
+		dtb_order_update_integration_state( $order_id, 'veeqo', [
+			'status'  => 'skipped',
+			'error'   => $message,
+			'attempt' => $attempt,
+		] );
+		dtb_order_append_event( $order_id, 'integration.veeqo.skipped', [
+			'source'     => 'cron',
+			'actor_type' => 'system',
+			'visibility' => 'operator',
+			'payload'    => [
+				'status'  => 'skipped',
+				'reason'  => 'manual_supplier_direct_launch_mode',
+				'message' => $message,
+			],
+		] );
 		return;
 	}
 
