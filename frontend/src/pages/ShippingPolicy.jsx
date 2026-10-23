@@ -26,71 +26,67 @@ import '../styles/store-policies.css';
 
 /* ─── Quick facts shown in the hero panel ────────────────────────────────── */
 const QUICK_FACTS = [
-  { Icon: Clock3, label: 'Same-day processing', text: 'In-stock orders placed before 12:00 PM CST ship the same day.' },
-  { Icon: PackageCheck, label: 'Free shipping $50+', text: 'Standard ground shipping is free on qualifying orders.' },
-  { Icon: CheckCircle2, label: 'Tracked every step', text: 'A tracking number is emailed the moment your order ships.' },
+  { Icon: Clock3, label: 'Order processing', text: 'Fulfillment timing depends on stock, package handling, and the selected shipping method.' },
+  { Icon: PackageCheck, label: 'Free shipping $50+', text: 'Qualifying domestic orders may receive free standard shipping when available at checkout.' },
+  { Icon: CheckCircle2, label: 'Shipment tracking', text: 'Tracking details are provided when a tracked shipment is dispatched.' },
 ];
 
-/* ─── Shipping rate table data ───────────────────────────────────────────── */
+// Information only. Carrier services and checkout charges are authoritative
+// solely when returned by the native WooCommerce Checkout Block / Store API.
 const SHIPPING_RATES = [
-  { service: 'Standard Ground', carrier: 'UPS / FedEx', transit: '3–7 business days', price: 'Free on orders $50+', highlight: true },
-  { service: 'USPS Priority Mail', carrier: 'USPS', transit: '2–4 business days', price: 'Calculated at checkout', highlight: false },
-  { service: 'Expedited 2-Day', carrier: 'UPS / FedEx', transit: '2 business days', price: 'Calculated at checkout', highlight: false },
-  { service: 'Overnight / Next Day Air', carrier: 'UPS / FedEx', transit: '1 business day', price: 'Calculated at checkout', highlight: false },
-  { service: 'Saturday Delivery', carrier: 'UPS / FedEx', transit: 'Saturday arrival', price: 'Calculated at checkout', highlight: false },
-  { service: 'LTL Freight', carrier: 'Regional freight carriers', transit: 'Coordinated with customer', price: 'Calculated at checkout', highlight: false },
-  { service: 'Canada / International', carrier: 'FedEx / Canada Post', transit: '2–21 days (by method)', price: 'Calculated at checkout', highlight: false },
+  { service: 'Standard shipping', carrier: 'Assigned at fulfillment', transit: 'Varies by address and package', price: 'Shown at checkout; free when eligible', highlight: true },
+  { service: 'Expedited service', carrier: 'Only when supported', transit: 'Depends on confirmed availability', price: 'Shown only when available', highlight: false },
+  { service: 'Oversized or multi-package', carrier: 'Selected for safe handling', transit: 'May require special arrangements', price: 'Confirmed for the shipment', highlight: false },
+  { service: 'International shipping', carrier: 'Destination-dependent', transit: 'Varies by customs and service', price: 'Only where shipping is supported', highlight: false },
 ];
 
 const PROCESSING_POINTS = [
-  'In-stock orders placed before 12:00 PM CST on business days ship the same day.',
-  'Orders after 12:00 PM CST or on weekends/holidays ship the next business day.',
-  'You\'ll receive a shipment confirmation email with tracking once your order is picked up by the carrier.',
-  'Backordered items ship separately at no additional charge — they never delay in-stock items.',
+  'Processing and dispatch times depend on inventory availability, packaging requirements, and order verification.',
+  'Shipping estimates are not guaranteed delivery dates unless expressly confirmed for your order.',
+  'Tracking information is provided when the shipment is dispatched and a carrier tracking reference is available.',
+  'Backordered or multiple-package orders may require separate shipments; our team will provide updates when applicable.',
 ];
 
 const INTERNATIONAL_POINTS = [
-  'Canada: Canada Post (14–21 days), FedEx Air – Duties & Taxes Included (2–3 days, all-in pricing), or FedEx Air – Duties & Taxes Excluded (2–3 days).',
-  'Worldwide: FedEx International Priority (2–3 days) or FedEx International Economy (3–5 days). All orders invoiced in USD.',
-  'Free shipping threshold does not apply to Alaska, Hawaii, Canada, or international orders.',
-  'Buyer is responsible for all import duties, taxes, and brokerage fees outside the US. Refusing delivery and failing to pay duties makes the buyer liable for both the original and return freight costs.',
+  'International destinations and available methods depend on the shipping options offered at checkout.',
+  'Import duties, customs charges and local taxes may apply and will be disclosed where the applicable service supports it.',
+  'Free domestic standard-shipping offers are not a promise of free international or freight shipping.',
+  'Contact support before ordering if your destination requires special delivery arrangements.',
 ];
 
 const SIGNATURE_RULES = [
-  { threshold: 'Orders over $300', rule: 'Indirect signature required at apartment complexes.' },
-  { threshold: 'Orders over $500', rule: 'Indirect signature required at all residential deliveries.' },
-  { threshold: 'Orders over $1,000', rule: 'Direct signature required at time of delivery.' },
+  { threshold: 'High-value orders', rule: 'Signature confirmation may be required depending on order value, carrier and destination.' },
+  { threshold: 'Oversized shipments', rule: 'Delivery arrangements and receiving requirements are confirmed when applicable.' },
 ];
 
-/* ─── FAQ items specific to shipping ────────────────────────────────────── */
 const SHIPPING_FAQS = [
   {
     q: 'How do I track my shipment?',
-    a: 'A tracking number is emailed automatically the moment your order ships. You can also find live tracking and your full order history in your Account Dashboard under Order History, or visit drywalltoolbox.com/order-tracking.',
+    a: 'When tracking is available, it is provided after dispatch. You can also check your Account Dashboard under Order History or visit drywalltoolbox.com/order-tracking.',
   },
   {
-    q: 'Can I modify or cancel my order after it\'s placed?',
-    a: 'You may cancel any order before it has been fulfilled and shipped. Once a shipment has left our facility, the standard return process applies. Direct-ship (drop-shipped) orders and special-order items cannot be cancelled once placed with the manufacturer.',
+    q: 'Can I modify or cancel my order after it is placed?',
+    a: 'Contact support promptly. Cancellation or modification depends on whether processing, allocation or shipment has already begun.',
   },
   {
     q: 'What if an item is backordered?',
-    a: 'We will notify you by email with an estimated restock date and offer to hold, substitute, or refund the line item. Backordered parts never delay in-stock items — they ship separately at no extra shipping charge.',
+    a: 'We will provide fulfillment options and updates when an item cannot ship as expected.',
   },
   {
     q: 'Do you offer Saturday delivery?',
-    a: 'Yes — Saturday Delivery is available at checkout for select ZIP codes. Order by 12:00 PM CST Friday. Contact us to confirm availability for your area.',
+    a: 'Saturday or other special delivery services are not guaranteed. Contact support to confirm availability before ordering.',
   },
   {
     q: 'Are there signature requirements for high-value shipments?',
-    a: 'Yes. Orders over $300 require indirect signature at apartment complexes; orders over $500 require indirect signature at all residential addresses; orders over $1,000 require a direct signature at the time of delivery. We recommend using UPS My Choice or FedEx Delivery Manager to manage delivery windows.',
+    a: 'Some shipments require a signature based on the carrier, destination or insured value. We will communicate applicable requirements.',
   },
   {
     q: 'How are large or heavy tools packaged?',
-    a: 'Larger tools and complete sets are double-boxed with industrial foam inserts and corner protection. Items that are oversized or too heavy for standard parcel carriers ship via LTL (Less than Truckload) freight — clearly marked on the product page.',
+    a: 'Packing is determined by the actual item and its handling needs. Long tools and complete toolsets may require multiple cartons or specialized delivery.',
   },
   {
-    q: 'How does LTL freight delivery work?',
-    a: 'LTL shipments require a physical address accessible to a full-size truck and trailer. Someone must be present to receive, inspect, and sign the Bill of Lading. Inspect the shipment BEFORE signing — note any damage on the BOL. Lift gate service is available for an additional fee if you don\'t have a loading dock.',
+    q: 'How does freight delivery work?',
+    a: 'If freight is necessary, delivery access, receiving arrangements and additional services must be confirmed before dispatch.',
   },
 ];
 
@@ -137,7 +133,7 @@ export default function ShippingPolicy() {
     <div className="store-policy-page">
       <SEOHead
         title="Shipping Policy"
-        description="Drywall Toolbox shipping policy: free shipping on orders $50 or more, same-day processing by 12 PM CST, UPS, FedEx &amp; USPS service levels, international shipping, and tracking information."
+        description="Drywall Toolbox shipping information: qualifying standard shipping, checkout shipping options, delivery handling, and tracking."
         canonical="/shipping-policy"
       />
 
@@ -162,8 +158,8 @@ export default function ShippingPolicy() {
             <PolicyPill>Service levels</PolicyPill>
             <h2>Service Levels & Carriers</h2>
             <p>
-              Carrier is selected automatically based on package size, weight, and destination.
-              UPS, FedEx, USPS, and LTL freight carriers are used.
+              Shipping costs and available methods are determined at checkout. The final carrier
+              is selected during fulfillment based on the physical shipment.
             </p>
           </div>
 
@@ -254,7 +250,7 @@ export default function ShippingPolicy() {
         <div className="store-policy-alert">
           <AlertCircle size={18} />
           <p>
-            All outbound shipments are insured and photographed before sealing. If your order arrives
+            Packaging and carrier protections depend on the shipment and its service requirements. If your order arrives
             damaged or contains the wrong item, photograph the packaging and contents immediately and{' '}
             <Link to="/contact" style={{ color: 'inherit', textDecoration: 'underline' }}>
               contact us within 72 hours
