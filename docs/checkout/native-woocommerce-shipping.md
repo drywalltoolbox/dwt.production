@@ -5,7 +5,7 @@
 - WooCommerce owns checkout, shipping zones and methods, displayed rates, order totals, payment state, and the shipping lines saved on the order.
 - DTB owns the payment-gated order ledger, Action Scheduler orchestration, order management, tracking records, and customer support.
 - Launch fulfillment is manual supplier-direct: after WooCommerce records captured payment, staff place the supplier order; the supplier ships to the customer.
-- Veeqo remains connected for inventory and future stocked-item operations. Supplier-direct orders must not be created in Veeqo automatically.
+- Veeqo code and credentials remain available for future stocked-item integration; production provider calls are paused during launch. Supplier-direct orders must not be created in Veeqo automatically.
 - Do not calculate checkout rates through Veeqo, add a competing checkout/rate engine, or promise services the fulfillment workflow does not support.
 
 ## Production readback — 2026-10-23
