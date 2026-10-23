@@ -109,3 +109,74 @@ advised before production cutover.
   costs. Use a vetted carrier plugin only when real-time quotes are required.
 - No automated international change without confirmed supported destination
   scope and merchant-approved price/eligibility policy.
+
+## Platinum benchmark: adopt principles, not the plugin stack
+
+Read-only inspection of Platinum's production WordPress via PLATMCP
+(2026-10-23) confirmed one native Free Shipping instance (zone 1,
+`requires = ''`, minimum 0), no Rest-of-World method, US-only selling
+countries, and an active YITH Shippo shipping plugin alongside the official
+Veeqo WooCommerce bridge.
+
+YITH Shippo's inspected source can calculate **multiple outbound parcels**,
+filter carrier services, combine quotes across parcels, apply shipping rules
+and surface rates as a WooCommerce method. Its parcel editor supports boxes,
+max-weight limits, padding, and dimensional adjustments. Nevertheless,
+Platinum's published `PT-FIN` kit and 50-inch handle have missing
+measurements/shipping classes, and populated-checkout behavior plus operational
+label ownership were **not verified**. No third-party code was copied.
+
+**Selected DTB adaptation:** WooCommerce zones/methods/classes remain the
+only checkout shipping truth; Veeqo remains sole label/fulfillment owner.
+Build a read-only completeness inventory and collect merchant-confirmed
+packaging data before considering a single supported carrier-rating extension.
+Do **not** add YITH Shippo, bypass native WooCommerce shipping, or build a
+parallel packing engine in DTB MU plugins.
+
+## Data readiness: operator packaging audit
+
+Run the new non-mutating report via WP-CLI:
+
+`wp --require=/path/to/scripts/wordpress/audit-shipping-packaging.php dtb shipping audit --format=csv`
+
+The report identifies shipping-class gaps, zero/missing **catalog** weight,
+length, width, height, and special-handling/variable-product review flags.
+Woo product dimensions **are not treated as measured outbound carton
+dimensions**. A special-handling review flag is tracked only through the
+explicit `_dtb_shipping_carton_reviewed = yes` product metadata. This field
+does not certify carrier-specific eligibility and is **never** used to create
+rates. No script in this PR automatically fills or overwrites this field.
+
+A shipping-class inventory must be manually validated at SKU/variation
+level; classes `long-bulky-tools`, `complete-toolsets`,
+`oversized-freight` flag special handling. The report itself never assigns
+categories by product names.
+
+### Release eligibility matrix
+
+| Shipment | Native rate posture | Required evidence before additional services |
+| --- | --- | --- |
+| Small replacement part | Merchant-approved Standard / eligible Free | Accurate dimensions and actual package type |
+| Ordinary hand tool | Merchant-approved Standard / eligible Free | Dimension and packed-carton verification |
+| Long finishing handle / extended box | No claimed carrier-specific rate | Actual measured long carton and carrier acceptance |
+| Complete toolset / kit | No fictitious one-box live quote | Merchant-confirmed multi-carton pack list and cost |
+| Oversize / freight | Special-handling policy, no invented freight rate | Actual freight eligibility, pricing and handling |
+| Mixed/quantity cart | Merchant Standard only until approved policy | Packing plan for all quantities and packages |
+
+This matrix is a **configuration review gate**, not a promise that a single
+unconditional native Flat Rate is economically appropriate for all categories.
+The existing $50 merchant Free Shipping entitlement remains under explicit
+business review for high-cost freight/toolsets; do not silently narrow the
+promotion in the source code. Any change requires an approved policy and
+checkout tests for the $50 boundary and mixed carts.
+
+### Decision gate: optional live rates
+
+Prefer native WooCommerce shipping for ordinary shipping. If carrier quotes
+are needed, evaluate a **single** supported checkout-only shipping extension
+with verified Checkout Block/Store API compatibility, multi-parcel packaging,
+service eligibility, stable IDs, shipping-cost behavior, and ability to
+disable external label purchase/tracking. Live Veeqo account status alone is
+not evidence that checkout quote services work. No extension is installed by
+this PR. Fulfillment service-level mapping to Veeqo is required before any
+paid expedited delivery promise is enabled.
