@@ -122,6 +122,14 @@ final class DTB_Native_Shipping_Migration_Command {
             WP_CLI::warning( 'Dry run only. Products still need shipping-class review; expedited services must be carrier-validated. No changes were made.' );
             return;
         }
+        // Forbid a blanket US Flat Rate unless merchant has explicitly
+        // accepted handling for toolsets, long tools, and freight. Shipping
+        // classes alone do not block Flat Rate, Free Shipping or estimate
+        // multiple cartons.
+        if ( ! isset( $assoc_args['special-handling-verified'] ) ) {
+            WP_CLI::error( 'Native universal Flat Rate/Free Shipping would cover heavy/long/toolset carts. Require --special-handling-verified only after approved class rules or a vetted extension are active.' );
+        }
+
         foreach ( [
             'small-parts'       => 'Small Replacement Parts',
             'standard-tools'   => 'Standard Tools',
@@ -147,13 +155,6 @@ final class DTB_Native_Shipping_Migration_Command {
             WP_CLI::error( 'Could not create both native methods; legacy shipping remains intact.' );
         }
 
-        // Forbid a blanket US Flat Rate unless merchant has explicitly
-        // accepted handling for toolsets, long tools, and freight. Shipping
-        // classes alone do not block Flat Rate, Free Shipping or estimate
-        // multiple cartons.
-        if ( ! isset( $assoc_args['special-handling-verified'] ) ) {
-            WP_CLI::error( 'Native universal Flat Rate/Free Shipping would cover heavy/long/toolset carts. Require --special-handling-verified only after approved class rules or a vetted extension are active.' );
-        }
         update_option( 'woocommerce_flat_rate_' . $standard_id . '_settings', [
             'title' => 'Standard Shipping',
             'tax_status' => 'taxable',
