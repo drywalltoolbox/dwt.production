@@ -53,4 +53,12 @@ dtb_shipping_assert( 3 === count( $quotes ), 'Ineligible media/cubic/envelope ra
 dtb_shipping_assert( [ 'standard', 'express', 'overnight' ] === array_column( $quotes, 'tier' ), 'Carrier service tiers incorrect.' );
 dtb_shipping_assert( 3 === count( array_unique( array_column( $quotes, 'id' ) ) ), 'Unstable/duplicate carrier rate IDs.' );
 dtb_shipping_assert( 45.0 === $quotes[0]['cost'], 'Unexpected rate normalization.' );
+$requoted = $rates;
+$requoted[4]['rate_id'] = 'short-lived-token-value-changed';
+$new_quotes = $reflect->invoke( null, $requoted, $parcel );
+dtb_shipping_assert( array_column( $quotes, 'id' ) === array_column( $new_quotes, 'id' ), 'Woo shipping method identity varies with expiring Veeqo quote tokens.' );
+$heavy_parcel = $parcel;
+$heavy_parcel['weight'] = 71.0;
+$heavy_quotes = $reflect->invoke( null, $rates, $heavy_parcel );
+dtb_shipping_assert( 2 === count( $heavy_quotes ), 'USPS parcel weight limit not enforced.' );
 echo "Veeqo verified-carton shipping contract: PASS\n";
