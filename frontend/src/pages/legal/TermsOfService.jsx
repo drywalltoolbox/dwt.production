@@ -71,7 +71,7 @@ const SECTIONS = [
     ],
     links: [
       { label: 'Shipping Policy', to: '/shipping-policy' },
-      { label: 'Track an order', to: '/order-tracking' },
+      { label: 'Order and tracking support', to: '/contact' },
     ],
   },
   {
