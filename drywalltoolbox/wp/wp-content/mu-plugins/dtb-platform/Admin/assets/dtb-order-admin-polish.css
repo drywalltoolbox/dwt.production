@@ -678,7 +678,7 @@ body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__bar {
 }
 body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items {
 	width: 100%;
-	table-layout: fixed;
+	table-layout: auto;
 }
 body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items thead th.item {
 	width: 45%;
@@ -757,4 +757,11 @@ body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .wc-order-tota
 	body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items {
 		overflow-x: auto;
 	}
+}
+
+
+/* Align order item photography with the product name and details. */
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody td.thumb,
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody td.name {
+	vertical-align: top !important;
 }
