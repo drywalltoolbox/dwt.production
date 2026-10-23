@@ -668,3 +668,93 @@ body.bp-orders-compact .wc-backbone-modal .wc-backbone-modal-main > footer butto
 		transition-duration: .01ms !important;
 	}
 }
+
+
+/* Keep order item labels clear while working through the item rows. */
+body.brikpanel-modern-edit.bp-order-tabs .bp-otabs__bar {
+	position: relative !important;
+	top: auto !important;
+	z-index: 2;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items {
+	width: 100%;
+	table-layout: fixed;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items thead th.item {
+	width: 45%;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items thead th.item_cost_of_goods {
+	width: 11%;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items thead th.item_cost {
+	width: 11%;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items thead th.quantity {
+	width: 7%;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items thead th.line_cost {
+	width: 12%;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items thead th.line_tax {
+	width: 10%;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items thead th.wc-order-edit-line-item {
+	width: 4%;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items td.thumb {
+	width: 72px;
+	box-sizing: border-box;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items td.thumb img {
+	width: 56px;
+	max-width: 100%;
+	height: auto;
+	border: 1px solid #dce5ef;
+	border-radius: 9px;
+	background: #fff;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items td.name {
+	overflow-wrap: anywhere;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items .wc-order-item-name {
+	font-size: 15px;
+	font-weight: 700;
+	line-height: 1.45;
+	color: #17304c;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items .wc-order-item-sku,
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items .wc-order-item-variation,
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items .brikpanel-order-item-weight {
+	margin-top: 5px;
+	font-size: 13px;
+	line-height: 1.45;
+	color: #586d84;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .wc-order-totals-items {
+	box-sizing: border-box;
+	border-top: 1px solid #e1e8f1 !important;
+	background: #f4f7fb !important;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .wc-order-totals-items .wc-order-totals td {
+	padding: 6px 9px;
+	font-size: 14px;
+	line-height: 1.45;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .wc-order-totals-items .wc-order-totals .label {
+	color: #53677f;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .wc-order-totals-items .wc-order-totals tr:last-child td {
+	padding-top: 10px;
+	border-top: 1px solid #d8e2ee;
+	font-size: 15px;
+	font-weight: 750;
+	color: #14263d;
+}
+@media screen and (max-width: 850px) {
+	body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items {
+		min-width: 780px;
+	}
+	body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items {
+		overflow-x: auto;
+	}
+}
