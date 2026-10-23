@@ -62,13 +62,28 @@ final class DTB_Native_Shipping_Migration_Command {
                 $has_world_fallback = true;
             }
         }
-        $allows_international = true;
         $ship_to = (string) get_option( 'woocommerce_ship_to_countries', '' );
         $allowed = (string) get_option( 'woocommerce_allowed_countries', 'all' );
-        if ( 'specific' === $ship_to || ( '' === $ship_to && 'specific' === $allowed ) ) {
-            $countries = (array) get_option( 'woocommerce_specific_ship_to_countries',
-                get_option( 'woocommerce_specific_allowed_countries', [] ) );
-            $allows_international = array_diff( $countries, [ 'US' ] ) !== [];
+        // Woo option values: disabled, specific, all, all_except, and blank
+        // (inherit selling-country restrictions). Never infer international
+        // eligibility from an empty country list when 'all' is configured.
+        if ( 'disabled' === $ship_to ) {
+            $allows_international = false;
+        } elseif ( 'specific' === $ship_to ) {
+            $countries = (array) get_option( 'woocommerce_specific_ship_to_countries', [] );
+            $allows_international = (bool) array_diff( $countries, [ 'US' ] );
+        } elseif ( '' === $ship_to && 'specific' === $allowed ) {
+            $countries = (array) get_option( 'woocommerce_specific_allowed_countries', [] );
+            $allows_international = (bool) array_diff( $countries, [ 'US' ] );
+        } else {
+            $allows_international = true;
+        }
+        // A generic global fallback does not prove that international
+        // destinations have approved prices, taxes, or physical service.
+        // Require explicit operator attestation and separately verified
+        // methods before disabling international legacy shipping.
+        if ( $apply && $allows_international && ! isset( $assoc_args['international-verified'] ) ) {
+            WP_CLI::error( 'International checkout is permitted. Require --international-verified after confirming every supported destination has an approved native zone/method and order fulfillment.' );
         }
         if ( $apply && $allows_international && ! $has_world_fallback ) {
             WP_CLI::error( 'International shipping is enabled but Rest-of-World has no verified native provider. Configure a verified international method or intentionally restrict supported countries BEFORE cutover.' );
@@ -132,6 +147,13 @@ final class DTB_Native_Shipping_Migration_Command {
             WP_CLI::error( 'Could not create both native methods; legacy shipping remains intact.' );
         }
 
+        // Forbid a blanket US Flat Rate unless merchant has explicitly
+        // accepted handling for toolsets, long tools, and freight. Shipping
+        // classes alone do not block Flat Rate, Free Shipping or estimate
+        // multiple cartons.
+        if ( ! isset( $assoc_args['special-handling-verified'] ) ) {
+            WP_CLI::error( 'Native universal Flat Rate/Free Shipping would cover heavy/long/toolset carts. Require --special-handling-verified only after approved class rules or a vetted extension are active.' );
+        }
         update_option( 'woocommerce_flat_rate_' . $standard_id . '_settings', [
             'title' => 'Standard Shipping',
             'tax_status' => 'taxable',
