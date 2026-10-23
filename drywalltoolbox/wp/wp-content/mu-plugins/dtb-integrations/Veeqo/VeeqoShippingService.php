@@ -13,15 +13,11 @@
  * stay entirely inside Veeqo's own native fulfillment workflow, untouched by
  * checkout-time rate shopping.
  *
- * `DTB_Shipping_Method::calculate_shipping()` (mu-plugins/dtb-commerce/Shipping/DTBShippingMethod.php)
- * is the only caller. It always keeps its own local policy tiers as the
- * fallback (and as the sole source of the $50+ free-shipping subsidy, which
- * is a DTB merchant policy, not a carrier rate Veeqo can quote) whenever live
- * rates are unavailable — not configured, API error, incomplete address, no
- * usable quotes, or a non-US destination (the Rate Shopping API is
- * documented as US-only). Live rate shopping can never block or break
- * checkout: every failure mode here degrades to "no live quotes", which the
- * caller already knows how to handle.
+ * `DTB_Shipping_Method::calculate_shipping()` calls this adapter with a
+ * Woo shipping package. Carrier quotes require verified physical single-
+ * carton metadata; unknown dimensions, multiple cartons, ineligible service
+ * types, and provider errors return no paid upgrades, leaving only DTB's
+ * merchant Standard/free policy. Checkout does not purchase shipping labels.
  *
  * @package drywall-toolbox
  */
