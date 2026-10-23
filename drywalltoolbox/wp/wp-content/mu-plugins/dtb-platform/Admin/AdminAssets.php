@@ -17,6 +17,7 @@ defined( 'ABSPATH' ) || exit;
 
 add_action( 'admin_enqueue_scripts', 'dtb_admin_assets_enqueue' );
 add_action( 'admin_enqueue_scripts', 'dtb_admin_remove_custom_styles', PHP_INT_MAX );
+add_action( 'admin_enqueue_scripts', 'dtb_admin_order_ui_assets', 1000 );
 add_filter( 'admin_body_class', 'dtb_admin_assets_body_class' );
 
 /**
@@ -33,7 +34,7 @@ function dtb_admin_remove_custom_styles(): void {
 	foreach ( (array) $styles->queue as $handle ) {
 		// Schematics owns only its control-center content layout. The active
 		// admin theme continues to own global wp-admin chrome and base tokens.
-		if ( 'dtb-schematics-workspace' === $handle ) {
+		if ( in_array( $handle, [ 'dtb-schematics-workspace', 'dtb-order-admin-polish' ], true ) ) {
 			continue;
 		}
 		$registered = $styles->registered[ $handle ] ?? null;
@@ -46,6 +47,53 @@ function dtb_admin_remove_custom_styles(): void {
 			wp_deregister_style( $handle );
 		}
 	}
+}
+
+/**
+ * Load the scoped order editor and preview polish after BrikPanel styles.
+ *
+ * @param string $hook_suffix Current admin hook.
+ */
+function dtb_admin_order_ui_assets( string $hook_suffix ): void {
+	$screen = get_current_screen();
+	if ( ! $screen ) {
+		return;
+	}
+
+	$page = sanitize_key( (string) ( $_GET['page'] ?? '' ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$is_orders_page = 'wc-orders' === $page;
+	$is_legacy_order_screen = 'shop_order' === ( $screen->post_type ?? '' )
+		&& in_array( $screen->base, [ 'post', 'edit' ], true );
+
+	if ( ! $is_orders_page && ! $is_legacy_order_screen ) {
+		return;
+	}
+
+	$css_file = __DIR__ . '/assets/dtb-order-admin-polish.css';
+	if ( ! file_exists( $css_file ) ) {
+		return;
+	}
+
+	$style_deps = [];
+	$styles     = wp_styles();
+	foreach ( (array) $styles->queue as $handle ) {
+		$registered = $styles->registered[ $handle ] ?? null;
+		$source     = is_object( $registered ) ? (string) $registered->src : '';
+		if (
+			false !== strpos( $source, '/brikpanel-order.css' )
+			|| false !== strpos( $source, '/brikpanel-order-tabs.css' )
+			|| false !== strpos( $source, '/brikpanel-orders.css' )
+		) {
+			$style_deps[] = $handle;
+		}
+	}
+
+	wp_enqueue_style(
+		'dtb-order-admin-polish',
+		plugin_dir_url( __FILE__ ) . 'assets/dtb-order-admin-polish.css',
+		array_values( array_unique( $style_deps ) ),
+		(string) filemtime( $css_file )
+	);
 }
 
 function dtb_admin_assets_enqueue(): void {
