@@ -765,3 +765,19 @@ body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_o
 body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .woocommerce_order_items tbody td.name {
 	vertical-align: top !important;
 }
+
+
+/* Give the order totals a full-width footer surface with a right-aligned ledger. */
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .wc-order-totals-items {
+	box-sizing: border-box;
+	width: 100% !important;
+	float: none !important;
+	margin: 0 !important;
+	padding: 14px 18px !important;
+	border-radius: 0 0 16px 16px;
+	background: #f4f7fb !important;
+}
+body.brikpanel-modern-edit.bp-order-tabs #woocommerce-order-items .wc-order-totals-items .wc-order-totals {
+	width: min(100%, 520px);
+	margin: 0 0 0 auto;
+}
