@@ -7,11 +7,12 @@
   "scripts": {
     "dev": "webpack serve --config webpack.config.cjs --mode development",
     "build": "npm run build:siteground-root",
-    "build:siteground-root": "cross-env APP_ENV=production PUBLIC_URL=/ node scripts/assert-public-env-safe.cjs pre && cross-env APP_ENV=production PUBLIC_URL=/ webpack --config webpack.config.cjs --mode production && cross-env APP_ENV=production PUBLIC_URL=/ node scripts/assert-build-routing.cjs && cross-env APP_ENV=production node scripts/assert-public-env-safe.cjs post",
-    "build:staging": "cross-env APP_ENV=staging PUBLIC_URL=/staging node scripts/assert-public-env-safe.cjs pre && cross-env APP_ENV=staging PUBLIC_URL=/staging webpack --config webpack.config.cjs --mode production && cross-env APP_ENV=staging PUBLIC_URL=/staging node scripts/assert-build-routing.cjs && cross-env APP_ENV=staging node scripts/assert-public-env-safe.cjs post",
+    "build:siteground-root": "cross-env APP_ENV=production PUBLIC_URL=/ node scripts/assert-public-env-safe.cjs pre && cross-env APP_ENV=production PUBLIC_URL=/ node scripts/assert-legal-pages.cjs && webpack --config webpack.config.cjs --mode production && cross-env APP_ENV=production PUBLIC_URL=/ node scripts/assert-build-routing.cjs && cross-env APP_ENV=production node scripts/assert-public-env-safe.cjs post",
+    "build:staging": "cross-env APP_ENV=staging PUBLIC_URL=/staging node scripts/assert-public-env-safe.cjs pre && cross-env APP_ENV=staging PUBLIC_URL=/staging node scripts/assert-legal-pages.cjs && webpack --config webpack.config.cjs --mode production && cross-env APP_ENV=staging PUBLIC_URL=/staging node scripts/assert-build-routing.cjs && cross-env APP_ENV=staging node scripts/assert-public-env-safe.cjs post",
     "clean:build-cache": "node scripts/clean-build-artifacts.cjs cache",
     "lint": "eslint src",
-    "preview": "webpack serve --config webpack.config.cjs --mode production"
+    "preview": "webpack serve --config webpack.config.cjs --mode production",
+    "test:legal": "node scripts/assert-legal-pages.cjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
