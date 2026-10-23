@@ -98,6 +98,28 @@ function dtb_build_image_sync_snapshot( string $relative_path ): array {
 		ARRAY_A
 	);
 
+	$thumbnail_ids = array_values( array_unique( array_filter( array_map( static function ( array $row ): int {
+		return absint( $row['thumbnail_id'] ?? 0 );
+	}, (array) $product_rows ) ) ) );
+	$thumbnail_files_by_id = [];
+	if ( ! empty( $thumbnail_ids ) ) {
+		$thumbnail_placeholders = implode( ',', array_fill( 0, count( $thumbnail_ids ), '%d' ) );
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$thumbnail_file_rows = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT post_id, meta_value AS attached_file
+				 FROM {$wpdb->postmeta}
+				 WHERE meta_key = '_wp_attached_file'
+				   AND post_id IN ({$thumbnail_placeholders})",
+				$thumbnail_ids
+			),
+			ARRAY_A
+		);
+		foreach ( $thumbnail_file_rows as $thumbnail_file_row ) {
+			$thumbnail_files_by_id[ (int) $thumbnail_file_row['post_id'] ] = (string) $thumbnail_file_row['attached_file'];
+		}
+	}
+
 	$sku_map = [];
 	foreach ( $product_rows as $row ) {
 		$sku_lower = strtolower( trim( (string) $row['sku'] ) );
@@ -117,6 +139,8 @@ function dtb_build_image_sync_snapshot( string $relative_path ): array {
 	$gallery_mismatch_samples   = [];
 	$expected_present_refs      = 0;
 	$expected_missing_refs      = 0;
+	$missing_disk_report        = [];
+	$missing_disk_unique        = [];
 	$expected_registered_refs   = 0;
 	$expected_missing_att_refs  = 0;
 	$wc_expected_skus           = 0;
@@ -130,6 +154,7 @@ function dtb_build_image_sync_snapshot( string $relative_path ): array {
 
 	foreach ( $expected_by_sku as $sku_lower => $expected_filenames ) {
 		$expected_attachment_ids = [];
+		$expected_attachment_filenames = [];
 		$missing_for_this_sku    = [];
 
 		foreach ( $expected_filenames as $filename ) {
@@ -140,12 +165,18 @@ function dtb_build_image_sync_snapshot( string $relative_path ): array {
 				if ( ! empty( $attachment_candidates ) ) {
 					++$expected_registered_refs;
 					$expected_attachment_ids[] = (int) $attachment_candidates[0]['attachment_id'];
+					$expected_attachment_filenames[] = $filename;
 				} else {
 					++$expected_missing_att_refs;
 					$missing_for_this_sku[] = $filename;
 				}
 			} else {
 				++$expected_missing_refs;
+				$missing_disk_report[] = [
+					'sku'      => (string) $sku_lower,
+					'filename' => (string) $filename,
+				];
+				$missing_disk_unique[ strtolower( (string) $filename ) ] = true;
 			}
 		}
 
@@ -178,6 +209,15 @@ function dtb_build_image_sync_snapshot( string $relative_path ): array {
 			} else {
 				++$primary_missing;
 			}
+			$primary_mismatch_samples[] = [
+				'sku'                    => $sku_lower,
+				'product_id'             => (int) $product['product_id'],
+				'current_thumbnail_id'   => (int) $product['thumbnail_id'],
+				'current_thumbnail_file' => $thumbnail_files_by_id[ (int) $product['thumbnail_id'] ] ?? '',
+				'expected_attachment_id' => 0,
+				'expected_filename'      => $expected_filenames[0] ?? '',
+				'reason'                 => 'expected_image_unavailable',
+			];
 			continue;
 		}
 
@@ -195,8 +235,10 @@ function dtb_build_image_sync_snapshot( string $relative_path ): array {
 				'sku'                   => $sku_lower,
 				'product_id'            => (int) $product['product_id'],
 				'current_thumbnail_id'  => $current_thumb_id,
-				'expected_attachment_id'=> $expected_primary_id,
-				'expected_filename'     => $expected_filenames[0] ?? '',
+				'current_thumbnail_file' => $thumbnail_files_by_id[ $current_thumb_id ] ?? '',
+				'expected_attachment_id' => $expected_primary_id,
+				'expected_filename'      => $expected_attachment_filenames[0] ?? ( $expected_filenames[0] ?? '' ),
+				'reason'                 => 'primary_image_differs',
 			];
 		}
 
@@ -435,6 +477,11 @@ function dtb_build_image_sync_snapshot( string $relative_path ): array {
 			'unexpected_disk_files'         => array_slice( $unexpected_disk_files, 0, 20 ),
 			'orphan_attachments'            => array_slice( $orphan_attachments, 0, 20 ),
 			'duplicate_attachment_basenames'=> array_slice( $duplicate_attachment_basenames, 0, 20 ),
+		],
+		'reports'          => [
+			'missing_disk_files'       => $missing_disk_report,
+			'missing_disk_unique_count'=> count( $missing_disk_unique ),
+			'primary_mismatches'       => $primary_mismatch_samples,
 		],
 	];
 }

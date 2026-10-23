@@ -615,13 +615,15 @@ function dtb_image_sync_page_render_workspace_html( string $upload_path ): strin
 	$media    = is_array( $snapshot['media'] ?? null ) ? $snapshot['media'] : [];
 	$links    = is_array( $snapshot['links'] ?? null ) ? $snapshot['links'] : [];
 	$run      = is_array( $snapshot['run'] ?? null ) ? $snapshot['run'] : [];
+	$reports  = is_array( $snapshot['reports'] ?? null ) ? $snapshot['reports'] : [];
+	$primary_issue_count = (int) ( $links['products_missing_primary'] ?? 0 ) + (int) ( $links['variations_missing_primary'] ?? 0 );
 
 	ob_start();
 	echo '<div class="dtb-grid dtb-grid--four dtb-mb-16">';
 	echo dtb_admin_ui_kpi( number_format_i18n( (int) ( $catalog['expected_skus_total'] ?? 0 ) ), __( 'Catalog SKUs', 'drywall-toolbox' ), [ 'icon' => 'dashicons-products', 'trend' => esc_html__( 'Expected source set', 'drywall-toolbox' ) ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo dtb_admin_ui_kpi( number_format_i18n( (int) ( $disk['expected_present_references'] ?? 0 ) ), __( 'Disk Coverage', 'drywall-toolbox' ), [ 'icon' => 'dashicons-images-alt2', 'trend' => sprintf( esc_html__( '%s missing', 'drywall-toolbox' ), number_format_i18n( (int) ( $disk['expected_missing_references'] ?? 0 ) ) ) ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo dtb_admin_ui_kpi( number_format_i18n( (int) ( $media['registered_attachments_total'] ?? 0 ) ), __( 'Registered Media', 'drywall-toolbox' ), [ 'icon' => 'dashicons-format-gallery', 'trend' => sprintf( esc_html__( '%s missing attachments', 'drywall-toolbox' ), number_format_i18n( (int) ( $media['expected_missing_attachments'] ?? 0 ) ) ) ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	echo dtb_admin_ui_kpi( number_format_i18n( (int) ( $links['products_with_correct_primary'] ?? 0 ) ), __( 'Link Integrity', 'drywall-toolbox' ), [ 'icon' => 'dashicons-admin-links', 'trend' => sprintf( esc_html__( '%s primary mismatches', 'drywall-toolbox' ), number_format_i18n( (int) ( $links['products_missing_primary'] ?? 0 ) ) ) ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo dtb_admin_ui_kpi( number_format_i18n( (int) ( $links['products_with_correct_primary'] ?? 0 ) ), __( 'Link Integrity', 'drywall-toolbox' ), [ 'icon' => 'dashicons-admin-links', 'trend' => sprintf( esc_html__( '%s primary mismatches', 'drywall-toolbox' ), number_format_i18n( $primary_issue_count ) ) ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	echo '</div>';
 
 	echo '<div class="dtb-card">';
@@ -667,8 +669,8 @@ function dtb_image_sync_page_render_workspace_html( string $upload_path ): strin
 		],
 		[
 			'area'   => __( 'Primary Image Mismatches', 'drywall-toolbox' ),
-			'value'  => (int) ( $links['products_missing_primary'] ?? 0 ),
-			'status' => ( (int) ( $links['products_missing_primary'] ?? 0 ) ) > 0 ? 'warning' : 'success',
+			'value'  => $primary_issue_count,
+			'status' => $primary_issue_count > 0 ? 'warning' : 'success',
 		],
 	];
 
@@ -680,6 +682,79 @@ function dtb_image_sync_page_render_workspace_html( string $upload_path ): strin
 		echo '</tr>';
 	}
 	echo dtb_admin_ui_table_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo '</div></div>';
+
+	$missing_disk_report = is_array( $reports['missing_disk_files'] ?? null ) ? $reports['missing_disk_files'] : [];
+	$primary_report      = is_array( $reports['primary_mismatches'] ?? null ) ? $reports['primary_mismatches'] : [];
+	$missing_unique      = (int) ( $reports['missing_disk_unique_count'] ?? 0 );
+
+	echo '<div class="dtb-card dtb-mt-16">';
+	echo '<div class="dtb-card__header"><h3 class="dtb-card__title">' . esc_html__( 'Missing Disk Image References', 'drywall-toolbox' ) . '</h3>';
+	echo '<span class="dtb-text-muted">' . esc_html( sprintf(
+		/* translators: 1: number of missing SKU-to-image references, 2: number of distinct missing filenames. */
+		__( '%1$s references · %2$s unique filenames', 'drywall-toolbox' ),
+		number_format_i18n( count( $missing_disk_report ) ),
+		number_format_i18n( $missing_unique )
+	) ) . '</span></div><div class="dtb-card__body">';
+	if ( empty( $missing_disk_report ) ) {
+		echo '<p>' . esc_html__( 'No catalog image references are missing from this directory.', 'drywall-toolbox' ) . '</p>';
+	} else {
+		echo '<p>' . esc_html__( 'Each row identifies a catalog SKU and the exact filename that the selected upload directory does not contain. A filename shared by multiple SKUs appears once per SKU reference.', 'drywall-toolbox' ) . '</p>';
+		echo dtb_admin_ui_table_open(
+			[
+				[ 'label' => __( 'SKU', 'drywall-toolbox' ), 'key' => 'sku' ],
+				[ 'label' => __( 'Missing filename', 'drywall-toolbox' ), 'key' => 'filename' ],
+			],
+			[ 'wrapper_id' => 'dtb-image-sync-missing-files' ]
+		); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		foreach ( $missing_disk_report as $issue ) {
+			echo '<tr><td><code>' . esc_html( (string) ( $issue['sku'] ?? '' ) ) . '</code></td><td><code>' . esc_html( (string) ( $issue['filename'] ?? '' ) ) . '</code></td></tr>';
+		}
+		echo dtb_admin_ui_table_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+	echo '</div></div>';
+
+	echo '<div class="dtb-card dtb-mt-16">';
+	echo '<div class="dtb-card__header"><h3 class="dtb-card__title">' . esc_html__( 'Primary Image Mismatches', 'drywall-toolbox' ) . '</h3>';
+	echo '<span class="dtb-text-muted">' . esc_html( sprintf(
+		/* translators: %s: number of product or variation primary-image issues. */
+		__( '%s products or variations', 'drywall-toolbox' ),
+		number_format_i18n( count( $primary_report ) )
+	) ) . '</span></div><div class="dtb-card__body">';
+	if ( empty( $primary_report ) ) {
+		echo '<p>' . esc_html__( 'All catalog products and variations with available expected media use the expected primary image.', 'drywall-toolbox' ) . '</p>';
+	} else {
+		echo '<p>' . esc_html__( 'The expected image is taken from the first image in the active catalog CSV that is present in the selected directory. “Current primary file” shows the attachment currently assigned in WooCommerce.', 'drywall-toolbox' ) . '</p>';
+		echo dtb_admin_ui_table_open(
+			[
+				[ 'label' => __( 'SKU', 'drywall-toolbox' ), 'key' => 'sku' ],
+				[ 'label' => __( 'Product ID', 'drywall-toolbox' ), 'key' => 'product_id' ],
+				[ 'label' => __( 'Current primary file', 'drywall-toolbox' ), 'key' => 'current_thumbnail_file' ],
+				[ 'label' => __( 'Expected primary file', 'drywall-toolbox' ), 'key' => 'expected_filename' ],
+				[ 'label' => __( 'Reason', 'drywall-toolbox' ), 'key' => 'reason' ],
+			],
+			[ 'wrapper_id' => 'dtb-image-sync-primary-mismatches' ]
+		); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		foreach ( $primary_report as $issue ) {
+			$reason = 'expected_image_unavailable' === ( $issue['reason'] ?? '' )
+				? __( 'Expected image is missing from this directory', 'drywall-toolbox' )
+				: __( 'WooCommerce primary differs from expected image', 'drywall-toolbox' );
+			$current_file = (string) ( $issue['current_thumbnail_file'] ?? '' );
+			if ( '' === $current_file ) {
+				$current_file = (int) ( $issue['current_thumbnail_id'] ?? 0 ) > 0
+					? sprintf( __( 'Attachment #%d; file unavailable', 'drywall-toolbox' ), (int) $issue['current_thumbnail_id'] )
+					: __( 'No primary image assigned', 'drywall-toolbox' );
+			}
+			echo '<tr>';
+			echo '<td><code>' . esc_html( (string) ( $issue['sku'] ?? '' ) ) . '</code></td>';
+			echo '<td>' . esc_html( (string) ( $issue['product_id'] ?? '' ) ) . '</td>';
+			echo '<td><code>' . esc_html( $current_file ) . '</code></td>';
+			echo '<td><code>' . esc_html( (string) ( $issue['expected_filename'] ?? '' ) ) . '</code></td>';
+			echo '<td>' . esc_html( $reason ) . '</td>';
+			echo '</tr>';
+		}
+		echo dtb_admin_ui_table_close(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
 	echo '</div></div>';
 
 	return (string) ob_get_clean();
