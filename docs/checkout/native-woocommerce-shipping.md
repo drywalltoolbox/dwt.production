@@ -188,3 +188,11 @@ paid expedited delivery promise is enabled.
 - The 1,134-row official CSV was successfully audited on the Windows device in a separate, read-only script; every source row has an empty Shipping class and many records have incomplete dimensions. That source fact must not be interpreted as the current live Woo catalog state.
 - `frontend/src/pages/ShippingPolicy.jsx` previously advertised overnight, Saturday, specific international services, same-day cutoff and calculated freight without verified eligible Woo rate instances. Source-only copy was adjusted to avoid promising unconfigured services. The actual native Checkout Block still owns rate selection and totals.
 - Production migration is explicitly blocked until verified country coverage, carrier/fulfillment service choices, SKU packaging and class policy, approved merchant flat rate, isolated Store API tests, and usable WP-CLI/SiteGround access.
+
+## Merge-first compatibility and separate production cutover
+
+PR #134 **can merge before WooCommerce shipping migration**. The PHP module retains the legacy `dtb_veeqo_rates` class, rate generator, zone bootstrap and existing checkout-time behavior until `dtb_native_shipping_migration_version=1` is written by the explicitly invoked WP-CLI migration after native shipping methods are configured and read back. The legacy rate fallback and zone bootstrap stop once that marker is set. The custom method remains registered to support historical order references but its zone instances are disabled at cutover.
+
+**Deployment order**: merge source → deploy the compatibility implementation (legacy active) → approve prices, classes and destination/special-handling rules → execute guarded native configuration from deployed WP-CLI → verify checkout rates and fulfillment → maintain rollback/backups. Merging is not migration; deploying is not proof of cutover. Never enable the migration flag manually ahead of native methods.
+
+The shipping migration's `--special-handling-verified` and international coverage gates must be met before it provisions new methods. Those flags are attestation, not substitute calculations. Do not invent flat rates or assert freight coverage without merchant/carrier facts.
