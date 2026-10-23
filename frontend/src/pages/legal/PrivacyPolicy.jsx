@@ -61,7 +61,7 @@ const SECTIONS = [
     ],
     links: [
       { label: 'Intuit global privacy statement', href: 'https://www.intuit.com/privacy/statement/' },
-      { label: 'Veeqo privacy information', href: 'https://www.veeqo.com/privacy-policy' },
+      { label: 'Veeqo privacy information', href: 'https://www.veeqo.com/privacy' },
     ],
   },
   {
