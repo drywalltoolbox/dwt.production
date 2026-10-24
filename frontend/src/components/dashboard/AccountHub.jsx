@@ -3,7 +3,7 @@
  * URL is the single navigation authority, and the existing DTB history read
  * model is the single API for order/repair/return/support summary data.
  */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Headphones, LayoutDashboard, LogOut, MapPin, Package, RotateCcw, Settings, Wrench } from 'lucide-react';
 import { useAuthContext } from '../../auth/AuthContext.js';
@@ -47,6 +47,9 @@ export default function AccountHub() {
   const [jobsError, setJobsError] = useState('');
   const [jobsLoading, setJobsLoading] = useState(true);
   const [jobsRevision, setJobsRevision] = useState(0);
+  const accountNavRef = useRef(null);
+  const accountMainRef = useRef(null);
+  const pendingTabScrollRef = useRef(null);
   const [signingOut, setSigningOut] = useState(false);
   const [signOutError, setSignOutError] = useState('');
 
@@ -86,9 +89,34 @@ export default function AccountHub() {
     return () => { alive = false; };
   }, [user?.id, activeTabId, jobsRevision]);
 
+  // Scroll only after an explicit account-tab action, never on initial load or
+  // browser history navigation. Respect reduced-motion preferences.
+  useEffect(() => {
+    if (pendingTabScrollRef.current !== activeTabId) return undefined;
+    pendingTabScrollRef.current = null;
+    const frame = window.requestAnimationFrame(() => {
+      accountMainRef.current?.focus({ preventScroll: true });
+      accountNavRef.current?.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        block: 'start',
+      });
+    });
+    return () => window.cancelAnimationFrame(frame);
+  }, [activeTabId]);
+
   const openTab = (id) => {
     const tab = TABS.find((entry) => entry.id === id);
     if (!tab) return;
+    pendingTabScrollRef.current = id;
+    if (activeTabId === id) {
+      accountMainRef.current?.focus({ preventScroll: true });
+      accountNavRef.current?.scrollIntoView({
+        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
+        block: 'start',
+      });
+      pendingTabScrollRef.current = null;
+      return;
+    }
     const next = new URLSearchParams(searchParams);
     if (id === 'overview') next.delete('tab');
     else next.set('tab', id);
@@ -111,10 +139,10 @@ export default function AccountHub() {
   return (
     <div className="page-wrapper dtb-account-page">
       <AccountMasthead user={user} onOpenTab={openTab}/>
-      <nav className="dtb-account-container dtb-account-nav" aria-label="Account sections">
+      <nav ref={accountNavRef} className="dtb-account-container dtb-account-nav" aria-label="Account sections">
         <NavbarTabs tabs={TABS} activeIndex={activeIndex} onChange={(index) => openTab(TABS[index]?.id)} className="dtb-account-reference-tabs"/>
       </nav>
-      <main className="dtb-account-container dtb-account-main" id="account-main">
+      <main ref={accountMainRef} tabIndex={-1} className="dtb-account-container dtb-account-main" id="account-main">
         {activeTabId === 'overview' && (
           <OverviewTab user={user}
             orders={history.orders} repairs={history.repairs} returns={history.returns}

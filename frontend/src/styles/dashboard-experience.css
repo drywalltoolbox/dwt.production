@@ -250,3 +250,7 @@
 @media (min-width: 1200px) {
   .dtb-account-reference-tabs .dtb-navtabs-inner { justify-content: space-between; }
 }
+
+/* Keep the selected account section visible when navigating from the hero card. */
+.dtb-account-nav { scroll-margin-top: clamp(12px, 4vw, 28px); }
+.dtb-account-main:focus { outline: none; }
