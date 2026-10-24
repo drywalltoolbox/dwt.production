@@ -196,7 +196,7 @@
 }
 
 /* Simple inline review row between the brand and product title. */
-.dtb-product-page-shell .dtb-pdp-header__reviews--inline {
+.dtb-pdp .dtb-pdp-header__reviews--inline {
   display: inline-flex !important;
   align-self: flex-start;
   width: fit-content;
@@ -213,12 +213,12 @@
   cursor: pointer;
 }
 
-.dtb-product-page-shell .dtb-pdp-header__reviews--inline .dtb-product-rating {
+.dtb-pdp .dtb-pdp-header__reviews--inline .dtb-product-rating {
   gap: .42rem;
   font-size: .76rem;
 }
 
-.dtb-product-page-shell .dtb-pdp-header__reviews--inline:hover {
+.dtb-pdp .dtb-pdp-header__reviews--inline:hover {
   background: transparent;
   color: var(--dtb-pdp-blue);
   box-shadow: none;
@@ -226,7 +226,7 @@
   text-underline-offset: 3px;
 }
 
-.dtb-product-page-shell .dtb-pdp-header__reviews--inline:focus-visible {
+.dtb-pdp .dtb-pdp-header__reviews--inline:focus-visible {
   outline: 3px solid rgba(31, 85, 238, .24);
   outline-offset: 3px;
 }
