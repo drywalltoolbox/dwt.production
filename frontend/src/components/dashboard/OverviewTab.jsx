@@ -42,7 +42,7 @@ function ActivityPanel({ title, items, loading, error, onViewAll, icon: Icon, em
 }
 
 export default function OverviewTab({
-  user, orders = [], repairs = [], returns = [], supportTickets = [],
+  user, orders = [], repairs = [], returns = [],
   jobs = [], jobsTotal = 0, jobsLoading = false, jobsError = '',
   ordersLoading = false, errors = {}, onOpenTab,
 }) {
@@ -77,7 +77,7 @@ export default function OverviewTab({
         <div className="dtb-account-stack">
           <ActivityPanel title="Recent Orders" icon={PackageOpen} items={orderActivity} loading={ordersLoading} error={errors.orders}
             emptyTitle="No orders yet" emptyDescription="Your orders and shipment details will appear here."
-            emptyAction="Browse tools" onViewAll={() => onOpenTab('orders')}/>
+            emptyAction="View orders" onViewAll={() => onOpenTab('orders')}/>
           <ActivityPanel title="Tool Repairs" icon={Wrench} items={repairActivity} loading={ordersLoading} error={errors.repairs}
             emptyTitle="No tool repairs yet" emptyDescription="Track service requests or get your equipment serviced."
             emptyAction="View repairs" onViewAll={() => onOpenTab('repairs')}/>
