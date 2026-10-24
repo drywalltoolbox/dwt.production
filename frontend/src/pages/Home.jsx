@@ -65,12 +65,11 @@ export default function Home() {
         <div className="dtb-home-storefront">
           <div className="dtb-container dtb-container--fluid pb-4">
 
-            {/* ── Trending / Featured Products (brand-balanced) ── */}
+            {/* ── Featured Products ── */}
             <TrendingProducts />
 
             {/* ── New Arrivals ── */}
             <StorefrontSection
-              eyebrow="Just In"
               revealHeading
               title="New Arrivals"
               viewAllHref="/products?sort=newest"
