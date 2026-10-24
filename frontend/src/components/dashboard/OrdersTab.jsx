@@ -1,138 +1,70 @@
 /**
- * Unified customer history: product orders, repair requests, and returns.
+ * Customer product orders only. Repairs and returns have their own account
+ * destinations; do not duplicate them as filters within Orders.
  */
-
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AlertCircle, Loader, Package, RotateCcw, ShoppingCart, Wrench } from 'lucide-react';
+import { AlertCircle, Loader, Package } from 'lucide-react';
 import { getOrders } from '../../api/orders.js';
-import { getCustomerRepairs } from '../../api/repairs.js';
-import { getCustomerReturns } from '../../api/returns.js';
-import {
-  buildAccountActivity,
-  normalizeOrders,
-  normalizeRepairs,
-  normalizeReturns,
-} from '../../utils/accountActivity.js';
+import { buildAccountActivity, normalizeOrders } from '../../utils/accountActivity.js';
 import AccountActivityList from '../account/AccountActivityList.jsx';
 
-function rejectedMessage(result, fallback) {
-  if (!result || result.status !== 'rejected') return '';
-  return result.reason?.message || fallback;
-}
-
-async function fetchAccountHistory() {
-  const [ordersResult, repairsResult, returnsResult] = await Promise.allSettled([
-    getOrders(1, 50),
-    getCustomerRepairs(1, 50),
-    getCustomerReturns(1, 50),
-  ]);
-
-  return {
-    data: {
-      orders: ordersResult.status === 'fulfilled' ? normalizeOrders(ordersResult.value) : [],
-      repairs: repairsResult.status === 'fulfilled' ? normalizeRepairs(repairsResult.value) : [],
-      returns: returnsResult.status === 'fulfilled' ? normalizeReturns(returnsResult.value) : [],
-    },
-    errors: {
-      orders: rejectedMessage(ordersResult, 'Orders are temporarily unavailable.'),
-      repairs: rejectedMessage(repairsResult, 'Repairs are temporarily unavailable.'),
-      returns: rejectedMessage(returnsResult, 'Returns are temporarily unavailable.'),
-    },
-  };
-}
-
 export default function OrdersTab() {
-  const [data, setData] = useState({ orders: [], repairs: [], returns: [] });
+  const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [errors, setErrors] = useState({ orders: '', repairs: '', returns: '' });
-  const [filter, setFilter] = useState('all');
+  const [error, setError] = useState('');
 
-  const loadHistory = useCallback(async () => {
+  const loadOrders = useCallback(async () => {
     setLoading(true);
-    setErrors({ orders: '', repairs: '', returns: '' });
-
-    const nextState = await fetchAccountHistory();
-    setData(nextState.data);
-    setErrors(nextState.errors);
-    setLoading(false);
+    setError('');
+    try {
+      const response = await getOrders(1, 50);
+      setOrders(normalizeOrders(response));
+    } catch (reason) {
+      setOrders([]);
+      setError(reason?.message || 'Your orders are temporarily unavailable.');
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   useEffect(() => {
-    let cancelled = false;
-
-    fetchAccountHistory().then((nextState) => {
-      if (cancelled) return;
-      setData(nextState.data);
-      setErrors(nextState.errors);
-      setLoading(false);
-    });
-
-    return () => { cancelled = true; };
+    let active = true;
+    getOrders(1, 50)
+      .then((response) => { if (active) setOrders(normalizeOrders(response)); })
+      .catch((reason) => {
+        if (active) { setOrders([]); setError(reason?.message || 'Your orders are temporarily unavailable.'); }
+      })
+      .finally(() => { if (active) setLoading(false); });
+    return () => { active = false; };
   }, []);
 
-  const activity = useMemo(() => buildAccountActivity(data), [data]);
-  const filteredActivity = useMemo(() => {
-    if (filter === 'all') return activity;
-    if (filter === 'orders') return activity.filter((item) => item.type === 'order' || item.type === 'repair-order');
-    return activity.filter((item) => item.type === filter);
-  }, [activity, filter]);
-
-  const filters = [
-    { id: 'all', label: 'All activity', count: activity.length, Icon: Package },
-    { id: 'orders', label: 'Orders', count: data.orders.length, Icon: ShoppingCart },
-    { id: 'repair', label: 'Repairs', count: data.repairs.length, Icon: Wrench },
-    { id: 'return', label: 'Returns', count: data.returns.length, Icon: RotateCcw },
-  ];
-
-  const activeError = useMemo(() => {
-    if (filter === 'orders') return errors.orders;
-    if (filter === 'repair') return errors.repairs;
-    if (filter === 'return') return errors.returns;
-    return [errors.orders, errors.repairs, errors.returns].filter(Boolean).join(' ');
-  }, [errors, filter]);
-
   if (loading) {
-    return <div className="account-history-state"><Loader size={20} className="animate-spin" /> Loading account history…</div>;
+    return <div className="account-history-state" role="status"><Loader size={20} className="animate-spin"/> Loading orders…</div>;
   }
 
+  const items = buildAccountActivity({
+    orders: orders.filter((order) => String(order?.order_type || '').toLowerCase() !== 'repair_service'),
+  });
+
   return (
-    <div className="account-history">
-      <div className="account-history__filters" role="tablist" aria-label="Filter account history">
-        {filters.map(({ id, label, count, Icon }) => (
-          <button
-            key={id}
-            type="button"
-            role="tab"
-            aria-selected={filter === id}
-            className={`account-history__filter${filter === id ? ' is-active' : ''}`}
-            onClick={() => setFilter(id)}
-          >
-            <Icon size={14} />
-            <span>{label}</span>
-            <strong>{count}</strong>
-          </button>
-        ))}
-      </div>
-
-      {activeError ? (
-        <div className="account-history-state is-error" role="status">
-          <AlertCircle size={18} />
-          <span>{activeError}</span>
-          <button type="button" onClick={loadHistory}>Retry</button>
-        </div>
-      ) : null}
-
-      {filteredActivity.length ? (
-        <AccountActivityList items={filteredActivity} />
-      ) : (
-        <div className="account-history-state">
-          <Package size={34} />
-          <strong>No activity found</strong>
-          <span>Your product orders, repair requests, and returns will appear here.</span>
-          <Link to="/products">Browse products</Link>
+    <section className="account-history" aria-label="Order history">
+      {error && (
+        <div className="account-history-state is-error" role="alert">
+          <AlertCircle size={18}/>
+          <span>{error}</span>
+          <button type="button" onClick={loadOrders}>Retry</button>
         </div>
       )}
-    </div>
+      {!error && (items.length
+        ? <AccountActivityList items={items}/>
+        : <div className="account-history-state">
+            <Package size={34}/>
+            <strong>No orders yet</strong>
+            <span>Your product orders will appear here after your first purchase.</span>
+            <Link to="/products">Browse products</Link>
+          </div>
+      )}
+    </section>
   );
 }

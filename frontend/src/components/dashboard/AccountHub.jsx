@@ -110,7 +110,7 @@ export default function AccountHub() {
 
   return (
     <div className="page-wrapper dtb-account-page">
-      <AccountMasthead user={user} history={history} loading={historyLoading} error={historyError} onOpenTab={openTab}/>
+      <AccountMasthead user={user} onOpenTab={openTab}/>
       <nav className="dtb-account-container dtb-account-nav" aria-label="Account sections">
         <NavbarTabs tabs={TABS} activeIndex={activeIndex} onChange={(index) => openTab(TABS[index]?.id)} className="dtb-account-reference-tabs"/>
       </nav>
