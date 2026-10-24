@@ -1,4 +1,5 @@
 import ProductDetail from './ProductDetail.jsx';
+import ProductRelatedProducts from './ProductRelatedProducts.jsx';
 import { useCatalogProductDetail } from '../../hooks/useCatalogProductDetail.js';
 import {
   toLegacyProductCardDTO,
@@ -10,6 +11,7 @@ export default function ProductDetailPlatform({
   onAddToCart,
   onClose,
   onNavigateToProduct,
+  onOpenProduct,
   initialSelectedAttrs = {},
   initialVariations = [],
   initialResolvedVariation = null,
@@ -18,6 +20,7 @@ export default function ProductDetailPlatform({
   const {
     product: detailProduct,
     variations,
+    relatedProducts,
     computed,
     status,
   } = useCatalogProductDetail(slug);
@@ -41,18 +44,27 @@ export default function ProductDetailPlatform({
     : {};
 
   return (
-    <ProductDetail
-      product={resolvedProduct}
-      onAddToCart={onAddToCart}
-      onClose={onClose}
-      onNavigateToProduct={onNavigateToProduct}
-      initialVariations={resolvedVariations}
-      initialResolvedVariation={resolvedInitialVariation}
-      initialSelectedAttrs={resolvedSelectedAttrs}
-      initialComputedData={computed}
-      variationsHydrating={status === 'idle' || status === 'loading'}
-      disableLegacyDetailFetch
-      autoSelectDefaultVariation={false}
-    />
+    <>
+      <ProductDetail
+        product={resolvedProduct}
+        onAddToCart={onAddToCart}
+        onClose={onClose}
+        onNavigateToProduct={onNavigateToProduct}
+        initialVariations={resolvedVariations}
+        initialResolvedVariation={resolvedInitialVariation}
+        initialSelectedAttrs={resolvedSelectedAttrs}
+        initialComputedData={computed}
+        variationsHydrating={status === 'idle' || status === 'loading'}
+        disableLegacyDetailFetch
+        autoSelectDefaultVariation={false}
+      />
+      <ProductRelatedProducts
+        products={relatedProducts}
+        context={computed?.relatedProductsContext}
+        onAddToCart={onAddToCart}
+        onOpenProduct={onOpenProduct}
+        id="catalog-quick-view-related"
+      />
+    </>
   );
 }
