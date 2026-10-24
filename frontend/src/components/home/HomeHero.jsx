@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { AnimatePresence, m as Motion, useIsPresent, useReducedMotion } from 'framer-motion';
-import HomeHeroBrands from './HomeHeroBrands';
 import HomeHeroButton from './HomeHeroButton';
 import { HOME_HERO_CAMPAIGNS, HOME_HERO_CAMPAIGN_COUNT } from './homeHeroCampaigns.js';
 import {
@@ -111,7 +110,7 @@ function HomeHeroSlide({ campaign, reduceMotion }) {
   );
 }
 
-export default function HomeHero({ brands = [] }) {
+export default function HomeHero() {
   const reduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
   const tabRefs = useRef([]);
@@ -342,7 +341,6 @@ export default function HomeHero({ brands = [] }) {
         </nav>
       </div>
 
-      <HomeHeroBrands brands={brands} />
     </section>
   );
 }

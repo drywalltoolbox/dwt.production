@@ -1,5 +1,6 @@
 import TrendingProducts from '../components/catalog/TrendingProducts';
 import HomeHero from '../components/home/HomeHero';
+import HomeHeroBrands from '../components/home/HomeHeroBrands';
 import SEOHead from '../components/shared/SEOHead';
 import { buildOrganizationSchema, buildSiteLinksSearchBoxSchema } from '../utils/schema';
 import StorefrontSection from '../components/storefront/StorefrontSection';
@@ -60,7 +61,7 @@ export default function Home() {
       />
 
       <div className="page-wrapper dtb-home-page storefront-shell">
-        <HomeHero brands={HOME_TRUST_BRANDS} />
+        <HomeHero />
 
         <div className="dtb-home-storefront">
           <div className="dtb-container dtb-container--fluid pb-4">
@@ -76,7 +77,11 @@ export default function Home() {
             >
               <StorefrontProductRail sort="newest" maxItems={10} label="New arrivals" />
             </StorefrontSection>
+          </div>
 
+          <HomeHeroBrands brands={HOME_TRUST_BRANDS} />
+
+          <div className="dtb-container dtb-container--fluid pb-4">
             {/* ── Brand product sections ── */}
             {HOME_BRAND_PRODUCT_SECTIONS.map((brand) => (
               <StorefrontSection

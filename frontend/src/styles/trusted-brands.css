@@ -22,9 +22,18 @@
 .dtb-ui-trusted-brands--transparent { background: transparent; }
 
 .dtb-ui-trusted-brands--home {
-  padding: clamp(2.25rem, 4vw, 4rem) clamp(1rem, 6vw, 7rem) 2rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1rem, 6vw, 7rem) clamp(1.5rem, 3vw, 2.5rem);
   border-block: 0;
   background: #fff;
+}
+
+.dtb-ui-trusted-brands--home .dtb-ui-trusted-brands__title {
+  color: var(--dtb-primary, #2255ee);
+  font-size: clamp(0.7rem, 1vw, 0.86rem);
+  font-weight: 850;
+  line-height: 1.55;
+  letter-spacing: 0.16em;
+  white-space: pre-line;
 }
 
 .dtb-ui-trusted-brands__heading {

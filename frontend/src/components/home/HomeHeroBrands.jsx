@@ -4,7 +4,7 @@ export default function HomeHeroBrands({ brands = [] }) {
   return (
     <TrustedBrands
       brands={brands}
-      title="Trusted by professionals. Powered by quality."
+      title={"SHOP BY BRAND.\nTRUSTED BY PROFESSIONALS."}
       speed={34}
       className="dtb-ui-trusted-brands--home"
     />
