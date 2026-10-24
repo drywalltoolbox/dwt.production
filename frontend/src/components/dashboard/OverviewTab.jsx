@@ -9,8 +9,6 @@ import {
 } from 'lucide-react';
 import AccountActivityList from '../account/AccountActivityList.jsx';
 import { buildAccountActivity } from '../../utils/accountActivity.js';
-import { ORDER_TERMINAL_STATUSES } from '../../api/orders.js';
-import { TERMINAL_STATUSES as REPAIR_TERMINAL_STATUSES } from '../../api/repairs.js';
 
 const isRepairOrder = (order) => String(order?.order_type || '').toLowerCase() === 'repair_service';
 
@@ -54,12 +52,6 @@ export default function OverviewTab({
   const orderActivity = buildAccountActivity({ orders: productOrders });
   const repairActivity = buildAccountActivity({ orders: repairOrders, repairs });
   const returnActivity = buildAccountActivity({ returns });
-  const activeOrders = productOrders.filter((order) => !ORDER_TERMINAL_STATUSES.includes(order.status));
-  const activeRepairs = repairActivity.filter((item) =>
-    item.type === 'repair-order'
-      ? !ORDER_TERMINAL_STATUSES.includes(item.status)
-      : !REPAIR_TERMINAL_STATUSES.includes(item.status));
-
   return (
     <div className="dtb-account-overview">
       <header className="dtb-account-welcome">
@@ -68,8 +60,8 @@ export default function OverviewTab({
       </header>
 
       <div className="dtb-account-grid">
-        <OverviewStat label="Active Orders" icon={Package} count={activeOrders.length} loading={ordersLoading} error={errors.orders} onClick={() => onOpenTab('orders')}/>
-        <OverviewStat label="Tool Repairs" icon={Wrench} type="repair" count={activeRepairs.length} loading={ordersLoading} error={errors.repairs} onClick={() => onOpenTab('repairs')}/>
+        <OverviewStat label="Recent Orders" icon={Package} count={productOrders.length} loading={ordersLoading} error={errors.orders} onClick={() => onOpenTab('orders')}/>
+        <OverviewStat label="Recent Repairs" icon={Wrench} type="repair" count={repairActivity.length} loading={ordersLoading} error={errors.repairs} onClick={() => onOpenTab('repairs')}/>
         <OverviewStat label="My Jobs" icon={MapPin} type="jobs" count={jobsTotal} loading={jobsLoading} error={jobsError} onClick={() => onOpenTab('jobs')}/>
       </div>
 
