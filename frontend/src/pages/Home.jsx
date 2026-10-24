@@ -44,7 +44,7 @@ const HOME_BRAND_LOGO_DIMENSIONS = {
   'Columbia Tools': [2048, 760],
   'Platinum Drywall Tools': [2048, 613],
   'Level 5': [2048, 470],
-  SurPro: [1500, 430],
+  SurPro: [1640, 430],
   'Dura-Stilts': [2048, 414],
 };
 
