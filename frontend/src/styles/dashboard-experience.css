@@ -254,3 +254,40 @@
 /* Keep the selected account section visible when navigating from the hero card. */
 .dtb-account-nav { scroll-margin-top: clamp(12px, 4vw, 28px); }
 .dtb-account-main:focus { outline: none; }
+
+/* Account live metrics: compact, legible at narrow mobile widths. */
+.dtb-masthead-profile__details--metrics { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 0; padding-top: 18px; }
+.dtb-masthead-profile__details--metrics > span { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; gap: 6px; padding-right: 8px; }
+.dtb-masthead-profile__details--metrics > span + span { padding-left: clamp(8px,1.2vw,17px); }
+.dtb-masthead-profile__details--metrics small { font-size: clamp(.53rem,.75vw,.69rem); line-height: 1.25; letter-spacing: .035em; }
+.dtb-masthead-profile__details--metrics strong { font-size: clamp(1.12rem,1.7vw,1.55rem); line-height: 1; font-variant-numeric: tabular-nums; color: #142c67; }
+.dtb-masthead-profile:focus-visible { outline: 3px solid #2458ee; outline-offset: 3px; }
+
+/* My Jobs: unobtrusive, compact workspace refinement. */
+.dtb-jobs-header { align-items: center; margin-bottom: 20px; gap: 14px; }
+.dtb-jobs-header h2 { letter-spacing: -.045em; }
+.dtb-jobs-header p { font-size: clamp(.83rem,1vw,.95rem); line-height: 1.5; margin-top: 7px; }
+.dtb-jobs-toolbar { gap: 11px; margin-bottom: 14px; }
+.dtb-jobs-search { border-radius: 14px; border-color: #dfe6f2; box-shadow: 0 2px 10px rgba(22,43,82,.025); transition: border-color .15s,box-shadow .15s; }
+.dtb-jobs-search:focus-within { border-color: #5c81f6; box-shadow: 0 0 0 3px rgba(38,86,245,.11); }
+.dtb-jobs-search input { height: 48px; font-size: .86rem; }
+.dtb-jobs-segment { border-radius: 14px; padding: 4px; background: #fff; border-color: #e1e7f1; }
+.dtb-jobs-segment button { border-radius: 10px; padding: 11px 16px; }
+.dtb-jobs-segment button.is-active { background: #eaf0ff; color: #2255ee; }
+.dtb-jobs-segment button:focus-visible, .dtb-jobs-card:focus-visible { outline: 3px solid #3767fa; outline-offset: 2px; }
+.dtb-jobs-meta { margin: 0 0 14px; }
+.dtb-jobs-card { border-radius: 18px; padding: 17px; align-items: center; }
+.dtb-jobs-empty { border: 1px solid #e1e8f3; border-radius: 22px; box-shadow: 0 12px 30px rgba(26,47,88,.035); padding: clamp(26px,4vw,40px) 18px; }
+.dtb-jobs-empty__icon { display: inline-grid; place-items: center; width: 52px; height: 52px; border-radius: 16px; background: #edf2ff; }
+.dtb-jobs-empty h3 { margin-top: 15px; }
+@media (max-width: 720px) {
+ .dtb-masthead-profile__details--metrics { grid-template-columns: repeat(3,minmax(0,1fr)); }
+ .dtb-masthead-profile__details--metrics > span + span { padding-left: 10px; }
+ .dtb-jobs-header { align-items: flex-start; }
+ .dtb-jobs-toolbar { align-items: stretch; }
+ .dtb-jobs-search { flex-basis: 100%; }
+}
+@media (max-width: 390px) {
+ .dtb-masthead-profile__details--metrics small { font-size: .53rem; letter-spacing: 0; }
+ .dtb-masthead-profile__details--metrics > span + span { padding-left: 7px; }
+}
