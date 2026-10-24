@@ -21,7 +21,6 @@ export default function AccountMasthead({ user, onOpenTab }) {
       <div className="dtb-masthead__inner dtb-account-container">
         <div className="dtb-masthead__top">
           <div className="dtb-masthead__intro">
-            <p className="dtb-masthead__eyebrow">CONTRACTOR ACCOUNT</p>
             <h1>Welcome back, <span>{greeting}.</span></h1>
             <p className="dtb-masthead__subtitle">Your tools. Your orders. Your jobs. All in one place.</p>
           </div>
