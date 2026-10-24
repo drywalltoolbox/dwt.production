@@ -614,7 +614,7 @@ function ProductReviewsButton({ onClick, className = '', rating = 0, ratingCount
       type="button"
       onClick={onClick}
       className={`dtb-pdp-header__reviews ${className}`.trim()}
-      aria-label="View product reviews"
+      aria-label="Write a review"
     >
       <ProductRating rating={rating} ratingCount={ratingCount} />
     </button>
@@ -646,6 +646,7 @@ export default function ProductDetail({
   const [addToCartError, setAddToCartError] = useState('');
   const [addToCartState, setAddToCartState] = useState('idle');
   const [buyNowState, setBuyNowState] = useState('idle');
+  const [reviewFormOpen, setReviewFormOpen] = useState(false);
   const reviewsRef = useRef(null);
   const addToCartFeedbackTimerRef = useRef(null);
   const buyNowRedirectTimerRef = useRef(null);
@@ -1017,10 +1018,7 @@ export default function ProductDetail({
     });
   };
 
-  const handleViewReviews = () => {
-    reviewsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    reviewsRef.current?.focus({ preventScroll: true });
-  };
+  const handleViewReviews = () => setReviewFormOpen(true);
 
   return (
     <div className={`dtb-pdp${onClose ? ' dtb-pdp--modal' : ''} w-full max-w-6xl mx-auto flex flex-col relative`}>
@@ -1177,7 +1175,7 @@ export default function ProductDetail({
 
           <section ref={reviewsRef} id="product-reviews" className="dtb-pdp-reviews" tabIndex={-1} aria-labelledby="product-reviews-title">
             <h2 id="product-reviews-title">Customer reviews</h2>
-            <Reviews key={effectiveProduct.id || product.id} productId={effectiveProduct.id || product.id} />
+            <Reviews key={effectiveProduct.id || product.id} productId={effectiveProduct.id || product.id} productName={effectiveName} reviewFormOpen={reviewFormOpen} onCloseReviewForm={() => setReviewFormOpen(false)} />
           </section>
 
         </div>

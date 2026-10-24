@@ -7,10 +7,27 @@ import LoadingCardTransition from '../shared/LoadingCardTransition.jsx';
 import StorefrontRail from './StorefrontRail';
 import StorefrontProductTile from './StorefrontProductTile';
 import StorefrontSkeletons from './StorefrontSkeletons';
+import { useCatalogProductDetail } from '../../hooks/useCatalogProductDetail.js';
+import ProductRelatedProducts from '../product/ProductRelatedProducts.jsx';
 
 // Do not ship quick-view's PDP implementation until the user opens it.
 const ProductDetail = lazy(() => import('../product/ProductDetail'));
 const ProductModal = lazy(() => import('../product/ProductModal'));
+
+function ProductQuickViewRecommendations({ product, onAddToCart, onOpenProduct }) {
+  const slug = product?.slug || product?.post_name || '';
+  const { relatedProducts, computed } = useCatalogProductDetail(slug);
+
+  return (
+    <ProductRelatedProducts
+      products={relatedProducts}
+      context={computed?.relatedProductsContext}
+      onAddToCart={onAddToCart}
+      onOpenProduct={onOpenProduct}
+      id="quick-view-related"
+    />
+  );
+}
 
 /**
  * A horizontal product rail that fetches products from the catalog API.
@@ -155,6 +172,11 @@ export default function StorefrontProductRail({
               initialVariations={[]}
               initialResolvedVariation={modalProduct.initialResolvedVariation}
               initialSelectedAttrs={modalProduct.initialSelectedAttrs}
+            />
+            <ProductQuickViewRecommendations
+              product={modalProduct.product || modalProduct}
+              onAddToCart={handleAddToCart}
+              onOpenProduct={(relatedProduct) => openModal(relatedProduct)}
             />
           </ProductModal>
         </Suspense>

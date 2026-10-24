@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { apiClient } from '../../api/client.js';
 import ProductRating from './ProductRating.jsx';
 
@@ -9,7 +10,9 @@ function formatDate(value) {
   return date && !Number.isNaN(date.valueOf()) ? date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '';
 }
 
-export default function Reviews({ productId, allowSubmit = true }) {
+export default function Reviews({ productId, productName = '', reviewFormOpen = false, onCloseReviewForm = () => {} }) {
+  const dialogRef = useRef(null);
+  const closeButtonRef = useRef(null);
   const [summary, setSummary] = useState({ average_rating: 0, rating_count: 0 });
   const [reviews, setReviews] = useState([]);
   const [page, setPage] = useState(1);
@@ -30,6 +33,47 @@ export default function Reviews({ productId, allowSubmit = true }) {
   const visibleError = endpoint
     ? (loadedEndpoint === endpoint ? error : '')
     : 'Reviews are unavailable for this product.';
+
+
+  useEffect(() => {
+    if (!reviewFormOpen || typeof document === 'undefined') return undefined;
+    const dialog = dialogRef.current;
+    const previousFocus = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => closeButtonRef.current?.focus({ preventScroll: true }));
+
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        onCloseReviewForm();
+      } else if (event.key === 'Tab' && dialog) {
+        const focusable = [...dialog.querySelectorAll('button:not([disabled]), textarea:not([disabled])')]
+          .filter((element) => element.getClientRects().length > 0);
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (!first || !last) {
+          event.preventDefault();
+          dialog.focus();
+        } else if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      if (previousFocus instanceof HTMLElement && previousFocus.isConnected) {
+        previousFocus.focus({ preventScroll: true });
+      }
+    };
+  }, [reviewFormOpen, onCloseReviewForm]);
 
   const fetchPage = useCallback(async (requestedPage = 1, append = false) => {
     if (!endpoint) return;
@@ -89,18 +133,59 @@ export default function Reviews({ productId, allowSubmit = true }) {
 
   return <div className="dtb-reviews">
     <div className="dtb-reviews__summary"><ProductRating rating={visibleSummary.average_rating} ratingCount={visibleSummary.rating_count} /></div>
-    {allowSubmit && <form onSubmit={handleSubmit} className="dtb-reviews__form">
-      <p className="dtb-reviews__form-heading">Write a review</p>
-      <p className="dtb-reviews__form-note">You must be signed in. Submitted reviews are moderated before publishing.</p>
-      <fieldset className="dtb-reviews__field"><legend className="dtb-reviews__label">Rating</legend><div className="dtb-reviews__star-picker">{[1, 2, 3, 4, 5].map((value) => <button type="button" key={value} onClick={() => setRating(value)} className={`dtb-reviews__star-btn${value <= rating ? ' is-active' : ''}`} aria-label={`${value} star${value === 1 ? '' : 's'}`} aria-pressed={value === rating}>★</button>)}</div></fieldset>
-      <div className="dtb-reviews__field"><label className="dtb-reviews__label" htmlFor="dtb-review-content">Review</label><textarea id="dtb-review-content" className="dtb-reviews__textarea" rows={4} value={content} onChange={(event) => setContent(event.target.value)} placeholder="Share your experience with this product." required /></div>
-      <button type="submit" className="dtb-reviews__submit" disabled={submitting || !endpoint}>{submitting ? 'Submitting…' : 'Submit review'}</button>
-      {submissionMessage && <p className="dtb-reviews__notice" role="status">{submissionMessage}</p>}
-    </form>}
     {visibleError && <p className="dtb-reviews__error" role="alert">{visibleError}</p>}
     <div className="dtb-reviews__list" aria-busy={loading}>
       {loading ? <p className="dtb-reviews__empty">Loading reviews…</p> : visibleReviews.length === 0 ? <p className="dtb-reviews__empty">No reviews yet.</p> : visibleReviews.map((review) => <article key={review.id} className="dtb-reviews__item"><div className="dtb-reviews__item-header"><div className="dtb-reviews__item-meta"><span className="dtb-reviews__item-author">{review.author}</span><ProductRating rating={review.rating} ratingCount={1} compact />{review.verified_purchase && <span className="dtb-reviews__verified">Verified purchase</span>}</div><time className="dtb-reviews__item-date" dateTime={review.date}>{formatDate(review.date)}</time></div><p className="dtb-reviews__item-text">{review.content}</p></article>)}
     </div>
     {visibleHasMore && <button type="button" className="dtb-reviews__more" onClick={() => fetchPage(page + 1, true)} disabled={loadingMore}>{loadingMore ? 'Loading…' : 'Load more reviews'}</button>}
+
+    {reviewFormOpen && typeof document !== 'undefined' && createPortal(
+      <div className="dtb-review-modal-backdrop" onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onCloseReviewForm();
+      }}>
+        <section
+          ref={dialogRef}
+          className="dtb-review-dialog"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="dtb-review-dialog-title"
+          aria-describedby="dtb-review-dialog-description"
+          tabIndex={-1}
+        >
+          <header className="dtb-review-dialog__header">
+            <div>
+              <span className="dtb-review-dialog__eyebrow">Product feedback</span>
+              <h2 id="dtb-review-dialog-title">Write a review</h2>
+              {productName && <p className="dtb-review-dialog__product">{productName}</p>}
+            </div>
+            <button ref={closeButtonRef} type="button" className="dtb-review-dialog__close" onClick={onCloseReviewForm} aria-label="Close review form">×</button>
+          </header>
+          <p id="dtb-review-dialog-description" className="dtb-reviews__form-note">Your feedback helps other pros choose the right tool. Submitted reviews are moderated before publishing.</p>
+          <form onSubmit={handleSubmit} className="dtb-review-dialog__form">
+            <fieldset className="dtb-reviews__field">
+              <legend className="dtb-reviews__label">Your rating</legend>
+              <div className="dtb-reviews__star-picker" role="group" aria-label="Choose a rating">
+                {[1, 2, 3, 4, 5].map((value) => (
+                  <button type="button" key={value} onClick={() => setRating(value)} className={'dtb-reviews__star-btn' + (value <= rating ? ' is-active' : '')} aria-label={value + ' star' + (value === 1 ? '' : 's')} aria-pressed={value === rating}>★</button>
+                ))}
+              </div>
+            </fieldset>
+            <div className="dtb-reviews__field">
+              <label className="dtb-reviews__label" htmlFor={'dtb-review-content-' + productId}>Your review</label>
+              <textarea id={'dtb-review-content-' + productId} className="dtb-reviews__textarea" rows={5} maxLength={3000} value={content} onChange={(event) => setContent(event.target.value)} placeholder="How has this product worked for you?" required />
+              <span className="dtb-review-dialog__counter">{content.length}/3000</span>
+            </div>
+            {(error || submissionMessage) && <p className={error ? 'dtb-reviews__error' : 'dtb-reviews__notice'} role={error ? 'alert' : 'status'}>{error || submissionMessage}</p>}
+            {!endpoint && <p className="dtb-reviews__error" role="alert">Reviews are unavailable for this product.</p>}
+            <footer className="dtb-review-dialog__actions">
+              <button type="button" className="dtb-review-dialog__cancel" onClick={onCloseReviewForm}>Cancel</button>
+              <button type="submit" className="dtb-reviews__submit" disabled={submitting || !endpoint}>{submitting ? 'Submitting…' : 'Submit review'}</button>
+            </footer>
+            <p className="dtb-review-dialog__signin">You must be signed in to submit a review.</p>
+          </form>
+        </section>
+      </div>,
+      document.body
+    )}
   </div>;
 }
