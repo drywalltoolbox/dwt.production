@@ -82,12 +82,11 @@ export default function Home() {
             {HOME_BRAND_PRODUCT_SECTIONS.map((brand) => (
               <StorefrontSection
                 key={brand.name}
-                eyebrow="Shop by brand"
                 title={brand.name}
                 subtitle={`Explore the ${brand.name} lineup.`}
                 className="dtb-home-brand-section"
                 viewAllHref={brand.to}
-                viewAllLabel={`Shop all ${brand.name}`}
+                viewAllLabel="Shop All"
               >
                 <StorefrontProductRail
                   brand={brand.brand}
