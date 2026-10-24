@@ -76,6 +76,7 @@ export default function ProductDetailHeader({
       <button
         type="button"
         onClick={onReviewsClick}
+        aria-label="Write a review"
         className="dtb-pdp-header__reviews dtb-pdp-header__reviews--inline"
       >
         <ProductRating rating={rating} ratingCount={ratingCount} />
