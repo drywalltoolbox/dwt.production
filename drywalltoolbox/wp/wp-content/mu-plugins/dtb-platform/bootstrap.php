@@ -104,6 +104,7 @@ require_once $_dtb_platform . '/Rest/OpsProductOrdersController.php';
 require_once $_dtb_platform . '/Rest/OpsRepairOrdersController.php';
 require_once $_dtb_platform . '/Rest/OpsSettingsController.php';
 require_once $_dtb_platform . '/Rest/AccountController.php';
+require_once $_dtb_platform . '/Rest/CustomerJobsController.php';
 require_once $_dtb_platform . '/Rest/HistoryController.php';
 require_once $_dtb_platform . '/Rest/ProxyRoutes.php';
 
