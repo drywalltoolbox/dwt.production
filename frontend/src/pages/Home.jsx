@@ -85,7 +85,7 @@ export default function Home() {
                 subtitle={`Explore the ${brand.name} lineup.`}
                 className="dtb-home-brand-section"
                 viewAllHref={brand.to}
-                viewAllLabel="Shop All"
+                viewAllLabel="View All"
               >
                 <StorefrontProductRail
                   brand={brand.brand}
