@@ -212,47 +212,26 @@
 .dtb-masthead-profile__details span span { display: grid; gap: 3px; min-width: 0; }
 .dtb-masthead-profile__details small { color: #8590a2; font-size: .64rem; font-weight: 750; letter-spacing: .05em; }
 .dtb-masthead-profile__details strong { color: #17243b; font-weight: 750; font-size: .81rem; overflow-wrap: anywhere; text-transform: capitalize; }
-.dtb-masthead__tiles { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: clamp(10px, 1.25vw, 20px); margin-top: clamp(22px, 3vw, 42px); }
-.dtb-masthead-tile { min-width: 0; display: flex; align-items: center; gap: clamp(10px, 1.4vw, 19px); padding: clamp(14px, 1.6vw, 22px); background: rgba(255,255,255,.96); border: 1px solid #f0f3fa; border-radius: 17px; box-shadow: 0 10px 30px rgba(22,44,82,.055); text-align: left; cursor: pointer; color: #13213a; transition: box-shadow .16s, transform .16s, border-color .16s; }
-.dtb-masthead-tile:hover { transform: translateY(-2px); box-shadow: 0 13px 35px rgba(22,44,82,.12); border-color: #d3dfff; }
-.dtb-masthead-tile__icon { width: clamp(45px, 5vw, 66px); height: clamp(45px, 5vw, 66px); flex: none; border-radius: 15px; display: grid; place-items: center; }
-.dtb-masthead-tile__icon--orders { background: #edf2ff; color: #2255ee; }
-.dtb-masthead-tile__icon--repairs { background: #e7faf4; color: #10bfa0; }
-.dtb-masthead-tile__icon--returns { background: #f2ecff; color: #873cff; }
-.dtb-masthead-tile__icon--support { background: #fff5e4; color: #ec8700; }
-.dtb-masthead-tile__body { flex: 1; min-width: 0; display: grid; gap: 5px; }
-.dtb-masthead-tile__label { color: #8993a4; font-size: clamp(.59rem, .75vw, .73rem); font-weight: 800; letter-spacing: .13em; white-space: normal; }
-.dtb-masthead-tile__number { color: #0d1a30; font-size: clamp(1.25rem, 2vw, 2rem); font-weight: 850; line-height: 1; }
-.dtb-masthead-tile__hint { font-size: clamp(.67rem,.94vw,.88rem); color: #718098; line-height: 1.25; }
-.dtb-masthead-tile__chevron { flex: none; color: #91a0b5; }
 .dtb-account-nav { padding-block: clamp(15px, 2.1vw, 28px) 12px; }
 .dtb-account-reference-tabs .dtb-navtab-btn { min-height: 46px; }
 .dtb-account-main { padding-top: 12px; }
 @media (max-width: 1100px) {
   .dtb-masthead__top { grid-template-columns: minmax(0,1.25fr) minmax(285px,.9fr); }
-  .dtb-masthead__tiles { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }
 @media (max-width: 720px) {
   .dtb-masthead__inner { padding-block: 27px 24px; }
   .dtb-masthead__top { grid-template-columns: minmax(0,1fr); min-height: auto; gap: 21px; }
   .dtb-masthead__intro h1 { font-size: clamp(1.75rem,7vw,2.9rem); }
   .dtb-masthead-profile { max-width: none; }
-  .dtb-masthead-tile__chevron { display: none; }
   .dtb-masthead__art::before { width: 100%; right: -40%; opacity: .65; }
 }
 @media (max-width: 390px) {
-  .dtb-masthead__tiles { gap: 8px; }
-  .dtb-masthead-tile { padding: 12px 9px; flex-direction: column; align-items: flex-start; gap: 9px; }
-  .dtb-masthead-tile__icon { width: 39px; height: 39px; border-radius: 10px; }
-  .dtb-masthead-tile__hint { display: none; }
   .dtb-masthead-profile__upper { gap: 10px; }
   .dtb-masthead-profile__avatar { width: 45px; height: 45px; }
   .dtb-masthead-profile__details { gap: 6px; }
   .dtb-masthead-profile__details > span + span { padding-left: 7px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .dtb-masthead-tile { transition: none; }
-  .dtb-masthead-tile:hover { transform: none; }
 }
 
 /* Reference's understated pale-blue account navigation, scoped to dashboard. */
