@@ -9,6 +9,7 @@ import { normalizeOrders, normalizeRepairs, normalizeReturns, normalizeSupportTi
 export async function getAccountWorkspaceHistory({ perPage = 20 } = {}) {
   const payload = await getAccountHistory({ perPage });
   return {
+    summary: payload.summary || null,
     orders: normalizeOrders(payload),
     repairs: normalizeRepairs(payload),
     returns: normalizeReturns(payload),

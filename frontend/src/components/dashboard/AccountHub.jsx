@@ -41,6 +41,7 @@ export default function AccountHub() {
     : TABS.some((tab) => tab.id === requested) ? requested : 'overview';
   const activeIndex = TABS.findIndex((tab) => tab.id === activeTabId);
   const [history, setHistory] = useState(EMPTY_HISTORY);
+  const [heroSummary, setHeroSummary] = useState(null);
   const [historyError, setHistoryError] = useState('');
   const [historyLoading, setHistoryLoading] = useState(true);
   const [jobsSummary, setJobsSummary] = useState({ jobs: [], total: 0 });
@@ -60,19 +61,19 @@ export default function AccountHub() {
   // Customer-scoped history. Only the overview consumes the aggregate. Other
   // tabs retain their authoritative domain reads for pagination/detail actions.
   useEffect(() => {
-    if (!user?.id || activeTabId !== 'overview') return undefined;
+    if (!user?.id) return undefined;
     let alive = true;
     Promise.resolve().then(() => {
       if (!alive) return;
       setHistoryLoading(true);
       setHistoryError('');
       return getAccountWorkspaceHistory({ perPage: 30 })
-        .then((data) => { if (alive) setHistory(data); })
-        .catch((error) => { if (alive) { setHistory(EMPTY_HISTORY); setHistoryError(error?.message || 'Account history is unavailable.'); } })
+        .then((data) => { if (alive) { setHistory(data); setHeroSummary(data.summary); } })
+        .catch((error) => { if (alive) { setHistory(EMPTY_HISTORY); setHeroSummary(null); setHistoryError(error?.message || 'Account history is unavailable.'); } })
         .finally(() => { if (alive) setHistoryLoading(false); });
     });
     return () => { alive = false; };
-  }, [user?.id, activeTabId]);
+  }, [user?.id]);
 
   useEffect(() => {
     if (!user?.id || activeTabId !== 'overview') return undefined;
@@ -138,7 +139,7 @@ export default function AccountHub() {
 
   return (
     <div className="page-wrapper dtb-account-page">
-      <AccountMasthead user={user} onOpenTab={openTab}/>
+      <AccountMasthead user={user} metrics={heroSummary} metricsLoading={historyLoading} onOpenTab={openTab}/>
       <nav ref={accountNavRef} className="dtb-account-container dtb-account-nav" aria-label="Account sections">
         <NavbarTabs tabs={TABS} activeIndex={activeIndex} onChange={(index) => openTab(TABS[index]?.id)} className="dtb-account-reference-tabs"/>
       </nav>

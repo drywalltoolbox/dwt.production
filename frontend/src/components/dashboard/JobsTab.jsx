@@ -203,7 +203,7 @@ export default function JobsTab({ onJobsChanged }) {
 
   return (
     <section className="dtb-jobs">
-      <header className="dtb-jobs-header"><div><span className="dtb-jobs-eyebrow">YOUR WORKSPACE</span><h2>My Jobs</h2><p>Keep jobsite locations and notes in one easy place.</p></div>{!selected && <button type="button" className="dtb-jobs-btn dtb-jobs-btn--primary" onClick={() => setShowCreate(true)}><Plus size={17}/> New Job</button>}</header>
+      <header className="dtb-jobs-header"><div><h2>My Jobs</h2><p>Keep jobsite locations and notes in one easy place.</p></div>{!selected && <button type="button" className="dtb-jobs-btn dtb-jobs-btn--primary" onClick={() => setShowCreate(true)}><Plus size={17}/> New Job</button>}</header>
       {error && <div role="alert" className="dtb-jobs-error">{error} <button type="button" onClick={refresh}>Retry</button></div>}
       {selected ? (
         <div className="dtb-jobs-detail">
@@ -220,7 +220,7 @@ export default function JobsTab({ onJobsChanged }) {
           <p className="dtb-jobs-meta">{loading ? 'Loading jobs…' : `${total} ${archived ? 'archived' : 'active'} ${total === 1 ? 'job' : 'jobs'}`}</p>
           {loading ? <div className="dtb-jobs-loading" role="status">Loading your jobs…</div> : jobs.length ? (
             <div className="dtb-jobs-grid">{jobs.map((job) => <button type="button" key={job.id} className="dtb-jobs-card" onClick={() => { setSelected(job); setEditing(false); }}><span className="dtb-jobs-card__icon"><MapPin size={19}/></span><span className="dtb-jobs-card__body"><strong>{job.name}</strong><span className="dtb-jobs-card__location">{job.location || 'No location added'}</span><small>Updated {dateLabel(job.updated_at)}</small></span><ChevronRight size={18} className="dtb-jobs-card__arrow"/></button>)}</div>
-          ) : !error && <div className="dtb-jobs-empty"><NotebookPen size={28}/><h3>{query ? 'No matching jobs' : archived ? 'No archived jobs' : 'Organize your jobsites'}</h3><p>{query ? 'Try a different search.' : archived ? 'Archived jobs will appear here.' : 'Save a job name, location, and any notes you want to remember.'}</p>{!archived && !query && !showCreate && <button type="button" className="dtb-jobs-btn dtb-jobs-btn--primary" onClick={() => setShowCreate(true)}><Plus size={16}/> Create First Job</button>}</div>}
+          ) : !error && <div className="dtb-jobs-empty"><span className="dtb-jobs-empty__icon"><NotebookPen size={25}/></span><h3>{query ? 'No matching jobs' : archived ? 'No archived jobs' : 'Organize your jobsites'}</h3><p>{query ? 'Try a different search.' : archived ? 'Archived jobs will appear here.' : 'Save a job name, location, and notes so you can find them later.'}</p>{!archived && !query && !showCreate && <button type="button" className="dtb-jobs-btn dtb-jobs-btn--primary" onClick={() => setShowCreate(true)}><Plus size={16}/> Create First Job</button>}</div>}
           {total > PAGE_SIZE && <div className="dtb-jobs-pages"><button type="button" className="dtb-jobs-btn dtb-jobs-btn--subtle" disabled={page <= 1 || loading} onClick={() => setPage((value) => value - 1)}>Previous</button><span>Page {page} of {Math.ceil(total / PAGE_SIZE)}</span><button type="button" className="dtb-jobs-btn dtb-jobs-btn--subtle" disabled={page * PAGE_SIZE >= total || loading} onClick={() => setPage((value) => value + 1)}>Next <ArrowRight size={15}/></button></div>}
         </>
       )}
