@@ -6,6 +6,8 @@ import StorefrontProductTile from '../storefront/StorefrontProductTile';
 import StorefrontSection from '../storefront/StorefrontSection';
 import StorefrontRail from '../storefront/StorefrontRail';
 import StorefrontSkeletons from '../storefront/StorefrontSkeletons.jsx';
+import ProductRelatedProducts from '../product/ProductRelatedProducts.jsx';
+import { useCatalogProductDetail } from '../../hooks/useCatalogProductDetail.js';
 import Toast from '../ui/Toast';
 
 // Product detail and its gallery/variation dependencies are only needed after
@@ -13,6 +15,21 @@ import Toast from '../ui/Toast';
 // chunk prevents a modal-only feature from delaying first render and LCP.
 const ProductDetail = lazy(() => import('../product/ProductDetail'));
 const ProductModal = lazy(() => import('../product/ProductModal'));
+
+function ProductQuickViewRecommendations({ product, onAddToCart, onOpenProduct }) {
+  const slug = product?.slug || product?.post_name || '';
+  const { relatedProducts, computed } = useCatalogProductDetail(slug);
+
+  return (
+    <ProductRelatedProducts
+      products={relatedProducts}
+      context={computed?.relatedProductsContext}
+      onAddToCart={onAddToCart}
+      onOpenProduct={onOpenProduct}
+      id="featured-quick-view-related"
+    />
+  );
+}
 
 export default function TrendingProducts() {
   const [products, setProducts] = useState([]);
@@ -176,6 +193,11 @@ export default function TrendingProducts() {
               initialVariations={[]}
               initialResolvedVariation={modalProduct.initialResolvedVariation}
               initialSelectedAttrs={modalProduct.initialSelectedAttrs}
+            />
+            <ProductQuickViewRecommendations
+              product={modalProduct.product || modalProduct}
+              onAddToCart={handleAddToCart}
+              onOpenProduct={(relatedProduct) => openModal(relatedProduct)}
             />
           </ProductModal>
         </Suspense>
