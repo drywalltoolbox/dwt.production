@@ -1,12 +1,9 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Home, Package, User, X, ShoppingBag, ChevronRight, AlertCircle, Loader, Wrench, RotateCcw, ChevronDown, LayoutDashboard, Calculator, LifeBuoy, BookOpen, Bell, CheckCheck, Eye, EyeOff, LockKeyhole, Mail, UserRound } from 'lucide-react';
-import { getCustomerOrders } from '../../api/orders.js';
-import { getCustomerRepairs } from '../../api/repairs.js';
-import { getCustomerReturns } from '../../api/returns.js';
-import { getCustomerSupportTickets } from '../../api/support.js';
+import { getAccountWorkspaceHistory } from '../../api/accountWorkspace.js';
 import { getRecentlyViewed } from '../../utils/recentlyViewed.js';
-import { buildAccountActivity, normalizeOrders, normalizeRepairs, normalizeReturns, normalizeSupportTickets } from '../../utils/accountActivity.js';
+import { buildAccountActivity } from '../../utils/accountActivity.js';
 import AccountActivityList from './AccountActivityList.jsx';
 
 const TABS = [
@@ -21,11 +18,6 @@ const HISTORY_FILTERS = [
   { id: 'returns', label: 'Returns' },
   { id: 'support', label: 'Support' },
 ];
-
-function settledError(result, fallback) {
-  if (!result || result.status !== 'rejected') return '';
-  return result.reason?.message || fallback;
-}
 
 function AccountHubHero({ eyebrow, title, subtitle, Icon }) {
   return (
@@ -254,34 +246,31 @@ export default function AccountHubSheet({ isOpen, onClose, user, onLogin, onRegi
     }
   }, [closeSheet, isSigningOut, onLogout]);
 
-  const applyHistoryResults = useCallback(([ordersResult, repairsResult, returnsResult, supportResult]) => {
-    setOrders(ordersResult.status === 'fulfilled' ? normalizeOrders(ordersResult.value) : []);
-    setRepairs(repairsResult.status === 'fulfilled' ? normalizeRepairs(repairsResult.value) : []);
-    setReturns(returnsResult.status === 'fulfilled' ? normalizeReturns(returnsResult.value) : []);
-    setSupportTickets(supportResult.status === 'fulfilled' ? normalizeSupportTickets(supportResult.value) : []);
-    setHistoryErrors({
-      orders: settledError(ordersResult, 'Product orders are temporarily unavailable.'),
-      repairs: settledError(repairsResult, 'Repairs are temporarily unavailable.'),
-      returns: settledError(returnsResult, 'Returns are temporarily unavailable.'),
-      support: settledError(supportResult, 'Support tickets are temporarily unavailable.'),
-    });
+  const applyHistoryResults = useCallback((payload) => {
+    setOrders(payload.orders || []);
+    setRepairs(payload.repairs || []);
+    setReturns(payload.returns || []);
+    setSupportTickets(payload.supportTickets || []);
+    setHistoryErrors({ orders: '', repairs: '', returns: '', support: '' });
+  }, []);
+
+  const showHistoryFailure = useCallback((error) => {
+    const message = error?.message || 'Account history is temporarily unavailable.';
+    setHistoryErrors({ orders: message, repairs: message, returns: message, support: message });
   }, []);
 
   const loadOrders = useCallback(async () => {
-    if (!user) return;
+    if (!user?.id) return;
     setOrdersLoading(true);
     setHistoryErrors({ orders: '', repairs: '', returns: '', support: '' });
-
-    const results = await Promise.allSettled([
-      getCustomerOrders(user?.id, 1, 20),
-      getCustomerRepairs(1, 20),
-      getCustomerReturns(1, 20),
-      getCustomerSupportTickets(1, 20),
-    ]);
-
-    applyHistoryResults(results);
-    setOrdersLoading(false);
-  }, [applyHistoryResults, user]);
+    try {
+      applyHistoryResults(await getAccountWorkspaceHistory({ perPage: 20 }));
+    } catch (error) {
+      showHistoryFailure(error);
+    } finally {
+      setOrdersLoading(false);
+    }
+  }, [applyHistoryResults, showHistoryFailure, user?.id]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -289,26 +278,19 @@ export default function AccountHubSheet({ isOpen, onClose, user, onLogin, onRegi
   }, [isOpen]);
 
   useEffect(() => {
+    if (!isOpen || !user?.id) return undefined;
     let cancelled = false;
-    if (!user) return undefined;
-
-    async function load() {
+    Promise.resolve().then(() => {
+      if (cancelled) return;
       setOrdersLoading(true);
       setHistoryErrors({ orders: '', repairs: '', returns: '', support: '' });
-      const results = await Promise.allSettled([
-        getCustomerOrders(user?.id, 1, 20),
-        getCustomerRepairs(1, 20),
-        getCustomerReturns(1, 20),
-        getCustomerSupportTickets(1, 20),
-      ]);
-      if (cancelled) return;
-      applyHistoryResults(results);
-      setOrdersLoading(false);
-    }
-
-    load();
+      return getAccountWorkspaceHistory({ perPage: 20 })
+        .then((result) => { if (!cancelled) applyHistoryResults(result); })
+        .catch((error) => { if (!cancelled) showHistoryFailure(error); })
+        .finally(() => { if (!cancelled) setOrdersLoading(false); });
+    });
     return () => { cancelled = true; };
-  }, [applyHistoryResults, user]);
+  }, [isOpen, user?.id, applyHistoryResults, showHistoryFailure]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -587,6 +569,10 @@ export default function AccountHubSheet({ isOpen, onClose, user, onLogin, onRegi
               <div className="account-hub__account-menu">
                 <Link to="/dashboard" onClick={closeSheet} className="account-hub__dashboard-link">
                   <span><LayoutDashboard size={18} />My Dashboard</span>
+                  <ChevronRight size={16} />
+                </Link>
+                <Link to="/dashboard?tab=jobs" onClick={closeSheet} className="account-hub__dashboard-link">
+                  <span><BookOpen size={18} />My Jobs &amp; Notes</span>
                   <ChevronRight size={16} />
                 </Link>
                 <AccountHubAccordion
