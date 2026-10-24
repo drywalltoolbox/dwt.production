@@ -45,6 +45,7 @@ const HOME_BRAND_PRODUCT_SECTIONS = HOME_BRAND_ORDER.map((brandName) => {
   return {
     name,
     brand: brandName,
+    logo: getBrandLogo(brandName),
     to: `/products/brands/${brandToSlug(brandName)}`,
   };
 });
@@ -87,9 +88,18 @@ export default function Home() {
             {HOME_BRAND_PRODUCT_SECTIONS.map((brand) => (
               <StorefrontSection
                 key={brand.name}
-                title={brand.name}
+                title={(
+                  <img
+                    className="dtb-home-brand-section__logo"
+                    src={brand.logo}
+                    alt={brand.name}
+                    height="48"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
                 subtitle={`Explore the ${brand.name} lineup.`}
-                className="dtb-home-product-section"
+                className="dtb-home-product-section dtb-home-brand-section"
                 viewAllHref={brand.to}
                 viewAllLabel="View All"
               >
