@@ -1,0 +1,42 @@
+name: Customer account contracts
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'frontend/src/components/dashboard/**'
+      - 'frontend/src/components/account/AccountHubSheet.jsx'
+      - 'frontend/src/api/accountWorkspace.js'
+      - 'frontend/src/api/jobs.js'
+      - 'frontend/src/styles/dashboard-experience.css'
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-platform/Rest/CustomerJobsController.php'
+      - 'drywalltoolbox/wp/wp-content/mu-plugins/dtb-platform/bootstrap.php'
+      - '.github/workflows/customer-account-contracts.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  account-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+      - name: Validate customer notebook PHP syntax
+        run: |
+          php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-platform/Rest/CustomerJobsController.php
+          php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-platform/bootstrap.php
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - name: Install locked frontend dependencies
+        working-directory: frontend
+        run: npm ci --no-audit --no-fund
+      - name: Lint account workspace changes
+        working-directory: frontend
+        run: npx eslint src/api/accountWorkspace.js src/api/jobs.js src/components/dashboard/AccountHub.jsx src/components/dashboard/OverviewTab.jsx src/components/dashboard/JobsTab.jsx src/components/account/AccountHubSheet.jsx
