@@ -255,3 +255,20 @@
   .dtb-masthead-tile { transition: none; }
   .dtb-masthead-tile:hover { transform: none; }
 }
+
+/* Reference's understated pale-blue account navigation, scoped to dashboard. */
+.dtb-account-reference-tabs .dtb-navtab-indicator { display: none; }
+.dtb-account-reference-tabs .dtb-navtab-btn {
+  color: #55637a !important;
+  padding: 12px clamp(11px, 1.4vw, 23px) !important;
+  font-weight: 720 !important;
+  font-size: clamp(.77rem, 1vw, .94rem) !important;
+}
+.dtb-account-reference-tabs .dtb-navtab-btn[aria-current="page"] {
+  background: #eaf0ff !important;
+  color: #2255ee !important;
+}
+.dtb-account-reference-tabs .dtb-navtab-btn:hover:not([aria-current="page"]) { background: #f5f7fc !important; }
+@media (min-width: 1200px) {
+  .dtb-account-reference-tabs .dtb-navtabs-inner { justify-content: space-between; }
+}
