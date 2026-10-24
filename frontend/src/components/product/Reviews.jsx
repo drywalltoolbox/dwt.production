@@ -10,7 +10,7 @@ function formatDate(value) {
   return date && !Number.isNaN(date.valueOf()) ? date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' }) : '';
 }
 
-export default function Reviews({ productId, productName = '', allowSubmit = true, reviewFormOpen = false, onCloseReviewForm = () => {} }) {
+export default function Reviews({ productId, productName = '', reviewFormOpen = false, onCloseReviewForm = () => {} }) {
   const dialogRef = useRef(null);
   const closeButtonRef = useRef(null);
   const [summary, setSummary] = useState({ average_rating: 0, rating_count: 0 });
