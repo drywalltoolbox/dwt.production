@@ -58,24 +58,30 @@ export default function AccountHub() {
   useEffect(() => {
     if (!user?.id || activeTabId !== 'overview') return undefined;
     let alive = true;
-    setHistoryLoading(true);
-    setHistoryError('');
-    getAccountWorkspaceHistory({ perPage: 30 })
-      .then((data) => { if (alive) setHistory(data); })
-      .catch((error) => { if (alive) { setHistory(EMPTY_HISTORY); setHistoryError(error?.message || 'Account history is unavailable.'); } })
-      .finally(() => { if (alive) setHistoryLoading(false); });
+    Promise.resolve().then(() => {
+      if (!alive) return;
+      setHistoryLoading(true);
+      setHistoryError('');
+      return getAccountWorkspaceHistory({ perPage: 30 })
+        .then((data) => { if (alive) setHistory(data); })
+        .catch((error) => { if (alive) { setHistory(EMPTY_HISTORY); setHistoryError(error?.message || 'Account history is unavailable.'); } })
+        .finally(() => { if (alive) setHistoryLoading(false); });
+    });
     return () => { alive = false; };
   }, [user?.id, activeTabId]);
 
   useEffect(() => {
     if (!user?.id || activeTabId !== 'overview') return undefined;
     let alive = true;
-    setJobsLoading(true);
-    setJobsError('');
-    listJobs({ page: 1, perPage: 3 })
-      .then((data) => { if (alive) setJobsSummary({ jobs: data.jobs || [], total: Number(data.total) || 0 }); })
-      .catch((error) => { if (alive) { setJobsSummary({ jobs: [], total: 0 }); setJobsError(error?.message || 'My Jobs is unavailable.'); } })
-      .finally(() => { if (alive) setJobsLoading(false); });
+    Promise.resolve().then(() => {
+      if (!alive) return;
+      setJobsLoading(true);
+      setJobsError('');
+      return listJobs({ page: 1, perPage: 3 })
+        .then((data) => { if (alive) setJobsSummary({ jobs: data.jobs || [], total: Number(data.total) || 0 }); })
+        .catch((error) => { if (alive) { setJobsSummary({ jobs: [], total: 0 }); setJobsError(error?.message || 'My Jobs is unavailable.'); } })
+        .finally(() => { if (alive) setJobsLoading(false); });
+    });
     return () => { alive = false; };
   }, [user?.id, activeTabId, jobsRevision]);
 
