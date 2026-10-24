@@ -280,12 +280,15 @@ export default function AccountHubSheet({ isOpen, onClose, user, onLogin, onRegi
   useEffect(() => {
     if (!isOpen || !user?.id) return undefined;
     let cancelled = false;
-    setOrdersLoading(true);
-    setHistoryErrors({ orders: '', repairs: '', returns: '', support: '' });
-    getAccountWorkspaceHistory({ perPage: 20 })
-      .then((result) => { if (!cancelled) applyHistoryResults(result); })
-      .catch((error) => { if (!cancelled) showHistoryFailure(error); })
-      .finally(() => { if (!cancelled) setOrdersLoading(false); });
+    Promise.resolve().then(() => {
+      if (cancelled) return;
+      setOrdersLoading(true);
+      setHistoryErrors({ orders: '', repairs: '', returns: '', support: '' });
+      return getAccountWorkspaceHistory({ perPage: 20 })
+        .then((result) => { if (!cancelled) applyHistoryResults(result); })
+        .catch((error) => { if (!cancelled) showHistoryFailure(error); })
+        .finally(() => { if (!cancelled) setOrdersLoading(false); });
+    });
     return () => { cancelled = true; };
   }, [isOpen, user?.id, applyHistoryResults, showHistoryFailure]);
 
