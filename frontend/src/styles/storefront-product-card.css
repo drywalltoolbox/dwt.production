@@ -178,3 +178,83 @@
 .dtb-product-card__qv-btn:hover { background:#fff; } .dtb-product-card__qv-btn:active { transform:scale(.96); }
 .dtb-product-card__qv-btn--disabled,.dtb-product-card__qv-btn--disabled:hover { background:rgba(148,163,184,.28);color:rgba(148,163,184,.7);box-shadow:none;cursor:not-allowed;transform:none; }
 @media (prefers-reduced-motion:reduce) { .storefront-skeleton,.dtb-product-card { animation:none;transition:none; } .dtb-product-card:hover,.dtb-product-card__action { transform:none; } .dtb-product-card__qv-overlay,.dtb-product-card__qv-actions { transition:none; } }
+
+/* Mobile commerce bay: keep the price spacious and the primary icon action at
+   the far edge of every shared card layout. */
+@media (max-width: 767px) {
+  .dtb-product-card--grid .dtb-product-card__footer,
+  .dtb-product-card--rail .dtb-product-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    min-height: 68px;
+    margin-top: 0;
+    padding-top: 10px;
+  }
+
+  .dtb-product-card--grid .dtb-product-card__price-col,
+  .dtb-product-card--rail .dtb-product-card__price-col {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+  }
+
+  .dtb-product-card--grid .dtb-product-card__price-group,
+  .dtb-product-card--rail .dtb-product-card__price-group {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 4px 6px;
+    width: auto;
+    min-width: 0;
+    max-width: 100%;
+    overflow: visible;
+  }
+
+  .dtb-product-card--variable.dtb-product-card--grid .dtb-product-card__price,
+  .dtb-product-card--variable.dtb-product-card--rail .dtb-product-card__price {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  .dtb-product-card .dtb-product-card__footer .dtb-product-card__action--mobile-icon {
+    display: inline-flex !important;
+    flex: 0 0 44px;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    min-width: 44px;
+    height: 44px;
+    min-height: 44px;
+    margin-left: auto;
+    padding: 0;
+    border-radius: 12px;
+    --dtb-atc-icon-size: 18px;
+  }
+
+  .dtb-product-card__action--mobile-icon .dtb-add-to-cart__content {
+    gap: 0;
+  }
+
+  .dtb-product-card__action--mobile-icon .dtb-add-to-cart__label {
+    display: none;
+  }
+
+  .dtb-product-card--list .dtb-product-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: 58px;
+    margin-top: 6px;
+    padding-top: 0;
+  }
+
+  .dtb-product-card--list .dtb-product-card__price-col {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+  }
+}
