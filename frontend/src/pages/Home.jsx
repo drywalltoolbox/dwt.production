@@ -28,7 +28,6 @@ function getHomeBrandDisplayName(value = '') {
 const HOME_TRUST_BRAND_NAMES = [
   ...HOME_BRAND_ORDER,
   'USG Sheetrock Tools',
-  'Asgard',
 ];
 
 const HOME_TRUST_BRANDS = HOME_TRUST_BRAND_NAMES.map((brandName) => {
@@ -111,7 +110,7 @@ export default function Home() {
                   />
                 )}
                 subtitle={`Explore the ${brand.name} lineup.`}
-                className="dtb-home-product-section dtb-home-brand-section"
+                className={`dtb-home-product-section dtb-home-brand-section dtb-home-brand-section--${brandToSlug(brand.brand)}`}
                 viewAllHref={brand.to}
                 viewAllLabel="View All"
               >

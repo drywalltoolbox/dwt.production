@@ -23,6 +23,7 @@ function BrandItem({ brand, clone = false }) {
   );
   const itemProps = {
     className: 'dtb-trusted-brand-link',
+    'data-brand': brand.name,
     'aria-hidden': clone || undefined,
     tabIndex: clone ? -1 : undefined,
   };
