@@ -21,8 +21,8 @@ function mutation(path, method, payload) {
   });
 }
 
-export const listJobs = ({ page = 1, perPage = 20, archived = false } = {}) =>
-  apiClient(`${base}?${query({ page, per_page: perPage, archived: archived ? 'true' : 'false' })}`);
+export const listJobs = ({ page = 1, perPage = 20, archived = false, search = '' } = {}) =>
+  apiClient(`${base}?${query({ page, per_page: perPage, archived: archived ? 'true' : 'false', search })}`);
 export const createJob = (data) => mutation(base, 'POST', data);
 export const updateJob = (id, data) => mutation(`${base}/${encodeURIComponent(id)}`, 'PATCH', data);
 export const deleteJob = (id) => mutation(`${base}/${encodeURIComponent(id)}`, 'DELETE');
