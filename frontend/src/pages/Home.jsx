@@ -3,8 +3,6 @@ import HomeHero from '../components/home/HomeHero';
 import SEOHead from '../components/shared/SEOHead';
 import { buildOrganizationSchema, buildSiteLinksSearchBoxSchema } from '../utils/schema';
 import StorefrontSection from '../components/storefront/StorefrontSection';
-import StorefrontRail from '../components/storefront/StorefrontRail';
-import StorefrontBrandTile from '../components/storefront/StorefrontBrandTile';
 import StorefrontProductRail from '../components/storefront/StorefrontProductRail';
 import { getBrandLogo } from '../utils/brandAssets.js';
 import { brandToSlug } from '../utils/catalogUrlState.js';
@@ -41,11 +39,11 @@ const HOME_TRUST_BRANDS = HOME_TRUST_BRAND_NAMES.map((brandName) => {
   };
 });
 
-const HOME_SHOP_BRANDS = HOME_BRAND_ORDER.map((brandName) => {
+const HOME_BRAND_PRODUCT_SECTIONS = HOME_BRAND_ORDER.map((brandName) => {
   const name = getHomeBrandDisplayName(brandName);
   return {
     name,
-    logo: getBrandLogo(brandName),
+    brand: brandName,
     to: `/products/brands/${brandToSlug(brandName)}`,
   };
 });
@@ -80,20 +78,25 @@ export default function Home() {
               <StorefrontProductRail sort="newest" maxItems={10} label="New arrivals" />
             </StorefrontSection>
 
-            {/* ── Shop by Brand ── */}
-            <StorefrontSection
-              eyebrow="Brands"
-              revealHeading
-              title="Shop by Brand"
-              viewAllHref="/products/brands"
-              viewAllLabel="All brands"
-            >
-              <StorefrontRail label="Brands" className="storefront-rail--brand">
-                {HOME_SHOP_BRANDS.map((brand) => (
-                  <StorefrontBrandTile key={brand.name} {...brand} />
-                ))}
-              </StorefrontRail>
-            </StorefrontSection>
+            {/* ── Brand product sections ── */}
+            {HOME_BRAND_PRODUCT_SECTIONS.map((brand) => (
+              <StorefrontSection
+                key={brand.name}
+                eyebrow="Shop by brand"
+                title={brand.name}
+                subtitle={`Explore the ${brand.name} lineup.`}
+                className="dtb-home-brand-section"
+                viewAllHref={brand.to}
+                viewAllLabel={`Shop all ${brand.name}`}
+              >
+                <StorefrontProductRail
+                  brand={brand.brand}
+                  sort="popular"
+                  maxItems={8}
+                  label={`${brand.name} products`}
+                />
+              </StorefrontSection>
+            ))}
 
           </div>
         </div>
