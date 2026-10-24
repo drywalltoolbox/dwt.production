@@ -46,6 +46,48 @@ function dtb_history_get_user() {
 	return is_user_logged_in() ? wp_get_current_user() : null;
 }
 
+/** Accurate customer-scoped counters; never derive totals from recent-history pages. */
+function dtb_history_active_summary( WP_User $user ): array {
+	$orders = [];
+	if ( function_exists( 'wc_get_orders' ) ) {
+		$base = [ 'status' => [ 'pending', 'on-hold', 'processing', 'shipped' ], 'limit' => -1, 'return' => 'ids' ];
+		foreach ( wc_get_orders( array_merge( $base, [ 'customer_id' => (int) $user->ID ] ) ) as $id ) {
+			$orders[ (int) $id ] = true;
+		}
+		if ( is_email( $user->user_email ) ) {
+			foreach ( wc_get_orders( array_merge( $base, [ 'billing_email' => $user->user_email ] ) ) as $id ) {
+				$orders[ (int) $id ] = true;
+			}
+		}
+	}
+	$active_orders = 0;
+	foreach ( array_keys( $orders ) as $order_id ) {
+		$order = wc_get_order( $order_id );
+		if ( $order && 'repair_service' !== (string) $order->get_meta( '_dtb_order_type', true ) ) ++$active_orders;
+	}
+	$active_repairs = 0;
+	if ( post_type_exists( 'dtb_repair_request' ) ) {
+		$owner = [ 'relation' => 'OR', [ 'key' => '_repair_customer_user_id', 'value' => (string) $user->ID ] ];
+		if ( is_email( $user->user_email ) ) $owner[] = [ 'key' => '_repair_customer_email', 'value' => $user->user_email ];
+		$query = new WP_Query( [
+			'post_type' => 'dtb_repair_request', 'post_status' => 'publish',
+			'fields' => 'ids', 'posts_per_page' => 1, 'no_found_rows' => false,
+			'meta_query' => [ 'relation' => 'AND', $owner, [ 'relation' => 'OR',
+				[ 'key' => '_repair_status', 'compare' => 'NOT EXISTS' ],
+				[ 'key' => '_repair_status', 'value' => [ 'closed', 'cancelled', 'quote_declined' ], 'compare' => 'NOT IN' ],
+			] ],
+		] );
+		$active_repairs = (int) $query->found_posts;
+	}
+	$active_jobs = 0;
+	if ( post_type_exists( 'dtb_customer_job' ) ) {
+		$query = new WP_Query( [ 'post_type' => 'dtb_customer_job', 'post_status' => 'private',
+			'author' => (int) $user->ID, 'fields' => 'ids', 'posts_per_page' => 1, 'no_found_rows' => false ] );
+		$active_jobs = (int) $query->found_posts;
+	}
+	return [ 'active_orders' => $active_orders, 'active_repairs' => $active_repairs, 'active_jobs' => $active_jobs ];
+}
+
 function dtb_history_get( WP_REST_Request $request ): WP_REST_Response {
 	$user = dtb_history_get_user();
 	if ( ! $user instanceof WP_User ) {
@@ -57,6 +99,7 @@ function dtb_history_get( WP_REST_Request $request ): WP_REST_Response {
 	$support = dtb_history_support( $user, $per_page );
 	$response = new WP_REST_Response( [
 		'orders'          => dtb_history_orders( $user, $per_page ),
+		'summary'         => dtb_history_active_summary( $user ),
 		'repairs'         => dtb_history_repairs( $user, $per_page ),
 		'returns'         => dtb_history_returns( $user, $per_page ),
 		'tickets'         => $support,
