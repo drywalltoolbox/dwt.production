@@ -147,6 +147,7 @@ export default function NavbarTabs({ tabs = [], activeIndex = 0, onChange, class
               key={tab.id}
               type="button"
               className="dtb-navtab-btn"
+              aria-current={isActive ? "page" : undefined}
               onClick={(event) => handleTabClick(event, index)}
               whileTap={reduceMotion ? undefined : { scale: 0.975 }}
               transition={reduceMotion ? reducedTransition : microInteractionTransition}

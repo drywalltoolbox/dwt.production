@@ -11,6 +11,7 @@ import { getAccountWorkspaceHistory } from '../../api/accountWorkspace.js';
 import { listJobs } from '../../api/jobs.js';
 import NavbarTabs from '../ui/NavbarTabs.jsx';
 import OverviewTab from './OverviewTab.jsx';
+import AccountMasthead from './AccountMasthead.jsx';
 import JobsTab from './JobsTab.jsx';
 import OrdersTab from './OrdersTab.jsx';
 import RepairsTab from './RepairsTab.jsx';
@@ -109,8 +110,9 @@ export default function AccountHub() {
 
   return (
     <div className="page-wrapper dtb-account-page">
+      <AccountMasthead user={user} history={history} loading={historyLoading} error={historyError} onOpenTab={openTab}/>
       <nav className="dtb-account-container dtb-account-nav" aria-label="Account sections">
-        <NavbarTabs tabs={TABS} activeIndex={activeIndex} onChange={(index) => openTab(TABS[index]?.id)}/>
+        <NavbarTabs tabs={TABS} activeIndex={activeIndex} onChange={(index) => openTab(TABS[index]?.id)} className="dtb-account-reference-tabs"/>
       </nav>
       <main className="dtb-account-container dtb-account-main" id="account-main">
         {activeTabId === 'overview' && (
