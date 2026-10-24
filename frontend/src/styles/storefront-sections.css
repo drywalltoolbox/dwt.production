@@ -136,20 +136,20 @@
 .dtb-home-brand-section__logo {
   display: block;
   width: auto;
-  max-width: min(100%, 13rem);
-  height: clamp(2rem, 3vw, 2.75rem);
+  max-width: min(100%, clamp(8rem, 15vw, 11.75rem));
+  height: auto;
+  max-height: clamp(1.7rem, 3vw, 2.55rem);
   object-fit: contain;
   object-position: left center;
 }
 
-@media (max-width: 479px) {
+@media (max-width: 600px) {
   .dtb-home-brand-section .storefront-section__title {
     min-height: 2.25rem;
   }
 
   .dtb-home-brand-section__logo {
-    max-width: min(39vw, 8.25rem);
-    height: 2.05rem;
+    max-width: min(100%, clamp(7.6rem, 34vw, 9.5rem));
   }
 }
 

@@ -40,12 +40,23 @@ const HOME_TRUST_BRANDS = HOME_TRUST_BRAND_NAMES.map((brandName) => {
   };
 });
 
+const HOME_BRAND_LOGO_DIMENSIONS = {
+  TapeTech: [2048, 500],
+  'Columbia Tools': [2048, 760],
+  'Platinum Drywall Tools': [2048, 613],
+  'Level 5': [2048, 470],
+  SurPro: [1500, 430],
+  'Dura-Stilts': [2048, 414],
+};
+
 const HOME_BRAND_PRODUCT_SECTIONS = HOME_BRAND_ORDER.map((brandName) => {
   const name = getHomeBrandDisplayName(brandName);
   return {
     name,
     brand: brandName,
     logo: getBrandLogo(brandName),
+    logoWidth: HOME_BRAND_LOGO_DIMENSIONS[brandName][0],
+    logoHeight: HOME_BRAND_LOGO_DIMENSIONS[brandName][1],
     to: `/products/brands/${brandToSlug(brandName)}`,
   };
 });
@@ -93,7 +104,8 @@ export default function Home() {
                     className="dtb-home-brand-section__logo"
                     src={brand.logo}
                     alt={brand.name}
-                    height="48"
+                    width={brand.logoWidth}
+                    height={brand.logoHeight}
                     loading="lazy"
                     decoding="async"
                   />
