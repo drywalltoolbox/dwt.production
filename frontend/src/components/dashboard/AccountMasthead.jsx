@@ -22,7 +22,7 @@ function StatusTile({ icon: Icon, tone, title, count, hint, loading, error, onCl
   );
 }
 
-export default function AccountMasthead({ user, history, loading, error, jobsTotal, jobsLoading, jobsError, onOpenTab }) {
+export default function AccountMasthead({ user, history, loading, error, onOpenTab }) {
   const fullName = joinName(user) || user?.display_name || 'Your account';
   const greeting = (user?.first_name || String(fullName).split(/\s+/)[0] || 'there').trim();
   const initials = (joinName(user) || fullName).split(/\s+/).slice(0, 2).map((part) => part[0] || '').join('').toUpperCase();
