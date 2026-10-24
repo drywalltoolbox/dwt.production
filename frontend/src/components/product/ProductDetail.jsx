@@ -874,6 +874,7 @@ export default function ProductDetail({
   const effectiveProduct = selectedVariation
     ? composeEffectiveVariationProduct(product, selectedVariation, selectedVariationLabel)
     : parentContextProduct;
+  const effectiveName = effectiveProduct.name || product.name || '';
   const schematicLink = getSchematicLinkForProduct(effectiveProduct, { allowLegacyFallback: false });
   const partsUrl = schematicLink?.url || null;
   const brandLabel = getBrandLabel(product, effectiveProduct);
@@ -1045,7 +1046,7 @@ export default function ProductDetail({
                 <ProductDetailHeader
                   product={product}
                   productUrl={detailProductUrl}
-                  effectiveName={(effectiveProduct.name || product.name)}
+                  effectiveName={effectiveName}
                   effectiveSku={effectiveSku}
                   isOutOfStock={isOutOfStock}
                   brandLabel={brandLabel}
