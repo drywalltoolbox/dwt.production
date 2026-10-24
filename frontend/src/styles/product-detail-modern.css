@@ -278,19 +278,6 @@
   box-shadow: var(--dtb-shadow-focus, 0 0 0 4px rgba(34, 85, 238, 0.2));
 }
 
-.product-image-gallery__counter {
-  padding: 0.3rem 0.65rem;
-  border-radius: var(--dtb-radius-pill, 999px);
-  background: rgba(15, 23, 42, 0.55);
-  color: #fff;
-  font-family: var(--dtb-font-ui, 'Geist Variable', sans-serif);
-  font-size: var(--dtb-text-xs, 0.75rem);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
 .product-image-gallery__dot {
   display: block;
   width: 6px;

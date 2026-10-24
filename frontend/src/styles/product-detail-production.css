@@ -116,16 +116,6 @@
   white-space: nowrap;
 }
 
-.dtb-product-page-shell .dtb-pdp-header__identity-sku::before {
-  content: '';
-  display: inline-block;
-  width: 1px;
-  height: 14px;
-  margin-right: 16px;
-  vertical-align: -2px;
-  background: var(--dtb-pdp-border);
-}
-
 .dtb-product-page-shell .dtb-pdp-header__reviews {
   gap: 7px;
   color: #8da0bb;

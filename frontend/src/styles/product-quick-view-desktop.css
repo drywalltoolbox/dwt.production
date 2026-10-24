@@ -199,7 +199,6 @@
   }
 
   .product-modal-card-shell.dtb-product-page-shell .product-image-gallery__nav-btn,
-  .product-modal-card-shell.dtb-product-page-shell .product-image-gallery__counter,
   .product-modal-card-shell.dtb-product-page-shell .product-image-gallery__thumb-nav {
     display: none !important;
   }
@@ -209,7 +208,7 @@
     min-width: 0;
     align-self: stretch;
     margin: 0;
-    padding: 15px 0 0 42px !important;
+    padding: 16px 14px 10px 42px !important;
     border-left: 1px solid #e1e7ef;
   }
 
@@ -237,7 +236,7 @@
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__identity-row {
     min-height: 21px;
     gap: 0;
-    margin-top: 20px;
+    margin-top: 13px;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__identity-row > * {
@@ -262,7 +261,7 @@
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__price-block {
-    margin-top: 21px;
+    margin-top: 16px;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__price-row {
@@ -285,7 +284,7 @@
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__summary {
     max-width: 610px;
-    margin: 21px 0 0;
+    margin: 16px 0 0;
     color: #34435a;
     font-size: 14px;
     font-weight: 440;
@@ -293,7 +292,7 @@
   }
 
   .product-modal-card-shell.dtb-product-page-shell .product-variation-rail {
-    margin-top: 22px !important;
+    margin-top: 18px !important;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .product-variation-rail :is(button, [role='button']) {
@@ -304,7 +303,7 @@
 
   /* Purchase controls ------------------------------------------------- */
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp__purchase-region {
-    margin-top: 24px !important;
+    margin-top: 20px !important;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-purchase-panel {

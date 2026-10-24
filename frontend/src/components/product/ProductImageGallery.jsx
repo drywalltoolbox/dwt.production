@@ -686,12 +686,8 @@ export default function ProductImageGallery({ product }) {
                 <ChevronRight size={17} />
               </button>
 
-              <div className="product-image-gallery__counter absolute bottom-3 right-3 z-10 flex items-center pointer-events-none">
-                {String(activeIndex + 1).padStart(2, '0')} <span aria-hidden="true">/</span> {String(stableImages.length).padStart(2, '0')}
-              </div>
-
               {stableImages.length <= 8 && (
-                <div className="absolute bottom-3 left-3 right-16 flex items-center gap-1.5 z-10 pointer-events-none">
+                <div className="product-image-gallery__indicators absolute bottom-3 z-10 flex items-center gap-1.5 pointer-events-none">
                   {stableImages.map((_, index) => (
                     <span
                       key={index}

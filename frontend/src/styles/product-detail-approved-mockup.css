@@ -61,6 +61,15 @@
   padding: 0;
 }
 
+/* Keep the product identity stack on a single, deliberate spacing rhythm. */
+.dtb-product-page-shell .dtb-pdp-header {
+  gap: 0;
+}
+
+.dtb-product-page-shell .dtb-pdp-header__identity-sku::before {
+  display: none !important;
+}
+
 .dtb-product-page-shell .dtb-pdp-header__brand-logo-wrap {
   display: flex;
   align-items: center;
