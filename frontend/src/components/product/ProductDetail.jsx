@@ -614,7 +614,7 @@ function ProductReviewsButton({ onClick, className = '', rating = 0, ratingCount
       type="button"
       onClick={onClick}
       className={`dtb-pdp-header__reviews ${className}`.trim()}
-      aria-label="View product reviews"
+      aria-label="Write a review"
     >
       <ProductRating rating={rating} ratingCount={ratingCount} />
     </button>
