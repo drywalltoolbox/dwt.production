@@ -60,10 +60,7 @@ function JobNotes({ jobId }) {
 
   useEffect(() => {
     let live = true;
-    setLoading(true);
-    setError('');
-    setNotes([]);
-    setPage(1);
+    // The editor is keyed by job ID, so initial state already represents loading.
     listJobNotes(jobId, 1).then((data) => {
       if (!live) return;
       setNotes(data.notes || []);
@@ -160,12 +157,16 @@ export default function JobsTab({ onJobsChanged }) {
 
   useEffect(() => {
     let live = true;
-    setLoading(true); setError('');
-    listJobs({ page, perPage: PAGE_SIZE, archived, search: searchTerm }).then((response) => {
+    Promise.resolve().then(() => {
       if (!live) return;
-      setJobs(response.jobs || []); setTotal(Number(response.total) || 0);
-    }).catch((err) => { if (live) setError(err?.message || 'Could not load your jobs.'); })
-      .finally(() => { if (live) setLoading(false); });
+      setLoading(true); setError('');
+      return listJobs({ page, perPage: PAGE_SIZE, archived, search: searchTerm }).then((response) => {
+        if (!live) return;
+        setJobs(response.jobs || []); setTotal(Number(response.total) || 0);
+      }).catch((err) => {
+        if (live) { setJobs([]); setTotal(0); setError(err?.message || 'Could not load your jobs.'); }
+      }).finally(() => { if (live) setLoading(false); });
+    });
     return () => { live = false; };
   }, [page, archived, searchTerm, revision]);
 
