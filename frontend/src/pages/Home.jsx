@@ -71,6 +71,7 @@ export default function Home() {
 
             {/* ── New Arrivals ── */}
             <StorefrontSection
+              className="dtb-home-product-section"
               revealHeading
               title="New Arrivals"
               viewAllHref="/products?sort=newest"
@@ -88,7 +89,7 @@ export default function Home() {
                 key={brand.name}
                 title={brand.name}
                 subtitle={`Explore the ${brand.name} lineup.`}
-                className="dtb-home-brand-section"
+                className="dtb-home-product-section"
                 viewAllHref={brand.to}
                 viewAllLabel="View All"
               >

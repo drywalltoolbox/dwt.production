@@ -136,7 +136,7 @@ export default function TrendingProducts() {
   if (!loading && products.length === 0) return null;
 
   return (
-    <StorefrontSection revealHeading title="Featured Products" viewAllHref="/products?sort=popular">
+    <StorefrontSection className="dtb-home-product-section" revealHeading title="Featured Products" viewAllHref="/products?sort=popular">
       <div ref={railRef}>
         <LoadingCardTransition
           loading={loading}
