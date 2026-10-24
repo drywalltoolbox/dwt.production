@@ -81,10 +81,10 @@ function dtb_jobs_format_note( WP_Post $note ): array {
 function dtb_jobs_validate_fields( array $data, bool $creating ) {
 	$name = array_key_exists( 'name', $data ) ? sanitize_text_field( (string) $data['name'] ) : null;
 	$location = array_key_exists( 'location', $data ) ? sanitize_text_field( (string) $data['location'] ) : null;
-	if ( ( $creating || null !== $name ) && ( '' === trim( (string) $name ) || mb_strlen( (string) $name ) > 120 ) ) {
+	if ( ( $creating || null !== $name ) && ( '' === trim( (string) $name ) || strlen( (string) $name ) > 120 ) ) {
 		return dtb_jobs_error( 'invalid_job_name', 'Job name must be between 1 and 120 characters.', 422 );
 	}
-	if ( null !== $location && mb_strlen( $location ) > 250 ) {
+	if ( null !== $location && strlen( $location ) > 250 ) {
 		return dtb_jobs_error( 'invalid_job_location', 'Location must not exceed 250 characters.', 422 );
 	}
 	return [ 'name' => $name, 'location' => $location ];
@@ -103,9 +103,11 @@ function dtb_jobs_list( WP_REST_Request $request ) {
 	$page = max( 1, min( 10000, (int) $request->get_param( 'page' ) ) );
 	$per_page = max( 1, min( 50, (int) $request->get_param( 'per_page' ) ) );
 	$archived = rest_sanitize_boolean( $request->get_param( 'archived' ) );
+	$search = sanitize_text_field( (string) ( $request->get_param( 'search' ) ?? '' ) );
 	$query = new WP_Query( [
 		'post_type'           => 'dtb_customer_job',
 		'post_status'         => $archived ? 'draft' : 'private',
+		's'                   => substr( $search, 0, 120 ),
 		'author'              => $user_id,
 		'posts_per_page'      => $per_page,
 		'paged'               => $page,
@@ -131,13 +133,20 @@ function dtb_jobs_item( WP_REST_Request $request ) {
 	$guard = dtb_jobs_mutation_guard( $request );
 	if ( $guard ) return $guard;
 	if ( 'DELETE' === $request->get_method() ) {
-		$notes = get_posts( [
-			'post_type' => 'dtb_customer_note', 'post_status' => 'private',
-			'author' => $user_id, 'post_parent' => $job->ID,
-			'numberposts' => -1, 'fields' => 'ids',
-		] );
-		// Delete children before the parent to avoid orphaned notes.
-		foreach ( $notes as $note_id ) wp_delete_post( (int) $note_id, true );
+		// Remove notes in bounded batches before deleting the parent.
+		// Deleting the first page repeatedly prevents skipped rows.
+		do {
+			$notes = get_posts( [
+				'post_type' => 'dtb_customer_note', 'post_status' => 'private',
+				'author' => $user_id, 'post_parent' => $job->ID,
+				'numberposts' => 100, 'fields' => 'ids',
+			] );
+			foreach ( $notes as $note_id ) {
+				if ( ! wp_delete_post( (int) $note_id, true ) ) {
+					return dtb_jobs_error( 'note_delete_failed', 'Could not remove associated notes.', 500 );
+				}
+			}
+		} while ( count( $notes ) === 100 );
 		if ( ! wp_delete_post( $job->ID, true ) ) return dtb_jobs_error( 'job_delete_failed', 'Could not delete job.', 500 );
 		return dtb_jobs_response( [ 'success' => true ] );
 	}
@@ -194,7 +203,7 @@ function dtb_jobs_notes( WP_REST_Request $request ) {
 	if ( $guard ) return $guard;
 	$data = $request->get_json_params();
 	$content = is_array( $data ) ? sanitize_textarea_field( (string) ( $data['content'] ?? '' ) ) : '';
-	if ( '' === trim( $content ) || mb_strlen( $content ) > 5000 ) {
+	if ( '' === trim( $content ) || strlen( $content ) > 5000 ) {
 		return dtb_jobs_error( 'invalid_note', 'Note must be between 1 and 5000 characters.', 422 );
 	}
 	$id = wp_insert_post( wp_slash( [
@@ -222,7 +231,7 @@ function dtb_jobs_note_item( WP_REST_Request $request ) {
 	}
 	$data = $request->get_json_params();
 	$content = is_array( $data ) ? sanitize_textarea_field( (string) ( $data['content'] ?? '' ) ) : '';
-	if ( '' === trim( $content ) || mb_strlen( $content ) > 5000 ) return dtb_jobs_error( 'invalid_note', 'Note must be between 1 and 5000 characters.', 422 );
+	if ( '' === trim( $content ) || strlen( $content ) > 5000 ) return dtb_jobs_error( 'invalid_note', 'Note must be between 1 and 5000 characters.', 422 );
 	$id = wp_update_post( wp_slash( [ 'ID' => $note->ID, 'post_content' => $content ] ), true );
 	if ( is_wp_error( $id ) || ! $id ) return dtb_jobs_error( 'note_update_failed', 'Could not update note.', 500 );
 	wp_update_post( [ 'ID' => $job_id ] );
@@ -237,6 +246,7 @@ add_action( 'rest_api_init', static function (): void {
 				'page' => [ 'default' => 1, 'sanitize_callback' => 'absint' ],
 				'per_page' => [ 'default' => 20, 'sanitize_callback' => 'absint' ],
 				'archived' => [ 'default' => false, 'sanitize_callback' => 'rest_sanitize_boolean' ],
+				'search' => [ 'default' => '', 'sanitize_callback' => 'sanitize_text_field' ],
 			],
 		],
 		[ 'methods' => 'POST', 'callback' => 'dtb_jobs_create', 'permission_callback' => $auth ],
