@@ -88,7 +88,7 @@ export default function AccountHub() {
         .finally(() => { if (alive) setJobsLoading(false); });
     });
     return () => { alive = false; };
-  }, [user?.id, jobsRevision]);
+  }, [user?.id, activeTabId, jobsRevision]);
 
   // Scroll only after an explicit account-tab action, never on initial load or
   // browser history navigation. Respect reduced-motion preferences.
