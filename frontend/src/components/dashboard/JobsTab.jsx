@@ -2,7 +2,7 @@
  * My Jobs: intentionally small, customer-owned jobsite notebook.
  * No workflow, crew management, or shadow commerce state.
  */
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ArrowLeft, ArrowRight, Archive, ArchiveRestore, Check, ChevronRight, ExternalLink, MapPin, NotebookPen, Pencil, Plus, Search, Trash2, X } from 'lucide-react';
 import { createJob, updateJob, deleteJob, listJobs, listJobNotes, createJobNote, updateJobNote, deleteJobNote } from '../../api/jobs.js';
 import '../../styles/dashboard-experience.css';
@@ -144,6 +144,7 @@ export default function JobsTab({ onJobsChanged }) {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [query, setQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [selected, setSelected] = useState(null);
   const [showCreate, setShowCreate] = useState(false);
   const [editing, setEditing] = useState(false);
@@ -153,15 +154,20 @@ export default function JobsTab({ onJobsChanged }) {
   const [revision, setRevision] = useState(0);
 
   useEffect(() => {
+    const handle = window.setTimeout(() => { setPage(1); setSearchTerm(query.trim()); }, 240);
+    return () => window.clearTimeout(handle);
+  }, [query]);
+
+  useEffect(() => {
     let live = true;
     setLoading(true); setError('');
-    listJobs({ page, perPage: PAGE_SIZE, archived }).then((response) => {
+    listJobs({ page, perPage: PAGE_SIZE, archived, search: searchTerm }).then((response) => {
       if (!live) return;
       setJobs(response.jobs || []); setTotal(Number(response.total) || 0);
     }).catch((err) => { if (live) setError(err?.message || 'Could not load your jobs.'); })
       .finally(() => { if (live) setLoading(false); });
     return () => { live = false; };
-  }, [page, archived, revision]);
+  }, [page, archived, searchTerm, revision]);
 
   const refresh = () => { setRevision((value) => value + 1); onJobsChanged?.(); };
   const saveNew = async (data) => {
@@ -193,10 +199,6 @@ export default function JobsTab({ onJobsChanged }) {
     finally { setBusy(false); }
   };
 
-  const visibleJobs = useMemo(() => {
-    const term = query.trim().toLocaleLowerCase();
-    return term ? jobs.filter((job) => [job.name, job.location].some((value) => value.toLocaleLowerCase().includes(term))) : jobs;
-  }, [jobs, query]);
 
   return (
     <section className="dtb-jobs">
@@ -213,10 +215,10 @@ export default function JobsTab({ onJobsChanged }) {
       ) : (
         <>
           {showCreate && <JobEditor heading="Create New Job" onCancel={() => setShowCreate(false)} onSave={saveNew} busy={busy}/>}
-          <div className="dtb-jobs-toolbar"><div className="dtb-jobs-search"><Search size={17}/><input aria-label="Search loaded jobs" placeholder="Search jobs or locations…" value={query} onChange={(event) => setQuery(event.target.value)}/></div><div className="dtb-jobs-segment" aria-label="Job organization"><button aria-pressed={!archived} className={!archived ? 'is-active' : ''} type="button" onClick={() => { setArchived(false); setPage(1); setQuery(''); }}>Active</button><button aria-pressed={archived} className={archived ? 'is-active' : ''} type="button" onClick={() => { setArchived(true); setPage(1); setQuery(''); }}>Archived</button></div></div>
+          <div className="dtb-jobs-toolbar"><div className="dtb-jobs-search"><Search size={17}/><input aria-label="Search jobs" placeholder="Search jobs or locations…" value={query} onChange={(event) => setQuery(event.target.value)}/></div><div className="dtb-jobs-segment" aria-label="Job organization"><button aria-pressed={!archived} className={!archived ? 'is-active' : ''} type="button" onClick={() => { setArchived(false); setPage(1); setQuery(''); }}>Active</button><button aria-pressed={archived} className={archived ? 'is-active' : ''} type="button" onClick={() => { setArchived(true); setPage(1); setQuery(''); }}>Archived</button></div></div>
           <p className="dtb-jobs-meta">{loading ? 'Loading jobs…' : `${total} ${archived ? 'archived' : 'active'} ${total === 1 ? 'job' : 'jobs'}`}</p>
-          {loading ? <div className="dtb-jobs-loading" role="status">Loading your jobs…</div> : visibleJobs.length ? (
-            <div className="dtb-jobs-grid">{visibleJobs.map((job) => <button type="button" key={job.id} className="dtb-jobs-card" onClick={() => { setSelected(job); setEditing(false); }}><span className="dtb-jobs-card__icon"><MapPin size={19}/></span><span className="dtb-jobs-card__body"><strong>{job.name}</strong><span className="dtb-jobs-card__location">{job.location || 'No location added'}</span><small>Updated {dateLabel(job.updated_at)}</small></span><ChevronRight size={18} className="dtb-jobs-card__arrow"/></button>)}</div>
+          {loading ? <div className="dtb-jobs-loading" role="status">Loading your jobs…</div> : jobs.length ? (
+            <div className="dtb-jobs-grid">{jobs.map((job) => <button type="button" key={job.id} className="dtb-jobs-card" onClick={() => { setSelected(job); setEditing(false); }}><span className="dtb-jobs-card__icon"><MapPin size={19}/></span><span className="dtb-jobs-card__body"><strong>{job.name}</strong><span className="dtb-jobs-card__location">{job.location || 'No location added'}</span><small>Updated {dateLabel(job.updated_at)}</small></span><ChevronRight size={18} className="dtb-jobs-card__arrow"/></button>)}</div>
           ) : !error && <div className="dtb-jobs-empty"><NotebookPen size={28}/><h3>{query ? 'No matching jobs' : archived ? 'No archived jobs' : 'Organize your jobsites'}</h3><p>{query ? 'Try a different search.' : archived ? 'Archived jobs will appear here.' : 'Save a job name, location, and any notes you want to remember.'}</p>{!archived && !query && !showCreate && <button type="button" className="dtb-jobs-btn dtb-jobs-btn--primary" onClick={() => setShowCreate(true)}><Plus size={16}/> Create First Job</button>}</div>}
           {total > PAGE_SIZE && <div className="dtb-jobs-pages"><button type="button" className="dtb-jobs-btn dtb-jobs-btn--subtle" disabled={page <= 1 || loading} onClick={() => setPage((value) => value - 1)}>Previous</button><span>Page {page} of {Math.ceil(total / PAGE_SIZE)}</span><button type="button" className="dtb-jobs-btn dtb-jobs-btn--subtle" disabled={page * PAGE_SIZE >= total || loading} onClick={() => setPage((value) => value + 1)}>Next <ArrowRight size={15}/></button></div>}
         </>
