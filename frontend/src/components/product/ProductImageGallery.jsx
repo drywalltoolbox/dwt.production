@@ -342,6 +342,10 @@ export default function ProductImageGallery({ product }) {
   }
 
   const hasMultiple = stableImages.length > 1;
+  const thumbRailFadeClasses = [
+    thumbRailState.canScrollBack && 'product-image-gallery__thumbs--fade-left',
+    thumbRailState.canScrollForward && 'product-image-gallery__thumbs--fade-right',
+  ].filter(Boolean).join(' ');
   const activeIndex = stableImages.length > 0 ? Math.min(currentIndex, stableImages.length - 1) : 0;
   const activeLightboxIndex = stableImages.length > 0 ? Math.min(lightbox.index, stableImages.length - 1) : 0;
 
@@ -712,7 +716,7 @@ export default function ProductImageGallery({ product }) {
               <ChevronLeft size={17} strokeWidth={2.5} />
             </button>
 
-            <div ref={thumbsRef} className="product-image-gallery__thumbs flex gap-2 overflow-x-auto md:px-10" style={{ scrollbarWidth: 'none' }} aria-label="Product image thumbnails">
+            <div ref={thumbsRef} className={`product-image-gallery__thumbs flex gap-2 overflow-x-auto md:px-10 ${thumbRailFadeClasses}`} style={{ scrollbarWidth: 'none' }} aria-label="Product image thumbnails">
               {stableImages.map((image, index) => (
                 <button
                   key={`${image}-${index}`}

@@ -294,15 +294,24 @@
   box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85);
 }
 
-/* Thumbnail strip — horizontal scroller. Snap points + explicit scroll
-   physics fix the "janky" free-scroll feel; edge fade masks hint that more
-   thumbnails are scrollable without needing arrows on touch devices. */
+/* Thumbnail strip — horizontal scroller. Edge masks only appear where the
+   rail has hidden thumbnails, so the first item never fades at the start. */
 .product-image-gallery__thumbs {
+  --dtb-thumb-mask-start: #000;
+  --dtb-thumb-mask-end: #000;
   scroll-snap-type: x proximity;
   scroll-behavior: smooth;
   scroll-padding-inline: 4px;
-  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 16px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, var(--dtb-thumb-mask-start) 0, #000 16px, #000 calc(100% - 16px), var(--dtb-thumb-mask-end) 100%);
+  mask-image: linear-gradient(to right, var(--dtb-thumb-mask-start) 0, #000 16px, #000 calc(100% - 16px), var(--dtb-thumb-mask-end) 100%);
+}
+
+.product-image-gallery__thumbs--fade-left {
+  --dtb-thumb-mask-start: transparent;
+}
+
+.product-image-gallery__thumbs--fade-right {
+  --dtb-thumb-mask-end: transparent;
 }
 
 /* Resting thumbnails intentionally carry no border/ring — a filmstrip of
