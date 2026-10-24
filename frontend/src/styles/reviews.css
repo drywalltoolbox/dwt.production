@@ -63,25 +63,6 @@
   height: 0.8rem;
 }
 
-/* ── Write a review form ─────────────────────────────────────────────────── */
-
-.dtb-reviews__form {
-  display: grid;
-  gap: 1rem;
-  padding: 1.25rem;
-  border: 1px solid #e2e8f0;
-  border-radius: var(--dtb-radius, 10px);
-  background: #fafbfc;
-}
-
-.dtb-reviews__form-heading {
-  margin: 0;
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: #0f172a;
-  letter-spacing: -0.01em;
-}
-
 .dtb-reviews__form-note,
 .dtb-reviews__notice,
 .dtb-reviews__error {
@@ -310,9 +291,6 @@
     font-size: 1.6rem;
   }
 
-  .dtb-reviews__form {
-    padding: 1rem;
-  }
 
   .dtb-reviews__star-btn .dtb-reviews__star {
     width: 1.55rem;
@@ -321,24 +299,8 @@
 }
 
 
-/* ── Review entry point ───────────────────────────────────────────────────── */
-.dtb-reviews__summary {
-  justify-content: space-between;
-  gap: 1rem;
-}
-.dtb-reviews__write {
-  border: 1px solid #c7d7f5;
-  border-radius: 999px;
-  background: #fff;
-  color: #1748b8;
-  font: inherit;
-  font-size: .82rem;
-  font-weight: 700;
-  padding: .6rem .9rem;
-  cursor: pointer;
-}
-.dtb-reviews__write:hover { background: #f2f6ff; border-color: #8da9e5; }
-.dtb-reviews__write:focus-visible,
+/* ── Review dialog focus styles ──────────────────────────────────────────── */
+.dtb-review-dialog button:focus-visible,
 .dtb-review-dialog button:focus-visible,
 .dtb-review-dialog textarea:focus-visible { outline: 3px solid rgba(35, 88, 229, .28); outline-offset: 2px; }
 
