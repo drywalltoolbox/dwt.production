@@ -45,7 +45,6 @@ export default function ProductDetailHeader({
   onReviewsClick,
   rating = 0,
   ratingCount = 0,
-  reviewsClassName = '',
 }) {
   const productUrl = productUrlOverride || getProductUrl(product);
   const title = effectiveName || product.sku || product.part_number;
@@ -73,6 +72,15 @@ export default function ProductDetailHeader({
       ) : brandLabel ? (
         <div className="dtb-pdp-header__brand-eyebrow">{brandLabel}</div>
       ) : null}
+
+      <button
+        type="button"
+        onClick={onReviewsClick}
+        className="dtb-pdp-header__reviews dtb-pdp-header__reviews--badge"
+        aria-label="View customer reviews"
+      >
+        <ProductRating rating={rating} ratingCount={ratingCount} />
+      </button>
 
       <h1 className="dtb-pdp-header__title">
         {productUrl ? (
@@ -110,14 +118,6 @@ export default function ProductDetailHeader({
       </div>
 
       {summary ? <p className="dtb-pdp-header__summary">{summary}</p> : null}
-      <button
-        type="button"
-        onClick={onReviewsClick}
-        className={`dtb-pdp-header__reviews ${reviewsClassName}`.trim()}
-        aria-label="View product reviews"
-      >
-        <ProductRating rating={rating} ratingCount={ratingCount} />
-      </button>
     </header>
   );
 }

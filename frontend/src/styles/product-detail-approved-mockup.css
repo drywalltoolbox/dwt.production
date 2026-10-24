@@ -190,10 +190,55 @@
 /* Keep the accepted compact composition free of redundant hero metadata. */
 .dtb-product-page-shell .dtb-pdp-header__mobile-status-row,
 .dtb-product-page-shell .dtb-pdp-header__desktop-reviews-row,
-.dtb-product-page-shell .dtb-pdp-header__reviews,
 .dtb-product-page-shell .dtb-pdp-shipping-note,
 .dtb-product-page-shell .dtb-pdp-header__meta--secondary {
   display: none !important;
+}
+
+/* Compact, interactive review badge between the brand and product title. */
+.dtb-product-page-shell .dtb-pdp-header__reviews--badge {
+  display: inline-flex !important;
+  align-self: flex-start;
+  width: fit-content;
+  max-width: 100%;
+  min-height: 0;
+  margin: 0 0 .62rem;
+  padding: .42rem .68rem;
+  border: 1px solid rgba(203, 213, 225, .82);
+  border-radius: 999px;
+  background: linear-gradient(180deg, #fff 0%, #f7faff 100%);
+  color: #52647d;
+  box-shadow: 0 2px 8px rgba(15, 35, 70, .055);
+  text-align: left;
+  transition: border-color 150ms ease, background 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+}
+
+.dtb-product-page-shell .dtb-pdp-header__reviews--badge .dtb-product-rating {
+  gap: .45rem;
+  font-size: .76rem;
+}
+
+.dtb-product-page-shell .dtb-pdp-header__reviews--badge:hover {
+  border-color: rgba(31, 85, 238, .32);
+  background: #fff;
+  color: var(--dtb-pdp-blue);
+  box-shadow: 0 5px 14px rgba(31, 85, 238, .1);
+  transform: translateY(-1px);
+}
+
+.dtb-product-page-shell .dtb-pdp-header__reviews--badge:focus-visible {
+  outline: 3px solid rgba(31, 85, 238, .24);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dtb-product-page-shell .dtb-pdp-header__reviews--badge {
+    transition: none;
+  }
+
+  .dtb-product-page-shell .dtb-pdp-header__reviews--badge:hover {
+    transform: none;
+  }
 }
 
 /* Variation rail ------------------------------------------------------- */

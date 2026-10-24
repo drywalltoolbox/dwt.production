@@ -1061,7 +1061,6 @@ export default function ProductDetail({
                   rating={effectiveProduct.average_rating ?? effectiveProduct.rating ?? product.average_rating ?? product.rating}
                   ratingCount={effectiveProduct.rating_count ?? effectiveProduct.reviews ?? product.rating_count ?? product.reviews}
                   money={money}
-                  reviewsClassName="dtb-pdp-mobile-relocate"
                 />
 
                 {needsVariation ? (
