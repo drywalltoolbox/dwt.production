@@ -205,6 +205,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
         ) : (
           <AddToCartButton onClick={handleAddButtonClick} disabled={outOfStock} className="dtb-product-card__action dtb-product-card__action--mobile-icon" size="card" label="Add" productId={displayProduct.id} aria-label={`Add ${name} to cart`} data-dtb-card-action="add" />
         )}
+        </div>
       </div>
     </article>
   );
