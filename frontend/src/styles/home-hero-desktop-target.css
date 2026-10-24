@@ -273,9 +273,25 @@
 }
 
 /* Keep the complete desktop/tablet campaign artwork visible instead of cropping
-   each image to cover the wide hero frame. */
+   each image to cover the wide hero frame. A subdued blurred copy fills any
+   remaining space so the fitted foreground has no hard edge or empty band. */
 @media (min-width: 641px) {
+  .home-hero__media::before {
+    position: absolute;
+    z-index: 0;
+    inset: -24px;
+    content: "";
+    background-image: var(--home-hero-media-image);
+    background-position: right center;
+    background-size: cover;
+    filter: blur(22px) brightness(.48) saturate(.8);
+    opacity: .7;
+    transform: scale(1.04);
+  }
+
   .home-hero__media-image {
+    position: relative;
+    z-index: 1;
     object-fit: contain;
     object-position: right center;
     transform: none;

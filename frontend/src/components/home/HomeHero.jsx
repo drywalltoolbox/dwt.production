@@ -11,6 +11,7 @@ import {
 } from '../../motion/dtbMotion.js';
 import homeHeroDesktopUrl from '@assets/media/home/home-hero-desktop-1600.webp';
 import homeHeroMobileUrl from '@assets/media/home/home-hero-mobile-640.webp';
+import homeRepairsHeroMobileUrl from '@assets/media/home/home-hero-repairs-mobile.jpg';
 import homeRepairsHeroDesktopUrl from '@assets/media/home/home-repairs-hero-desktop.webp';
 
 const SWIPE_THRESHOLD_PX = 44;
@@ -200,13 +201,17 @@ export default function HomeHero({ brands = [] }) {
         onTouchEnd={handleTouchEnd}
         onTouchCancel={() => { touchStartRef.current = null; }}
       >
-        <picture className="home-hero__media" aria-hidden="true">
+        <picture
+          className="home-hero__media"
+          aria-hidden="true"
+          style={{ '--home-hero-media-image': `url("${desktopHeroUrl}")` }}
+        >
           <source
             media="(max-width: 640px)"
-            srcSet={homeHeroMobileUrl}
-            type="image/webp"
-            width="640"
-            height="1138"
+            srcSet={activeCampaign.id === 'repairs' ? homeRepairsHeroMobileUrl : homeHeroMobileUrl}
+            type={activeCampaign.id === 'repairs' ? 'image/jpeg' : 'image/webp'}
+            width={activeCampaign.id === 'repairs' ? 720 : 640}
+            height={activeCampaign.id === 'repairs' ? 1280 : 1138}
           />
           <img
             className="home-hero__media-image"
