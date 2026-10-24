@@ -1,13 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, m as Motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, m as Motion, useIsPresent, useReducedMotion } from 'framer-motion';
 import HomeHeroBrands from './HomeHeroBrands';
 import HomeHeroButton from './HomeHeroButton';
 import { HOME_HERO_CAMPAIGNS, HOME_HERO_CAMPAIGN_COUNT } from './homeHeroCampaigns.js';
 import {
-  homeHeroContentVariants,
-  homeHeroItemVariants,
-  reducedHomeHeroContentVariants,
-  reducedHomeHeroItemVariants,
+  homeHeroSlideVariants,
+  reducedHomeHeroSlideVariants,
 } from '../../motion/dtbMotion.js';
 import homeHeroDesktopUrl from '@assets/media/home/home-hero-desktop-1600.webp';
 import homeHeroMobileUrl from '@assets/media/home/home-hero-mobile-640.webp';
@@ -33,10 +31,89 @@ function HeroTitleLines({ campaign }) {
   );
 }
 
+function HomeHeroSlide({ campaign, reduceMotion }) {
+  const isPresent = useIsPresent();
+  const isRepairsMedia = campaign.id === 'repairs';
+  const desktopHeroUrl = isRepairsMedia ? homeRepairsHeroDesktopUrl : homeHeroDesktopUrl;
+  const mobileHeroUrl = isRepairsMedia ? homeRepairsHeroMobileUrl : homeHeroMobileUrl;
+  const desktopHeroDimensions = isRepairsMedia
+    ? { width: 1672, height: 941 }
+    : { width: 1600, height: 640 };
+  const slideVariants = reduceMotion ? reducedHomeHeroSlideVariants : homeHeroSlideVariants;
+
+  return (
+    <Motion.div
+      className="home-hero__slide"
+      aria-hidden={!isPresent}
+      inert={!isPresent}
+      variants={slideVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+    >
+      <picture
+        className="home-hero__media"
+        aria-hidden="true"
+        style={{ '--home-hero-media-image': `url("${desktopHeroUrl}")` }}
+      >
+        <source
+          media="(max-width: 640px)"
+          srcSet={mobileHeroUrl}
+          type={isRepairsMedia ? 'image/jpeg' : 'image/webp'}
+          width={isRepairsMedia ? 720 : 640}
+          height={isRepairsMedia ? 1280 : 1138}
+        />
+        <img
+          className="home-hero__media-image"
+          src={desktopHeroUrl}
+          width={desktopHeroDimensions.width}
+          height={desktopHeroDimensions.height}
+          sizes="100vw"
+          alt=""
+          decoding="async"
+          loading="eager"
+          fetchPriority="high"
+          draggable="false"
+        />
+      </picture>
+
+      <div className="home-hero__ambient" aria-hidden="true" />
+      <div className="home-hero__scrim" aria-hidden="true" />
+
+      <div
+        className="home-hero__content-shell"
+        id={isPresent ? 'home-hero-panel' : undefined}
+        aria-live="off"
+      >
+        <div className="home-hero__content">
+          <p className="home-hero__eyebrow">
+            <span className="home-hero__eyebrow-bar" aria-hidden="true" />
+            {campaign.eyebrow}
+          </p>
+
+          <h1 id={isPresent ? 'home-hero-title' : undefined} className="home-hero__title">
+            <HeroTitleLines campaign={campaign} />
+          </h1>
+
+          <p className="home-hero__description">{campaign.description}</p>
+
+          <div className="home-hero__actions">
+            <HomeHeroButton to={campaign.primaryAction.to}>
+              {campaign.primaryAction.label}
+            </HomeHeroButton>
+            <HomeHeroButton to={campaign.secondaryAction.to} variant="secondary">
+              {campaign.secondaryAction.label}
+            </HomeHeroButton>
+          </div>
+        </div>
+      </div>
+    </Motion.div>
+  );
+}
+
 export default function HomeHero({ brands = [] }) {
   const reduceMotion = useReducedMotion();
   const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(1);
   const tabRefs = useRef([]);
   const [interactionPaused, setInteractionPaused] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
@@ -46,23 +123,58 @@ export default function HomeHero({ brands = [] }) {
   const [pointerActive, setPointerActive] = useState(false);
 
   const activeCampaign = HOME_HERO_CAMPAIGNS[activeIndex];
-  const desktopHeroUrl = activeCampaign.id === 'repairs' ? homeRepairsHeroDesktopUrl : homeHeroDesktopUrl;
-  const desktopHeroDimensions = activeCampaign.id === 'repairs'
-    ? { width: 1672, height: 941 }
-    : { width: 1600, height: 640 };
-  const contentVariants = reduceMotion ? reducedHomeHeroContentVariants : homeHeroContentVariants;
-  const itemVariants = reduceMotion ? reducedHomeHeroItemVariants : homeHeroItemVariants;
+  const [visibleCampaignId, setVisibleCampaignId] = useState(HOME_HERO_CAMPAIGNS[0].id);
+  const visibleCampaign = HOME_HERO_CAMPAIGNS.find(({ id }) => id === visibleCampaignId) ?? HOME_HERO_CAMPAIGNS[0];
 
-  const selectCampaign = useCallback((nextIndex, requestedDirection) => {
+  useEffect(() => {
+    if (visibleCampaignId === activeCampaign.id) return undefined;
+
+    const mobileViewport = window.matchMedia('(max-width: 640px)').matches;
+    const incomingUrl = activeCampaign.id === 'repairs'
+      ? (mobileViewport ? homeRepairsHeroMobileUrl : homeRepairsHeroDesktopUrl)
+      : (mobileViewport ? homeHeroMobileUrl : homeHeroDesktopUrl);
+    const incomingImage = new window.Image();
+    let cancelled = false;
+    let settled = false;
+
+    const revealWhenDecoded = async () => {
+      if (settled) return;
+      settled = true;
+
+      try {
+        if (typeof incomingImage.decode === 'function') {
+          await incomingImage.decode();
+        }
+      } catch {
+        // The load event has fired, and some browsers reject decode() for an
+        // image that is otherwise ready to render.
+      }
+
+      if (!cancelled) setVisibleCampaignId(activeCampaign.id);
+    };
+
+    incomingImage.decoding = 'async';
+    incomingImage.onload = revealWhenDecoded;
+    incomingImage.src = incomingUrl;
+    if (incomingImage.complete && incomingImage.naturalWidth > 0) {
+      revealWhenDecoded();
+    }
+
+    return () => {
+      cancelled = true;
+      incomingImage.onload = null;
+    };
+  }, [activeCampaign.id, visibleCampaignId]);
+
+  const selectCampaign = useCallback((nextIndex) => {
     if (nextIndex === activeIndex) return;
 
     const normalizedIndex = (nextIndex + HOME_HERO_CAMPAIGN_COUNT) % HOME_HERO_CAMPAIGN_COUNT;
-    setDirection(requestedDirection ?? (normalizedIndex > activeIndex ? 1 : -1));
     setActiveIndex(normalizedIndex);
   }, [activeIndex]);
 
   const selectRelativeCampaign = useCallback((delta) => {
-    selectCampaign(activeIndex + delta, delta >= 0 ? 1 : -1);
+    selectCampaign(activeIndex + delta);
   }, [activeIndex, selectCampaign]);
 
   const clearPointerIdleTimer = useCallback(() => {
@@ -99,7 +211,6 @@ export default function HomeHero({ brands = [] }) {
   useEffect(() => {
     if (interactionPaused || pointerActive || reduceMotion || !pageVisible) return undefined;
     const interval = window.setInterval(() => {
-      setDirection(1);
       setActiveIndex((index) => (index + 1) % HOME_HERO_CAMPAIGN_COUNT);
     }, SLIDE_INTERVAL_MS);
     return () => window.clearInterval(interval);
@@ -116,7 +227,7 @@ export default function HomeHero({ brands = [] }) {
     if (nextIndex === null) return;
 
     event.preventDefault();
-    selectCampaign(nextIndex, event.key === 'ArrowLeft' ? -1 : 1);
+    selectCampaign(nextIndex);
     tabRefs.current[nextIndex]?.focus();
   }, [activeIndex, selectCampaign]);
 
@@ -201,74 +312,13 @@ export default function HomeHero({ brands = [] }) {
         onTouchEnd={handleTouchEnd}
         onTouchCancel={() => { touchStartRef.current = null; }}
       >
-        <picture
-          className="home-hero__media"
-          aria-hidden="true"
-          style={{ '--home-hero-media-image': `url("${desktopHeroUrl}")` }}
-        >
-          <source
-            media="(max-width: 640px)"
-            srcSet={activeCampaign.id === 'repairs' ? homeRepairsHeroMobileUrl : homeHeroMobileUrl}
-            type={activeCampaign.id === 'repairs' ? 'image/jpeg' : 'image/webp'}
-            width={activeCampaign.id === 'repairs' ? 720 : 640}
-            height={activeCampaign.id === 'repairs' ? 1280 : 1138}
+        <AnimatePresence initial={false} mode="sync">
+          <HomeHeroSlide
+            key={visibleCampaign.id}
+            campaign={visibleCampaign}
+            reduceMotion={reduceMotion}
           />
-          <img
-            className="home-hero__media-image"
-            src={desktopHeroUrl}
-            width={desktopHeroDimensions.width}
-            height={desktopHeroDimensions.height}
-            sizes="100vw"
-            alt=""
-            decoding="async"
-            loading="eager"
-            fetchPriority="high"
-            draggable="false"
-          />
-        </picture>
-
-        <div className="home-hero__ambient" aria-hidden="true" />
-        <div className="home-hero__scrim" aria-hidden="true" />
-
-        <div
-          className="home-hero__content-shell"
-          id="home-hero-panel"
-          aria-live="off"
-        >
-          <AnimatePresence initial={false} mode="popLayout" custom={direction}>
-            <Motion.div
-              className="home-hero__content"
-              custom={direction}
-              key={activeCampaign.id}
-              variants={contentVariants}
-              initial="enter"
-              animate="center"
-              exit="exit"
-            >
-              <Motion.p className="home-hero__eyebrow" variants={itemVariants}>
-                <span className="home-hero__eyebrow-bar" aria-hidden="true" />
-                {activeCampaign.eyebrow}
-              </Motion.p>
-
-              <Motion.h1 id="home-hero-title" className="home-hero__title" variants={itemVariants}>
-                <HeroTitleLines campaign={activeCampaign} />
-              </Motion.h1>
-
-              <Motion.p className="home-hero__description" variants={itemVariants}>
-                {activeCampaign.description}
-              </Motion.p>
-
-              <Motion.div className="home-hero__actions" variants={itemVariants}>
-                <HomeHeroButton to={activeCampaign.primaryAction.to}>
-                  {activeCampaign.primaryAction.label}
-                </HomeHeroButton>
-                <HomeHeroButton to={activeCampaign.secondaryAction.to} variant="secondary">
-                  {activeCampaign.secondaryAction.label}
-                </HomeHeroButton>
-              </Motion.div>
-            </Motion.div>
-          </AnimatePresence>
-        </div>
+        </AnimatePresence>
 
         <nav className="home-hero-carousel" aria-label="Homepage slides">
           <div className="home-hero-carousel__controls" role="group" aria-label="Choose homepage slide"

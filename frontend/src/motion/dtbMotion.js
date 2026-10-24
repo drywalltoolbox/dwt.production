@@ -258,49 +258,26 @@ export const productModalMobileVariants = {
 };
 
 
-// Homepage campaign hero motion. The stage itself stays geometrically stable;
-// only bounded content inside the stage moves. This avoids full-viewport
-// compositor shifts while still giving manual campaign changes clear direction.
-export const homeHeroContentVariants = {
-  enter: (direction = 1) => ({
-    opacity: 0,
-    x: direction >= 0 ? 20 : -20,
-    filter: 'blur(3px)',
-  }),
-  center: {
+// Keep each home campaign's artwork and copy in one fixed slide layer. The
+// incoming slide fades over the outgoing one without crop or layout movement.
+export const homeHeroSlideVariants = {
+  hidden: { opacity: 0 },
+  visible: {
     opacity: 1,
-    x: 0,
-    filter: 'blur(0px)',
-    transition: {
-      duration: 0.72,
-      ease: [0.22, 1, 0.36, 1],
-      staggerChildren: 0.035,
-    },
+    transition: dtbTransition.slow,
   },
-  exit: (direction = 1) => ({
-    opacity: 0,
-    x: direction >= 0 ? -16 : 16,
-    filter: 'blur(2px)',
-    transition: { duration: 0.5, ease: [0.4, 0, 1, 1] },
-  }),
+  exit: {
+    // Hold the outgoing image underneath the incoming fade so the composite
+    // stays fully covered and does not briefly darken between slides.
+    opacity: 1,
+    transition: dtbTransition.slow,
+  },
 };
 
-export const homeHeroItemVariants = {
-  enter: { opacity: 0, y: 8 },
-  center: { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
-  exit: { opacity: 0, y: -4, transition: { duration: 0.35 } },
-};
-
-export const reducedHomeHeroContentVariants = {
-  enter: { opacity: 0, x: 0 },
-  center: { opacity: 1, x: 0, transition: reducedTransition },
-  exit: { opacity: 0, x: 0, transition: reducedTransition },
-};
-
-export const reducedHomeHeroItemVariants = {
-  enter: { opacity: 0, y: 0 },
-  center: { opacity: 1, y: 0, transition: reducedTransition },
-  exit: { opacity: 0, y: 0, transition: reducedTransition },
+export const reducedHomeHeroSlideVariants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: reducedTransition },
+  exit: { opacity: 1, transition: reducedTransition },
 };
 
 export const homeHeroNavigationTransition = dtbSpring.gentle;
