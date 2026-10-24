@@ -12,17 +12,6 @@ import { buildAccountActivity } from '../../utils/accountActivity.js';
 
 const isRepairOrder = (order) => String(order?.order_type || '').toLowerCase() === 'repair_service';
 
-function OverviewStat({ label, count, icon: Icon, type = '', onClick, loading, error }) {
-  return (
-    <button type="button" className="dtb-account-card dtb-account-stat" onClick={onClick}
-      aria-label={`Open ${label}`}>
-      <span className={`dtb-account-stat__icon ${type ? `is-${type}` : ''}`}><Icon size={19}/></span>
-      <span className="dtb-account-stat__text"><strong>{loading ? '…' : error ? '—' : count}</strong><span>{label}</span></span>
-      <ChevronRight className="dtb-account-stat__arrow" size={17}/>
-    </button>
-  );
-}
-
 function EmptyState({ icon: Icon, title, description, action, onAction }) {
   return <div className="dtb-account-empty"><span className="dtb-account-empty__icon"><Icon size={21}/></span><div className="dtb-account-empty__copy"><strong>{title}</strong><p>{description}</p>{action && <button type="button" className="dtb-account-panel__link" onClick={onAction}>{action} <ArrowRight size={14}/></button>}</div></div>;
 }
@@ -40,13 +29,10 @@ function ActivityPanel({ title, items, loading, error, onViewAll, icon: Icon, em
 }
 
 export default function OverviewTab({
-  user, orders = [], repairs = [], returns = [],
-  jobs = [], jobsTotal = 0, jobsLoading = false, jobsError = '',
+  orders = [], repairs = [], returns = [],
+  jobs = [], jobsLoading = false, jobsError = '',
   ordersLoading = false, errors = {}, onOpenTab,
 }) {
-  const firstName = (user?.first_name || '').trim();
-  const fallbackName = String(user?.display_name || '').trim().split(/\s+/)[0];
-  const greeting = firstName || fallbackName || 'there';
   const productOrders = orders.filter((order) => !isRepairOrder(order));
   const repairOrders = orders.filter(isRepairOrder);
   const orderActivity = buildAccountActivity({ orders: productOrders });
@@ -54,17 +40,6 @@ export default function OverviewTab({
   const returnActivity = buildAccountActivity({ returns });
   return (
     <div className="dtb-account-overview">
-      <header className="dtb-account-welcome">
-        <div><span className="dtb-account-eyebrow">CONTRACTOR HUB</span><h1>Welcome back, {greeting}.</h1><p>Your orders, jobs, and tools—all in one place.</p></div>
-        <span className="dtb-account-avatar" aria-hidden="true">{greeting[0].toUpperCase()}</span>
-      </header>
-
-      <div className="dtb-account-grid">
-        <OverviewStat label="Recent Orders" icon={Package} count={productOrders.length} loading={ordersLoading} error={errors.orders} onClick={() => onOpenTab('orders')}/>
-        <OverviewStat label="Recent Repairs" icon={Wrench} type="repair" count={repairActivity.length} loading={ordersLoading} error={errors.repairs} onClick={() => onOpenTab('repairs')}/>
-        <OverviewStat label="My Jobs" icon={MapPin} type="jobs" count={jobsTotal} loading={jobsLoading} error={jobsError} onClick={() => onOpenTab('jobs')}/>
-      </div>
-
       <div className="dtb-account-layout">
         <div className="dtb-account-stack">
           <ActivityPanel title="Recent Orders" icon={PackageOpen} items={orderActivity} loading={ordersLoading} error={errors.orders}
