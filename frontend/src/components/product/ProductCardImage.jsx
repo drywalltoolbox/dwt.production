@@ -119,8 +119,7 @@ export default function ProductCardImage({
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(90deg, #f5f5f5 25%, #ebebeb 50%, #f5f5f5 75%)',
-          backgroundSize: '200% 100%',
+          background: '#fff',
           // A static reserved image bed prevents dozens of independently
           // animated gradients from flashing while a catalog grid resolves.
           animation: 'none',
