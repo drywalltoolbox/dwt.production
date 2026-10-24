@@ -1,0 +1,163 @@
+/* Account hub 2.0 — presentation only. Shares storefront tokens and native account APIs. */
+.dtb-account-page {
+  min-width: 0;
+  background: var(--surface-canvas, #f4f6fb);
+}
+.dtb-account-container { width: min(100% - 32px, 1200px); margin-inline: auto; min-width: 0; }
+.dtb-account-nav { padding-block: clamp(12px, 2vw, 20px) 12px; }
+.dtb-account-main { padding-block: 8px clamp(28px, 4vw, 56px); min-width: 0; }
+.dtb-account-welcome { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 18px; }
+.dtb-account-welcome h1 { margin: 0; color: #10203d; font-size: clamp(1.35rem, 2.7vw, 1.85rem); font-weight: 800; line-height: 1.2; letter-spacing: -.035em; }
+.dtb-account-welcome p { color: #657287; font-size: .88rem; margin: 5px 0 0; line-height: 1.5; }
+.dtb-account-eyebrow, .dtb-jobs-eyebrow { color: #2255ee; font-size: .66rem; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; margin-bottom: 5px; display: block; }
+.dtb-account-avatar { display: grid; place-items: center; width: 46px; height: 46px; border: 1px solid #d9e3f6; border-radius: 14px; background: #eaf0ff; color: #2255ee; font-weight: 800; flex: none; }
+.dtb-account-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-bottom: 16px; }
+.dtb-account-card { min-width: 0; border: 1px solid rgba(15,23,42,.075); background: #fff; border-radius: 14px; box-shadow: 0 2px 12px rgba(15,23,42,.045); }
+.dtb-account-stat { display: flex; align-items: center; gap: 12px; padding: clamp(13px,2vw,19px); width: 100%; cursor: pointer; text-align: left; color: #10203d; transition: transform .15s, box-shadow .15s, border-color .15s; }
+.dtb-account-stat:hover { border-color: #b4c8ff; box-shadow: 0 8px 25px rgba(15,23,42,.065); transform: translateY(-1px); }
+.dtb-account-stat__icon { width: 42px; height: 42px; border-radius: 12px; background: #eef4ff; color: #2255ee; display: grid; place-items: center; flex: none; }
+.dtb-account-stat__icon.is-repair { background: #ecfafe; color: #0284c7; }
+.dtb-account-stat__icon.is-jobs { background: #f2f0ff; color: #6454ca; }
+.dtb-account-stat__text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.dtb-account-stat__text strong { font-size: 1.35rem; font-weight: 800; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.dtb-account-stat__text span { color: #5b6678; font-size: .74rem; font-weight: 650; }
+.dtb-account-stat__arrow { margin-left: auto; color: #95a3b7; flex: none; }
+.dtb-account-layout { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(275px, 1fr); gap: 16px; align-items: start; }
+.dtb-account-stack { display: grid; gap: 16px; min-width: 0; }
+.dtb-account-panel { padding: clamp(16px,2.4vw,23px); min-width: 0; }
+.dtb-account-panel__header { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; }
+.dtb-account-panel__header h2 { margin: 0; font-size: .99rem; font-weight: 780; letter-spacing: -.015em; color: #12213a; }
+.dtb-account-panel__link { display: inline-flex; align-items: center; gap: 5px; color: #2255ee; font-size: .78rem; font-weight: 750; background: transparent; border: 0; padding: 5px 2px; text-decoration: none; cursor: pointer; white-space: nowrap; }
+.dtb-account-panel__link:hover { text-decoration: underline; }
+.dtb-account-empty { display: flex; align-items: center; gap: 15px; padding-block: 12px 2px; }
+.dtb-account-empty__icon { display: grid; place-items: center; width: 45px; height: 45px; border-radius: 12px; background: #f0f4fc; color: #64748b; flex: none; }
+.dtb-account-empty__copy { min-width: 0; }
+.dtb-account-empty__copy strong { font-size: .85rem; font-weight: 730; color: #1d2c46; display: block; }
+.dtb-account-empty__copy p { margin: 4px 0 0; font-size: .76rem; line-height: 1.5; color: #64748b; }
+.dtb-account-quick { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.dtb-account-quick a { display: flex; align-items: center; gap: 10px; border: 1px solid #e8edf5; border-radius: 11px; padding: 12px; min-width: 0; text-decoration: none; color: #23334e; font-size: .8rem; font-weight: 700; transition: border-color .15s, background .15s; }
+.dtb-account-quick a:hover { border-color: #c1d2ff; background: #f8faff; }
+.dtb-account-quick a svg { color: #2255ee; flex: none; }
+.dtb-account-job-list { display: grid; gap: 8px; }
+.dtb-account-job-list button { width: 100%; border: 1px solid #e6eaf3; border-radius: 10px; background: #fff; padding: 11px 12px; display: flex; align-items: center; gap: 10px; text-align: left; cursor: pointer; color: #14263c; }
+.dtb-account-job-list button:hover { background: #f7faff; border-color: #c8d5f6; }
+.dtb-account-job-list button > span { flex: 1; min-width: 0; }
+.dtb-account-job-list strong { font-size: .81rem; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.dtb-account-job-list small { font-size: .72rem; color: #6d7a8d; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 3px; }
+.dtb-account-loading { padding: 18px 0; font-size: .83rem; color: #64748b; }
+.dtb-account-error { background: #fff5f5; border: 1px solid #fecaca; padding: 12px; border-radius: 10px; font-size: .8rem; color: #b91c1c; }
+.dtb-account-error button { margin-left: 8px; text-decoration: underline; border: 0; background: none; cursor: pointer; color: inherit; font-weight: 700; }
+.dtb-account-bottom { margin-top: 16px; }
+.dtb-account-logout { margin-top: 24px; display: flex; justify-content: flex-end; }
+.dtb-account-logout button { border: 1px solid #f1cbd2; border-radius: 10px; padding: 10px 14px; background: #fff7f7; color: #b91c1c; font-size: .78rem; font-weight: 730; display: flex; align-items: center; gap: 8px; cursor: pointer; }
+.dtb-account-logout button:hover { background: #ffeded; }
+
+/* Jobs and notes: one column of information, not a project-management UI. */
+.dtb-jobs { min-width: 0; color: #12213a; }
+.dtb-jobs-header { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
+.dtb-jobs-header h2 { margin: 0; font-size: clamp(1.4rem, 2.8vw, 2rem); font-weight: 820; letter-spacing: -.04em; }
+.dtb-jobs-header p { margin: 5px 0 0; color: #657287; font-size: .85rem; }
+.dtb-jobs-btn { min-height: 40px; padding: 9px 14px; border-radius: 10px; border: 1px solid transparent; display: inline-flex; align-items: center; justify-content: center; gap: 7px; font-size: .81rem; font-weight: 750; cursor: pointer; text-decoration: none; }
+.dtb-jobs-btn:disabled { opacity: .5; cursor: not-allowed; }
+.dtb-jobs-btn--primary { color: #fff; background: #2255ee; border-color: #2255ee; }
+.dtb-jobs-btn--primary:hover:not(:disabled) { background: #1746d7; }
+.dtb-jobs-btn--subtle { color: #34415b; background: #fff; border-color: #dfe5ef; }
+.dtb-jobs-btn--subtle:hover:not(:disabled) { background: #f7faff; }
+.dtb-jobs-btn--danger { color: #b91c1c; background: #fff; border-color: #f1cbd2; }
+.dtb-jobs-btn--danger:hover { background: #fff5f5; }
+.dtb-jobs-toolbar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+.dtb-jobs-search { display: flex; align-items: center; gap: 8px; flex: 1 1 240px; border: 1px solid #dce5f0; border-radius: 11px; background: white; padding: 0 12px; min-width: 0; color: #8190a5; }
+.dtb-jobs-search input { border: 0; outline: none; min-width: 0; flex: 1; width: 100%; height: 43px; font-size: .82rem; color: #13223a; background: transparent; }
+.dtb-jobs-segment { display: flex; gap: 4px; padding: 4px; border: 1px solid #e6eaf0; background: #fff; border-radius: 12px; }
+.dtb-jobs-segment button { border: 0; border-radius: 8px; background: transparent; padding: 8px 13px; font-size: .8rem; font-weight: 700; color: #64748b; cursor: pointer; }
+.dtb-jobs-segment button.is-active { background: #2255ee; color: #fff; }
+.dtb-jobs-meta { margin: 8px 0 13px; color: #778397; font-size: .75rem; }
+.dtb-jobs-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+.dtb-jobs-card { min-width: 0; display: flex; gap: 12px; align-items: flex-start; padding: 18px; border: 1px solid #e1e7f0; background: white; border-radius: 14px; text-align: left; cursor: pointer; box-shadow: 0 2px 10px rgba(15,23,42,.035); transition: box-shadow .15s, border-color .15s; }
+.dtb-jobs-card:hover { border-color: #bbcdfc; box-shadow: 0 5px 22px rgba(15,23,42,.065); }
+.dtb-jobs-card__icon { background: #eef3ff; color: #2255ee; border-radius: 10px; width: 38px; height: 38px; display: grid; place-items: center; flex: none; }
+.dtb-jobs-card__body { display: flex; flex-direction: column; gap: 5px; min-width: 0; flex: 1; }
+.dtb-jobs-card__body strong { color: #13223a; font-size: .91rem; font-weight: 800; overflow-wrap: anywhere; }
+.dtb-jobs-card__location { color: #596980; font-size: .77rem; overflow-wrap: anywhere; }
+.dtb-jobs-card__body small { color: #8290a2; font-size: .71rem; }
+.dtb-jobs-card__arrow { flex: none; color: #9dabc0; }
+.dtb-jobs-editor, .dtb-jobs-detail, .dtb-jobs-notes { min-width: 0; background: white; border: 1px solid #e5e9f0; border-radius: 15px; padding: clamp(16px,3vw,24px); box-shadow: 0 2px 12px rgba(15,23,42,.04); }
+.dtb-jobs-editor { margin-bottom: 20px; }
+.dtb-jobs-editor__head { display: flex; align-items: center; justify-content: space-between; }
+.dtb-jobs-editor h3 { margin: 0 0 16px; font-size: 1.05rem; }
+.dtb-jobs-editor label, .dtb-jobs-compose label { display: block; margin-top: 12px; color: #31415b; font-size: .78rem; font-weight: 730; }
+.dtb-jobs-editor input, .dtb-jobs-compose textarea, .dtb-jobs-note__edit textarea { display: block; width: 100%; max-width: 100%; margin-top: 7px; background: #fff; border: 1px solid #dae3ef; border-radius: 10px; padding: 11px 12px; color: #10203d; font: inherit; font-size: .88rem; line-height: 1.5; }
+.dtb-jobs-compose textarea, .dtb-jobs-note__edit textarea { resize: vertical; min-height: 90px; }
+.dtb-required { color: #ba253b; }
+.dtb-jobs-optional { color: #8a97a9; font-weight: 500; }
+.dtb-jobs-icon-btn { width: 35px; height: 35px; display: grid; place-items: center; border: 0; border-radius: 9px; background: #f1f5f9; color: #44536a; cursor: pointer; }
+.dtb-jobs-form-actions { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; margin-top: 15px; }
+.dtb-jobs-error { border-radius: 10px; background: #fff1f2; color: #b42336; border: 1px solid #fecdd3; padding: 10px 12px; font-size: .81rem; overflow-wrap: anywhere; }
+.dtb-jobs-error button { border: 0; background: none; font-weight: 750; text-decoration: underline; color: inherit; cursor: pointer; }
+.dtb-jobs-empty { border: 1px dashed #cbd6e8; border-radius: 15px; text-align: center; background: white; padding: 32px 18px; color: #718096; }
+.dtb-jobs-empty svg { color: #2255ee; }
+.dtb-jobs-empty h3 { color: #14263c; font-size: 1.02rem; margin: 12px 0 4px; }
+.dtb-jobs-empty p { color: #657287; font-size: .83rem; margin: 0 auto 16px; max-width: 360px; }
+.dtb-jobs-empty--small { padding: 22px 15px; margin-top: 15px; }
+.dtb-jobs-empty--small p { margin: 7px auto 0; }
+.dtb-jobs-pages { display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 20px; font-size: .78rem; color: #64748b; }
+.dtb-jobs-back { display: flex; gap: 7px; align-items: center; border: 0; padding: 3px 0; background: transparent; color: #2255ee; font-weight: 750; font-size: .8rem; cursor: pointer; margin-bottom: 17px; }
+.dtb-jobs-detail__heading { display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: 14px; padding-bottom: 18px; border-bottom: 1px solid #e7ecf4; }
+.dtb-jobs-detail__heading h3 { margin: 0; font-size: clamp(1.2rem,2.4vw,1.55rem); letter-spacing: -.03em; overflow-wrap: anywhere; }
+.dtb-jobs-detail__actions { display: flex; flex-wrap: wrap; gap: 7px; }
+.dtb-jobs-location { display: inline-flex; align-items: flex-start; gap: 5px; margin-top: 7px; font-size: .8rem; line-height: 1.5; color: #4c6bae; overflow-wrap: anywhere; }
+.dtb-jobs-location svg { flex: none; }
+.dtb-jobs-muted { color: #76859a; font-size: .82rem; }
+.dtb-jobs-notes { border: 0; box-shadow: none; padding: 18px 0 0; }
+.dtb-jobs-section-head { display: flex; justify-content: space-between; gap: 12px; align-items: start; flex-wrap: wrap; margin-bottom: 14px; }
+.dtb-jobs-section-head h3 { margin: 0; font-size: 1rem; color: #14263c; }
+.dtb-jobs-section-head p { color: #6d788b; margin: 4px 0 0; font-size: .77rem; }
+.dtb-jobs-count { color: #6c7a8d; font-size: .72rem; border: 1px solid #e7edf5; padding: 5px 9px; border-radius: 99px; white-space: nowrap; }
+.dtb-jobs-compose { background: #f9fbfe; border: 1px solid #e4eaf3; border-radius: 12px; padding: 13px; }
+.dtb-jobs-compose label { margin: 0; }
+.dtb-jobs-compose textarea { background: #fff; }
+.dtb-jobs-compose-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 9px; }
+.dtb-jobs-compose-foot > span { color: #8a96a8; font-size: .7rem; }
+.dtb-jobs-note-list { display: grid; gap: 10px; margin-top: 13px; }
+.dtb-jobs-note { background: white; border: 1px solid #e4e9f2; border-radius: 12px; padding: 15px; }
+.dtb-jobs-note__top { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.dtb-jobs-note__top time { color: #7d8a9c; font-size: .7rem; font-weight: 650; }
+.dtb-jobs-note__controls { display: flex; gap: 4px; }
+.dtb-jobs-note__controls button { border: 0; border-radius: 8px; padding: 7px; display: grid; place-items: center; background: transparent; color: #68768b; cursor: pointer; }
+.dtb-jobs-note__controls button:hover { background: #f0f4fc; color: #2255ee; }
+.dtb-jobs-note__text { white-space: pre-wrap; overflow-wrap: anywhere; color: #28374d; font-size: .86rem; line-height: 1.6; margin: 6px 0 0; }
+.dtb-jobs-load { display: flex; margin: 12px auto 0; }
+.dtb-jobs-loading { color: #657287; padding: 26px 0; font-size: .85rem; }
+.dtb-account-page :is(button, a, input, textarea):focus-visible { outline: 3px solid rgba(34,85,238,.55); outline-offset: 2px; }
+@media (max-width: 800px) {
+  .dtb-account-layout { grid-template-columns: minmax(0,1fr); }
+  .dtb-account-stack { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .dtb-account-stack > *:first-child { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+  .dtb-account-container { width: min(100% - 24px, 1200px); }
+  .dtb-account-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px; }
+  .dtb-account-stat { padding: 11px 8px; flex-direction: column; align-items: flex-start; gap: 7px; }
+  .dtb-account-stat__icon { width: 32px; height: 32px; border-radius: 9px; }
+  .dtb-account-stat__arrow { display: none; }
+  .dtb-account-stat__text strong { font-size: 1.1rem; }
+  .dtb-account-stat__text span { font-size: .67rem; line-height: 1.2; }
+  .dtb-account-stack { grid-template-columns: minmax(0,1fr); }
+  .dtb-account-stack > *:first-child { grid-column: auto; }
+  .dtb-jobs-grid { grid-template-columns: minmax(0,1fr); }
+  .dtb-jobs-header { align-items: flex-start; }
+  .dtb-jobs-detail__actions { width: 100%; }
+  .dtb-jobs-detail__actions .dtb-jobs-btn { flex: 1 1 auto; }
+  .dtb-jobs-toolbar { align-items: stretch; }
+  .dtb-jobs-search { flex-basis: 100%; }
+  .dtb-jobs-segment { width: max-content; max-width: 100%; }
+}
+@media (max-width: 360px) {
+  .dtb-account-stat { padding: 10px 6px; }
+  .dtb-account-stat__text span { font-size: .62rem; }
+  .dtb-account-quick { grid-template-columns: minmax(0,1fr); }
+  .dtb-jobs-header > .dtb-jobs-btn { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dtb-account-page *, .dtb-jobs * { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
