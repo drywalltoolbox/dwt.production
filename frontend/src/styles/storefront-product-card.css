@@ -246,3 +246,64 @@
     min-width: 0;
   }
 }
+
+/* Mobile catalog polish: preserve the existing card identity and commerce
+   behavior while borrowing the reference's tighter, product-first rhythm. */
+@media (max-width: 767px) {
+  .dtb-product-card--grid,
+  .dtb-product-card--rail {
+    border-color: rgba(203, 213, 225, .8);
+    box-shadow: 0 3px 12px rgba(15, 23, 42, .045);
+  }
+
+  .dtb-product-card--grid .dtb-product-card__image,
+  .dtb-product-card--rail .dtb-product-card__image {
+    padding: 5px;
+  }
+
+  .dtb-product-card--grid .dtb-product-card__meta,
+  .dtb-product-card--rail .dtb-product-card__meta {
+    padding: 10px 11px 11px;
+    gap: 4px;
+  }
+
+  .dtb-product-card--grid .dtb-product-card__brand,
+  .dtb-product-card--rail .dtb-product-card__brand {
+    font-size: .65rem;
+    letter-spacing: .065em;
+  }
+
+  .dtb-product-card--grid .dtb-product-card__divider,
+  .dtb-product-card--rail .dtb-product-card__divider {
+    background: rgba(226, 232, 240, .75);
+  }
+
+  .dtb-product-card--grid .dtb-product-card__footer,
+  .dtb-product-card--rail .dtb-product-card__footer {
+    min-height: 54px;
+    gap: 6px;
+    padding-top: 7px;
+  }
+
+  /* Preserve the 44px tap target; make the blue visual surface less bulky. */
+  .dtb-product-card .dtb-product-card__footer .dtb-product-card__action--mobile-icon {
+    position: relative;
+    min-width: 44px;
+    min-height: 44px;
+    width: 44px;
+    height: 44px;
+    border-radius: 11px;
+    box-shadow: 0 2px 8px rgba(34, 85, 238, .14);
+    --dtb-atc-icon-size: 17px;
+  }
+
+  .dtb-product-card--grid .dtb-product-card__price,
+  .dtb-product-card--rail .dtb-product-card__price {
+    font-size: clamp(.94rem, 3.6vw, 1.06rem);
+  }
+
+  .dtb-product-card--grid .dtb-product-card__compare-price,
+  .dtb-product-card--rail .dtb-product-card__compare-price {
+    font-size: .7rem;
+  }
+}
