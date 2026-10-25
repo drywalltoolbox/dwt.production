@@ -54,6 +54,8 @@ export default function Contact() {
     };
   });
   const [submitting, setSubmitting] = useState(false);
+  const submittingRef = useRef(false);
+  submittingRef.current = submitting;
   const [success, setSuccess]       = useState(false);
   const [tracking, setTracking]     = useState(null);
   const [error, setError]           = useState('');
@@ -67,7 +69,7 @@ export default function Contact() {
       .filter((item) => item.getClientRects().length);
     (focusable()[0] || dialog)?.focus({ preventScroll: true });
     const onKeyDown = (event) => {
-      if (event.key === 'Escape' && !submitting) {
+      if (event.key === 'Escape' && !submittingRef.current) {
         event.preventDefault();
         setWizardOpen(false);
       }
@@ -88,7 +90,7 @@ export default function Contact() {
       document.removeEventListener('keydown', onKeyDown);
       openerRef.current?.focus({ preventScroll: true });
     };
-  }, [wizardOpen, submitting]);
+  }, [wizardOpen]);
 
   const advance = () => {
     setError('');
