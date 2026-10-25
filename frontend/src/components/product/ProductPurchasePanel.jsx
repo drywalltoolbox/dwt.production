@@ -1,4 +1,4 @@
-import { Minus, Plus } from 'lucide-react';
+import { ChevronRight, Minus, Plus } from 'lucide-react';
 import AddToCartButton from '../ui/AddToCartButton.jsx';
 
 export default function ProductPurchasePanel({
@@ -54,8 +54,8 @@ export default function ProductPurchasePanel({
             className="dtb-pdp-set-summary__action"
             onClick={onViewIncludes}
           >
-            View what&apos;s included
-            <span aria-hidden="true">→</span>
+            What&apos;s Included
+            <ChevronRight size={14} aria-hidden="true" />
           </button>
         </div>
       ) : null}
