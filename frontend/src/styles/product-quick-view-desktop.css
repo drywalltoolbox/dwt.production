@@ -425,3 +425,9 @@
     transition: none;
   }
 }
+
+/* Keep composed Quick View content, including related products, on one surface. */
+.product-modal-content {
+  width: 100%;
+  background: #fff;
+}

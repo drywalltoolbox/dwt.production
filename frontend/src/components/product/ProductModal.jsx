@@ -255,7 +255,9 @@ export default function ProductModal({ isOpen, product, onClose, children }) {
                 }
                 onClick={(e) => e.stopPropagation()}
               >
-                {children}
+                <div className="product-modal-content">
+                  {children}
+                </div>
               </Motion.div>
             </div>
           </PanelComponent>
