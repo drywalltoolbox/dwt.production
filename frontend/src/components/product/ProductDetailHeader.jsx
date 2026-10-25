@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { decodeHtmlEntities } from '../../utils/string';
 import { shouldShowCompareAtPrice } from '../../utils/productPricing.js';
 import ProductRating from './ProductRating.jsx';
 import '../../styles/product-detail-overview-refinements.css';
@@ -10,16 +9,6 @@ function getProductUrl(product) {
   if (slug) return `/products/${slug}`;
   const id = product?.id || product?.part_number || product?.sku || '';
   return id ? `/product/${encodeURIComponent(id)}` : '';
-}
-
-function toPlainSummary(value = '') {
-  const compact = decodeHtmlEntities(String(value || ''))
-    .replace(/<br\s*\/?>/gi, ' ')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-  return compact;
 }
 
 function toFinitePrice(value) {
@@ -48,7 +37,6 @@ export default function ProductDetailHeader({
 }) {
   const productUrl = productUrlOverride || getProductUrl(product);
   const title = effectiveName || product.sku || product.part_number;
-  const summary = toPlainSummary(product?.short_description || product?.shortDescription || '');
   // ProductDetail owns variation resolution and passes the effective selected
   // variation's price explicitly. Do not re-read price fields from `product`
   // here: for variable PDPs that object is the parent/default-card context and
@@ -117,7 +105,6 @@ export default function ProductDetailHeader({
         </div>
       </div>
 
-      {summary ? <p className="dtb-pdp-header__summary">{summary}</p> : null}
     </header>
   );
 }
