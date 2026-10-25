@@ -25,7 +25,6 @@ export default function Reviews({ productId, productName = '', reviewFormOpen = 
   const [submitting, setSubmitting] = useState(false);
   const [submissionMessage, setSubmissionMessage] = useState('');
   const endpoint = Number.isInteger(Number(productId)) && Number(productId) > 0 ? `/wp-json/dtb/v1/products/${Number(productId)}/reviews` : null;
-  const loading = Boolean(endpoint) && loadedEndpoint !== endpoint;
   const hasCurrentReviews = Boolean(endpoint) && loadedEndpoint === endpoint;
   const visibleSummary = hasCurrentReviews ? summary : { average_rating: 0, rating_count: 0 };
   const visibleReviews = hasCurrentReviews ? reviews : [];
