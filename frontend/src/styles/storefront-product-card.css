@@ -371,13 +371,19 @@
   }
 
   .dtb-product-card .dtb-product-card__footer .dtb-product-card__action--mobile-icon {
-    flex: 0 0 58px;
-    width: 58px;
-    min-width: 58px;
-    height: 44px;
+    flex: 0 0 46px;
+    width: 46px;
+    min-width: 46px;
+    height: 42px;
     min-height: 44px;
-    border-radius: 11px;
+    border-radius: 10px;
     box-shadow: 0 2px 7px rgba(34, 85, 238, .12);
-    --dtb-atc-icon-size: 17px;
+    --dtb-atc-icon-size: 15px;
+  }
+
+  .dtb-product-card--variable .dtb-product-card__price {
+    font-size: clamp(.72rem, 3.25vw, .94rem);
+    letter-spacing: -.035em;
+    line-height: 1.15;
   }
 }
