@@ -10,26 +10,56 @@ export default function ProductInformationAccordion({ description, features, spe
   const specificationsButtonRef = useRef(null);
   const requestedSpecsOpen = specificationsRequest > 0 && dismissedSpecsRequest !== specificationsRequest;
   const isOpen = (key) => openKeys.includes(key) || (key === 'specs' && requestedSpecsOpen);
-  // The parent request reaches this component after React commits its open
-  // state. Scroll the matching Specifications control, not a global selector,
-  // so full PDP and Quick View always move their own scroll container.
+  // The requested panel can be taller than a mobile viewport. Align its heading
+  // just below the visible sticky navigation, rather than centering the heading
+  // (which leaves most of the included items below the fold).
   useEffect(() => {
     if (!requestedSpecsOpen || typeof window === 'undefined') return undefined;
 
+    let secondFrame;
     const frame = window.requestAnimationFrame(() => {
-      const button = specificationsButtonRef.current;
-      if (!button) return;
+      secondFrame = window.requestAnimationFrame(() => {
+        const button = specificationsButtonRef.current;
+        if (!button) return;
 
-      button.focus({ preventScroll: true });
-      const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-      button.scrollIntoView({
-        behavior: prefersReducedMotion ? 'auto' : 'smooth',
-        block: 'center',
-        inline: 'nearest',
+        const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+        const behavior = reducedMotion ? 'instant' : 'smooth';
+        const scrollShell = button.closest('.product-modal-scroll-shell');
+        button.focus({ preventScroll: true });
+
+        if (scrollShell) {
+          const shellRect = scrollShell.getBoundingClientRect();
+          const buttonRect = button.getBoundingClientRect();
+          scrollShell.scrollTo({
+            top: scrollShell.scrollTop + buttonRect.top - shellRect.top - 16,
+            behavior,
+          });
+          return;
+        }
+
+        // Account for the actual on-screen header, including the mobile
+        // shipping bar, logo row, and search row; CSS token heights alone
+        // don't describe this compound sticky header.
+        let headerBottom = 0;
+        document.querySelectorAll('header').forEach((header) => {
+          const position = window.getComputedStyle(header).position;
+          if (position !== 'sticky' && position !== 'fixed') return;
+          const rect = header.getBoundingClientRect();
+          if (rect.top <= 2 && rect.bottom > 0 && rect.bottom < window.innerHeight) {
+            headerBottom = Math.max(headerBottom, rect.bottom);
+          }
+        });
+        window.scrollTo({
+          top: window.scrollY + button.getBoundingClientRect().top - headerBottom - 16,
+          behavior,
+        });
       });
     });
 
-    return () => window.cancelAnimationFrame(frame);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      if (secondFrame) window.cancelAnimationFrame(secondFrame);
+    };
   }, [requestedSpecsOpen, specificationsRequest]);
   const toggle = (key) => {
     if (isOpen(key)) {
