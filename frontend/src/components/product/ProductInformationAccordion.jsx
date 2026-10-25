@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
 /** Full-page PDP information only; product, variation and cart state stay upstream. */
@@ -7,8 +7,30 @@ export default function ProductInformationAccordion({ description, features, spe
   const [openKeys, setOpenKeys] = useState([]);
   const [renderedKeys, setRenderedKeys] = useState([]);
   const [dismissedSpecsRequest, setDismissedSpecsRequest] = useState(0);
+  const specificationsButtonRef = useRef(null);
   const requestedSpecsOpen = specificationsRequest > 0 && dismissedSpecsRequest !== specificationsRequest;
   const isOpen = (key) => openKeys.includes(key) || (key === 'specs' && requestedSpecsOpen);
+  // The parent request reaches this component after React commits its open
+  // state. Scroll the matching Specifications control, not a global selector,
+  // so full PDP and Quick View always move their own scroll container.
+  useEffect(() => {
+    if (!requestedSpecsOpen || typeof window === 'undefined') return undefined;
+
+    const frame = window.requestAnimationFrame(() => {
+      const button = specificationsButtonRef.current;
+      if (!button) return;
+
+      button.focus({ preventScroll: true });
+      const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+      button.scrollIntoView({
+        behavior: prefersReducedMotion ? 'auto' : 'smooth',
+        block: 'center',
+        inline: 'nearest',
+      });
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [requestedSpecsOpen, specificationsRequest]);
   const toggle = (key) => {
     if (isOpen(key)) {
       setOpenKeys((current) => current.filter((item) => item !== key));
@@ -37,7 +59,7 @@ export default function ProductInformationAccordion({ description, features, spe
       {sections.map(({ key, title, content }) => (
         <div className="dtb-pdp-info-accordion__item" key={key}>
           <h2 className="dtb-pdp-info-accordion__heading">
-            <button type="button" aria-expanded={isOpen(key)} aria-controls={`dtb-pdp-detail-${key}`} data-pdp-section={key} onClick={() => toggle(key)}>
+            <button ref={key === "specs" ? specificationsButtonRef : undefined} type="button" aria-expanded={isOpen(key)} aria-controls={`dtb-pdp-detail-${key}`} data-pdp-section={key} onClick={() => toggle(key)}>
               <span>{title}</span><ChevronDown size={17} aria-hidden="true" className={isOpen(key) ? 'is-open' : ''} />
             </button>
           </h2>

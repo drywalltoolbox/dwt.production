@@ -1010,13 +1010,6 @@ export default function ProductDetail({
   const handleViewIncludes = () => {
     if (!hasIncludesSpec || detailTabs.hidden) return;
     setSpecificationsRequest((current) => current + 1);
-
-    if (typeof window === 'undefined' || typeof document === 'undefined') return;
-    window.requestAnimationFrame(() => {
-      const specsButton = document.querySelector('.dtb-pdp-info-accordion [data-pdp-section="specs"]');
-      specsButton?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      specsButton?.focus({ preventScroll: true });
-    });
   };
 
   const handleViewReviews = () => setReviewFormOpen(true);
