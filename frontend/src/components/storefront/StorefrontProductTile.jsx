@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, Info, SlidersHorizontal } from 'lucide-react';
+import { Eye, SlidersHorizontal } from 'lucide-react';
 import ProductCardImage from '../product/ProductCardImage';
 import AddToCartButton from '../ui/AddToCartButton.jsx';
 import '../../styles/contractor-shopping.css';
@@ -29,11 +29,6 @@ function parsePrice(value) {
   return Number.isFinite(numeric) ? numeric : null;
 }
 
-function stripHtml(html, maxLen = 72) {
-  if (!html) return '';
-  const plain = html.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
-  return plain.length > maxLen ? `${plain.slice(0, maxLen).trimEnd()}…` : plain;
-}
 
 function isNestedInteractiveTarget(target) {
   return target instanceof Element && Boolean(target.closest('button, a, input, select, textarea, [data-dtb-card-action]'));
@@ -52,7 +47,6 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   // Never expose their internal/canonical parent SKU on customer product cards.
   // A real variation SKU belongs to the selected variation and is surfaced by the PDP/selector.
   const sku = isVariable ? '' : (displayProduct.sku || commerceProduct.sku || '');
-  const shortDescription = stripHtml(displayProduct.short_description || '', 132);
 
   const priceStr = isVariable && displayProduct.min_price != null
     ? `From $${money(displayProduct.min_price)}`
@@ -172,7 +166,6 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
         </div>
         <span className={`dtb-product-card__badge dtb-product-card__badge--${outOfStock ? 'out' : 'in'} dtb-product-card__badge--right`}>{outOfStock ? 'Out of Stock' : 'In Stock'}</span>
         {showDesktopOverlay && <div ref={overlayRef} aria-hidden={!overlayActive && !overlayHasFocus} className={`dtb-product-card__qv-overlay${overlayActive ? ' dtb-product-card__qv-overlay--active' : ''}`} onFocusCapture={() => setOverlayHasFocus(true)} onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setOverlayHasFocus(false); }} onClick={(e) => { e.stopPropagation(); closeOverlay(); if (productUrl) navigate(productUrl); }}><div className={`dtb-product-card__qv-actions${overlayActive ? ' dtb-product-card__qv-actions--active' : ''}`}><button type="button" tabIndex={overlayActive ? 0 : -1} className="dtb-product-card__qv-btn" onClick={handleQuickView} aria-label={`Quick view ${name}`}><Eye size={14} strokeWidth={2.2} /><span>Quick View</span></button></div></div>}
-        {showDesktopOverlay && <div className="dtb-product-card__inside" aria-hidden="true"><div className="dtb-product-card__inside-icon"><Info size={18} strokeWidth={2.4} /></div><div className="dtb-product-card__inside-contents"><dl className="dtb-product-card__inside-grid"><div><dt>Brand</dt><dd>{displayProduct.brand || 'DTB'}</dd></div>{sku ? <div><dt>SKU</dt><dd>{sku}</dd></div> : null}</dl>{shortDescription ? <p className="dtb-product-card__inside-desc">{shortDescription}</p> : null}</div></div>}
       </div>
       <div className="dtb-product-card__meta">
         {displayProduct.brand ? <span className="dtb-product-card__brand">{displayProduct.brand}</span> : null}
