@@ -268,6 +268,7 @@ export default function ProductsCategorySelector({
   itemLabel = 'product',
 }) {
   const [previewState, setPreviewState] = useState({ brand: '', images: [], total: null });
+  const [partsPreview, setPartsPreview] = useState({ brand: '', image: '' });
   const normalizedCategories = Array.isArray(categories) ? categories : [];
   const categoryCountFallback = normalizedCategories.reduce((sum, category) => (
     sum + Number(category?.count || category?.productCount || 0)
@@ -312,6 +313,32 @@ export default function ProductsCategorySelector({
     return () => { cancelled = true; };
   }, [brand, includeAllProducts, loadAllProductsPreview]);
 
+  // A brand's Parts category has no curated thumbnail mapping. Resolve a
+  // real, published part image from the existing catalog API instead of
+  // showing the missing-image placeholder on an otherwise populated card.
+  const hasPartsCategory = normalizedCategories.some((category) =>
+    ['parts', 'replacement_parts', 'replacement-parts'].includes(
+      String(category?.key || category?.slug || '').toLowerCase()
+    ) && Number(category?.count || category?.productCount || 0) > 0
+  );
+
+  useEffect(() => {
+    if (!brand || !hasPartsCategory) return undefined;
+    let cancelled = false;
+    fetchCatalogProducts({ brands: [brand], isParts: 1, page: 1, perPage: 8 })
+      .then((response) => {
+        if (cancelled) return;
+        const image = (Array.isArray(response?.items) ? response.items : [])
+          .map(primaryProductImage)
+          .find(Boolean) || '';
+        setPartsPreview({ brand, image });
+      })
+      .catch(() => {
+        if (!cancelled) setPartsPreview({ brand, image: '' });
+      });
+    return () => { cancelled = true; };
+  }, [brand, hasPartsCategory]);
+
   const allProductsCard = {
     ...ALL_PRODUCTS_CATEGORY,
     count: allProductsCount,
@@ -352,7 +379,9 @@ export default function ProductsCategorySelector({
           <ProductCategoryCard
             key={category.key || category.slug || category.name}
             brand={brand}
-            category={category}
+            category={['parts', 'replacement_parts', 'replacement-parts'].includes(String(category.key || category.slug || '').toLowerCase()) && partsPreview.brand === brand && partsPreview.image
+              ? { ...category, preview: { url: partsPreview.image } }
+              : category}
             index={index}
             onSelectCategory={onSelectCategory}
             allProductsImages={category.isAllProducts ? allProductsImages : []}
