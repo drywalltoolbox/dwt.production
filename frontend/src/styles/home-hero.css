@@ -607,3 +607,14 @@
     -webkit-backdrop-filter: none;
   }
 }
+
+/* Keep the Tools campaign's intentional three-line headline unbroken on phones. */
+@media (max-width: 640px) {
+  .home-hero__stage[data-campaign="tools"] .home-hero__title {
+    max-width: none;
+    font-size: clamp(29px, 8.5vw, 39px);
+  }
+  .home-hero__stage[data-campaign="tools"] .home-hero__title-line {
+    white-space: nowrap;
+  }
+}
