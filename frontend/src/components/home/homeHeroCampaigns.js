@@ -13,7 +13,7 @@ export const HOME_HERO_CAMPAIGNS = [
     id: 'parts',
     label: 'Parts',
     eyebrow: 'Parts & Schematics',
-    titleLines: ['The Parts You Need', 'All In One Place'],
+    titleLines: ['Genuine Parts.', 'All In One Place.'],
     accentLine: 1,
     description: 'Find the right drywall tool parts with easy brand browsing and interactive schematics.',
     primaryAction: { label: 'Shop Parts', to: '/parts' },
