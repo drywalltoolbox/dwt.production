@@ -48,8 +48,12 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   // A real variation SKU belongs to the selected variation and is surfaced by the PDP/selector.
   const sku = isVariable ? '' : (displayProduct.sku || commerceProduct.sku || '');
 
-  const priceStr = isVariable && displayProduct.min_price != null
-    ? `From $${money(displayProduct.min_price)}`
+  const variableMinPrice = isVariable ? parsePrice(displayProduct.min_price) : null;
+  const variableMaxPrice = isVariable ? parsePrice(displayProduct.max_price) : null;
+  const priceStr = isVariable
+    ? (variableMinPrice !== null && variableMaxPrice !== null
+      ? `$${money(variableMinPrice)}–$${money(variableMaxPrice)}`
+      : 'View options')
     : `$${money(commerceProduct.price ?? displayProduct.price ?? 0)}`;
 
   const salePriceValue = parsePrice(commerceProduct.sale_price ?? displayProduct.sale_price);
