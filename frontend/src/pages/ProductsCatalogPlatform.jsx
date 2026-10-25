@@ -750,17 +750,26 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
         {!searchQuery && !isCategoryPageRoute && !isAllProductsRoute && !showCategoryLanding && !showBrandLanding && (
           <div className="mb-5 sm:mb-8">
             <div className={`dtb-listing-heading${isCategoryProductRoute ? '' : ' dtb-listing-heading--standard'}`}>
-              {isCategoryProductRoute && (
-                <button
-                  type="button"
-                  onClick={selectedBrand ? (selectedDisplayCategories.length > 0 ? resetToCategoryCards : resetToBrandList) : () => navigate('/products')}
-                  className="dtb-listing-heading__back-pill sm:hidden"
-                >
-                  <ArrowLeft size={14} aria-hidden="true" />
-                  <span>{categoryScopeLabel || 'Products'}</span>
-                </button>
-              )}
-              {isCategoryProductRoute ? (
+              {selectedBrand && getBrandLogo(categoryScopeLabel) ? (
+                <div className="dtb-brand-listing-header">
+                  <button
+                    type="button"
+                    className="dtb-brand-listing-header__back"
+                    onClick={selectedDisplayCategories.length > 0 ? resetToCategoryCards : resetToBrandList}
+                    aria-label={selectedDisplayCategories.length > 0 ? 'Back to brand categories' : 'Back to brands'}
+                    title={selectedDisplayCategories.length > 0 ? 'Back to brand categories' : 'Back to brands'}
+                  >
+                    <ArrowLeft size={22} strokeWidth={2} aria-hidden="true" />
+                  </button>
+                  <img
+                    className="dtb-brand-listing-header__logo"
+                    src={getBrandLogo(categoryScopeLabel)}
+                    alt={`${categoryScopeLabel} logo`}
+                  />
+                  {isCategoryProductRoute && <h1 className="dtb-brand-listing-header__category">{unifiedHeadingTitle}</h1>}
+                  <p className="dtb-brand-listing-header__meta">{unifiedHeadingMeta}</p>
+                </div>
+              ) : isCategoryProductRoute ? (
                 <div className="dtb-listing-heading__title-row hidden sm:flex">
                   <div className="dtb-listing-heading__nav-col shrink-0 lg:w-80">
                     <BackButton
