@@ -491,37 +491,50 @@
   }
 }
 
-/* Product and schematic taxonomy selectors: image-first utility cards.
- * Keep preview media separate from the navigation label instead of placing
- * white copy over a dark full-card photographic scrim. */
+/* Shared selector structure: the media frame AND its card container are styled.
+ * Source imagery sometimes has baked-in rectangular white/gray backgrounds;
+ * a contained image is therefore not equivalent to a transparent cutout. */
 .dtb-selector-card--media {
+  display: grid;
+  grid-template-rows: auto minmax(76px, auto);
   aspect-ratio: auto;
   min-height: 0;
-  flex-direction: column;
+  border: 1px solid #dde4ee;
+  border-radius: 15px;
   background: #fff;
-  border-color: #dfe5ee;
-  border-radius: 16px;
-  box-shadow: 0 2px 9px rgba(15, 32, 58, 0.045);
+  box-shadow: 0 2px 10px rgba(15, 32, 58, 0.05);
+}
+
+.dtb-selector-card__media-frame {
+  position: relative;
+  display: block;
+  min-width: 0;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background: #f5f7fa;
+  border-bottom: 1px solid #e7ecf3;
 }
 
 .dtb-selector-card--media .dtb-selector-card__image,
 .dtb-selector-card--media .dtb-selector-card__slide,
-.dtb-selector-card--media .dtb-selector-card__image-fallback,
-.dtb-selector-card--media .dtb-selector-card__slideshow {
+.dtb-selector-card--media .dtb-selector-card__slideshow,
+.dtb-selector-card--media .dtb-selector-card__image-fallback {
   position: absolute;
-  inset: 0 0 auto;
+  inset: 0;
   width: 100%;
-  height: auto;
-  aspect-ratio: 5 / 4;
+  height: 100%;
   object-fit: contain;
   object-position: center;
-  background: #f5f7fa;
+  background: transparent;
 }
 
 .dtb-selector-card--media .dtb-selector-card__image,
 .dtb-selector-card--media .dtb-selector-card__slide {
-  padding: clamp(12px, 3vw, 24px);
+  box-sizing: border-box;
+  padding: clamp(12px, 3vw, 26px);
   mix-blend-mode: multiply;
+  transform: none;
 }
 
 .dtb-selector-card--media .dtb-selector-card__scrim {
@@ -531,13 +544,13 @@
 .dtb-selector-card--media .dtb-selector-card__overlay {
   position: relative;
   inset: auto;
-  width: 100%;
-  min-height: 76px;
-  margin-top: calc(100% * 4 / 5);
-  padding: 13px clamp(12px, 2vw, 18px) 15px;
+  display: flex;
   align-items: center;
+  justify-content: space-between;
+  min-width: 0;
+  min-height: 76px;
   gap: 8px;
-  border-top: 1px solid #e8edf4;
+  padding: 12px clamp(12px, 2vw, 18px);
   background: #fff;
 }
 
@@ -547,7 +560,7 @@
 
 .dtb-selector-card--media .dtb-selector-card__title {
   color: #14233d;
-  font-size: clamp(0.83rem, 1.65vw, 1rem);
+  font-size: clamp(0.82rem, 1.65vw, 1rem);
   font-weight: 750;
   line-height: 1.25;
   letter-spacing: -0.02em;
@@ -557,12 +570,13 @@
 
 .dtb-selector-card--media .dtb-selector-card__meta {
   color: #68778c;
-  font-size: clamp(0.73rem, 1.2vw, 0.83rem);
+  font-size: clamp(0.72rem, 1.2vw, 0.83rem);
   font-weight: 550;
 }
 
 .dtb-selector-card--media .dtb-selector-card__chevron {
   align-self: center;
+  flex: 0 0 auto;
   width: 17px;
   height: 17px;
   margin: 0;
@@ -575,8 +589,9 @@
     box-shadow: 0 12px 26px rgba(22, 52, 105, 0.11);
     transform: translateY(-2px);
   }
-  .dtb-selector-card--media:hover .dtb-selector-card__chevron {
-    color: #234de2;
+  .dtb-selector-card--media:hover .dtb-selector-card__image,
+  .dtb-selector-card--media:hover .dtb-selector-card__slide {
+    transform: none;
   }
 }
 
