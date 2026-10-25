@@ -307,3 +307,41 @@
     font-size: .7rem;
   }
 }
+
+/* The shared responsive grid rule must never override list view's single
+   column. Two-column list cards crush the details pane on iPhone. */
+@media (max-width: 767px) {
+  .dtb-product-grid.dtb-product-grid--list {
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .dtb-product-grid--list > .dtb-product-card--list {
+    grid-template-columns: minmax(108px, 34%) minmax(0, 1fr);
+    width: 100%;
+    min-width: 0;
+    min-height: 176px;
+  }
+
+  .dtb-product-grid--list .dtb-product-card--list .dtb-product-card__image {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .dtb-product-grid--list .dtb-product-card--list .dtb-product-card__meta {
+    min-width: 0;
+    width: 100%;
+    padding: 12px;
+    overflow: hidden;
+  }
+
+  .dtb-product-grid--list .dtb-product-card--list .dtb-product-card__name {
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
+  }
+
+  .dtb-product-grid--list .dtb-product-card--list .dtb-product-card__footer {
+    gap: 8px;
+  }
+}
