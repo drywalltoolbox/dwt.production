@@ -27,7 +27,8 @@ export function MediaSelectorCard({
       className={`dtb-selector-card dtb-selector-card--media${className ? ` ${className}` : ''}`}
       onClick={onClick}
     >
-      {media || (image ? (
+      <span className="dtb-selector-card__media-frame" aria-hidden="true">
+        {media || (image ? (
         <img
           src={image}
           srcSet={imageSrcSet}
@@ -43,6 +44,7 @@ export function MediaSelectorCard({
           <ImageOff size={26} />
         </span>
       ))}
+      </span>
       <span className="dtb-selector-card__scrim" aria-hidden="true" />
       <span className="dtb-selector-card__overlay">
         <span className="dtb-selector-card__text">
