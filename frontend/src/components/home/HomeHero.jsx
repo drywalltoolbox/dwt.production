@@ -52,7 +52,6 @@ function HomeHeroSlide({ campaign, reduceMotion, isActive, isEntering = false, i
       <picture
         className="home-hero__media"
         aria-hidden="true"
-        style={{ '--home-hero-media-image': `url("${desktopHeroUrl}")` }}
       >
         <source
           media="(max-width: 640px)"
