@@ -490,3 +490,105 @@
     transition-delay: 0ms !important;
   }
 }
+
+/* Product and schematic taxonomy selectors: image-first utility cards.
+ * Keep preview media separate from the navigation label instead of placing
+ * white copy over a dark full-card photographic scrim. */
+.dtb-selector-card--media {
+  aspect-ratio: auto;
+  min-height: 0;
+  flex-direction: column;
+  background: #fff;
+  border-color: #dfe5ee;
+  border-radius: 16px;
+  box-shadow: 0 2px 9px rgba(15, 32, 58, 0.045);
+}
+
+.dtb-selector-card--media .dtb-selector-card__image,
+.dtb-selector-card--media .dtb-selector-card__slide,
+.dtb-selector-card--media .dtb-selector-card__image-fallback,
+.dtb-selector-card--media .dtb-selector-card__slideshow {
+  position: absolute;
+  inset: 0 0 auto;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 5 / 4;
+  object-fit: contain;
+  object-position: center;
+  background: #f5f7fa;
+}
+
+.dtb-selector-card--media .dtb-selector-card__image,
+.dtb-selector-card--media .dtb-selector-card__slide {
+  padding: clamp(12px, 3vw, 24px);
+  mix-blend-mode: multiply;
+}
+
+.dtb-selector-card--media .dtb-selector-card__scrim {
+  display: none;
+}
+
+.dtb-selector-card--media .dtb-selector-card__overlay {
+  position: relative;
+  inset: auto;
+  width: 100%;
+  min-height: 76px;
+  margin-top: calc(100% * 4 / 5);
+  padding: 13px clamp(12px, 2vw, 18px) 15px;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid #e8edf4;
+  background: #fff;
+}
+
+.dtb-selector-card--media .dtb-selector-card__text {
+  gap: 4px;
+}
+
+.dtb-selector-card--media .dtb-selector-card__title {
+  color: #14233d;
+  font-size: clamp(0.83rem, 1.65vw, 1rem);
+  font-weight: 750;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  text-shadow: none;
+  overflow-wrap: normal;
+}
+
+.dtb-selector-card--media .dtb-selector-card__meta {
+  color: #68778c;
+  font-size: clamp(0.73rem, 1.2vw, 0.83rem);
+  font-weight: 550;
+}
+
+.dtb-selector-card--media .dtb-selector-card__chevron {
+  align-self: center;
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  color: #3158d9;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dtb-selector-card--media:hover {
+    border-color: #a8bafb;
+    box-shadow: 0 12px 26px rgba(22, 52, 105, 0.11);
+    transform: translateY(-2px);
+  }
+  .dtb-selector-card--media:hover .dtb-selector-card__chevron {
+    color: #234de2;
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .dtb-selector-grid--categories {
+    gap: 12px;
+  }
+  .dtb-selector-card--media {
+    border-radius: 13px;
+  }
+  .dtb-selector-card--media .dtb-selector-card__overlay {
+    min-height: 78px;
+    padding: 11px 10px 12px;
+  }
+}
