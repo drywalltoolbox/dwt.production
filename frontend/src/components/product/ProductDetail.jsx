@@ -647,7 +647,6 @@ export default function ProductDetail({
   const [addToCartState, setAddToCartState] = useState('idle');
   const [buyNowState, setBuyNowState] = useState('idle');
   const [reviewFormOpen, setReviewFormOpen] = useState(false);
-  const reviewsRef = useRef(null);
   const addToCartFeedbackTimerRef = useRef(null);
   const buyNowRedirectTimerRef = useRef(null);
   const seededVariations = buildSeedVariations(initialVariations, initialResolvedVariation);
@@ -1167,10 +1166,7 @@ export default function ProductDetail({
             </Link>
           </div>
 
-          <section ref={reviewsRef} id="product-reviews" className="dtb-pdp-reviews" tabIndex={-1} aria-labelledby="product-reviews-title">
-            <h2 id="product-reviews-title">Customer reviews</h2>
-            <Reviews key={effectiveProduct.id || product.id} productId={effectiveProduct.id || product.id} productName={effectiveName} reviewFormOpen={reviewFormOpen} onCloseReviewForm={() => setReviewFormOpen(false)} />
-          </section>
+          <Reviews key={effectiveProduct.id || product.id} productId={effectiveProduct.id || product.id} productName={effectiveName} reviewFormOpen={reviewFormOpen} onCloseReviewForm={() => setReviewFormOpen(false)} />
 
         </div>
       </div>
