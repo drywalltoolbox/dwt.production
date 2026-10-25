@@ -218,8 +218,7 @@ export default function Contact() {
         </aside>
 
         <section className="dtb-contact__form-panel" aria-labelledby="dtb-contact-form-title">
-          <span className="dtb-contact__form-kicker"><span className="dtb-contact__kicker-mark" aria-hidden="true" /> PERSONALIZED ASSISTANCE</span>
-          <h2 id="dtb-contact-form-title">How can we help?</h2>
+          <h2 id="dtb-contact-form-title">Get the Help You Need.</h2>
           <p>Get expert help with tools, parts, orders, and repairs—all in one place.</p>
           <button ref={openerRef} type="button" className="dtb-contact__submit dtb-contact__open-wizard" onClick={() => { setWizardOpen(true); setStep(0); setError(''); }}>
             Send an Inquiry <ArrowRight size={18} aria-hidden="true" />
