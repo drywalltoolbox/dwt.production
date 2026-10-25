@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ProductsCatalogPlatform from './ProductsCatalogPlatform.jsx';
 import InteriorPageHero from '../components/shared/InteriorPageHero.jsx';
 import {
@@ -79,13 +79,6 @@ export default function Parts() {
   return (
     <div className="dtb-parts-page">
       <PartsHero activeFilters={activeFilters} onRemoveFilter={removeFilter} />
-      <nav className="dtb-parts-discovery" aria-label="Find the right replacement part">
-        <p><strong>Have a model or diagram?</strong> Identify the numbered part in its schematic before selecting a product.</p>
-        <div className="dtb-parts-discovery__links">
-          <Link to="/schematics">Browse schematics</Link>
-          <Link to="/contact">Ask for parts help</Link>
-        </div>
-      </nav>
       <ProductsCatalogPlatform forceProductGrid title="Parts" isPartsFilter={1} />
     </div>
   );
