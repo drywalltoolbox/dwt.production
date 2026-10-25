@@ -22,12 +22,12 @@ export const HOME_HERO_CAMPAIGNS = [
   {
     id: 'repairs',
     label: 'Repairs',
-    eyebrow: 'Professional Repair Service',
-    titleLines: ['Get it repaired.', 'Get back to work.'],
+    eyebrow: 'Drywall Tool Repair Specialists',
+    titleLines: ['Expert Repairs.', 'Less Downtime.'],
     accentLine: 1,
-    description: 'Professional repair service for drywall taping and finishing equipment, with clear service options and repair tracking.',
-    primaryAction: { label: 'Start a Repair', to: '/repairs/start' },
-    secondaryAction: { label: 'Repair Services', to: '/repairs' },
+    description: 'Restore your taping and finishing tools with professional service, straightforward repair options, and status tracking.',
+    primaryAction: { label: 'Request a Repair', to: '/repairs/start' },
+    secondaryAction: { label: 'Explore Services', to: '/repairs' },
   },
 ];
 
