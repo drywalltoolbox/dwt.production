@@ -140,7 +140,7 @@ export default function TrendingProducts() {
         return (a.brand || '').localeCompare(b.brand || '');
       });
 
-      setProducts(balancedSelection.slice(0, 16));
+      setProducts(balancedSelection.slice(0, 10));
       setLoading(false);
     }).catch((err) => {
       console.error('Error fetching trending products:', err);
