@@ -1,0 +1,29 @@
+{
+  "source_file": "docs/reference/data/brands/tapetech/Copy-of-TT-Where-Parts-Are-Used.csv",
+  "source_rows": 985,
+  "model_columns": 99,
+  "catalog_tapetech_parts": 215,
+  "source_exact_part_matches": 173,
+  "fitment_proposals_applied": 166,
+  "unique_target_tool_skus": 39,
+  "drafts_published_price_and_cost": 201,
+  "drafts_left_missing_price": [
+    "050132F",
+    "052052",
+    "0521496",
+    "056135",
+    "411003",
+    "729009",
+    "859016",
+    "CNTT",
+    "ERASP0814",
+    "GSRTT",
+    "QCATT",
+    "SCP001WD",
+    "T032"
+  ],
+  "drafts_left_missing_cost": [],
+  "backup": "products/launch/official/dtb_official_catalog.csv.tapetech-20261025-123211.bak",
+  "proposal_csv": "products/dev/catalog-enrichment/compatibility/tapetech-where-parts-used-proposals.csv",
+  "mutated_catalog_rows": 1134
+}

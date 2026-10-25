@@ -275,3 +275,74 @@ The preexisting long-form catalog descriptions for all 81 simple products
 were independently compared against the live public TSW descriptions and
 found text-equivalent; those long descriptions were intentionally preserved.
 No supplier cost update was attempted with expired authentication evidence.
+
+## TapeTech parts image export
+
+Download the public TSW images for every exact SKU in the enriched TapeTech
+parts source:
+
+```powershell
+python scripts/supplier-catalog/export_tapetech_part_images.py
+```
+
+The script reads `docs/reference/data/TSW/TSW Product Data - TapeTech Parts - Enriched.csv`,
+matches its SKUs against the TSW TapeTech brand listing, then checks off-list
+SKUs through TSW's stable part-number route. It downloads images only from the
+observed TSW supplier asset namespaces and writes the original supplier image
+filenames plus `results/images/tapetech-parts/tapetech-parts-image-manifest.csv`.
+The manifest has one row per input SKU, source image and product URLs, and an
+`image_status` of `downloaded`, `placeholder`, `unavailable`, or
+`download_failed`. Placeholder images are not saved as product photography;
+HTTP failures are retained in `download_error` for review. This is public image
+evidence only and does not update WooCommerce or the official catalog.
+
+## TapeTech image normalization and launch mapping
+
+After exporting the public images, prepare the optimized local media set and a
+narrow update-existing import file:
+
+```powershell
+python scripts/supplier-catalog/prepare_tapetech_media_migration.py
+```
+
+The normalizer prefers a public TSW `_L` image when that exact variant was
+verified; otherwise it uses the downloaded listing image. It converts valid
+images to WebP at their source dimensions without upscaling, preserves the
+supplier image basename, and adds the unique assets to
+`products/launch/media/media-10-23-2026/media`. It maps products by exact
+TapeTech SKU, records unmatched and unavailable cases in
+`results/images/tapetech-parts/tapetech-parts-migration-audit.csv`, and creates
+`products/launch/in-works/tapetech_parts_images_update_existing_20261025.csv`
+with only `Type`, `SKU`, and `Images` for exact existing launch products that
+have no image assigned. It does not rewrite the official catalog or apply the
+WooCommerce import.
+
+If enhanced generated part images are available in
+`products/launch/media/regenerated_images_webp`, replace the corresponding
+TSW-derived media files after normalization with:
+
+```powershell
+python scripts/supplier-catalog/replace_tapetech_images_with_regenerated.py
+```
+
+The replacement step requires an exact supplier image-basename match, then
+uses the audited SKU-to-media mapping so `_M` and `_L` destination names remain
+correct. It validates WebP integrity and dimensions, backs up each original
+file under `results/images/tapetech-parts/original_webp_before_generated`, and
+writes a replacement audit. Other media files and WooCommerce records are not
+changed.
+
+## Catalog photo-coming-soon placeholder
+
+Normalize the source placeholder, place it in the active launch media folder,
+and map it to catalog products with no image:
+
+```powershell
+python scripts/supplier-catalog/prepare_catalog_image_placeholders.py
+```
+
+The script writes a 1200x1200 WebP, updates only blank `Images` cells in the
+official catalog, and creates a narrow `Type`, `SKU`, `Images` update-existing
+CSV. A variation with a populated parent gallery is left blank so the
+storefront continues to use the parent image. The pre-update catalog and a
+row-level assignment audit are saved under `results/images/placeholder/`.
