@@ -200,3 +200,176 @@
 @media (max-width: 520px) {
   .dtb-contact__inquiry-dropdown [role="listbox"] { max-height: min(300px, 45dvh); }
 }
+
+/* Contact inquiry wizard: responsive, viewport-contained modal. */
+.dtb-contact__form-kicker {
+  display: block;
+  margin-bottom: .75rem;
+  color: #165cf4;
+  font-size: .72rem;
+  font-weight: 850;
+  letter-spacing: .14em;
+}
+.dtb-contact__form-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  min-height: 260px;
+}
+.dtb-contact__form-panel > p {
+  max-width: 36rem;
+  margin: 0;
+  color: #5f708a;
+  line-height: 1.55;
+}
+.dtb-contact__open-wizard { align-self: flex-start; width: auto; min-width: 200px; margin-top: .6rem; }
+.dtb-contact__dialog-backdrop {
+  position: fixed;
+  z-index: 10050;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: max(18px, env(safe-area-inset-top)) 16px max(18px, env(safe-area-inset-bottom));
+  background: rgba(8, 20, 43, .66);
+  backdrop-filter: blur(8px);
+}
+.dtb-contact__dialog {
+  width: min(100%, 620px);
+  max-height: min(92dvh, 760px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  border: 1px solid rgba(229,235,247,.94);
+  border-radius: 20px;
+  padding: clamp(20px, 4vw, 32px);
+  background: #fff;
+  box-shadow: 0 30px 80px rgba(5, 19, 42, .26);
+  outline: none;
+}
+.dtb-contact__dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 25px;
+}
+.dtb-contact__dialog-header h2 {
+  margin: 0;
+  color: #0b1731;
+  font-family: var(--dtb-font-display, var(--dtb-font-ui, sans-serif));
+  font-size: clamp(1.5rem, 3.8vw, 2rem);
+  font-weight: 850;
+  letter-spacing: -.035em;
+}
+.dtb-contact__dialog-close {
+  display: grid;
+  place-items: center;
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #e1e7f1;
+  border-radius: 12px;
+  color: #32435f;
+  background: #f5f7fb;
+  cursor: pointer;
+}
+.dtb-contact__dialog-close:focus-visible, .dtb-contact__dialog-secondary:focus-visible {
+  outline: 3px solid #85b0ff;
+  outline-offset: 2px;
+}
+.dtb-contact__steps {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 6px;
+  margin: 0 0 22px;
+  padding: 0;
+  list-style: none;
+}
+.dtb-contact__steps li {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  padding: 9px 7px;
+  border-bottom: 2px solid #e2e8f2;
+  color: #79869b;
+  font-size: .74rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+.dtb-contact__steps li.is-current {
+  border-color: #165cf4;
+  color: #12366d;
+}
+.dtb-contact__steps li.is-complete {
+  border-color: #83b0ff;
+  color: #21539b;
+}
+.dtb-contact__step-number {
+  display: inline-grid;
+  flex: 0 0 23px;
+  width: 23px;
+  height: 23px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e8edf5;
+  color: #62728a;
+  font-size: .69rem;
+}
+.is-current .dtb-contact__step-number { background: #165cf4; color: #fff; }
+.is-complete .dtb-contact__step-number { background: #e4efff; color: #165cf4; }
+.dtb-contact__wizard-form { margin-top: 0; gap: 18px; }
+.dtb-contact__wizard-step { display: grid; gap: 14px; min-height: 205px; align-content: start; }
+.dtb-contact__wizard-step h3 {
+  margin: 0;
+  color: #101f3a;
+  font-size: 1.2rem;
+  font-weight: 780;
+  letter-spacing: -.025em;
+}
+.dtb-contact__wizard-step > p { margin: -7px 0 5px; color: #61728b; font-size: .9rem; line-height: 1.5; }
+.dtb-contact__wizard-step .dtb-contact__field input, .dtb-contact__wizard-step .dtb-contact__field textarea { min-height: 48px; }
+.dtb-contact__wizard-step .dtb-contact__field textarea { min-height: 160px; }
+.dtb-contact__wizard-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 18px;
+  border-top: 1px solid #e6eaf1;
+}
+.dtb-contact__wizard-actions .dtb-contact__submit { width: auto; min-width: 148px; }
+.dtb-contact__dialog-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 45px;
+  padding: 9px 14px;
+  border: 1px solid #dae3ef;
+  border-radius: 9px;
+  background: #fff;
+  color: #273a59;
+  font-weight: 700;
+  cursor: pointer;
+}
+.dtb-contact__dialog-secondary:hover { background: #f6f8fc; }
+@media (max-width: 520px) {
+  .dtb-contact__dialog-backdrop { padding: 0; place-items: end stretch; }
+  .dtb-contact__dialog {
+    width: 100%;
+    max-height: calc(100dvh - env(safe-area-inset-top));
+    padding: 23px 18px max(22px, env(safe-area-inset-bottom));
+    border-radius: 22px 22px 0 0;
+  }
+  .dtb-contact__steps li { flex-direction: column; align-items: flex-start; font-size: .67rem; }
+  .dtb-contact__form-panel { min-height: 220px; }
+  .dtb-contact__open-wizard { width: 100%; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .dtb-contact__dialog { animation: dtb-contact-dialog-enter .22s ease-out both; }
+  @keyframes dtb-contact-dialog-enter {
+    from { opacity: 0; transform: translateY(10px) scale(.985); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+}
