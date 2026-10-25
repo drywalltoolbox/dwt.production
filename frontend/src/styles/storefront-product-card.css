@@ -376,7 +376,7 @@
     min-width: 58px;
     height: 44px;
     min-height: 44px;
-    border-radius: 999px;
+    border-radius: 11px;
     box-shadow: 0 2px 7px rgba(34, 85, 238, .12);
     --dtb-atc-icon-size: 17px;
   }
