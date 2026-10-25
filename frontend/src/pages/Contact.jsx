@@ -196,7 +196,7 @@ export default function Contact() {
       <section className="dtb-contact__content" aria-label="Contact Drywall Toolbox">
         <aside className="dtb-contact__information">
           <h2>Contact Information</h2>
-          <p className="dtb-contact__information-intro">Reach out directly or use our seamless inquiry form. Our experts will respond promptly.</p>
+          <p className="dtb-contact__information-intro">Reach out directly or use our seamless inquiry form. Our experts will get back to you soon.</p>
           <div className="dtb-contact__details">
             <div className="dtb-contact__detail">
               <span className="dtb-contact__detail-icon"><Phone size={23} strokeWidth={1.9} aria-hidden="true" /></span>
