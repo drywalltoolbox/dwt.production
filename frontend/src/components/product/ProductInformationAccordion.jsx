@@ -31,7 +31,7 @@ export default function ProductInformationAccordion({ description, features, spe
           const shellRect = scrollShell.getBoundingClientRect();
           const buttonRect = button.getBoundingClientRect();
           scrollShell.scrollTo({
-            top: scrollShell.scrollTop + buttonRect.top - shellRect.top - 16,
+            top: scrollShell.scrollTop + buttonRect.top - shellRect.top - 12,
             behavior,
           });
           return;
@@ -41,16 +41,22 @@ export default function ProductInformationAccordion({ description, features, spe
         // shipping bar, logo row, and search row; CSS token heights alone
         // don't describe this compound sticky header.
         let headerBottom = 0;
-        document.querySelectorAll('header').forEach((header) => {
-          const position = window.getComputedStyle(header).position;
-          if (position !== 'sticky' && position !== 'fixed') return;
-          const rect = header.getBoundingClientRect();
-          if (rect.top <= 2 && rect.bottom > 0 && rect.bottom < window.innerHeight) {
-            headerBottom = Math.max(headerBottom, rect.bottom);
+        // Sticky positioning may belong to an outer header wrapper rather
+        // than the semantic <header> itself. Inspect each banner's ancestors
+        // so the destination lands below the entire visible mobile app shell.
+        document.querySelectorAll('header, [role="banner"]').forEach((header) => {
+          for (let element = header; element && element !== document.body; element = element.parentElement) {
+            const position = window.getComputedStyle(element).position;
+            if (position !== 'sticky' && position !== 'fixed') continue;
+            const rect = element.getBoundingClientRect();
+            if (rect.top <= 2 && rect.bottom > 0 && rect.bottom < window.innerHeight) {
+              headerBottom = Math.max(headerBottom, rect.bottom);
+            }
           }
         });
+        const heading = button.closest('.dtb-pdp-info-accordion__heading') || button;
         window.scrollTo({
-          top: window.scrollY + button.getBoundingClientRect().top - headerBottom - 16,
+          top: window.scrollY + heading.getBoundingClientRect().top - headerBottom - 12,
           behavior,
         });
       });
