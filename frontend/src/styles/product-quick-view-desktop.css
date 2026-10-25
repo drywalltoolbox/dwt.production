@@ -431,3 +431,68 @@
   width: 100%;
   background: #fff;
 }
+
+
+/* The modal wrapper owns one shared PDP surface. The page-shell defaults add
+   page gutters around this wrapper, while the PDP component adds a second
+   card frame; both create a visible seam and misalign its sibling rail. */
+.product-modal-card-shell.dtb-product-page-shell {
+  box-sizing: border-box;
+  padding: 0 !important;
+  margin-inline: auto !important;
+}
+
+.product-modal-content {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  background: #fff;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.product-modal-content > .dtb-pdp.dtb-pdp--modal {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  margin: 0;
+  padding: 0 !important;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  overflow: visible;
+}
+
+.product-modal-content > .dtb-pdp.dtb-pdp--modal .dtb-pdp__inner {
+  --product-modal-content-gutter: clamp(1rem, 4.6vw, 3rem);
+  padding: clamp(1.25rem, 3.8vw, 2.75rem) var(--product-modal-content-gutter) 2.5rem !important;
+}
+
+.product-modal-content > .product-related {
+  --product-modal-content-gutter: clamp(1rem, 4.6vw, 3rem);
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: clamp(1.5rem, 3vw, 2.25rem) var(--product-modal-content-gutter) clamp(2rem, 4vw, 3rem);
+}
+
+.product-modal-content > .product-related .storefront-rail {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (min-width: 48rem) {
+  .product-modal-card-shell.dtb-product-page-shell > .product-modal-content {
+    border-radius: 26px;
+  }
+}
+
+@media (min-width: 64rem) {
+  .product-modal-card-shell.dtb-product-page-shell > .product-modal-content {
+    border-radius: 20px;
+  }
+}
