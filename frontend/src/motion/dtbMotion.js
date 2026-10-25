@@ -258,26 +258,30 @@ export const productModalMobileVariants = {
 };
 
 
-// Keep each home campaign's artwork and copy in one fixed slide layer. The
-// incoming slide fades over the outgoing one without crop or layout movement.
+// Keep both fixed slide layers present during a shared opacity crossfade.
+// The decoded incoming image fades in while the outgoing image fades out, so
+// AnimatePresence never removes the old artwork before the new one is visible.
+const homeHeroSlideTransition = {
+  duration: 0.62,
+  ease: dtbEase.fade,
+};
+
 export const homeHeroSlideVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
-    transition: dtbTransition.slow,
+    transition: homeHeroSlideTransition,
   },
   exit: {
-    // Hold the outgoing image underneath the incoming fade so the composite
-    // stays fully covered and does not briefly darken between slides.
-    opacity: 1,
-    transition: dtbTransition.slow,
+    opacity: 0,
+    transition: homeHeroSlideTransition,
   },
 };
 
 export const reducedHomeHeroSlideVariants = {
   hidden: { opacity: 0 },
   visible: { opacity: 1, transition: reducedTransition },
-  exit: { opacity: 1, transition: reducedTransition },
+  exit: { opacity: 0, transition: reducedTransition },
 };
 
 export const homeHeroNavigationTransition = dtbSpring.gentle;
