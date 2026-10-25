@@ -34,7 +34,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    width: min(58rem, 60vw);
+    width: min(64rem, 68vw);
     min-height: 0;
   }
 
@@ -43,7 +43,7 @@
     top: auto;
     left: clamp(32px, 5vw, 80px);
     bottom: auto;
-    width: min(43rem, calc(100% - clamp(54px, 6vw, 96px)));
+    width: min(50rem, calc(100% - clamp(54px, 6vw, 96px)));
     max-height: 100%;
     min-width: 0;
     margin-block: 0;
@@ -62,16 +62,16 @@
     width: 100%;
     max-width: 100%;
     margin-bottom: clamp(12px, 1.8svh, 20px);
-    font-size: clamp(2.7rem, 4.1vw, 4.75rem);
+    font-size: clamp(3.4rem, 5.2vw, 5rem);
     line-height: .96;
     letter-spacing: -.054em;
     text-wrap: balance;
   }
 
   .home-hero__description {
-    max-width: min(36rem, 100%);
+    max-width: min(42rem, 100%);
     margin-bottom: clamp(14px, 2svh, 22px);
-    font-size: clamp(14px, 1.05vw, 18px);
+    font-size: clamp(15px, 1.15vw, 19px);
     line-height: 1.48;
   }
 
@@ -84,7 +84,7 @@
   .home-hero__button {
     min-height: clamp(46px, 5.8svh, 54px);
     padding-inline: clamp(16px, 1.5vw, 27px);
-    font-size: clamp(14px, 1vw, 17px);
+    font-size: clamp(15px, 1.05vw, 18px);
   }
 
   .home-hero__button--primary {
