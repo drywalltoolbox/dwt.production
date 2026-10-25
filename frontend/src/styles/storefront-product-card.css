@@ -345,3 +345,39 @@
     gap: 8px;
   }
 }
+
+/* Mobile commerce hierarchy: comparison price belongs beneath the selling
+   price; compact horizontal actions retain accessible 44px tap height. */
+@media (max-width: 767px) {
+  .dtb-product-card--grid .dtb-product-card__price-group,
+  .dtb-product-card--rail .dtb-product-card__price-group,
+  .dtb-product-card--list .dtb-product-card__price-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 3px;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .dtb-product-card--grid .dtb-product-card__compare-price,
+  .dtb-product-card--rail .dtb-product-card__compare-price,
+  .dtb-product-card--list .dtb-product-card__compare-price {
+    display: block;
+    max-width: 100%;
+    line-height: 1.15;
+  }
+
+  .dtb-product-card .dtb-product-card__footer .dtb-product-card__action--mobile-icon {
+    flex: 0 0 58px;
+    width: 58px;
+    min-width: 58px;
+    height: 44px;
+    min-height: 44px;
+    border-radius: 999px;
+    box-shadow: 0 2px 7px rgba(34, 85, 238, .12);
+    --dtb-atc-icon-size: 17px;
+  }
+}
