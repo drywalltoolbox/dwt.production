@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, Clock3, Mail, Phone, X } from 'lucide-react';
 import SEOHead from '../components/shared/SEOHead';
@@ -62,8 +63,28 @@ export default function Contact() {
 
   useEffect(() => {
     if (!wizardOpen) return undefined;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    const body = document.body;
+    const html = document.documentElement;
+    const scrollY = window.scrollY;
+    const scrollX = window.scrollX;
+    const prior = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+      htmlOverflow: html.style.overflow,
+    };
+    // iOS Safari does not reliably prevent touch scrolling with body
+    // overflow:hidden alone. Fix the page in place and keep scroll state.
+    body.style.position = 'fixed';
+    body.style.top = `-${scrollY}px`;
+    body.style.left = `-${scrollX}px`;
+    body.style.right = '0';
+    body.style.width = '100%';
+    body.style.overflow = 'hidden';
+    html.style.overflow = 'hidden';
     const dialog = dialogRef.current;
     const focusable = () => [...(dialog?.querySelectorAll('button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex="0"]') || [])]
       .filter((item) => item.getClientRects().length);
@@ -86,7 +107,14 @@ export default function Contact() {
     };
     document.addEventListener('keydown', onKeyDown);
     return () => {
-      document.body.style.overflow = previousOverflow;
+      body.style.position = prior.position;
+      body.style.top = prior.top;
+      body.style.left = prior.left;
+      body.style.right = prior.right;
+      body.style.width = prior.width;
+      body.style.overflow = prior.overflow;
+      html.style.overflow = prior.htmlOverflow;
+      window.scrollTo({ left: scrollX, top: scrollY, behavior: 'instant' });
       document.removeEventListener('keydown', onKeyDown);
       openerRef.current?.focus({ preventScroll: true });
     };
@@ -197,7 +225,7 @@ export default function Contact() {
             Start an Inquiry <ArrowRight size={18} aria-hidden="true" />
           </button>
         </section>
-        {wizardOpen && (
+        {wizardOpen && createPortal(
           <div className="dtb-contact__dialog-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !submitting) setWizardOpen(false); }}>
             <section ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="dtb-contact-dialog-title" tabIndex={-1} className="dtb-contact__dialog">
               <div className="dtb-contact__dialog-header">
@@ -263,7 +291,8 @@ export default function Contact() {
                 </>
               )}
             </section>
-          </div>
+          </div>,
+          document.body
         )}
       </section>
     </main>
