@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import StorefrontRail from '../storefront/StorefrontRail';
 import StorefrontProductTile from '../storefront/StorefrontProductTile';
 
+const MAX_RELATED_PRODUCTS = 10;
+
 export function getRelatedProductsCopy(context = 'related') {
   if (context === 'compatible_parts') {
     return {
@@ -33,6 +35,7 @@ export default function ProductRelatedProducts({
 }) {
   if (!Array.isArray(products) || products.length === 0) return null;
 
+  const visibleProducts = products.slice(0, MAX_RELATED_PRODUCTS);
   const copy = getRelatedProductsCopy(context);
   const titleId = `${id}-title`;
 
@@ -46,7 +49,7 @@ export default function ProductRelatedProducts({
         <Link to="/products" className="product-related__browse">Browse all products</Link>
       </div>
       <StorefrontRail label={copy.railLabel} className="storefront-rail--fixed-tiles">
-        {products.map((relatedProduct, index) => {
+        {visibleProducts.map((relatedProduct, index) => {
           const cardProduct = relatedProduct.cardProduct || relatedProduct;
           return (
             <StorefrontProductTile
