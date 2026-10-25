@@ -10,26 +10,62 @@ export default function ProductInformationAccordion({ description, features, spe
   const specificationsButtonRef = useRef(null);
   const requestedSpecsOpen = specificationsRequest > 0 && dismissedSpecsRequest !== specificationsRequest;
   const isOpen = (key) => openKeys.includes(key) || (key === 'specs' && requestedSpecsOpen);
-  // The parent request reaches this component after React commits its open
-  // state. Scroll the matching Specifications control, not a global selector,
-  // so full PDP and Quick View always move their own scroll container.
+  // The requested panel can be taller than a mobile viewport. Align its heading
+  // just below the visible sticky navigation, rather than centering the heading
+  // (which leaves most of the included items below the fold).
   useEffect(() => {
     if (!requestedSpecsOpen || typeof window === 'undefined') return undefined;
 
+    let secondFrame;
     const frame = window.requestAnimationFrame(() => {
-      const button = specificationsButtonRef.current;
-      if (!button) return;
+      secondFrame = window.requestAnimationFrame(() => {
+        const button = specificationsButtonRef.current;
+        if (!button) return;
 
-      button.focus({ preventScroll: true });
-      const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-      button.scrollIntoView({
-        behavior: prefersReducedMotion ? 'auto' : 'smooth',
-        block: 'center',
-        inline: 'nearest',
+        const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
+        const behavior = reducedMotion ? 'auto' : 'smooth';
+        const scrollShell = button.closest('.product-modal-scroll-shell');
+        button.focus({ preventScroll: true });
+
+        if (scrollShell) {
+          const shellRect = scrollShell.getBoundingClientRect();
+          const buttonRect = button.getBoundingClientRect();
+          scrollShell.scrollTo({
+            top: scrollShell.scrollTop + buttonRect.top - shellRect.top - 12,
+            behavior,
+          });
+          return;
+        }
+
+        // Account for the actual on-screen header, including the mobile
+        // shipping bar, logo row, and search row; CSS token heights alone
+        // don't describe this compound sticky header.
+        let headerBottom = 0;
+        // Sticky positioning may belong to an outer header wrapper rather
+        // than the semantic <header> itself. Inspect each banner's ancestors
+        // so the destination lands below the entire visible mobile app shell.
+        document.querySelectorAll('header, [role="banner"]').forEach((header) => {
+          for (let element = header; element && element !== document.body; element = element.parentElement) {
+            const position = window.getComputedStyle(element).position;
+            if (position !== 'sticky' && position !== 'fixed') continue;
+            const rect = element.getBoundingClientRect();
+            if (rect.top <= 2 && rect.bottom > 0 && rect.bottom < window.innerHeight) {
+              headerBottom = Math.max(headerBottom, rect.bottom);
+            }
+          }
+        });
+        const heading = button.closest('.dtb-pdp-info-accordion__heading') || button;
+        window.scrollTo({
+          top: window.scrollY + heading.getBoundingClientRect().top - headerBottom - 12,
+          behavior,
+        });
       });
     });
 
-    return () => window.cancelAnimationFrame(frame);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      if (secondFrame) window.cancelAnimationFrame(secondFrame);
+    };
   }, [requestedSpecsOpen, specificationsRequest]);
   const toggle = (key) => {
     if (isOpen(key)) {
