@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowRight, Check, Clock3, Mail, Phone } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Clock3, Mail, Phone, X } from 'lucide-react';
 import SEOHead from '../components/shared/SEOHead';
 import Dropdown from '../components/ui/Dropdown';
 import { apiClient } from '../api/client';
@@ -34,6 +34,10 @@ function resolveInquiryType(value) {
 export default function Contact() {
   const [searchParams] = useSearchParams();
   const inquiryRef = useRef(null);
+  const dialogRef = useRef(null);
+  const openerRef = useRef(null);
+  const [wizardOpen, setWizardOpen] = useState(false);
+  const [step, setStep] = useState(0);
   const [formData, setFormData] = useState(() => {
     const requestedInquiry = resolveInquiryType(searchParams.get('inquiry'));
     const sku = (searchParams.get('sku') || '').trim();
@@ -54,12 +58,61 @@ export default function Contact() {
   const [tracking, setTracking]     = useState(null);
   const [error, setError]           = useState('');
 
+  useEffect(() => {
+    if (!wizardOpen) return undefined;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const dialog = dialogRef.current;
+    const focusable = () => [...(dialog?.querySelectorAll('button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex="0"]') || [])]
+      .filter((item) => item.getClientRects().length);
+    (focusable()[0] || dialog)?.focus({ preventScroll: true });
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape' && !submitting) {
+        event.preventDefault();
+        setWizardOpen(false);
+      }
+      if (event.key !== 'Tab') return;
+      const items = focusable();
+      if (!items.length) { event.preventDefault(); return; }
+      const first = items[0];
+      const last = items[items.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault(); last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault(); first.focus();
+      }
+    };
+    document.addEventListener('keydown', onKeyDown);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener('keydown', onKeyDown);
+      openerRef.current?.focus({ preventScroll: true });
+    };
+  }, [wizardOpen, submitting]);
+
+  const advance = () => {
+    setError('');
+    if (step === 0) {
+      const name = document.getElementById('dtb-contact-name');
+      const email = document.getElementById('dtb-contact-email');
+      if (!name?.reportValidity()) return;
+      if (!email?.reportValidity()) return;
+    }
+    if (step === 1 && !formData.inquiryType) {
+      setError('Select an inquiry type to continue.');
+      inquiryRef.current?.focus();
+      return;
+    }
+    setStep((current) => Math.min(2, current + 1));
+  };
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!formData.message.trim()) { setError('Enter your inquiry message.'); return; }
     if (!formData.inquiryType) {
       setError('Please select an inquiry type.');
       inquiryRef.current?.focus();
@@ -135,60 +188,81 @@ export default function Contact() {
         </aside>
 
         <section className="dtb-contact__form-panel" aria-labelledby="dtb-contact-form-title">
-          <h2 id="dtb-contact-form-title">Send Us a Message</h2>
-          {success ? (
-            <div className="dtb-contact__success" role="status">
-              <span className="dtb-contact__success-icon"><Check size={28} aria-hidden="true" /></span>
-              <h3>Message sent!</h3>
-              <p>Your inquiry has been received. Our team will respond as soon as possible.</p>
-              {tracking && (
-                <Link className="dtb-contact__ticket-link" to={`/support/status/${tracking.id}?token=${encodeURIComponent(tracking.token)}`}>
-                  Track {tracking.number || 'your ticket'} <ArrowRight size={16} aria-hidden="true" />
-                </Link>
-              )}
-              <button type="button" className="dtb-contact__submit dtb-contact__reset" onClick={() => { setSuccess(false); setTracking(null); }}>
-                Send another message
-              </button>
-            </div>
-          ) : (
-            <form className="dtb-contact__form" onSubmit={handleSubmit}>
-              {error && <p className="dtb-contact__error" role="alert">{error}</p>}
-              <div className="dtb-contact__field-row">
-                <div className="dtb-contact__field">
-                  <label htmlFor="dtb-contact-name">Full Name</label>
-                  <input id="dtb-contact-name" type="text" name="name" autoComplete="name" value={formData.name} onChange={handleChange} placeholder="John Doe" required disabled={submitting} />
-                </div>
-                <div className="dtb-contact__field">
-                  <label htmlFor="dtb-contact-email">Email Address</label>
-                  <input id="dtb-contact-email" type="email" name="email" autoComplete="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" required disabled={submitting} />
-                </div>
-              </div>
-              <div className="dtb-contact__field">
-                <label htmlFor="dtb-contact-type">Inquiry Type</label>
-                <Dropdown
-                  id="dtb-contact-type"
-                  triggerRef={inquiryRef}
-                  value={formData.inquiryType}
-                  onChange={(value) => { setFormData((current) => ({ ...current, inquiryType: value })); setError(''); }}
-                  options={inquiryTypes}
-                  placeholder="Select an inquiry type"
-                  required
-                  fitViewport
-                  disabled={submitting}
-                  fullWidth
-                  className="dtb-contact__inquiry-dropdown"
-                />
-              </div>
-              <div className="dtb-contact__field">
-                <label htmlFor="dtb-contact-message">Message</label>
-                <textarea id="dtb-contact-message" rows={4} name="message" value={formData.message} onChange={handleChange} placeholder="How can we help?" required disabled={submitting} />
-              </div>
-              <button type="submit" className="dtb-contact__submit" disabled={submitting}>
-                {submitting ? 'Sending…' : 'Submit Inquiry'} {!submitting && <ArrowRight size={18} aria-hidden="true" />}
-              </button>
-            </form>
-          )}
+          <span className="dtb-contact__form-kicker">DIRECT SUPPORT</span>
+          <h2 id="dtb-contact-form-title">Tell us what you need.</h2>
+          <p>Start a guided inquiry in three quick steps. Your information stays in place as you move between steps.</p>
+          <button ref={openerRef} type="button" className="dtb-contact__submit dtb-contact__open-wizard" onClick={() => { setWizardOpen(true); setStep(0); setError(''); }}>
+            Start an Inquiry <ArrowRight size={18} aria-hidden="true" />
+          </button>
         </section>
+        {wizardOpen && (
+          <div className="dtb-contact__dialog-backdrop" onMouseDown={(event) => { if (event.target === event.currentTarget && !submitting) setWizardOpen(false); }}>
+            <section ref={dialogRef} role="dialog" aria-modal="true" aria-labelledby="dtb-contact-dialog-title" tabIndex={-1} className="dtb-contact__dialog">
+              <div className="dtb-contact__dialog-header">
+                <div>
+                  <span className="dtb-contact__form-kicker">DRYWALL TOOLBOX · SUPPORT</span>
+                  <h2 id="dtb-contact-dialog-title">{success ? 'Inquiry received' : 'Contact our team'}</h2>
+                </div>
+                <button type="button" className="dtb-contact__dialog-close" aria-label="Close inquiry" onClick={() => !submitting && setWizardOpen(false)} disabled={submitting}><X size={20} aria-hidden="true" /></button>
+              </div>
+              {success ? (
+                <div className="dtb-contact__success" role="status">
+                  <span className="dtb-contact__success-icon"><Check size={28} aria-hidden="true" /></span>
+                  <h3>Message sent!</h3>
+                  <p>Your inquiry has been received. Our team will respond as soon as possible.</p>
+                  {tracking && <Link className="dtb-contact__ticket-link" to={`/support/status/${tracking.id}?token=${encodeURIComponent(tracking.token)}`}>Track {tracking.number || 'your ticket'} <ArrowRight size={16} aria-hidden="true" /></Link>}
+                  <button type="button" className="dtb-contact__submit" onClick={() => { setSuccess(false); setTracking(null); setWizardOpen(false); }}>Done</button>
+                  <button type="button" className="dtb-contact__dialog-secondary" onClick={() => { setSuccess(false); setTracking(null); setStep(0); }}>Send another inquiry</button>
+                </div>
+              ) : (
+                <>
+                  <ol className="dtb-contact__steps" aria-label="Inquiry progress">
+                    {['Contact details', 'Inquiry type', 'Your message'].map((label, index) => (
+                      <li key={label} className={index === step ? 'is-current' : index < step ? 'is-complete' : ''} aria-current={index === step ? 'step' : undefined}>
+                        <span className="dtb-contact__step-number">{index < step ? <Check size={14} aria-hidden="true" /> : index + 1}</span>
+                        <span>{label}</span>
+                      </li>
+                    ))}
+                  </ol>
+                  <form className="dtb-contact__form dtb-contact__wizard-form" noValidate onSubmit={(event) => {
+                    if (step !== 2) { event.preventDefault(); advance(); return; }
+                    handleSubmit(event);
+                  }}>
+                    {error && <p className="dtb-contact__error" role="alert">{error}</p>}
+                    {step === 0 && (
+                      <div className="dtb-contact__wizard-step">
+                        <h3>Your contact information</h3>
+                        <p>We'll use these details to respond to your inquiry.</p>
+                        <div className="dtb-contact__field"><label htmlFor="dtb-contact-name">Full name</label><input id="dtb-contact-name" type="text" name="name" autoComplete="name" value={formData.name} onChange={handleChange} placeholder="Full name" required disabled={submitting} /></div>
+                        <div className="dtb-contact__field"><label htmlFor="dtb-contact-email">Email address</label><input id="dtb-contact-email" type="email" name="email" autoComplete="email" value={formData.email} onChange={handleChange} placeholder="you@example.com" required disabled={submitting} /></div>
+                      </div>
+                    )}
+                    {step === 1 && (
+                      <div className="dtb-contact__wizard-step">
+                        <h3>What can we help with?</h3>
+                        <p>Choose the topic that best matches your request.</p>
+                        <div className="dtb-contact__field"><label htmlFor="dtb-contact-type">Inquiry type</label>
+                          <Dropdown id="dtb-contact-type" triggerRef={inquiryRef} value={formData.inquiryType} onChange={(value) => { setFormData((current) => ({ ...current, inquiryType: value })); setError(''); }} options={inquiryTypes} placeholder="Select an inquiry type" required fitViewport disabled={submitting} fullWidth className="dtb-contact__inquiry-dropdown" />
+                        </div>
+                      </div>
+                    )}
+                    {step === 2 && (
+                      <div className="dtb-contact__wizard-step">
+                        <h3>Describe your inquiry</h3>
+                        <p>Include the product, model, or order information if relevant. Do not include payment details.</p>
+                        <div className="dtb-contact__field"><label htmlFor="dtb-contact-message">Message</label><textarea id="dtb-contact-message" rows={6} name="message" value={formData.message} onChange={handleChange} placeholder="How can we help?" required disabled={submitting} /></div>
+                      </div>
+                    )}
+                    <div className="dtb-contact__wizard-actions">
+                      {step > 0 ? <button type="button" className="dtb-contact__dialog-secondary" onClick={() => { setStep((current) => current - 1); setError(''); }} disabled={submitting}><ArrowLeft size={16} aria-hidden="true" /> Back</button> : <button type="button" className="dtb-contact__dialog-secondary" onClick={() => setWizardOpen(false)}>Cancel</button>}
+                      <button type="submit" className="dtb-contact__submit" disabled={submitting}>{step === 2 ? (submitting ? 'Sending…' : 'Submit inquiry') : 'Continue'} <ArrowRight size={17} aria-hidden="true" /></button>
+                    </div>
+                  </form>
+                </>
+              )}
+            </section>
+          </div>
+        )}
       </section>
     </main>
   );
