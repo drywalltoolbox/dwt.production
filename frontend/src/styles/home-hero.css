@@ -608,13 +608,51 @@
   }
 }
 
-/* Keep the Tools campaign's intentional three-line headline unbroken on phones. */
+/* Each slide owns its typography, including while another slide crossfades.
+   Never size exiting slide copy using the incoming campaign's stage state. */
 @media (max-width: 640px) {
-  .home-hero__stage[data-campaign="tools"] .home-hero__title {
-    max-width: none;
-    font-size: clamp(29px, 8.5vw, 39px);
+  .home-hero__slide .home-hero__title {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    gap: .045em;
+    text-wrap: initial;
+    overflow-wrap: normal;
   }
-  .home-hero__stage[data-campaign="tools"] .home-hero__title-line {
+
+  .home-hero__slide[data-campaign="tools"] .home-hero__title {
+    font-size: clamp(27px, 8.1vw, 38px);
+  }
+
+  .home-hero__slide[data-campaign="tools"] .home-hero__title-line {
     white-space: nowrap;
   }
+
+  /* The second Parts line is long; scale it to available width instead
+     of allowing it to reach the edge of a 320-390px viewport. */
+  .home-hero__slide[data-campaign="parts"] .home-hero__title {
+    font-size: clamp(25px, 7.7vw, 38px);
+  }
+
+  .home-hero__slide[data-campaign="parts"] .home-hero__title-line {
+    max-width: 100%;
+    text-wrap: balance;
+  }
+
+  /* Preserve purposeful two-line phrases instead of letting the second
+     campaign's typography rules affect Repairs during a transition. */
+  .home-hero__slide[data-campaign="repairs"] .home-hero__title {
+    font-size: clamp(29px, 8.7vw, 39px);
+  }
+
+  .home-hero__slide[data-campaign="repairs"] .home-hero__title-line {
+    max-width: 100%;
+    text-wrap: balance;
+  }
+}
+
+@media (max-width: 359px) {
+  .home-hero__slide[data-campaign="tools"] .home-hero__title { font-size: 7.7vw; }
+  .home-hero__slide[data-campaign="parts"] .home-hero__title { font-size: 7.35vw; }
+  .home-hero__slide[data-campaign="repairs"] .home-hero__title { font-size: 8.3vw; }
 }
