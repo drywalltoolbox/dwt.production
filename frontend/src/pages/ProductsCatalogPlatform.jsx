@@ -767,7 +767,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                     alt={`${categoryScopeLabel} logo`}
                   />
                   {isCategoryProductRoute && <h1 className="dtb-brand-listing-header__category">{unifiedHeadingTitle}</h1>}
-                  <p className="dtb-brand-listing-header__meta">{unifiedHeadingMeta}</p>
+                  {!isCategoryProductRoute && <p className="dtb-brand-listing-header__meta">{unifiedHeadingMeta}</p>}
                 </div>
               ) : isCategoryProductRoute ? (
                 <div className="dtb-listing-heading__title-row hidden sm:flex">
