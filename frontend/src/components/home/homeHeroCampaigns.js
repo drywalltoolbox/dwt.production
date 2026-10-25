@@ -2,7 +2,7 @@ export const HOME_HERO_CAMPAIGNS = [
   {
     id: 'tools',
     label: 'Tools',
-    eyebrow: 'Pro Quality. Pro Results.',
+    eyebrow: 'Built for the Trade',
     titleLines: ['The New', 'Standard In', 'Drywall Tools'],
     accentLine: 1,
     description: 'Everything you need for taping and finishing—from professional tools and parts to expert repair service. Built for pros who demand more.',
@@ -12,7 +12,7 @@ export const HOME_HERO_CAMPAIGNS = [
   {
     id: 'parts',
     label: 'Parts',
-    eyebrow: 'Parts. Diagrams. Fitment.',
+    eyebrow: 'Parts & Schematics',
     titleLines: ['The Parts You Need', 'All In One Place'],
     accentLine: 1,
     description: 'Find the right drywall tool parts with easy brand browsing and interactive schematics.',
@@ -22,7 +22,7 @@ export const HOME_HERO_CAMPAIGNS = [
   {
     id: 'repairs',
     label: 'Repairs',
-    eyebrow: 'Drywall Tool Repair Specialists',
+    eyebrow: 'Expert Repair Services',
     titleLines: ['We Fix the Tools.', 'You Finish the Job.'],
     accentLine: 1,
     description: 'From routine maintenance to complete repairs, our experts keep your drywall tools performing at their best.',
