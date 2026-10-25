@@ -1139,13 +1139,6 @@ export default function ProductDetail({
                 />
               )}
 
-              <div className="dtb-pdp-mobile-post-purchase">
-                {partsUrl ? (
-                  <Link to={partsUrl} className="dtb-pdp-parts-link dtb-pdp-parts-link--mobile">
-                    View associated schematic and part numbers
-                  </Link>
-                ) : null}
-              </div>
             </div>
           </div>
 
