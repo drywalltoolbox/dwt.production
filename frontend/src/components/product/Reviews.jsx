@@ -131,13 +131,19 @@ export default function Reviews({ productId, productName = '', reviewFormOpen = 
     } finally { setSubmitting(false); }
   }
 
-  return <div className="dtb-reviews">
-    <div className="dtb-reviews__summary"><ProductRating rating={visibleSummary.average_rating} ratingCount={visibleSummary.rating_count} /></div>
-    {visibleError && <p className="dtb-reviews__error" role="alert">{visibleError}</p>}
-    <div className="dtb-reviews__list" aria-busy={loading}>
-      {loading ? <p className="dtb-reviews__empty">Loading reviews…</p> : visibleReviews.length === 0 ? <p className="dtb-reviews__empty">No reviews yet.</p> : visibleReviews.map((review) => <article key={review.id} className="dtb-reviews__item"><div className="dtb-reviews__item-header"><div className="dtb-reviews__item-meta"><span className="dtb-reviews__item-author">{review.author}</span><ProductRating rating={review.rating} ratingCount={1} compact />{review.verified_purchase && <span className="dtb-reviews__verified">Verified purchase</span>}</div><time className="dtb-reviews__item-date" dateTime={review.date}>{formatDate(review.date)}</time></div><p className="dtb-reviews__item-text">{review.content}</p></article>)}
-    </div>
-    {visibleHasMore && <button type="button" className="dtb-reviews__more" onClick={() => fetchPage(page + 1, true)} disabled={loadingMore}>{loadingMore ? 'Loading…' : 'Load more reviews'}</button>}
+  return <>
+    {hasCurrentReviews && visibleReviews.length > 0 && (
+      <section className="dtb-pdp-reviews" id="product-reviews" tabIndex={-1} aria-labelledby="product-reviews-title">
+        <h2 id="product-reviews-title">Customer reviews</h2>
+        <div className="dtb-reviews">
+          <div className="dtb-reviews__summary"><ProductRating rating={visibleSummary.average_rating} ratingCount={visibleSummary.rating_count} /></div>
+          <div className="dtb-reviews__list">
+            {visibleReviews.map((review) => <article key={review.id} className="dtb-reviews__item"><div className="dtb-reviews__item-header"><div className="dtb-reviews__item-meta"><span className="dtb-reviews__item-author">{review.author}</span><ProductRating rating={review.rating} ratingCount={1} compact />{review.verified_purchase && <span className="dtb-reviews__verified">Verified purchase</span>}</div><time className="dtb-reviews__item-date" dateTime={review.date}>{formatDate(review.date)}</time></div><p className="dtb-reviews__item-text">{review.content}</p></article>)}
+          </div>
+          {visibleHasMore && <button type="button" className="dtb-reviews__more" onClick={() => fetchPage(page + 1, true)} disabled={loadingMore}>{loadingMore ? 'Loading…' : 'Load more reviews'}</button>}
+        </div>
+      </section>
+    )}
 
     {reviewFormOpen && typeof document !== 'undefined' && createPortal(
       <div className="dtb-review-modal-backdrop" onMouseDown={(event) => {
@@ -187,5 +193,5 @@ export default function Reviews({ productId, productName = '', reviewFormOpen = 
       </div>,
       document.body
     )}
-  </div>;
+  </>;
 }
