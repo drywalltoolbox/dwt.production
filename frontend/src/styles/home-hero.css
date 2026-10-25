@@ -141,6 +141,7 @@
   line-height: 0.94;
   letter-spacing: -0.052em;
   text-wrap: balance;
+  text-transform: uppercase;
 }
 
 .home-hero__title-line {
