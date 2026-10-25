@@ -1,11 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AnimatePresence, m as Motion, useIsPresent, useReducedMotion } from 'framer-motion';
+import { useReducedMotion } from 'framer-motion';
 import HomeHeroButton from './HomeHeroButton';
 import { HOME_HERO_CAMPAIGNS, HOME_HERO_CAMPAIGN_COUNT } from './homeHeroCampaigns.js';
-import {
-  homeHeroSlideVariants,
-  reducedHomeHeroSlideVariants,
-} from '../../motion/dtbMotion.js';
 import homeHeroDesktopUrl from '@assets/media/home/home-hero-desktop-1600.webp';
 import homeHeroMobileUrl from '@assets/media/home/home-hero-mobile-640.webp';
 import homeRepairsHeroMobileUrl from '@assets/media/home/home-hero-repairs-mobile.jpg';
@@ -13,6 +9,7 @@ import homeRepairsHeroDesktopUrl from '@assets/media/home/home-repairs-hero-desk
 
 const SWIPE_THRESHOLD_PX = 44;
 const SLIDE_INTERVAL_MS = 8500;
+const HERO_CROSSFADE_DURATION_MS = 620;
 const POINTER_IDLE_MS = 3000;
 
 function HeroTitleLines({ campaign }) {
@@ -30,25 +27,26 @@ function HeroTitleLines({ campaign }) {
   );
 }
 
-function HomeHeroSlide({ campaign, reduceMotion }) {
-  const isPresent = useIsPresent();
+function HomeHeroSlide({ campaign, reduceMotion, isActive, isEntering = false, isExiting = false }) {
   const isRepairsMedia = campaign.id === 'repairs';
   const desktopHeroUrl = isRepairsMedia ? homeRepairsHeroDesktopUrl : homeHeroDesktopUrl;
   const mobileHeroUrl = isRepairsMedia ? homeRepairsHeroMobileUrl : homeHeroMobileUrl;
   const desktopHeroDimensions = isRepairsMedia
     ? { width: 1672, height: 941 }
     : { width: 1600, height: 640 };
-  const slideVariants = reduceMotion ? reducedHomeHeroSlideVariants : homeHeroSlideVariants;
+  const slideDuration = reduceMotion ? 100 : HERO_CROSSFADE_DURATION_MS;
+  const slideClassName = [
+    'home-hero__slide',
+    isEntering && 'home-hero__slide--entering',
+    isExiting && 'home-hero__slide--exiting',
+  ].filter(Boolean).join(' ');
 
   return (
-    <Motion.div
-      className="home-hero__slide"
-      aria-hidden={!isPresent}
-      inert={!isPresent}
-      variants={slideVariants}
-      initial="hidden"
-      animate="visible"
-      exit="exit"
+    <div
+      className={slideClassName}
+      aria-hidden={!isActive}
+      inert={!isActive}
+      style={{ '--home-hero-slide-duration': `${slideDuration}ms` }}
     >
       <picture
         className="home-hero__media"
@@ -81,7 +79,7 @@ function HomeHeroSlide({ campaign, reduceMotion }) {
 
       <div
         className="home-hero__content-shell"
-        id={isPresent ? 'home-hero-panel' : undefined}
+        id={isActive ? 'home-hero-panel' : undefined}
         aria-live="off"
       >
         <div className="home-hero__content">
@@ -90,7 +88,7 @@ function HomeHeroSlide({ campaign, reduceMotion }) {
             {campaign.eyebrow}
           </p>
 
-          <h1 id={isPresent ? 'home-hero-title' : undefined} className="home-hero__title">
+          <h1 id={isActive ? 'home-hero-title' : undefined} className="home-hero__title">
             <HeroTitleLines campaign={campaign} />
           </h1>
 
@@ -106,7 +104,7 @@ function HomeHeroSlide({ campaign, reduceMotion }) {
           </div>
         </div>
       </div>
-    </Motion.div>
+    </div>
   );
 }
 
@@ -123,7 +121,10 @@ export default function HomeHero() {
 
   const activeCampaign = HOME_HERO_CAMPAIGNS[activeIndex];
   const [visibleCampaignId, setVisibleCampaignId] = useState(HOME_HERO_CAMPAIGNS[0].id);
+  const [outgoingCampaignId, setOutgoingCampaignId] = useState(null);
+  const [crossfadeStarted, setCrossfadeStarted] = useState(false);
   const visibleCampaign = HOME_HERO_CAMPAIGNS.find(({ id }) => id === visibleCampaignId) ?? HOME_HERO_CAMPAIGNS[0];
+  const outgoingCampaign = HOME_HERO_CAMPAIGNS.find(({ id }) => id === outgoingCampaignId) ?? null;
 
   useEffect(() => {
     if (visibleCampaignId === activeCampaign.id) return undefined;
@@ -149,7 +150,11 @@ export default function HomeHero() {
         // image that is otherwise ready to render.
       }
 
-      if (!cancelled) setVisibleCampaignId(activeCampaign.id);
+      if (!cancelled) {
+        setOutgoingCampaignId(visibleCampaignId);
+        setCrossfadeStarted(false);
+        setVisibleCampaignId(activeCampaign.id);
+      }
     };
 
     incomingImage.decoding = 'async';
@@ -164,6 +169,23 @@ export default function HomeHero() {
       incomingImage.onload = null;
     };
   }, [activeCampaign.id, visibleCampaignId]);
+
+  useEffect(() => {
+    if (!outgoingCampaignId) return undefined;
+
+    let frame = 0;
+    const timeout = window.setTimeout(() => {
+      setOutgoingCampaignId(null);
+      setCrossfadeStarted(false);
+    }, HERO_CROSSFADE_DURATION_MS + 80);
+
+    frame = window.requestAnimationFrame(() => setCrossfadeStarted(true));
+
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.clearTimeout(timeout);
+    };
+  }, [outgoingCampaignId, visibleCampaignId]);
 
   const selectCampaign = useCallback((nextIndex) => {
     if (nextIndex === activeIndex) return;
@@ -311,13 +333,22 @@ export default function HomeHero() {
         onTouchEnd={handleTouchEnd}
         onTouchCancel={() => { touchStartRef.current = null; }}
       >
-        <AnimatePresence initial={false} mode="sync">
+        {outgoingCampaign && outgoingCampaign.id !== visibleCampaign.id && (
           <HomeHeroSlide
-            key={visibleCampaign.id}
-            campaign={visibleCampaign}
+            key={outgoingCampaign.id}
+            campaign={outgoingCampaign}
             reduceMotion={reduceMotion}
+            isActive={false}
+            isExiting={crossfadeStarted}
           />
-        </AnimatePresence>
+        )}
+        <HomeHeroSlide
+          key={visibleCampaign.id}
+          campaign={visibleCampaign}
+          reduceMotion={reduceMotion}
+          isActive
+          isEntering={Boolean(outgoingCampaign) && !crossfadeStarted}
+        />
 
         <nav className="home-hero-carousel" aria-label="Homepage slides">
           <div className="home-hero-carousel__controls" role="group" aria-label="Choose homepage slide"
