@@ -44,6 +44,7 @@ function HomeHeroSlide({ campaign, reduceMotion, isActive, isEntering = false, i
   return (
     <div
       className={slideClassName}
+      data-campaign={campaign.id}
       aria-hidden={!isActive}
       inert={!isActive}
       style={{ '--home-hero-slide-duration': `${slideDuration}ms` }}

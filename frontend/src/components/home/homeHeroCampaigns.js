@@ -3,7 +3,7 @@ export const HOME_HERO_CAMPAIGNS = [
     id: 'tools',
     label: 'Tools',
     eyebrow: 'Pro Quality. Pro Results.',
-    titleLines: ['A New', 'Standard In', 'Drywall Tools'],
+    titleLines: ['The New', 'Standard In', 'Drywall Tools'],
     accentLine: 1,
     description: 'Everything you need for taping and finishing—from professional tools and parts to expert repair service. Built for pros who demand more.',
     primaryAction: { label: 'Shop All', to: '/all-products' },
