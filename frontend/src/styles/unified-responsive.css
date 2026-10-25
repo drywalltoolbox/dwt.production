@@ -882,3 +882,35 @@ body,
     animation: none;
   }
 }
+
+/*
+ * iOS form-control focus contract.
+ * Safari magnifies the visual viewport when a focused editable control has
+ * computed text smaller than 16px. Feature-level declarations and inline
+ * dropdown styles can override the weak :where rule above; enforce at the
+ * interactive controls rather than disabling native user zoom globally.
+ */
+@media (max-width: 47.99rem) and (pointer: coarse) {
+  body input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']):not([type='file']):not([type='hidden']),
+  body textarea,
+  body select,
+  body [role='combobox'],
+  body button[aria-haspopup='listbox'] {
+    font-size: max(16px, 1em) !important;
+  }
+
+  /* Dialogs and sheets must own their own pan gestures without causing
+     horizontal document expansion. No global overflow-x clipping here:
+     intentional carousels and schematic zoom canvases keep their behavior. */
+  :where([role='dialog'], [aria-modal='true']) {
+    box-sizing: border-box;
+    min-width: 0;
+    max-width: 100vw;
+    overscroll-behavior: contain;
+  }
+
+  :where([role='dialog'], [aria-modal='true']) :where(form, fieldset, input, textarea, select) {
+    min-width: 0;
+    max-width: 100%;
+  }
+}
