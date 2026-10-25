@@ -41,7 +41,6 @@
 .dtb-product-card--rail .dtb-product-card__meta { gap:.15rem; }
 .dtb-product-card--rail .dtb-product-card__name { -webkit-line-clamp:2;line-clamp:2;font-size:.86rem; }
 .dtb-product-card--rail .dtb-product-card__sku { display:block;font-size:.62rem; }
-.dtb-product-card__inside { display:none; }
 
 /* Mobile grid + homepage rail cards use deterministic content slots. The title
    always owns two lines; SKU owns one line only when it is a real sellable SKU.
@@ -152,17 +151,6 @@
   .dtb-product-card--list .dtb-product-card__desc { -webkit-line-clamp:1;line-clamp:1; }
   .dtb-product-card--list .dtb-product-card__sku { margin-top:1px; }
   .dtb-product-card--list .dtb-product-card__footer { width:100%;margin-top:auto;padding-top:12px; }
-  .dtb-product-card__inside { z-index:4;display:block;position:absolute;top:0;right:0;width:48px;height:48px;border-radius:0 0 0 48px;background:#2255ee;overflow:hidden;box-shadow:-4px 6px 16px rgba(34,85,238,.3);transition:width .4s cubic-bezier(.22,1,.36,1),height .4s cubic-bezier(.22,1,.36,1),border-radius .4s cubic-bezier(.22,1,.36,1),background .32s ease,box-shadow .32s ease; }
-  .dtb-product-card__inside-icon { position:absolute;right:8px;top:8px;color:#fff;opacity:1;transition:opacity .14s ease; }
-  .dtb-product-card__inside:hover { width:100%;height:100%;border-radius:0;background:linear-gradient(145deg,#0c1b45 0%,#0e2666 52%,#1a3a8f 100%);box-shadow:none; }
-  .dtb-product-card__inside:hover .dtb-product-card__inside-icon { opacity:0; }
-  .dtb-product-card__inside-contents { height:100%;padding:clamp(22px,2vw,28px);color:#fff;opacity:0;transform:translateY(18px) scale(.94);transition:opacity .28s ease,transform .36s cubic-bezier(.22,1,.36,1);transition-delay:0s; }
-  .dtb-product-card__inside:hover .dtb-product-card__inside-contents { opacity:1;transform:translateY(0) scale(1);transition-delay:.24s; }
-  .dtb-product-card__inside-grid { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px 16px;margin:0; }
-  .dtb-product-card__inside-grid div { min-width:0; }
-  .dtb-product-card__inside-grid dt { margin:0 0 5px;color:rgba(255,255,255,.7);font-size:.68rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase; }
-  .dtb-product-card__inside-grid dd { margin:0;color:#fff;font-size:.86rem;font-weight:750;line-height:1.25;overflow-wrap:anywhere; }
-  .dtb-product-card__inside-desc { margin:14px 0 0;color:rgba(255,255,255,.88);font-size:.79rem;line-height:1.4;overflow-wrap:anywhere; }
 }
 
 .storefront-skeleton { border-radius:var(--dtb-radius-md);background:linear-gradient(100deg,#e2e8f0 20%,#f1f5f9 40%,#e2e8f0 60%);background-size:220% 100%;animation:storefront-shimmer 1.1s linear infinite; }
