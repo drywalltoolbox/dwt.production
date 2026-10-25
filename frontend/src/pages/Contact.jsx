@@ -218,11 +218,16 @@ export default function Contact() {
         </aside>
 
         <section className="dtb-contact__form-panel" aria-labelledby="dtb-contact-form-title">
-          <span className="dtb-contact__form-kicker">DIRECT SUPPORT</span>
-          <h2 id="dtb-contact-form-title">Tell us what you need.</h2>
-          <p>Start a guided inquiry in three quick steps. Your information stays in place as you move between steps.</p>
+          <span className="dtb-contact__form-kicker"><span className="dtb-contact__kicker-mark" aria-hidden="true" /> PERSONALIZED ASSISTANCE</span>
+          <h2 id="dtb-contact-form-title">How can we help?</h2>
+          <p>Questions about tools, parts, orders, or repairs? Tell our team what you need.</p>
+          <div className="dtb-contact__entry-topics" aria-label="Common inquiry topics">
+            <span>Product advice</span>
+            <span>Parts &amp; repairs</span>
+            <span>Orders &amp; shipping</span>
+          </div>
           <button ref={openerRef} type="button" className="dtb-contact__submit dtb-contact__open-wizard" onClick={() => { setWizardOpen(true); setStep(0); setError(''); }}>
-            Start an Inquiry <ArrowRight size={18} aria-hidden="true" />
+            Send an Inquiry <ArrowRight size={18} aria-hidden="true" />
           </button>
         </section>
         {wizardOpen && createPortal(
