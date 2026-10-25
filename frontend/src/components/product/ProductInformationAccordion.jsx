@@ -23,7 +23,7 @@ export default function ProductInformationAccordion({ description, features, spe
         if (!button) return;
 
         const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches ?? false;
-        const behavior = reducedMotion ? 'instant' : 'smooth';
+        const behavior = reducedMotion ? 'auto' : 'smooth';
         const scrollShell = button.closest('.product-modal-scroll-shell');
         button.focus({ preventScroll: true });
 
