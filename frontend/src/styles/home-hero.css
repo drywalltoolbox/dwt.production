@@ -656,3 +656,41 @@
   .home-hero__slide[data-campaign="parts"] .home-hero__title { font-size: 7.35vw; }
   .home-hero__slide[data-campaign="repairs"] .home-hero__title { font-size: 8.3vw; }
 }
+
+/* Responsive hero supporting copy: a fluid reading measure prevents arbitrary
+   narrow wraps while keeping each slide's CTA stack anchored consistently. */
+.home-hero__slide .home-hero__description {
+  width: 100%;
+  max-width: min(100%, 54ch);
+  min-width: 0;
+  text-wrap: pretty;
+  overflow-wrap: break-word;
+}
+
+@media (min-width: 641px) and (max-width: 900px) {
+  .home-hero__slide .home-hero__description {
+    max-width: min(100%, 48ch);
+    font-size: clamp(14px, 1.85vw, 16px);
+    line-height: 1.48;
+  }
+}
+
+@media (max-width: 640px) {
+  .home-hero__slide .home-hero__description {
+    width: 100%;
+    max-width: min(100%, 43ch);
+    margin-bottom: clamp(13px, 3.5vw, 17px);
+    font-size: clamp(13px, 3.35vw, 15px);
+    line-height: 1.47;
+    letter-spacing: -.008em;
+    text-wrap: pretty;
+  }
+}
+
+@media (max-width: 359px) {
+  .home-hero__slide .home-hero__description {
+    max-width: 100%;
+    font-size: 13px;
+    line-height: 1.43;
+  }
+}
