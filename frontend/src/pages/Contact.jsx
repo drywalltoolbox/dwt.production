@@ -107,7 +107,6 @@ export default function Contact() {
         <div className="dtb-contact__hero-inner">
           <span className="dtb-contact__eyebrow">Contact Us</span>
           <h1>We're here to help.</h1>
-          <p>Have a question, need product guidance, or want to talk to our team? Send us a message and we’ll get back to you as soon as possible.</p>
         </div>
       </header>
 
