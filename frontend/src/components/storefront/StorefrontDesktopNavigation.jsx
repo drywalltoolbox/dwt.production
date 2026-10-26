@@ -221,23 +221,87 @@ function ProductCard({ entry, onNavigate }) {
 
 function ProductsPanelRenderer({ item, onNavigate }) {
   const groups = Array.isArray(item.items) ? item.items : [];
-  const entries = groups.flatMap((group) => {
-    const children = Array.isArray(group.children) ? group.children : [];
-    return children.length > 0 ? children : [group];
-  });
+  const [activeGroupKey, setActiveGroupKey] = useState(() => groups[0]?.slug || groups[0]?.label || '');
+  const activeGroup = groups.find((group) => (group.slug || group.label) === activeGroupKey) || groups[0];
+  const entries = activeGroup
+    ? (Array.isArray(activeGroup.children) && activeGroup.children.length > 0 ? activeGroup.children : [activeGroup])
+    : [];
+
+  const parentIconFor = (group) => {
+    const slug = String(group?.slug || '').toLowerCase();
+    if (slug.includes('automatic')) return Wrench;
+    if (slug.includes('taping') || slug.includes('finishing') || slug.includes('hand-tools')) return PenTool;
+    if (slug.includes('corner') || slug.includes('bead')) return Ruler;
+    if (slug.includes('stilt')) return Hammer;
+    if (slug.includes('replacement') || slug.includes('parts')) return Settings2;
+    if (slug.includes('accessor')) return ShoppingBag;
+    if (slug.includes('material') || slug.includes('consumable')) return Package;
+    return Layers;
+  };
 
   return (
     <>
-      <MegaMenuHero item={item} onNavigate={onNavigate} />
-      {entries.length > 0 ? (
-        <div className="dtb-mega-menu__products-grid">
-          {entries.map((entry) => (
-            <ProductCard key={entry.to || entry.slug || entry.label} entry={entry} onNavigate={onNavigate} />
-          ))}
+      <header className="dtb-shop-menu__header">
+        <span className="dtb-mega-menu__eyebrow">Our Products</span>
+        <h2 className="dtb-shop-menu__title">Shop tools by category</h2>
+        <p className="dtb-shop-menu__description">Browse professional drywall tools, parts, materials, and accessories.</p>
+      </header>
+      {groups.length > 0 && activeGroup ? (
+        <div className="dtb-shop-menu__workspace">
+          <aside className="dtb-shop-menu__category-rail" aria-label="Shop categories">
+            <div className="dtb-shop-menu__rail-heading">
+              <span className="dtb-mega-menu__eyebrow">Shop Categories</span>
+              <p>Explore our full range of professional drywall tools and supplies.</p>
+            </div>
+            <div className="dtb-shop-menu__parent-list" role="group" aria-label="Product categories">
+              {groups.map((group) => {
+                const key = group.slug || group.label;
+                const selected = key === (activeGroup.slug || activeGroup.label);
+                const Icon = parentIconFor(group);
+                return (
+                  <button
+                    key={key}
+                    type="button"
+                    className={`dtb-shop-menu__parent-card${selected ? ' is-active' : ''}`}
+                    aria-pressed={selected}
+                    onMouseEnter={() => setActiveGroupKey(key)}
+                    onFocus={() => setActiveGroupKey(key)}
+                    onClick={() => setActiveGroupKey(key)}
+                  >
+                    <Icon size={24} strokeWidth={1.9} aria-hidden="true" />
+                    <span>{group.label}</span>
+                    <ChevronRight size={17} strokeWidth={2.1} aria-hidden="true" />
+                  </button>
+                );
+              })}
+            </div>
+          </aside>
+          <section className="dtb-shop-menu__category-content" aria-live="polite" aria-label={`${activeGroup.label} subcategories`}>
+            <div className="dtb-shop-menu__category-heading">
+              <div>
+                <span className="dtb-mega-menu__eyebrow">{activeGroup.label}</span>
+                <h3>{activeGroup.label}</h3>
+                <p>{activeGroup.description || `Browse ${String(activeGroup.label || '').toLowerCase()} and related products.`}</p>
+              </div>
+              {activeGroup.to ? (
+                <Link to={activeGroup.to} className="dtb-shop-menu__view-all" onClick={onNavigate}>
+                  <span>View all in this category</span>
+                  <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
+                </Link>
+              ) : null}
+            </div>
+            {entries.length > 0 ? (
+              <div className="dtb-mega-menu__products-grid">
+                {entries.map((entry) => (
+                  <ProductCard key={entry.to || entry.slug || entry.label} entry={entry} onNavigate={onNavigate} />
+                ))}
+              </div>
+            ) : (
+              <MegaMenuDeferredState item={item} />
+            )}
+          </section>
         </div>
-      ) : (
-        <MegaMenuDeferredState item={item} />
-      )}
+      ) : <MegaMenuDeferredState item={item} />}
     </>
   );
 }
@@ -563,7 +627,7 @@ export default function StorefrontDesktopNavigation({ items, openMenuId, onOpen,
               }
             }}
             style={{
-              '--mega-panel-width': '1240px',
+              '--mega-panel-width': renderedItem.id === 'products' ? '1180px' : undefined,
               opacity: sheetVisible && shellOpen ? 1 : 0,
               visibility: shellOpen ? 'visible' : 'hidden',
               pointerEvents: shellOpen ? 'auto' : 'none',
