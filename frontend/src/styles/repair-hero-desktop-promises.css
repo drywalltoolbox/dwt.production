@@ -3,10 +3,10 @@
  * Mobile remains owned by repair-landing-mobile-hero.css. */
 @media (min-width: 64rem) {
   .repair-landing .repair-hero {
-    min-height: clamp(570px, 39.5vw, 690px);
+    min-height: clamp(660px, 43vw, 760px);
     background-color: #020b1b;
     background-image:
-      linear-gradient(90deg, #020b1b 0%, rgba(3, 14, 33, .98) 17%, rgba(4, 19, 43, .88) 32%, rgba(5, 24, 53, .54) 47%, rgba(5, 24, 53, .08) 66%, transparent 78%),
+      linear-gradient(90deg, #020b1b 0%, rgba(3, 14, 33, .99) 16%, rgba(3, 15, 35, .97) 27%, rgba(4, 19, 43, .91) 39%, rgba(5, 24, 53, .72) 53%, rgba(5, 24, 53, .38) 68%, rgba(5, 24, 53, .08) 82%, transparent 92%),
       linear-gradient(0deg, rgba(2, 9, 22, .70) 0%, rgba(2, 9, 22, .08) 36%, transparent 58%),
       var(--repair-hero-image);
     background-repeat: no-repeat;
