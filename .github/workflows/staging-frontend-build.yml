@@ -1,4 +1,4 @@
-name: Frontend staging build (validation only)
+name: Frontend pull request validation
 
 on:
   pull_request:
@@ -6,7 +6,6 @@ on:
     paths:
       - 'frontend/**'
       - '.github/workflows/staging-frontend-build.yml'
-  workflow_dispatch:
 
 permissions:
   contents: read
@@ -73,22 +72,4 @@ jobs:
           assert not re.search(r'src=["\']/assets/', html), "Root-mounted asset reference found"
           print(f"Validated {len(entry)} staging entrypoints")
           PY
-          (
-            cd "$root"
-            find . -type f -print0 | LC_ALL=C sort -z | xargs -0 sha256sum
-          ) > staging-artifact-sha256.txt
-          printf '%s\n' "${{ github.sha }}" > staging-source-sha.txt
 
-      - name: Package staging distribution
-        run: tar -C dist-staging -czf staging-dist.tar.gz .
-
-      - name: Upload validated distribution
-        uses: actions/upload-artifact@v4
-        with:
-          name: dtb-staging-${{ github.sha }}
-          path: |
-            staging-dist.tar.gz
-            staging-artifact-sha256.txt
-            staging-source-sha.txt
-          if-no-files-found: error
-          retention-days: 14

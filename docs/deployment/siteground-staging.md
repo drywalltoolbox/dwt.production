@@ -1,29 +1,37 @@
 # SiteGround staging deployment
 
-GitHub Actions is the deployment authority for the React staging storefront only. Production deployment is out of scope.
+GitHub Actions deploys the React storefront to `/staging/` only. Production deployment is out of scope.
 
-## One-click operator workflows
+## Operator workflows
 
-- Deploy Latest Frontend to Staging: `.github/workflows/staging-frontend-publish.yml`. Click Run workflow on `main` with no inputs. The workflow checks out that commit, runs `npm ci` and `npm run build:staging`, using `frontend/.env.staging` through the existing webpack loader, validates the resulting `dist-staging/` inventory/checksums, snapshots the previous staging site in the private SiteGround release directory, mirrors the new files into `public_html/staging/`, and checks HTTP response/noindex.
-- Rollback Staging to Previous Release: `.github/workflows/staging-frontend-rollback.yml`. Click Run workflow with no inputs. Under the shared remote lock, the server reads the currently published release identity and restores the snapshot created before that publication, deleting files absent from the previous snapshot. Fails if there is no valid previous snapshot.
+- `.github/workflows/staging-frontend-publish.yml` runs on pushes to `main` and can be manually dispatched from `main`. Its build job builds and validates the triggering commit once, packages a short-lived artifact, then the publish job downloads that exact artifact and deploys it.
+- `.github/workflows/staging-frontend-rollback.yml` restores the snapshot from the current release under the same server-side lock.
+- `.github/workflows/staging-frontend-build.yml` validates pull requests that change frontend files. Its artifact is not used for deployment because the release must be built from the exact commit being published.
 
-## Source and release identity
+## Release safety
 
-The deployment workflow always compiles the checked-out source rather than downloading an older successful build artifact. The existing `.github/workflows/staging-frontend-build.yml` remains a separate automatic validation-only workflow and is not a dependency of deployment.
+The release identity is derived from the source SHA, workflow run ID, and run attempt. Before publication, the deploy job checks that identity and the build's SHA-256 manifest, validates the artifact paths, and rechecks the payload after extraction. SiteGround verifies the incoming hashes, locks the publish directory, snapshots the current staging tree, and swaps the manifest and HTML shell last. Rollback remains an explicit operator action.
 
-The source commit is `GITHUB_SHA`. The release identity is the 40-character SHA-1 digest of the source SHA, GitHub workflow run ID, and attempt. The release identity uniquely identifies a manual build-and-publish attempt, so rerunning the workflow on an unchanged commit still generates a fresh release and a corresponding rollback snapshot.
+The public shell and asset probes retry transient connection/TLS failures up to three times. HTTP errors, incorrect content types, missing HTML, or a missing `X-Robots-Tag: noindex` header still fail the workflow. A SiteGround CAPTCHA challenge on the asset probe is reported as unverified; it does not invalidate the independent artifact and server-side hash checks.
 
-## Safety and operational behavior
+## GitHub staging environment
 
-- Shared `siteground-staging-publish` concurrency group prevents simultaneous publish/rollback workflows.
-- GitHub staging environment contains the existing SSH secrets; credentials are never entered in the dispatch form or committed to source.
-- `scripts/deployment/staging-release.sh` verifies the target is `public_html/staging/`, requires the private release directory outside the webroot, validates checksums before mutation, snapshots before replace, and uses a remote release lock.
-- `rsync --delete` makes the staging directory a build-owned mirror. Do not store persistent uploads or operator-edited files in staging. Old browser tabs referencing removed asset filenames may need refreshing.
-- HTML and manifest are replaced last; the HTTP check verifies a valid HTML response plus `X-Robots-Tag: noindex`, not complete application functionality.
-- If a release fails after preparing the incoming directory, inspect the private state before retrying; the release script refuses ambiguous incoming paths.
-- Rollback is explicitly initiated by the operator, never automatic after a health-check failure.
-- SSH host-key checking remains disabled in existing workflows and requires separate hardening using a verified SiteGround host key.
+Configure the protected environment named `staging` with these secrets:
 
-## Verification
+| Secret | Use |
+| --- | --- |
+| `SITEGROUND_STAGING_SSH_HOST` | SiteGround SSH host |
+| `SITEGROUND_STAGING_SSH_PORT` | SSH port; defaults to 22 |
+| `SITEGROUND_STAGING_SSH_USER` | Staging-scoped SSH user |
+| `SITEGROUND_STAGING_SSH_PRIVATE_KEY` | SSH private key |
+| `SITEGROUND_STAGING_SSH_KNOWN_HOSTS` | Prevalidated host-key entry for the configured host and port |
+| `SITEGROUND_STAGING_PUBLIC_DIR` | Absolute path to `public_html/staging` |
+| `SITEGROUND_STAGING_RELEASE_DIR` | Existing private writable path outside `public_html` |
 
-The original artifact-based publication and SSH preflight previously succeeded. The new build-and-deploy workflow is committed but **has not been executed**. Run the one-click deployment and inspect all job steps, the publish log, HTTP verification, and rendered staging website before asserting the new version is live.
+The publisher pins the configured SSH host key. Do not disable host-key checking or put credentials in workflow inputs or source control.
+
+## Server-side behavior and limits
+
+`scripts/deployment/staging-release.sh` requires the target to be the `staging` directory immediately under `public_html`; the private release directory must remain outside the webroot. It validates checksums before mutation, acquires an exclusive lock, snapshots the prior tree, and attempts restoration after a partial publish failure. A stale lock is never cleared automatically; inspect it before manual recovery.
+
+`rsync --delete` makes the staging directory a build-owned mirror. Do not keep persistent uploads or operator-edited files there. Old open tabs may need a refresh after hashed assets are replaced. The HTTP check confirms the shell and noindex response; it does not establish visual or end-to-end application correctness.

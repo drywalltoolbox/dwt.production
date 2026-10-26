@@ -11,7 +11,7 @@ export default function RepairGuarantees() {
         </li>
 
         <li className="repair-guarantees__item">
-          <span className="repair-guarantees__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="m14.5 3.5 6 6-9.8 9.8a2.1 2.1 0 0 1-3-3l6.8-6.8ZM12 6l6 6M5.5 20.5l-2 1" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg></span>
+          <span className="repair-guarantees__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20.2 13.2 13.2 20.2a2 2 0 0 1-2.8 0l-6.6-6.6a2 2 0 0 1 0-2.8l7-7H18a2 2 0 0 1 2 2v7.4Z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="15.5" cy="8.5" r="1.25" fill="currentColor"/></svg></span>
           <div>
             <h2>Transparent Pricing</h2>
             <p>Clear estimates, no hidden fees, and no surprise charges. Nothing extra moves forward without your approval.</p>
