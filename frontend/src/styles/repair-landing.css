@@ -36,7 +36,7 @@
       rgba(4, 16, 37, 0.52) 56%,
       rgba(4, 16, 37, 0.08) 76%,
       rgba(4, 16, 37, 0.02) 100%),
-    url('../assets/media/repairs/repair-hero.webp') center center / cover no-repeat;
+    var(--repair-hero-image) center center / cover no-repeat;
 }
 
 .repair-hero__inner {
@@ -619,7 +619,7 @@
         rgba(2, 10, 25, 0.3) 34%,
         rgba(2, 10, 25, 0.9) 62%,
         rgba(2, 10, 25, 0.99) 100%),
-      url('../assets/media/repairs/repair-hero.webp') 68% center / cover no-repeat;
+      var(--repair-hero-image) 68% center / cover no-repeat;
   }
 
   .repair-hero__inner {

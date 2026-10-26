@@ -36,7 +36,7 @@
 .repair-landing .repair-section-shell { width:min(1320px,calc(100% - 72px)); }
 .repair-landing .repair-eyebrow { margin-bottom:7px; font-size:.66rem; letter-spacing:.13em; }
 
-.repair-landing .repair-hero { min-height:360px; background:linear-gradient(90deg,rgba(2,12,28,.98) 0%,rgba(3,15,34,.92) 34%,rgba(3,15,34,.46) 58%,rgba(3,15,34,.06) 82%),url('../assets/media/repairs/repair-hero.webp') 58% 52%/cover no-repeat; }
+.repair-landing .repair-hero { min-height:360px; background:linear-gradient(90deg,rgba(2,12,28,.98) 0%,rgba(3,15,34,.92) 34%,rgba(3,15,34,.46) 58%,rgba(3,15,34,.06) 82%),var(--repair-hero-image) 58% 52%/cover no-repeat; }
 .repair-landing .repair-hero__inner { width:min(1320px,calc(100% - 72px)); }
 .repair-landing .repair-hero__content { width:min(570px,50%); padding:34px 0 30px; }
 .repair-landing .repair-hero h1 { max-width:10ch; margin-bottom:12px; font-size:clamp(2.55rem,4vw,4.25rem); line-height:.94; }

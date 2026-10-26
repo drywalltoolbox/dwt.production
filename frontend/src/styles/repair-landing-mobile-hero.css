@@ -22,7 +22,7 @@
         rgba(3,31,67,.34) 0%,
         rgba(3,31,67,.14) 40%,
         rgba(3,31,67,0) 72%),
-      url('../assets/media/repairs/repair-hero.webp') 60% 30%/cover no-repeat,
+      var(--repair-hero-image-mobile) 60% 30%/cover no-repeat,
       #020b1b;
   }
 

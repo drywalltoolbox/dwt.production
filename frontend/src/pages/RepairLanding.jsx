@@ -4,6 +4,9 @@ import RepairGuarantees from '../components/RepairGuarantees';
 import { getOfficialRepairBrands } from '../data/repairCatalogMap.js';
 import { getBrandLogo } from '../utils/brandAssets.js';
 import repairServicePackageArt from '../assets/media/repairs/repair-service-package.webp';
+import { HOME_HERO_CAMPAIGNS } from '../components/home/homeHeroCampaigns.js';
+import homeRepairsHeroDesktopUrl from '../assets/media/home/home-repairs-hero-desktop.webp';
+import homeRepairsHeroMobileUrl from '../assets/media/home/home-hero-repairs-mobile.jpg';
 import '../styles/repair-landing.css';
 import '../styles/repair-merchandising.css';
 import '../styles/repair-landing-responsive.css';
@@ -55,6 +58,8 @@ const FAQ_GROUPS = [
   ] },
 ];
 
+const REPAIRS_CAMPAIGN = HOME_HERO_CAMPAIGNS.find(({ id }) => id === 'repairs');
+
 const PROMOTED_REPAIR_BRAND_EXCLUSIONS = new Set(['SurPro', 'Dura-Stilts']);
 const PROMOTED_REPAIR_BRAND_ADDITIONS = ['Level 5'];
 
@@ -73,14 +78,14 @@ export default function RepairLanding() {
 
   return (
     <div className="repair-landing page-wrapper">
-      <SEOHead title="Drywall Tool Repair Services" description="Professional repair, rebuild, diagnostic, shipping, approval, and tracking services for taping and finishing tools." canonical="/repairs" />
-      <section className="repair-hero" aria-labelledby="repair-hero-title"><div className="repair-hero__inner"><div className="repair-hero__content">
-        <p className="repair-eyebrow">Professional Tool Repair</p>
-        <h1 id="repair-hero-title"><span className="repair-hero__title-line repair-hero__title-line--primary">Get Your Tools</span><span className="repair-hero__title-line repair-hero__title-line--accent">Back On The Job.</span></h1>
-        <p className="repair-hero__lead">Professional taping and finishing tool repair, backed by expert technicians and service you can track from start to finish.</p>
+      <SEOHead title="Expert Repair Services | Drywall Toolbox" description={REPAIRS_CAMPAIGN.description} canonical="/repairs" />
+      <section className="repair-hero" aria-labelledby="repair-hero-title" style={{ '--repair-hero-image': `url("${homeRepairsHeroDesktopUrl}")`, '--repair-hero-image-mobile': `url("${homeRepairsHeroMobileUrl}")` }}><div className="repair-hero__inner"><div className="repair-hero__content">
+        <p className="repair-eyebrow">{REPAIRS_CAMPAIGN.eyebrow}</p>
+        <h1 id="repair-hero-title">{REPAIRS_CAMPAIGN.titleLines.map((line, index) => <span className={`repair-hero__title-line${index === REPAIRS_CAMPAIGN.accentLine ? ' repair-hero__title-line--accent' : ' repair-hero__title-line--primary'}`} key={line}>{line}</span>)}</h1>
+        <p className="repair-hero__lead">{REPAIRS_CAMPAIGN.description}</p>
         <div className="repair-hero__actions" aria-label="Repair service actions">
-          <Link className="repair-button repair-button--primary" to="/repairs/start">Start a Repair <span aria-hidden="true">→</span></Link>
-          <Link className="repair-button repair-button--secondary" to="/repairs/packages">View Services <span aria-hidden="true">→</span></Link>
+          <Link className="repair-button repair-button--primary" to={REPAIRS_CAMPAIGN.primaryAction.to}>{REPAIRS_CAMPAIGN.primaryAction.label} <span aria-hidden="true">→</span></Link>
+          <Link className="repair-button repair-button--secondary" to={REPAIRS_CAMPAIGN.secondaryAction.to}>{REPAIRS_CAMPAIGN.secondaryAction.label} <span aria-hidden="true">→</span></Link>
           <Link className="repair-button repair-button--utility" to="/repairs/track">Track Repair <span aria-hidden="true">→</span></Link>
         </div>
       </div><RepairGuarantees /></div></section>
