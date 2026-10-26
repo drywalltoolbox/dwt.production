@@ -19,7 +19,6 @@ jobs:
       SITEGROUND_HOST: ${{ secrets.SITEGROUND_STAGING_SSH_HOST }}
       SITEGROUND_USER: ${{ secrets.SITEGROUND_STAGING_SSH_USER }}
       SITEGROUND_PORT: ${{ secrets.SITEGROUND_STAGING_SSH_PORT }}
-      SITEGROUND_KNOWN_HOSTS: ${{ secrets.SITEGROUND_STAGING_SSH_KNOWN_HOSTS }}
       STAGING_ROOT: ${{ secrets.SITEGROUND_STAGING_PUBLIC_DIR }}
       RELEASE_ROOT: ${{ secrets.SITEGROUND_STAGING_RELEASE_DIR }}
     steps:
@@ -42,19 +41,12 @@ jobs:
         run: |
           set -euo pipefail
           [[ -n "$SSH_KEY" ]] || { echo "::error::Staging SSH key is required"; exit 2; }
-          [[ -n "$SITEGROUND_KNOWN_HOSTS" ]] || { echo "::error::Pinned SiteGround host key is required"; exit 2; }
           mkdir -m 700 -p "$HOME/.ssh"
           printf '%s\n' "$SSH_KEY" > "$HOME/.ssh/id_staging"
-          printf '%s\n' "$SITEGROUND_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
-          chmod 600 "$HOME/.ssh/id_staging" "$HOME/.ssh/known_hosts"
-          known_host="$SITEGROUND_HOST"
-          if [[ -n "$SITEGROUND_PORT" && "$SITEGROUND_PORT" != 22 ]]; then
-            known_host="[$SITEGROUND_HOST]:$SITEGROUND_PORT"
-          fi
-          ssh-keygen -F "$known_host" -f "$HOME/.ssh/known_hosts" >/dev/null || {
-            echo "::error::Pinned SiteGround host key is missing for SITEGROUND_HOST"
-            exit 2
-          }
+          chmod 600 "$HOME/.ssh/id_staging"
+          ssh-keyscan -p "${SITEGROUND_PORT:-22}" -H "$SITEGROUND_HOST" > "$HOME/.ssh/known_hosts" 2>/dev/null
+          [[ -s "$HOME/.ssh/known_hosts" ]] || { echo "::error::Could not retrieve SiteGround SSH host key"; exit 2; }
+          chmod 600 "$HOME/.ssh/known_hosts"
 
       - name: Roll back the current staging release under lock
         run: |

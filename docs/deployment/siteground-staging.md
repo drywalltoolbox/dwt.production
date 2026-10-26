@@ -24,11 +24,10 @@ Configure the protected environment named `staging` with these secrets:
 | `SITEGROUND_STAGING_SSH_PORT` | SSH port; defaults to 22 |
 | `SITEGROUND_STAGING_SSH_USER` | Staging-scoped SSH user |
 | `SITEGROUND_STAGING_SSH_PRIVATE_KEY` | SSH private key |
-| `SITEGROUND_STAGING_SSH_KNOWN_HOSTS` | Prevalidated host-key entry for the configured host and port |
 | `SITEGROUND_STAGING_PUBLIC_DIR` | Absolute path to `public_html/staging` |
 | `SITEGROUND_STAGING_RELEASE_DIR` | Existing private writable path outside `public_html` |
 
-The publisher pins the configured SSH host key. Do not disable host-key checking or put credentials in workflow inputs or source control.
+The publisher retrieves the SSH host key for the configured host and port at the start of each job, then requires strict host-key checking for every SSH connection in that job. Do not disable host-key checking or put credentials in workflow inputs or source control.
 
 ## Server-side behavior and limits
 
