@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import RepairGuarantees from './RepairGuarantees';
-import repairHeroUrl from '../assets/media/home/home-repairs-hero-desktop.webp';
+import repairHeroUrl from '../assets/media/home/home-repairs-hero-desktop-1600.webp';
 import repairHeroMobileUrl from '../assets/media/home/home-hero-repairs-mobile.jpg';
 
 function Arrow() {

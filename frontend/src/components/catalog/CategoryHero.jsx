@@ -15,7 +15,7 @@ export function CategoryHeroSkeleton() {
   );
 }
 
-/** Category display only; catalog, filters, merchandising and routes remain unchanged. */
+/** Renders a taxonomy category hero and brand-scoped merchandising context. */
 export default function CategoryHero({
   category,
   breadcrumbs = [],
@@ -34,6 +34,7 @@ export default function CategoryHero({
       breadcrumbs={breadcrumbs}
       products={products}
       brands={brands}
+      brand={brand}
       onAddToCart={onAddToCart}
       onOpenProduct={onOpenProduct}
     />;

@@ -371,6 +371,10 @@ export default function ProductsCategorySelector({
               className="product-brand-header-logo"
             />
           )}
+          <div className="product-selector-header-copy">
+            <h1>Shop {brand} by category</h1>
+            <p>Choose a category to browse this brand’s products.</p>
+          </div>
         </div>
       </div>
 

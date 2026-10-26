@@ -2,9 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import RepairHero from '../RepairHero';
 import { HOME_HERO_CAMPAIGNS, HOME_HERO_CAMPAIGN_COUNT } from './homeHeroCampaigns.js';
-import homeHeroDesktop1600Url from '@assets/media/home/home-hero-desktop-1600.webp';
+import homeHeroDesktop1920Url from '@assets/media/home/home-hero-desktop-1920.webp';
 import homeHeroMobileUrl from '@assets/media/home/home-hero-mobile-640.webp';
-import homeRepairsHeroDesktopUrl from '@assets/media/home/home-repairs-hero-desktop.webp';
+import homeRepairsHeroDesktopUrl from '@assets/media/home/home-repairs-hero-desktop-1600.webp';
 import homeRepairsHeroMobileUrl from '@assets/media/home/home-hero-repairs-mobile.jpg';
 import '../../styles/repair-hero-shared.css';
 
@@ -15,7 +15,7 @@ const POINTER_IDLE_MS = 3000;
 
 function HomeHeroSlide({ campaign, reduceMotion, isActive, isEntering = false, isExiting = false }) {
   const isRepairs = campaign.id === 'repairs';
-  const heroImage = isRepairs ? homeRepairsHeroDesktopUrl : homeHeroDesktop1600Url;
+  const heroImage = isRepairs ? homeRepairsHeroDesktopUrl : homeHeroDesktop1920Url;
   const mobileHeroImage = isRepairs ? homeRepairsHeroMobileUrl : homeHeroMobileUrl;
   const slideDuration = reduceMotion ? 100 : HERO_CROSSFADE_DURATION_MS;
   const slideClassName = [
@@ -69,7 +69,7 @@ export default function HomeHero() {
     const mobileViewport = window.matchMedia('(max-width: 640px)').matches;
     const incomingUrl = activeCampaign.id === 'repairs'
       ? (mobileViewport ? homeRepairsHeroMobileUrl : homeRepairsHeroDesktopUrl)
-      : (mobileViewport ? homeHeroMobileUrl : homeHeroDesktop1600Url);
+      : (mobileViewport ? homeHeroMobileUrl : homeHeroDesktop1920Url);
     const incomingImage = new window.Image();
     let cancelled = false;
     let settled = false;

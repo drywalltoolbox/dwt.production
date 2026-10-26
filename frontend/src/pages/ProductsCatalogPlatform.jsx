@@ -525,7 +525,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   const categorySeoTitle = searchQuery
     ? `Search: ${searchQuery}`
     : isCategoryPageRoute
-      ? (categoryMeta?.label || (categoryMetaError ? 'Category not found' : 'Loading category…'))
+      ? `${selectedBrandFacet?.label ? `${selectedBrandFacet.label} ` : ''}${categoryMeta?.label || (categoryMetaError ? 'Category not found' : 'Loading category…')}`
       : pageHeading;
   const categorySeoDescription = isCategoryPageRoute
     ? (categoryMeta?.description || seoDescription)

@@ -3,13 +3,14 @@ import { Link } from 'react-router-dom';
 import { getBrandLogo } from '../../utils/brandAssets.js';
 import ProductRating from '../product/ProductRating.jsx';
 import ToolSetComparison from './ToolSetComparison.jsx';
+import { buildCategoryPageUrl } from '../../utils/catalogFacets.js';
 import '../../styles/tool-sets-kits-experience.css';
 
 const IMAGE_ROOT = 'https://drywalltoolbox.com/wp/wp-content/uploads/2026/categories/thumbnails';
 const WORKFLOWS = [
   { title: 'Hand finishing', description: 'Tell our team what you finish by hand. We will help identify a suitable setup while the catalog has no dedicated hand-tool range.', to: '/contact?inquiry=product_guidance&topic=hand-finishing', action: 'Ask for setup help' },
-  { title: 'Semi-auto upgrade', description: 'Start with banjo tapers and semi-automatic tools while keeping familiar finishing methods.', to: '/products?display_category=semi-automatic-tapers-banjos', action: 'Shop semi-auto tapers' },
-  { title: 'Flat-box setup', description: 'Compare flat boxes first, then check the required handle and loading equipment.', to: '/products?display_category=flat-boxes', action: 'Shop flat boxes' },
+  { title: 'Semi-auto upgrade', description: 'Start with banjo tapers and semi-automatic tools while keeping familiar finishing methods.', category: 'semi-automatic-tapers-banjos', action: 'Shop semi-auto tapers' },
+  { title: 'Flat-box setup', description: 'Compare flat boxes first, then check the required handle and loading equipment.', category: 'flat-boxes', action: 'Shop flat boxes' },
   { title: 'Full automatic system', description: 'Compare listed taping, loading, flat, and corner tools in the sets below.', to: '#dtb-set-comparison-title', action: 'Compare sets' },
 ];
 
@@ -22,7 +23,7 @@ function productPrice(product) {
   return Number.isFinite(amount) && amount > 0 ? amount : null;
 }
 
-export default function ToolSetsKitsExperience({ category, breadcrumbs = [], products = [], brands = [], onAddToCart, onOpenProduct }) {
+export default function ToolSetsKitsExperience({ category, breadcrumbs = [], products = [], brands = [], brand = '', onAddToCart, onOpenProduct }) {
   const featured = products.slice(0, 4);
   const trustedBrands = brands
     .map((brand) => ({ name: brand.name || brand.label, src: getBrandLogo(brand.name || brand.label) || brand.logo, to: `/products/brands/${brand.slug}` }))
@@ -53,13 +54,13 @@ export default function ToolSetsKitsExperience({ category, breadcrumbs = [], pro
           <span>Start with individual tools, an upgrade path, or a complete set.</span>
         </header>
         <div className="dtb-toolsets-system-grid">
-          {WORKFLOWS.map(({ title, description, to, action }) => (
-            to.startsWith('#') ? <a className="dtb-toolsets-system" href={to} key={title}>
-              <div className="dtb-toolsets-system__body"><div className="dtb-toolsets-system__copy"><h3>{title}</h3><p>{description}</p><span className="dtb-toolsets-system__destination">{action}</span></div><span className="dtb-toolsets-system__action"><ArrowRight aria-hidden="true" /></span></div>
-            </a> : <Link className="dtb-toolsets-system" to={to} key={title}>
-              <div className="dtb-toolsets-system__body"><div className="dtb-toolsets-system__copy"><h3>{title}</h3><p>{description}</p><span className="dtb-toolsets-system__destination">{action}</span></div><span className="dtb-toolsets-system__action"><ArrowRight aria-hidden="true" /></span></div>
-            </Link>
-          ))}
+          {WORKFLOWS.map(({ title, description, to, category: categorySlug, action }) => {
+            const destination = categorySlug ? buildCategoryPageUrl(categorySlug, brand) : to;
+            const content = <div className="dtb-toolsets-system__body"><div className="dtb-toolsets-system__copy"><h3>{title}</h3><p>{description}</p><span className="dtb-toolsets-system__destination">{action}</span></div><span className="dtb-toolsets-system__action"><ArrowRight aria-hidden="true" /></span></div>;
+            return destination.startsWith('#')
+              ? <a className="dtb-toolsets-system" href={destination} key={title}>{content}</a>
+              : <Link className="dtb-toolsets-system" to={destination} key={title}>{content}</Link>;
+          })}
         </div>
 
         <ToolSetComparison products={products} />
