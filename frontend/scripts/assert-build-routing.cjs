@@ -187,23 +187,26 @@ for (const logicalName of ['main.js', 'main.css', 'runtime.js']) {
   }
 }
 
-// The responsive homepage art is an LCP contract: both independently sized
-// sources must be emitted with a content hash. Do not accept a generic
-// home-hero match here; that would allow one viewport to silently regress.
-const requiredHomeHeroAssets = [
-  'home-hero-mobile-640',
-  'home-hero-desktop-1600',
+// Hero art is a production contract: the homepage campaign slides and the
+// Repair Services landing page must each emit the exact imported responsive
+// artwork with a content hash. Keep this list aligned with the source imports.
+const requiredHeroAssets = [
+  { logicalName: 'home-hero-mobile-640', extension: 'webp' },
+  { logicalName: 'home-hero-desktop-1920', extension: 'webp' },
+  { logicalName: 'home-repairs-hero-desktop-1600', extension: 'webp' },
+  { logicalName: 'home-hero-repairs-mobile', extension: 'jpg' },
+  { logicalName: 'repair-hero', extension: 'webp' },
 ];
-const emittedHomeHeroAssets = requiredHomeHeroAssets.map((logicalName) => {
-  const expectedAsset = new RegExp(`/assets/images/${logicalName}\\.[a-f0-9]{8}\\.webp$`, 'i');
+const emittedHeroAssets = requiredHeroAssets.map(({ logicalName, extension }) => {
+  const expectedAsset = new RegExp(`/assets/images/${logicalName}\\.[a-f0-9]{8}\\.${extension}$`, 'i');
   const assetPath = Object.values(manifest.files || {}).find((candidate) => expectedAsset.test(candidate));
   if (!assetPath) {
     throw new Error(`The asset manifest is missing the content-hashed ${logicalName} image.`);
   }
   return assetPath;
 });
-if (appEnv === 'staging' && emittedHomeHeroAssets.some((p) => !p.startsWith('/staging/'))) {
-  throw new Error('The staging home hero asset must be emitted below /staging/.');
+if (appEnv === 'staging' && emittedHeroAssets.some((p) => !p.startsWith('/staging/'))) {
+  throw new Error('Every staging hero asset must be emitted below /staging/.');
 }
 
 const lazyAssets = Object.values(manifest.files || {}).filter((assetPath) => /\.chunk\.(?:js|css)$/i.test(assetPath));
