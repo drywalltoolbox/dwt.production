@@ -20,6 +20,7 @@ export default function CategoryHero({
   category,
   breadcrumbs = [],
   activeFilters = [],
+  brand = '',
   onRemoveFilter = null,
   products = [],
   brands = [],
@@ -48,7 +49,7 @@ export default function CategoryHero({
         activeFilters={activeFilters}
         onRemoveFilter={onRemoveFilter}
       />
-      <CategoryMerchandising category={category} />
+      <CategoryMerchandising category={category} brand={brand} />
     </>
   );
 }

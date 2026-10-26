@@ -5,7 +5,7 @@ import { getCategoryMerchandising, resolveIntentTarget } from '../../data/catego
 import '../../styles/category-merchandising.css';
 import '../../styles/contractor-shopping.css';
 
-function IntentCard({ intent, target }) {
+function IntentCard({ intent, target, brand }) {
   const hasRoutableTarget = Boolean(target?.slug);
   const content = (
     <>
@@ -29,13 +29,13 @@ function IntentCard({ intent, target }) {
   }
 
   return (
-    <Link className="dtb-category-intent-card" to={buildCategoryPageUrl(target.slug)}>
+    <Link className="dtb-category-intent-card" to={buildCategoryPageUrl(target.slug, brand)}>
       {content}
     </Link>
   );
 }
 
-export default function CategoryMerchandising({ category }) {
+export default function CategoryMerchandising({ category, brand = '' }) {
   const config = getCategoryMerchandising(category);
   if (!config) return null;
 
@@ -63,6 +63,7 @@ export default function CategoryMerchandising({ category }) {
                 key={intent.label}
                 intent={intent}
                 target={resolveIntentTarget(intent, children)}
+                brand={brand}
               />
             ))}
           </div>

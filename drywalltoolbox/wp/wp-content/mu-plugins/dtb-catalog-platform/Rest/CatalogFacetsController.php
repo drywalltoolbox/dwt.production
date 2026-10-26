@@ -145,6 +145,7 @@ final class DTB_CatalogFacetsController {
 		$brands            = [];
 		$categories        = [];
 		$display_by_brand  = [];
+		$product_category_counts = [];
 		$page              = 1;
 		$per_page          = 100;
 
@@ -185,6 +186,16 @@ final class DTB_CatalogFacetsController {
 			foreach ( $raw_products as $raw ) {
 				if ( ! is_array( $raw ) ) {
 					continue;
+				}
+
+				foreach ( (array) ( $raw['categories'] ?? [] ) as $product_category ) {
+					if ( ! is_array( $product_category ) ) {
+						continue;
+					}
+					$product_category_slug = sanitize_title( (string) ( $product_category['slug'] ?? '' ) );
+					if ( '' !== $product_category_slug ) {
+						$product_category_counts[ $product_category_slug ] = ( $product_category_counts[ $product_category_slug ] ?? 0 ) + 1;
+					}
 				}
 
 				$dto      = dtb_catalog_normalize_product( $raw );
@@ -248,13 +259,57 @@ final class DTB_CatalogFacetsController {
 			usort( $display_result[ $brand_key ], static fn ( $a, $b ): int => strcmp( (string) $a['label'], (string) $b['label'] ) );
 		}
 
+		$navigation_groups = DTB_CatalogNavigationService::get_groups();
+		if ( '' !== trim( (string) ( $scope['brand'] ?? '' ) ) ) {
+			$navigation_groups = self::scope_navigation_groups_to_products( $navigation_groups, $product_category_counts );
+		}
+
 		return [
 			'contractVersion'          => DTB_CatalogNavigationService::CONTRACT_VERSION,
 			'brands'                   => $brands,
 			'categories'               => $categories,
 			'displayCategoriesByBrand' => $display_result,
-			'navigationGroups'         => DTB_CatalogNavigationService::get_groups(),
+			'navigationGroups'         => $navigation_groups,
 		];
+	}
+
+	/**
+	 * Return only canonical category groups that contain products in the
+	 * requested facet scope. The registry still owns names/order; the scoped
+	 * WooCommerce product result owns the counts.
+	 *
+	 * @param array<int,array<string,mixed>> $groups
+	 * @param array<string,int>              $product_category_counts
+	 * @return array<int,array<string,mixed>>
+	 */
+	private static function scope_navigation_groups_to_products( array $groups, array $product_category_counts ): array {
+		$scoped_groups = [];
+
+		foreach ( $groups as $group ) {
+			$children = [];
+			foreach ( (array) ( $group['children'] ?? [] ) as $child ) {
+				$slug  = sanitize_title( (string) ( $child['slug'] ?? '' ) );
+				$count = absint( $product_category_counts[ $slug ] ?? 0 );
+				if ( '' === $slug || $count < 1 ) {
+					continue;
+				}
+				$child['productCount'] = $count;
+				$children[]            = $child;
+			}
+
+			$group_slug  = sanitize_title( (string) ( $group['slug'] ?? '' ) );
+			$direct_count = absint( $product_category_counts[ $group_slug ] ?? 0 );
+			$child_count  = array_sum( array_map( static fn( array $child ): int => absint( $child['productCount'] ?? 0 ), $children ) );
+			if ( $direct_count < 1 && $child_count < 1 ) {
+				continue;
+			}
+
+			$group['productCount'] = $direct_count + $child_count;
+			$group['children']     = $children;
+			$scoped_groups[]       = $group;
+		}
+
+		return $scoped_groups;
 	}
 
 	/** @return int|null */

@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 
 final class DTB_CatalogNavigationService {
 
-	public const CONTRACT_VERSION = '2.2';
+	public const CONTRACT_VERSION = '2.3';
 
 	private const REGISTRY_PATH = __DIR__ . '/../Resources/catalog-taxonomy.json';
 

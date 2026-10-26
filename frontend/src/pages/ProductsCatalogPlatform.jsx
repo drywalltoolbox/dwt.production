@@ -36,6 +36,7 @@ import {
   buildCategoryPageUrl,
   dedupeCatalogBrandEntries,
   flattenCatalogNavigationGroups,
+  normalizeCatalogNavigationGroups,
   normalizeDisplayCategorySlug,
 } from '../utils/catalogFacets.js';
 import { searchProducts } from '../services/catalog.js';
@@ -394,10 +395,15 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
 
   const brandCategoryCards = useMemo(() => {
     if (!selectedBrand) return [];
-    const byBrand = getDisplayCategoriesForBrand(facets?.displayCategoriesByBrand, selectedBrandFacet, selectedBrand, brandSlug);
-    if (!Array.isArray(byBrand)) return [];
-    return mergeCategoryEntries(byBrand);
-  }, [brandSlug, facets, selectedBrand, selectedBrandFacet]);
+    return normalizeCatalogNavigationGroups(facets?.navigationGroups)
+      .filter((group) => group.count > 0)
+      .map((group) => ({
+        ...group,
+        name: group.label,
+        key: group.key || group.slug,
+        preview: group.image ? { url: group.image } : undefined,
+      }));
+  }, [facets?.navigationGroups, selectedBrand]);
 
   const selectedDisplayCategories = useMemo(
     () => query.displayCategory || [],
@@ -464,7 +470,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
       : `${isPartsPage ? 'Replacement parts and service components' : 'All brands and categories'}${total > 0 ? ` · ${total.toLocaleString()} product${total === 1 ? '' : 's'}` : ''}`;
   const canonicalCategorySlug = categoryPathSlug || query.category || '';
   const canonicalUrl = canonicalCategorySlug
-    ? buildCategoryPageUrl(canonicalCategorySlug)
+    ? buildCategoryPageUrl(canonicalCategorySlug, selectedBrand)
     : (isPartsPage ? '/parts' : '/products');
   const seoDescription = searchQuery
     ? `Products matching “${searchQuery}” in the Drywall Toolbox catalog.`
@@ -474,23 +480,31 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
 
   const categoryBreadcrumbs = useMemo(() => {
     if (!isCategoryPageRoute || !categoryMeta) return [];
+    const brandFilter = selectedBrandFacet?.slug || selectedBrand;
     const crumbs = [{ label: 'Home', path: '/' }];
     if (categoryMeta.parent?.slug) {
-      crumbs.push({ label: categoryMeta.parent.label, path: buildCategoryPageUrl(categoryMeta.parent.slug) });
+      crumbs.push({ label: categoryMeta.parent.label, path: buildCategoryPageUrl(categoryMeta.parent.slug, brandFilter) });
     }
-    crumbs.push({ label: categoryMeta.label, path: buildCategoryPageUrl(categoryPathSlug) });
+    crumbs.push({ label: categoryMeta.label, path: buildCategoryPageUrl(categoryPathSlug, brandFilter) });
     return crumbs;
-  }, [categoryMeta, categoryPathSlug, isCategoryPageRoute]);
+  }, [categoryMeta, categoryPathSlug, isCategoryPageRoute, selectedBrand, selectedBrandFacet]);
 
   const categoryToolTypes = useMemo(
-    () => (Array.isArray(categoryMeta?.children) ? categoryMeta.children : [])
-      .map((child) => ({
-        ...child,
-        name: child?.label || child?.name || '',
-        count: Number(child?.productCount || child?.count || 0),
-      }))
-      .filter((child) => child.name && child.slug && child.count > 0),
-    [categoryMeta],
+    () => {
+      const navGroup = normalizeCatalogNavigationGroups(facets?.navigationGroups)
+        .find((group) => group.slug === categoryPathSlug);
+      const children = selectedBrand
+        ? (navGroup?.children || [])
+        : (navGroup?.children?.length ? navGroup.children : (Array.isArray(categoryMeta?.children) ? categoryMeta.children : []));
+      return children
+        .map((child) => ({
+          ...child,
+          name: child?.label || child?.name || '',
+          count: Number(child?.productCount || child?.count || 0),
+        }))
+        .filter((child) => child.name && child.slug && child.count > 0);
+    },
+    [categoryMeta, categoryPathSlug, facets?.navigationGroups, selectedBrand],
   );
 
   const allProductsToolTypes = useMemo(
@@ -726,6 +740,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                 category={categoryMeta}
                 breadcrumbs={categoryBreadcrumbs}
                 activeFilters={activeBreadcrumbFilters}
+                brand={selectedBrandFacet?.slug || selectedBrand}
                 onRemoveFilter={removeBreadcrumbFilter}
                 productCount={total}
                 products={mappedProducts}
@@ -734,7 +749,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                 onOpenProduct={openModal}
               />
               {Array.isArray(categoryMeta.children) && categoryMeta.children.length > 0 && (
-                <ShopByToolType categories={categoryToolTypes} onOpenFilters={() => setShowFilters(true)} />
+                <ShopByToolType categories={categoryToolTypes} parentLabel={categoryMeta.label} brand={selectedBrandFacet?.slug || selectedBrand} onOpenFilters={() => setShowFilters(true)} />
               )}
             </>
           ) : categoryMetaError ? (
@@ -844,7 +859,9 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
               brandLogo={selectedBrandFacet?.logo || getBrandLogo(selectedBrand)}
               categories={brandCategoryCards}
               onBack={resetToBrandList}
-              onSelectCategory={(cat) => navigate(`/products/brands/${selectedBrandFacet?.slug || brandToSlug(selectedBrand)}/categories/${cat.slug}`)}
+              onSelectCategory={(cat) => cat.isAllProducts
+                ? navigate(`/products/brands/${selectedBrandFacet?.slug || brandToSlug(selectedBrand)}/categories/all-products`)
+                : navigate(buildCategoryPageUrl(cat.slug, selectedBrandFacet?.slug || selectedBrand))}
             />
           </LoadingCardTransition>
         ) : (

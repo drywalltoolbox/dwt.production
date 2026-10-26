@@ -7,7 +7,7 @@ import { resolveCategoryThumbnail } from '../../utils/categoryThumbnailImages.js
 import '../../styles/category-hero.css';
 import '../../styles/tool-type-merchandising.css';
 
-function ToolTypeTile({ category, showSelectorChevron = false }) {
+function ToolTypeTile({ category, showSelectorChevron = false, brand = '' }) {
   const [imageFailed, setImageFailed] = useState(false);
   const image = resolveCategoryThumbnail(category);
   const hasImage = Boolean(image) && !imageFailed;
@@ -15,8 +15,8 @@ function ToolTypeTile({ category, showSelectorChevron = false }) {
 
   return (
     <Link
-      to={buildCategoryPageUrl(category.slug)}
-      className={`dtb-tool-type-tile${hasImage ? '' : ' dtb-tool-type-tile--no-image'}`}
+      to={buildCategoryPageUrl(category.slug, brand)}
+      className={`dtb-tool-type-tile${hasImage ? '' : ' dtb-tool-type-tile--no-image'}${showSelectorChevron ? ' dtb-tool-type-tile--selector' : ''}`}
     >
       <span className="dtb-tool-type-tile__media">
         {hasImage ? (
@@ -33,6 +33,7 @@ function ToolTypeTile({ category, showSelectorChevron = false }) {
         )}
       </span>
       <span className="dtb-tool-type-tile__label">{category.name}</span>
+      {Number(category.count) > 0 && <span className="dtb-tool-type-tile__count">{Number(category.count).toLocaleString()} products</span>}
       {description && !showSelectorChevron && <span className="dtb-tool-type-tile__description">{description}</span>}
       {showSelectorChevron && <ChevronRight size={15} strokeWidth={2} className="dtb-tool-type-tile__chevron" aria-hidden="true" />}
     </Link>
@@ -54,7 +55,7 @@ function ToolTypeTile({ category, showSelectorChevron = false }) {
  * layout stability and fitment; the image element must not assert a legacy
  * 348x128 intrinsic ratio.
  */
-export default function ShopByToolType({ categories = [], onOpenFilters }) {
+export default function ShopByToolType({ categories = [], onOpenFilters, parentLabel = '', brand = '' }) {
   const location = useLocation();
   const items = Array.isArray(categories) ? categories : [];
   const isAllProductsRoute = location.pathname === '/products';
@@ -73,8 +74,8 @@ export default function ShopByToolType({ categories = [], onOpenFilters }) {
     <div className={`dtb-tool-type-section mb-6 sm:mb-8${isAllProductsRoute ? ' dtb-tool-type-section--all-products' : ''}`}>
       <div className="storefront-section__head">
         <div className="storefront-section__head-text">
-          <h2 className="storefront-section__title">Shop by Tool Type</h2>
-          <p className="storefront-section__subtitle">Go directly to the tool family you need, then refine by brand and product attributes.</p>
+          <h2 className="storefront-section__title">{parentLabel ? `Shop ${parentLabel} by Category` : 'Shop by Tool Type'}</h2>
+          <p className="storefront-section__subtitle">{parentLabel ? `Choose a ${parentLabel.toLowerCase()} category to browse products.` : 'Go directly to the tool family you need, then refine by brand and product attributes.'}</p>
         </div>
         <a href="#dtb-category-filters" className="storefront-section__view-all" onClick={handleViewAll}>
           View all tool types
@@ -82,11 +83,11 @@ export default function ShopByToolType({ categories = [], onOpenFilters }) {
         </a>
       </div>
 
-      <StorefrontRail label="Shop by tool type" className="dtb-tool-type-rail">
-        {items.map((category) => (
-          <ToolTypeTile key={category.slug} category={category} showSelectorChevron={isAllProductsRoute} />
-        ))}
-        {isAllProductsRoute && (
+      {isAllProductsRoute ? (
+        <StorefrontRail label="Shop by tool type" className="dtb-tool-type-rail">
+          {items.map((category) => (
+            <ToolTypeTile key={category.slug} category={category} showSelectorChevron brand={brand} />
+          ))}
           <a
             href="#dtb-category-filters"
             className="dtb-tool-type-view-all"
@@ -98,8 +99,12 @@ export default function ShopByToolType({ categories = [], onOpenFilters }) {
             </span>
             <span>View All<br />Categories</span>
           </a>
-        )}
-      </StorefrontRail>
+        </StorefrontRail>
+      ) : (
+        <div className="dtb-tool-type-grid" aria-label={`${parentLabel || 'Product'} categories`}>
+          {items.map((category) => <ToolTypeTile key={category.slug} category={category} brand={brand} />)}
+        </div>
+      )}
     </div>
   );
 }

@@ -46,8 +46,10 @@ export function buildCatalogCategoryUrl(slug) {
   return `/products?category=${encodeURIComponent(canonicalCatalogCategorySlug(slug))}`;
 }
 
-export function buildCategoryPageUrl(slug) {
-  return `/category/${encodeURIComponent(canonicalCatalogCategorySlug(slug))}`;
+export function buildCategoryPageUrl(slug, brand = '') {
+  const path = `/category/${encodeURIComponent(canonicalCatalogCategorySlug(slug))}`;
+  const brandSlug = brandToSlug(brand);
+  return brandSlug ? `${path}?brand=${encodeURIComponent(brandSlug)}` : path;
 }
 
 export function normalizeCatalogBrandEntry(rawBrand = {}) {
