@@ -10,8 +10,8 @@
   --dtb-shell: #0a1020;
   --dtb-shell-2: #121a2f;
   --dtb-drawer-bg: #020617;
-  --dtb-primary: #2255ee;
-  --dtb-primary-strong: #1945d8;
+  --dtb-primary: #2255EE;
+  --dtb-primary-strong: #2255EE;
   --dtb-primary-soft: #eef3ff;
   --dtb-text: #0f172a;
   --dtb-text-soft: #334155;
@@ -21,7 +21,7 @@
   --dtb-danger: #b42318;
   --dtb-success: #16794b;
   --dtb-warning: #9a6700;
-  --dtb-focus: #2255ee;
+  --dtb-focus: #2255EE;
 
   /* Fluid viewport and content constraints. */
   --dtb-viewport-gutter: clamp(1rem, 0.56rem + 1.42vw, 2rem);

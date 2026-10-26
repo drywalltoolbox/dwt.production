@@ -16,7 +16,7 @@
 .dtb-product-page-shell .dtb-pdp-gallery {
   --dtb-gallery-line: #e2e8f0;
   --dtb-gallery-line-strong: #cbd5e1;
-  --dtb-gallery-blue: #1f55ee;
+  --dtb-gallery-blue: var(--dtb-primary);
   --dtb-gallery-ink: #172033;
   min-width: 0;
 }

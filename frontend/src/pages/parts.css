@@ -8,7 +8,7 @@
 
 .dtb-parts-hero {
   --parts-hero-navy: #061c3d;
-  --parts-hero-blue: #0878ff;
+  --parts-hero-blue: var(--dtb-primary);
   position: relative;
   width: 100%;
   overflow: hidden;

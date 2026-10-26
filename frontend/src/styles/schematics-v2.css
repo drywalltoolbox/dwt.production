@@ -889,12 +889,12 @@
 }
 .hotspot-modal-title-link:hover,
 .hotspot-modal-title-link:focus-visible {
-  color: var(--dtb-primary, #2563eb) !important;
+  color: var(--dtb-primary, #2255EE) !important;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 .hotspot-modal-title-link:focus-visible {
-  outline: 2px solid var(--dtb-primary, #2563eb);
+  outline: 2px solid var(--dtb-primary, #2255EE);
   outline-offset: 1px;
   border-radius: 2px;
 }
@@ -1082,14 +1082,14 @@
   font-family: 'Courier New', monospace;
   font-weight: 800;
   font-size: clamp(14px, 3vw, 18px);
-  color: #2563eb;
+  color: #2255EE;
   white-space: nowrap;
 }
 
 .schematic-hotspot-card__cta {
   flex-shrink: 0;
   padding: clamp(8px, 1.5vw, 10px) clamp(12px, 2vw, 16px);
-  background: #2563eb;
+  background: #2255EE;
   color: #ffffff;
   border: none;
   border-radius: clamp(6px, 1.5vw, 8px);
@@ -1103,7 +1103,7 @@
 }
 
 .schematic-hotspot-card__cta:hover:not(:disabled) {
-  background: #1d4ed8;
+  background: #2255EE;
   box-shadow: 0 4px 8px rgba(37, 99, 235, 0.3);
 }
 

@@ -5,8 +5,8 @@
   --auth-muted: #71717a;
   --auth-border: #e4e4e7;
   --auth-border-strong: #d4d4d8;
-  --auth-accent: #2255ee;
-  --auth-accent-hover: #2255ee;
+  --auth-accent: var(--dtb-primary);
+  --auth-accent-hover: var(--dtb-primary);
   --auth-danger: #b91c1c;
   --auth-focus: rgba(34, 85, 238, 0.18);
   display: flex;

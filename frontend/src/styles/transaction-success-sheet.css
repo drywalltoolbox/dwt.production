@@ -1,5 +1,5 @@
 .dtb-success-sheet {
-  --dtb-success-accent: #2255ee;
+  --dtb-success-accent: var(--dtb-primary);
   --dtb-success-green: #16a34a;
   width: 100%;
   max-width: 760px;

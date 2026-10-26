@@ -13,7 +13,7 @@
   --dtb-order-text: #111827;
   --dtb-order-muted: #64748b;
   --dtb-order-soft: #f8fafc;
-  --dtb-order-blue: #2255ee;
+  --dtb-order-blue: var(--dtb-primary);
 
   min-height: 100dvh;
   padding: clamp(1.4rem, 3vw, 2.8rem) 0 clamp(2.25rem, 4vw, 4rem);

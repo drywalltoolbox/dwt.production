@@ -342,7 +342,7 @@
 }
 .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading button:hover { background: #f8faff; }
 .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading button:focus-visible {
-  outline: 2px solid #1f55ee; outline-offset: -3px;
+  outline: 2px solid #2255EE; outline-offset: -3px;
 }
 .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading svg {
   flex-shrink: 0;

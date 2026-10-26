@@ -168,7 +168,7 @@
 .dtb-legal-document__section a { text-decoration: underline; text-underline-offset: .18em; }
 .dtb-legal-toc__links a[aria-current="location"] { color: #1748cc; background: #edf3ff; font-weight: 700; }
 .dtb-legal-page a:focus-visible,
-.dtb-legal-page select:focus-visible { outline: 3px solid #2563eb; outline-offset: 3px; }
+.dtb-legal-page select:focus-visible { outline: 3px solid #2255EE; outline-offset: 3px; }
 @media print {
   .dtb-legal-toc, .dtb-legal-document__links { display: none !important; }
   .dtb-legal-page, .dtb-legal-hero, .dtb-legal-document { color: #000 !important; background: #fff !important; }

@@ -8,7 +8,7 @@ const CATEGORY_INTENT_CONFIG = {
       { label: 'Load', description: 'Move compound into tapers, boxes, and corner tools.', targetSlugs: ['pumps', 'mud-pans-and-pumps'] },
       { label: 'Finish flats', description: 'Finish flat joints with controlled compound application.', targetSlugs: ['finishing-boxes', 'flat-boxes'] },
       { label: 'Finish corners', description: 'Roll, apply, and finish inside corners.', targetSlugs: ['corner-tools', 'angle-heads', 'automatic-angle-heads'] },
-      { label: 'Complete systems', description: 'Shop coordinated tool sets for a complete workflow.', targetSlugs: ['tool-sets-kits', 'automatic-tool-sets', 'tool-sets-and-kits', 'toolsets'] },
+      { label: 'Complete systems', description: 'Shop coordinated automatic tool sets for a complete workflow.', targetSlugs: ['automatic-tool-sets-kits', 'tool-sets-kits', 'automatic-tool-sets', 'tool-sets-and-kits', 'toolsets'] },
     ],
   },
   'semi-automatic-tools': {
@@ -20,6 +20,7 @@ const CATEGORY_INTENT_CONFIG = {
       { label: 'Compound tubes', description: 'Manual-pressure compound delivery for finishing tools.', targetSlugs: ['compound-tubes', 'automatic-compound-tubes'] },
       { label: 'Applicator heads', description: 'Pair compatible heads with compound delivery tools.', targetSlugs: ['applicator-heads', 'compound-applicators', 'automatic-compound-applicators'] },
       { label: 'Corner flushers', description: 'Finish inside corners efficiently after application.', targetSlugs: ['corner-flushers', 'automatic-corner-flushers'] },
+      { label: 'Tool sets & kits', description: 'Shop coordinated semi-automatic tool sets for corner finishing and compound application.', targetSlugs: ['semi-automatic-tool-sets-kits'] },
     ],
     guide: {
       title: 'Where semi-automatic tools fit',
@@ -50,6 +51,12 @@ const CATEGORY_INTENT_CONFIG = {
         { label: 'Commerce facts', detail: 'Use the live product listing and product details for current price, availability, warranty, and any real set savings.' },
       ],
     },
+  },
+  'automatic-tool-sets-kits': {
+    aliasOf: 'automatic-tool-sets',
+  },
+  'semi-automatic-tool-sets-kits': {
+    aliasOf: 'semi-automatic-tools',
   },
   toolsets: {
     aliasOf: 'automatic-tool-sets',

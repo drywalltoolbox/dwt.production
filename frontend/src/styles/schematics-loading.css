@@ -40,7 +40,7 @@
     rgba(34, 85, 238, 0.08) 0deg,
     rgba(34, 85, 238, 0.18) 115deg,
     var(--dtb-primary, #2255ee) 300deg,
-    var(--dtb-primary-strong, #1945d8) 360deg
+    var(--dtb-primary-strong, #2255EE) 360deg
   );
   box-shadow: 0 5px 18px rgba(34, 85, 238, 0.12);
   animation: dtb-schematic-loader-spin 820ms linear infinite;

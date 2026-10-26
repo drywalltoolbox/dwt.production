@@ -10,8 +10,8 @@
   --repair-muted: #64748b;
   --repair-line: #dfe5ec;
   --repair-soft: #f6f8fb;
-  --repair-blue: #2255ee;
-  --repair-blue-dark: #1745cc;
+  --repair-blue: var(--dtb-primary);
+  --repair-blue-dark: var(--dtb-primary);
   --repair-shell: 1280px;
 }
 

@@ -574,7 +574,7 @@
 }
 .storefront-cart-sheet--premium .scs-count {
   min-width: 23px; height: 23px; padding-inline: 6px;
-  font-size: 12px; background: var(--dtb-primary, #2457de);
+  font-size: 12px; background: var(--dtb-primary, #2255EE);
 }
 .storefront-cart-sheet--premium .scs-clear-cart {
   min-height: 40px; padding: 0 12px;
@@ -665,14 +665,14 @@
 .storefront-cart-sheet--premium .scs-checkout-btn {
   min-height: 54px;
   border-radius: 12px; font-size: 15px;
-  background: linear-gradient(105deg, #193a67, var(--dtb-primary, #2457de));
+  background: linear-gradient(105deg, #193a67, var(--dtb-primary, #2255EE));
   box-shadow: 0 8px 20px rgb(27 72 175 / 17%);
 }
 .storefront-cart-sheet--premium .scs-view-cart-btn {
   min-height: 48px; border-radius: 12px; border: 1px solid var(--scs-edge);
 }
 .storefront-cart-sheet--premium :is(a, button):focus-visible {
-  outline: 3px solid var(--dtb-primary, #2457de);
+  outline: 3px solid var(--dtb-primary, #2255EE);
   outline-offset: 3px;
 }
 @media (max-width: 480px) {
@@ -704,7 +704,7 @@
   line-height: 1.45;
 }
 .storefront-cart-sheet--premium .scs-shipping-progress__message strong {
-  color: var(--dtb-primary, #2457de);
+  color: var(--dtb-primary, #2255EE);
   font-weight: 750;
 }
 .storefront-cart-sheet--premium .scs-shipping-progress__track {
@@ -717,7 +717,7 @@
   display: block;
   height: 100%;
   border-radius: inherit;
-  background: linear-gradient(90deg, #1c447d, var(--dtb-primary, #2457de));
+  background: linear-gradient(90deg, #1c447d, var(--dtb-primary, #2255EE));
   transition: width 200ms ease;
 }
 @media (max-width: 480px) {
@@ -757,7 +757,7 @@
 }
 
 .storefront-cart-sheet--premium .scs-coupon-toggle svg:first-child {
-  color: var(--dtb-primary, #2457de);
+  color: var(--dtb-primary, #2255EE);
 }
 
 .storefront-cart-sheet--premium .scs-coupon-toggle svg:last-child {
@@ -811,7 +811,7 @@
 }
 
 .storefront-cart-sheet--premium .scs-coupon-form__controls input:focus {
-  border-color: var(--dtb-primary, #2457de);
+  border-color: var(--dtb-primary, #2255EE);
   outline: none;
   box-shadow: 0 0 0 3px rgb(36 87 222 / 12%);
 }
@@ -835,8 +835,8 @@
 }
 
 .storefront-cart-sheet--premium .scs-coupon-form__controls button:hover:not(:disabled) {
-  border-color: var(--dtb-primary, #2457de);
-  background: var(--dtb-primary, #2457de);
+  border-color: var(--dtb-primary, #2255EE);
+  background: var(--dtb-primary, #2255EE);
   color: #fff;
 }
 
@@ -880,7 +880,7 @@
 }
 
 .storefront-cart-sheet--premium .scs-coupon-applied__label svg {
-  color: var(--dtb-primary, #2457de);
+  color: var(--dtb-primary, #2255EE);
 }
 
 .storefront-cart-sheet--premium .scs-coupon-applied__codes {
@@ -997,7 +997,7 @@
 .storefront-cart-sheet--premium .scs-checkout-btn {
   min-height: 54px;
   border-radius: 11px;
-  background: var(--dtb-primary, #2457de);
+  background: var(--dtb-primary, #2255EE);
   box-shadow: 0 8px 20px rgb(36 87 222 / 18%);
 }
 

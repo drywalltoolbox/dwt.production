@@ -32,7 +32,7 @@
 .repair-resources__actions a:last-child { color:var(--repair-blue); }
 
 /* Approved repair landing redesign — visual composition only. */
-.repair-landing { --repair-blue:#146cff; --repair-navy:#06152d; --repair-soft:#f7faff; --repair-line:#d9e4f1; }
+.repair-landing { --repair-blue:var(--dtb-primary); --repair-navy:#06152d; --repair-soft:#f7faff; --repair-line:#d9e4f1; }
 .repair-landing .repair-section-shell { width:min(1320px,calc(100% - 72px)); }
 .repair-landing .repair-eyebrow { margin-bottom:7px; font-size:.66rem; letter-spacing:.13em; }
 
@@ -85,7 +85,7 @@
 .repair-landing .repair-process__step { position:relative; display:block; padding:0 22px 0; border-right:1px solid #e0e7f0; }
 .repair-landing .repair-process__step:first-child { padding-left:0; }
 .repair-landing .repair-process__step:last-child { padding-right:0; border-right:0; }
-.repair-landing .repair-process__number { position:relative; z-index:1; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; margin-bottom:15px; border-radius:50%; background:#146cff; color:#fff; box-shadow:0 0 0 5px #fff; }
+.repair-landing .repair-process__number { position:relative; z-index:1; display:inline-flex; align-items:center; justify-content:center; width:36px; height:36px; margin-bottom:15px; border-radius:50%; background:#2255EE; color:#fff; box-shadow:0 0 0 5px #fff; }
 .repair-landing .repair-process__step h3 { font-size:.86rem; }
 .repair-landing .repair-process__step p { font-size:.72rem; line-height:1.48; }
 

@@ -1,5 +1,5 @@
 .home-hero {
-  --home-hero-blue: #3d6dff;
+  --home-hero-blue: var(--dtb-primary);
   --home-hero-ink: #071329;
   --home-hero-muted: #bac5da;
   --home-hero-glass: rgba(8, 20, 42, 0.58);

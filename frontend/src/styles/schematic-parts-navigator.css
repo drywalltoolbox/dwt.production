@@ -306,7 +306,7 @@
     position: absolute;
     width: 11px;
     height: 11px;
-    border: 1.5px solid #2563eb;
+    border: 1.5px solid #2255EE;
     border-radius: 50%;
     background: rgba(37,99,235,.12);
     top: 50%;
@@ -318,13 +318,13 @@
   .dtb-schematics-page__content--viewer .hotspot--selected:not(.hotspot-rectangle):not(.hotspot-polygon)::after {
     width: 15px;
     height: 15px;
-    border: 2px solid #1d4ed8;
+    border: 2px solid #2255EE;
     background: rgba(37,99,235,.18);
     box-shadow: 0 0 0 3px rgba(37,99,235,.12);
   }
   .dtb-schematics-page__content--viewer .hotspot-rectangle.hotspot--selected,
   .dtb-schematics-page__content--viewer .hotspot-polygon.hotspot--selected {
-    border: 1.5px solid #2563eb;
+    border: 1.5px solid #2255EE;
     background: rgba(37,99,235,.08);
     box-shadow: none;
   }
@@ -395,7 +395,7 @@
     height: 17px;
     box-sizing: border-box;
     transform: translate(-50%, -50%);
-    border: 1.5px solid #2563eb;
+    border: 1.5px solid #2255EE;
     border-radius: 50%;
     background: rgba(37, 99, 235, .07);
     box-shadow: 0 0 0 2px rgba(37, 99, 235, .13);
@@ -426,7 +426,7 @@
     width: 13px;
     height: 13px;
     box-sizing: border-box;
-    border: 1.5px solid #2563eb;
+    border: 1.5px solid #2255EE;
     background: rgba(37, 99, 235, .06);
     box-shadow: 0 0 0 1px rgba(37, 99, 235, .12);
     pointer-events: none;
@@ -573,7 +573,7 @@
     content: none !important;
   }
   .dtb-schematics-page__content--viewer .hotspot:focus-visible {
-    outline: 2px solid #2563eb !important;
+    outline: 2px solid #2255EE !important;
     outline-offset: 2px;
   }
 }

@@ -598,7 +598,7 @@ a.dtb-cart-row__name:hover {
 
 .dtb-cart-sheet__checkout:hover:not([aria-disabled='true']),
 .dtb-cart-empty__action:hover {
-  background: var(--dtb-primary-strong, #1d4ed8);
+  background: var(--dtb-primary-strong, #2255EE);
 }
 
 .dtb-cart-sheet__checkout:hover:not([aria-disabled='true']) {

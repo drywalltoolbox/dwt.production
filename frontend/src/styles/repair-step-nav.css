@@ -10,7 +10,7 @@
   --repair-step-border: #e2e8f0;
   --repair-step-text: #0f172a;
   --repair-step-muted: #64748b;
-  --repair-step-accent: #2255ee;
+  --repair-step-accent: var(--dtb-primary);
   --repair-step-accent-light: #eff6ff;
   --repair-step-done: #16a34a;
   overflow: hidden;

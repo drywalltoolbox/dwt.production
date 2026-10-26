@@ -312,7 +312,7 @@
   display: block;
   width: 21px;
   height: 16px;
-  border: 1.7px solid #2563eb;
+  border: 1.7px solid #2255EE;
   border-radius: 2px;
 }
 
@@ -323,7 +323,7 @@
   top: 3px;
   width: 11px;
   height: 1.5px;
-  background: #2563eb;
+  background: #2255EE;
 }
 
 .repair-track__mail::before {

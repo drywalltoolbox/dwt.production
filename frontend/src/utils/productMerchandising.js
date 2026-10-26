@@ -1,5 +1,7 @@
 const TOOL_SET_CATEGORY_KEYS = new Set([
   'automatic-tool-sets',
+  'automatic-tool-sets-kits',
+  'semi-automatic-tool-sets-kits',
   'toolsets',
   'tool-sets-kits',
   'tool-sets-and-kits',

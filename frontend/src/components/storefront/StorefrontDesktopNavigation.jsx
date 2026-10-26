@@ -116,7 +116,7 @@ function MegaMenuLoadingSpinner({ reducedMotion }) {
   return (
     <svg viewBox="0 0 24 24" style={LOADING_SPINNER_STYLE} aria-hidden="true" focusable="false">
       <circle cx="12" cy="12" r="9" fill="none" stroke="rgba(20, 87, 245, 0.16)" strokeWidth="2.2" />
-      <path d="M12 3a9 9 0 0 1 8.35 5.65" fill="none" stroke="var(--mega-blue, #1457f5)" strokeWidth="2.2" strokeLinecap="round">
+      <path d="M12 3a9 9 0 0 1 8.35 5.65" fill="none" stroke="var(--mega-blue, #2255EE)" strokeWidth="2.2" strokeLinecap="round">
         {!reducedMotion ? (
           <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.9s" repeatCount="indefinite" />
         ) : null}

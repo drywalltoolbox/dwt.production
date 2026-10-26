@@ -8,7 +8,7 @@
 
 .dtb-product-page-shell {
   --dtb-pdp-navy: #071630;
-  --dtb-pdp-blue: #0b57e3;
+  --dtb-pdp-blue: var(--dtb-primary);
   --dtb-pdp-green: #159447;
   --dtb-pdp-text: #172a49;
   --dtb-pdp-muted: #6a7b94;

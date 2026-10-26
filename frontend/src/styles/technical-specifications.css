@@ -15,7 +15,7 @@
   --ts-soft: #f8fafc;
   --ts-line: #e2e8f0;
   --ts-line-strong: #cbd5e1;
-  --ts-blue: #2255ee;
+  --ts-blue: var(--dtb-primary);
   display: grid;
   gap: 0;
   margin: 0.25rem 0 0.5rem;

@@ -8,7 +8,7 @@
 
 .dtb-products-hero {
   --products-hero-navy: #061c3d;
-  --products-hero-blue: #0878ff;
+  --products-hero-blue: var(--dtb-primary);
   position: relative;
   width: 100%;
   overflow: hidden;
@@ -399,7 +399,7 @@
 }
 .dtb-products-page .dtb-tool-type-section--all-products .dtb-tool-type-tile:hover .dtb-tool-type-tile__chevron,
 .dtb-products-page .dtb-tool-type-section--all-products .dtb-tool-type-tile:focus-visible .dtb-tool-type-tile__chevron {
-  color: var(--dtb-primary, #1457f5);
+  color: var(--dtb-primary, #2255EE);
   transform: translateX(2px);
 }
 @media (max-width: 767px) {

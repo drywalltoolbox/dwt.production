@@ -63,7 +63,7 @@
 
 .schematic-hotspot-card__price {
   font-family: inherit;
-  color: #1d4ed8;
+  color: #2255EE;
   font-weight: 800;
   letter-spacing: -0.02em;
 }
@@ -455,7 +455,7 @@
   }
 
   .schematic-hotspot-card__price {
-    color: #1d4ed8;
+    color: #2255EE;
   }
 
   .schematic-hotspot-card__stock-skeleton,

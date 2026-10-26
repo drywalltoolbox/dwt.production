@@ -1,5 +1,5 @@
 {
-  "schema_version": 3,
+  "schema_version": 4,
   "root_taxa": ["automatic_taping_tools", "taping_finishing_tools", "corner_bead_tools", "hanging_tools", "stilts", "replacement_parts", "accessories", "materials_consumables"],
   "taxa": [
     {"key":"automatic_taping_tools","parent_key":null,"label":"Automatic Taping Tools","slug":"automatic-taping-tools","sort":100,"publish_when_empty":false},
@@ -21,7 +21,8 @@
     {"key":"semi_automatic_tapers_banjos","parent_key":"taping_finishing_tools","label":"Semi-Automatic Tapers & Banjos","slug":"semi-automatic-tapers-banjos","sort":310,"publish_when_empty":false},
     {"key":"mud_pans","parent_key":"taping_finishing_tools","label":"Mud Pans","slug":"mud-pans","sort":320,"publish_when_empty":false},
     {"key":"mud_mixing_tools","parent_key":"taping_finishing_tools","label":"Mud Mixing Tools","slug":"mud-mixing-tools","sort":330,"publish_when_empty":false},
-    {"key":"automatic_tool_sets","parent_key":"taping_finishing_tools","label":"Tool Sets & Kits","slug":"tool-sets-kits","sort":340,"publish_when_empty":false},
+    {"key":"automatic_tool_sets_kits","parent_key":"automatic_taping_tools","label":"Automatic Tool Sets & Kits","slug":"automatic-tool-sets-kits","sort":125,"publish_when_empty":false},
+    {"key":"semi_automatic_tool_sets_kits","parent_key":"taping_finishing_tools","label":"Semi-Automatic Tool Sets & Kits","slug":"semi-automatic-tool-sets-kits","sort":340,"publish_when_empty":false},
     {"key":"corner_bead_tools","parent_key":null,"label":"Corner Bead Tools","slug":"corner-bead-tools","sort":400,"publish_when_empty":false},
     {"key":"bead_tools","parent_key":"corner_bead_tools","label":"Bead Hoppers","slug":"bead-hoppers","sort":410,"publish_when_empty":false},
     {"key":"bead_rollers","parent_key":"corner_bead_tools","label":"Corner Bead Rollers","slug":"corner-bead-rollers","sort":420,"publish_when_empty":false},
@@ -34,7 +35,7 @@
     {"key":"accessories","parent_key":null,"label":"Accessories","slug":"accessories","sort":800,"publish_when_empty":false},
     {"key":"tool_storage_cases","parent_key":"accessories","label":"Tool Cases","slug":"tool-cases","sort":810,"publish_when_empty":false},
     {"key":"mud_pan_accessories","parent_key":"accessories","label":"Mud Pan Accessories","slug":"mud-pan-accessories","sort":820,"publish_when_empty":false},
-    {"key":"materials_consumables","parent_key":null,"label":"Materials & Consumables","slug":"materials-consumables","sort":900,"publish_when_empty":false},
+    {"key":"materials_consumables","parent_key":null,"label":"Materials & Consumables","slug":"materials-consumables","sort":900,"publish_when_empty":true},
     {"key":"drywall_sealants","parent_key":"materials_consumables","label":"Sealants","slug":"sealants","sort":910,"publish_when_empty":false}
   ]
 }

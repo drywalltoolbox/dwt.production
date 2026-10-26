@@ -58,6 +58,8 @@ const CATEGORY_THUMBNAIL_FILE_BY_SLUG = {
   'handles-extensions': 'handles-extensions',
   'handles': 'handles-extensions',
   'tool-sets-kits': 'automatic-taping-tool-sets',
+  'automatic-tool-sets-kits': 'automatic-taping-tool-sets',
+  'semi-automatic-tool-sets-kits': 'semi-automatic-taping-tool-sets',
   'tool-storage-cases': 'automatic-taping-tool-cases',
   'semi-automatic-tapers-banjos': 'semi-automatic-tapers',
   'drywall-stilts': 'stilts',

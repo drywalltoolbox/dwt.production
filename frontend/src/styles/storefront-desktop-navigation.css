@@ -254,7 +254,7 @@
   }
 
   .site-header .dtb-desktop-nav-tab:focus-visible {
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 0 4px var(--dtb-primary, #1457f5);
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 0 0 4px var(--dtb-primary, #2255EE);
   }
 
   /* Maintains a contiguous pointer path from tab to the viewport-centered sheet. */
@@ -279,7 +279,7 @@
     --mega-border: #dde5ef;
     --mega-ink: #0b1630;
     --mega-muted: #5f718d;
-    --mega-blue: var(--dtb-primary, #1457f5);
+    --mega-blue: var(--dtb-primary, #2255EE);
     --mega-surface: #f7f8fa;
     --mega-card-surface: #fbfcfd;
     --mega-hover: #eef1f4;
@@ -1118,7 +1118,7 @@
     top: 2px;
     bottom: 2px;
     width: 2px;
-    background: linear-gradient(to bottom, transparent, #367cff 30%, #1457f5 55%, transparent);
+    background: linear-gradient(to bottom, transparent, #367cff 30%, #2255EE 55%, transparent);
     pointer-events: none;
   }
   .site-header .dtb-mega-menu__heading {
@@ -1220,7 +1220,7 @@
     box-shadow: 0 4px 12px rgba(15, 23, 42, .06);
   }
   .site-header .dtb-desktop-nav-dropdown--parts .dtb-mega-menu__selector-card:focus-visible {
-    outline: 2px solid var(--mega-blue, #1457f5);
+    outline: 2px solid var(--mega-blue, #2255EE);
     outline-offset: 2px;
   }
   .site-header .dtb-desktop-nav-dropdown--parts .dtb-mega-menu__selector-card--category {
@@ -1280,7 +1280,7 @@
   }
   .site-header .dtb-desktop-nav-dropdown--parts .dtb-mega-menu__selector-card:hover .dtb-mega-menu__selector-chevron,
   .site-header .dtb-desktop-nav-dropdown--parts .dtb-mega-menu__selector-card:focus-visible .dtb-mega-menu__selector-chevron {
-    color: var(--mega-blue, #1457f5);
+    color: var(--mega-blue, #2255EE);
     transform: translateX(2px);
   }
 }
@@ -1457,7 +1457,7 @@
     bottom: 20px;
     left: 28px;
     width: 2px;
-    background: linear-gradient(to bottom, transparent, #367cff 30%, #1457f5 70%, transparent);
+    background: linear-gradient(to bottom, transparent, #367cff 30%, #2255EE 70%, transparent);
     content: '';
   }
 
@@ -1548,7 +1548,7 @@
   .site-header .dtb-shop-menu__parent-card.is-active {
     border-color: #d8e5fb;
     background: #edf3ff;
-    color: #1457f5;
+    color: #2255EE;
     outline: none;
   }
 
@@ -1559,13 +1559,13 @@
     left: 0;
     width: 4px;
     border-radius: 0 4px 4px 0;
-    background: #1457f5;
+    background: #2255EE;
     content: '';
   }
 
   .site-header .dtb-shop-menu__parent-card.is-active > svg:first-child,
   .site-header .dtb-shop-menu__parent-card.is-active > svg:last-child {
-    color: #1457f5;
+    color: #2255EE;
   }
 
   .site-header .dtb-shop-menu__category-content {
@@ -1623,7 +1623,7 @@
     border: 1px solid #d4e1f5;
     border-radius: 9px;
     background: #fff;
-    color: #1457f5;
+    color: #2255EE;
     font-size: 0.78rem;
     font-weight: 740;
     text-decoration: none;

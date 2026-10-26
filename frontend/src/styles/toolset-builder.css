@@ -2041,7 +2041,7 @@
   bottom: clamp(1.55rem, 1.85vw, 1.95rem);
   left: 0;
   width: 3px;
-  background: linear-gradient(180deg, #0a2b57 0%, #0878ff 100%);
+  background: linear-gradient(180deg, #0a2b57 0%, #2255EE 100%);
   content: '';
 }
 
@@ -2146,7 +2146,7 @@
   width: 3rem;
   height: 2px;
   margin-top: 0.75rem;
-  background: #0878ff;
+  background: #2255EE;
 }
 
 @media (max-width: 900px) {

@@ -8,8 +8,8 @@
   --surface: #ffffff;
   --soft: #f8fafc;
   --soft-blue: #f4f7ff;
-  --accent: #2255ee;
-  --accent-deep: #2255ee;
+  --accent: var(--dtb-primary);
+  --accent-deep: var(--dtb-primary);
   --font-rounded: ui-rounded, "SF Pro Rounded", "Arial Rounded MT", "Avenir Next", "Trebuchet MS", system-ui, sans-serif;
   width: 100%;
   margin: 0 auto;

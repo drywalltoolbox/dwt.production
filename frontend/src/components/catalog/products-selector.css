@@ -11,7 +11,7 @@
 
 .products-brand-selector__hero {
   --brands-hero-navy: #061c3d;
-  --brands-hero-blue: #0878ff;
+  --brands-hero-blue: var(--dtb-primary);
   position: relative;
   width: calc(100% + (2 * var(--dtb-viewport-gutter)));
   margin: 0 calc(-1 * var(--dtb-viewport-gutter)) clamp(1.75rem, 3vw, 2.75rem);

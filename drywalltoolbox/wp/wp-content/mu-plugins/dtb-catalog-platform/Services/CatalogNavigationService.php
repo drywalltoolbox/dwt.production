@@ -13,17 +13,18 @@ defined( 'ABSPATH' ) || exit;
 
 final class DTB_CatalogNavigationService {
 
-	public const CONTRACT_VERSION = '2.1';
+	public const CONTRACT_VERSION = '2.2';
 
 	private const REGISTRY_PATH = __DIR__ . '/../Resources/catalog-taxonomy.json';
 
-	/** Replacement Parts has a dedicated primary navigation surface. */
+	/** Shop exposes the complete catalog parent taxonomy, including Parts. */
 	private const STOREFRONT_ROOT_KEYS = [
 		'automatic_taping_tools',
 		'taping_finishing_tools',
 		'corner_bead_tools',
 		'hanging_tools',
 		'stilts',
+		'replacement_parts',
 		'accessories',
 		'materials_consumables',
 	];
