@@ -24,6 +24,10 @@
   filter: drop-shadow(0 3px 7px rgba(0, 57, 164, .26));
 }
 
+.repair-landing .repair-hero .repair-eyebrow {
+  color: var(--dtb-primary, #1769ff);
+}
+
 @media (min-width: 48rem) and (max-width: 63.99rem) {
   .repair-landing .repair-hero {
     min-height: clamp(650px, 80vw, 760px);
@@ -44,7 +48,7 @@
 
   .repair-landing .repair-hero .repair-eyebrow {
     margin-bottom: 16px;
-    color: #3295ff;
+    color: var(--dtb-primary, #1769ff);
     font-size: clamp(.76rem, 1.25vw, .86rem);
     font-weight: 760;
     letter-spacing: .17em;
@@ -63,7 +67,8 @@
   }
 
   .repair-landing .repair-hero h1 {
-    max-width: 14ch;
+    max-width: none;
+    overflow: visible;
     margin-bottom: 18px;
     font-size: clamp(3rem, 6.4vw, 4.25rem);
     font-weight: 820;
@@ -139,7 +144,7 @@
 
   .repair-landing .repair-hero .repair-eyebrow {
     margin-bottom: clamp(16px, 1.25vw, 22px);
-    color: #3195ff;
+    color: var(--dtb-primary, #1769ff);
     font-size: clamp(.78rem, .76vw, .9rem);
     font-weight: 760;
     letter-spacing: .18em;
@@ -165,8 +170,13 @@
   }
 
   .repair-landing .repair-hero__content {
-    width: min(820px, 58%);
+    width: min(920px, 62%);
     padding: 0;
+  }
+
+  .repair-landing .repair-hero h1 {
+    max-width: none;
+    overflow: visible;
   }
 
   .repair-landing .repair-hero h1 .repair-hero__title-line {
