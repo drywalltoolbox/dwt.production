@@ -111,10 +111,9 @@ final class DTB_ProductDetailController {
 			return [];
 		}
 
-		$candidate_ids = array_merge(
-			$source_product->get_upsell_ids(),
-			wc_get_related_products( $product_id, self::RELATED_PRODUCT_LIMIT * 2, [ $product_id ] )
-		);
+		// Keep this rail to explicit operator-curated upsells. WooCommerce's
+		// category/tag fallback is not a relevance signal and can look random.
+		$candidate_ids = $source_product->get_upsell_ids();
 		$candidate_ids = array_values( array_unique( array_filter( array_map( 'absint', $candidate_ids ) ) ) );
 		$visible_ids   = [];
 

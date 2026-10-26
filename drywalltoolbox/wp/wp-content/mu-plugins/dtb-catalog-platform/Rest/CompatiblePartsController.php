@@ -42,6 +42,10 @@ final class DTB_CompatiblePartsController {
 					'sanitize_callback' => 'sanitize_text_field',
 					'validate_callback' => static fn( $v ) => self::is_valid_sku( $v ),
 				],
+				'limit' => [
+					'sanitize_callback' => 'absint',
+					'validate_callback' => static fn( $v ) => is_numeric( $v ) && (int) $v >= 1 && (int) $v <= 100,
+				],
 			],
 		] );
 
@@ -85,12 +89,12 @@ final class DTB_CompatiblePartsController {
 			);
 		}
 
-		$product_ids = self::find_products_with_sku_in_meta(
-			$tool_sku,
+		$tool_skus   = self::get_tool_skus_for_product( $tool_sku );
+		$product_ids = self::find_products_with_skus_in_meta(
+			$tool_skus,
 			[ DTB_ProductMeta::COMPATIBLE_TOOL_SKUS, DTB_ProductMeta::REPLACEMENT_PART_FOR ]
 		);
-
-		$dtos = self::normalize_product_ids( $product_ids );
+		$dtos = self::normalize_product_ids( $product_ids, absint( $request->get_param( 'limit' ) ) );
 
 		return new WP_REST_Response( [
 			'toolSku'  => $tool_sku,
@@ -125,12 +129,9 @@ final class DTB_CompatiblePartsController {
 			);
 		}
 
-		$compatible_raw = get_post_meta( $part_post, DTB_ProductMeta::COMPATIBLE_TOOL_SKUS, true );
-		$replacement_raw = get_post_meta( $part_post, DTB_ProductMeta::REPLACEMENT_PART_FOR, true );
-
 		$tool_skus = array_filter( array_unique( array_merge(
-			self::decode_sku_list( $compatible_raw ),
-			self::decode_sku_list( $replacement_raw )
+			self::get_meta_sku_values( $part_post, DTB_ProductMeta::COMPATIBLE_TOOL_SKUS ),
+			self::get_meta_sku_values( $part_post, DTB_ProductMeta::REPLACEMENT_PART_FOR )
 		) ) );
 
 		$dtos = [];
@@ -236,45 +237,102 @@ final class DTB_CompatiblePartsController {
 	 * @param  string[] $meta_keys  Meta keys to search in.
 	 * @return int[]
 	 */
-	private static function find_products_with_sku_in_meta( string $sku, array $meta_keys ): array {
-		$ids = [];
+	private static function find_products_with_skus_in_meta( array $skus, array $meta_keys ): array {
+		$skus = array_values( array_unique( array_filter( array_map(
+			static fn( $sku ): string => strtoupper( trim( (string) $sku ) ),
+			$skus
+		) ) ) );
+		if ( empty( $skus ) || empty( $meta_keys ) ) {
+			return [];
+		}
+
+		$meta_query = [ 'relation' => 'OR' ];
 		foreach ( $meta_keys as $key ) {
-			$found = get_posts( [
-				'post_type'      => 'product',
-				'post_status'    => 'publish',
-				'posts_per_page' => 500,
-				'fields'         => 'ids',
-				'meta_query'     => [
-					[
-						'key'     => $key,
-						'value'   => $sku,
-						'compare' => 'LIKE',
-					],
-				],
-			] );
-			foreach ( $found as $product_id ) {
-				$stored_skus = self::decode_sku_list( get_post_meta( $product_id, $key, true ) );
-				foreach ( $stored_skus as $stored_sku ) {
-					if ( 0 === strcasecmp( $sku, $stored_sku ) ) {
-						$ids[] = (int) $product_id;
-						break;
-					}
-				}
+			foreach ( $skus as $sku ) {
+				$meta_query[] = [
+					'key'     => $key,
+					'value'   => $sku,
+					'compare' => 'LIKE',
+				];
 			}
 		}
-		return array_values( array_unique( $ids ) );
+
+		$found = get_posts( [
+			'post_type'              => 'product',
+			'post_status'            => 'publish',
+			'posts_per_page'         => 500,
+			'fields'                 => 'ids',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => true,
+			'meta_query'             => $meta_query,
+		] );
+
+		$matches = [];
+		foreach ( $found as $product_id ) {
+			$stored_skus = array_merge(
+				self::get_meta_sku_values( (int) $product_id, DTB_ProductMeta::COMPATIBLE_TOOL_SKUS ),
+				self::get_meta_sku_values( (int) $product_id, DTB_ProductMeta::REPLACEMENT_PART_FOR )
+			);
+			$matched_skus = array_values( array_intersect( $skus, array_map( 'strtoupper', $stored_skus ) ) );
+			if ( ! empty( $matched_skus ) ) {
+				$matches[] = [
+					'id'           => (int) $product_id,
+					'matched_skus' => $matched_skus,
+					'sku'          => strtoupper( (string) get_post_meta( $product_id, '_sku', true ) ),
+				];
+			}
+		}
+
+		$sku_order = array_flip( $skus );
+		usort( $matches, static function ( array $a, array $b ) use ( $sku_order ): int {
+			$match_count = count( $b['matched_skus'] ) <=> count( $a['matched_skus'] );
+			if ( 0 !== $match_count ) {
+				return $match_count;
+			}
+
+			$rank_a = min( array_map( static fn( $sku ): int => $sku_order[ $sku ] ?? PHP_INT_MAX, $a['matched_skus'] ) );
+			$rank_b = min( array_map( static fn( $sku ): int => $sku_order[ $sku ] ?? PHP_INT_MAX, $b['matched_skus'] ) );
+			if ( $rank_a !== $rank_b ) {
+				return $rank_a <=> $rank_b;
+			}
+
+			return strcmp( $a['sku'], $b['sku'] );
+		} );
+
+		return array_values( array_map( static fn( array $match ): int => $match['id'], $matches ) );
 	}
 
 	/**
 	 * @param  int[] $product_ids
 	 * @return array[]  DTB product DTOs.
 	 */
-	private static function normalize_product_ids( array $product_ids ): array {
+	private static function normalize_product_ids( array $product_ids, int $limit = 0 ): array {
+		$ids = [];
+		foreach ( array_unique( array_map( 'absint', $product_ids ) ) as $id ) {
+			$product = wc_get_product( $id );
+			if ( ! $product ) {
+				continue;
+			}
+			if ( $product instanceof WC_Product_Variation ) {
+				$id      = $product->get_parent_id();
+				$product = $id > 0 ? wc_get_product( $id ) : false;
+			}
+			if ( ! $product || 'publish' !== get_post_status( $product->get_id() ) || ! $product->is_visible() ) {
+				continue;
+			}
+			$ids[] = $product->get_id();
+		}
+		$ids = array_values( array_unique( $ids ) );
+		if ( $limit > 0 ) {
+			$ids = array_slice( $ids, 0, min( 100, $limit ) );
+		}
+
 		$dtos = [];
-		foreach ( $product_ids as $id ) {
-			$dto = self::normalize_single( (int) $id );
-			if ( $dto ) {
-				$dtos[] = $dto;
+		foreach ( array_chunk( $ids, 100 ) as $chunk ) {
+			foreach ( dtb_catalog_wc_fetch_products_by_ids( $chunk ) as $wc_product ) {
+				if ( is_array( $wc_product ) && 'publish' === ( $wc_product['status'] ?? '' ) ) {
+					$dtos[] = dtb_catalog_normalize_product( $wc_product );
+				}
 			}
 		}
 		return $dtos;
@@ -326,6 +384,64 @@ final class DTB_CompatiblePartsController {
 	 */
 	private static function decode_sku_list( mixed $raw ): array {
 		$values = DTB_CatalogProductNormalizer::decode_csv_or_array( $raw );
-		return array_values( array_filter( array_map( 'trim', $values ), static fn( $value ) => '' !== $value ) );
+		return array_values( array_filter( array_map(
+			static fn( $value ): string => strtoupper( trim( (string) $value ) ),
+			$values
+		), static fn( $value ) => '' !== $value ) );
+	}
+
+	/**
+	 * Read every stored value for multi-value compatibility metadata.
+	 *
+	 * @param int    $product_id Product ID.
+	 * @param string $meta_key   Compatibility metadata key.
+	 * @return string[]
+	 */
+	private static function get_meta_sku_values( int $product_id, string $meta_key ): array {
+		$raw_values = get_post_meta( $product_id, $meta_key, false );
+		$values     = [];
+		foreach ( (array) $raw_values as $raw_value ) {
+			$values = array_merge( $values, self::decode_sku_list( $raw_value ) );
+		}
+		return array_values( array_unique( $values ) );
+	}
+
+	/**
+	 * Resolve the product SKU and exact SKUs of any included tool components.
+	 *
+	 * @param string $sku Requested product SKU.
+	 * @return string[]
+	 */
+	private static function get_tool_skus_for_product( string $sku ): array {
+		$skus       = [ strtoupper( $sku ) ];
+		$product_id = wc_get_product_id_by_sku( $sku );
+		$product    = $product_id > 0 ? wc_get_product( $product_id ) : false;
+		if ( ! $product || $product instanceof WC_Product_Variation ) {
+			return $skus;
+		}
+
+		for ( $index = 0; $index < 20; $index++ ) {
+			$included_sku = strtoupper( trim( (string) get_post_meta( $product_id, '_includes_' . $index . '_sku', true ) ) );
+			if ( '' === $included_sku ) {
+				continue;
+			}
+			$skus[]       = $included_sku;
+			$included_id  = wc_get_product_id_by_sku( $included_sku );
+			$included     = $included_id > 0 ? wc_get_product( $included_id ) : false;
+			if ( ! $included || ! $included->is_type( 'variable' ) ) {
+				continue;
+			}
+			foreach ( array_slice( $included->get_children(), 0, 100 ) as $variation_id ) {
+				$variation = wc_get_product( $variation_id );
+				if ( $variation instanceof WC_Product_Variation && 'publish' === get_post_status( $variation_id ) && $variation->is_visible() ) {
+					$variation_sku = strtoupper( trim( (string) $variation->get_sku() ) );
+					if ( '' !== $variation_sku ) {
+						$skus[] = $variation_sku;
+					}
+				}
+			}
+		}
+
+		return array_values( array_unique( array_filter( $skus ) ) );
 	}
 }

@@ -52,6 +52,7 @@ const CATEGORY_THUMBNAIL_FILE_BY_SLUG = {
   'corner-flushers': 'corner-flushers',
   'corner-rollers': 'corner-rollers',
   'loading-compound-pumps': 'loading-pumps',
+  'automatic-goosenecks-box-fillers': 'goosenecks-box-fillers-adapters',
   'goosenecks-box-fillers-adapters': 'goosenecks-box-fillers-adapters',
   'handles-extensions': 'handles-extensions',
   'tool-sets-kits': 'automatic-taping-tool-sets',

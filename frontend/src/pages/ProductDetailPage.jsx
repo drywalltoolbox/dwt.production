@@ -26,6 +26,7 @@
 import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import useCatalogProductDetail from '../hooks/useCatalogProductDetail.js';
+import useCompatibleParts from '../hooks/useCompatibleParts.js';
 import { getVariationSelectionMap } from '../utils/variationSelection';
 import { buildBreadcrumbSchema, buildProductSchema, stripHtml } from '../utils/schema';
 import ProductDetail from '../components/product/ProductDetail';
@@ -109,6 +110,10 @@ export default function ProductDetailPage() {
   }, [product?.id, resolvedInitialVariation, urlVariantId, variations]);
 
   const selectedVariation = locallySelectedVariation || resolvedInitialVariation;
+  const compatiblePartsSku = product?.product_kind === 'part'
+    ? ''
+    : (selectedVariation?.sku || product?.sku || '');
+  const { products: compatibleParts } = useCompatibleParts(compatiblePartsSku);
 
   useEffect(() => {
     if (!slug || !variationId) return;
@@ -258,6 +263,13 @@ export default function ProductDetailPage() {
           autoSelectDefaultVariation={false}
         />
 
+        <ProductRelatedProducts
+          products={compatibleParts}
+          context="compatible_parts"
+          id="product-compatible-parts"
+          onAddToCart={handleAddToCart}
+          onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
+        />
         <ProductRelatedProducts
           products={relatedProducts}
           context={computed?.relatedProductsContext}
