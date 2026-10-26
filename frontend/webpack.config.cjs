@@ -243,9 +243,12 @@ module.exports = (envFlags, argv) => {
 
   // The homepage LCP image is selected by a React <picture>, which means the
   // browser cannot discover it until the entry bundle has parsed and rendered.
-  // Injecting responsive preload hints from the final emitted asset names lets
-  // the HTML parser begin the correct request immediately while retaining
-  // content-hashed URLs and their immutable-cache safety.
+  // Emit matching responsive preload candidates from the generated manifest so
+  // the HTML parser starts the same width candidate the picture will select.
+  const responsiveHeroPreload = JSON.parse(fs.readFileSync(
+    path.resolve(__dirname, 'src/assets/media/responsiveHeroPreload.json'),
+    'utf8',
+  ));
   const HeroImagePreloadPlugin = {
     apply(compiler) {
       compiler.hooks.compilation.tap('HeroImagePreloadPlugin', (compilation) => {
@@ -253,21 +256,39 @@ module.exports = (envFlags, argv) => {
           'HeroImagePreloadPlugin',
           (htmlPluginData) => {
             const assetNames = new Set(compilation.getAssets().map((asset) => asset.name));
-            const heroAssets = [
-              { match: /(?:^|\/)home-hero-mobile-640\.[a-f0-9]{8}\.webp$/i, media: '(max-width: 640px)' },
-              { match: /(?:^|\/)home-hero-desktop-1600\.[a-f0-9]{8}\.webp$/i, media: '(min-width: 641px)' },
+            const homeGroup = responsiveHeroPreload.groups[responsiveHeroPreload.group];
+            const heroSources = [
+              { setId: homeGroup.mobile, media: responsiveHeroPreload.mobileMediaQuery },
+              { setId: homeGroup.desktop, media: responsiveHeroPreload.desktopMediaQuery },
             ];
 
-            for (const { match, media } of heroAssets) {
-              const assetName = Array.from(assetNames).find((name) => match.test(name));
-              if (!assetName) continue;
+            for (const { setId, media } of heroSources) {
+              const imageSet = responsiveHeroPreload.sets[setId];
+              if (!imageSet) continue;
+              const sourcePath = path.parse(imageSet.sourceFilename);
+              const candidates = [
+                ...imageSet.candidates,
+                { filename: imageSet.sourceFilename, width: imageSet.sourceWidth },
+              ];
+              const srcSet = candidates.map(({ filename, width }) => {
+                const outputBase = filename === imageSet.sourceFilename
+                  ? path.parse(sourcePath.base).name
+                  : `${setId.replace(/[A-Z]/g, (letter) => `-${letter.toLowerCase()}`).replace(/^-/, '')}-${width}`;
+                const escapedBase = outputBase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const match = new RegExp(`(?:^|/)${escapedBase}\\.[a-f0-9]{8}\\.webp$`, 'i');
+                const assetName = Array.from(assetNames).find((name) => match.test(name));
+                return assetName ? `${publicPath}${assetName} ${width}w` : null;
+              }).filter(Boolean).join(', ');
+              if (!srcSet) continue;
+
               htmlPluginData.headTags.push({
                 tagName: 'link',
                 voidTag: true,
                 attributes: {
                   rel: 'preload',
                   as: 'image',
-                  href: `${publicPath}${assetName}`,
+                  imagesrcset: srcSet,
+                  imagesizes: '100vw',
                   type: 'image/webp',
                   media,
                   fetchpriority: 'high',

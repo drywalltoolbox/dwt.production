@@ -22,7 +22,8 @@ import {
   getToolsetWorkflow,
 } from '../features/toolset-builder/model.js';
 import { getBrandLogo } from '../utils/brandAssets.js';
-import toolsetHeroImage from '../assets/media/toolset/toolset-hero-automatic-tapers.webp';
+import ResponsivePicture from '../components/media/ResponsivePicture.jsx';
+import { RESPONSIVE_HERO_MEDIA } from '../assets/media/responsiveHeroMedia.js';
 import { resolveCategoryThumbnail } from '../utils/categoryThumbnailImages.js';
 import '../styles/toolset-builder.css';
 
@@ -54,7 +55,9 @@ const WORKFLOW_MEDIA = {
 function WorkflowCard({ workflow, onSelect }) {
   const reduceMotion = useReducedMotion();
   const Icon = WORKFLOW_ICONS[workflow.id] || Settings2;
-  const media = WORKFLOW_MEDIA[workflow.id] || toolsetHeroImage;
+  const media = WORKFLOW_MEDIA[workflow.id] || RESPONSIVE_HERO_MEDIA.toolsetBuilder.desktop;
+  const mediaSrc = typeof media === 'string' ? media : media.src;
+  const mediaSrcSet = typeof media === 'string' ? undefined : media.srcSet;
 
   return (
     <Motion.button
@@ -66,7 +69,7 @@ function WorkflowCard({ workflow, onSelect }) {
       transition={dtbSpring.responsive}
     >
       <span className="dtb-toolset-workflow-card__media" aria-hidden="true">
-        <img src={media} alt="" loading="lazy" decoding="async" />
+        <img src={mediaSrc} srcSet={mediaSrcSet} sizes={mediaSrcSet ? '88px' : undefined} alt="" loading="lazy" decoding="async" />
         <span className="dtb-toolset-workflow-card__icon">
           <Icon size={24} />
         </span>
@@ -87,13 +90,12 @@ function BuilderLanding({ onSelectWorkflow }) {
   return (
     <>
       <section className="dtb-toolset-hero" aria-labelledby="toolset-builder-title">
-        <img
-          className="dtb-toolset-hero__media"
-          src={toolsetHeroImage}
-          alt=""
-          aria-hidden="true"
+        <ResponsivePicture
+          className="dtb-toolset-hero__picture"
+          imageClassName="dtb-toolset-hero__media"
+          media={RESPONSIVE_HERO_MEDIA.toolsetBuilder}
+          decorative
           fetchPriority="high"
-          decoding="async"
         />
         <div className="dtb-toolset-hero__scrim" aria-hidden="true" />
         <div className="dtb-container dtb-container--wide">

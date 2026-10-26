@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "widths": [480, 640, 828, 960, 1280, 1600, 1920],
+  "webp": {
+    "quality": 92,
+    "effort": 6,
+    "smartSubsample": true
+  },
+  "mobileMediaQuery": "(max-width: 47.99rem)",
+  "preload": {
+    "group": "home",
+    "desktopMedia": "(min-width: 48rem)"
+  },
+  "sets": {
+    "homeDesktop": "src/assets/media/home/home-hero-desktop.webp",
+    "homeMobile": "src/assets/media/home/home-hero-mobile.webp",
+    "repairsDesktop": "src/assets/media/home/home-repairs-hero-desktop.webp",
+    "repairsMobile": "src/assets/media/home/home-hero-repairs-mobile.webp",
+    "toolsetBuilder": "src/assets/media/toolset/toolset-hero-automatic-tapers.webp",
+    "dropdownParts": "src/assets/media/catalog/dropdown-heroes/parts.webp",
+    "dropdownRepairs": "src/assets/media/catalog/dropdown-heroes/repairs.webp",
+    "dropdownSchematics": "src/assets/media/catalog/dropdown-heroes/schematics.webp"
+  },
+  "groups": {
+    "home": {
+      "desktop": "homeDesktop",
+      "mobile": "homeMobile"
+    },
+    "repairs": {
+      "desktop": "repairsDesktop",
+      "mobile": "repairsMobile"
+    },
+    "toolsetBuilder": {
+      "desktop": "toolsetBuilder"
+    },
+    "dropdownParts": {
+      "desktop": "dropdownParts"
+    },
+    "dropdownRepairs": {
+      "desktop": "dropdownRepairs"
+    },
+    "dropdownSchematics": {
+      "desktop": "dropdownSchematics"
+    }
+  }
+}

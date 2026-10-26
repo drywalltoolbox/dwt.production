@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/shared/SEOHead';
 import RepairHero from '../components/RepairHero';
+import ResponsivePicture from '../components/media/ResponsivePicture.jsx';
+import { RESPONSIVE_HERO_MEDIA } from '../assets/media/responsiveHeroMedia.js';
 import { getOfficialRepairBrands } from '../data/repairCatalogMap.js';
 import { getBrandLogo } from '../utils/brandAssets.js';
-import repairHeroArtwork from '../assets/media/repairs/repair-hero.webp';
 import repairServicePackageArt from '../assets/media/repairs/repair-service-package.webp';
 import { HOME_HERO_CAMPAIGNS } from '../components/home/homeHeroCampaigns.js';
 import '../styles/repair-landing.css';
@@ -79,13 +80,30 @@ export default function RepairLanding() {
   return (
     <div className="repair-landing page-wrapper">
       <SEOHead title="Expert Repair Services | Drywall Toolbox" description={REPAIRS_CAMPAIGN.description} canonical="/repairs" />
-      <RepairHero campaign={REPAIRS_CAMPAIGN} image={repairHeroArtwork} />
+      <RepairHero campaign={REPAIRS_CAMPAIGN} />
 
       <section className="repair-service-details" aria-labelledby="repair-service-paths-title"><div className="repair-section-shell">
         <div className="repair-section-heading repair-section-heading--center"><p className="repair-eyebrow">How Should We Start?</p><h2 id="repair-service-paths-title">Choose the path that matches what you know today.</h2><p>Both options continue into the same structured repair intake, shipping, approval, and tracking workflow.</p></div>
         <div className="repair-service-details__grid">
           <article className="repair-service-panel repair-service-panel--package"><img className="repair-service-panel__package-art" src={repairServicePackageArt} alt="" aria-hidden="true" decoding="async" /><p className="repair-eyebrow">I Know the Service I Need</p><h2>Choose a repair package.</h2><p>Pick the service that fits your tool and the work it needs.</p><ul><li>Choose a tool-family package or tune-up</li><li>Set shipping and approval preferences during intake</li></ul><Link to="/repairs/packages">Compare repair packages <span aria-hidden="true">→</span></Link></article>
-          <article className="repair-service-panel repair-service-panel--diagnostic"><p className="repair-eyebrow">I Need the Tool Diagnosed</p><h2>Start with physical inspection.</h2><p>Not sure what is wrong? Send it in for inspection and an estimate before added work begins.</p><ul><li>Add photos and symptoms to help document the issue</li><li>Review inspection findings before quote-first work begins</li></ul><Link className="repair-button repair-button--primary" to="/repairs/start?package=diagnose_and_quote">Start Diagnostic <span aria-hidden="true">→</span></Link></article>
+          <article className="repair-service-panel repair-service-panel--diagnostic">
+            <ResponsivePicture
+              className="repair-service-panel__diagnostic-media"
+              imageClassName="repair-service-panel__diagnostic-image"
+              media={RESPONSIVE_HERO_MEDIA.repairs}
+              useMobileSource={false}
+              sizes="(max-width: 700px) 100vw, 50vw"
+              decorative
+              loading="lazy"
+              fetchPriority="auto"
+            />
+            <div className="repair-service-panel__diagnostic-scrim" aria-hidden="true" />
+            <p className="repair-eyebrow">I Need the Tool Diagnosed</p>
+            <h2>Start with physical inspection.</h2>
+            <p>Not sure what is wrong? Send it in for inspection and an estimate before added work begins.</p>
+            <ul><li>Add photos and symptoms to help document the issue</li><li>Review inspection findings before quote-first work begins</li></ul>
+            <Link className="repair-button repair-button--primary" to="/repairs/start?package=diagnose_and_quote">Start Diagnostic <span aria-hidden="true">→</span></Link>
+          </article>
         </div>
       </div></section>
 

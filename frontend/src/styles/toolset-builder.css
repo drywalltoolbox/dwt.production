@@ -1444,10 +1444,16 @@
   background: linear-gradient(90deg, rgba(2, 10, 25, .99) 0%, rgba(4, 15, 35, .97) 30%, rgba(4, 16, 37, .82) 47%, rgba(4, 16, 37, .34) 65%, rgba(4, 16, 37, .06) 100%);
 }
 
-.dtb-toolset-hero__media {
+.dtb-toolset-hero__picture {
   position: absolute;
   z-index: -2;
   inset: 0;
+  display: block;
+  overflow: hidden;
+}
+
+.dtb-toolset-hero__media {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;

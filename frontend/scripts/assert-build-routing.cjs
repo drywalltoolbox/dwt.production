@@ -27,6 +27,7 @@ const routingFilename = appEnv === 'staging'
   : '.htaccess';
 const sourcePath = path.join(repositoryRoot, 'drywalltoolbox', routingFilename);
 const manifestPath = path.join(outputRoot, 'asset-manifest.json');
+const indexPath = path.join(outputRoot, 'index.html');
 const robotsPath = path.join(outputRoot, 'robots.txt');
 const storefrontShellPath = path.join(outputRoot, 'storefront.html');
 const schematicSourceRoot = path.join(frontendRoot, 'public', 'brands');
@@ -187,26 +188,61 @@ for (const logicalName of ['main.js', 'main.css', 'runtime.js']) {
   }
 }
 
-// Hero art is a production contract: the homepage campaign slides and the
-// Repair Services landing page must each emit the exact imported responsive
-// artwork with a content hash. Keep this list aligned with the source imports.
-const requiredHeroAssets = [
-  { logicalName: 'home-hero-mobile-640', extension: 'webp' },
-  { logicalName: 'home-hero-desktop-1920', extension: 'webp' },
-  { logicalName: 'home-repairs-hero-desktop-1600', extension: 'webp' },
-  { logicalName: 'home-hero-repairs-mobile', extension: 'jpg' },
-  { logicalName: 'repair-hero', extension: 'webp' },
-];
-const emittedHeroAssets = requiredHeroAssets.map(({ logicalName, extension }) => {
-  const expectedAsset = new RegExp(`/assets/images/${logicalName}\\.[a-f0-9]{8}\\.${extension}$`, 'i');
-  const assetPath = Object.values(manifest.files || {}).find((candidate) => expectedAsset.test(candidate));
-  if (!assetPath) {
-    throw new Error(`The asset manifest is missing the content-hashed ${logicalName} image.`);
+// Every registered source and width candidate must be bundled with a content
+// hash, and the homepage's parser-discovered preload sets must match the
+// candidates used by its first <picture> slide.
+const responsiveHeroManifest = JSON.parse(fs.readFileSync(
+  path.join(frontendRoot, 'src/assets/media/responsiveHeroPreload.json'),
+  'utf8',
+));
+const emittedResponsiveSets = new Map();
+const emittedFiles = Object.values(manifest.files || {});
+function outputAssetPath(sourceFilename) {
+  const stem = path.parse(path.basename(sourceFilename)).name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const expectedAsset = new RegExp(`(?:^|/)assets/images/${stem}\\.[a-f0-9]{8}\\.webp$`, 'i');
+  return emittedFiles.find((candidate) => expectedAsset.test(candidate)) || '';
+}
+
+for (const [setId, imageSet] of Object.entries(responsiveHeroManifest.sets || {})) {
+  const candidateFiles = [
+    ...imageSet.candidates.map(({ filename }) => `generated/heroes/${filename}`),
+    imageSet.sourceFilename,
+  ];
+  const emittedCandidates = [];
+  for (let index = 0; index < candidateFiles.length; index += 1) {
+    const sourceFilename = candidateFiles[index];
+    const width = index < imageSet.candidates.length
+      ? imageSet.candidates[index].width
+      : imageSet.sourceWidth;
+    const assetPath = outputAssetPath(sourceFilename);
+    if (!assetPath) {
+      throw new Error(`The asset manifest is missing responsive hero candidate ${setId}:${width}w.`);
+    }
+    if (appEnv === 'staging' && !assetPath.startsWith('/staging/')) {
+      throw new Error(`The staging responsive hero candidate ${setId}:${width}w is not below /staging/.`);
+    }
+    emittedCandidates.push({ assetPath, width });
   }
-  return assetPath;
-});
-if (appEnv === 'staging' && emittedHeroAssets.some((p) => !p.startsWith('/staging/'))) {
-  throw new Error('Every staging hero asset must be emitted below /staging/.');
+  emittedResponsiveSets.set(setId, emittedCandidates);
+}
+
+const html = fs.readFileSync(indexPath, 'utf8');
+const preloadTags = Array.from(html.matchAll(/<link\b[^>]*rel="preload"[^>]*>/gi), ([tag]) => tag);
+const homeGroup = responsiveHeroManifest.groups[responsiveHeroManifest.group];
+const homePreloads = [
+  { setId: homeGroup.mobile, media: responsiveHeroManifest.mobileMediaQuery },
+  { setId: homeGroup.desktop, media: responsiveHeroManifest.desktopMediaQuery },
+];
+for (const { setId, media } of homePreloads) {
+  const preload = preloadTags.find((tag) => tag.includes(`media="${media}"`));
+  if (!preload || !preload.includes('imagesrcset=') || !preload.includes('imagesizes="100vw"')) {
+    throw new Error(`The homepage is missing the responsive image preload for ${setId}.`);
+  }
+  for (const { assetPath, width } of emittedResponsiveSets.get(setId) || []) {
+    if (!preload.includes(`${assetPath} ${width}w`)) {
+      throw new Error(`The homepage preload for ${setId} is missing its ${width}w candidate.`);
+    }
+  }
 }
 
 const lazyAssets = Object.values(manifest.files || {}).filter((assetPath) => /\.chunk\.(?:js|css)$/i.test(assetPath));

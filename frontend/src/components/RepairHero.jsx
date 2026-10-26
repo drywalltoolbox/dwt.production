@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import RepairGuarantees from './RepairGuarantees';
-import repairHeroUrl from '../assets/media/home/home-repairs-hero-desktop-1600.webp';
-import repairHeroMobileUrl from '../assets/media/home/home-hero-repairs-mobile.jpg';
+import ResponsivePicture from './media/ResponsivePicture.jsx';
+import { RESPONSIVE_HERO_MEDIA } from '../assets/media/responsiveHeroMedia.js';
 
 function Arrow() {
   return (
@@ -13,16 +13,27 @@ function Arrow() {
   );
 }
 
-export default function RepairHero({ campaign, titleId = 'repair-hero-title', image = repairHeroUrl, mobileImage = repairHeroMobileUrl, homeSlide = false }) {
+export default function RepairHero({
+  campaign,
+  titleId = 'repair-hero-title',
+  media = RESPONSIVE_HERO_MEDIA.repairs,
+  homeSlide = false,
+  isActive = true,
+}) {
   return (
     <section
       className={`repair-hero${homeSlide ? ' repair-hero--home-slide' : ''}`}
       aria-labelledby={titleId}
-      style={{
-        '--repair-hero-image': `url("${image}")`,
-        '--repair-hero-image-mobile': `url("${mobileImage}")`,
-      }}
     >
+      <ResponsivePicture
+        className="repair-hero__media"
+        imageClassName="repair-hero__image"
+        media={media}
+        decorative
+        loading={homeSlide || isActive ? 'eager' : 'lazy'}
+        fetchPriority={isActive ? 'high' : 'auto'}
+      />
+      <div className="repair-hero__scrim" aria-hidden="true" />
       <div className="repair-hero__inner">
         <div className="repair-hero__content">
           <p className="repair-eyebrow">{campaign.eyebrow}</p>

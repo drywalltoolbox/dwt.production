@@ -2,10 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
 import RepairHero from '../RepairHero';
 import { HOME_HERO_CAMPAIGNS, HOME_HERO_CAMPAIGN_COUNT } from './homeHeroCampaigns.js';
-import homeHeroDesktop1920Url from '@assets/media/home/home-hero-desktop-1920.webp';
-import homeHeroMobileUrl from '@assets/media/home/home-hero-mobile-640.webp';
-import homeRepairsHeroDesktopUrl from '@assets/media/home/home-repairs-hero-desktop-1600.webp';
-import homeRepairsHeroMobileUrl from '@assets/media/home/home-hero-repairs-mobile.jpg';
+import { RESPONSIVE_HERO_MEDIA, RESPONSIVE_HERO_MEDIA_QUERY } from '@assets/media/responsiveHeroMedia.js';
+import { getResponsiveImageSource } from '../media/ResponsivePicture.jsx';
 import '../../styles/repair-hero-shared.css';
 
 const SWIPE_THRESHOLD_PX = 44;
@@ -14,9 +12,7 @@ const HERO_CROSSFADE_DURATION_MS = 620;
 const POINTER_IDLE_MS = 3000;
 
 function HomeHeroSlide({ campaign, reduceMotion, isActive, isEntering = false, isExiting = false }) {
-  const isRepairs = campaign.id === 'repairs';
-  const heroImage = isRepairs ? homeRepairsHeroDesktopUrl : homeHeroDesktop1920Url;
-  const mobileHeroImage = isRepairs ? homeRepairsHeroMobileUrl : homeHeroMobileUrl;
+  const media = campaign.id === 'repairs' ? RESPONSIVE_HERO_MEDIA.repairs : RESPONSIVE_HERO_MEDIA.home;
   const slideDuration = reduceMotion ? 100 : HERO_CROSSFADE_DURATION_MS;
   const slideClassName = [
     'home-hero__slide',
@@ -36,9 +32,9 @@ function HomeHeroSlide({ campaign, reduceMotion, isActive, isEntering = false, i
         <RepairHero
           campaign={campaign}
           titleId={isActive ? 'home-hero-title' : null}
-          image={heroImage}
-          mobileImage={mobileHeroImage}
+          media={media}
           homeSlide
+          isActive={isActive}
         />
       </div>
     </div>
@@ -66,10 +62,11 @@ export default function HomeHero() {
   useEffect(() => {
     if (visibleCampaignId === activeCampaign.id) return undefined;
 
-    const mobileViewport = window.matchMedia('(max-width: 640px)').matches;
-    const incomingUrl = activeCampaign.id === 'repairs'
-      ? (mobileViewport ? homeRepairsHeroMobileUrl : homeRepairsHeroDesktopUrl)
-      : (mobileViewport ? homeHeroMobileUrl : homeHeroDesktop1920Url);
+    const mobileViewport = window.matchMedia(RESPONSIVE_HERO_MEDIA_QUERY).matches;
+    const incomingMedia = activeCampaign.id === 'repairs'
+      ? RESPONSIVE_HERO_MEDIA.repairs
+      : RESPONSIVE_HERO_MEDIA.home;
+    const incomingSource = getResponsiveImageSource(incomingMedia, mobileViewport);
     const incomingImage = new window.Image();
     let cancelled = false;
     let settled = false;
@@ -95,8 +92,10 @@ export default function HomeHero() {
     };
 
     incomingImage.decoding = 'async';
+    incomingImage.sizes = incomingSource.sizes;
+    incomingImage.srcset = incomingSource.srcSet;
     incomingImage.onload = revealWhenDecoded;
-    incomingImage.src = incomingUrl;
+    incomingImage.src = incomingSource.src;
     if (incomingImage.complete && incomingImage.naturalWidth > 0) {
       revealWhenDecoded();
     }

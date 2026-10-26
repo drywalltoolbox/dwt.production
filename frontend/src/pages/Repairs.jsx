@@ -23,6 +23,8 @@ import {
 import { uploadRepairMedia } from '../api/repairs.js';
 import veeqoService from '../services/veeqo';
 import TransactionSuccessSheet from '../components/confirmation/TransactionSuccessSheet.jsx';
+import ResponsivePicture from '../components/media/ResponsivePicture.jsx';
+import { RESPONSIVE_HERO_MEDIA } from '../assets/media/responsiveHeroMedia.js';
 import '../styles/repairs-workflow.css';
 import '../styles/repair-step-nav.css';
 
@@ -461,9 +463,17 @@ export default function Repairs() {
 
       <section style={{
         padding: 'clamp(70px, 10vw, 110px) clamp(1.5rem, 5vw, 3rem) clamp(44px, 7vw, 72px)',
-        background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #2255ee 100%)',
+        background: '#04172f',
         color: 'white',
       }}>
+        <ResponsivePicture
+          className="repair-workflow-hero__media"
+          imageClassName="repair-workflow-hero__image"
+          media={RESPONSIVE_HERO_MEDIA.repairs}
+          decorative
+          fetchPriority="high"
+        />
+        <div className="repair-workflow-hero__scrim" aria-hidden="true" />
         <div style={{ maxWidth: '1180px', margin: '0 auto' }}>
           <div style={{ maxWidth: '1120px' }}>
             <p className="dtb-title-eyebrow" style={{

@@ -1,0 +1,241 @@
+{
+  "mobileMediaQuery": "(max-width: 47.99rem)",
+  "desktopMediaQuery": "(min-width: 48rem)",
+  "group": "home",
+  "groups": {
+    "home": {
+      "desktop": "homeDesktop",
+      "mobile": "homeMobile"
+    },
+    "repairs": {
+      "desktop": "repairsDesktop",
+      "mobile": "repairsMobile"
+    },
+    "toolsetBuilder": {
+      "desktop": "toolsetBuilder"
+    },
+    "dropdownParts": {
+      "desktop": "dropdownParts"
+    },
+    "dropdownRepairs": {
+      "desktop": "dropdownRepairs"
+    },
+    "dropdownSchematics": {
+      "desktop": "dropdownSchematics"
+    }
+  },
+  "sets": {
+    "homeDesktop": {
+      "sourceFilename": "home/home-hero-desktop.webp",
+      "sourceWidth": 1672,
+      "candidates": [
+        {
+          "filename": "home-desktop-480.webp",
+          "width": 480
+        },
+        {
+          "filename": "home-desktop-640.webp",
+          "width": 640
+        },
+        {
+          "filename": "home-desktop-828.webp",
+          "width": 828
+        },
+        {
+          "filename": "home-desktop-960.webp",
+          "width": 960
+        },
+        {
+          "filename": "home-desktop-1280.webp",
+          "width": 1280
+        },
+        {
+          "filename": "home-desktop-1600.webp",
+          "width": 1600
+        }
+      ]
+    },
+    "homeMobile": {
+      "sourceFilename": "home/home-hero-mobile.webp",
+      "sourceWidth": 941,
+      "candidates": [
+        {
+          "filename": "home-mobile-480.webp",
+          "width": 480
+        },
+        {
+          "filename": "home-mobile-640.webp",
+          "width": 640
+        },
+        {
+          "filename": "home-mobile-828.webp",
+          "width": 828
+        }
+      ]
+    },
+    "repairsDesktop": {
+      "sourceFilename": "home/home-repairs-hero-desktop.webp",
+      "sourceWidth": 1672,
+      "candidates": [
+        {
+          "filename": "repairs-desktop-480.webp",
+          "width": 480
+        },
+        {
+          "filename": "repairs-desktop-640.webp",
+          "width": 640
+        },
+        {
+          "filename": "repairs-desktop-828.webp",
+          "width": 828
+        },
+        {
+          "filename": "repairs-desktop-960.webp",
+          "width": 960
+        },
+        {
+          "filename": "repairs-desktop-1280.webp",
+          "width": 1280
+        },
+        {
+          "filename": "repairs-desktop-1600.webp",
+          "width": 1600
+        }
+      ]
+    },
+    "repairsMobile": {
+      "sourceFilename": "home/home-hero-repairs-mobile.webp",
+      "sourceWidth": 941,
+      "candidates": [
+        {
+          "filename": "repairs-mobile-480.webp",
+          "width": 480
+        },
+        {
+          "filename": "repairs-mobile-640.webp",
+          "width": 640
+        },
+        {
+          "filename": "repairs-mobile-828.webp",
+          "width": 828
+        }
+      ]
+    },
+    "toolsetBuilder": {
+      "sourceFilename": "toolset/toolset-hero-automatic-tapers.webp",
+      "sourceWidth": 1774,
+      "candidates": [
+        {
+          "filename": "toolset-builder-480.webp",
+          "width": 480
+        },
+        {
+          "filename": "toolset-builder-640.webp",
+          "width": 640
+        },
+        {
+          "filename": "toolset-builder-828.webp",
+          "width": 828
+        },
+        {
+          "filename": "toolset-builder-960.webp",
+          "width": 960
+        },
+        {
+          "filename": "toolset-builder-1280.webp",
+          "width": 1280
+        },
+        {
+          "filename": "toolset-builder-1600.webp",
+          "width": 1600
+        }
+      ]
+    },
+    "dropdownParts": {
+      "sourceFilename": "catalog/dropdown-heroes/parts.webp",
+      "sourceWidth": 1568,
+      "candidates": [
+        {
+          "filename": "dropdown-parts-480.webp",
+          "width": 480
+        },
+        {
+          "filename": "dropdown-parts-640.webp",
+          "width": 640
+        },
+        {
+          "filename": "dropdown-parts-828.webp",
+          "width": 828
+        },
+        {
+          "filename": "dropdown-parts-960.webp",
+          "width": 960
+        },
+        {
+          "filename": "dropdown-parts-1280.webp",
+          "width": 1280
+        }
+      ]
+    },
+    "dropdownRepairs": {
+      "sourceFilename": "catalog/dropdown-heroes/repairs.webp",
+      "sourceWidth": 1983,
+      "candidates": [
+        {
+          "filename": "dropdown-repairs-480.webp",
+          "width": 480
+        },
+        {
+          "filename": "dropdown-repairs-640.webp",
+          "width": 640
+        },
+        {
+          "filename": "dropdown-repairs-828.webp",
+          "width": 828
+        },
+        {
+          "filename": "dropdown-repairs-960.webp",
+          "width": 960
+        },
+        {
+          "filename": "dropdown-repairs-1280.webp",
+          "width": 1280
+        },
+        {
+          "filename": "dropdown-repairs-1600.webp",
+          "width": 1600
+        },
+        {
+          "filename": "dropdown-repairs-1920.webp",
+          "width": 1920
+        }
+      ]
+    },
+    "dropdownSchematics": {
+      "sourceFilename": "catalog/dropdown-heroes/schematics.webp",
+      "sourceWidth": 1536,
+      "candidates": [
+        {
+          "filename": "dropdown-schematics-480.webp",
+          "width": 480
+        },
+        {
+          "filename": "dropdown-schematics-640.webp",
+          "width": 640
+        },
+        {
+          "filename": "dropdown-schematics-828.webp",
+          "width": 828
+        },
+        {
+          "filename": "dropdown-schematics-960.webp",
+          "width": 960
+        },
+        {
+          "filename": "dropdown-schematics-1280.webp",
+          "width": 1280
+        }
+      ]
+    }
+  }
+}

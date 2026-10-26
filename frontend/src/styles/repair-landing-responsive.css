@@ -70,7 +70,7 @@
     height:95vw;
     max-height:730px;
     border-bottom:0;
-    background:linear-gradient(180deg,rgba(2,10,25,.01) 0%,rgba(2,10,25,.02) 31%,rgba(2,10,25,.13) 48%,rgba(2,10,25,.58) 69%,rgba(2,10,25,.90) 88%,#020b1b 100%),linear-gradient(90deg,rgba(2,10,25,.10) 0%,rgba(2,10,25,0) 72%),var(--repair-hero-image-mobile) 58% 35%/cover no-repeat,#020b1b;
+    background:#020b1b;
   }
   .repair-landing .repair-hero__inner { min-height:100%; height:100%; align-items:flex-end; }
   .repair-landing .repair-hero__content { width:100%; max-width:none; padding:0 0 clamp(32px,8vw,36px); }
@@ -191,12 +191,13 @@
     min-height:clamp(350px,87vw,390px);
     padding:clamp(18px,4.5vw,21px) clamp(17px,4.25vw,20px) clamp(17px,4.25vw,20px);
     border:1px solid #06182f;
+    background:#04172f;
+    box-shadow:0 8px 24px rgba(4,23,47,.12);
+  }
+  .repair-landing .repair-service-panel--diagnostic::before {
     background:
       linear-gradient(180deg,rgba(4,23,47,.60) 0%,rgba(4,23,47,.44) 40%,rgba(4,23,47,.78) 100%),
-      linear-gradient(90deg,#04172f 0%,#04172f 45%,rgba(4,23,47,.96) 57%,rgba(4,23,47,.66) 72%,rgba(4,23,47,.18) 100%),
-      url('../assets/media/repairs/repair-hero.webp') 70% center/cover no-repeat,
-      #04172f;
-    box-shadow:0 8px 24px rgba(4,23,47,.12);
+      linear-gradient(90deg,#04172f 0%,#04172f 45%,rgba(4,23,47,.96) 57%,rgba(4,23,47,.66) 72%,rgba(4,23,47,.18) 100%);
   }
   .repair-landing .repair-service-panel--diagnostic::after { display:none; }
   .repair-landing .repair-service-panel--diagnostic .repair-eyebrow { width:100%; color:#4a96ff; }
