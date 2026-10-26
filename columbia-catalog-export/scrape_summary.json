@@ -1,0 +1,216 @@
+{
+  "source": "https://shopcolumbiatools.com",
+  "generated_at": "2026-10-26T16:50:19.329488+00:00",
+  "collections_count": 28,
+  "global_products_count": 1056,
+  "unique_products_count": 1056,
+  "product_image_count": 1563,
+  "image_download_failures": 0,
+  "collection_count_mismatches": 0,
+  "complete": true,
+  "collection_audits": [
+    {
+      "handle": "angle-heads",
+      "title": "Angle Heads",
+      "products_count_reported": 12,
+      "products_extracted": 12,
+      "count_matches": true
+    },
+    {
+      "handle": "automatic-tapers",
+      "title": "Automatic Tapers",
+      "products_count_reported": 9,
+      "products_extracted": 9,
+      "count_matches": true
+    },
+    {
+      "handle": "automatic-taping-tools",
+      "title": "Automatic Taping Tools",
+      "products_count_reported": 87,
+      "products_extracted": 87,
+      "count_matches": true
+    },
+    {
+      "handle": "the-predator-family",
+      "title": "Carbon Fiber Predator Line",
+      "products_count_reported": 17,
+      "products_extracted": 17,
+      "count_matches": true
+    },
+    {
+      "handle": "columbia-merch",
+      "title": "Columbia Merch",
+      "products_count_reported": 2,
+      "products_extracted": 2,
+      "count_matches": true
+    },
+    {
+      "handle": "comfort-grip-knives",
+      "title": "Comfort Grip Knives",
+      "products_count_reported": 25,
+      "products_extracted": 25,
+      "count_matches": true
+    },
+    {
+      "handle": "applicators",
+      "title": "Compound Applicators",
+      "products_count_reported": 9,
+      "products_extracted": 9,
+      "count_matches": true
+    },
+    {
+      "handle": "compound-tubes",
+      "title": "Compound Tubes",
+      "products_count_reported": 10,
+      "products_extracted": 10,
+      "count_matches": true
+    },
+    {
+      "handle": "corner-boxes",
+      "title": "Corner Boxes",
+      "products_count_reported": 5,
+      "products_extracted": 5,
+      "count_matches": true
+    },
+    {
+      "handle": "corner-flushers",
+      "title": "Corner Flushers",
+      "products_count_reported": 13,
+      "products_extracted": 13,
+      "count_matches": true
+    },
+    {
+      "handle": "corner-rollers",
+      "title": "Corner Rollers",
+      "products_count_reported": 14,
+      "products_extracted": 14,
+      "count_matches": true
+    },
+    {
+      "handle": "finishing-boxes",
+      "title": "Finishing Boxes",
+      "products_count_reported": 20,
+      "products_extracted": 20,
+      "count_matches": true
+    },
+    {
+      "handle": "flat-box-handles",
+      "title": "Flat Box Handles",
+      "products_count_reported": 17,
+      "products_extracted": 17,
+      "count_matches": true
+    },
+    {
+      "handle": "hand-tools",
+      "title": "Hand Tools",
+      "products_count_reported": 69,
+      "products_extracted": 69,
+      "count_matches": true
+    },
+    {
+      "handle": "hand-trowels",
+      "title": "Hand Trowels",
+      "products_count_reported": 13,
+      "products_extracted": 13,
+      "count_matches": true
+    },
+    {
+      "handle": "loading-pumps",
+      "title": "Loading Pumps",
+      "products_count_reported": 7,
+      "products_extracted": 7,
+      "count_matches": true
+    },
+    {
+      "handle": "maintenance-kits",
+      "title": "Maintenance Kits",
+      "products_count_reported": 46,
+      "products_extracted": 46,
+      "count_matches": true
+    },
+    {
+      "handle": "mud-pans",
+      "title": "Mud Pans",
+      "products_count_reported": 3,
+      "products_extracted": 3,
+      "count_matches": true
+    },
+    {
+      "handle": "nail-spotters",
+      "title": "Nail Spotters",
+      "products_count_reported": 11,
+      "products_extracted": 11,
+      "count_matches": true
+    },
+    {
+      "handle": "nylon-handle-knives",
+      "title": "Nylon Handle Knives",
+      "products_count_reported": 14,
+      "products_extracted": 14,
+      "count_matches": true
+    },
+    {
+      "handle": "one-piece-stainless-knives",
+      "title": "One Piece Stainless Knives",
+      "products_count_reported": 10,
+      "products_extracted": 10,
+      "count_matches": true
+    },
+    {
+      "handle": "replacement-parts",
+      "title": "Replacement Parts",
+      "products_count_reported": 778,
+      "products_extracted": 778,
+      "count_matches": true
+    },
+    {
+      "handle": "sanders",
+      "title": "Sanders",
+      "products_count_reported": 6,
+      "products_extracted": 6,
+      "count_matches": true
+    },
+    {
+      "handle": "semi-automatic-taping-tools",
+      "title": "Semi Auto Taping Tools",
+      "products_count_reported": 35,
+      "products_extracted": 35,
+      "count_matches": true
+    },
+    {
+      "handle": "smoothing-blades",
+      "title": "Smoothing Blades",
+      "products_count_reported": 25,
+      "products_extracted": 25,
+      "count_matches": true
+    },
+    {
+      "handle": "handles",
+      "title": "Support Handles",
+      "products_count_reported": 11,
+      "products_extracted": 11,
+      "count_matches": true
+    },
+    {
+      "handle": "tool-cases",
+      "title": "Tool Cases",
+      "products_count_reported": 3,
+      "products_extracted": 3,
+      "count_matches": true
+    },
+    {
+      "handle": "tool-sets",
+      "title": "Tool Sets",
+      "products_count_reported": 5,
+      "products_extracted": 5,
+      "count_matches": true
+    }
+  ],
+  "image_failures": [],
+  "notes": [
+    "Prices and SKUs are variant-level values; product_variants.csv has one row per variant.",
+    "description_html preserves Shopify body_html; description_text is a convenience rendering.",
+    "Image URLs are the source URLs returned in product JSON; files are downloaded without resizing.",
+    "Products are public products exposed by Shopify's public JSON endpoints; unpublished/private products are not accessible here."
+  ]
+}

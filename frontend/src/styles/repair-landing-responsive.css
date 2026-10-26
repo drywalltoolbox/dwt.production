@@ -194,7 +194,7 @@
     background:
       linear-gradient(180deg,rgba(4,23,47,.60) 0%,rgba(4,23,47,.44) 40%,rgba(4,23,47,.78) 100%),
       linear-gradient(90deg,#04172f 0%,#04172f 45%,rgba(4,23,47,.96) 57%,rgba(4,23,47,.66) 72%,rgba(4,23,47,.18) 100%),
-      url('../assets/media/repairs/repair-service-diagnostic.webp') 70% center/cover no-repeat,
+      url('../assets/media/repairs/repair-hero.webp') 70% center/cover no-repeat,
       #04172f;
     box-shadow:0 8px 24px rgba(4,23,47,.12);
   }

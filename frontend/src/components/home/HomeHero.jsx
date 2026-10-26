@@ -6,7 +6,7 @@ import homeHeroDesktop1600Url from '@assets/media/home/home-hero-desktop-1600.we
 import homeHeroMobileUrl from '@assets/media/home/home-hero-mobile-640.webp';
 import homeRepairsHeroDesktopUrl from '@assets/media/home/home-repairs-hero-desktop.webp';
 import homeRepairsHeroMobileUrl from '@assets/media/home/home-hero-repairs-mobile.jpg';
-import '../styles/repair-hero-shared.css';
+import '../../styles/repair-hero-shared.css';
 
 const SWIPE_THRESHOLD_PX = 44;
 const SLIDE_INTERVAL_MS = 8500;

@@ -60,7 +60,7 @@
 .repair-landing .repair-service-panel li::after { content:'✓'; position:absolute; top:8px; left:4px; color:#fff; font-size:.65rem; font-weight:900; line-height:17px; }
 .repair-landing .repair-service-panel > a:not(.repair-button) { display:inline-flex; align-items:center; gap:10px; margin-top:4px; color:#0768f7; font-size:.82rem; font-weight:850; text-decoration:none; }
 
-.repair-landing .repair-service-panel--diagnostic { padding:30px 45% 28px 30px; border-color:#06182f; background:linear-gradient(90deg,#04172f 0%,rgba(4,23,47,.97) 37%,rgba(4,23,47,.78) 55%,rgba(4,23,47,.24) 78%,rgba(4,23,47,.06) 100%),url('../assets/media/repairs/repair-service-diagnostic.webp') 64% center/cover no-repeat; color:#fff; }
+.repair-landing .repair-service-panel--diagnostic { padding:30px 45% 28px 30px; border-color:#06182f; background:linear-gradient(90deg,#04172f 0%,rgba(4,23,47,.97) 37%,rgba(4,23,47,.78) 55%,rgba(4,23,47,.24) 78%,rgba(4,23,47,.06) 100%),url('../assets/media/repairs/repair-hero.webp') 64% center/cover no-repeat; color:#fff; }
 .repair-landing .repair-service-panel--diagnostic::after { display:none; }
 .repair-landing .repair-service-panel--diagnostic .repair-eyebrow { color:#3f8dff; }
 .repair-landing .repair-service-panel--diagnostic h2 { max-width:11ch; color:#fff; }
@@ -131,7 +131,7 @@
   .repair-landing .repair-service-details__grid { grid-template-columns:1fr; }
   .repair-landing .repair-service-panel { min-height:470px; padding:22px 18px 205px; }
   .repair-landing .repair-service-panel::after { top:auto; right:-5%; bottom:0; width:78%; height:215px; opacity:1; }
-  .repair-landing .repair-service-panel--diagnostic { min-height:520px; padding:22px 18px 220px; background:linear-gradient(180deg,#04172f 0%,rgba(4,23,47,.98) 43%,rgba(4,23,47,.7) 61%,rgba(4,23,47,.12) 100%),url('../assets/media/repairs/repair-service-diagnostic.webp') 60% bottom/auto 62% no-repeat,#04172f; }
+  .repair-landing .repair-service-panel--diagnostic { min-height:520px; padding:22px 18px 220px; background:linear-gradient(180deg,#04172f 0%,rgba(4,23,47,.98) 43%,rgba(4,23,47,.7) 61%,rgba(4,23,47,.12) 100%),url('../assets/media/repairs/repair-hero.webp') 60% bottom/auto 62% no-repeat,#04172f; }
   .repair-landing .repair-service-panel h2 { max-width:13ch; }
   .repair-landing .repair-service-panel--diagnostic h2 { max-width:10ch; }
   .repair-landing .repair-assurance__grid { grid-template-columns:1fr; }
