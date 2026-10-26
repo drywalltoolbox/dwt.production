@@ -15,7 +15,7 @@ export const HOME_HERO_CAMPAIGNS = [
     eyebrow: 'Parts & Schematics',
     titleLines: ['Genuine Parts.', 'All In One Place.'],
     accentLine: 1,
-    description: 'Find the exact replacement part for all of your tools, using our semless brand browsing and interactive schematic experience.',
+    description: 'Find the exact replacement part for all of your tools, using our seamless brand browsing and interactive schematic experience.',
     primaryAction: { label: 'Shop Parts', to: '/parts' },
     secondaryAction: { label: 'Browse Schematics', to: '/schematics' },
   },
