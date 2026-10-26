@@ -1,12 +1,10 @@
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/shared/SEOHead';
-import RepairGuarantees from '../components/RepairGuarantees';
+import RepairHero from '../components/RepairHero';
 import { getOfficialRepairBrands } from '../data/repairCatalogMap.js';
 import { getBrandLogo } from '../utils/brandAssets.js';
 import repairServicePackageArt from '../assets/media/repairs/repair-service-package.webp';
 import { HOME_HERO_CAMPAIGNS } from '../components/home/homeHeroCampaigns.js';
-import homeRepairsHeroDesktopUrl from '../assets/media/home/home-repairs-hero-desktop.webp';
-import homeRepairsHeroMobileUrl from '../assets/media/home/home-hero-repairs-mobile.jpg';
 import '../styles/repair-landing.css';
 import '../styles/repair-merchandising.css';
 import '../styles/repair-landing-responsive.css';
@@ -15,6 +13,7 @@ import '../styles/repair-landing-mobile-hero.css';
 import '../styles/repair-guarantees.css';
 import '../styles/repair-hero-desktop-promises.css';
 import '../styles/repair-service-cards-mobile.css';
+import '../styles/repair-hero-shared.css';
 
 const PROCESS_STEPS = [
   { title: 'Identify the tool', description: 'Tell us the brand, tool family, model, symptoms, and service goal. Photos can be added during intake.' },
@@ -79,16 +78,7 @@ export default function RepairLanding() {
   return (
     <div className="repair-landing page-wrapper">
       <SEOHead title="Expert Repair Services | Drywall Toolbox" description={REPAIRS_CAMPAIGN.description} canonical="/repairs" />
-      <section className="repair-hero" aria-labelledby="repair-hero-title" style={{ '--repair-hero-image': `url("${homeRepairsHeroDesktopUrl}")`, '--repair-hero-image-mobile': `url("${homeRepairsHeroMobileUrl}")` }}><div className="repair-hero__inner"><div className="repair-hero__content">
-        <p className="repair-eyebrow">{REPAIRS_CAMPAIGN.eyebrow}</p>
-        <h1 id="repair-hero-title">{REPAIRS_CAMPAIGN.titleLines.map((line, index) => <span className={`repair-hero__title-line${index === REPAIRS_CAMPAIGN.accentLine ? ' repair-hero__title-line--accent' : ' repair-hero__title-line--primary'}`} key={line}>{line}</span>)}</h1>
-        <p className="repair-hero__lead">{REPAIRS_CAMPAIGN.description}</p>
-        <div className="repair-hero__actions" aria-label="Repair service actions">
-          <Link className="repair-button repair-button--primary" to={REPAIRS_CAMPAIGN.primaryAction.to}>{REPAIRS_CAMPAIGN.primaryAction.label} <span className="repair-button__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4.75 12h14.5M12.5 5.25 19.25 12l-6.75 6.75" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" /></svg></span></Link>
-          <Link className="repair-button repair-button--secondary" to={REPAIRS_CAMPAIGN.secondaryAction.to}>{REPAIRS_CAMPAIGN.secondaryAction.label} <span className="repair-button__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4.75 12h14.5M12.5 5.25 19.25 12l-6.75 6.75" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" /></svg></span></Link>
-          <Link className="repair-button repair-button--utility" to="/repairs/track">Track Repair <span className="repair-button__arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4.75 12h14.5M12.5 5.25 19.25 12l-6.75 6.75" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" /></svg></span></Link>
-        </div>
-      </div><RepairGuarantees /></div></section>
+      <RepairHero campaign={REPAIRS_CAMPAIGN} />
 
       <section className="repair-service-details" aria-labelledby="repair-service-paths-title"><div className="repair-section-shell">
         <div className="repair-section-heading repair-section-heading--center"><p className="repair-eyebrow">How Should We Start?</p><h2 id="repair-service-paths-title">Choose the path that matches what you know today.</h2><p>Both options continue into the same structured repair intake, shipping, approval, and tracking workflow.</p></div>

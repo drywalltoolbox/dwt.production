@@ -1,39 +1,22 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useReducedMotion } from 'framer-motion';
-import HomeHeroButton from './HomeHeroButton';
+import RepairHero from '../RepairHero';
 import { HOME_HERO_CAMPAIGNS, HOME_HERO_CAMPAIGN_COUNT } from './homeHeroCampaigns.js';
-import homeHeroDesktopUrl from '@assets/media/home/home-hero-desktop-1600.webp';
+import homeHeroDesktop1600Url from '@assets/media/home/home-hero-desktop-1600.webp';
 import homeHeroMobileUrl from '@assets/media/home/home-hero-mobile-640.webp';
-import homeRepairsHeroMobileUrl from '@assets/media/home/home-hero-repairs-mobile.jpg';
 import homeRepairsHeroDesktopUrl from '@assets/media/home/home-repairs-hero-desktop.webp';
+import homeRepairsHeroMobileUrl from '@assets/media/home/home-hero-repairs-mobile.jpg';
+import '../styles/repair-hero-shared.css';
 
 const SWIPE_THRESHOLD_PX = 44;
 const SLIDE_INTERVAL_MS = 8500;
 const HERO_CROSSFADE_DURATION_MS = 620;
 const POINTER_IDLE_MS = 3000;
 
-function HeroTitleLines({ campaign }) {
-  return (
-    <>
-      {campaign.titleLines.map((line, index) => (
-        <span
-          className={`home-hero__title-line${index === campaign.accentLine ? ' home-hero__title-line--accent' : ''}`}
-          key={line}
-        >
-          {line}
-        </span>
-      ))}
-    </>
-  );
-}
-
 function HomeHeroSlide({ campaign, reduceMotion, isActive, isEntering = false, isExiting = false }) {
-  const isRepairsMedia = campaign.id === 'repairs';
-  const desktopHeroUrl = isRepairsMedia ? homeRepairsHeroDesktopUrl : homeHeroDesktopUrl;
-  const mobileHeroUrl = isRepairsMedia ? homeRepairsHeroMobileUrl : homeHeroMobileUrl;
-  const desktopHeroDimensions = isRepairsMedia
-    ? { width: 1672, height: 941 }
-    : { width: 1600, height: 640 };
+  const isRepairs = campaign.id === 'repairs';
+  const heroImage = isRepairs ? homeRepairsHeroDesktopUrl : homeHeroDesktop1600Url;
+  const mobileHeroImage = isRepairs ? homeRepairsHeroMobileUrl : homeHeroMobileUrl;
   const slideDuration = reduceMotion ? 100 : HERO_CROSSFADE_DURATION_MS;
   const slideClassName = [
     'home-hero__slide',
@@ -49,60 +32,14 @@ function HomeHeroSlide({ campaign, reduceMotion, isActive, isEntering = false, i
       inert={!isActive}
       style={{ '--home-hero-slide-duration': `${slideDuration}ms` }}
     >
-      <picture
-        className="home-hero__media"
-        aria-hidden="true"
-      >
-        <source
-          media="(max-width: 640px)"
-          srcSet={mobileHeroUrl}
-          type={isRepairsMedia ? 'image/jpeg' : 'image/webp'}
-          width={isRepairsMedia ? 720 : 640}
-          height={isRepairsMedia ? 1280 : 1138}
+      <div className="repair-landing home-hero__repair-surface" aria-live="off">
+        <RepairHero
+          campaign={campaign}
+          titleId={isActive ? 'home-hero-title' : null}
+          image={heroImage}
+          mobileImage={mobileHeroImage}
+          homeSlide
         />
-        <img
-          className="home-hero__media-image"
-          src={desktopHeroUrl}
-          width={desktopHeroDimensions.width}
-          height={desktopHeroDimensions.height}
-          sizes="100vw"
-          alt=""
-          decoding="async"
-          loading="eager"
-          fetchPriority="high"
-          draggable="false"
-        />
-      </picture>
-
-      <div className="home-hero__ambient" aria-hidden="true" />
-      <div className="home-hero__scrim" aria-hidden="true" />
-
-      <div
-        className="home-hero__content-shell"
-        id={isActive ? 'home-hero-panel' : undefined}
-        aria-live="off"
-      >
-        <div className="home-hero__content">
-          <p className="home-hero__eyebrow">
-            <span className="home-hero__eyebrow-bar" aria-hidden="true" />
-            {campaign.eyebrow}
-          </p>
-
-          <h1 id={isActive ? 'home-hero-title' : undefined} className="home-hero__title">
-            <HeroTitleLines campaign={campaign} />
-          </h1>
-
-          <p className="home-hero__description">{campaign.description}</p>
-
-          <div className="home-hero__actions">
-            <HomeHeroButton to={campaign.primaryAction.to}>
-              {campaign.primaryAction.label}
-            </HomeHeroButton>
-            <HomeHeroButton to={campaign.secondaryAction.to} variant="secondary">
-              {campaign.secondaryAction.label}
-            </HomeHeroButton>
-          </div>
-        </div>
       </div>
     </div>
   );
@@ -132,7 +69,7 @@ export default function HomeHero() {
     const mobileViewport = window.matchMedia('(max-width: 640px)').matches;
     const incomingUrl = activeCampaign.id === 'repairs'
       ? (mobileViewport ? homeRepairsHeroMobileUrl : homeRepairsHeroDesktopUrl)
-      : (mobileViewport ? homeHeroMobileUrl : homeHeroDesktopUrl);
+      : (mobileViewport ? homeHeroMobileUrl : homeHeroDesktop1600Url);
     const incomingImage = new window.Image();
     let cancelled = false;
     let settled = false;
