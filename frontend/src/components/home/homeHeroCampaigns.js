@@ -27,7 +27,7 @@ export const HOME_HERO_CAMPAIGNS = [
     accentLine: 1,
     description: 'From routine maintenance to complete repairs, our experts keep your drywall tools performing at their best.',
     primaryAction: { label: 'Request a Repair', to: '/repairs/start' },
-    secondaryAction: { label: 'Explore Services', to: '/repairs' },
+    secondaryAction: { label: 'Explore Services', to: '/repairs/packages' },
   },
 ];
 

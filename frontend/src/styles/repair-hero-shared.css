@@ -563,3 +563,13 @@
   .home-hero__stage { min-height: clamp(610px, 156vw, 690px); }
   .home-hero-carousel { bottom: 4px; }
 }
+
+/* The Repair Services landing page uses its supplied artwork as the complete
+   hero surface. The artwork already provides its own dark text-safe area. */
+.repair-landing .repair-hero {
+  background: transparent;
+}
+
+.repair-landing .repair-hero__scrim {
+  display: none;
+}

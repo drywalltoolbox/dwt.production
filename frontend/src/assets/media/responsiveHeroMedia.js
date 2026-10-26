@@ -17,6 +17,7 @@ import heroRepairsDesktopW828 from "./generated/heroes/repairs-desktop-828.webp"
 import heroRepairsDesktopW960 from "./generated/heroes/repairs-desktop-960.webp";
 import heroRepairsDesktopW1280 from "./generated/heroes/repairs-desktop-1280.webp";
 import heroRepairsDesktopW1600 from "./generated/heroes/repairs-desktop-1600.webp";
+import heroRepairsDesktopW1920 from "./generated/heroes/repairs-desktop-1920.webp";
 import heroRepairsMobileSource from "./home/home-hero-repairs-mobile.webp";
 import heroRepairsMobileW480 from "./generated/heroes/repairs-mobile-480.webp";
 import heroRepairsMobileW640 from "./generated/heroes/repairs-mobile-640.webp";
@@ -53,7 +54,7 @@ export const RESPONSIVE_HERO_MEDIA_QUERY = "(max-width: 47.99rem)";
 const imageSets = Object.freeze({
   homeDesktop: Object.freeze({ src: heroHomeDesktopSource, srcSet: [heroHomeDesktopW480 + ' 480w', heroHomeDesktopW640 + ' 640w', heroHomeDesktopW828 + ' 828w', heroHomeDesktopW960 + ' 960w', heroHomeDesktopW1280 + ' 1280w', heroHomeDesktopW1600 + ' 1600w', heroHomeDesktopSource + ' 1672w'].join(', '), width: 1672, height: 941 }),
   homeMobile: Object.freeze({ src: heroHomeMobileSource, srcSet: [heroHomeMobileW480 + ' 480w', heroHomeMobileW640 + ' 640w', heroHomeMobileW828 + ' 828w', heroHomeMobileSource + ' 941w'].join(', '), width: 941, height: 1672 }),
-  repairsDesktop: Object.freeze({ src: heroRepairsDesktopSource, srcSet: [heroRepairsDesktopW480 + ' 480w', heroRepairsDesktopW640 + ' 640w', heroRepairsDesktopW828 + ' 828w', heroRepairsDesktopW960 + ' 960w', heroRepairsDesktopW1280 + ' 1280w', heroRepairsDesktopW1600 + ' 1600w', heroRepairsDesktopSource + ' 1672w'].join(', '), width: 1672, height: 941 }),
+  repairsDesktop: Object.freeze({ src: heroRepairsDesktopSource, srcSet: [heroRepairsDesktopW480 + ' 480w', heroRepairsDesktopW640 + ' 640w', heroRepairsDesktopW828 + ' 828w', heroRepairsDesktopW960 + ' 960w', heroRepairsDesktopW1280 + ' 1280w', heroRepairsDesktopW1600 + ' 1600w', heroRepairsDesktopW1920 + ' 1920w', heroRepairsDesktopSource + ' 1983w'].join(', '), width: 1983, height: 793 }),
   repairsMobile: Object.freeze({ src: heroRepairsMobileSource, srcSet: [heroRepairsMobileW480 + ' 480w', heroRepairsMobileW640 + ' 640w', heroRepairsMobileW828 + ' 828w', heroRepairsMobileSource + ' 941w'].join(', '), width: 941, height: 1672 }),
   toolsetBuilder: Object.freeze({ src: heroToolsetBuilderSource, srcSet: [heroToolsetBuilderW480 + ' 480w', heroToolsetBuilderW640 + ' 640w', heroToolsetBuilderW828 + ' 828w', heroToolsetBuilderW960 + ' 960w', heroToolsetBuilderW1280 + ' 1280w', heroToolsetBuilderW1600 + ' 1600w', heroToolsetBuilderSource + ' 1774w'].join(', '), width: 1774, height: 887 }),
   dropdownParts: Object.freeze({ src: heroDropdownPartsSource, srcSet: [heroDropdownPartsW480 + ' 480w', heroDropdownPartsW640 + ' 640w', heroDropdownPartsW828 + ' 828w', heroDropdownPartsW960 + ' 960w', heroDropdownPartsW1280 + ' 1280w', heroDropdownPartsSource + ' 1568w'].join(', '), width: 1568, height: 1003 }),

@@ -310,7 +310,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     {
       id: 'repairs',
       label: 'Repair Services',
-      landingTo: '/repairs',
+      landingTo: '/repairs/packages',
       landingLabel: 'View all repair services',
       landingDescription: 'Browse our complete collection of repair packages.',
       description: 'Compare repair packages for your tool type.',
