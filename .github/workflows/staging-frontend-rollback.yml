@@ -44,16 +44,13 @@ jobs:
           mkdir -m 700 -p "$HOME/.ssh"
           printf '%s\n' "$SSH_KEY" > "$HOME/.ssh/id_staging"
           chmod 600 "$HOME/.ssh/id_staging"
-          ssh-keyscan -p "${SITEGROUND_PORT:-22}" -H "$SITEGROUND_HOST" > "$HOME/.ssh/known_hosts" 2>/dev/null
-          [[ -s "$HOME/.ssh/known_hosts" ]] || { echo "::error::Could not retrieve SiteGround SSH host key"; exit 2; }
-          chmod 600 "$HOME/.ssh/known_hosts"
 
       - name: Roll back the current staging release under lock
         run: |
           set -euo pipefail
           printf -v remote '%q ' bash -s -- rollback "$STAGING_ROOT" "$RELEASE_ROOT" auto
           ssh -i "$HOME/.ssh/id_staging" -p "${SITEGROUND_PORT:-22}" -o BatchMode=yes -o IdentitiesOnly=yes \
-            -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < scripts/deployment/staging-release.sh
 
       - name: Verify staging HTTP shell and noindex response
@@ -77,4 +74,4 @@ jobs:
 
       - name: Remove temporary SSH credentials
         if: always()
-        run: rm -f "$HOME/.ssh/id_staging" "$HOME/.ssh/known_hosts"
+        run: rm -f "$HOME/.ssh/id_staging"

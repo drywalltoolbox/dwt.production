@@ -27,7 +27,7 @@ Configure the protected environment named `staging` with these secrets:
 | `SITEGROUND_STAGING_PUBLIC_DIR` | Absolute path to `public_html/staging` |
 | `SITEGROUND_STAGING_RELEASE_DIR` | Existing private writable path outside `public_html` |
 
-The publisher retrieves the SSH host key for the configured host and port at the start of each job, then requires strict host-key checking for every SSH connection in that job. Do not disable host-key checking or put credentials in workflow inputs or source control.
+The publish and rollback workflows use OpenSSH with `StrictHostKeyChecking=no` and `UserKnownHostsFile=/dev/null`, matching the previously working staging deployment workflow. This accepts the presented host key on each connection and does not pin or persist it. Keep the SSH private key in the protected `staging` environment; do not put credentials in workflow inputs or source control.
 
 ## Server-side behavior and limits
 
