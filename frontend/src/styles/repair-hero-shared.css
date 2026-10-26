@@ -458,9 +458,13 @@
 }
 
 @media (max-width: 47.99rem) {
-  .repair-landing .repair-hero,
+  .repair-landing .repair-hero {
+    min-height: clamp(590px, 145vw, 650px);
+    background: #020b1b;
+  }
+
   .home-hero__repair-surface .repair-hero {
-    min-height: clamp(610px, 156vw, 690px);
+    min-height: 0;
     background: #020b1b;
   }
 
@@ -484,10 +488,20 @@
     padding: 0 0 18px;
   }
 
-  .repair-landing .repair-hero__content,
+  .repair-landing .repair-hero__content {
+    width: 100%;
+    padding: clamp(165px, 42vw, 215px) 0 0;
+  }
+
+  .home-hero__repair-surface .repair-hero__inner {
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 48px;
+  }
+
   .home-hero__repair-surface .repair-hero__content {
     width: 100%;
-    padding: clamp(235px, 60vw, 280px) 0 0;
+    padding: 0;
   }
 
   .repair-landing .repair-hero .repair-eyebrow,
@@ -550,17 +564,17 @@
   .home-hero__repair-surface .repair-hero__actions .repair-button--utility { display: none; }
 
   .home-hero__repair-surface .repair-hero {
-    height: auto;
-    min-height: 100%;
+    height: 100%;
+    min-height: 0;
   }
 
   .home-hero__repair-surface .repair-hero__inner {
-    height: auto;
-    min-height: clamp(610px, 156vw, 690px);
+    height: 100%;
+    min-height: 0;
   }
 
   .home-hero__repair-surface .repair-hero .repair-guarantees { display: none; }
-  .home-hero__stage { min-height: clamp(610px, 156vw, 690px); }
+  .home-hero__stage { min-height: 0; }
   .home-hero-carousel { bottom: 4px; }
 }
 
@@ -572,4 +586,19 @@
 
 .repair-landing .repair-hero__scrim {
   display: none;
+}
+
+@media (max-width: 47.99rem) {
+  .repair-landing .repair-hero__scrim {
+    display: block;
+    background: linear-gradient(180deg, transparent 20%, rgba(2, 10, 25, .18) 39%, rgba(2, 10, 25, .82) 67%, #020b1b 100%);
+  }
+}
+
+@media (max-width: 360px) {
+  .repair-landing .repair-hero__actions,
+  .home-hero__repair-surface .repair-hero__actions {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+  }
 }
