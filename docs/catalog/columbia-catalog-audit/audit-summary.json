@@ -1,0 +1,54 @@
+{
+  "source_generated_at": "2026-10-26T16:50:19.329488+00:00",
+  "hashes": {
+    "products/launch/official/dtb_official_catalog.csv": "1bc44bf5f1dd397cef02113ac244aaf391961e6f61cc88523ecd0ae730d36cc6",
+    "columbia-catalog-export/products.json": "572cd1ffe3061fb00bd1068289d678f6b86fd5fee984fe08bfd3d6123f78456c",
+    "columbia-catalog-export/product_variants.csv": "bb4ec8d05980314af85be10d582b4226638ac66e9481ab3caf94a7d5ce7e9e5d",
+    "columbia-catalog-export/collections.json": "dc1321da057b02c0d4a5dcecaaa5090e5a8cf3240f530405c5fa68595bd4721c",
+    "columbia-catalog-export/scrape_summary.json": "46328262cd0514dae398ddc2c9727126b05bd77d27d7fc8eaf197fe5d8661136"
+  },
+  "counts": {
+    "source_products": 1056,
+    "source_variants_csv": 1060,
+    "source_variants_json": 1060,
+    "dtb_columbia_rows": 566,
+    "dtb_columbia_sellable_rows": 515,
+    "dtb_columbia_parent_rows": 51,
+    "source_match_status": {
+      "exact_identifier": 434,
+      "unmatched": 599,
+      "ambiguous_identifier": 2,
+      "normalized_identifier_candidate": 15,
+      "manufacturer_identifier_review": 4,
+      "missing_source_sku": 6
+    },
+    "dtb_match_status": {
+      "family_parent_not_compared_as_sellable": 51,
+      "exact_identifier": 434,
+      "not_exact_matched": 77,
+      "manufacturer_identifier_review": 4
+    },
+    "source_blank_skus": 6,
+    "duplicate_source_skus": {
+      "ct45-black": 2
+    },
+    "duplicate_product_ids": {},
+    "variant_multiset_mismatches": 0,
+    "json_image_refs": 1563,
+    "json_image_paths_missing": 1563,
+    "csv_unique_image_paths": 1563,
+    "csv_missing_image_refs": 0,
+    "image_files_on_disk": 1563,
+    "image_files_unreferenced_by_csv": 0,
+    "image_refs_missing_from_disk": 0,
+    "collections_mismatches": {},
+    "findings": {
+      "price_difference": 404,
+      "placeholder_dtb_image": 33,
+      "identifier_mapping": 4,
+      "dtb_unmatched": 77,
+      "source_unresolved": 622
+    },
+    "candidate_rows": 617
+  }
+}

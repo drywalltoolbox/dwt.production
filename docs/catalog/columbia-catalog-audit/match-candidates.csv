@@ -1,0 +1,618 @@
+﻿source_row,source_sku,source_name,source_product_id,dtb_sku,dtb_name,dtb_type,dtb_parent,score,basis,number_conflict,decision
+3,FA269,#10 Lock Washer,10210655928618,FA229,#6 Lock Washer,simple,,0.714,title_similarity=0.889; token_overlap=0.500,yes,review_required
+3,FA269,#10 Lock Washer,10210655928618,FA268,#10 Flat Washer,simple,,0.657,title_similarity=0.786; token_overlap=0.500,no,review_required
+3,FA269,#10 Lock Washer,10210655928618,FA280,#10 Belleville Washer,simple,,0.581,title_similarity=0.647; token_overlap=0.500,no,review_required
+4,FA331,"#10 Nylon Flat Washer 1/16"" Thick",10210651308330,FA268,#10 Flat Washer,simple,,0.535,title_similarity=0.622; token_overlap=0.429,yes,review_required
+6,FA398,#4 Flat Washer Stainless,10210647310634,FA253,#8 Flat Washer,simple,,0.547,title_similarity=0.667; token_overlap=0.400,yes,review_required
+6,FA398,#4 Flat Washer Stainless,10210647310634,FA228,#6 Flat Washer,simple,,0.547,title_similarity=0.667; token_overlap=0.400,yes,review_required
+6,FA398,#4 Flat Washer Stainless,10210647310634,FA268,#10 Flat Washer,simple,,0.537,title_similarity=0.649; token_overlap=0.400,yes,review_required
+7,FA205,#4 Lock Washer,10318165606698,FA229,#6 Lock Washer,simple,,0.733,title_similarity=0.923; token_overlap=0.500,yes,review_required
+7,FA205,#4 Lock Washer,10318165606698,CR4,Cut Washer,simple,,0.495,title_similarity=0.696; token_overlap=0.250,no,review_required
+8,FA283,#4 Star Washer,10210654880042,FA252,#8 Star Washer,simple,,0.733,title_similarity=0.923; token_overlap=0.500,yes,review_required
+8,FA283,#4 Star Washer,10210654880042,FA230,#6 Star Washer,simple,,0.733,title_similarity=0.923; token_overlap=0.500,yes,review_required
+8,FA283,#4 Star Washer,10210654880042,CR4,Cut Washer,simple,,0.495,title_similarity=0.696; token_overlap=0.250,no,review_required
+9,FA277,#6 Bellevile Washer,10210655306026,FA280,#10 Belleville Washer,simple,,0.582,title_similarity=0.895; token_overlap=0.200,yes,review_required
+9,FA277,#6 Bellevile Washer,10210655306026,FA229,#6 Lock Washer,simple,,0.580,title_similarity=0.645; token_overlap=0.500,no,review_required
+9,FA277,#6 Bellevile Washer,10210655306026,FA228,#6 Flat Washer,simple,,0.580,title_similarity=0.645; token_overlap=0.500,no,review_required
+15,FA251,#8 Lock Washer,10210657206570,FA229,#6 Lock Washer,simple,,0.733,title_similarity=0.923; token_overlap=0.500,yes,review_required
+15,FA251,#8 Lock Washer,10210657206570,FA253,#8 Flat Washer,simple,,0.648,title_similarity=0.769; token_overlap=0.500,no,review_required
+15,FA251,#8 Lock Washer,10210657206570,FA252,#8 Star Washer,simple,,0.606,title_similarity=0.692; token_overlap=0.500,no,review_required
+22,FA329,1/16 X 1/4 Dowell Pin,10210651439402,FA200,"1/16 x 1/4"" Split Pin",simple,,0.751,title_similarity=0.780; token_overlap=0.714,no,review_required
+22,FA329,1/16 X 1/4 Dowell Pin,10210651439402,FA203,"1/16 x 3/4"" Cotter Pin",simple,,0.700,title_similarity=0.762; token_overlap=0.625,yes,review_required
+22,FA329,1/16 X 1/4 Dowell Pin,10210651439402,FA202,"1/16 X 1/2"" Cotter Pin",simple,,0.644,title_similarity=0.762; token_overlap=0.500,yes,review_required
+26,FA308,"1/2 X 7/8"" Flat Washer",10210653045034,FA3,"1/2"" x 7/8"" Flat Washer",simple,,1.000,format_normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,review_required
+26,FA308,"1/2 X 7/8"" Flat Washer",10210653045034,FA308,"Columbia 33/64 X 7/8"" Flat Washer",simple,,0.880,format_normalized_identifier; title_similarity=0.717; token_overlap=0.500,yes,review_required
+26,FA308,"1/2 X 7/8"" Flat Washer",10210653045034,FA286,"1/4"" x 1/2"" Flat Washer",simple,,0.674,title_similarity=0.714; token_overlap=0.625,yes,review_required
+28,FA333,1/4 Flat Washer (Also Cr4),10210651177258,FA286,"1/4"" x 1/2"" Flat Washer",simple,,0.584,title_similarity=0.652; token_overlap=0.500,yes,review_required
+28,FA333,1/4 Flat Washer (Also Cr4),10210651177258,FA268,#10 Flat Washer,simple,,0.495,title_similarity=0.667; token_overlap=0.286,yes,review_required
+30,FA357,1/4 X 1-1/4 Ss Slotted Spring Pin,10210649899306,FA288,"1/4"" X 3/4"" Split Pin",simple,,0.538,title_similarity=0.615; token_overlap=0.444,yes,review_required
+30,FA357,1/4 X 1-1/4 Ss Slotted Spring Pin,10210649899306,FA200,"1/16 x 1/4"" Split Pin",simple,,0.532,title_similarity=0.604; token_overlap=0.444,yes,review_required
+30,FA357,1/4 X 1-1/4 Ss Slotted Spring Pin,10210649899306,FA382,"10-32 x 1/4"" SS Set Screw",simple,,0.492,title_similarity=0.596; token_overlap=0.364,yes,review_required
+33,FA287,"1/4"" X 1/2"" Split Pin",10210654585130,FA288,"1/4"" X 3/4"" Split Pin",simple,,0.814,title_similarity=0.895; token_overlap=0.714,yes,review_required
+33,FA287,"1/4"" X 1/2"" Split Pin",10210654585130,FA200,"1/16 x 1/4"" Split Pin",simple,,0.801,title_similarity=0.872; token_overlap=0.714,yes,review_required
+33,FA287,"1/4"" X 1/2"" Split Pin",10210654585130,FA224,"1/8"" x 3/8"" Split Pin",simple,,0.688,title_similarity=0.842; token_overlap=0.500,yes,review_required
+39,FA341,1/4-20 Nyloc Wing Nut,10210650587434,FA290,Columbia 1/4-20 Nyloc Nut,simple,,0.704,title_similarity=0.696; token_overlap=0.714,no,review_required
+39,FA341,1/4-20 Nyloc Wing Nut,10210650587434,FA292,FA292 1/4-20 Nyloc Jam Nut,simple,,0.640,title_similarity=0.708; token_overlap=0.556,yes,review_required
+39,FA341,1/4-20 Nyloc Wing Nut,10210650587434,FA291,1/4-20 Hex Nut,simple,,0.603,title_similarity=0.629; token_overlap=0.571,no,review_required
+40,FA323,"1/4-20 X 1"" Hex Bolt",10210651898154,FA296,"1/4 -20 x 1/2"" Hex Bolt",simple,,0.908,title_similarity=0.950; token_overlap=0.857,yes,review_required
+40,FA323,"1/4-20 X 1"" Hex Bolt",10210651898154,FA300,"1/4-20 x 2"" Hex Bolt",simple,,0.907,title_similarity=0.947; token_overlap=0.857,yes,review_required
+40,FA323,"1/4-20 X 1"" Hex Bolt",10210651898154,FA301,"1/4-20 x 2 1/4"" Hex Bolt",simple,,0.883,title_similarity=0.905; token_overlap=0.857,yes,review_required
+41,FA360,"1/4-20 X 1"" Slotted Drive Binding Head Ss",10210649669930,FA313,1/4-20 X 1/4 Socket Head Set Screw,simple,,0.515,title_similarity=0.595; token_overlap=0.417,no,review_required
+48,FA362,1/4-20 X 3/8 Nylon Oval Thumb Screw,10210649473322,FA298,"1/4-20 x 7/8"" Flat Socket",simple,,0.527,title_similarity=0.644; token_overlap=0.385,yes,review_required
+48,FA362,1/4-20 X 3/8 Nylon Oval Thumb Screw,10210649473322,FA313,1/4-20 X 1/4 Socket Head Set Screw,simple,,0.524,title_similarity=0.638; token_overlap=0.385,yes,review_required
+48,FA362,1/4-20 X 3/8 Nylon Oval Thumb Screw,10210649473322,CFB10,"5/16-18 x 3/4"" Thumb Screw",simple,,0.521,title_similarity=0.633; token_overlap=0.385,yes,review_required
+49,FA392,1/4-20 X 3/8 Pan Head Slot,10210647703850,FA260,"8-32 x 3/8"" Pan Slot",simple,,0.641,title_similarity=0.756; token_overlap=0.500,yes,review_required
+49,FA392,1/4-20 X 3/8 Pan Head Slot,10210647703850,FA256,"8-32 X 3/16"" Pan Slot",simple,,0.587,title_similarity=0.696; token_overlap=0.455,yes,review_required
+49,FA392,1/4-20 X 3/8 Pan Head Slot,10210647703850,FA218,"4-40 x 3/8"" Flat Slot",simple,,0.587,title_similarity=0.696; token_overlap=0.455,yes,review_required
+51,FA345,1/4-20 X 5/8 Nylon Thumb Screw,10210650390826,FA297,"1/4-20 x 5/8"" Socket",simple,,0.607,title_similarity=0.612; token_overlap=0.600,no,review_required
+51,FA345,1/4-20 X 5/8 Nylon Thumb Screw,10210650390826,FA298,"1/4-20 x 7/8"" Flat Socket",simple,,0.554,title_similarity=0.667; token_overlap=0.417,yes,review_required
+51,FA345,1/4-20 X 5/8 Nylon Thumb Screw,10210650390826,CFB10,"5/16-18 x 3/4"" Thumb Screw",simple,,0.548,title_similarity=0.655; token_overlap=0.417,yes,review_required
+53,FA304,1/4-20 X 5/8” Thumb Screw,10210653307178,FA297,"1/4-20 x 5/8"" Socket",simple,,0.658,title_similarity=0.651; token_overlap=0.667,no,review_required
+53,FA304,1/4-20 X 5/8” Thumb Screw,10210653307178,CFB10,"5/16-18 x 3/4"" Thumb Screw",simple,,0.609,title_similarity=0.735; token_overlap=0.455,yes,review_required
+53,FA304,1/4-20 X 5/8” Thumb Screw,10210653307178,FA298,"1/4-20 x 7/8"" Flat Socket",simple,,0.594,title_similarity=0.708; token_overlap=0.455,yes,review_required
+55,FA337,1/4-20 X1-3/4 Slotted Pan Head,10210650882346,FA299,"1/4-20 x 1 1/2"" Pan Phillips",simple,,0.566,title_similarity=0.621; token_overlap=0.500,yes,review_required
+55,FA337,1/4-20 X1-3/4 Slotted Pan Head,10210650882346,FA313,1/4-20 X 1/4 Socket Head Set Screw,simple,,0.560,title_similarity=0.646; token_overlap=0.455,yes,review_required
+55,FA337,1/4-20 X1-3/4 Slotted Pan Head,10210650882346,FA288,"1/4"" X 3/4"" Split Pin",simple,,0.532,title_similarity=0.640; token_overlap=0.400,yes,review_required
+61,FA356,1/8 X 1-1/4 Ss Slotted Spring,10210649964842,FA382,"10-32 x 1/4"" SS Set Screw",simple,,0.516,title_similarity=0.642; token_overlap=0.364,yes,review_required
+62,FA355,1/8 X 1/2 Ss Dowel Pin,10210650030378,FA202,"1/16 X 1/2"" Cotter Pin",simple,,0.584,title_similarity=0.698; token_overlap=0.444,yes,review_required
+62,FA355,1/8 X 1/2 Ss Dowel Pin,10210650030378,FA224,"1/8"" x 3/8"" Split Pin",simple,,0.576,title_similarity=0.683; token_overlap=0.444,yes,review_required
+62,FA355,1/8 X 1/2 Ss Dowel Pin,10210650030378,FA262,"8-32 x 1/2"" Socket",simple,,0.510,title_similarity=0.564; token_overlap=0.444,yes,review_required
+63,FA364,"1/8 X 3/4"" Spring Pin Ss",10210649375018,FA224,"1/8"" x 3/8"" Split Pin",simple,,0.669,title_similarity=0.762; token_overlap=0.556,yes,review_required
+63,FA364,"1/8 X 3/4"" Spring Pin Ss",10210649375018,FA288,"1/4"" X 3/4"" Split Pin",simple,,0.669,title_similarity=0.762; token_overlap=0.556,yes,review_required
+63,FA364,"1/8 X 3/4"" Spring Pin Ss",10210649375018,FA365,"3/16 x 1"" Sping Pin SS",simple,,0.650,title_similarity=0.773; token_overlap=0.500,yes,review_required
+67,AB4-10,"10"" Automatic Box Door",10210684010794,10FFBA,"Columbia Automatic Flat Box - 10""",variation,COL-AUTOMATIC-FLAT-BOX,0.549,title_similarity=0.588; token_overlap=0.500,no,review_required
+67,AB4-10,"10"" Automatic Box Door",10210684010794,10FBBA,"Columbia Automatic Fat Boy Box - 10""",variation,COL-AUTOMATIC-FAT-BOY-BOX,0.498,title_similarity=0.556; token_overlap=0.429,no,review_required
+80,SB2-10-KIT,"10"" Tomahawk Replacement Blade",10210687058218,SB212,"Columbia Replacement 12"" Blade for Tomahawk",simple,,0.518,title_similarity=0.592; token_overlap=0.429,yes,review_required
+83,FA334,10-24 Nyloc Jam Nut,10210651111722,FA271,10-24 Nyloc Nut,simple,,0.845,title_similarity=0.882; token_overlap=0.800,no,review_required
+83,FA334,10-24 Nyloc Jam Nut,10210651111722,FA234,6-32 Nyloc Jam Nut,simple,,0.669,title_similarity=0.865; token_overlap=0.429,yes,review_required
+83,FA334,10-24 Nyloc Jam Nut,10210651111722,FA272,10-24 Wing Nut,simple,,0.592,title_similarity=0.667; token_overlap=0.500,no,review_required
+89,FA327,10-24 X 1-1/4 Fillister Slot,10210651570474,FA257,"8-32 x 1/4"" Fillister Slot",simple,,0.727,title_similarity=0.868; token_overlap=0.556,yes,review_required
+89,FA327,10-24 X 1-1/4 Fillister Slot,10210651570474,FA219,"4-40 x 1/2"" Fillister Slot",simple,,0.686,title_similarity=0.792; token_overlap=0.556,yes,review_required
+89,FA327,10-24 X 1-1/4 Fillister Slot,10210651570474,FA245,"6-32 x 1/2"" Fillister Slot",simple,,0.637,title_similarity=0.830; token_overlap=0.400,yes,review_required
+90,FA325,10-24 X 1-1/4 Flat Head Socket,10210651734314,FA316,"10-32 X 1/2"" Flat Socket Head",simple,,0.668,title_similarity=0.724; token_overlap=0.600,yes,review_required
+90,FA325,10-24 X 1-1/4 Flat Head Socket,10210651734314,FA295,"1/4 x 1/2"" Flathead Socket",simple,,0.660,title_similarity=0.873; token_overlap=0.400,yes,review_required
+90,FA325,10-24 X 1-1/4 Flat Head Socket,10210651734314,FA312,"10-24 X 1/4"" Socket Hand Set",simple,,0.617,title_similarity=0.632; token_overlap=0.600,no,review_required
+91,FA350,10-24 X 1/2 Hex Bolt,10210650095914,FA273,"10-24 x 1"" Hex Bolt",simple,,0.907,title_similarity=0.947; token_overlap=0.857,yes,review_required
+91,FA350,10-24 X 1/2 Hex Bolt,10210650095914,FA275,"10-24 x 7/8"" Hex Bolt",simple,,0.745,title_similarity=0.900; token_overlap=0.556,yes,review_required
+91,FA350,10-24 X 1/2 Hex Bolt,10210650095914,FA296,"1/4 -20 x 1/2"" Hex Bolt",simple,,0.733,title_similarity=0.878; token_overlap=0.556,yes,review_required
+92,FA388,"10-24 X 3/16"" Long Ss Binder",10210647965994,FA237,"6-32 x 3/16"" Binder Slot",simple,,0.516,title_similarity=0.640; token_overlap=0.364,yes,review_required
+92,FA388,"10-24 X 3/16"" Long Ss Binder",10210647965994,FA274,"10-24 x 3/8"" Socket",simple,,0.498,title_similarity=0.578; token_overlap=0.400,yes,review_required
+92,FA388,"10-24 X 3/16"" Long Ss Binder",10210647965994,FA210,"4-40 x 3/16"" Binder Slot",simple,,0.494,title_similarity=0.600; token_overlap=0.364,yes,review_required
+93,FA377,"10-24 X 3/4"" Ss Hex Bolt",10210648490282,FA273,"10-24 x 1"" Hex Bolt",simple,,0.706,title_similarity=0.829; token_overlap=0.556,yes,review_required
+93,FA377,"10-24 X 3/4"" Ss Hex Bolt",10210648490282,FA275,"10-24 x 7/8"" Hex Bolt",simple,,0.685,title_similarity=0.837; token_overlap=0.500,yes,review_required
+93,FA377,"10-24 X 3/4"" Ss Hex Bolt",10210648490282,FA220,"4-40 x 3/4"" Hex Bolt",simple,,0.669,title_similarity=0.762; token_overlap=0.556,yes,review_required
+97,FA383,10-32 Ss Jam Nut,10210648097066,FA234,6-32 Nyloc Jam Nut,simple,,0.581,title_similarity=0.706; token_overlap=0.429,yes,review_required
+98,FA375,10-32 Wing Nut,10210648621354,FA272,10-24 Wing Nut,simple,,0.781,title_similarity=0.929; token_overlap=0.600,yes,review_required
+98,FA375,10-32 Wing Nut,10210648621354,FA271,10-24 Nyloc Nut,simple,,0.529,title_similarity=0.690; token_overlap=0.333,yes,review_required
+98,FA375,10-32 Wing Nut,10210648621354,FA254,8-32 Nyloc Nut,simple,,0.504,title_similarity=0.643; token_overlap=0.333,yes,review_required
+99,FA371,"10-32 X 1"" Fillister Slot",10210648883498,FA257,"8-32 x 1/4"" Fillister Slot",simple,,0.775,title_similarity=0.898; token_overlap=0.625,yes,review_required
+99,FA371,"10-32 X 1"" Fillister Slot",10210648883498,FA245,"6-32 x 1/2"" Fillister Slot",simple,,0.775,title_similarity=0.898; token_overlap=0.625,yes,review_required
+99,FA371,"10-32 X 1"" Fillister Slot",10210648883498,FA238,"6-32 X 3/16"" Fillister Slot",simple,,0.684,title_similarity=0.880; token_overlap=0.444,yes,review_required
+100,FA282,"10-32 X 1"" Flat Slot",10210654978346,FA227,"6-32 X 1/4"" Flat Slot",simple,,0.761,title_similarity=0.872; token_overlap=0.625,yes,review_required
+100,FA282,"10-32 X 1"" Flat Slot",10210654978346,FA316,"10-32 X 1/2"" Flat Socket Head",simple,,0.671,title_similarity=0.766; token_overlap=0.556,yes,review_required
+100,FA282,"10-32 X 1"" Flat Slot",10210654978346,FA243,"6-32 x 3/8"" Flat Slot",simple,,0.651,title_similarity=0.821; token_overlap=0.444,yes,review_required
+102,FA397,"10-32 X 1/2"" Hex Bolt",10210647376170,FA273,"10-24 x 1"" Hex Bolt",simple,,0.773,title_similarity=0.895; token_overlap=0.625,yes,review_required
+102,FA397,"10-32 X 1/2"" Hex Bolt",10210647376170,FA296,"1/4 -20 x 1/2"" Hex Bolt",simple,,0.706,title_similarity=0.829; token_overlap=0.556,yes,review_required
+102,FA397,"10-32 X 1/2"" Hex Bolt",10210647376170,FA300,"1/4-20 x 2"" Hex Bolt",simple,,0.673,title_similarity=0.769; token_overlap=0.556,yes,review_required
+103,FA393,10-32 X 1/2” Set Screw,10210647605546,FA382,"10-32 x 1/4"" SS Set Screw",simple,,0.789,title_similarity=0.889; token_overlap=0.667,yes,review_required
+103,FA393,10-32 X 1/2” Set Screw,10210647605546,FA235,"6-32 X 1/8"" Set Screw",simple,,0.733,title_similarity=0.878; token_overlap=0.556,yes,review_required
+103,FA393,10-32 X 1/2” Set Screw,10210647605546,FA302,"1/4-28 x 1/4"" Set Screw",simple,,0.660,title_similarity=0.837; token_overlap=0.444,yes,review_required
+105,FA391,"10-32 X 3/16"" Pan Slot Drive",10210647769386,FA256,"8-32 X 3/16"" Pan Slot",simple,,0.745,title_similarity=0.809; token_overlap=0.667,yes,review_required
+105,FA391,"10-32 X 3/16"" Pan Slot Drive",10210647769386,FA260,"8-32 x 3/8"" Pan Slot",simple,,0.657,title_similarity=0.739; token_overlap=0.556,yes,review_required
+105,FA391,"10-32 X 3/16"" Pan Slot Drive",10210647769386,FA237,"6-32 x 3/16"" Binder Slot",simple,,0.599,title_similarity=0.680; token_overlap=0.500,yes,review_required
+106,FA361,10-32 X 3/4 Ss Socket Head Cap,10210649571626,FA376,8-32 x 5/16 SS Socket Head,simple,,0.620,title_similarity=0.786; token_overlap=0.417,yes,review_required
+106,FA361,10-32 X 3/4 Ss Socket Head Cap,10210649571626,FA316,"10-32 X 1/2"" Flat Socket Head",simple,,0.605,title_similarity=0.759; token_overlap=0.417,yes,review_required
+106,FA361,10-32 X 3/4 Ss Socket Head Cap,10210649571626,FA315,"FA315 10-32 X 3/8"" Flat Socket Head",simple,,0.597,title_similarity=0.708; token_overlap=0.462,yes,review_required
+107,FA319,"10-32 X 3/4"" Hex Bolt",10210652225834,FA220,"4-40 x 3/4"" Hex Bolt",simple,,0.733,title_similarity=0.821; token_overlap=0.625,yes,review_required
+107,FA319,"10-32 X 3/4"" Hex Bolt",10210652225834,FA231,"6-32 x 3/8"" Hex Bolt",simple,,0.729,title_similarity=0.872; token_overlap=0.556,yes,review_required
+107,FA319,"10-32 X 3/4"" Hex Bolt",10210652225834,FA305,"5/16 -18 x 3/4"" Hex Bolt",simple,,0.670,title_similarity=0.810; token_overlap=0.500,yes,review_required
+108,FA339,10-32 X 5/16 Slotted Trusshead,10210650751274,FA376,8-32 x 5/16 SS Socket Head,simple,,0.537,title_similarity=0.679; token_overlap=0.364,yes,review_required
+109,FA358,10-32 X 7/8 Ss Socket Head Cap,10210649801002,FA376,8-32 x 5/16 SS Socket Head,simple,,0.678,title_similarity=0.786; token_overlap=0.545,yes,review_required
+109,FA358,10-32 X 7/8 Ss Socket Head Cap,10210649801002,FA316,"10-32 X 1/2"" Flat Socket Head",simple,,0.605,title_similarity=0.759; token_overlap=0.417,yes,review_required
+109,FA358,10-32 X 7/8 Ss Socket Head Cap,10210649801002,FA315,"FA315 10-32 X 3/8"" Flat Socket Head",simple,,0.597,title_similarity=0.708; token_overlap=0.462,yes,review_required
+113,AB4-12,"12"" Automatic Box Door",10210683945258,12FFBA,"Columbia Automatic Flat Box - 12""",variation,COL-AUTOMATIC-FLAT-BOX,0.549,title_similarity=0.588; token_overlap=0.500,no,review_required
+113,AB4-12,"12"" Automatic Box Door",10210683945258,12FBBA,"Columbia Automatic Fat Boy Box - 12""",variation,COL-AUTOMATIC-FAT-BOY-BOX,0.498,title_similarity=0.556; token_overlap=0.429,no,review_required
+131,SB2-12-KIT,"12"" Tomahawk Replacement Blade",10210686959914,SB212,"Columbia Replacement 12"" Blade for Tomahawk",simple,,0.625,title_similarity=0.592; token_overlap=0.667,no,review_required
+134,AB4-14,"14"" Automatic Box Door",10210683912490,14FFBA,"Columbia Automatic Flat Box - 14""",variation,COL-AUTOMATIC-FLAT-BOX,0.549,title_similarity=0.588; token_overlap=0.500,no,review_required
+148,SB2-14-KIT,"14"" Tomahawk Replacement Blade",10210686894378,SB212,"Columbia Replacement 12"" Blade for Tomahawk",simple,,0.518,title_similarity=0.592; token_overlap=0.429,yes,review_required
+155,SB2-18-KIT,"18"" Tomahawk Replacement Blade",10210686861610,SB212,"Columbia Replacement 12"" Blade for Tomahawk",simple,,0.518,title_similarity=0.592; token_overlap=0.429,yes,review_required
+162,HNS7-2 KIT,"2"" Nail Spotter Blade Kit",10210689122602,2NS,"Columbia Nail Spotter - 2""",variation,COL-NAIL-SPOTTER,0.553,title_similarity=0.596; token_overlap=0.500,no,review_required
+163,HNSA-5-2,"2"" Nail Spotter Wheel Kit",10210688925994,2NS,"Columbia Nail Spotter - 2""",variation,COL-NAIL-SPOTTER,0.553,title_similarity=0.596; token_overlap=0.500,no,review_required
+164,2NS-WHEEL,"2"" Nail Spotter With Wheels",10210692170026,2NS,"Columbia Nail Spotter - 2""",variation,COL-NAIL-SPOTTER,0.539,title_similarity=0.571; token_overlap=0.500,no,review_required
+177,SB2-24-KIT,"24"" Tomahawk Replacement Blade",10210686763306,SB212,"Columbia Replacement 12"" Blade for Tomahawk",simple,,0.518,title_similarity=0.592; token_overlap=0.429,yes,review_required
+187,HNS7-3-KIT,"3"" Nail Spotter Blade Kit",10210688991530,3NS,"Columbia Nail Spotter - 3""",variation,COL-NAIL-SPOTTER,0.553,title_similarity=0.596; token_overlap=0.500,no,review_required
+188,HNSA-5-3,"3"" Nail Spotter Wheel Kit",10210688860458,3NS,"Columbia Nail Spotter - 3""",variation,COL-NAIL-SPOTTER,0.553,title_similarity=0.596; token_overlap=0.500,no,review_required
+189,3NS-WHEEL,"3"" Nail Spotter With Wheels",10210692038954,3NS,"Columbia Nail Spotter - 3""",variation,COL-NAIL-SPOTTER,0.539,title_similarity=0.571; token_overlap=0.500,no,review_required
+196,3BBH,3' 180 Grip Bent Flat Box Handle,10210700755242,3BH,Columbia 180° Grip Flat Box Handle - 3',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.754,title_similarity=0.758; token_overlap=0.750,no,review_required
+196,3BBH,3' 180 Grip Bent Flat Box Handle,10210700755242,6BH,Columbia 180° Grip Flat Box Handle - 6',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.667,title_similarity=0.758; token_overlap=0.556,yes,review_required
+196,3BBH,3' 180 Grip Bent Flat Box Handle,10210700755242,5BH,Columbia 180° Grip Flat Box Handle - 5',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.667,title_similarity=0.758; token_overlap=0.556,yes,review_required
+208,FA321,3/16 X 3/8 Pop Rivet,10210652061994,FA225,"1/8"" x 3/8"" Rivet Shoulder Washer",simple,,0.480,title_similarity=0.510; token_overlap=0.444,yes,review_required
+210,HNS14B,3/32 X 5/16 Solid Round Head,10210637644074,FA376,8-32 x 5/16 SS Socket Head,simple,,0.571,title_similarity=0.667; token_overlap=0.455,yes,review_required
+214,SB2-32-KIT,"32"" Tomahawk Replacement Blade",10210686665002,SB212,"Columbia Replacement 12"" Blade for Tomahawk",simple,,0.518,title_similarity=0.592; token_overlap=0.429,yes,review_required
+225,4BBH,4' 180 Grip Bent Flat Box Handle,10210700427562,4BH,Columbia 180° Grip Flat Box Handle - 4',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.754,title_similarity=0.758; token_overlap=0.750,no,review_required
+225,4BBH,4' 180 Grip Bent Flat Box Handle,10210700427562,6BH,Columbia 180° Grip Flat Box Handle - 6',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.667,title_similarity=0.758; token_overlap=0.556,yes,review_required
+225,4BBH,4' 180 Grip Bent Flat Box Handle,10210700427562,5BH,Columbia 180° Grip Flat Box Handle - 5',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.667,title_similarity=0.758; token_overlap=0.556,yes,review_required
+227,FA318,"4-40 X 1"" Binder Slot",10210652258602,FA213,"4-40 x 1/4"" Binder Slot",simple,,0.974,title_similarity=0.952; token_overlap=1.000,no,review_required
+227,FA318,"4-40 X 1"" Binder Slot",10210652258602,FA2,"4-40 x 1/8"" Binder Slot",simple,,0.910,title_similarity=0.952; token_overlap=0.857,yes,review_required
+227,FA318,"4-40 X 1"" Binder Slot",10210652258602,FA215,"4-40 x 5/16"" Binder Slot",simple,,0.793,title_similarity=0.930; token_overlap=0.625,yes,review_required
+229,FA400,"4-40 X 3/16"" Socket Cap Screw",10210647245098,FA261,"8-32 X 3/8"" Socket Screw",simple,,0.590,title_similarity=0.745; token_overlap=0.400,yes,review_required
+229,FA400,"4-40 X 3/16"" Socket Cap Screw",10210647245098,FA249,"8-32X3/16"" Set Screw",simple,,0.568,title_similarity=0.735; token_overlap=0.364,yes,review_required
+229,FA400,"4-40 X 3/16"" Socket Cap Screw",10210647245098,FA212,"4-40 x 3/16"" Truss Slot",simple,,0.555,title_similarity=0.600; token_overlap=0.500,no,review_required
+231,FA344,4-40 X 3/4 Socket Head,10210650456362,FA220,"4-40 x 3/4"" Hex Bolt",simple,,0.574,title_similarity=0.634; token_overlap=0.500,no,review_required
+231,FA344,4-40 X 3/4 Socket Head,10210650456362,FA313,1/4-20 X 1/4 Socket Head Set Screw,simple,,0.573,title_similarity=0.714; token_overlap=0.400,yes,review_required
+231,FA344,4-40 X 3/4 Socket Head,10210650456362,FA218,"4-40 x 3/8"" Flat Slot",simple,,0.540,title_similarity=0.619; token_overlap=0.444,yes,review_required
+232,FA374,4-40 X 5/8 Ss Binder Slot,10210648686890,FA2,"4-40 x 1/8"" Binder Slot",simple,,0.791,title_similarity=0.894; token_overlap=0.667,yes,review_required
+232,FA374,4-40 X 5/8 Ss Binder Slot,10210648686890,FA215,"4-40 x 5/16"" Binder Slot",simple,,0.781,title_similarity=0.875; token_overlap=0.667,yes,review_required
+232,FA374,4-40 X 5/8 Ss Binder Slot,10210648686890,FA213,"4-40 x 1/4"" Binder Slot",simple,,0.718,title_similarity=0.851; token_overlap=0.556,yes,review_required
+236,FA221,4/40 X 1/4 Fillister Slot,10210659467562,FA219,"4-40 x 1/2"" Fillister Slot",simple,,0.914,title_similarity=0.960; token_overlap=0.857,yes,review_required
+236,FA221,4/40 X 1/4 Fillister Slot,10210659467562,FA216,4-40 X 3/8” Fillister Slot,simple,,0.787,title_similarity=0.920; token_overlap=0.625,yes,review_required
+236,FA221,4/40 X 1/4 Fillister Slot,10210659467562,FA214,"4-40 x 1/4"" Flat Slot",simple,,0.786,title_similarity=0.844; token_overlap=0.714,no,review_required
+238,FA208,4/40 X 1/8 Binder Slot,10210660614442,FA2,"4-40 x 1/8"" Binder Slot",simple,,1.000,format_normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,review_required
+238,FA208,4/40 X 1/8 Binder Slot,10210660614442,FA213,"4-40 x 1/4"" Binder Slot",simple,,0.911,title_similarity=0.955; token_overlap=0.857,yes,review_required
+238,FA208,4/40 X 1/8 Binder Slot,10210660614442,FA208,"Columbia 4-40 x 1/8"" Binder Slot",simple,,0.880,format_normalized_identifier; title_similarity=0.830; token_overlap=0.875,no,review_required
+239,FA209,4/40 X 1/8 Flat Slot,10210660548906,FA214,"4-40 x 1/4"" Flat Slot",simple,,0.908,title_similarity=0.950; token_overlap=0.857,yes,review_required
+239,FA209,4/40 X 1/8 Flat Slot,10210660548906,FA218,"4-40 x 3/8"" Flat Slot",simple,,0.860,title_similarity=0.950; token_overlap=0.750,yes,review_required
+239,FA209,4/40 X 1/8 Flat Slot,10210660548906,FA2,"4-40 x 1/8"" Binder Slot",simple,,0.757,title_similarity=0.762; token_overlap=0.750,no,review_required
+241,FA211,4/40 X 3/16 Flat Slot,10210660319530,FA218,"4-40 x 3/8"" Flat Slot",simple,,0.847,title_similarity=0.927; token_overlap=0.750,yes,review_required
+241,FA211,4/40 X 3/16 Flat Slot,10210660319530,FA212,"4-40 x 3/16"" Truss Slot",simple,,0.798,title_similarity=0.837; token_overlap=0.750,no,review_required
+241,FA211,4/40 X 3/16 Flat Slot,10210660319530,FA214,"4-40 x 1/4"" Flat Slot",simple,,0.764,title_similarity=0.878; token_overlap=0.625,yes,review_required
+242,FA293,4/40 X 3/4 Binder Slot,10210654159146,FA210,"4-40 x 3/16"" Binder Slot",simple,,0.899,title_similarity=0.933; token_overlap=0.857,yes,review_required
+242,FA293,4/40 X 3/4 Binder Slot,10210654159146,FA213,"4-40 x 1/4"" Binder Slot",simple,,0.846,title_similarity=0.955; token_overlap=0.714,yes,review_required
+242,FA293,4/40 X 3/4 Binder Slot,10210654159146,FA2,"4-40 x 1/8"" Binder Slot",simple,,0.781,title_similarity=0.909; token_overlap=0.625,yes,review_required
+244,FA217,4/40 X 3/8 Binder Slot,10210659795242,FA2,"4-40 x 1/8"" Binder Slot",simple,,0.863,title_similarity=0.955; token_overlap=0.750,yes,review_required
+244,FA217,4/40 X 3/8 Binder Slot,10210659795242,FA210,"4-40 x 3/16"" Binder Slot",simple,,0.851,title_similarity=0.933; token_overlap=0.750,yes,review_required
+244,FA217,4/40 X 3/8 Binder Slot,10210659795242,FA216,4-40 X 3/8” Fillister Slot,simple,,0.782,title_similarity=0.809; token_overlap=0.750,no,review_required
+248,FA223,4/40 X 5/16 Flat Slot,10210659336490,FA214,"4-40 x 1/4"" Flat Slot",simple,,0.764,title_similarity=0.878; token_overlap=0.625,yes,review_required
+248,FA223,4/40 X 5/16 Flat Slot,10210659336490,FA215,"4-40 x 5/16"" Binder Slot",simple,,0.763,title_similarity=0.773; token_overlap=0.750,no,review_required
+248,FA223,4/40 X 5/16 Flat Slot,10210659336490,FA218,"4-40 x 3/8"" Flat Slot",simple,,0.733,title_similarity=0.878; token_overlap=0.556,yes,review_required
+250,SB2-40-KIT,"40"" Tomahawk Replacement Blade",10210686632234,SB212,"Columbia Replacement 12"" Blade for Tomahawk",simple,,0.518,title_similarity=0.592; token_overlap=0.429,yes,review_required
+252,42BBH,"42"" 180 Grip Bent Flat Box Handle",10210700591402,42BH,"Columbia 180° Grip Flat Box Handle - 42""",variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.742,title_similarity=0.735; token_overlap=0.750,no,review_required
+252,42BBH,"42"" 180 Grip Bent Flat Box Handle",10210700591402,6BH,Columbia 180° Grip Flat Box Handle - 6',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.660,title_similarity=0.746; token_overlap=0.556,yes,review_required
+252,42BBH,"42"" 180 Grip Bent Flat Box Handle",10210700591402,5BH,Columbia 180° Grip Flat Box Handle - 5',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.660,title_similarity=0.746; token_overlap=0.556,yes,review_required
+257,SB2-48-KIT,"48"" Tomahawk Replacement Blade",10210686566698,SB212,"Columbia Replacement 12"" Blade for Tomahawk",simple,,0.518,title_similarity=0.592; token_overlap=0.429,yes,review_required
+264,5BBH,5' 180 Grip Bent Flat Box Handle,10210700296490,5BH,Columbia 180° Grip Flat Box Handle - 5',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.754,title_similarity=0.758; token_overlap=0.750,no,review_required
+264,5BBH,5' 180 Grip Bent Flat Box Handle,10210700296490,6BH,Columbia 180° Grip Flat Box Handle - 6',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.667,title_similarity=0.758; token_overlap=0.556,yes,review_required
+264,5BBH,5' 180 Grip Bent Flat Box Handle,10210700296490,4BH,Columbia 180° Grip Flat Box Handle - 4',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.667,title_similarity=0.758; token_overlap=0.556,yes,review_required
+273,FA346,"5/16-18 X 2"" Hex Bolt",10210650325290,FA305,"5/16 -18 x 3/4"" Hex Bolt",simple,,0.798,title_similarity=0.905; token_overlap=0.667,yes,review_required
+273,FA346,"5/16-18 X 2"" Hex Bolt",10210650325290,FA306,"5/16-18 x 1 1/4"" Hex Bolt",simple,,0.775,title_similarity=0.864; token_overlap=0.667,yes,review_required
+273,FA346,"5/16-18 X 2"" Hex Bolt",10210650325290,FA300,"1/4-20 x 2"" Hex Bolt",simple,,0.603,title_similarity=0.769; token_overlap=0.400,yes,review_required
+275,FA309,"5/16-18 X 3/4"" Thumb Screw",10210652946730,CFB10,"5/16-18 x 3/4"" Thumb Screw",simple,,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+275,FA309,"5/16-18 X 3/4"" Thumb Screw",10210652946730,FA305,"5/16 -18 x 3/4"" Hex Bolt",simple,,0.621,title_similarity=0.638; token_overlap=0.600,no,review_required
+275,FA309,"5/16-18 X 3/4"" Thumb Screw",10210652946730,FA306,"5/16-18 x 1 1/4"" Hex Bolt",simple,,0.519,title_similarity=0.571; token_overlap=0.455,yes,review_required
+284,FA420,5/64 X 1/4 Split Pin,10210646982954,FA200,"1/16 x 1/4"" Split Pin",simple,,0.776,title_similarity=0.900; token_overlap=0.625,yes,review_required
+284,FA420,5/64 X 1/4 Split Pin,10210646982954,FA288,"1/4"" X 3/4"" Split Pin",simple,,0.761,title_similarity=0.872; token_overlap=0.625,yes,review_required
+284,FA420,5/64 X 1/4 Split Pin,10210646982954,FA224,"1/8"" x 3/8"" Split Pin",simple,,0.623,title_similarity=0.769; token_overlap=0.444,yes,review_required
+285,FA401,"5/64"" X 1/4"" Spring Pin Ss",10210647179562,FA365,"3/16 x 1"" Sping Pin SS",simple,,0.628,title_similarity=0.844; token_overlap=0.364,yes,review_required
+285,FA401,"5/64"" X 1/4"" Spring Pin Ss",10210647179562,FA200,"1/16 x 1/4"" Split Pin",simple,,0.580,title_similarity=0.727; token_overlap=0.400,yes,review_required
+285,FA401,"5/64"" X 1/4"" Spring Pin Ss",10210647179562,FA288,"1/4"" X 3/4"" Split Pin",simple,,0.564,title_similarity=0.698; token_overlap=0.400,yes,review_required
+298,6BBH,6' 180 Grip Bent Flat Box Handle,10210700165418,6BH,Columbia 180° Grip Flat Box Handle - 6',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.754,title_similarity=0.758; token_overlap=0.750,no,review_required
+298,6BBH,6' 180 Grip Bent Flat Box Handle,10210700165418,5BH,Columbia 180° Grip Flat Box Handle - 5',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.667,title_similarity=0.758; token_overlap=0.556,yes,review_required
+298,6BBH,6' 180 Grip Bent Flat Box Handle,10210700165418,4BH,Columbia 180° Grip Flat Box Handle - 4',variation,COL-180-GRIP-FLAT-BOX-HANDLE,0.667,title_similarity=0.758; token_overlap=0.556,yes,review_required
+300,FA248,"6-32 5/8"" Flat Slot",10210657435946,FA243,"6-32 x 3/8"" Flat Slot",simple,,0.773,title_similarity=0.895; token_overlap=0.625,yes,review_required
+300,FA248,"6-32 5/8"" Flat Slot",10210657435946,FA227,"6-32 X 1/4"" Flat Slot",simple,,0.663,title_similarity=0.842; token_overlap=0.444,yes,review_required
+300,FA248,"6-32 5/8"" Flat Slot",10210657435946,FA264,"8-32 x 5/8"" Truss Slot",simple,,0.620,title_similarity=0.718; token_overlap=0.500,yes,review_required
+304,FA402,6-32 X 1 3/8” Socket Head Cap Screw,10210647114026,FA261,"8-32 X 3/8"" Socket Screw",simple,,0.695,title_similarity=0.772; token_overlap=0.600,yes,review_required
+304,FA402,6-32 X 1 3/8” Socket Head Cap Screw,10210647114026,FA235,"6-32 X 1/8"" Set Screw",simple,,0.653,title_similarity=0.741; token_overlap=0.545,yes,review_required
+304,FA402,6-32 X 1 3/8” Socket Head Cap Screw,10210647114026,FA313,1/4-20 X 1/4 Socket Head Set Screw,simple,,0.594,title_similarity=0.765; token_overlap=0.385,yes,review_required
+305,FA342,6-32 X 1-1/4 Socket Head,10210650521898,FA316,"10-32 X 1/2"" Flat Socket Head",simple,,0.669,title_similarity=0.808; token_overlap=0.500,yes,review_required
+305,FA342,6-32 X 1-1/4 Socket Head,10210650521898,FA376,8-32 x 5/16 SS Socket Head,simple,,0.626,title_similarity=0.840; token_overlap=0.364,yes,review_required
+305,FA342,6-32 X 1-1/4 Socket Head,10210650521898,FA311,"FA311 1/4-28 X 1/2"" Socket Head",simple,,0.605,title_similarity=0.727; token_overlap=0.455,yes,review_required
+306,FA328,6-32 X 1/2 Hex Bolt,10210651504938,FA247,"6-32 X 5/8"" Hex Bolt",simple,,0.742,title_similarity=0.895; token_overlap=0.556,yes,review_required
+306,FA328,6-32 X 1/2 Hex Bolt,10210651504938,FA231,"6-32 x 3/8"" Hex Bolt",simple,,0.742,title_similarity=0.895; token_overlap=0.556,yes,review_required
+306,FA328,6-32 X 1/2 Hex Bolt,10210651504938,FA296,"1/4 -20 x 1/2"" Hex Bolt",simple,,0.718,title_similarity=0.850; token_overlap=0.556,yes,review_required
+309,FA246,"6-32 X 1/2"" Socket Head",10210657567018,FA316,"10-32 X 1/2"" Flat Socket Head",simple,,0.762,title_similarity=0.840; token_overlap=0.667,yes,review_required
+309,FA246,"6-32 X 1/2"" Socket Head",10210657567018,FA262,"8-32 x 1/2"" Socket",simple,,0.733,title_similarity=0.821; token_overlap=0.625,yes,review_required
+309,FA246,"6-32 X 1/2"" Socket Head",10210657567018,FA311,"FA311 1/4-28 X 1/2"" Socket Head",simple,,0.640,title_similarity=0.792; token_overlap=0.455,yes,review_required
+310,FA347,6-32 X 1/4 Socket Cap,10210650226986,FA262,"8-32 x 1/2"" Socket",simple,,0.634,title_similarity=0.789; token_overlap=0.444,yes,review_required
+310,FA347,6-32 X 1/4 Socket Cap,10210650226986,FA239,"6-32 X 1/4"" Binder Slot",simple,,0.608,title_similarity=0.651; token_overlap=0.556,no,review_required
+310,FA347,6-32 X 1/4 Socket Cap,10210650226986,FA227,"6-32 X 1/4"" Flat Slot",simple,,0.599,title_similarity=0.634; token_overlap=0.556,no,review_required
+317,FA242,6-32 X 3/8 Fillister Slot,10210657829162,FA238,"6-32 X 3/16"" Fillister Slot",simple,,0.855,title_similarity=0.941; token_overlap=0.750,yes,review_required
+317,FA242,6-32 X 3/8 Fillister Slot,10210657829162,FA243,"6-32 x 3/8"" Flat Slot",simple,,0.802,title_similarity=0.844; token_overlap=0.750,no,review_required
+317,FA242,6-32 X 3/8 Fillister Slot,10210657829162,FA241,"6-32 X 3/8"" Binder Slot",simple,,0.782,title_similarity=0.809; token_overlap=0.750,no,review_required
+320,FA310,"6-32 X 3/8"" Set Screw",10210652881194,FA235,"6-32 X 1/8"" Set Screw",simple,,0.860,title_similarity=0.950; token_overlap=0.750,yes,review_required
+320,FA310,"6-32 X 3/8"" Set Screw",10210652881194,FA249,"8-32X3/16"" Set Screw",simple,,0.820,title_similarity=0.878; token_overlap=0.750,yes,review_required
+320,FA310,"6-32 X 3/8"" Set Screw",10210652881194,FA261,"8-32 X 3/8"" Socket Screw",simple,,0.767,title_similarity=0.884; token_overlap=0.625,yes,review_required
+321,FA330,6-32 X 5/16 Fillister Slot,10210651373866,FA238,"6-32 X 3/16"" Fillister Slot",simple,,0.866,title_similarity=0.962; token_overlap=0.750,yes,review_required
+321,FA330,6-32 X 5/16 Fillister Slot,10210651373866,FA245,"6-32 x 1/2"" Fillister Slot",simple,,0.746,title_similarity=0.902; token_overlap=0.556,yes,review_required
+321,FA330,6-32 X 5/16 Fillister Slot,10210651373866,FA237,"6-32 x 3/16"" Binder Slot",simple,,0.677,title_similarity=0.776; token_overlap=0.556,yes,review_required
+322,FA240,"6-32 X 5/16"" Binder Slot",10210657960234,FA237,"6-32 x 3/16"" Binder Slot",simple,,0.864,title_similarity=0.957; token_overlap=0.750,yes,review_required
+322,FA240,"6-32 X 5/16"" Binder Slot",10210657960234,FA241,"6-32 X 3/8"" Binder Slot",simple,,0.739,title_similarity=0.889; token_overlap=0.556,yes,review_required
+322,FA240,"6-32 X 5/16"" Binder Slot",10210657960234,FA236,"6-32 X 1/8"" Binder Slot",simple,,0.739,title_similarity=0.889; token_overlap=0.556,yes,review_required
+324,FA332,6-32 X 5/8 Socket Head,10210651242794,FA376,8-32 x 5/16 SS Socket Head,simple,,0.758,title_similarity=0.833; token_overlap=0.667,yes,review_required
+324,FA332,6-32 X 5/8 Socket Head,10210651242794,FA261,"8-32 X 3/8"" Socket Screw",simple,,0.616,title_similarity=0.756; token_overlap=0.444,yes,review_required
+324,FA332,6-32 X 5/8 Socket Head,10210651242794,FA247,"6-32 X 5/8"" Hex Bolt",simple,,0.599,title_similarity=0.634; token_overlap=0.556,no,review_required
+325,FA385,"6-32X3/32"" Ss Socket Set Screw",10210648031530,FA261,"8-32 X 3/8"" Socket Screw",simple,,0.678,title_similarity=0.778; token_overlap=0.556,yes,review_required
+325,FA385,"6-32X3/32"" Ss Socket Set Screw",10210648031530,FA235,"6-32 X 1/8"" Set Screw",simple,,0.613,title_similarity=0.706; token_overlap=0.500,yes,review_required
+325,FA385,"6-32X3/32"" Ss Socket Set Screw",10210648031530,FA249,"8-32X3/16"" Set Screw",simple,,0.606,title_similarity=0.692; token_overlap=0.500,yes,review_required
+326,FA322,"6/32 X 1"" Hex Bolt",10210651996458,FA247,"6-32 X 5/8"" Hex Bolt",simple,,0.770,title_similarity=0.889; token_overlap=0.625,yes,review_required
+326,FA322,"6/32 X 1"" Hex Bolt",10210651996458,FA231,"6-32 x 3/8"" Hex Bolt",simple,,0.770,title_similarity=0.889; token_overlap=0.625,yes,review_required
+326,FA322,"6/32 X 1"" Hex Bolt",10210651996458,FA273,"10-24 x 1"" Hex Bolt",simple,,0.696,title_similarity=0.857; token_overlap=0.500,yes,review_required
+327,FA226,6/32 X 3/16 Flat Slot,10210659172650,FA243,"6-32 x 3/8"" Flat Slot",simple,,0.847,title_similarity=0.927; token_overlap=0.750,yes,review_required
+327,FA226,6/32 X 3/16 Flat Slot,10210659172650,FA238,"6-32 X 3/16"" Fillister Slot",simple,,0.806,title_similarity=0.851; token_overlap=0.750,no,review_required
+327,FA226,6/32 X 3/16 Flat Slot,10210659172650,FA237,"6-32 x 3/16"" Binder Slot",simple,,0.763,title_similarity=0.773; token_overlap=0.750,no,review_required
+335,SB2-7-KIT,"7"" Tomahawk Replacement Blade",10210686533930,SB212,"Columbia Replacement 12"" Blade for Tomahawk",simple,,0.523,title_similarity=0.600; token_overlap=0.429,yes,review_required
+339,AB4-8,"8"" Automatic Box Door",10210683420970,8FFBA,"Columbia Automatic Flat Box - 8""",variation,COL-AUTOMATIC-FLAT-BOX,0.562,title_similarity=0.612; token_overlap=0.500,no,review_required
+339,AB4-8,"8"" Automatic Box Door",10210683420970,8FBBA,"Columbia Automatic Fat Boy Box - 8""",variation,COL-AUTOMATIC-FAT-BOY-BOX,0.510,title_similarity=0.577; token_overlap=0.429,no,review_required
+353,FA255,8-32 Nyloc Jam Nut,10210656911658,FA254,8-32 Nyloc Nut,simple,,0.841,title_similarity=0.875; token_overlap=0.800,no,review_required
+353,FA255,8-32 Nyloc Jam Nut,10210656911658,FA234,6-32 Nyloc Jam Nut,simple,,0.819,title_similarity=0.944; token_overlap=0.667,yes,review_required
+353,FA255,8-32 Nyloc Jam Nut,10210656911658,FA233,6-32 Nyloc Nut,simple,,0.672,title_similarity=0.812; token_overlap=0.500,yes,review_required
+356,FA389,"8-32 X 1.75"" Socket Head Cap",10210647900458,FA376,8-32 x 5/16 SS Socket Head,simple,,0.640,title_similarity=0.755; token_overlap=0.500,yes,review_required
+356,FA389,"8-32 X 1.75"" Socket Head Cap",10210647900458,FA262,"8-32 x 1/2"" Socket",simple,,0.575,title_similarity=0.682; token_overlap=0.444,yes,review_required
+356,FA389,"8-32 X 1.75"" Socket Head Cap",10210647900458,FA261,"8-32 X 3/8"" Socket Screw",simple,,0.552,title_similarity=0.640; token_overlap=0.444,yes,review_required
+358,FA366,8-32 X 1/4 Ss Socket Cap Screw,10210649276714,FA382,"10-32 x 1/4"" SS Set Screw",simple,,0.694,title_similarity=0.815; token_overlap=0.545,yes,review_required
+358,FA366,8-32 X 1/4 Ss Socket Cap Screw,10210649276714,FA261,"8-32 X 3/8"" Socket Screw",simple,,0.661,title_similarity=0.792; token_overlap=0.500,yes,review_required
+358,FA366,8-32 X 1/4 Ss Socket Cap Screw,10210649276714,FA235,"6-32 X 1/8"" Set Screw",simple,,0.601,title_similarity=0.720; token_overlap=0.455,yes,review_required
+360,FA396,"8-32 X 1/4"" Flat Head Slot",10210647474474,FA227,"6-32 X 1/4"" Flat Slot",simple,,0.764,title_similarity=0.844; token_overlap=0.667,yes,review_required
+360,FA396,"8-32 X 1/4"" Flat Head Slot",10210647474474,FA257,"8-32 x 1/4"" Fillister Slot",simple,,0.740,title_similarity=0.800; token_overlap=0.667,no,review_required
+360,FA396,"8-32 X 1/4"" Flat Head Slot",10210647474474,FA214,"4-40 x 1/4"" Flat Slot",simple,,0.666,title_similarity=0.756; token_overlap=0.556,yes,review_required
+366,FA381,8-32 X 5/16 Ss Socket Head,10210648228138,FA376,8-32 x 5/16 SS Socket Head,simple,,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+366,FA381,8-32 X 5/16 Ss Socket Head,10210648228138,FA262,"8-32 x 1/2"" Socket",simple,,0.564,title_similarity=0.698; token_overlap=0.400,yes,review_required
+366,FA381,8-32 X 5/16 Ss Socket Head,10210648228138,FA261,"8-32 X 3/8"" Socket Screw",simple,,0.562,title_similarity=0.694; token_overlap=0.400,yes,review_required
+369,FA324,"8-32 X 5/16"" Truss Slot",10210651832618,FA264,"8-32 x 5/8"" Truss Slot",simple,,0.897,title_similarity=0.930; token_overlap=0.857,yes,review_required
+369,FA324,"8-32 X 5/16"" Truss Slot",10210651832618,FA265,"8-32 x 3/4"" Truss Slot",simple,,0.736,title_similarity=0.884; token_overlap=0.556,yes,review_required
+369,FA324,"8-32 X 5/16"" Truss Slot",10210651832618,FA256,"8-32 X 3/16"" Pan Slot",simple,,0.669,title_similarity=0.762; token_overlap=0.556,yes,review_required
+370,FA263,"8-32 X 5/8"" Flat Slot",10210656321834,FA264,"8-32 x 5/8"" Truss Slot",simple,,0.778,title_similarity=0.829; token_overlap=0.714,no,review_required
+370,FA263,"8-32 X 5/8"" Flat Slot",10210656321834,FA243,"6-32 x 3/8"" Flat Slot",simple,,0.776,title_similarity=0.900; token_overlap=0.625,yes,review_required
+370,FA263,"8-32 X 5/8"" Flat Slot",10210656321834,FA260,"8-32 x 3/8"" Pan Slot",simple,,0.676,title_similarity=0.821; token_overlap=0.500,yes,review_required
+372,FA250,"8-32 X 7/8"" Truss Slot",10210657272106,FA264,"8-32 x 5/8"" Truss Slot",simple,,0.845,title_similarity=0.952; token_overlap=0.714,yes,review_required
+372,FA250,"8-32 X 7/8"" Truss Slot",10210657272106,FA265,"8-32 x 3/4"" Truss Slot",simple,,0.779,title_similarity=0.905; token_overlap=0.625,yes,review_required
+372,FA250,"8-32 X 7/8"" Truss Slot",10210657272106,FA260,"8-32 x 3/8"" Pan Slot",simple,,0.638,title_similarity=0.750; token_overlap=0.500,yes,review_required
+375,FA370,8/32 X 3/4 Ss Socket Cap,10210649014570,FA261,"8-32 X 3/8"" Socket Screw",simple,,0.671,title_similarity=0.766; token_overlap=0.556,yes,review_required
+375,FA370,8/32 X 3/4 Ss Socket Cap,10210649014570,FA376,8-32 x 5/16 SS Socket Head,simple,,0.645,title_similarity=0.800; token_overlap=0.455,yes,review_required
+375,FA370,8/32 X 3/4 Ss Socket Cap,10210649014570,FA265,"8-32 x 3/4"" Truss Slot",simple,,0.641,title_similarity=0.756; token_overlap=0.500,no,review_required
+383,CT14,Adjustable Brake Holder,10210668577066,CT14A,Taper Adjustable Brake,simple,,0.616,title_similarity=0.711; token_overlap=0.500,no,review_required
+385,FFB2A,Adjuster Pin Bushing,10210645442858,HNS13,Roll Pin Bushing,simple,,0.622,title_similarity=0.722; token_overlap=0.500,no,review_required
+386,FFB11,Adjuster Spring,10210646688042,FFB11-8,"Adjuster Spring - 8""",variation,FFB11,0.816,title_similarity=0.938; token_overlap=0.667,no,review_required
+386,FFB11,Adjuster Spring,10210646688042,FFB11-12,"Adjuster Spring - 12""",variation,FFB11,0.800,title_similarity=0.909; token_overlap=0.667,no,review_required
+386,FFB11,Adjuster Spring,10210646688042,FFB11-10,"Adjuster Spring - 10""",variation,FFB11,0.800,title_similarity=0.909; token_overlap=0.667,no,review_required
+388,CC3,Adjusting Roller,10348392841514,CR2,Roller,simple,,0.525,title_similarity=0.545; token_overlap=0.500,no,review_required
+390,AHA (KIT),Angle Head Adaptor,10210691940650,AHA,Angle Head Adapter,simple,,0.744,title_similarity=0.944; token_overlap=0.500,no,review_required
+390,AHA (KIT),Angle Head Adaptor,10210691940650,3AH,"Columbia Angle Head - 3""",variation,COL-ANGLE-HEAD,0.490,title_similarity=0.564; token_overlap=0.400,no,review_required
+390,AHA (KIT),Angle Head Adaptor,10210691940650,2AH,"Columbia Angle Head - 2""",variation,COL-ANGLE-HEAD,0.490,title_similarity=0.564; token_overlap=0.400,no,review_required
+391,AHR-BK-2,"Angle Head Blade Kit 2""",10210691776810,AH32,"Columbia 2"" Angle Head Carbide Blade",simple,,0.566,title_similarity=0.561; token_overlap=0.571,no,review_required
+391,AHR-BK-2,"Angle Head Blade Kit 2""",10210691776810,AHA,Angle Head Adapter,simple,,0.535,title_similarity=0.700; token_overlap=0.333,no,review_required
+391,AHR-BK-2,"Angle Head Blade Kit 2""",10210691776810,2AH,"Columbia Angle Head - 2""",variation,COL-ANGLE-HEAD,0.532,title_similarity=0.558; token_overlap=0.500,no,review_required
+392,AHR-BK-2.5,"Angle Head Blade Kit 2.5""",10210691711274,2.5AH,"Columbia Angle Head - 2.5""",variation,COL-ANGLE-HEAD,0.553,title_similarity=0.596; token_overlap=0.500,no,review_required
+392,AHR-BK-2.5,"Angle Head Blade Kit 2.5""",10210691711274,AH325,"Columbia 2.5"" Angle Head Carbide Blade",simple,,0.546,title_similarity=0.525; token_overlap=0.571,no,review_required
+392,AHR-BK-2.5,"Angle Head Blade Kit 2.5""",10210691711274,AHA,Angle Head Adapter,simple,,0.517,title_similarity=0.667; token_overlap=0.333,no,review_required
+393,AHR-BK-3,"Angle Head Blade Kit 3""",10210691612970,AH33,"Columbia 3"" Angle Head Carbide Blade",simple,,0.566,title_similarity=0.561; token_overlap=0.571,no,review_required
+393,AHR-BK-3,"Angle Head Blade Kit 3""",10210691612970,AHA,Angle Head Adapter,simple,,0.535,title_similarity=0.700; token_overlap=0.333,no,review_required
+393,AHR-BK-3,"Angle Head Blade Kit 3""",10210691612970,3AH,"Columbia Angle Head - 3""",variation,COL-ANGLE-HEAD,0.532,title_similarity=0.558; token_overlap=0.500,no,review_required
+394,AHR-BK-3.5,"Angle Head Blade Kit 3.5""",10210691514666,3.5AH,"Columbia Angle Head - 3.5""",variation,COL-ANGLE-HEAD,0.553,title_similarity=0.596; token_overlap=0.500,no,review_required
+394,AHR-BK-3.5,"Angle Head Blade Kit 3.5""",10210691514666,AH335,"Columbia 3.5"" Angle Head Carbide Blade",simple,,0.546,title_similarity=0.525; token_overlap=0.571,no,review_required
+394,AHR-BK-3.5,"Angle Head Blade Kit 3.5""",10210691514666,AHA,Angle Head Adapter,simple,,0.517,title_similarity=0.667; token_overlap=0.333,no,review_required
+395,AH12,Angle Head Reduction Spring,10210682437930,AH1-2,"Columbia Tools Head Casting for AH1 Angle Heads - 2""",variation,AH1,0.880,format_normalized_identifier; title_similarity=0.286; token_overlap=0.167,no,review_required
+395,AH12,Angle Head Reduction Spring,10210682437930,AH73,"Columbia 3"" Angle Head Tension Spring",simple,,0.577,title_similarity=0.698; token_overlap=0.429,no,review_required
+395,AH12,Angle Head Reduction Spring,10210682437930,AH72,"Columbia 2"" Angle Head Frame Tension Spring",simple,,0.551,title_similarity=0.696; token_overlap=0.375,no,review_required
+396,AHR-K,Angle Head Repair Kit,10210691449130,AHA,Angle Head Adapter,simple,,0.518,title_similarity=0.615; token_overlap=0.400,no,review_required
+397,AH20,Angle Head Wheel,10210682011946,AHA,Angle Head Adapter,simple,,0.613,title_similarity=0.706; token_overlap=0.500,no,review_required
+397,AH20,Angle Head Wheel,10210682011946,3AH,"Columbia Angle Head - 3""",variation,COL-ANGLE-HEAD,0.507,title_similarity=0.595; token_overlap=0.400,no,review_required
+397,AH20,Angle Head Wheel,10210682011946,2AH,"Columbia Angle Head - 2""",variation,COL-ANGLE-HEAD,0.507,title_similarity=0.595; token_overlap=0.400,no,review_required
+403,AB3,Auto Box Side Plate - Right,10210684272938,HFFB3,Hinge Box End Plate - Right,variation,HFFB3-PLATE,0.589,title_similarity=0.720; token_overlap=0.429,no,review_required
+403,AB3,Auto Box Side Plate - Right,10210684272938,CT6,Columbia Taper Side Plate Right,simple,,0.566,title_similarity=0.679; token_overlap=0.429,no,review_required
+403,AB3,Auto Box Side Plate - Right,10210684272938,CT8,Columbia Taper Side Plate Support Right,simple,,0.495,title_similarity=0.594; token_overlap=0.375,no,review_required
+404,AB3A,Auto Box Side Plate Left,10210684240170,HFFB3A,Hinge Box End Plate - Left,variation,HFFB3-PLATE,0.582,title_similarity=0.708; token_overlap=0.429,no,review_required
+404,AB3A,Auto Box Side Plate Left,10210684240170,CT6A,Stainless Steel Side Plate - Left,simple,,0.553,title_similarity=0.655; token_overlap=0.429,no,review_required
+404,AB3A,Auto Box Side Plate Left,10210684240170,CT7,Columbia Taper Side Plate Support Left,simple,,0.488,title_similarity=0.581; token_overlap=0.375,no,review_required
+408,HFFB5-10,"Axle 10""",10210639249706,FFB5-10,"Axle - 10""",variation,FFB5,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+408,HFFB5-10,"Axle 10""",10210639249706,FFB5-14,"Axle - 14""",variation,FFB5,0.621,title_similarity=0.857; token_overlap=0.333,yes,review_required
+408,HFFB5-10,"Axle 10""",10210639249706,FFB5-12,"Axle - 12""",variation,FFB5,0.621,title_similarity=0.857; token_overlap=0.333,yes,review_required
+409,HFFB5-12,"Axle 12""",10210639216938,FFB5-12,"Axle - 12""",variation,FFB5,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+409,HFFB5-12,"Axle 12""",10210639216938,FFB5-14,"Axle - 14""",variation,FFB5,0.621,title_similarity=0.857; token_overlap=0.333,yes,review_required
+409,HFFB5-12,"Axle 12""",10210639216938,FFB5-10,"Axle - 10""",variation,FFB5,0.621,title_similarity=0.857; token_overlap=0.333,yes,review_required
+410,HFFB5-14,"Axle 14""",10210639184170,FFB5-14,"Axle - 14""",variation,FFB5,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+410,HFFB5-14,"Axle 14""",10210639184170,FFB5-12,"Axle - 12""",variation,FFB5,0.621,title_similarity=0.857; token_overlap=0.333,yes,review_required
+410,HFFB5-14,"Axle 14""",10210639184170,FFB5-10,"Axle - 10""",variation,FFB5,0.621,title_similarity=0.857; token_overlap=0.333,yes,review_required
+411,HFFB5-7,"Axle 7""",10210639151402,FFB5-7,"Axle - 7""",variation,FFB5,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+411,HFFB5-7,"Axle 7""",10210639151402,FFB5-8,"Axle - 8""",variation,FFB5,0.608,title_similarity=0.833; token_overlap=0.333,yes,review_required
+411,HFFB5-7,"Axle 7""",10210639151402,FFB5-14,"Axle - 14""",variation,FFB5,0.573,title_similarity=0.769; token_overlap=0.333,yes,review_required
+412,HFFB5-8,"Axle 8""",10210639118634,FFB5-8,"Axle - 8""",variation,FFB5,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+412,HFFB5-8,"Axle 8""",10210639118634,FFB5-7,"Axle - 7""",variation,FFB5,0.608,title_similarity=0.833; token_overlap=0.333,yes,review_required
+412,HFFB5-8,"Axle 8""",10210639118634,FFB5-14,"Axle - 14""",variation,FFB5,0.573,title_similarity=0.769; token_overlap=0.333,yes,review_required
+414,HNS5-2,"Axle For 2"" Nail Spotter",10210637152554,2NS,"Columbia Nail Spotter - 2""",variation,COL-NAIL-SPOTTER,0.560,title_similarity=0.609; token_overlap=0.500,no,review_required
+415,HNS5-3,"Axle For 3"" Nail Spotter",10210637087018,3NS,"Columbia Nail Spotter - 3""",variation,COL-NAIL-SPOTTER,0.560,title_similarity=0.609; token_overlap=0.500,no,review_required
+422,CF4S,Ball Spring Short,10210676637994,HNS10A,Columbia Tools Door Spring - Short,variation,HNS-DOOR-SPRING,0.509,title_similarity=0.653; token_overlap=0.333,no,review_required
+422,CF4S,Ball Spring Short,10210676637994,CF4L,Columbia Ball Spring Long Flusher,simple,,0.480,title_similarity=0.600; token_overlap=0.333,no,review_required
+428,CLBR,Bead Roller,10210701410602,CR2,Roller,simple,,0.613,title_similarity=0.706; token_overlap=0.500,no,review_required
+430,FFB41,Bead Wheel,10210644361514,FFB36,Box Wheel,simple,,0.555,title_similarity=0.737; token_overlap=0.333,no,review_required
+430,FFB41,Bead Wheel,10210644361514,FFB43,Columbia Bead Wheel Bushing,simple,,0.522,title_similarity=0.541; token_overlap=0.500,no,review_required
+437,FFB44,Bead Wheel Bolt,10210644164906,FFB43,Columbia Bead Wheel Bushing,simple,,0.494,title_similarity=0.571; token_overlap=0.400,no,review_required
+439,FFBA-41,Bead Wheel Kit,10210690302250,FFB43,Columbia Bead Wheel Bushing,simple,,0.502,title_similarity=0.585; token_overlap=0.400,no,review_required
+441,CT106A,Bearing Shaft,10210670838058,CT70,Drive Shaft,simple,,0.517,title_similarity=0.667; token_overlap=0.333,no,review_required
+441,CT106A,Bearing Shaft,10210670838058,CT130,Extension Shaft,simple,,0.504,title_similarity=0.643; token_overlap=0.333,no,review_required
+441,CT106A,Bearing Shaft,10210670838058,MP11,Piston Shaft,simple,,0.502,title_similarity=0.640; token_overlap=0.333,no,review_required
+445,BBH9-3,Bent Connecting Strap 3',10210680766762,BH9-3,Brake Connecting Strap - 3',variation,BH9,0.761,title_similarity=0.894; token_overlap=0.600,no,review_required
+445,BBH9-3,Bent Connecting Strap 3',10210680766762,BH9-6,Brake Connecting Strap - 6',variation,BH9,0.618,title_similarity=0.851; token_overlap=0.333,yes,review_required
+445,BBH9-3,Bent Connecting Strap 3',10210680766762,BH9-5,Brake Connecting Strap - 5',variation,BH9,0.618,title_similarity=0.851; token_overlap=0.333,yes,review_required
+446,BBH9-4',Bent Connecting Strap 4',10210680701226,BH9-4,Brake Connecting Strap - 4',variation,BH9,0.761,title_similarity=0.894; token_overlap=0.600,no,review_required
+446,BBH9-4',Bent Connecting Strap 4',10210680701226,BH9-42,"Brake Connecting Strap - 42""",variation,BH9,0.631,title_similarity=0.875; token_overlap=0.333,yes,review_required
+446,BBH9-4',Bent Connecting Strap 4',10210680701226,BH9-6,Brake Connecting Strap - 6',variation,BH9,0.618,title_similarity=0.851; token_overlap=0.333,yes,review_required
+447,BBH9-42,"Bent Connecting Strap 42""",10210680602922,BH9-42,"Brake Connecting Strap - 42""",variation,BH9,0.764,title_similarity=0.898; token_overlap=0.600,no,review_required
+447,BBH9-42,"Bent Connecting Strap 42""",10210680602922,BH9-4,Brake Connecting Strap - 4',variation,BH9,0.631,title_similarity=0.875; token_overlap=0.333,yes,review_required
+447,BBH9-42,"Bent Connecting Strap 42""",10210680602922,BH9-6,Brake Connecting Strap - 6',variation,BH9,0.608,title_similarity=0.833; token_overlap=0.333,yes,review_required
+448,BBH9-5,Bent Connecting Strap 5',10210680537386,BH9-5,Brake Connecting Strap - 5',variation,BH9,0.761,title_similarity=0.894; token_overlap=0.600,no,review_required
+448,BBH9-5,Bent Connecting Strap 5',10210680537386,BH9-6,Brake Connecting Strap - 6',variation,BH9,0.618,title_similarity=0.851; token_overlap=0.333,yes,review_required
+448,BBH9-5,Bent Connecting Strap 5',10210680537386,BH9-4,Brake Connecting Strap - 4',variation,BH9,0.618,title_similarity=0.851; token_overlap=0.333,yes,review_required
+449,BBH9-6',Bent Connecting Strap 6',10210680471850,BH9-6,Brake Connecting Strap - 6',variation,BH9,0.761,title_similarity=0.894; token_overlap=0.600,no,review_required
+449,BBH9-6',Bent Connecting Strap 6',10210680471850,BH9-5,Brake Connecting Strap - 5',variation,BH9,0.618,title_similarity=0.851; token_overlap=0.333,yes,review_required
+449,BBH9-6',Bent Connecting Strap 6',10210680471850,BH9-4,Brake Connecting Strap - 4',variation,BH9,0.618,title_similarity=0.851; token_overlap=0.333,yes,review_required
+458,"FFB9-10""","Blade 10""",10210643542314,FFB9-10,"Columbia Tools FFB9 Flat Finishing Box Blade - 10""",variation,FFB9,0.880,format_normalized_identifier; title_similarity=0.286; token_overlap=0.222,yes,review_required
+458,"FFB9-10""","Blade 10""",10210643542314,FFB5-10,"Axle - 10""",variation,FFB5,0.517,title_similarity=0.667; token_overlap=0.333,no,review_required
+459,"FFB9-12""","Blade 12""",10210643444010,FFB9-12,"Columbia Tools FFB9 Flat Finishing Box Blade - 12""",variation,FFB9,0.880,format_normalized_identifier; title_similarity=0.286; token_overlap=0.222,yes,review_required
+459,"FFB9-12""","Blade 12""",10210643444010,AH3-2,"Top Blade - 2""",variation,AH3,0.518,title_similarity=0.737; token_overlap=0.250,yes,review_required
+459,"FFB9-12""","Blade 12""",10210643444010,FFB5-12,"Axle - 12""",variation,FFB5,0.517,title_similarity=0.667; token_overlap=0.333,no,review_required
+461,"FFB9-5.5""","Blade 5.5""",10210643280170,FFB9-5.5,"Columbia Tools FFB9 Flat Finishing Box Blade - 5.5""",variation,FFB9,0.880,format_normalized_identifier; title_similarity=0.310; token_overlap=0.222,yes,review_required
+461,"FFB9-5.5""","Blade 5.5""",10210643280170,AH3-3.5,"Top Blade - 3.5""",variation,AH3,0.513,title_similarity=0.727; token_overlap=0.250,yes,review_required
+461,"FFB9-5.5""","Blade 5.5""",10210643280170,AH3-2.5,"Top Blade - 2.5""",variation,AH3,0.513,title_similarity=0.727; token_overlap=0.250,yes,review_required
+462,"FFB9-7""","Blade 7""",10210643149098,FFB9-7,"Columbia Tools FFB9 Flat Finishing Box Blade - 7""",variation,FFB9,0.880,format_normalized_identifier; title_similarity=0.259; token_overlap=0.222,yes,review_required
+462,"FFB9-7""","Blade 7""",10210643149098,FFB5-7,"Axle - 7""",variation,FFB5,0.488,title_similarity=0.615; token_overlap=0.333,no,review_required
+463,"FFB9-8""","Blade 8""",10210643083562,FFB9-8,"Columbia Tools FFB9 Flat Finishing Box Blade - 8""",variation,FFB9,0.880,format_normalized_identifier; title_similarity=0.259; token_overlap=0.222,yes,review_required
+463,"FFB9-8""","Blade 8""",10210643083562,FFB5-8,"Axle - 8""",variation,FFB5,0.488,title_similarity=0.615; token_overlap=0.333,no,review_required
+474,AB1-10,"Body Automatic Box 10""",10210684502314,10FFBA,"Columbia Automatic Flat Box - 10""",variation,COL-AUTOMATIC-FLAT-BOX,0.613,title_similarity=0.706; token_overlap=0.500,no,review_required
+474,AB1-10,"Body Automatic Box 10""",10210684502314,10FBBA,"Columbia Automatic Fat Boy Box - 10""",variation,COL-AUTOMATIC-FAT-BOY-BOX,0.560,title_similarity=0.667; token_overlap=0.429,no,review_required
+474,AB1-10,"Body Automatic Box 10""",10210684502314,14FFBA,"Columbia Automatic Flat Box - 14""",variation,COL-AUTOMATIC-FLAT-BOX,0.495,title_similarity=0.667; token_overlap=0.286,yes,review_required
+475,AB1-12,"Body Automatic Box 12""",10210684436778,12FFBA,"Columbia Automatic Flat Box - 12""",variation,COL-AUTOMATIC-FLAT-BOX,0.613,title_similarity=0.706; token_overlap=0.500,no,review_required
+475,AB1-12,"Body Automatic Box 12""",10210684436778,12FBBA,"Columbia Automatic Fat Boy Box - 12""",variation,COL-AUTOMATIC-FAT-BOY-BOX,0.560,title_similarity=0.667; token_overlap=0.429,no,review_required
+475,AB1-12,"Body Automatic Box 12""",10210684436778,14FFBA,"Columbia Automatic Flat Box - 14""",variation,COL-AUTOMATIC-FLAT-BOX,0.495,title_similarity=0.667; token_overlap=0.286,yes,review_required
+476,AB1-14,"Body Automatic Box 14""",10210684404010,14FFBA,"Columbia Automatic Flat Box - 14""",variation,COL-AUTOMATIC-FLAT-BOX,0.613,title_similarity=0.706; token_overlap=0.500,no,review_required
+476,AB1-14,"Body Automatic Box 14""",10210684404010,12FFBA,"Columbia Automatic Flat Box - 12""",variation,COL-AUTOMATIC-FLAT-BOX,0.495,title_similarity=0.667; token_overlap=0.286,yes,review_required
+476,AB1-14,"Body Automatic Box 14""",10210684404010,10FFBA,"Columbia Automatic Flat Box - 10""",variation,COL-AUTOMATIC-FLAT-BOX,0.495,title_similarity=0.667; token_overlap=0.286,yes,review_required
+477,AB1-8,"Body Automatic Box 8""",10210684338474,8FFBA,"Columbia Automatic Flat Box - 8""",variation,COL-AUTOMATIC-FLAT-BOX,0.607,title_similarity=0.694; token_overlap=0.500,no,review_required
+477,AB1-8,"Body Automatic Box 8""",10210684338474,8FBBA,"Columbia Automatic Fat Boy Box - 8""",variation,COL-AUTOMATIC-FAT-BOY-BOX,0.552,title_similarity=0.654; token_overlap=0.429,no,review_required
+477,AB1-8,"Body Automatic Box 8""",10210684338474,14FFBA,"Columbia Automatic Flat Box - 14""",variation,COL-AUTOMATIC-FLAT-BOX,0.481,title_similarity=0.640; token_overlap=0.286,yes,review_required
+481,HFFB4-10,"Box Door 10""",10210639511850,HFFB14-10,"Flat Box Hinged Door Gasket - 10""",variation,HFFB14,0.520,title_similarity=0.537; token_overlap=0.500,no,review_required
+482,HFFB4-12,"Box Door 12""",10210639479082,HFFB14-12,"Flat Box Hinged Door Gasket - 12""",variation,HFFB14,0.520,title_similarity=0.537; token_overlap=0.500,no,review_required
+483,HFFB4-14,"Box Door 14""",10210639446314,HFFB14-14,"Flat Box Hinged Door Gasket - 14""",variation,HFFB14,0.520,title_similarity=0.537; token_overlap=0.500,no,review_required
+486,HFFB4-8,"Box Door 8""",10210639282474,HFFB14-8,"Flat Box Hinged Door Gasket - 8""",variation,HFFB14,0.507,title_similarity=0.513; token_overlap=0.500,no,review_required
+488,FFB2-10,"Box Roll Face 10""",10210646262058,CFB28,"Columbia 8"" Roll Face",simple,,0.486,title_similarity=0.611; token_overlap=0.333,yes,review_required
+489,FFB2-12,"Box Roll Face 12""",10210646196522,CFB28,"Columbia 8"" Roll Face",simple,,0.486,title_similarity=0.611; token_overlap=0.333,yes,review_required
+490,FFB2-14,"Box Roll Face 14""",10210646130986,CFB28,"Columbia 8"" Roll Face",simple,,0.486,title_similarity=0.611; token_overlap=0.333,yes,review_required
+492,FFB2-7,"Box Roll Face 7""",10210645573930,CFB28,"Columbia 8"" Roll Face",simple,,0.496,title_similarity=0.629; token_overlap=0.333,yes,review_required
+493,FFB2-8,"Box Roll Face 8""",10210645508394,CFB28,"Columbia 8"" Roll Face",simple,,0.616,title_similarity=0.629; token_overlap=0.600,no,review_required
+501,BH9-3',Brake Connecting Strap 3',10210679652650,BH9-3,Brake Connecting Strap - 3',variation,BH9,1.000,format_normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,review_required
+501,BH9-3',Brake Connecting Strap 3',10210679652650,BH9-6,Brake Connecting Strap - 6',variation,BH9,0.797,title_similarity=0.958; token_overlap=0.600,yes,review_required
+501,BH9-3',Brake Connecting Strap 3',10210679652650,BH9-5,Brake Connecting Strap - 5',variation,BH9,0.797,title_similarity=0.958; token_overlap=0.600,yes,review_required
+502,BH9-4',Brake Connecting Strap 4',10210679587114,BH9-4,Brake Connecting Strap - 4',variation,BH9,1.000,format_normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,review_required
+502,BH9-4',Brake Connecting Strap 4',10210679587114,BH9-42,"Brake Connecting Strap - 42""",variation,BH9,0.809,title_similarity=0.980; token_overlap=0.600,yes,review_required
+502,BH9-4',Brake Connecting Strap 4',10210679587114,BH9-6,Brake Connecting Strap - 6',variation,BH9,0.797,title_similarity=0.958; token_overlap=0.600,yes,review_required
+503,"BH9-42""","Brake Connecting Strap 42""",10210679521578,BH9-42,"Brake Connecting Strap - 42""",variation,BH9,1.000,format_normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,review_required
+503,"BH9-42""","Brake Connecting Strap 42""",10210679521578,BH9-4,Brake Connecting Strap - 4',variation,BH9,0.809,title_similarity=0.980; token_overlap=0.600,yes,review_required
+503,"BH9-42""","Brake Connecting Strap 42""",10210679521578,BH9-6,Brake Connecting Strap - 6',variation,BH9,0.786,title_similarity=0.939; token_overlap=0.600,yes,review_required
+504,BH9-5',Brake Connecting Strap 5',10210679423274,BH9-5,Brake Connecting Strap - 5',variation,BH9,1.000,format_normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,review_required
+504,BH9-5',Brake Connecting Strap 5',10210679423274,BH9-6,Brake Connecting Strap - 6',variation,BH9,0.797,title_similarity=0.958; token_overlap=0.600,yes,review_required
+504,BH9-5',Brake Connecting Strap 5',10210679423274,BH9-4,Brake Connecting Strap - 4',variation,BH9,0.797,title_similarity=0.958; token_overlap=0.600,yes,review_required
+505,BH9-6',Brake Connecting Strap 6',10210679357738,BH9-6,Brake Connecting Strap - 6',variation,BH9,1.000,format_normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,review_required
+505,BH9-6',Brake Connecting Strap 6',10210679357738,BH9-5,Brake Connecting Strap - 5',variation,BH9,0.797,title_similarity=0.958; token_overlap=0.600,yes,review_required
+505,BH9-6',Brake Connecting Strap 6',10210679357738,BH9-4,Brake Connecting Strap - 4',variation,BH9,0.797,title_similarity=0.958; token_overlap=0.600,yes,review_required
+512,HH17,Brass Connector Complete,10210638790954,HH17B,Brass Connector - 2,variation,HH-BRASS-CONNECTOR,0.654,title_similarity=0.780; token_overlap=0.500,no,review_required
+512,HH17,Brass Connector Complete,10210638790954,HH17A,Brass Connector - 1,variation,HH-BRASS-CONNECTOR,0.654,title_similarity=0.780; token_overlap=0.500,no,review_required
+513,OCR2A,Bullnose Corner Roller Wheel,10210634268970,CBNCR,Columbia Outside Corner Roller - Bullnose,variation,COL-OUTSIDE-CORNER-ROLLER,0.553,title_similarity=0.597; token_overlap=0.500,no,review_required
+513,OCR2A,Bullnose Corner Roller Wheel,10210634268970,CR,Columbia Corner Roller,simple,,0.510,title_similarity=0.600; token_overlap=0.400,no,review_required
+513,OCR2A,Bullnose Corner Roller Wheel,10210634268970,COBCRW,Columbia Outside Corner Roller - Wide,variation,COL-OUTSIDE-CORNER-ROLLER,0.495,title_similarity=0.667; token_overlap=0.286,no,review_required
+520,SAT18,Cable Guide,10210633613610,CTA84,Columbia Cable Pulley Guide,simple,,0.543,title_similarity=0.579; token_overlap=0.500,no,review_required
+524,CLT-BF,Cam Lock Box Filler Attachment,10210702393642,CLTBF,Columbia Compound Tube Box Filler,simple,,0.880,format_normalized_identifier; title_similarity=0.476; token_overlap=0.250,no,review_required
+530,CLT16,Cam Lock Tube Cone Solid,10210673230122,CLT55,"Columbia Cam Lock Tube - 55""",variation,COL-CAM-LOCK-TUBE,0.507,title_similarity=0.571; token_overlap=0.429,no,review_required
+530,CLT16,Cam Lock Tube Cone Solid,10210673230122,CLT42,"Columbia Cam Lock Tube - 42""",variation,COL-CAM-LOCK-TUBE,0.507,title_similarity=0.571; token_overlap=0.429,no,review_required
+530,CLT16,Cam Lock Tube Cone Solid,10210673230122,CLT32,"Columbia Cam Lock Tube - 32""",variation,COL-CAM-LOCK-TUBE,0.507,title_similarity=0.571; token_overlap=0.429,no,review_required
+539,CMH8,Closet Monster Tubing,10210672935210,CMH,Columbia Closet Monster Handle,simple,,0.525,title_similarity=0.627; token_overlap=0.400,no,review_required
+544,CT82B,Clutch Lever Screw,10364548088106,CT82,Clutch Lever,simple,,0.740,title_similarity=0.800; token_overlap=0.667,no,review_required
+551,CPG,Columbia Mud Pan Grip,10210692858154,PHMP,Columbia Predator Mud Pump,simple,,0.501,title_similarity=0.638; token_overlap=0.333,no,review_required
+551,CPG,Columbia Mud Pan Grip,10210692858154,HMP,Columbia Hot Mud Pump - Standard,variation,COL-HOT-MUD-PUMP,0.495,title_similarity=0.667; token_overlap=0.286,no,review_required
+551,CPG,Columbia Mud Pan Grip,10210692858154,HMP-C,Columbia Hot Mud Pump - CDN,variation,COL-HOT-MUD-PUMP,0.487,title_similarity=0.652; token_overlap=0.286,no,review_required
+554,C1PTAPER,Columbia One Predator Taper,10210704720170,PTAPER,Columbia One Predator Taper,simple,,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+554,C1PTAPER,Columbia One Predator Taper,10210704720170,PHMP,Columbia Predator Mud Pump,simple,,0.544,title_similarity=0.717; token_overlap=0.333,no,review_required
+554,C1PTAPER,Columbia One Predator Taper,10210704720170,PC1H,Columbia Predator One Handle - 4' Fixed,variation,COL-PREDATOR-ONE-HANDLE,0.542,title_similarity=0.635; token_overlap=0.429,no,review_required
+555,C1PBODY,Columbia One Predator Taper Body,10210704884010,PTAPER,Columbia One Predator Taper,simple,,0.863,title_similarity=0.915; token_overlap=0.800,no,review_required
+555,C1PBODY,Columbia One Predator Taper Body,10210704884010,PC1H,Columbia Predator One Handle - 4' Fixed,variation,COL-PREDATOR-ONE-HANDLE,0.525,title_similarity=0.647; token_overlap=0.375,no,review_required
+555,C1PBODY,Columbia One Predator Taper Body,10210704884010,PHMP,Columbia Predator Mud Pump,simple,,0.489,title_similarity=0.655; token_overlap=0.286,no,review_required
+556,C1PHEAD,Columbia One Predator Taper Head,10210704785706,PTAPER,Columbia One Predator Taper,simple,,0.863,title_similarity=0.915; token_overlap=0.800,no,review_required
+556,C1PHEAD,Columbia One Predator Taper Head,10210704785706,PC1H,Columbia Predator One Handle - 4' Fixed,variation,COL-PREDATOR-ONE-HANDLE,0.541,title_similarity=0.676; token_overlap=0.375,no,review_required
+556,C1PHEAD,Columbia One Predator Taper Head,10210704785706,PHMP,Columbia Predator Mud Pump,simple,,0.489,title_similarity=0.655; token_overlap=0.286,no,review_required
+557,C1SPTAPER,Columbia One Sawed Off Predator Taper,10210704556330,PTAPER,Columbia One Predator Taper,simple,,0.764,title_similarity=0.844; token_overlap=0.667,no,review_required
+557,C1SPTAPER,Columbia One Sawed Off Predator Taper,10210704556330,STAPER,"Columbia Automatic Taper - Sawed Off 39""",variation,COL-AUTOMATIC-TAPER,0.552,title_similarity=0.595; token_overlap=0.500,no,review_required
+558,C1SPBODY,Columbia One Sawed Off Predator Taper Body,10210704621866,PTAPER,Columbia One Predator Taper,simple,,0.688,title_similarity=0.783; token_overlap=0.571,no,review_required
+558,C1SPBODY,Columbia One Sawed Off Predator Taper Body,10210704621866,STAPER,"Columbia Automatic Taper - Sawed Off 39""",variation,COL-AUTOMATIC-TAPER,0.506,title_similarity=0.557; token_overlap=0.444,no,review_required
+559,C1TBPTAPER,Columbia One Tall Boy Predator Taper,10210704326954,PTAPER,Columbia One Predator Taper,simple,,0.771,title_similarity=0.857; token_overlap=0.667,no,review_required
+559,C1TBPTAPER,Columbia One Tall Boy Predator Taper,10210704326954,TBGN,Columbia Gooseneck - Tall Boy,variation,COL-GOOSENECK,0.560,title_similarity=0.667; token_overlap=0.429,no,review_required
+559,C1TBPTAPER,Columbia One Tall Boy Predator Taper,10210704326954,TBBF,Columbia Box Filler - Tall Boy,variation,COL-BOX-FILLER,0.512,title_similarity=0.625; token_overlap=0.375,no,review_required
+560,C1TBPBODY,Columbia One Tall Boy Predator Taper Body,10210704458026,PTAPER,Columbia One Predator Taper,simple,,0.694,title_similarity=0.794; token_overlap=0.571,no,review_required
+560,C1TBPBODY,Columbia One Tall Boy Predator Taper Body,10210704458026,TBGN,Columbia Gooseneck - Tall Boy,variation,COL-GOOSENECK,0.508,title_similarity=0.618; token_overlap=0.375,no,review_required
+562,CF8,Combo Flusher Wheel,10210676277546,3CSF,"Columbia Combo Flusher - 3""",variation,COL-COMBO-FLUSHER,0.538,title_similarity=0.651; token_overlap=0.400,no,review_required
+562,CF8,Combo Flusher Wheel,10210676277546,3.5CSF,"Columbia Combo Flusher - 3.5""",variation,COL-COMBO-FLUSHER,0.522,title_similarity=0.622; token_overlap=0.400,no,review_required
+562,CF8,Combo Flusher Wheel,10210676277546,2.5CSF,"Columbia Combo Flusher - 2.5""",variation,COL-COMBO-FLUSHER,0.522,title_similarity=0.622; token_overlap=0.400,no,review_required
+563,CF6,Combo Flusher Wheel Bracket,10210676408618,3WTCSF,"Columbia Combo Flusher - 3"" Widetrack",variation,COL-COMBO-FLUSHER,0.489,title_similarity=0.656; token_overlap=0.286,no,review_required
+564,CF7,Combo Flusher Wheel Bushing,10210676343082,FFB43,Columbia Bead Wheel Bushing,simple,,0.557,title_similarity=0.741; token_overlap=0.333,no,review_required
+564,CF7,Combo Flusher Wheel Bushing,10210676343082,CT50,Crimping Wheel Bushing,simple,,0.539,title_similarity=0.653; token_overlap=0.400,no,review_required
+567,CFB5D,Cone Ball - Plastic,10210674049322,CFB5B,Cone Ball,simple,,0.681,title_similarity=0.692; token_overlap=0.667,no,review_required
+571,CFB5C,Cone O-Ring,10210674082090,HH23,Piston O-Ring,simple,,0.638,title_similarity=0.750; token_overlap=0.500,no,review_required
+571,CFB5C,Cone O-Ring,10210674082090,HP44,Collar O-Ring,simple,,0.638,title_similarity=0.750; token_overlap=0.500,no,review_required
+578,CC19,Corner Cobra Link,10356656898346,CC,Columbia Corner Cobra,simple,,0.572,title_similarity=0.632; token_overlap=0.500,no,review_required
+580,CC-RK,Corner Cobra Repair Kit,10210691285290,CC,Columbia Corner Cobra,simple,,0.480,title_similarity=0.545; token_overlap=0.400,no,review_required
+585,CR2B,Corner Roller Wheel Steel,10210671460650,CR,Columbia Corner Roller,simple,,0.484,title_similarity=0.553; token_overlap=0.400,no,review_required
+586,CT34,Cover Plate Attachment Block,10210667233578,CT34R,Columbia Removable Cover Plate Attachment Block,simple,,0.711,title_similarity=0.747; token_overlap=0.667,no,review_required
+601,SAT4,Door Catch,10210633417002,CFB15,Door Hinge,simple,,0.480,title_similarity=0.600; token_overlap=0.333,no,review_required
+606,AB54-10,"Door Seat Automatic Box 10""",10210682863914,10FFBA,"Columbia Automatic Flat Box - 10""",variation,COL-AUTOMATIC-FLAT-BOX,0.566,title_similarity=0.679; token_overlap=0.429,no,review_required
+606,AB54-10,"Door Seat Automatic Box 10""",10210682863914,10FBBA,"Columbia Automatic Fat Boy Box - 10""",variation,COL-AUTOMATIC-FAT-BOY-BOX,0.523,title_similarity=0.644; token_overlap=0.375,no,review_required
+607,AB54-12,"Door Seat Automatic Box 12""",10210682798378,12FFBA,"Columbia Automatic Flat Box - 12""",variation,COL-AUTOMATIC-FLAT-BOX,0.566,title_similarity=0.679; token_overlap=0.429,no,review_required
+607,AB54-12,"Door Seat Automatic Box 12""",10210682798378,12FBBA,"Columbia Automatic Fat Boy Box - 12""",variation,COL-AUTOMATIC-FAT-BOY-BOX,0.523,title_similarity=0.644; token_overlap=0.375,no,review_required
+608,AB54-14,"Door Seat Automatic Box 14""",10210682732842,14FFBA,"Columbia Automatic Flat Box - 14""",variation,COL-AUTOMATIC-FLAT-BOX,0.566,title_similarity=0.679; token_overlap=0.429,no,review_required
+609,AB54-8,"Door Seat Automatic Box 8""",10210682667306,8FFBA,"Columbia Automatic Flat Box - 8""",variation,COL-AUTOMATIC-FLAT-BOX,0.560,title_similarity=0.667; token_overlap=0.429,no,review_required
+609,AB54-8,"Door Seat Automatic Box 8""",10210682667306,8FBBA,"Columbia Automatic Fat Boy Box - 8""",variation,COL-AUTOMATIC-FAT-BOY-BOX,0.516,title_similarity=0.632; token_overlap=0.375,no,review_required
+611,AB46,Door Spring Automatic Box,10210683617578,FFB16,Door Spring Nut,simple,,0.565,title_similarity=0.700; token_overlap=0.400,no,review_required
+633,ABF3A,Fat Automatic Side Plate Left,10210682569002,CT6A,Stainless Steel Side Plate - Left,simple,,0.523,title_similarity=0.600; token_overlap=0.429,no,review_required
+633,ABF3A,Fat Automatic Side Plate Left,10210682569002,CT7,Columbia Taper Side Plate Support Left,simple,,0.481,title_similarity=0.567; token_overlap=0.375,no,review_required
+634,ABF3,Fat Automatic Side Plate-Right,10210682601770,CT6,Columbia Taper Side Plate Right,simple,,0.554,title_similarity=0.656; token_overlap=0.429,no,review_required
+634,ABF3,Fat Automatic Side Plate-Right,10210682601770,CT8,Columbia Taper Side Plate Support Right,simple,,0.488,title_similarity=0.580; token_overlap=0.375,no,review_required
+635,HFBB4-10,"Fat Boy Door 10""",10210640953642,10FBB,"Columbia Fat Boy Flat Box - 10""",variation,COL-FAT-BOY-FLAT-BOX,0.500,title_similarity=0.558; token_overlap=0.429,no,review_required
+636,HFBB4-12,"Fat Boy Door 12""",10210640888106,12FBB,"Columbia Fat Boy Flat Box - 12""",variation,COL-FAT-BOY-FLAT-BOX,0.500,title_similarity=0.558; token_overlap=0.429,no,review_required
+637,HFBB4-5.5,"Fat Boy Door 5.5""",10210640822570,5.5FBB,"Columbia Fat Boy Flat Box - 5.5""",variation,COL-FAT-BOY-FLAT-BOX,0.511,title_similarity=0.578; token_overlap=0.429,no,review_required
+638,HFBB4-8,"Fat Boy Door 8""",10210640757034,8FBB,"Columbia Fat Boy Flat Box - 8""",variation,COL-FAT-BOY-FLAT-BOX,0.488,title_similarity=0.537; token_overlap=0.429,no,review_required
+639,HFBB14-10,"Fat Boy Door Gasket 10""",10210641510698,HFFB14-10,"Flat Box Hinged Door Gasket - 10""",variation,HFFB14,0.613,title_similarity=0.808; token_overlap=0.375,no,review_required
+639,HFBB14-10,"Fat Boy Door Gasket 10""",10210641510698,HFFB14-14,"Flat Box Hinged Door Gasket - 14""",variation,HFFB14,0.523,title_similarity=0.769; token_overlap=0.222,yes,review_required
+639,HFBB14-10,"Fat Boy Door Gasket 10""",10210641510698,HFFB14-12,"Flat Box Hinged Door Gasket - 12""",variation,HFFB14,0.523,title_similarity=0.769; token_overlap=0.222,yes,review_required
+640,HFBB14-12,"Fat Boy Door Gasket 12""",10210641445162,HFFB14-12,"Flat Box Hinged Door Gasket - 12""",variation,HFFB14,0.613,title_similarity=0.808; token_overlap=0.375,no,review_required
+640,HFBB14-12,"Fat Boy Door Gasket 12""",10210641445162,HFFB14-14,"Flat Box Hinged Door Gasket - 14""",variation,HFFB14,0.523,title_similarity=0.769; token_overlap=0.222,yes,review_required
+640,HFBB14-12,"Fat Boy Door Gasket 12""",10210641445162,HFFB14-10,"Flat Box Hinged Door Gasket - 10""",variation,HFFB14,0.523,title_similarity=0.769; token_overlap=0.222,yes,review_required
+641,HFBB1-10,"Fat Boy Rear Plate 10""",10210641641770,10FBB,"Columbia Fat Boy Flat Box - 10""",variation,COL-FAT-BOY-FLAT-BOX,0.483,title_similarity=0.571; token_overlap=0.375,no,review_required
+642,HFBB1-12,"Fat Boy Rear Plate 12""",10210641576234,12FBB,"Columbia Fat Boy Flat Box - 12""",variation,COL-FAT-BOY-FLAT-BOX,0.483,title_similarity=0.571; token_overlap=0.375,no,review_required
+643,HFBB1-5.5,"Fat Boy Rear Plate 5.5""",10210641150250,5.5FBB,"Columbia Fat Boy Flat Box - 5.5""",variation,COL-FAT-BOY-FLAT-BOX,0.492,title_similarity=0.588; token_overlap=0.375,no,review_required
+648,FBB2-8,"Fat Boy Roll Face 8""",10210646720810,CFB28,"Columbia 8"" Roll Face",simple,,0.563,title_similarity=0.615; token_overlap=0.500,no,review_required
+660,HFBB14-14,"Fatboy Hinge Box Door Gasket 14""",10210641379626,HFFB14-14,"Flat Box Hinged Door Gasket - 14""",variation,HFFB14,0.694,title_similarity=0.852; token_overlap=0.500,no,review_required
+660,HFBB14-14,"Fatboy Hinge Box Door Gasket 14""",10210641379626,HFFB14-12,"Flat Box Hinged Door Gasket - 12""",variation,HFFB14,0.601,title_similarity=0.820; token_overlap=0.333,yes,review_required
+660,HFBB14-14,"Fatboy Hinge Box Door Gasket 14""",10210641379626,HFFB14-10,"Flat Box Hinged Door Gasket - 10""",variation,HFFB14,0.601,title_similarity=0.820; token_overlap=0.333,yes,review_required
+661,HFBB14-5.5,"Fatboy Hinge Door Gasket 5.5""",10210641281322,HFFB14-8,"Flat Box Hinged Door Gasket - 8""",variation,HFFB14,0.563,title_similarity=0.842; token_overlap=0.222,yes,review_required
+661,HFBB14-5.5,"Fatboy Hinge Door Gasket 5.5""",10210641281322,HFFB14-14,"Flat Box Hinged Door Gasket - 14""",variation,HFFB14,0.555,title_similarity=0.828; token_overlap=0.222,yes,review_required
+661,HFBB14-5.5,"Fatboy Hinge Door Gasket 5.5""",10210641281322,HFFB14-12,"Flat Box Hinged Door Gasket - 12""",variation,HFFB14,0.555,title_similarity=0.828; token_overlap=0.222,yes,review_required
+662,HFBB14-8,"Fatboy Hinge Door Gasket 8""",10210641215786,HFFB14-8,"Flat Box Hinged Door Gasket - 8""",variation,HFFB14,0.669,title_similarity=0.909; token_overlap=0.375,no,review_required
+662,HFBB14-8,"Fatboy Hinge Door Gasket 8""",10210641215786,HFFB14-14,"Flat Box Hinged Door Gasket - 14""",variation,HFFB14,0.571,title_similarity=0.857; token_overlap=0.222,yes,review_required
+662,HFBB14-8,"Fatboy Hinge Door Gasket 8""",10210641215786,HFFB14-12,"Flat Box Hinged Door Gasket - 12""",variation,HFFB14,0.571,title_similarity=0.857; token_overlap=0.222,yes,review_required
+670,FFBA-36,Flat Box Wheel Kit,10210690367786,FFB36,Box Wheel,simple,,0.592,title_similarity=0.667; token_overlap=0.500,no,review_required
+680,AH6,Funnel Retainer Spring,10210681487658,AH6A,Funnel Retainer Clip,simple,,0.670,title_similarity=0.810; token_overlap=0.500,no,review_required
+680,AH6,Funnel Retainer Spring,10210681487658,CT65,Needle Return Spring,simple,,0.483,title_similarity=0.714; token_overlap=0.200,no,review_required
+688,CT126PA,Hand Grip Body,10210669035818,CT126,Hand Grip Body,simple,,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+688,CT126PA,Hand Grip Body,10210669035818,CT124,Hand Grip Guard Ring,simple,,0.536,title_similarity=0.647; token_overlap=0.400,no,review_required
+691,CC16,Handle Adapter,10210678243626,HH8,Handle Tube,simple,,0.546,title_similarity=0.720; token_overlap=0.333,no,review_required
+691,CC16,Handle Adapter,10210678243626,HNS12,Handle Clamp,simple,,0.531,title_similarity=0.692; token_overlap=0.333,no,review_required
+691,CC16,Handle Adapter,10210678243626,AHA,Angle Head Adapter,simple,,0.525,title_similarity=0.750; token_overlap=0.250,no,review_required
+692,CFB8B,Handle Adaptor,10210673754410,HNS12,Handle Clamp,simple,,0.531,title_similarity=0.692; token_overlap=0.333,no,review_required
+692,CFB8B,Handle Adaptor,10210673754410,HH8,Handle Tube,simple,,0.502,title_similarity=0.640; token_overlap=0.333,no,review_required
+695,AH15,Handle Connecting Link Assembl,10210682372394,CR11,Handle Connecting Link,simple,,0.803,title_similarity=0.846; token_overlap=0.750,no,review_required
+695,AH15,Handle Connecting Link Assembl,10210682372394,HNSA-14,Handle Link Assembly,simple,,0.598,title_similarity=0.760; token_overlap=0.400,no,review_required
+695,AH15,Handle Connecting Link Assembl,10210682372394,CT132,Connecting Link,simple,,0.592,title_similarity=0.667; token_overlap=0.500,no,review_required
+696,FFH14,Handle Grip,10210642460970,MH11,Handle Grip Bushing,simple,,0.703,title_similarity=0.733; token_overlap=0.667,no,review_required
+696,FFH14,Handle Grip,10210642460970,MP6,Handle Link,simple,,0.550,title_similarity=0.727; token_overlap=0.333,no,review_required
+696,FFH14,Handle Grip,10210642460970,HNS12,Handle Clamp,simple,,0.533,title_similarity=0.696; token_overlap=0.333,no,review_required
+697,EXT35,Handle Grip  (Closed End),10210661302570,MH11,Handle Grip Bushing,simple,,0.556,title_similarity=0.683; token_overlap=0.400,no,review_required
+698,EXT36,Handle Grip Mount,10210661237034,MH11,Handle Grip Bushing,simple,,0.653,title_similarity=0.778; token_overlap=0.500,no,review_required
+698,EXT36,Handle Grip Mount,10210661237034,MH1,Handle Mount Plate,simple,,0.602,title_similarity=0.686; token_overlap=0.500,no,review_required
+698,EXT36,Handle Grip Mount,10210661237034,CT126,Hand Grip Body,simple,,0.480,title_similarity=0.710; token_overlap=0.200,no,review_required
+700,HNS14A,Handle Link,10210637709610,MP6,Handle Link,simple,,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+700,HNS14A,Handle Link,10210637709610,HNSA-14,Handle Link Assembly,simple,,0.690,title_similarity=0.710; token_overlap=0.667,no,review_required
+700,HNS14A,Handle Link,10210637709610,CR11,Handle Connecting Link,simple,,0.667,title_similarity=0.667; token_overlap=0.667,no,review_required
+701,HNS14C,Handle Link Connector,10210637611306,MP6,Handle Link,simple,,0.678,title_similarity=0.688; token_overlap=0.667,no,review_required
+701,HNS14C,Handle Link Connector,10210637611306,CR11,Handle Connecting Link,simple,,0.583,title_similarity=0.651; token_overlap=0.500,no,review_required
+701,HNS14C,Handle Link Connector,10210637611306,HNSA-14,Handle Link Assembly,simple,,0.574,title_similarity=0.634; token_overlap=0.500,no,review_required
+704,MP7D,Handle Nut,10210634432810,HH8,Handle Tube,simple,,0.569,title_similarity=0.762; token_overlap=0.333,no,review_required
+704,MP7D,Handle Nut,10210634432810,MP6,Handle Link,simple,,0.569,title_similarity=0.762; token_overlap=0.333,no,review_required
+704,MP7D,Handle Nut,10210634432810,HNS12,Handle Clamp,simple,,0.500,title_similarity=0.636; token_overlap=0.333,no,review_required
+707,HNS14,Handle Spring,10210637742378,MP6,Handle Link,simple,,0.562,title_similarity=0.750; token_overlap=0.333,no,review_required
+707,HNS14,Handle Spring,10210637742378,HH12,Brake Spring,simple,,0.546,title_similarity=0.720; token_overlap=0.333,no,review_required
+707,HNS14,Handle Spring,10210637742378,MH12,PinchBrake Spring,simple,,0.517,title_similarity=0.667; token_overlap=0.333,no,review_required
+712,SAT9,Hinge,10210633318698,CFB15,Door Hinge,simple,,0.592,title_similarity=0.667; token_overlap=0.500,no,review_required
+712,SAT9,Hinge,10210633318698,CT20,Hinge Block,simple,,0.569,title_similarity=0.625; token_overlap=0.500,no,review_required
+717,HFFB14-5.5,"Hinge Box Door Gasket 5.5""",10210640134442,CFB77,"Columbia 7"" Angle Box Door Gasket",simple,,0.555,title_similarity=0.702; token_overlap=0.375,yes,review_required
+717,HFFB14-5.5,"Hinge Box Door Gasket 5.5""",10210640134442,HFFB14-8,"Flat Box Hinged Door Gasket - 8""",variation,HFFB14,0.535,title_similarity=0.667; token_overlap=0.375,yes,review_required
+717,HFFB14-5.5,"Hinge Box Door Gasket 5.5""",10210640134442,HFFB14-14,"Flat Box Hinged Door Gasket - 14""",variation,HFFB14,0.529,title_similarity=0.655; token_overlap=0.375,yes,review_required
+718,HFFB14-7,"Hinge Box Door Gasket 7""",10210640068906,CFB77,"Columbia 7"" Angle Box Door Gasket",simple,,0.657,title_similarity=0.727; token_overlap=0.571,no,review_required
+718,HFFB14-7,"Hinge Box Door Gasket 7""",10210640068906,CFB7-7,"Columbia Tools Door Gasket - 7""",variation,CFB7,0.560,title_similarity=0.667; token_overlap=0.429,no,review_required
+718,HFFB14-7,"Hinge Box Door Gasket 7""",10210640068906,HFFB14-8,"Flat Box Hinged Door Gasket - 8""",variation,HFFB14,0.550,title_similarity=0.692; token_overlap=0.375,yes,review_required
+720,FFB4C,Hinge Box Door Spacer,10210643902762,HFFB3A,Hinge Box End Plate - Left,variation,HFFB3-PLATE,0.495,title_similarity=0.667; token_overlap=0.286,no,review_required
+734,ICA3,ICA Wheel,10210636497194,FFB36,Box Wheel,simple,,0.517,title_similarity=0.667; token_overlap=0.333,no,review_required
+734,ICA3,ICA Wheel,10210636497194,CT47,Crimping Wheel,simple,,0.485,title_similarity=0.609; token_overlap=0.333,no,review_required
+735,ICA2,ICA Wheel Bushing,10210636529962,CT50,Crimping Wheel Bushing,simple,,0.648,title_similarity=0.769; token_overlap=0.500,no,review_required
+735,ICA2,ICA Wheel Bushing,10210636529962,FFB43,Columbia Bead Wheel Bushing,simple,,0.580,title_similarity=0.727; token_overlap=0.400,no,review_required
+735,ICA2,ICA Wheel Bushing,10210636529962,FFB5A,Axel Bushing,simple,,0.530,title_similarity=0.759; token_overlap=0.250,no,review_required
+741,ITFB36,Inside Track Box Wheel,10210636333354,FFB36,Box Wheel,simple,,0.544,title_similarity=0.581; token_overlap=0.500,no,review_required
+741,ITFB36,Inside Track Box Wheel,10210636333354,FFB37,Rubber for Box Wheel,simple,,0.490,title_similarity=0.619; token_overlap=0.333,no,review_required
+744,CT27,Knife Guide Bracket - Left,10210667725098,CT31,Chain Tension & Guide Bracket,simple,,0.495,title_similarity=0.627; token_overlap=0.333,no,review_required
+745,CT26,Knife Guide Bracket Right,10210667790634,CT31,Chain Tension & Guide Bracket,simple,,0.488,title_similarity=0.615; token_overlap=0.333,no,review_required
+748,CT41A,Knife Retainer Cap,10210666512682,AH5,Frame Retainer Clip,simple,,0.506,title_similarity=0.757; token_overlap=0.200,no,review_required
+748,CT41A,Knife Retainer Cap,10210666512682,AH6A,Funnel Retainer Clip,simple,,0.495,title_similarity=0.737; token_overlap=0.200,no,review_required
+749,CT39,Knife Return Spring,10210666840362,CT65,Needle Return Spring,simple,,0.676,title_similarity=0.821; token_overlap=0.500,no,review_required
+749,CT39,Knife Return Spring,10210666840362,CT81,Clutch Return Spring,simple,,0.620,title_similarity=0.718; token_overlap=0.500,no,review_required
+749,CT39,Knife Return Spring,10210666840362,CT36,Return Spring Tube,simple,,0.611,title_similarity=0.703; token_overlap=0.500,no,review_required
+759,CTA80,Manual Drive Grip Assembly,10210661957930,CT80,Manual Drive Grip,simple,,0.772,title_similarity=0.791; token_overlap=0.750,no,review_required
+771,MHR-K,Matrix Handle  Repair Kit,10210688598314,MH2,Matrix Handle Head,simple,,0.599,title_similarity=0.762; token_overlap=0.400,no,review_required
+785,MH14,Matrix Small Link Pin,10210636103978,MH5,Connecting Link Pin,simple,,0.483,title_similarity=0.550; token_overlap=0.400,no,review_required
+794,AB50,Mud Seal Strip Automatic Box,10341780652330,HFFB1A-10,"Mud Seal Strip - 10""",simple,,0.592,title_similarity=0.667; token_overlap=0.500,no,review_required
+800,CTA97,Mud Supply Valve Assembly,10210661695786,CT97,Mud Supply Valve Body,simple,,0.724,title_similarity=0.826; token_overlap=0.600,no,review_required
+800,CTA97,Mud Supply Valve Assembly,10210661695786,CFB6,Mud Supply Valve Unit,simple,,0.677,title_similarity=0.739; token_overlap=0.600,no,review_required
+803,HNS3,Nail Spotter Side Plate,10210637250858,CT6A,Stainless Steel Side Plate - Left,simple,,0.495,title_similarity=0.667; token_overlap=0.286,no,review_required
+804,HNS6,Nail Spotter Wheel,10210637054250,3NS,"Columbia Nail Spotter - 3""",variation,COL-NAIL-SPOTTER,0.529,title_similarity=0.634; token_overlap=0.400,no,review_required
+804,HNS6,Nail Spotter Wheel,10210637054250,2NS,"Columbia Nail Spotter - 2""",variation,COL-NAIL-SPOTTER,0.529,title_similarity=0.634; token_overlap=0.400,no,review_required
+811,CFB19,Nylatron Bushings,10210675753258,CT76,Nylatron Washer,simple,,0.528,title_similarity=0.688; token_overlap=0.333,no,review_required
+822,OCR2B,Outside Corner Roller Wheel,10210634203434,COBCRW,Columbia Outside Corner Roller - Wide,variation,COL-OUTSIDE-CORNER-ROLLER,0.651,title_similarity=0.774; token_overlap=0.500,no,review_required
+822,OCR2B,Outside Corner Roller Wheel,10210634203434,COBCRE,Columbia Outside Corner Roller - European,variation,COL-OUTSIDE-CORNER-ROLLER,0.625,title_similarity=0.727; token_overlap=0.500,no,review_required
+822,OCR2B,Outside Corner Roller Wheel,10210634203434,CBNCR,Columbia Outside Corner Roller - Bullnose,variation,COL-OUTSIDE-CORNER-ROLLER,0.608,title_similarity=0.697; token_overlap=0.500,no,review_required
+824,OCR3,Outside Roller Wheel Bushing,10210634072362,CT28,Roller Bushing,simple,,0.592,title_similarity=0.667; token_overlap=0.500,no,review_required
+824,OCR3,Outside Roller Wheel Bushing,10210634072362,CT50,Crimping Wheel Bushing,simple,,0.510,title_similarity=0.600; token_overlap=0.400,no,review_required
+824,OCR3,Outside Roller Wheel Bushing,10210634072362,FFB43,Columbia Bead Wheel Bushing,simple,,0.490,title_similarity=0.618; token_overlap=0.333,no,review_required
+826,SAT20,Oval Sleeve,10210633580842,MP39,Sleeve,simple,,0.613,title_similarity=0.706; token_overlap=0.500,no,review_required
+833,CTA107,Piston Assembly,10210662318378,CT107,Piston Body,simple,,0.531,title_similarity=0.692; token_overlap=0.333,no,review_required
+833,CTA107,Piston Assembly,10210662318378,HPA-48,Handle Pin Assembly,simple,,0.501,title_similarity=0.706; token_overlap=0.250,no,review_required
+838,CT110,Piston Cup Relief Washer,10210670510378,MP13,Piston Backing Washer - Large,variation,MP-PISTON-BACKING-WASHER,0.495,title_similarity=0.627; token_overlap=0.333,no,review_required
+838,CT110,Piston Cup Relief Washer,10210670510378,MP13A,Piston Backing Washer - Small,variation,MP-PISTON-BACKING-WASHER,0.495,title_similarity=0.627; token_overlap=0.333,no,review_required
+839,HH24,Piston Driver,10210638430506,CT107,Piston Body,simple,,0.517,title_similarity=0.667; token_overlap=0.333,no,review_required
+839,HH24,Piston Driver,10210638430506,HH23,Piston O-Ring,simple,,0.493,title_similarity=0.692; token_overlap=0.250,no,review_required
+846,CMT4,Plunger Housing,10210672771370,AH1A,Spring Housing,simple,,0.567,title_similarity=0.759; token_overlap=0.333,no,review_required
+846,CMT4,Plunger Housing,10210672771370,HH16,Piston Housing,simple,,0.529,title_similarity=0.690; token_overlap=0.333,no,review_required
+851,CT45-BLACK,Predator Connecting Rod,10210666283306,MH16,Connecting Rod Housing,simple,,0.567,title_similarity=0.622; token_overlap=0.500,no,review_required
+852,CT45-BLACK,Predator Connecting Rod,10364545433898,MH16,Connecting Rod Housing,simple,,0.567,title_similarity=0.622; token_overlap=0.500,no,review_required
+854,CPT130,Predator Extension Shaft,10210671984938,CT130,Extension Shaft,simple,,0.723,title_similarity=0.769; token_overlap=0.667,no,review_required
+854,CPT130,Predator Extension Shaft,10210671984938,CT127,Extension Shaft Bracket,simple,,0.576,title_similarity=0.638; token_overlap=0.500,no,review_required
+859,CT36 - BLACK,Predator Return Spring Tube,10364546515242,CT36,Return Spring Tube,simple,,0.778,title_similarity=0.800; token_overlap=0.750,no,review_required
+859,CT36 - BLACK,Predator Return Spring Tube,10364546515242,CT65,Needle Return Spring,simple,,0.554,title_similarity=0.681; token_overlap=0.400,no,review_required
+859,CT36 - BLACK,Predator Return Spring Tube,10364546515242,CT81,Clutch Return Spring,simple,,0.531,title_similarity=0.638; token_overlap=0.400,no,review_required
+864,MP33A,Pump Filler O-Ring,10210634662186,HP44,Collar O-Ring,simple,,0.535,title_similarity=0.645; token_overlap=0.400,no,review_required
+864,MP33A,Pump Filler O-Ring,10210634662186,HH23,Piston O-Ring,simple,,0.499,title_similarity=0.581; token_overlap=0.400,no,review_required
+867,MP7E,Pump Handle Ball,10210634400042,MP7,Pump Handle,simple,,0.748,title_similarity=0.815; token_overlap=0.667,no,review_required
+877,HNS1-2,"Rear Plate 2""",10210637906218,HNS12,Handle Clamp,simple,,0.880,format_normalized_identifier; title_similarity=0.333; token_overlap=0.000,no,review_required
+878,HNS1-3,"Rear Plate 3""",10210637775146,HNS13,Roll Pin Bushing,simple,,0.880,format_normalized_identifier; title_similarity=0.286; token_overlap=0.000,no,review_required
+887,CT91,Release Clip Bushing,10210663104810,CT92,Release Clip Bushing,simple,,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+887,CT91,Release Clip Bushing,10210663104810,HH31,Release Clip Pin,simple,,0.683,title_similarity=0.833; token_overlap=0.500,no,review_required
+887,CT91,Release Clip Bushing,10210663104810,HH32,Release Clip Washer,simple,,0.648,title_similarity=0.769; token_overlap=0.500,no,review_required
+895,CT99,Removable Cover Plate Pin,10210662482218,CTA99,Columbia Removable Cover Plate Pin,simple,,0.826,title_similarity=0.847; token_overlap=0.800,no,review_required
+895,CT99,Removable Cover Plate Pin,10210662482218,CT34R,Columbia Removable Cover Plate Attachment Block,simple,,0.544,title_similarity=0.639; token_overlap=0.429,no,review_required
+895,CT99,Removable Cover Plate Pin,10210662482218,CT87,Engraved Cover Plate Cap,simple,,0.509,title_similarity=0.653; token_overlap=0.333,no,review_required
+896,CT100,Removable Cover Plate Pin Ring,10210671165738,CTA99,Columbia Removable Cover Plate Pin,simple,,0.730,title_similarity=0.781; token_overlap=0.667,no,review_required
+896,CT100,Removable Cover Plate Pin Ring,10210671165738,CT34R,Columbia Removable Cover Plate Attachment Block,simple,,0.512,title_similarity=0.623; token_overlap=0.375,no,review_required
+898,HH22,Reservoir Piston,10210638528810,HH14,Brake Piston,simple,,0.504,title_similarity=0.643; token_overlap=0.333,no,review_required
+899,HH21,Reservoir Piston Return Spring,10210638627114,CT65,Needle Return Spring,simple,,0.532,title_similarity=0.640; token_overlap=0.400,no,review_required
+899,HH21,Reservoir Piston Return Spring,10210638627114,CT81,Clutch Return Spring,simple,,0.510,title_similarity=0.600; token_overlap=0.400,no,review_required
+904,AH16,Retaining Spring Backer,10210682306858,CT119,Spool Retaining Spring,simple,,0.616,title_similarity=0.711; token_overlap=0.500,no,review_required
+906,CT119A,Retaining Spring Rubber Cap,10210669756714,CT119,Spool Retaining Spring,simple,,0.539,title_similarity=0.653; token_overlap=0.400,no,review_required
+907,CT123A,Retaining Spring Shaft (New),10210669396266,CT119,Spool Retaining Spring,simple,,0.547,title_similarity=0.667; token_overlap=0.400,no,review_required
+907,CT123A,Retaining Spring Shaft (New),10210669396266,CT123,Columbia Retaining Quick Release Spring Shaft,simple,,0.534,title_similarity=0.620; token_overlap=0.429,no,review_required
+917,CFB2-7,"Roll Face 7""",10210675622186,CFB28,"Columbia 8"" Roll Face",simple,,0.499,title_similarity=0.581; token_overlap=0.400,yes,review_required
+918,CFB2-8,"Roll Face 8""",10210675589418,CFB28,"Columbia 8"" Roll Face",simple,,0.880,format_normalized_identifier; title_similarity=0.581; token_overlap=0.750,no,review_required
+921,CC5,Roller,10210678014250,CR2,Roller,simple,,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+921,CC5,Roller,10210678014250,CT28,Roller Bushing,simple,,0.555,title_similarity=0.600; token_overlap=0.500,no,review_required
+921,CC5,Roller,10210678014250,CT125,Rollers,simple,,0.508,title_similarity=0.923; token_overlap=0.000,no,review_required
+932,DDM7,Rubber Boot,10210661466410,CT87-CS,Rubber Seal,simple,,0.500,title_similarity=0.636; token_overlap=0.333,no,review_required
+934,FFB25-14,"Rubber Gasket Retainer 14""",10210645803306,FFB25-12,"Rubber Gasket Retainer - 12""",variation,FFB25,0.798,title_similarity=0.960; token_overlap=0.600,yes,review_required
+934,FFB25-14,"Rubber Gasket Retainer 14""",10210645803306,FFB25-10,"Rubber Gasket Retainer - 10""",variation,FFB25,0.798,title_similarity=0.960; token_overlap=0.600,yes,review_required
+935,FFB25-5.5,"Rubber Gasket Retainer 5.5""",10210645737770,FFB25-12,"Rubber Gasket Retainer - 12""",variation,FFB25,0.766,title_similarity=0.902; token_overlap=0.600,yes,review_required
+935,FFB25-5.5,"Rubber Gasket Retainer 5.5""",10210645737770,FFB25-10,"Rubber Gasket Retainer - 10""",variation,FFB25,0.766,title_similarity=0.902; token_overlap=0.600,yes,review_required
+936,FFB25-7,"Rubber Gasket Retainer 7""",10210645672234,FFB25-12,"Rubber Gasket Retainer - 12""",variation,FFB25,0.786,title_similarity=0.939; token_overlap=0.600,yes,review_required
+936,FFB25-7,"Rubber Gasket Retainer 7""",10210645672234,FFB25-10,"Rubber Gasket Retainer - 10""",variation,FFB25,0.786,title_similarity=0.939; token_overlap=0.600,yes,review_required
+937,FFB25-8,"Rubber Gasket Retainer 8""",10210645639466,FFB25-12,"Rubber Gasket Retainer - 12""",variation,FFB25,0.786,title_similarity=0.939; token_overlap=0.600,yes,review_required
+937,FFB25-8,"Rubber Gasket Retainer 8""",10210645639466,FFB25-10,"Rubber Gasket Retainer - 10""",variation,FFB25,0.786,title_similarity=0.939; token_overlap=0.600,yes,review_required
+941,S2,Sander Clamp/Clip,10210633974058,HNS12,Handle Clamp,simple,,0.492,title_similarity=0.690; token_overlap=0.250,no,review_required
+951,CT129,Shaft Guide Roller,10210668806442,CT128A,Columbia Taper Shaft Guide Roller Bushing,simple,,0.561,title_similarity=0.610; token_overlap=0.500,no,review_required
+955,CC11,Shoulder Bolt,10210678800682,FFB39,Hex Bolt,simple,,0.517,title_similarity=0.667; token_overlap=0.333,no,review_required
+959,CT13A,Side Plate Shim,10327863132458,CT7A,Side Plate Hub,simple,,0.680,title_similarity=0.828; token_overlap=0.500,no,review_required
+964,CT129B,Sleeve,10210668708138,MP39,Sleeve,simple,,1.000,title_similarity=1.000; token_overlap=1.000,no,review_required
+966,CC12,Small Roller,10210678702378,CR2,Roller,simple,,0.592,title_similarity=0.667; token_overlap=0.500,no,review_required
+973,CC13,Spring Tube,10210678571306,CT36,Return Spring Tube,simple,,0.717,title_similarity=0.759; token_overlap=0.667,no,review_required
+973,CC13,Spring Tube,10210678571306,AH1A,Spring Housing,simple,,0.502,title_similarity=0.640; token_overlap=0.333,no,review_required
+984,CC4,Step Roller,10210678079786,CR2,Roller,simple,,0.613,title_similarity=0.706; token_overlap=0.500,no,review_required
+987,BBH10,Strap Link,10210680897834,CT116A,Strap,simple,,0.592,title_similarity=0.667; token_overlap=0.500,no,review_required
+989,CTA47,Sub Assembled Crimping Wheel,10210662187306,CT47,Crimping Wheel,simple,,0.592,title_similarity=0.667; token_overlap=0.500,no,review_required
+989,CTA47,Sub Assembled Crimping Wheel,10210662187306,CT50,Crimping Wheel Bushing,simple,,0.488,title_similarity=0.560; token_overlap=0.400,no,review_required
+990,CTA13,Sub Assembled Dog Base Bracket,10210662252842,CT13,Dog Base Bracket,simple,,0.653,title_similarity=0.696; token_overlap=0.600,no,review_required
+1006,CTA57,Tape Advance Carriage Assembly,10210662121770,CT57,Tape Advance Carriage,simple,,0.790,title_similarity=0.824; token_overlap=0.750,no,review_required
+1008,SAT11,Tape Axle,10210633875754,CT120,Tape Spool,simple,,0.497,title_similarity=0.632; token_overlap=0.333,no,review_required
+1009,SAT13,Tape Drum Bushing,10210633777450,MP5,Head Bushing,simple,,0.492,title_similarity=0.690; token_overlap=0.250,no,review_required
+1009,SAT13,Tape Drum Bushing,10210633777450,FFB5A,Axel Bushing,simple,,0.492,title_similarity=0.690; token_overlap=0.250,no,review_required
+1010,SAT6,Tape Plate,10210633351466,BH2,Plate,simple,,0.592,title_similarity=0.667; token_overlap=0.500,no,review_required
+1010,SAT6,Tape Plate,10210633351466,CT120,Tape Spool,simple,,0.535,title_similarity=0.700; token_overlap=0.333,no,review_required
+1012,SAT17,Tape Wheel,10210633679146,FFB36,Box Wheel,simple,,0.497,title_similarity=0.632; token_overlap=0.333,no,review_required
+1012,SAT17,Tape Wheel,10210633679146,CT120,Tape Spool,simple,,0.480,title_similarity=0.600; token_overlap=0.333,no,review_required
+1019,CT124B,Taper Guard Ring Bottom,10210669265194,CT115,Guard Ring,simple,,0.558,title_similarity=0.606; token_overlap=0.500,no,review_required
+1019,CT124B,Taper Guard Ring Bottom,10210669265194,CT124,Hand Grip Guard Ring,simple,,0.483,title_similarity=0.605; token_overlap=0.333,no,review_required
+1020,CT124A,Taper Guard Ring Top,10210669363498,CT115,Guard Ring,simple,,0.592,title_similarity=0.667; token_overlap=0.500,no,review_required
+1020,CT124A,Taper Guard Ring Top,10210669363498,CT124,Hand Grip Guard Ring,simple,,0.508,title_similarity=0.650; token_overlap=0.333,no,review_required
+1027,TBMP2,Tbmp Foot Valve Casting,10210632630570,MP2,Foot Valve Casting,simple,,0.820,title_similarity=0.878; token_overlap=0.750,no,review_required
+1029,TBMP11,Tbmp Piston Shaft,10210632696106,MP11,Piston Shaft,simple,,0.755,title_similarity=0.828; token_overlap=0.667,no,review_required
+1031,TBMP24,Tbmp Screen,10210632597802,MP24,Mud Pump Screen,simple,,0.493,title_similarity=0.692; token_overlap=0.250,no,review_required
+1060,OCR2D,Wide Outside Roller Wheel,10210634105130,COBCRW,Columbia Outside Corner Roller - Wide,variation,COL-OUTSIDE-CORNER-ROLLER,0.573,title_similarity=0.633; token_overlap=0.500,no,review_required

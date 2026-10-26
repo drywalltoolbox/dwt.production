@@ -1,0 +1,167 @@
+﻿dtb_sku,dtb_name,supplier_sku,supplier_name,supplier_cost,identifier_similarity,status
+FA288,"1/4"" X 3/4"" Split Pin",FA208,"Columbia 4-40 x 1/8"" Binder Slot",0.32,0.800,unverified_candidate_not_cost_evidence
+FA288,"1/4"" X 3/4"" Split Pin",FA268,Columbia #10 Flat Washer,0.32,0.800,unverified_candidate_not_cost_evidence
+FA288,"1/4"" X 3/4"" Split Pin",FA278,Columbia #8 Belleville Washer,0.33,0.800,unverified_candidate_not_cost_evidence
+FA291,1/4-20 Hex Nut,FA201,"Columbia 1/16"" X 3/8"" Split Pin",0.32,0.800,unverified_candidate_not_cost_evidence
+FA291,1/4-20 Hex Nut,FA215,Columbia 4-40 x 5/16 Binder Slot,0.32,0.800,unverified_candidate_not_cost_evidence
+FA291,1/4-20 Hex Nut,FA231,"Columbia #6 X 3/8"" Hex Bolt",0.64,0.800,unverified_candidate_not_cost_evidence
+FA299,1/4-20 X 1-1/2 Hex Bolt,FA279,Columbia 10-24 X 1-1/4in Hex Bolt,0.8,0.800,unverified_candidate_not_cost_evidence
+FA299,1/4-20 X 1-1/2 Hex Bolt,FA289,"Columbia Split Pin 1/4"" X 2""",1.21,0.800,unverified_candidate_not_cost_evidence
+FA299,1/4-20 X 1-1/2 Hex Bolt,FA290,Columbia 1/4-20 Nyloc Nut,0.89,0.800,unverified_candidate_not_cost_evidence
+FA313,1/4-20 X 1/4 Socket Head Set Screw,FA231,"Columbia #6 X 3/8"" Hex Bolt",0.64,0.800,unverified_candidate_not_cost_evidence
+FA313,1/4-20 X 1/4 Socket Head Set Screw,FA312,"Columbia 10-24 X 1/4"" Set Screw",0.89,0.800,unverified_candidate_not_cost_evidence
+FA313,1/4-20 X 1/4 Socket Head Set Screw,FA314,Columbia 10-24 X 1-1/2 Pan Slot,0.31,0.800,unverified_candidate_not_cost_evidence
+FA301,"1/4-20 x 2 1/4"" Hex Bolt",FA201,"Columbia 1/16"" X 3/8"" Split Pin",0.32,0.800,unverified_candidate_not_cost_evidence
+FA301,"1/4-20 x 2 1/4"" Hex Bolt",FA231,"Columbia #6 X 3/8"" Hex Bolt",0.64,0.800,unverified_candidate_not_cost_evidence
+FA301,"1/4-20 x 2 1/4"" Hex Bolt",FA300,"Columbia 1/4-20 X 2"" Hex Bolt",1.63,0.800,unverified_candidate_not_cost_evidence
+FA297,"1/4-20 x 5/8"" Socket",FA247,"Columbia 6-32 X 5/8"" Hex Bolt",0.8,0.800,unverified_candidate_not_cost_evidence
+FA297,"1/4-20 x 5/8"" Socket",FA267,"Columbia 8-32 X 1/2"" Pan Head Screw",0.41,0.800,unverified_candidate_not_cost_evidence
+FA297,"1/4-20 x 5/8"" Socket",FA270,"Columbia #10 X 3/4"" Fender Washer",0.89,0.800,unverified_candidate_not_cost_evidence
+FA311,"FA311 1/4-28 X 1/2"" Socket Head",FA231,"Columbia #6 X 3/8"" Hex Bolt",0.64,0.800,unverified_candidate_not_cost_evidence
+FA311,"FA311 1/4-28 X 1/2"" Socket Head",FA312,"Columbia 10-24 X 1/4"" Set Screw",0.89,0.800,unverified_candidate_not_cost_evidence
+FA311,"FA311 1/4-28 X 1/2"" Socket Head",FA314,Columbia 10-24 X 1-1/2 Pan Slot,0.31,0.800,unverified_candidate_not_cost_evidence
+FA320,"1/4-28-3/8"" Socket Set Screw",FA201,"Columbia 1/16"" X 3/8"" Split Pin",0.32,0.800,unverified_candidate_not_cost_evidence
+FA320,"1/4-28-3/8"" Socket Set Screw",FA208,"Columbia 4-40 x 1/8"" Binder Slot",0.32,0.800,unverified_candidate_not_cost_evidence
+FA320,"1/4-28-3/8"" Socket Set Screw",FA220,"Columbia 4-40 X 3/4"" Bind Head Screw",0.32,0.800,unverified_candidate_not_cost_evidence
+FA271,10-24 Nyloc Nut,FA201,"Columbia 1/16"" X 3/8"" Split Pin",0.32,0.800,unverified_candidate_not_cost_evidence
+FA271,10-24 Nyloc Nut,FA215,Columbia 4-40 x 5/16 Binder Slot,0.32,0.800,unverified_candidate_not_cost_evidence
+FA271,10-24 Nyloc Nut,FA231,"Columbia #6 X 3/8"" Hex Bolt",0.64,0.800,unverified_candidate_not_cost_evidence
+FA272,10-24 Wing Nut,FA220,"Columbia 4-40 X 3/4"" Bind Head Screw",0.32,0.800,unverified_candidate_not_cost_evidence
+FA272,10-24 Wing Nut,FA222,"Columbia 5-40 X 3/8"" Bind Head Screw",0.32,0.800,unverified_candidate_not_cost_evidence
+FA272,10-24 Wing Nut,FA224,"Columbia 1/8"" X 3/8"" Split Pin",0.48,0.800,unverified_candidate_not_cost_evidence
+FA316,"10-32 X 1/2"" Flat Socket Head",FA231,"Columbia #6 X 3/8"" Hex Bolt",0.64,0.800,unverified_candidate_not_cost_evidence
+FA316,"10-32 X 1/2"" Flat Socket Head",FA306,"Columbia 5/16-18 X 1-1/4"" Hex Bolt",1.63,0.800,unverified_candidate_not_cost_evidence
+FA316,"10-32 X 1/2"" Flat Socket Head",FA312,"Columbia 10-24 X 1/4"" Set Screw",0.89,0.800,unverified_candidate_not_cost_evidence
+FA315,"FA315 10-32 X 3/8"" Flat Socket Head",FA215,Columbia 4-40 x 5/16 Binder Slot,0.32,0.800,unverified_candidate_not_cost_evidence
+FA315,"FA315 10-32 X 3/8"" Flat Socket Head",FA231,"Columbia #6 X 3/8"" Hex Bolt",0.64,0.800,unverified_candidate_not_cost_evidence
+FA315,"FA315 10-32 X 3/8"" Flat Socket Head",FA305,"Columbia 5/16-18 X 3/4"" Hex Bolt",1.63,0.800,unverified_candidate_not_cost_evidence
+FA365,"3/16 x 1"" Sping Pin SS",FA305,"Columbia 5/16-18 X 3/4"" Hex Bolt",1.63,0.800,unverified_candidate_not_cost_evidence
+FA365,"3/16 x 1"" Sping Pin SS",FA306,"Columbia 5/16-18 X 1-1/4"" Hex Bolt",1.63,0.800,unverified_candidate_not_cost_evidence
+FA365,"3/16 x 1"" Sping Pin SS",AH325,"Columbia 2.5"" Angle Head Carbide Blade",18.72,0.600,unverified_candidate_not_cost_evidence
+FA206,4-40 Hex Nut,FA201,"Columbia 1/16"" X 3/8"" Split Pin",0.32,0.800,unverified_candidate_not_cost_evidence
+FA206,4-40 Hex Nut,FA208,"Columbia 4-40 x 1/8"" Binder Slot",0.32,0.800,unverified_candidate_not_cost_evidence
+FA206,4-40 Hex Nut,FA220,"Columbia 4-40 X 3/4"" Bind Head Screw",0.32,0.800,unverified_candidate_not_cost_evidence
+FA207,4-40 Nyloc Nut,FA201,"Columbia 1/16"" X 3/8"" Split Pin",0.32,0.800,unverified_candidate_not_cost_evidence
+FA207,4-40 Nyloc Nut,FA208,"Columbia 4-40 x 1/8"" Binder Slot",0.32,0.800,unverified_candidate_not_cost_evidence
+FA207,4-40 Nyloc Nut,FA220,"Columbia 4-40 X 3/4"" Bind Head Screw",0.32,0.800,unverified_candidate_not_cost_evidence
+FA216,4-40 X 3/8” Fillister Slot,FA201,"Columbia 1/16"" X 3/8"" Split Pin",0.32,0.800,unverified_candidate_not_cost_evidence
+FA216,4-40 X 3/8” Fillister Slot,FA215,Columbia 4-40 x 5/16 Binder Slot,0.32,0.800,unverified_candidate_not_cost_evidence
+FA216,4-40 X 3/8” Fillister Slot,FA231,"Columbia #6 X 3/8"" Hex Bolt",0.64,0.800,unverified_candidate_not_cost_evidence
+FA303,5-16 Flat Washer,FA300,"Columbia 1/4-20 X 2"" Hex Bolt",1.63,0.800,unverified_candidate_not_cost_evidence
+FA303,5-16 Flat Washer,FA302,"Columbia 1/4-28 X 1/4"" Set Screw",0.89,0.800,unverified_candidate_not_cost_evidence
+FA303,5-16 Flat Washer,FA305,"Columbia 5/16-18 X 3/4"" Hex Bolt",1.63,0.800,unverified_candidate_not_cost_evidence
+FA307,5-16 x 24 Jam Nut,FA300,"Columbia 1/4-20 X 2"" Hex Bolt",1.63,0.800,unverified_candidate_not_cost_evidence
+FA307,5-16 x 24 Jam Nut,FA302,"Columbia 1/4-28 X 1/4"" Set Screw",0.89,0.800,unverified_candidate_not_cost_evidence
+FA307,5-16 x 24 Jam Nut,FA305,"Columbia 5/16-18 X 3/4"" Hex Bolt",1.63,0.800,unverified_candidate_not_cost_evidence
+FA317,"5/32"" x 7/8"" Roll Pin",FA231,"Columbia #6 X 3/8"" Hex Bolt",0.64,0.800,unverified_candidate_not_cost_evidence
+FA317,"5/32"" x 7/8"" Roll Pin",FA312,"Columbia 10-24 X 1/4"" Set Screw",0.89,0.800,unverified_candidate_not_cost_evidence
+FA317,"5/32"" x 7/8"" Roll Pin",FA314,Columbia 10-24 X 1-1/2 Pan Slot,0.31,0.800,unverified_candidate_not_cost_evidence
+FA227,"6-32 X 1/4"" Flat Slot",FA220,"Columbia 4-40 X 3/4"" Bind Head Screw",0.32,0.800,unverified_candidate_not_cost_evidence
+FA227,"6-32 X 1/4"" Flat Slot",FA222,"Columbia 5-40 X 3/8"" Bind Head Screw",0.32,0.800,unverified_candidate_not_cost_evidence
+FA227,"6-32 X 1/4"" Flat Slot",FA224,"Columbia 1/8"" X 3/8"" Split Pin",0.48,0.800,unverified_candidate_not_cost_evidence
+FA235,"6-32 X 1/8"" Set Screw",FA215,Columbia 4-40 x 5/16 Binder Slot,0.32,0.800,unverified_candidate_not_cost_evidence
+FA235,"6-32 X 1/8"" Set Screw",FA225,"Columbia 1/8"" X 3/8"" Special Washer",0.89,0.800,unverified_candidate_not_cost_evidence
+FA235,"6-32 X 1/8"" Set Screw",FA231,"Columbia #6 X 3/8"" Hex Bolt",0.64,0.800,unverified_candidate_not_cost_evidence
+FA238,"6-32 X 3/16"" Fillister Slot",FA208,"Columbia 4-40 x 1/8"" Binder Slot",0.32,0.800,unverified_candidate_not_cost_evidence
+FA238,"6-32 X 3/16"" Fillister Slot",FA231,"Columbia #6 X 3/8"" Hex Bolt",0.64,0.800,unverified_candidate_not_cost_evidence
+FA238,"6-32 X 3/16"" Fillister Slot",FA232,Columbia 6-32 Hex Nut,0.89,0.800,unverified_candidate_not_cost_evidence
+FA249,"8-32X3/16"" Set Screw",FA224,"Columbia 1/8"" X 3/8"" Split Pin",0.48,0.800,unverified_candidate_not_cost_evidence
+FA249,"8-32X3/16"" Set Screw",FA234,Columbia 6-32 Nyloc Jam Nut,0.79,0.800,unverified_candidate_not_cost_evidence
+FA249,"8-32X3/16"" Set Screw",FA245,"Columbia 6-32 X 1/2"" Fill. Head Screw",0.41,0.800,unverified_candidate_not_cost_evidence
+FA376,8-32 x 5/16 SS Socket Head,FA276,Columbia 10-24 X 7/8 Pan Head Screw,0.32,0.800,unverified_candidate_not_cost_evidence
+FA376,8-32 x 5/16 SS Socket Head,FA306,"Columbia 5/16-18 X 1-1/4"" Hex Bolt",1.63,0.800,unverified_candidate_not_cost_evidence
+FA376,8-32 x 5/16 SS Socket Head,FA379,"Columbia 1/4"" E-Clip for Matrix Handle",1.71,0.800,unverified_candidate_not_cost_evidence
+FA254,8-32 Nyloc Nut,FA215,Columbia 4-40 x 5/16 Binder Slot,0.32,0.800,unverified_candidate_not_cost_evidence
+FA254,8-32 Nyloc Nut,FA224,"Columbia 1/8"" X 3/8"" Split Pin",0.48,0.800,unverified_candidate_not_cost_evidence
+FA254,8-32 Nyloc Nut,FA225,"Columbia 1/8"" X 3/8"" Special Washer",0.89,0.800,unverified_candidate_not_cost_evidence
+FA258,8-32X 1/4 Half Dog Set,FA208,"Columbia 4-40 x 1/8"" Binder Slot",0.32,0.800,unverified_candidate_not_cost_evidence
+FA258,8-32X 1/4 Half Dog Set,FA215,Columbia 4-40 x 5/16 Binder Slot,0.32,0.800,unverified_candidate_not_cost_evidence
+FA258,8-32X 1/4 Half Dog Set,FA225,"Columbia 1/8"" X 3/8"" Special Washer",0.89,0.800,unverified_candidate_not_cost_evidence
+MP32,Backing Washer Locator,CMT32,"Columbia 32"" Compound Mud Tube",134.24,0.667,unverified_candidate_not_cost_evidence
+MP32,Backing Washer Locator,HMP,Columbia Mud Pump (Top Disconnect),277.45,0.571,unverified_candidate_not_cost_evidence
+FFB9-14,"Columbia Tools FFB9 Flat Finishing Box Blade - 14""",FFB17,Columbia Door Spring,2.72,0.727,unverified_candidate_not_cost_evidence
+FFB9-14,"Columbia Tools FFB9 Flat Finishing Box Blade - 14""",FFB43,Columbia Bead Wheel Bushing,1.49,0.727,unverified_candidate_not_cost_evidence
+FFB9-14,"Columbia Tools FFB9 Flat Finishing Box Blade - 14""",7FFB,"Columbia 7"" Flat Finishing Box",255.24,0.600,unverified_candidate_not_cost_evidence
+HH16A,Bleeder Screw,AH6A,Columbia Angle Head Ball Holder Release Clip,12.03,0.667,unverified_candidate_not_cost_evidence
+BH26,Columbia Tools BH26 Cam for 180 Grip Box Handle,BH2,Columbia Box Handle Plate (180 Grip),22.92,0.857,unverified_candidate_not_cost_evidence
+BH26,Columbia Tools BH26 Cam for 180 Grip Box Handle,BH06,Columbia Box Handle Hinge Pin (180 Grip),5.43,0.750,unverified_candidate_not_cost_evidence
+BH26,Columbia Tools BH26 Cam for 180 Grip Box Handle,3BH,"Columbia 36"" 180-Grip Flat Box Handle",127.21,0.571,unverified_candidate_not_cost_evidence
+CT104,Connection Strap,CT10,Columbia Taper Crimping Arm Bushing Right,2.91,0.889,unverified_candidate_not_cost_evidence
+CT104,Connection Strap,CT103,Columbia Taper Barrel Main Body,77.59,0.800,unverified_candidate_not_cost_evidence
+CT104,Connection Strap,CT105,Columbia Taper Crimper Lever,17.83,0.800,unverified_candidate_not_cost_evidence
+FFB37,Rubber for Box Wheel,FFB17,Columbia Door Spring,2.72,0.800,unverified_candidate_not_cost_evidence
+FFB37,Rubber for Box Wheel,FFB43,Columbia Bead Wheel Bushing,1.49,0.800,unverified_candidate_not_cost_evidence
+FFB37,Rubber for Box Wheel,7FFB,"Columbia 7"" Flat Finishing Box",255.24,0.667,unverified_candidate_not_cost_evidence
+HH15,Grip Sleeve Octagon,BH1,Columbia Mounting Plate (180 Grip),37.15,0.571,unverified_candidate_not_cost_evidence
+HH15,Grip Sleeve Octagon,BH5,Columbia Upper Mounting Bracket (180 Grip),5.43,0.571,unverified_candidate_not_cost_evidence
+CR1,Columbia Tools Head Casting (CR1),CR12,Columbia Swivel Coupling Pin,2.4,0.857,unverified_candidate_not_cost_evidence
+CR1,Columbia Tools Head Casting (CR1),CR,Columbia Inside Corner Roller,104.43,0.800,unverified_candidate_not_cost_evidence
+CR1,Columbia Tools Head Casting (CR1),C1H,Columbia 4' Extendable One Handle,27.9,0.667,unverified_candidate_not_cost_evidence
+CFB15A,Hinge Bushing (Plastic Washer),CFB15,Columbia Door Hinge,15.51,0.909,unverified_candidate_not_cost_evidence
+CFB15A,Hinge Bushing (Plastic Washer),CFB1A,Columbia Hinge Seal,2.32,0.909,unverified_candidate_not_cost_evidence
+CFB15A,Hinge Bushing (Plastic Washer),CFB16,Columbia Nylatron Bushing,3.09,0.727,unverified_candidate_not_cost_evidence
+CT4,Wafer Bushing - Left,CT41,Columbia Taper Cutter Block,0.97,0.857,unverified_candidate_not_cost_evidence
+CT4,Wafer Bushing - Left,CT43,Columbia Taper Micro Chain,19.39,0.857,unverified_candidate_not_cost_evidence
+CT4,Wafer Bushing - Left,CT45,Columbia Taper Connecting Rod (Includes CT46 Stop),10.48,0.857,unverified_candidate_not_cost_evidence
+MH3,Lower Mount Bracket,MH,Columbia Matrix Extendable Flat Box Handle,232.76,0.800,unverified_candidate_not_cost_evidence
+MH3,Lower Mount Bracket,CMH,"Columbia 18"" Closet Monster Flat Box Handle",83.83,0.667,unverified_candidate_not_cost_evidence
+MH3,Lower Mount Bracket,FMH,Columbia L-Trim Mud Applicator Head,60.09,0.667,unverified_candidate_not_cost_evidence
+MH12,PinchBrake Spring,MH17,Columbia Matrix Pinch Brake,10.77,0.750,unverified_candidate_not_cost_evidence
+MH12,PinchBrake Spring,MH21,Columbia Matrix Grip Adjuster Housing,4.4,0.750,unverified_candidate_not_cost_evidence
+MH12,PinchBrake Spring,MH24,Columbia Matrix Pinch Brake Bushing,5.88,0.750,unverified_candidate_not_cost_evidence
+MP23,Mud Pump Seal,HMP,Columbia Mud Pump (Top Disconnect),277.45,0.571,unverified_candidate_not_cost_evidence
+CT63,Needle,CT6,Columbia Taper Side Plate Right,18.63,0.857,unverified_candidate_not_cost_evidence
+CT63,Needle,CT23,Columbia Taper Reinforcing Rod,4.67,0.750,unverified_candidate_not_cost_evidence
+CT63,Needle,CT31,Columbia Taper Chain Tension & Guide Bracket,3.49,0.750,unverified_candidate_not_cost_evidence
+CT76,Nylatron Washer,CT6,Columbia Taper Side Plate Right,18.63,0.857,unverified_candidate_not_cost_evidence
+CT76,Nylatron Washer,CT7,Columbia Taper Side Plate Support Left,35.29,0.857,unverified_candidate_not_cost_evidence
+CT76,Nylatron Washer,CT17,Columbia Taper Separation Plate,10.85,0.750,unverified_candidate_not_cost_evidence
+MP13,Piston Backing Washer - Large,HMP,Columbia Mud Pump (Top Disconnect),277.45,0.571,unverified_candidate_not_cost_evidence
+HH23,Piston O-Ring,BH2,Columbia Box Handle Plate (180 Grip),22.92,0.571,unverified_candidate_not_cost_evidence
+HP46,Latch Keeper,AH4,Columbia Angle Head Side Blade,2.13,0.571,unverified_candidate_not_cost_evidence
+HP46,Latch Keeper,BH4,Columbia Lower Brake Lever,15.32,0.571,unverified_candidate_not_cost_evidence
+HP46,Latch Keeper,HMP,Columbia Mud Pump (Top Disconnect),277.45,0.571,unverified_candidate_not_cost_evidence
+HH33,Rlease Trigger Spring,AH33,"Columbia 3"" Angle Head Carbide Blade",18.72,0.750,unverified_candidate_not_cost_evidence
+HH33,Rlease Trigger Spring,AH335,"Columbia 3.5"" Angle Head Carbide Blade",18.72,0.667,unverified_candidate_not_cost_evidence
+CT101,Columbia Tools CT101 Return Spring,CT10,Columbia Taper Crimping Arm Bushing Right,2.91,0.889,unverified_candidate_not_cost_evidence
+CT101,Columbia Tools CT101 Return Spring,CT11,Columbia Taper Mud Guard Plate,5.43,0.889,unverified_candidate_not_cost_evidence
+CT101,Columbia Tools CT101 Return Spring,CT103,Columbia Taper Barrel Main Body,77.59,0.800,unverified_candidate_not_cost_evidence
+CT40,Return Spring Ring,CT10,Columbia Taper Crimping Arm Bushing Right,2.91,0.750,unverified_candidate_not_cost_evidence
+CT40,Return Spring Ring,CT20,Columbia Taper Hinge Block,6.21,0.750,unverified_candidate_not_cost_evidence
+CT40,Return Spring Ring,CT41,Columbia Taper Cutter Block,0.97,0.750,unverified_candidate_not_cost_evidence
+FFB25-12,"Rubber Gasket Retainer - 12""",FA252,Columbia #8 Star Washer,0.32,0.667,unverified_candidate_not_cost_evidence
+FFB25-12,"Rubber Gasket Retainer - 12""",FFB17,Columbia Door Spring,2.72,0.667,unverified_candidate_not_cost_evidence
+FFB25-12,"Rubber Gasket Retainer - 12""",SB212,"Columbia Replacement 12"" Blade for Tomahawk",19.09,0.667,unverified_candidate_not_cost_evidence
+FFB25-10,"Rubber Gasket Retainer - 10""",FFB17,Columbia Door Spring,2.72,0.667,unverified_candidate_not_cost_evidence
+FFB7A,Shoe - Left,8FFBA,"Columbia 8"" Automatic Assist Drywall Flat Box",281.39,0.800,unverified_candidate_not_cost_evidence
+FFB7A,Shoe - Left,FFB17,Columbia Door Spring,2.72,0.800,unverified_candidate_not_cost_evidence
+FFB7A,Shoe - Left,10FFBA,"Columbia 10"" Automatic Flat Box",283.0,0.727,unverified_candidate_not_cost_evidence
+FFB7,Shoe - Right,FFB17,Columbia Door Spring,2.72,0.889,unverified_candidate_not_cost_evidence
+FFB7,Shoe - Right,7FFB,"Columbia 7"" Flat Finishing Box",255.24,0.750,unverified_candidate_not_cost_evidence
+FFB7,Shoe - Right,8FFB,"Columbia 8"" Flat Finishing Box",256.12,0.750,unverified_candidate_not_cost_evidence
+MP39,Sleeve,HMP,Columbia Mud Pump (Top Disconnect),277.45,0.571,unverified_candidate_not_cost_evidence
+MP39,Sleeve,MH9,CTTMH9,10.31,0.571,unverified_candidate_not_cost_evidence
+MP36,Columbia Tools Nylatron Bushing (MP36),HMP,Columbia Mud Pump (Top Disconnect),277.45,0.571,unverified_candidate_not_cost_evidence
+BH11,Strap Connecting Pin,BH1,Columbia Mounting Plate (180 Grip),37.15,0.857,unverified_candidate_not_cost_evidence
+BH11,Strap Connecting Pin,3BH,"Columbia 36"" 180-Grip Flat Box Handle",127.21,0.571,unverified_candidate_not_cost_evidence
+BH11,Strap Connecting Pin,4BH,"Columbia 48"" 180-Grip Flat Box Handle",130.59,0.571,unverified_candidate_not_cost_evidence
+FFB32A,Thumb Release Clip Screw,8FFBA,"Columbia 8"" Automatic Assist Drywall Flat Box",281.39,0.727,unverified_candidate_not_cost_evidence
+FFB32A,Thumb Release Clip Screw,FFB43,Columbia Bead Wheel Bushing,1.49,0.727,unverified_candidate_not_cost_evidence
+FFB32A,Thumb Release Clip Screw,10FFBA,"Columbia 10"" Automatic Flat Box",283.0,0.667,unverified_candidate_not_cost_evidence
+AH8A,"Top Retainer Corner Clip - 3.5""",AH8,Columbia Angle Head Retainer Clip,3.84,0.857,unverified_candidate_not_cost_evidence
+AH8A,"Top Retainer Corner Clip - 3.5""",AHA,Columbia Anglehead Adaptor,14.56,0.857,unverified_candidate_not_cost_evidence
+AH8A,"Top Retainer Corner Clip - 3.5""",AH6A,Columbia Angle Head Ball Holder Release Clip,12.03,0.750,unverified_candidate_not_cost_evidence
+FFB9-10,"Columbia Tools FFB9 Flat Finishing Box Blade - 10""",FFB17,Columbia Door Spring,2.72,0.727,unverified_candidate_not_cost_evidence
+FFB9-10,"Columbia Tools FFB9 Flat Finishing Box Blade - 10""",7FFB,"Columbia 7"" Flat Finishing Box",255.24,0.600,unverified_candidate_not_cost_evidence
+FFB9-10,"Columbia Tools FFB9 Flat Finishing Box Blade - 10""",8FFB,"Columbia 8"" Flat Finishing Box",256.12,0.600,unverified_candidate_not_cost_evidence
+FFB9-12,"Columbia Tools FFB9 Flat Finishing Box Blade - 12""",FFB17,Columbia Door Spring,2.72,0.727,unverified_candidate_not_cost_evidence
+FFB9-12,"Columbia Tools FFB9 Flat Finishing Box Blade - 12""",7FFB,"Columbia 7"" Flat Finishing Box",255.24,0.600,unverified_candidate_not_cost_evidence
+FFB9-12,"Columbia Tools FFB9 Flat Finishing Box Blade - 12""",8FFB,"Columbia 8"" Flat Finishing Box",256.12,0.600,unverified_candidate_not_cost_evidence
+FFB9-5.5,"Columbia Tools FFB9 Flat Finishing Box Blade - 5.5""",7FFB,"Columbia 7"" Flat Finishing Box",255.24,0.600,unverified_candidate_not_cost_evidence
+FFB9-5.5,"Columbia Tools FFB9 Flat Finishing Box Blade - 5.5""",8FFB,"Columbia 8"" Flat Finishing Box",256.12,0.600,unverified_candidate_not_cost_evidence
+FFB9-7,"Columbia Tools FFB9 Flat Finishing Box Blade - 7""",FFB17,Columbia Door Spring,2.72,0.800,unverified_candidate_not_cost_evidence
+FFB9-7,"Columbia Tools FFB9 Flat Finishing Box Blade - 7""",7FFB,"Columbia 7"" Flat Finishing Box",255.24,0.667,unverified_candidate_not_cost_evidence
+FFB9-7,"Columbia Tools FFB9 Flat Finishing Box Blade - 7""",8FFB,"Columbia 8"" Flat Finishing Box",256.12,0.667,unverified_candidate_not_cost_evidence
+FFB9-8,"Columbia Tools FFB9 Flat Finishing Box Blade - 8""",7FFB,"Columbia 7"" Flat Finishing Box",255.24,0.667,unverified_candidate_not_cost_evidence
+FFB9-8,"Columbia Tools FFB9 Flat Finishing Box Blade - 8""",8FFB,"Columbia 8"" Flat Finishing Box",256.12,0.667,unverified_candidate_not_cost_evidence
+FFB9-8,"Columbia Tools FFB9 Flat Finishing Box Blade - 8""",CFB8,Columbia Handle Mount Casting,27.15,0.667,unverified_candidate_not_cost_evidence

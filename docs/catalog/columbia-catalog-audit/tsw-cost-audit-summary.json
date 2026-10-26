@@ -1,0 +1,26 @@
+{
+  "source_hashes": {
+    "products/catalog/source/tsw-costs.csv": "4e9e245b2761848144ab50a19cb9989f3a72f5506216ff23ce619ca9a1c3bf89",
+    "products/launch/official/dtb_official_catalog.csv": "c4a9b708d8e9f334845ce037fb9cc5bb3ff74e522443cd3d791c5b25617cc645",
+    "docs/reference/data/TSW/TSW Product Data.xlsx": "eb7244d1c5a00e00412e490e5cc44c2b0e0ceffdbc6d17002baa12b48f7a3565",
+    "docs/catalog/columbia-catalog-audit/price-below-cost-review.csv": "e28e092bb9d8a53ce73e9d529d59272a413b94beabcc4d3353bb86589fe54585",
+    "docs/reference/data/TSW/TSW Product Data - DTB Brands.csv": "cef6b58210ce0c2cc2601443d5b498294682979012c3d3ce856410a9b9cfaf8f",
+    "scripts/supplier-catalog/results/cost/tsw-supplier-cost-migration-report.json": "11b58aa8e3f778a2f10f083485c9afd3719909591027a9ba55500cc2535959d9"
+  },
+  "rows": 73,
+  "cost_status": {
+    "identity_conflict": 2,
+    "no_matching_tsw_cost": 64,
+    "exact_sku_cost_agrees": 5,
+    "pack_quantity_review": 1,
+    "prior_mapping_conflict": 1
+  },
+  "product_status": {
+    "exact_supplier_sku": 37,
+    "not_found": 28,
+    "normalized_candidate": 8
+  },
+  "raw_ctt_rows": 687,
+  "tsw_columbia_cost_rows": 301,
+  "unmatched_candidate_rows": 166
+}

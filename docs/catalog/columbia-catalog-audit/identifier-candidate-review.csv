@@ -1,0 +1,20 @@
+﻿source_row,source_sku,dtb_sku,source_name,dtb_name,existing_mpn,decision,evidence
+26,FA308,FA3,"1/2 X 7/8"" Flat Washer","1/2"" x 7/8"" Flat Washer",FA308,collision,Two DTB rows claim manufacturer identifier
+26,FA308,FA308,"1/2 X 7/8"" Flat Washer","Columbia 33/64 X 7/8"" Flat Washer",,collision,Two DTB rows claim manufacturer identifier
+238,FA208,FA2,4/40 X 1/8 Binder Slot,"4-40 x 1/8"" Binder Slot",FA208,collision,Two DTB rows claim manufacturer identifier
+238,FA208,FA208,4/40 X 1/8 Binder Slot,"Columbia 4-40 x 1/8"" Binder Slot",,collision,Two DTB rows claim manufacturer identifier
+395,AH12,AH1-2,Angle Head Reduction Spring,"Columbia Tools Head Casting for AH1 Angle Heads - 2""",AH1-2,reject,Names identify different products despite normalized identifier
+458,"FFB9-10""",FFB9-10,"Blade 10""","Columbia Tools FFB9 Flat Finishing Box Blade - 10""",FFB9-10,strong_candidate,Matching part name and stated size; punctuation formatting differs
+459,"FFB9-12""",FFB9-12,"Blade 12""","Columbia Tools FFB9 Flat Finishing Box Blade - 12""",FFB9-12,strong_candidate,Matching part name and stated size; punctuation formatting differs
+461,"FFB9-5.5""",FFB9-5.5,"Blade 5.5""","Columbia Tools FFB9 Flat Finishing Box Blade - 5.5""",FFB9-5.5,strong_candidate,Matching part name and stated size; punctuation formatting differs
+462,"FFB9-7""",FFB9-7,"Blade 7""","Columbia Tools FFB9 Flat Finishing Box Blade - 7""",FFB9-7,strong_candidate,Matching part name and stated size; punctuation formatting differs
+463,"FFB9-8""",FFB9-8,"Blade 8""","Columbia Tools FFB9 Flat Finishing Box Blade - 8""",FFB9-8,strong_candidate,Matching part name and stated size; punctuation formatting differs
+501,BH9-3',BH9-3,Brake Connecting Strap 3',Brake Connecting Strap - 3',BH9-3,strong_candidate,Matching part name and stated size; punctuation formatting differs
+502,BH9-4',BH9-4,Brake Connecting Strap 4',Brake Connecting Strap - 4',BH9-4,strong_candidate,Matching part name and stated size; punctuation formatting differs
+503,"BH9-42""",BH9-42,"Brake Connecting Strap 42""","Brake Connecting Strap - 42""",BH9,strong_candidate,Matching part name and stated size; punctuation formatting differs
+504,BH9-5',BH9-5,Brake Connecting Strap 5',Brake Connecting Strap - 5',BH9-5,strong_candidate,Matching part name and stated size; punctuation formatting differs
+505,BH9-6',BH9-6,Brake Connecting Strap 6',Brake Connecting Strap - 6',BH9-6,strong_candidate,Matching part name and stated size; punctuation formatting differs
+524,CLT-BF,CLTBF,Cam Lock Box Filler Attachment,Columbia Compound Tube Box Filler,,review,Product terminology requires additional evidence
+877,HNS1-2,HNS12,"Rear Plate 2""",Handle Clamp,HNS12,reject,Names identify different products despite normalized identifier
+878,HNS1-3,HNS13,"Rear Plate 3""",Roll Pin Bushing,HNS13,reject,Names identify different products despite normalized identifier
+918,CFB2-8,CFB28,"Roll Face 8""","Columbia 8"" Roll Face",,strong_candidate,Matching part name and stated size; punctuation formatting differs

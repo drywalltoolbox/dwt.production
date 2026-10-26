@@ -1,0 +1,1141 @@
+﻿priority,kind,dtb_sku,source_sku,evidence,recommendation,confidence
+P2,price_difference,FA280,FA280,DTB regular=1.16; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA270,FA270,DTB regular=2.31; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA253,FA253,DTB regular=1.16; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA252,FA252,DTB regular=1.27; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA201,FA201,DTB regular=0.61; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,FA201,FA201,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT109,CT109,DTB regular=7.04; manufacturer price=4.53; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA380,FA380,DTB regular=4.40; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA285,FA285,DTB regular=3.15; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,FA285,FA285,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,FA288,FA288,DTB regular=2.60; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA291,FA291,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA292,FA292,DTB regular=2.12; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA290,FA290,DTB regular=1.63; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,FA290,FA290,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,FA299,FA299,DTB regular=4.40; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA295,FA295,DTB regular=1.16; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA313,FA313,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA300,FA300,DTB regular=4.21; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA301,FA301,DTB regular=3.30; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA294,FA294,DTB regular=3.03; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA297,FA297,DTB regular=3.03; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA298,FA298,DTB regular=1.16; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA311,FA311,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA302,FA302,DTB regular=2.37; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA320,FA320,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA225,FA225,DTB regular=2.31; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA224,FA224,DTB regular=1.27; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA379,FA379,DTB regular=4.40; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,10FBBA,10FBBA,DTB regular=542.29; manufacturer price=493.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,10FFBA,10FFBA,DTB regular=470.79; manufacturer price=428.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,10FBB,10FBB,DTB regular=500.49; manufacturer price=455.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,10FFB,10FFB,DTB regular=441.09; manufacturer price=401.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA271,FA271,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA272,FA272,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA279,FA279,DTB regular=2.15; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,FA279,FA279,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,FA273,FA273,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA314,FA314,DTB regular=0.61; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,FA314,FA314,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,FA274,FA274,DTB regular=3.03; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA276,FA276,DTB regular=1.16; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA281,FA281,DTB regular=2.15; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,FA281,FA281,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,FA316,FA316,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA312,FA312,DTB regular=2.37; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA275,FA275,DTB regular=2.37; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA315,FA315,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,12FBBA,12FBBA,DTB regular=553.29; manufacturer price=503.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,12FFBA,12FFBA,DTB regular=476.29; manufacturer price=433.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,12FBB,12FBB,DTB regular=512.59; manufacturer price=466.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,12FFB,12FFB,DTB regular=452.09; manufacturer price=411.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,14FFBA,14FFBA,DTB regular=482.89; manufacturer price=439.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,14FFB,14FFB,DTB regular=464.19; manufacturer price=422.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,BH2,BH2,DTB regular=50.42; manufacturer price=38.20; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,2AH,2AH,DTB regular=452.09; manufacturer price=411.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,2NS,2NS,DTB regular=327.79; manufacturer price=298.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNS7-2,HNS7-2,DTB regular=29.59; manufacturer price=23.08; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH3-2,AH3-2,DTB regular=39.97; manufacturer price=31.19; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,2.5AH,2.5AH,DTB regular=464.19; manufacturer price=422.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,2.5CSF,2.5CSF,DTB regular=180.39; manufacturer price=164.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,2.5DF,2.5DF,DTB regular=140.79; manufacturer price=128.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,2.5SF,2.5SF,DTB regular=128.69; manufacturer price=117.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH3-2.5,AH3-2.5,DTB regular=39.97; manufacturer price=31.19; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CLT24,CLT24,DTB regular=283.79; manufacturer price=258.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CMT24,CMT24,DTB regular=217.79; manufacturer price=198.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,3AH,3AH,DTB regular=488.39; manufacturer price=444.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,3CSF,3CSF,DTB regular=185.89; manufacturer price=169.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,3DF,3DF,DTB regular=144.09; manufacturer price=134.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,3NS,3NS,DTB regular=339.89; manufacturer price=309.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNS7-3,HNS7-3,DTB regular=29.59; manufacturer price=23.08; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,3SF,3SF,DTB regular=135.29; manufacturer price=123.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH3-3,AH3-3,DTB regular=39.97; manufacturer price=31.19; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,3WTDF,3WTDF,DTB regular=155.09; manufacturer price=141.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,3WTSF,3WTSF,DTB regular=140.79; manufacturer price=128.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,3BH,3BH,DTB regular=208.99; manufacturer price=190.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,3.5AH,3.5AH,DTB regular=500.49; manufacturer price=455.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,3.5CSF,3.5CSF,DTB regular=200.19; manufacturer price=182.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,3.5DF,3.5DF,DTB regular=160.60; manufacturer price=146.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,3.5SF,3.5SF,DTB regular=147.39; manufacturer price=134.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH3-3.5,AH3-3.5,DTB regular=39.97; manufacturer price=31.19; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA365,FA365,DTB regular=3.30; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CLT32,CLT32,DTB regular=295.89; manufacturer price=269.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CMT32,CMT32,DTB regular=229.89; manufacturer price=209.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,4DF,4DF,DTB regular=166.55; manufacturer price=152.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,4SF,4SF,DTB regular=154.66; manufacturer price=141.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,4BH,4BH,DTB regular=232.09; manufacturer price=211.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA206,FA206,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA207,FA207,DTB regular=2.00; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA219,FA219,DTB regular=1.16; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA220,FA220,DTB regular=1.21; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA216,FA216,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,42BH,42BH,DTB regular=226.59; manufacturer price=206.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CLT42,CLT42,DTB regular=309.09; manufacturer price=281.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CMT42,CMT42,DTB regular=244.19; manufacturer price=222.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,5BH,5BH,DTB regular=244.19; manufacturer price=222.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA303,FA303,DTB regular=3.30; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,5.5FBB,5.5FBB,DTB regular=422.83; manufacturer price=435.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,5.5FFB,5.5FFB,DTB regular=404.79; manufacturer price=368.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA306,FA306,DTB regular=3.83; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA305,FA305,DTB regular=4.02; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA307,FA307,DTB regular=3.30; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA317,FA317,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,FA222,FA222,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CLT55,CLT55,DTB regular=306.89; manufacturer price=279.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CMT55,CMT55,DTB regular=256.29; manufacturer price=233.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,6BH,6BH,DTB regular=256.29; manufacturer price=233.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA232,FA232,DTB regular=2.31; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA234,FA234,DTB regular=2.04; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA233,FA233,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA227,FA227,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA235,FA235,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA238,FA238,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA247,FA247,DTB regular=2.15; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA231,FA231,DTB regular=1.71; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,7FFB,7FFB,DTB regular=416.89; manufacturer price=379.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,7CFB,7CFB,DTB regular=345.39; manufacturer price=314.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,8FBBA,8FBBA,DTB regular=530.19; manufacturer price=482.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,8FFBA,8FFBA,DTB regular=464.19; manufacturer price=422.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,8FBB,8FBB,DTB regular=488.39; manufacturer price=444.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,8FFB,8FFB,DTB regular=428.99; manufacturer price=390.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,8CFB,8CFB,DTB regular=357.49; manufacturer price=325.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA266,FA266,DTB regular=1.27; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,FA266,FA266,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,FA267,FA267,DTB regular=1.16; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA262,FA262,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA249,FA249,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA261,FA261,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA376,FA376,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA254,FA254,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA258,FA258,DTB regular=2.20; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT14A,CT14A,DTB regular=9.60; manufacturer price=6.16; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT15,CT15,DTB regular=6.60; manufacturer price=5.85; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB11-12,FFB11-12,DTB regular=11.51; manufacturer price=7.11; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB4B,FFB4B,DTB regular=5.72; manufacturer price=3.68; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,TAPER,TAPER,DTB regular=1814.22; manufacturer price=1650.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB5A,FFB5A,DTB regular=4.16; manufacturer price=2.60; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB39,FFB39,DTB regular=3.30; manufacturer price=3.51; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP32,MP32,DTB regular=3.14; manufacturer price=1.96; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH6A,AH6A,DTB regular=25.70; manufacturer price=20.02; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CF4L,CF4L,DTB regular=13.18; manufacturer price=7.05; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CF4L,CF4L,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT122A,CT122A,DTB regular=21.25; manufacturer price=19.41; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT122A,CT122A,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT116A,CT116A,DTB regular=24.13; manufacturer price=19.41; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB8,FFB8,DTB regular=2.20; manufacturer price=2.01; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB43,FFB43,DTB regular=2.73; manufacturer price=2.48; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,FFB43,FFB43,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT125A,CT125A,DTB regular=5.04; manufacturer price=3.23; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CR-3,CR3,DTB regular=10.40; manufacturer price=6.48; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,identifier_mapping,CR-3,CR3,Source SKU matches a DTB manufacturer identifier but differs from DTB SKU CR-3,Verify identity and preserve both protected identifiers,medium
+P2,price_difference,CFB16,CFB16,DTB regular=8.01; manufacturer price=4.78; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,BH24A,BH24A,DTB regular=4.40; manufacturer price=3.72; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,BH3,BH3,DTB regular=35.20; manufacturer price=29.92; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB9-14,FFB9-14,DTB regular=8.12; manufacturer price=3.23; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNS8-2,HNS8-2,DTB regular=42.28; manufacturer price=32.99; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNS8-3,HNS8-3,DTB regular=42.28; manufacturer price=32.99; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH16A,HH16A,DTB regular=18.70; manufacturer price=4.82; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT34R,CT34R,DTB regular=6.73; manufacturer price=5.40; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT34R,CT34R,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,HH10B,HH10B,DTB regular=2.20; manufacturer price=1.58; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH9A,AH9A,DTB regular=12.45; manufacturer price=9.71; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH9,AH9,DTB regular=13.48; manufacturer price=7.80; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,BF,BF,DTB regular=83.59; manufacturer price=76.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HFFB1A-10,HFFB1A,DTB regular=11.00; manufacturer price=12.67; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,identifier_mapping,HFFB1A-10,HFFB1A,Source SKU matches a DTB manufacturer identifier but differs from DTB SKU HFFB1A-10,Verify identity and preserve both protected identifiers,medium
+P2,price_difference,FFB36,FFB36,DTB regular=5.50; manufacturer price=6.44; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT22,CT22,DTB regular=25.74; manufacturer price=20.69; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT22,CT22,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT87A,CT87A,DTB regular=12.08; manufacturer price=7.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH7,HH7,DTB regular=29.17; manufacturer price=23.44; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH13,HH13,DTB regular=21.41; manufacturer price=17.21; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT16,CT16,DTB regular=16.50; manufacturer price=16.16; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH14,HH14,DTB regular=18.70; manufacturer price=17.42; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH17A,HH17A,DTB regular=5.50; manufacturer price=4.82; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH17B,HH17B,DTB regular=5.50; manufacturer price=4.76; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB38,FFB38,DTB regular=2.20; manufacturer price=2.04; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT72,CT72,DTB regular=11.00; manufacturer price=7.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,BH26,BH26,DTB regular=13.62; manufacturer price=8.25; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,BH7,BH7,DTB regular=15.40; manufacturer price=13.43; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT35,CT35,DTB regular=5.04; manufacturer price=3.24; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT87-CS,CT87-CS,DTB regular=11.33; manufacturer price=7.08; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT55,CT55,DTB regular=16.57; manufacturer price=12.93; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT56,CT56,DTB regular=10.10; manufacturer price=6.48; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT31,CT31,DTB regular=9.05; manufacturer price=5.82; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CMH,CMH,DTB regular=125.39; manufacturer price=114.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT83,CT83,DTB regular=5.17; manufacturer price=3.23; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT82,CT82,DTB regular=33.13; manufacturer price=25.84; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT88,CT88,DTB regular=19.91; manufacturer price=15.52; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT85,CT85,DTB regular=49.70; manufacturer price=38.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT81,CT81,DTB regular=4.05; manufacturer price=2.60; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH9,HH9,DTB regular=55.01; manufacturer price=44.20; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HP44,HP44,DTB regular=2.59; manufacturer price=1.62; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,C1HEXT,C1HEXT,DTB regular=149.59; manufacturer price=136.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,C1H,C1H,DTB regular=71.49; manufacturer price=65.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,C1HS,C1HS,DTB regular=54.38; manufacturer price=50.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CFB5B,CFB5B,DTB regular=21.41; manufacturer price=16.71; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT45,CT45,DTB regular=22.37; manufacturer price=17.46; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT104,CT104,DTB regular=12.00; manufacturer price=11.64; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT95,CT95,DTB regular=13.05; manufacturer price=7.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT95,CT95,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CFB3-7,CFB3-7,DTB regular=48.22; manufacturer price=38.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CFB3-8,CFB3-8,DTB regular=48.22; manufacturer price=38.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CC,CC,DTB regular=404.80; manufacturer price=368.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CR,CR,DTB regular=179.03; manufacturer price=168.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT47,CT47,DTB regular=16.57; manufacturer price=12.93; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT105,CT105,DTB regular=38.08; manufacturer price=29.72; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT10A,CT10A,DTB regular=7.79; manufacturer price=4.85; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT10,CT10,DTB regular=5.18; manufacturer price=4.85; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT10,CT10,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT50,CT50,DTB regular=9.05; manufacturer price=5.82; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CF1B,CF1B,DTB regular=16.48; manufacturer price=14.35; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CF1B,CF1B,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,HNS4-2,HNS4-2,DTB regular=41.05; manufacturer price=32.99; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNS4-3,HNS4-3,DTB regular=41.05; manufacturer price=32.99; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CFB4-7,CFB4-7,DTB regular=16.08; manufacturer price=12.93; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CFB4-8,CFB4-8,DTB regular=16.08; manufacturer price=12.93; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CFB7-7,CFB7-7,DTB regular=49.68; manufacturer price=38.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CFB7-8,CFB7-8,DTB regular=49.68; manufacturer price=38.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CFB15,CFB15,DTB regular=33.11; manufacturer price=24.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB17,FFB17,DTB regular=80.54; manufacturer price=4.53; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNS10,HNS10,DTB regular=7.02; manufacturer price=4.51; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB16,FFB16,DTB regular=8.09; manufacturer price=5.20; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNS10A,HNS10A,DTB regular=6.66; manufacturer price=4.16; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB4A,FFB4A,DTB regular=6.71; manufacturer price=4.30; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT78,CT78,DTB regular=109.34; manufacturer price=85.33; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT70,CT70,DTB regular=41.40; manufacturer price=32.32; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT77,CT77,DTB regular=82.83; manufacturer price=64.63; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT71,CT71,DTB regular=24.89; manufacturer price=15.52; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH5,HH5,DTB regular=36.30; manufacturer price=32.64; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH30,HH30,DTB regular=22.48; manufacturer price=18.08; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT130,CT130,DTB regular=29.85; manufacturer price=23.29; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT127,CT127,DTB regular=40.22; manufacturer price=32.32; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CEXT90,CEXT90,DTB regular=140.79; manufacturer price=128.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP33,MP33,DTB regular=2.20; manufacturer price=1.48; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP28,MP28,DTB regular=13.51; manufacturer price=8.42; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP25,MP25,DTB regular=12.45; manufacturer price=9.71; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CFLT,CFLT,DTB regular=101.19; manufacturer price=92.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB37,FFB37,DTB regular=2.20; manufacturer price=1.29; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FMH,FMH,DTB regular=101.19; manufacturer price=92.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP2,MP2,DTB regular=37.29; manufacturer price=29.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH5,AH5,DTB regular=2.51; manufacturer price=1.62; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH7-2,AH7-2,DTB regular=2.09; manufacturer price=1.31; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH7-2.5,AH7-2.5,DTB regular=2.09; manufacturer price=1.31; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH7-3,AH7-3,DTB regular=2.09; manufacturer price=1.31; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH7-3.5,AH7-3.5,DTB regular=2.09; manufacturer price=1.31; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,GN,GN,DTB regular=119.89; manufacturer price=109.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH35,HH35,DTB regular=10.40; manufacturer price=6.68; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT115,CT115,DTB regular=24.86; manufacturer price=19.41; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT115A,CT115A,DTB regular=3.08; manufacturer price=1.93; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT115A,CT115A,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT58,CT58,DTB regular=12.08; manufacturer price=7.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH15,HH15,DTB regular=16.50; manufacturer price=3.53; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNS12,HNS12,DTB regular=21.14; manufacturer price=16.49; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CR11,CR11,DTB regular=33.11; manufacturer price=25.84; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP6,MP6,DTB regular=41.43; manufacturer price=32.32; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,BH1,BH1,DTB regular=70.14; manufacturer price=61.90; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CR6,CR6,DTB regular=19.45; manufacturer price=15.18; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HPA-48,HPA48,DTB regular=5.50; manufacturer price=4.70; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,identifier_mapping,HPA-48,HPA48,Source SKU matches a DTB manufacturer identifier but differs from DTB SKU HPA-48,Verify identity and preserve both protected identifiers,medium
+P2,price_difference,HNS12A,HNS12A,DTB regular=8.81; manufacturer price=5.50; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP5,MP5,DTB regular=29.02; manufacturer price=22.64; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CR1,CR1,DTB regular=64.35; manufacturer price=51.72; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH12,HH12,DTB regular=7.21; manufacturer price=4.76; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT20,CT20,DTB regular=12.89; manufacturer price=10.36; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HFFB14-10,HFFB14-10,DTB regular=49.72; manufacturer price=38.79; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HFFB14-12,HFFB14-12,DTB regular=49.72; manufacturer price=38.79; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HFFB14-14,HFFB14-14,DTB regular=46.20; manufacturer price=38.79; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HFFB14-8,HFFB14-8,DTB regular=49.72; manufacturer price=38.79; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CFB15A,CFB15A,DTB regular=3.03; manufacturer price=1.83; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CR12,CR12,DTB regular=5.92; manufacturer price=3.99; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,BH6,BH6,DTB regular=10.00; manufacturer price=9.05; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CFB1A,CFB1A,DTB regular=6.22; manufacturer price=3.87; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CFB1A,CFB1A,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,HNS15-2,HNS15-2,DTB regular=48.11; manufacturer price=37.54; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNS15-3,HNS15-3,DTB regular=48.11; manufacturer price=37.54; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT79,CT79,DTB regular=49.70; manufacturer price=38.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT68,CT68,DTB regular=19.89; manufacturer price=15.52; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,IA90,IA90,DTB regular=101.19; manufacturer price=92.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,ICA2-1,ICA2-1,DTB regular=75.89; manufacturer price=69.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,ICA4-1,ICA4-1,DTB regular=94.59; manufacturer price=86.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT41,CT41,DTB regular=18.24; manufacturer price=1.62; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT41,CT41,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,HP47,HP47,DTB regular=34.10; manufacturer price=28.44; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT29A,CT29A,DTB regular=5.17; manufacturer price=3.23; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT4,CT4,DTB regular=2.07; manufacturer price=1.29; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HMP,HMP,DTB regular=452.09; manufacturer price=411.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CHXL,CHXL,DTB regular=191.39; manufacturer price=174.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,BH4,BH4,DTB regular=28.60; manufacturer price=25.53; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT80,CT80,DTB regular=48.22; manufacturer price=38.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MHS,MHS,DTB regular=375.09; manufacturer price=341.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH,MH,DTB regular=387.19; manufacturer price=352.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MHL,MHL,DTB regular=411.39; manufacturer price=374.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH8,MH8,DTB regular=8.80; manufacturer price=6.40; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH7,MH7,DTB regular=31.90; manufacturer price=22.96; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH5,MH5,DTB regular=5.50; manufacturer price=3.85; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH16,MH16,DTB regular=8.80; manufacturer price=6.12; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH21,MH21,DTB regular=9.90; manufacturer price=7.34; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH23,MH23,DTB regular=12.10; manufacturer price=8.97; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH22,MH22,DTB regular=12.10; manufacturer price=9.02; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH11,MH11,DTB regular=6.60; manufacturer price=4.49; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH1,MH1,DTB regular=81.40; manufacturer price=61.90; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH6,MH6,DTB regular=4.40; manufacturer price=3.20; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH13,MH13,DTB regular=5.50; manufacturer price=3.55; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH3,MH3,DTB regular=35.20; manufacturer price=9.60; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH3A,MH3A,DTB regular=4.40; manufacturer price=9.57; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH17,MH17,DTB regular=24.20; manufacturer price=17.95; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH15,MH15,DTB regular=24.20; manufacturer price=17.95; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH25,MH25,DTB regular=14.30; manufacturer price=10.61; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH18,MH18,DTB regular=19.00; manufacturer price=16.48; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,MH9,MH9,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,MH12,MH12,DTB regular=4.40; manufacturer price=1.80; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH24,MH24,DTB regular=13.20; manufacturer price=9.80; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH20,MH20,DTB regular=3.30; manufacturer price=2.06; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH4,MH4,DTB regular=40.70; manufacturer price=28.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT43,CT43,DTB regular=41.43; manufacturer price=32.32; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP24,MP24,DTB regular=6.22; manufacturer price=3.87; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP23,MP23,DTB regular=6.22; manufacturer price=3.87; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT96,CT96,DTB regular=3.61; manufacturer price=2.26; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT93,CT93,DTB regular=56.89; manufacturer price=51.72; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT93,CT93,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT94,CT94,DTB regular=4.98; manufacturer price=4.53; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT94,CT94,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT98,CT98,DTB regular=8.28; manufacturer price=5.16; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT97,CT97,DTB regular=33.15; manufacturer price=25.86; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CFB6,CFB6,DTB regular=35.40; manufacturer price=28.44; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT63,CT63,DTB regular=2.20; manufacturer price=1.29; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT62,CT62,DTB regular=21.52; manufacturer price=16.79; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT64,CT64,DTB regular=8.28; manufacturer price=5.16; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT65,CT65,DTB regular=5.72; manufacturer price=3.56; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB32,FFB32,DTB regular=3.30; manufacturer price=2.60; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT2,CT2,DTB regular=6.22; manufacturer price=3.87; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT76,CT76,DTB regular=1.57; manufacturer price=0.98; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP23A,MP23A,DTB regular=2.20; manufacturer price=1.29; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FA289,FA289,DTB regular=3.03; manufacturer price=1.10; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,FA289,FA289,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,COBCR,COBCR,DTB regular=95.70; manufacturer price=87.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,OA90,OA90,DTB regular=101.19; manufacturer price=92.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,OA90-325,OA90-325,DTB regular=101.12; manufacturer price=92.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CBNCR,CBNCR,DTB regular=95.70; manufacturer price=87.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,COBCRW,COBCRW,DTB regular=95.70; manufacturer price=87.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT19,CT19,DTB regular=44.77; manufacturer price=34.93; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH32,HH32,DTB regular=29.99; manufacturer price=24.09; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MH19,MH19,DTB regular=29.70; manufacturer price=23.34; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP13,MP13,DTB regular=12.08; manufacturer price=7.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP13A,MP13A,DTB regular=14.92; manufacturer price=11.64; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT107,CT107,DTB regular=33.11; manufacturer price=25.84; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP14,MP14,DTB regular=14.92; manufacturer price=11.64; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH16,HH16,DTB regular=28.60; manufacturer price=27.71; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH23,HH23,DTB regular=2.20; manufacturer price=1.26; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP11,MP11,DTB regular=66.29; manufacturer price=51.72; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNS18,HNS18,DTB regular=4.40; manufacturer price=3.53; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,PCLT42,PCLT42,DTB regular=404.86; manufacturer price=369.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,PCMT42,PCMT42,DTB regular=302.42; manufacturer price=275.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,PC1HEXT,PC1HEXT,DTB regular=186.67; manufacturer price=161.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,PC1H,PC1H,DTB regular=105.37; manufacturer price=96.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,PCHXL,PCHXL,DTB regular=237.77; manufacturer price=217.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,PHMP,PHMP,DTB regular=546.06; manufacturer price=497.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,PMHS,PMHS,DTB regular=422.40; manufacturer price=380.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,PMH,PMH,DTB regular=459.80; manufacturer price=389.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,PMHL,PMHL,DTB regular=553.30; manufacturer price=434.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HP1,HP1,DTB regular=66.29; manufacturer price=51.72; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP3,MP3,DTB regular=5.17; manufacturer price=3.23; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP7,MP7,DTB regular=115.96; manufacturer price=90.49; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HP46,HP46,DTB regular=6.03; manufacturer price=3.87; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT42A,CT42A,DTB regular=2.20; manufacturer price=2.95; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT67,CT67,DTB regular=8.28; manufacturer price=5.16; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HFFB3,HFFB3,DTB regular=39.60; manufacturer price=38.17; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT23,CT23,DTB regular=12.08; manufacturer price=7.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT23,CT23,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT92,CT92,DTB regular=13.29; manufacturer price=10.36; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH31,HH31,DTB regular=18.00; manufacturer price=14.46; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT89,CT89,DTB regular=19.91; manufacturer price=15.52; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH33,HH33,DTB regular=8.03; manufacturer price=5.17; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT118A,CT118A,DTB regular=6.22; manufacturer price=5.82; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT118A,CT118A,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT54,CT54,DTB regular=3.30; manufacturer price=3.23; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT101,CT101,DTB regular=4.57; manufacturer price=2.84; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT40,CT40,DTB regular=2.20; manufacturer price=1.29; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT36,CT36,DTB regular=43.08; manufacturer price=33.61; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT29,CT29,DTB regular=5.17; manufacturer price=3.23; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT5,CT5,DTB regular=2.07; manufacturer price=1.29; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,RC,RC,DTB regular=1123.09; manufacturer price=1021.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT90,CT90,DTB regular=33.11; manufacturer price=25.84; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNS13,HNS13,DTB regular=5.26; manufacturer price=3.29; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT28,CT28,DTB regular=6.22; manufacturer price=3.87; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT125,CT125,DTB regular=5.17; manufacturer price=3.23; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB25-12,FFB25-12,DTB regular=8.25; manufacturer price=5.15; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB25-10,FFB25-10,DTB regular=8.25; manufacturer price=5.15; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,SACS,SACS,DTB regular=1273.72; manufacturer price=1158.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,SAT,SAT,DTB regular=268.95; manufacturer price=244.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,TCS,TCS,DTB regular=223.85; manufacturer price=202.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT17,CT17,DTB regular=22.48; manufacturer price=18.08; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT17,CT17,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P1,placeholder_dtb_image,CT128A,CT128A,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,FFB7A,FFB7A,DTB regular=3.00; manufacturer price=2.60; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB7,FFB7,DTB regular=3.00; manufacturer price=2.60; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH4,AH4,DTB regular=4.40; manufacturer price=3.56; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT7A,CT7A,DTB regular=16.08; manufacturer price=12.93; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT7,CT7,DTB regular=64.71; manufacturer price=58.83; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT7,CT7,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT8,CT8,DTB regular=64.71; manufacturer price=58.83; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT8,CT8,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,MP39,MP39,DTB regular=3.61; manufacturer price=2.26; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT112,CT112,DTB regular=13.90; manufacturer price=10.85; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH18,AH18,DTB regular=11.18; manufacturer price=8.72; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT119,CT119,DTB regular=6.60; manufacturer price=5.82; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH1A,AH1A,DTB regular=13.40; manufacturer price=7.80; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT49,CT49,DTB regular=63.95; manufacturer price=58.14; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT49,CT49,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT3A,CT3A,DTB regular=14.92; manufacturer price=11.64; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT3,CT3,DTB regular=14.92; manufacturer price=11.64; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT6A,CT6A,DTB regular=47.67; manufacturer price=37.22; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT6,CT6,DTB regular=39.78; manufacturer price=31.04; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT6,CT6,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT73,CT73,DTB regular=49.68; manufacturer price=38.77; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,MP36,MP36,DTB regular=8.03; manufacturer price=5.16; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,BH11,BH11,DTB regular=3.00; manufacturer price=2.36; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNSA-14,HNSA14,DTB regular=49.50; manufacturer price=42.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,identifier_mapping,HNSA-14,HNSA14,Source SKU matches a DTB manufacturer identifier but differs from DTB SKU HNSA-14,Verify identity and preserve both protected identifiers,medium
+P1,placeholder_dtb_image,CTA84,CTA84,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,TBBF,TBBF,DTB regular=83.59; manufacturer price=76.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,TBGN,TBGN,DTB regular=160.60; manufacturer price=146.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,TBMP,TBMP,DTB regular=542.29; manufacturer price=493.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT57,CT57,DTB regular=112.64; manufacturer price=87.90; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT12,CT12,DTB regular=7.82; manufacturer price=7.11; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P1,placeholder_dtb_image,CT12,CT12,DTB image field references a placeholder,Review source image and replace only after identity and media rights are confirmed,high
+P2,price_difference,CT120,CT120,DTB regular=29.70; manufacturer price=25.84; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT103,CT103,DTB regular=165.70; manufacturer price=129.30; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT111,CT111,DTB regular=19.89; manufacturer price=15.52; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,FFB32A,FFB32A,DTB regular=2.00; manufacturer price=1.20; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT53,CT53,DTB regular=29.02; manufacturer price=22.64; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT86,CT86,DTB regular=24.86; manufacturer price=19.41; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,CT92A,CT92A,DTB regular=4.16; manufacturer price=2.60; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH10A,HH10A,DTB regular=2.20; manufacturer price=1.67; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH8A,AH8A,DTB regular=7.00; manufacturer price=5.82; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,AH8,AH8,DTB regular=7.46; manufacturer price=4.25; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,ICATW,ICATW,DTB regular=128.69; manufacturer price=117.00; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HH2,HH2,DTB regular=85.23; manufacturer price=68.50; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,BH5,BH5,DTB regular=11.59; manufacturer price=9.05; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,price_difference,HNS20,HNS20,DTB regular=22.48; manufacturer price=17.55; currency and price basis not established,Review price basis and currency before any pricing decision,medium
+P2,dtb_unmatched,CPFGN,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FA3,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FA2,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CFB10,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FFB11-8,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FFB11-10,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AHA,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FFB5-7,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FFB5-8,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FFB5-10,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FFB5-12,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FFB5-14,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FFB9-5.5,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FFB9-7,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FFB9-8,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FFB9-10,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FFB9-12,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CFB8,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,MH9A,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,BH9-3,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,BH9-42,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,BH9-4,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,BH9-5,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,BH9-6,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,HH19,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FA278,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH32,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH72,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH325,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH725,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH33,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH73,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH335,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH735,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FA308,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,FA208,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CFB77,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CFB47,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CFB78,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CFB48,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CFB28,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CLTBF,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CTA87CL,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CT87CS,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CFB8A,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CTA99,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,SB212,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CT123,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CT132,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CR4,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CT13,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CFB11A,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CT87,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CT126,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CT124,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,HH8,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH1-2,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH1-2.5,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH1-3,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH1-3.5,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,HFFB3A,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,MP8,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,HH17C,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,MH2,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,HNS17A,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,HFFB4D,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,HP45,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CT121A,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,MH10,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,AH1B,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CR2,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,STAPER,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,PTAPER,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,3WTCSF,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,COBCRE,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,HMP-C,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,dtb_unmatched,CPFP,,No unique exact identifier match in manufacturer snapshot,"Investigate legacy SKU, variant naming, and manufacturer identifiers before any catalog removal",medium
+P2,source_unresolved,,FA269,Source row 3: #10 Lock Washer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA331,"Source row 4: #10 Nylon Flat Washer 1/16"" Thick; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA398,Source row 6: #4 Flat Washer Stainless; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA205,Source row 7: #4 Lock Washer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA283,Source row 8: #4 Star Washer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA277,Source row 9: #6 Bellevile Washer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA340,Source row 13: #8 1/16 Thick .4375 Od Nylon Wash; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA251,Source row 15: #8 Lock Washer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CGPK1.5,"Source row 17: 1.5"" Comfort Grip SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,NPK1.5,"Source row 18: 1.5"" Nylon Grip Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OPPK1.5,"Source row 19: 1.5"" One Piece SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AH19,Source row 20: 1/16 Allen Key; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA329,Source row 22: 1/16 X 1/4 Dowell Pin; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA308,"Source row 26: 1/2 X 7/8"" Flat Washer; ambiguous_identifier",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA333,Source row 28: 1/4 Flat Washer (Also Cr4); unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA357,Source row 30: 1/4 X 1-1/4 Ss Slotted Spring Pin; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA390,"Source row 31: 1/4"" Door Handle Rivet; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA287,"Source row 33: 1/4"" X 1/2"" Split Pin; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA341,Source row 39: 1/4-20 Nyloc Wing Nut; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA323,"Source row 40: 1/4-20 X 1"" Hex Bolt; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA360,"Source row 41: 1/4-20 X 1"" Slotted Drive Binding Head Ss; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA362,Source row 48: 1/4-20 X 3/8 Nylon Oval Thumb Screw; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA392,Source row 49: 1/4-20 X 3/8 Pan Head Slot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA345,Source row 51: 1/4-20 X 5/8 Nylon Thumb Screw; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA304,Source row 53: 1/4-20 X 5/8” Thumb Screw; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA337,Source row 55: 1/4-20 X1-3/4 Slotted Pan Head; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA359,Source row 59: 1/4Id .684 Od .046 Thick Brass; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA336,Source row 60: 1/8 Allen Key Short Arm; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA356,Source row 61: 1/8 X 1-1/4 Ss Slotted Spring; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA355,Source row 62: 1/8 X 1/2 Ss Dowel Pin; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA364,"Source row 63: 1/8 X 3/4"" Spring Pin Ss; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB4-10,"Source row 67: 10"" Automatic Box Door; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB40-10,"Source row 70: 10"" Bead Wheel Axle; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-9-10,"Source row 71: 10"" Box Blades Kit; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTK10-B,"Source row 72: 10"" BS Comfort Grip Taping Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CGPK10,"Source row 73: 10"" Comfort Grip SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSB10,"Source row 75: 10"" Fat Boy Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,10ITFB,"Source row 77: 10"" Inside Track Fat Boy Finishing Box; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,NPK10,"Source row 78: 10"" Nylon Grip Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTK10,"Source row 79: 10"" SS Comfort Grip Taping Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SB2-10-KIT,"Source row 80: 10"" Tomahawk Replacement Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TSB-10,"Source row 81: 10"" Tomahawk Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OPPK10-1,Source row 82: 10-1 One Piece SS Joint Putty Knife; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA334,Source row 83: 10-24 Nyloc Jam Nut; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA327,Source row 89: 10-24 X 1-1/4 Fillister Slot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA325,Source row 90: 10-24 X 1-1/4 Flat Head Socket; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA350,Source row 91: 10-24 X 1/2 Hex Bolt; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA388,"Source row 92: 10-24 X 3/16"" Long Ss Binder; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA377,"Source row 93: 10-24 X 3/4"" Ss Hex Bolt; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA383,Source row 97: 10-32 Ss Jam Nut; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA375,Source row 98: 10-32 Wing Nut; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA371,"Source row 99: 10-32 X 1"" Fillister Slot; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA282,"Source row 100: 10-32 X 1"" Flat Slot; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA397,"Source row 102: 10-32 X 1/2"" Hex Bolt; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA393,Source row 103: 10-32 X 1/2” Set Screw; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA391,"Source row 105: 10-32 X 3/16"" Pan Slot Drive; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA361,Source row 106: 10-32 X 3/4 Ss Socket Head Cap; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA319,"Source row 107: 10-32 X 3/4"" Hex Bolt; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA339,Source row 108: 10-32 X 5/16 Slotted Trusshead; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA358,Source row 109: 10-32 X 7/8 Ss Socket Head Cap; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB4-12,"Source row 113: 12"" Automatic Box Door; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB40-12,"Source row 116: 12"" Bead Wheel Axle; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-9-12,"Source row 117: 12"" Box Blades Kit; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTK12-B,"Source row 118: 12"" BS Comfort Grip Taping Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,2KMR12,"Source row 119: 12"" Comfort Grip Mud Roller Cage With Roller; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSB12,"Source row 121: 12"" Fat Boy Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,12-4.7-0.7-G-C-C,"Source row 123: 12"" Gold Curved Trowel; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,12-4.7-0.7-G-C,"Source row 124: 12"" Gold Finishing Trowel; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,12-4.7-0.7-G-W,"Source row 125: 12"" Gold Finishing Trowel; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,12-4.3-0.3-G-C,"Source row 126: 12"" Gold Finishing Trowel .3MM; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,12ITFB,"Source row 127: 12"" Inside Track Fat Boy Finishing Box; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MRR12,"Source row 128: 12"" Mud Roller Replacement; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,12-4.7-0.4-S-C-C,"Source row 129: 12"" Silver Curved Trowel; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTK12,"Source row 130: 12"" SS Comfort Grip Taping Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SB2-12-KIT,"Source row 131: 12"" Tomahawk Replacement Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TSB-12,"Source row 132: 12"" Tomahawk Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,13-H-S,"Source row 133: 13"" X 13"" Aluminum Hawk; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB4-14,"Source row 134: 14"" Automatic Box Door; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB40-14,"Source row 136: 14"" Bead Wheel Axle; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB40-14A,"Source row 137: 14"" Bead Wheel Axle Automatic Box; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-9-14,"Source row 138: 14"" Box Blades Kit; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTK14-B,"Source row 139: 14"" BS Comfort Grip Taping Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSB14,"Source row 140: 14"" Fat Boy Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,14-4.7-0.7-G-C-C,"Source row 142: 14"" Gold Curved Trowel; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,14-4.7-0.7-G-C,"Source row 143: 14"" Gold Finishing Trowel; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,14-4.7-0.7-G-W,"Source row 144: 14"" Gold Finishing Trowel; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,14-4.3-0.3-G-C,"Source row 145: 14"" Gold Finishing Trowel .3MM; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,14-4.7-0.4-S-C-C,"Source row 146: 14"" Silver Curved Trowel; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTK14,"Source row 147: 14"" SS Comfort Grip Taping Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SB2-14-KIT,"Source row 148: 14"" Tomahawk Replacement Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TSB-14,"Source row 149: 14"" Tomahawk Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSB16,"Source row 150: 16"" Fat Boy Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,16-4.7-0.7-G-C-C,"Source row 151: 16"" Gold Curved Trowel; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,16-4.7-0.7-G-C,"Source row 152: 16"" Gold Finishing Trowel; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSB18,"Source row 153: 18"" Fat Boy Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,18-4.7-0.7-G-C,"Source row 154: 18"" Gold Finishing Trowel; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SB2-18-KIT,"Source row 155: 18"" Tomahawk Replacement Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TSB-18,"Source row 156: 18"" Tomahawk Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CGPK2,"Source row 159: 2"" Comfort Grip SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS7-2 KIT,"Source row 162: 2"" Nail Spotter Blade Kit; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNSA-5-2,"Source row 163: 2"" Nail Spotter Wheel Kit; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,2NS-WHEEL,"Source row 164: 2"" Nail Spotter With Wheels; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,NPK2,"Source row 165: 2"" Nylon Grip Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OPPK2,"Source row 166: 2"" One Piece SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSB24,"Source row 176: 24"" Fatboy Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SB2-24-KIT,"Source row 177: 24"" Tomahawk Replacement Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TSB-24,"Source row 178: 24"" Tomahawk Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,"TOOL BAG 24""","Source row 179: 24"" Tool Bag; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,3WJKBP,"Source row 180: 3 Way Comfort Grip SS Joint Putty Knife Blister Pack 4""/5""/6""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CGPK3,"Source row 183: 3"" Comfort Grip SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS7-3-KIT,"Source row 187: 3"" Nail Spotter Blade Kit; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNSA-5-3,"Source row 188: 3"" Nail Spotter Wheel Kit; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,3NS-WHEEL,"Source row 189: 3"" Nail Spotter With Wheels; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,NPK3,"Source row 190: 3"" Nylon Grip Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OPPK3,"Source row 191: 3"" One Piece SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,3BBH,Source row 196: 3' 180 Grip Bent Flat Box Handle; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CGCK3.5,"Source row 200: 3.5"" Comfort Grip Pointing Joint Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,PJK3.5,"Source row 202: 3.5"" Nylon Grip Pointing Putty Joint Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA368,Source row 205: 3/16 Allen Key; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA349,Source row 206: 3/16 Hex Drive Short Arm; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA321,Source row 208: 3/16 X 3/8 Pop Rivet; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA395,"Source row 209: 3/16"" Dia Button Head Rivet, Grip Range 1/16""-1/8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS14B,Source row 210: 3/32 X 5/16 Solid Round Head; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSB32,"Source row 213: 32"" Fat Boy Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SB2-32-KIT,"Source row 214: 32"" Tomahawk Replacement Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TSB-32,"Source row 215: 32"" Tomahawk Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,3CGPK4,"Source row 216: 4"" 3 Way Comfort Grip SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,3NPK4,"Source row 217: 4"" 3 Way Nylon Grip Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,2KMR4,"Source row 218: 4"" Comfort Grip Mud Roller Cage With Roller; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CGPK4,"Source row 219: 4"" Comfort Grip SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MRR4,"Source row 221: 4"" Mud Roller Replacement; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,NPK4,"Source row 222: 4"" Nylon Grip Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OPPK4,"Source row 223: 4"" One Piece SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,4BBH,Source row 225: 4' 180 Grip Bent Flat Box Handle; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA318,"Source row 227: 4-40 X 1"" Binder Slot; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA400,"Source row 229: 4-40 X 3/16"" Socket Cap Screw; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA344,Source row 231: 4-40 X 3/4 Socket Head; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA374,Source row 232: 4-40 X 5/8 Ss Binder Slot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA221,Source row 236: 4/40 X 1/4 Fillister Slot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA208,Source row 238: 4/40 X 1/8 Binder Slot; ambiguous_identifier,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA209,Source row 239: 4/40 X 1/8 Flat Slot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA211,Source row 241: 4/40 X 3/16 Flat Slot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA293,Source row 242: 4/40 X 3/4 Binder Slot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA217,Source row 244: 4/40 X 3/8 Binder Slot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA223,Source row 248: 4/40 X 5/16 Flat Slot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSB40,"Source row 249: 40"" Fat Boy Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SB2-40-KIT,"Source row 250: 40"" Tomahawk Replacement Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TSB-40,"Source row 251: 40"" Tomahawk Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,42BBH,"Source row 252: 42"" 180 Grip Bent Flat Box Handle; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSB48,"Source row 256: 48"" Fat Boy Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SB2-48-KIT,"Source row 257: 48"" Tomahawk Replacement Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TSB-48,"Source row 258: 48"" Tomahawk Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,3CGPK5,"Source row 259: 5"" 3 Way Comfort Grip SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,3NPK5,"Source row 260: 5"" 3 Way Nylon Grip Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CGPK5,"Source row 261: 5"" Comfort Grip SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,NPK5,"Source row 262: 5"" Nylon Grip Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OPPK5,"Source row 263: 5"" One Piece SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,5BBH,Source row 264: 5' 180 Grip Bent Flat Box Handle; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA326,Source row 267: 5-32 X 1/4 Pop Rivet Aluminum; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB40-5.5,"Source row 268: 5.5"" Bead Wheel Axle; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-9-5.5,"Source row 269: 5.5"" Box Blades Kit; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA346,"Source row 273: 5/16-18 X 2"" Hex Bolt; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA309,"Source row 275: 5/16-18 X 3/4"" Thumb Screw; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA367,Source row 277: 5/32 Allen Key; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA372,Source row 278: 5/32 X .550 Aluminium Rivet; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA373,Source row 279: 5/32 X .800 Aluminium Rivet; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA284,"Source row 281: 5/32"" X 3/8"" Pop Rivet Aluminum; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AH19A,Source row 283: 5/64 Allen Key; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA420,Source row 284: 5/64 X 1/4 Split Pin; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA401,"Source row 285: 5/64"" X 1/4"" Spring Pin Ss; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,3CGPK6,"Source row 288: 6"" 3 Way Comfort Grip SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,3NPK6,"Source row 289: 6"" 3 Way Nylon Grip Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CBS2K,"Source row 290: 6"" Comfort Grip Bucket Scoop; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CGCK6,"Source row 291: 6"" Comfort Grip Clipped Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CGPK6,"Source row 292: 6"" Comfort Grip SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BSNC,"Source row 293: 6"" Natural Cork Grip Bucket Scoop; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CJK6,"Source row 294: 6"" Nylon Grip Clipped Joint Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,NPK6,"Source row 295: 6"" Nylon Grip Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OPBS,"Source row 296: 6"" One Piece SS Bucket Scoop; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OPPK6,"Source row 297: 6"" One Piece SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,6BBH,Source row 298: 6' 180 Grip Bent Flat Box Handle; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA248,"Source row 300: 6-32 5/8"" Flat Slot; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA402,Source row 304: 6-32 X 1 3/8” Socket Head Cap Screw; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA342,Source row 305: 6-32 X 1-1/4 Socket Head; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA328,Source row 306: 6-32 X 1/2 Hex Bolt; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA246,"Source row 309: 6-32 X 1/2"" Socket Head; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA347,Source row 310: 6-32 X 1/4 Socket Cap; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA242,Source row 317: 6-32 X 3/8 Fillister Slot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA310,"Source row 320: 6-32 X 3/8"" Set Screw; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA330,Source row 321: 6-32 X 5/16 Fillister Slot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA240,"Source row 322: 6-32 X 5/16"" Binder Slot; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA332,Source row 324: 6-32 X 5/8 Socket Head; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA385,"Source row 325: 6-32X3/32"" Ss Socket Set Screw; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA322,"Source row 326: 6/32 X 1"" Hex Bolt; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA226,Source row 327: 6/32 X 3/16 Flat Slot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB40-7,"Source row 329: 7"" Bead Wheel Axle; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-9-7,"Source row 330: 7"" Box Blades Kit; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSB7,"Source row 331: 7"" Fat Boy Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CFB9,"Source row 334: 7"" Throttle Box Spring; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SB2-7-KIT,"Source row 335: 7"" Tomahawk Replacement Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TSB-7,"Source row 336: 7"" Tomahawk Smoothing Blade; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA338,Source row 337: 7/16-14X1/2 Cup Point Setscrew; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA335,Source row 338: 7/64 Allen Key Long Arm; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB4-8,"Source row 339: 8"" Automatic Box Door; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB40-8,"Source row 342: 8"" Bead Wheel Axle; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-9-8,"Source row 343: 8"" Box Blades Kit; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTK8-B,"Source row 344: 8"" BS Comfort Grip Taping Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CGPK8,"Source row 345: 8"" Comfort Grip SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,8ITFB,"Source row 348: 8"" Inside Track Fat Boy Finishing Box; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,NPK8,"Source row 349: 8"" Nylon Grip Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OPPK8,"Source row 350: 8"" One Piece SS Joint Putty Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTK8,"Source row 351: 8"" SS Comfort Grip Taping Knife; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA255,Source row 353: 8-32 Nyloc Jam Nut; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA389,"Source row 356: 8-32 X 1.75"" Socket Head Cap; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA366,Source row 358: 8-32 X 1/4 Ss Socket Cap Screw; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA396,"Source row 360: 8-32 X 1/4"" Flat Head Slot; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA381,Source row 366: 8-32 X 5/16 Ss Socket Head; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA324,"Source row 369: 8-32 X 5/16"" Truss Slot; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA263,"Source row 370: 8-32 X 5/8"" Flat Slot; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA250,"Source row 372: 8-32 X 7/8"" Truss Slot; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA370,Source row 375: 8/32 X 3/4 Ss Socket Cap; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,91CGMT,Source row 376: 9 In 1 Comfort Grip Multi Tool; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,9-1MT,Source row 377: 9 In 1 Nylon Multi Tool; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,2KMR9,"Source row 378: 9"" Comfort Grip Mud Roller Cage With Roller; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MRR9,"Source row 379: 9"" Mud Roller Replacement; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FA369,Source row 380: 9/64 Allen Key; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT117A,Source row 381: Adaptor Base; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT14,Source row 383: Adjustable Brake Holder; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB2A,Source row 385: Adjuster Pin Bushing; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB11,Source row 386: Adjuster Spring; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC3,Source row 388: Adjusting Roller; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AHA (KIT),Source row 390: Angle Head Adaptor; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AHR-BK-2,"Source row 391: Angle Head Blade Kit 2""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AHR-BK-2.5,"Source row 392: Angle Head Blade Kit 2.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AHR-BK-3,"Source row 393: Angle Head Blade Kit 3""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AHR-BK-3.5,"Source row 394: Angle Head Blade Kit 3.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AH12,Source row 395: Angle Head Reduction Spring; normalized_identifier_candidate,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AHR-K,Source row 396: Angle Head Repair Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AH20,Source row 397: Angle Head Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AHA-20,Source row 398: Angle Head Wheel Assembly Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AHR-K-OS,Source row 399: Anglehead Repair Kit Old Style; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CEXT3,Source row 400: Applicator Wheels; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB41,Source row 401: Auto Box Hook Bracket Left; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB40,Source row 402: Auto Box Hook Bracket Right; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB3,Source row 403: Auto Box Side Plate - Right; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB3A,Source row 404: Auto Box Side Plate Left; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB43,Source row 405: Automatic Box Gear; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB42,Source row 406: Automatic Box Hook; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB5-10,"Source row 408: Axle 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB5-12,"Source row 409: Axle 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB5-14,"Source row 410: Axle 14""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB5-7,"Source row 411: Axle 7""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB5-8,"Source row 412: Axle 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS5-2,"Source row 414: Axle For 2"" Nail Spotter; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS5-3,"Source row 415: Axle For 3"" Nail Spotter; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB20A,Source row 416: Axle Roller Sleeve; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB48,Source row 417: Axle Spring Automatic Box; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CF4S,Source row 422: Ball Spring Short; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB42,Source row 426: Bead Axle Spacer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BGK,Source row 427: Bead Guide Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CLBR,Source row 428: Bead Roller; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CLBP,Source row 429: Bead Roller Pro; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB41,Source row 430: Bead Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-40-10,"Source row 431: Bead Wheel Axel Kit 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-40-12,"Source row 432: Bead Wheel Axel Kit 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-40-14,"Source row 433: Bead Wheel Axel Kit 14""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-40-5.5,"Source row 434: Bead Wheel Axel Kit 5.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-40-8,"Source row 435: Bead Wheel Axel Kit 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-40-7,"Source row 436: Bead Wheel Axle Kit 7""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB44,Source row 437: Bead Wheel Bolt; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBA-41,Source row 439: Bead Wheel Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT106A,Source row 441: Bearing Shaft; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BBH9-3,Source row 445: Bent Connecting Strap 3'; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BBH9-4',Source row 446: Bent Connecting Strap 4'; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BBH9-42,"Source row 447: Bent Connecting Strap 42""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BBH9-5,Source row 448: Bent Connecting Strap 5'; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BBH9-6',Source row 449: Bent Connecting Strap 6'; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BBH9,Source row 450: Bent Handle Common Strap; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CLT12,Source row 452: Black Collar; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,,Source row 453: Black T-Shirt; missing_source_sku,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,,Source row 454: Black T-Shirt; missing_source_sku,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,,Source row 455: Black T-Shirt; missing_source_sku,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,,Source row 456: Black T-Shirt; missing_source_sku,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,,Source row 457: Black T-Shirt; missing_source_sku,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,"FFB9-10""","Source row 458: Blade 10""; normalized_identifier_candidate",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,"FFB9-12""","Source row 459: Blade 12""; normalized_identifier_candidate",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,"FFB9-5.5""","Source row 461: Blade 5.5""; normalized_identifier_candidate",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,"FFB9-7""","Source row 462: Blade 7""; normalized_identifier_candidate",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,"FFB9-8""","Source row 463: Blade 8""; normalized_identifier_candidate",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBA10-14,"Source row 464: Blade Bar Assembly 14""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBA10-5.5,"Source row 465: Blade Bar Assembly 5.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBA10-10,"Source row 466: Blade Bar Sub Assembly 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBA10-12,"Source row 467: Blade Bar Sub Assembly 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBA10-7,"Source row 468: Blade Bar Sub Assembly 7""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBA10-8,"Source row 469: Blade Bar Sub Assembly 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB1-10,"Source row 474: Body Automatic Box 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB1-12,"Source row 475: Body Automatic Box 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB1-14,"Source row 476: Body Automatic Box 14""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB1-8,"Source row 477: Body Automatic Box 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB4-10,"Source row 481: Box Door 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB4-12,"Source row 482: Box Door 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB4-14,"Source row 483: Box Door 14""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB4-5.5,"Source row 484: Box Door 5.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB4-7,"Source row 485: Box Door 7""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB4-8,"Source row 486: Box Door 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB2-10,"Source row 488: Box Roll Face 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB2-12,"Source row 489: Box Roll Face 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB2-14,"Source row 490: Box Roll Face 14""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB2-5.5,"Source row 491: Box Roll Face 5.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB2-7,"Source row 492: Box Roll Face 7""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB2-8,"Source row 493: Box Roll Face 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBR-7-7A,Source row 494: Box Shoes Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BH9-3',Source row 501: Brake Connecting Strap 3'; normalized_identifier_candidate,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BH9-4',Source row 502: Brake Connecting Strap 4'; normalized_identifier_candidate,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,"BH9-42""","Source row 503: Brake Connecting Strap 42""; normalized_identifier_candidate",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BH9-5',Source row 504: Brake Connecting Strap 5'; normalized_identifier_candidate,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BH9-6',Source row 505: Brake Connecting Strap 6'; normalized_identifier_candidate,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB19,Source row 508: Brass Adjusting Bolt; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CLT14,Source row 509: Brass Clips; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HH17,Source row 512: Brass Connector Complete; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OCR2A,Source row 513: Bullnose Corner Roller Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC10,"Source row 515: Bushing .4"" Long; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC17,"Source row 516: Bushing .6"" Long; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AH22,Source row 517: Bushing For Angle Head Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1PT130,Source row 518: C1Pt130 Removable Head Extension Shaft; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT18,Source row 520: Cable Guide; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT21,Source row 521: Cable Thimble; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CLT-BF,Source row 524: Cam Lock Box Filler Attachment; normalized_identifier_candidate,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTA87-CL KIT,Source row 525: Cam Lock Cap Assembly Replacement Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT99-CL,Source row 526: Cam Lock Cap Pin; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTA99-CL,Source row 527: Cam Lock Cap Release Pin Assy; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT34-CL,Source row 528: Cam Lock Cap Side Block; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT87-CL,Source row 529: Cam Lock Taper Cap; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CLT16,Source row 530: Cam Lock Tube Cone Solid; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT32,Source row 533: Carriage Cam; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CLT15,Source row 537: Clip Pins; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CMH8,Source row 539: Closet Monster Tubing; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CMH2,Source row 540: Closet Monster180 Grip Head; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CLTA16,Source row 541: Clt Assembled Cone Solid; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT82B,Source row 544: Clutch Lever Screw; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CMT8,Source row 548: Cmt8 Mastic Tube Washer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CPG,Source row 551: Columbia Mud Pan Grip; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1PTAPER,Source row 554: Columbia One Predator Taper; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1PBODY,Source row 555: Columbia One Predator Taper Body; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1PHEAD,Source row 556: Columbia One Predator Taper Head; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1SPTAPER,Source row 557: Columbia One Sawed Off Predator Taper; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1SPBODY,Source row 558: Columbia One Sawed Off Predator Taper Body; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1TBPTAPER,Source row 559: Columbia One Tall Boy Predator Taper; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1TBPBODY,Source row 560: Columbia One Tall Boy Predator Taper Body; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CF8,Source row 562: Combo Flusher Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CF6,Source row 563: Combo Flusher Wheel Bracket; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CF7,Source row 564: Combo Flusher Wheel Bushing; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,JKBP,"Source row 565: Comfort Grip SS Joint Putty Knife Blister Pack 4""/5""/6""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CFB5D,Source row 567: Cone Ball - Plastic; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CMT6,Source row 568: Cone Insert (Bottom) 3 Holes; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CMT6A,Source row 569: Cone Insert (Bottom) 5 Holes; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CMT2,Source row 570: Cone Insert (Top); unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CFB5C,Source row 571: Cone O-Ring; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC19,Source row 578: Corner Cobra Link; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC6,Source row 579: Corner Cobra Nylon Washer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC-RK,Source row 580: Corner Cobra Repair Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,2KCMR,Source row 581: Corner Mud Roller Cage With Roller; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CMRR,Source row 582: Corner Mud Roller Replacement; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CR2A,Source row 584: Corner Roller Wheel Plastic; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CR2B,Source row 585: Corner Roller Wheel Steel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT34,Source row 586: Cover Plate Attachment Block; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTA41 KIT,Source row 592: Cutter Block Assembly Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,DDM-HOSE,Source row 593: DDM Vacuum Hose; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBA12,"Source row 594: Dial Assembly (5.5,7,8,10""); unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB44,Source row 600: Door Bracket Automatic Box; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT4,Source row 601: Door Catch; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB47,Source row 605: Door Knob Automatic Box; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB54-10,"Source row 606: Door Seat Automatic Box 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB54-12,"Source row 607: Door Seat Automatic Box 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB54-14,"Source row 608: Door Seat Automatic Box 14""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB54-8,"Source row 609: Door Seat Automatic Box 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB46,Source row 611: Door Spring Automatic Box; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT66,Source row 617: Drive Drum; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT66A,Source row 618: Drive Drum Plug; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CS,Source row 622: Drywall Sander; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CSH,Source row 623: Drywall Sander Pole; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OCR2C,Source row 624: European Outside Cr Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT22,"Source row 630: Eyelet 1/16""  Ss .190 Pin; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS9-2,"Source row 631: Face Plate 2""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS9-3,"Source row 632: Face Plate 3""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,ABF3A,Source row 633: Fat Automatic Side Plate Left; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,ABF3,Source row 634: Fat Automatic Side Plate-Right; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB4-10,"Source row 635: Fat Boy Door 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB4-12,"Source row 636: Fat Boy Door 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB4-5.5,"Source row 637: Fat Boy Door 5.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB4-8,"Source row 638: Fat Boy Door 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB14-10,"Source row 639: Fat Boy Door Gasket 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB14-12,"Source row 640: Fat Boy Door Gasket 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB1-10,"Source row 641: Fat Boy Rear Plate 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB1-12,"Source row 642: Fat Boy Rear Plate 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB1-5.5,"Source row 643: Fat Boy Rear Plate 5.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB1-8,"Source row 644: Fat Boy Rear Plate 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FBB2-10,"Source row 645: Fat Boy Roll Face 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FBB2-12,"Source row 646: Fat Boy Roll Face 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FBB2-5.5,"Source row 647: Fat Boy Roll Face 5.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FBB2-8,"Source row 648: Fat Boy Roll Face 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB3,Source row 649: Fat Boy Side Plates; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSBR10,"Source row 650: Fat Boy Skimming Blade Replacement 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSBR12,"Source row 651: Fat Boy Skimming Blade Replacement 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSBR14,"Source row 652: Fat Boy Skimming Blade Replacement 14""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSBR16,"Source row 653: Fat Boy Skimming Blade Replacement 16""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSBR18,"Source row 654: Fat Boy Skimming Blade Replacement 18""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSBR24,"Source row 655: Fat Boy Skimming Blade Replacement 24""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSBR32,"Source row 656: Fat Boy Skimming Blade Replacement 32""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSBR40,"Source row 657: Fat Boy Skimming Blade Replacement 40""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSBR48,"Source row 658: Fat Boy Skimming Blade Replacement 48""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSBR7,"Source row 659: Fat Boy Skimming Blade Replacement 7""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB14-14,"Source row 660: Fatboy Hinge Box Door Gasket 14""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB14-5.5,"Source row 661: Fatboy Hinge Door Gasket 5.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFBB14-8,"Source row 662: Fatboy Hinge Door Gasket 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FSBC,Source row 663: Fatboy Smoothing Blade Claw Handle Adaptor; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FTH4-6,Source row 664: Fiberglass Telescopic Handle 4'-6'; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FTH5-8,Source row 665: Fiberglass Telescopic Handle 5'-8'; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFBA-36,Source row 670: Flat Box Wheel Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CFB5A,Source row 679: Funnel Cone; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AH6,Source row 680: Funnel Retainer Spring; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MP27C,Source row 682: Gooseneck O Ring Retainer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT12,Source row 684: Grommet; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT126PA,Source row 688: Hand Grip Body; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,PROMO 1,Source row 690: HAND TOOL PROMOTION; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC16,Source row 691: Handle Adapter; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CFB8B,Source row 692: Handle Adaptor; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AH15,Source row 695: Handle Connecting Link Assembl; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFH14,Source row 696: Handle Grip; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,EXT35,Source row 697: Handle Grip  (Closed End); unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,EXT36,Source row 698: Handle Grip Mount; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS14A,Source row 700: Handle Link; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS14C,Source row 701: Handle Link Connector; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MP7D,Source row 704: Handle Nut; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS14,Source row 707: Handle Spring; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CPT1A,Source row 710: Head Mounting Collar; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT9,Source row 712: Hinge; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB14-5.5,"Source row 717: Hinge Box Door Gasket 5.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB14-7,"Source row 718: Hinge Box Door Gasket 7""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB4C,Source row 720: Hinge Box Door Spacer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB52,Source row 728: Hook Bushing Automatic Box; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HHR-1,Source row 730: Hydra-Reach Repair Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,ICA4L,Source row 731: ICA Left Skid; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,ICA-A3,Source row 732: ICA Replacement Wheel Kit (2 Wheels); unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,ICA4R,Source row 733: ICA Right Skid; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,ICA3,Source row 734: ICA Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,ICA2,Source row 735: ICA Wheel Bushing; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,ICATWA-2,Source row 736: ICATW Replacement Wheel Kit (4 Wheels); unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,ICATW2,Source row 737: ICATW Wheel Screw; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,ITFB36,Source row 741: Inside Track Box Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,ITFB37,Source row 742: Inside Track Box Wheel Tire; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,ITC-K,Source row 743: Inside Track Conversion Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT27,Source row 744: Knife Guide Bracket - Left; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT26,Source row 745: Knife Guide Bracket Right; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT25,Source row 746: Knife Guide Square Tube; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT41A,Source row 748: Knife Retainer Cap; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT39,Source row 749: Knife Return Spring; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC8,Source row 751: Left Hand Thread; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1PT6,Source row 757: Lower Strap Quick Disconnect; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTA80,Source row 759: Manual Drive Grip Assembly; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CMTA8,Source row 760: Mastic Tube Plunger Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MHR-K,Source row 771: Matrix Handle  Repair Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MH14,Source row 785: Matrix Small Link Pin; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTA93,Source row 789: Mud Gate Assembly; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT11,Source row 790: Mud Gate Plate; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MRW,Source row 793: Mud Roller Washer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB50,Source row 794: Mud Seal Strip Automatic Box; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT3,Source row 798: Mud Skimmer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTA97,Source row 800: Mud Supply Valve Assembly; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS3,Source row 803: Nail Spotter Side Plate; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS6,Source row 804: Nail Spotter Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS6A,Source row 805: Nail Spotter Wheel Oring; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CFB19,Source row 811: Nylatron Bushings; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AH21,Source row 815: O-Ring For Angle Head Wheels; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OPKSET,Source row 817: One Piece Putty Knife Set w/Carrying Case; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OCR2B,Source row 822: Outside Corner Roller Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OCR6,Source row 823: Outside Roller Hinge Pin; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OCR3,Source row 824: Outside Roller Wheel Bushing; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT20,Source row 826: Oval Sleeve; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,PHA-KIT,Source row 827: Paint Handle Adaptor; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,PDDM,Source row 829: Phantom Dustless Drywall Sander; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,DDM-HEAD,Source row 830: Phantom Sander Head Only; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTA107,Source row 833: Piston Assembly; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT110,Source row 838: Piston Cup Relief Washer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HH24,Source row 839: Piston Driver; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HH27,Source row 840: Piston Driver Adapter; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CMT5,Source row 845: Plastic Handle Collar; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CMT4,Source row 846: Plunger Housing; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT45-BLACK,Source row 851: Predator Connecting Rod; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT45-BLACK,Source row 852: Predator Connecting Rod; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CPT130,Source row 854: Predator Extension Shaft; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT36 - BLACK,Source row 859: Predator Return Spring Tube; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,PTS,Source row 860: Predator Tactical Set; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CPT103-72,Source row 861: Predator Taper Body Long; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CPT103,Source row 862: Predator Taper Replacement Tube; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MP33A,Source row 864: Pump Filler O-Ring; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MP7E,Source row 867: Pump Handle Ball; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,PROMO2,Source row 869: PUMP PROMO; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MPR-1,Source row 870: Pump Repair Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CLT18,Source row 872: Quick Release Screws; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB1-10,"Source row 874: Rear Plate 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB1-12,"Source row 875: Rear Plate 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB1-14,"Source row 876: Rear Plate 14""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS1-2,"Source row 877: Rear Plate 2""; normalized_identifier_candidate",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS1-3,"Source row 878: Rear Plate 3""; normalized_identifier_candidate",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB1-5.5,"Source row 879: Rear Plate 5.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB1-7,"Source row 880: Rear Plate 7""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CFB1-7,"Source row 881: Rear Plate 7""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HFFB1-8,"Source row 882: Rear Plate 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CFB1-8,"Source row 883: Rear Plate 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT91,Source row 887: Release Clip Bushing; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT6R,Source row 891: Removable Cap Sideplate Screw; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1PT1,Source row 892: Removable Collar Adaptor; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1PT2,Source row 893: Removable Collar Bottom; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1PT3,Source row 894: Removable Collar Clamp; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT99,Source row 895: Removable Cover Plate Pin; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT100,Source row 896: Removable Cover Plate Pin Ring; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HH3,Source row 897: Reservior; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HH22,Source row 898: Reservoir Piston; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HH21,Source row 899: Reservoir Piston Return Spring; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB51-10,"Source row 900: Resistance Bar Auto Box 10""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB51-12,"Source row 901: Resistance Bar Auto Box 12""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB51-14,"Source row 902: Resistance Bar Auto Box 14""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB51-8,"Source row 903: Resistance Bar Auto Box 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AH16,Source row 904: Retaining Spring Backer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT119A,Source row 906: Retaining Spring Rubber Cap; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT123A,Source row 907: Retaining Spring Shaft (New); unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC9,Source row 912: Right Hand Thread; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CFB2-7,"Source row 917: Roll Face 7""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CFB2-8,"Source row 918: Roll Face 8""; normalized_identifier_candidate",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB49,Source row 919: Roll Face Spring Studs Autobox; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC5,Source row 921: Roller; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CRA-2,Source row 923: Roller Replacement Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CEXT2,Source row 924: Roller Wheel Screw; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,"HNS2-2""","Source row 926: Rollface 2""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS2-3,"Source row 927: Rollface 3""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS2A,Source row 928: Rollface Post; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C12MP,"Source row 929: Rounded Bottom 12"" Mud Pan w/Grip; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C14MP,"Source row 930: Rounded Bottom 14"" Mud Pan w/Grip; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C16MP,"Source row 931: Rounded Bottom 16"" Mud Pan w/Grip; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,DDM7,Source row 932: Rubber Boot; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB25-14,"Source row 934: Rubber Gasket Retainer 14""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB25-5.5,"Source row 935: Rubber Gasket Retainer 5.5""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB25-7,"Source row 936: Rubber Gasket Retainer 7""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB25-8,"Source row 937: Rubber Gasket Retainer 8""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MP9C,Source row 939: S-Hook; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SBSET,Source row 940: Sabre Smoothing Blade Set; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,S2,Source row 941: Sander Clamp/Clip; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,S3,Source row 942: Sander Pad; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,DDM15,Source row 943: Sanding Pad; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CF3A,Source row 944: Screw For Flusher Wheels; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BB,Source row 948: Semi-Automatic Drywall Taping Banjo; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT128,Source row 950: Shaft Guide; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT129,Source row 951: Shaft Guide Roller; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC11,Source row 955: Shoulder Bolt; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SF5,Source row 956: Shrink Fit Handle Grips; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT13A,Source row 959: Side Plate Shim; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CF3,Source row 962: Skid; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT129B,Source row 964: Sleeve; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC12,Source row 966: Small Roller; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT51,Source row 968: Spacer Bar; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AB45,Source row 970: Spring Catcher; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,AH11,Source row 972: Spring Reduction Pin; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC13,Source row 973: Spring Tube; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT48,Source row 974: SS Crimping Arm Left; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MP9,Source row 981: Standard Fitting; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CLT13,Source row 983: Steel Collar; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC4,Source row 984: Step Roller; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT116,Source row 985: Strap - Old Style; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,BBH10,Source row 987: Strap Link; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CLTA17,Source row 988: Sub Assembled Clt Cone W/Valve; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTA47,Source row 989: Sub Assembled Crimping Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTA13,Source row 990: Sub Assembled Dog Base Bracket; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTA59,Source row 992: Sub Assembled Magnet; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,MPA14,Source row 993: Sub Assembled Piston Cup; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HHA3,Source row 994: Sub Assembled Resevior; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SSA,Source row 996: Super Sander Adapter; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT10,Source row 997: Support Arm; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,FFB1B,Source row 998: Sweep Grip; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TS,Source row 999: Tactical Set; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TBMP8C,Source row 1002: Tall Boy Leg Stabilizer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TBMP8,Source row 1004: Tallboy Leg; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTA57,Source row 1006: Tape Advance Carriage Assembly; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT11,Source row 1008: Tape Axle; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT13,Source row 1009: Tape Drum Bushing; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT6,Source row 1010: Tape Plate; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT17,Source row 1012: Tape Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT16,Source row 1013: Tape Wheel Axle Long; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT15,Source row 1014: Tape Wheel Axle Short; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TAPER BAG,Source row 1015: Taper Bag; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTR-42A,Source row 1016: Taper Blades Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTR-72,Source row 1018: Taper Cables Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT124B,Source row 1019: Taper Guard Ring Bottom; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT124A,Source row 1020: Taper Guard Ring Top; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT1R,Source row 1021: Taper Head; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTR-2,Source row 1022: Taper Head Repair Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTR-63,Source row 1023: Taper Needles Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CTR-1,Source row 1025: Taper Repair Kit; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT121B,Source row 1026: Taper Spool Shaft (New); unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TBMP2,Source row 1027: Tbmp Foot Valve Casting; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TBMP8B,Source row 1028: Tbmp Leg Spacer; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TBMP11,Source row 1029: Tbmp Piston Shaft; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TBMP1,Source row 1030: TBMP Replacement Tube; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TBMP24,Source row 1031: Tbmp Screen; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CPT125B,Source row 1032: Teflon Threaded Insert; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC14,Source row 1033: Telescoping Post; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,SAT5,Source row 1034: Tension Cable; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TT,Source row 1035: ThrottleTube; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TWS,Source row 1040: Tomahawk Warrior Set; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CLTHA,Source row 1041: Tomalock Handle Adaptor; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS19-2,"Source row 1045: Triangle Adaptor 2""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,HNS19-3,"Source row 1046: Triangle Adaptor 3""; unmatched",Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,,Source row 1047: Trucker Hat; missing_source_sku,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT37,Source row 1048: Tube Holding Bracket - Upper; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CT38,Source row 1049: Tube Holding Bracket Lower; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,TL3-8,Source row 1050: Twist Lock Handle 3'-8'; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CC15,Source row 1052: Universal Hinge; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,UTA,Source row 1053: Universal Thread Adaptor - Quick Connect; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,C1PT5,Source row 1056: Upper Strap Quick Disconnect; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CFBA6,Source row 1057: Valve Sub Assembly; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,CF3B,Source row 1059: Wheel For Flusher; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
+P2,source_unresolved,,OCR2D,Source row 1060: Wide Outside Roller Wheel; unmatched,Review candidate matches and assortment relevance before proposing addition,medium
