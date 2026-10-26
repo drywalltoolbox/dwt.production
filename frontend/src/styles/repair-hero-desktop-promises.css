@@ -1,6 +1,6 @@
 /* Desktop-only repair hero composition matching the approved repair mockup.
  * Loaded last so this file owns final desktop hero/action refinements.
- * Mobile remains owned by repair-landing-mobile-hero.css. */
+ * Mobile hero layout is owned by repair-hero-shared.css. */
 .repair-landing .repair-hero h1 .repair-hero__title-line--primary {
   color: #fff;
   background: linear-gradient(180deg, #fff 0%, #f4f8ff 55%, #dce8fa 100%);

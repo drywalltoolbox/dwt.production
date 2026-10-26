@@ -425,8 +425,18 @@
 
 @media (max-width: 47.99rem) {
   .home-hero__stage {
-    height: clamp(510px, calc(100svh - var(--header-height, 160px) - 16px), 560px);
+    display: grid;
+    height: auto;
     min-height: 0;
+    overflow: visible;
+  }
+
+  .home-hero__slide {
+    position: relative;
+    inset: auto;
+    display: flex;
+    grid-area: 1 / 1;
+    min-width: 0;
   }
 }
 

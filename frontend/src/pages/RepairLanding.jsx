@@ -11,7 +11,6 @@ import '../styles/repair-landing.css';
 import '../styles/repair-merchandising.css';
 import '../styles/repair-landing-responsive.css';
 import '../styles/repair-landing-desktop.css';
-import '../styles/repair-landing-mobile-hero.css';
 import '../styles/repair-guarantees.css';
 import '../styles/repair-hero-desktop-promises.css';
 import '../styles/repair-service-cards-mobile.css';

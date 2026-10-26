@@ -458,12 +458,27 @@
 }
 
 @media (max-width: 47.99rem) {
-  .repair-landing .repair-hero {
-    min-height: clamp(510px, calc(100svh - var(--header-height, 160px) - 16px), 560px);
+  .repair-landing .repair-hero:not(.repair-hero--home-slide) {
+    height: auto;
+    min-height: 0;
+    max-height: none;
     background: #020b1b;
   }
 
-  .home-hero__repair-surface .repair-hero {
+  .home-hero__repair-surface {
+    position: relative;
+    inset: auto;
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  .home-hero__repair-surface .repair-hero.repair-hero--home-slide {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    height: auto;
     min-height: 0;
     background: #020b1b;
   }
@@ -480,28 +495,31 @@
     object-position: 60% 30%;
   }
 
-  .repair-landing .repair-hero__inner,
-  .home-hero__repair-surface .repair-hero__inner {
-    width: calc(100% - 28px);
+  .repair-landing .repair-hero .repair-hero__inner,
+  .home-hero__repair-surface .repair-hero .repair-hero__inner {
+    display: flex;
+    flex-direction: column;
     align-items: stretch;
     justify-content: flex-end;
-    padding: 0 0 18px;
-  }
-
-  .repair-landing .repair-hero__content {
     width: 100%;
-    padding: clamp(130px, 34vw, 175px) 0 0;
+    max-width: none;
+    height: auto;
+    min-height: 0;
+    margin: 0;
+    padding: clamp(110px, 29vw, 150px) clamp(16px, 4vw, 24px) 22px;
   }
 
-  .home-hero__repair-surface .repair-hero__inner {
-    flex-direction: column;
-    justify-content: flex-end;
-    padding-bottom: 42px;
-  }
-
-  .home-hero__repair-surface .repair-hero__content {
+  .repair-landing .repair-hero .repair-hero__content,
+  .home-hero__repair-surface .repair-hero .repair-hero__content {
     width: 100%;
+    max-width: none;
+    min-width: 0;
     padding: 0;
+  }
+
+  .home-hero__repair-surface .repair-hero .repair-hero__inner {
+    flex: 1 1 auto;
+    padding-bottom: 42px;
   }
 
   .repair-landing .repair-hero .repair-eyebrow,
@@ -524,7 +542,8 @@
 
   .repair-landing .repair-hero__lead,
   .home-hero__repair-surface .repair-hero__lead {
-    width: min(92%, 40ch);
+    width: 100%;
+    max-width: 46ch;
     margin-bottom: 17px;
     color: rgba(255, 255, 255, .94);
     font-size: clamp(14px, 3.6vw, 16px);
@@ -542,14 +561,15 @@
   .home-hero__repair-surface .repair-hero__actions .repair-button {
     width: 100%;
     min-width: 0;
-    min-height: 46px;
-    height: 46px;
+    min-height: 48px;
+    height: auto;
     justify-content: space-between;
     gap: 6px;
-    padding: 0 9px 0 12px;
+    padding: 10px 10px 10px 12px;
     border-radius: 10px;
     font-family: var(--dtb-font-ui, var(--dtb-font-body, sans-serif));
-    font-size: clamp(10px, 2.9vw, 12px);
+    font-size: clamp(12px, 3.1vw, 14px);
+    line-height: 1.2;
     white-space: normal;
   }
 
@@ -562,16 +582,6 @@
 
   .repair-landing .repair-hero__actions .repair-button--utility,
   .home-hero__repair-surface .repair-hero__actions .repair-button--utility { display: none; }
-
-  .home-hero__repair-surface .repair-hero {
-    height: 100%;
-    min-height: 0;
-  }
-
-  .home-hero__repair-surface .repair-hero__inner {
-    height: 100%;
-    min-height: 0;
-  }
 
   .home-hero__repair-surface .repair-hero .repair-guarantees { display: none; }
   .home-hero__stage { min-height: 0; }
