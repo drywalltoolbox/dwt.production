@@ -72,7 +72,7 @@ function get_terms( array $args ): array {
 		if ( ! isset( $allowed[ $taxon['slug'] ] ) ) {
 			continue;
 		}
-		$is_empty = 'automatic_continuous_flow_tools' === $taxon['key'] || null === $taxon['parent_key'];
+		$is_empty = 'automatic_continuous_flow_tools' === $taxon['key'] || ( null === $taxon['parent_key'] && 'stilts' !== $taxon['key'] );
 		$terms[]  = new WP_Term(
 			$ids[ $taxon['key'] ],
 			null === $taxon['parent_key'] ? 0 : $ids[ $taxon['parent_key'] ],
@@ -87,15 +87,15 @@ function get_terms( array $args ): array {
 require_once dirname( __DIR__, 3 ) . '/drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Services/CatalogNavigationService.php';
 
 $groups = DTB_CatalogNavigationService::get_groups();
-if ( '2.0' !== DTB_CatalogNavigationService::CONTRACT_VERSION ) {
+if ( '2.1' !== DTB_CatalogNavigationService::CONTRACT_VERSION ) {
 	throw new RuntimeException( 'Unexpected navigation contract version.' );
 }
-if ( [ 'taping-finishing-tools', 'stilts-accessories' ] !== array_column( $groups, 'slug' ) ) {
+if ( [ 'automatic-taping-tools', 'taping-finishing-tools', 'corner-bead-tools', 'hanging-tools', 'drywall-stilts', 'accessories', 'materials-consumables' ] !== array_column( $groups, 'slug' ) ) {
 	throw new RuntimeException( 'Canonical root order was not preserved.' );
 }
 
 $children = $groups[0]['children'];
-if ( 'automatic-tapers' !== $children[0]['slug'] || 'semi-automatic-tapers-banjos' !== $children[1]['slug'] ) {
+if ( 'automatic-tapers' !== $children[0]['slug'] || 'flat-boxes' !== $children[1]['slug'] ) {
 	throw new RuntimeException( 'Canonical child sort order was not preserved.' );
 }
 if ( in_array( 'continuous-flow-tools', array_column( $children, 'slug' ), true ) ) {

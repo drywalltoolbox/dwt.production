@@ -1,7 +1,11 @@
 import { brandToSlug, canonicalBrandLabel, canonicalDisplayCategorySlug, sortBrandsBy } from './catalogUrlState.js';
 
 const LEGACY_CATEGORY_SLUG_ALIASES = {
-  'automatic-taping-tools': 'taping-finishing-tools',
+  'stilts-accessories': 'drywall-stilts',
+  'stilts': 'drywall-stilts',
+  'bead-tools': 'bead-hoppers',
+  'tool-storage-cases': 'tool-cases',
+  'drywall-sealants': 'sealants',
   'automatic-taping-tool-sets': 'tool-sets-kits',
   'automatic-tool-sets': 'tool-sets-kits',
   'tool-sets': 'tool-sets-kits',
@@ -11,10 +15,11 @@ const LEGACY_CATEGORY_SLUG_ALIASES = {
   'semi-automatic-taping-tool-sets': 'tool-sets-kits',
   'semi-automatic-tool-sets': 'tool-sets-kits',
   'angle-heads': 'corner-finishers',
-  'angle-boxes-corner-applicators': 'corner-applicators-angle-boxes',
-  'loading-pumps': 'loading-compound-pumps',
+  'corner-applicators-angle-boxes': 'angle-boxes-corner-applicators',
+  'loading-compound-pumps': 'loading-pumps',
   'goosenecks-box-fillers': 'goosenecks-box-fillers-adapters',
-  'automatic-handles-extensions': 'handles-extensions',
+  'automatic-handles-extensions': 'handles',
+  'handles-extensions': 'handles',
 };
 
 export function canonicalCatalogCategorySlug(value) {

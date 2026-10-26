@@ -32,32 +32,49 @@ The governing rules are:
 ## Canonical hierarchy
 
 ```text
-Taping & Finishing Tools
+Automatic Taping Tools
   Automatic Tapers
-  Semi-Automatic Tapers & Banjos
   Flat Boxes
   Corner Finishers
-  Corner Applicators & Angle Boxes
+  Angle Boxes & Corner Applicators
   Compound Tubes
   Powered Compound Applicators
   Applicator Heads
   Corner Flushers
   Corner Rollers
   Nail Spotters
-  Loading & Compound Pumps
+  Loading Pumps
   Goosenecks, Box Fillers & Adapters
-  Handles & Extensions
+  Handles
   Continuous Flow Tools
-  Tool Sets & Kits
-  Tool Storage & Cases
 
+Taping & Finishing Tools
+  Semi-Automatic Tapers & Banjos
+  Mud Pans
+  Mud Mixing Tools
+  Tool Sets & Kits
+
+Corner Bead Tools
+  Bead Hoppers
+  Corner Bead Rollers
+
+Hanging Tools
+  Drywall Squares
+  Drywall Saws
+  Fastener Setting Tools
+
+Drywall Stilts
 Replacement Parts
 
-Stilts & Accessories
-  Stilts
+Accessories
+  Tool Cases
+  Mud Pan Accessories
+
+Materials & Consumables
+  Sealants
 ```
 
-The current launch catalog has no sellable stilt-accessory leaves beyond complete Stilts. New leaves must be added only when actual catalog inventory and evidence justify them.
+Only stocked leaves appear in customer navigation; the registry may retain a hidden future leaf such as Continuous Flow Tools. Taping knives, joint knives, trowels, bead mud heads, and bead fastening tools require verified owner SKUs before they are added. Repair hardware remains exclusively in Replacement Parts.
 
 ## Important normalization decisions
 
@@ -67,7 +84,7 @@ The current launch catalog has no sellable stilt-accessory leaves beyond complet
 
 ### Corner Applicators / Angle Boxes / Corner Boxes
 
-`Corner Applicators & Angle Boxes` is the canonical cross-brand class for reservoir-style corner applicator boxes. `Corner Box` remains an alias.
+`Angle Boxes & Corner Applicators` is the canonical cross-brand class for reservoir-style corner applicator boxes. `Corner Box` remains an alias.
 
 ### Compound delivery versus applicator heads
 
@@ -89,42 +106,46 @@ Semi-automatic tapers/banjos are a functional product class directly under `Tapi
 
 ### Handles
 
-Fixed, extendable, box, corner-tool, and related compatible handles remain consolidated under `Handles & Extensions`. Handle type/compatibility belongs in facets/attributes rather than duplicate category leaves.
+Fixed, extendable, box, corner-tool, and related compatible handles remain consolidated under `Handles`. Handle type/compatibility belongs in facets/attributes rather than duplicate category leaves.
 
 ### Replacement parts
 
 `Replacement Parts` remains a dedicated top-level catalog surface. Part discovery should primarily use compatibility relationships such as brand, compatible tool/model, schematic, assembly, and part type rather than creating hardware-type product-category branches.
+
+Outside bead rollers and inside tape rollers are distinct. Exact outside-only owner SKUs belong to `Corner Bead Tools > Corner Bead Rollers`; inside-only and mixed variable families remain under `Automatic Taping Tools > Corner Rollers` until a mixed family can be split with evidence. Variations inherit their parent's category tuple.
+
+`Accessories` contains optional add-ons and cases. `Materials & Consumables` contains installation products used up in the work, such as sealants. Neither is a replacement-parts synonym.
 
 ## Canonical compatibility facets
 
 The official CSV currently derives compatibility/filter keys from the functional category. Representative tuples are:
 
 ```text
-Taping & Finishing Tools > Automatic Tapers
+Automatic Taping Tools > Automatic Tapers
   -> _dtb_category_key = taping
   -> _dtb_display_category_key = automatic_tapers
 
-Taping & Finishing Tools > Flat Boxes
+Automatic Taping Tools > Flat Boxes
   -> finishing
   -> flat_boxes
 
-Taping & Finishing Tools > Corner Finishers
+Automatic Taping Tools > Corner Finishers
   -> corner
   -> corner_finishers
 
-Taping & Finishing Tools > Compound Tubes
+Automatic Taping Tools > Compound Tubes
   -> corner
   -> compound_tubes
 
-Taping & Finishing Tools > Powered Compound Applicators
+Automatic Taping Tools > Powered Compound Applicators
   -> corner
   -> powered_compound_applicators
 
-Taping & Finishing Tools > Applicator Heads
+Automatic Taping Tools > Applicator Heads
   -> corner
   -> applicator_heads
 
-Taping & Finishing Tools > Handles & Extensions
+Automatic Taping Tools > Handles
   -> handles
   -> handles
 
@@ -140,7 +161,7 @@ Replacement Parts
   -> parts
   -> parts
 
-Stilts & Accessories > Stilts
+Drywall Stilts
   -> stilts
   -> stilts
 ```
@@ -171,20 +192,27 @@ Variation-specific category drift is invalid. If choices require materially diff
 
 `GET /wp-json/dtb/v1/catalog/facets` derives `navigationGroups` from active WooCommerce `product_cat` ancestry.
 
-The response contract is version `2.0`. Primary `navigationGroups` are read through `DTB_CatalogNavigationService` using one bounded query restricted to registered taxonomy slugs. WooCommerce owns term existence, ancestry, counts, descriptions, and media; the deployed registry projection supplies the canonical allowlist and `sort` order. Scoped brand/display facets may still scan the bounded paginated product projection, but primary navigation must never be rebuilt by scanning every product.
+The response contract is version `2.1`. Primary `navigationGroups` are read through `DTB_CatalogNavigationService` using one bounded query restricted to registered taxonomy slugs. WooCommerce owns term existence, ancestry, counts, descriptions, and media; the deployed registry projection supplies the canonical allowlist and `sort` order. Scoped brand/display facets may still scan the bounded paginated product projection, but primary navigation must never be rebuilt by scanning every product.
 
 Supported customer navigation roots are ordered:
 
-1. `Taping & Finishing Tools`
-2. `Stilts & Accessories` (displayed as `Stilts` while the launch catalog contains only complete stilt products)
+1. `Automatic Taping Tools`
+2. `Taping & Finishing Tools`
+3. `Corner Bead Tools`
+4. `Hanging Tools`
+5. `Drywall Stilts`
+6. `Accessories`
+7. `Materials & Consumables`
 
 Replacement Parts remain a dedicated storefront navigation surface.
 
 The frontend renders the same backend-owned groups and children for desktop and mobile navigation, preserves backend order, and defensively deduplicates canonical slugs. Historical URL aliases may redirect old category slugs to deterministic new equivalents, but frontend compatibility code must not become a taxonomy authority. Facet and category caches are namespaced to the response contract version; responses with a different contract version are not persisted.
 
-WooCommerce treats unescaped commas in `Categories` as separators between separate terms. Canonical category labels containing a comma must therefore escape it as `\,` in the official CSV. The canonical Goosenecks path is serialized as `Taping & Finishing Tools > Goosenecks\, Box Fillers & Adapters` while its human-facing term name remains `Goosenecks, Box Fillers & Adapters`.
+WooCommerce treats unescaped commas in `Categories` as separators between separate terms. Canonical category labels containing a comma must therefore escape it as `\,` in the official CSV. The canonical Goosenecks path is serialized as `Automatic Taping Tools > Goosenecks\, Box Fillers & Adapters` while its human-facing term name remains `Goosenecks, Box Fillers & Adapters`.
 
 Runtime taxonomy migration version `2` idempotently renames the historical `goosenecks` child, merges product relationships and media from any pre-existing canonical/legacy terms, removes the accidental top-level `box-fillers-adapters` split term, and invalidates catalog caches. Version `2` replays the migration for installations where an import recreated the legacy term after version `1` had completed. The migration version is recorded only after every required mutation succeeds.
+
+Migration version `3` creates the new storefront roots and reparents or renames existing exact-slug WooCommerce terms before the revised official CSV is imported. It preserves term IDs and existing product relationships, refuses a conflicting target slug, and records completion only after all moves succeed. Deploy and verify this migration before the CSV update-existing import so WooCommerce reuses the intended term slugs. The CSV import then moves owner products and their variations into the registered paths; review and remove empty historical terms only after the import is reconciled. Do not make empty proposed product families visible merely to mirror another retailer.
 
 ## Runtime compatibility
 

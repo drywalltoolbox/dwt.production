@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getStructuredIncludedItems, isToolSetProduct } from '../../utils/productMerchandising.js';
-import warrantyEvidence from '../../../../products/launch/official/toolset_warranty_evidence.json';
+import warrantyEvidence from '../../../../products/launch/official/other/toolset_warranty_evidence.json';
 import '../../styles/tool-set-comparison.css';
 
 const GROUPS = [

@@ -1,4 +1,22 @@
 sku,taxon_key,evidence,review_status
+030250,drywall_sealants,USG acoustical sealant is an installation material consumed during use.,approved
+340401,mud_pans,USG MATRIX stainless steel mud pan is a hand finishing pan.,approved
+340402,mud_pans,USG MATRIX stainless steel mud pan is a hand finishing pan.,approved
+340403,mud_pans,USG MATRIX stainless steel mud pan is a hand finishing pan.,approved
+340404,mud_pan_accessories,USG mud pan grip is an optional add-on for a mud pan.,approved
+340405,mud_pans,USG Classic stainless steel mud pan is a hand finishing pan.,approved
+340406,mud_pans,USG Classic stainless steel mud pan is a hand finishing pan.,approved
+340407,mud_pans,USG Classic stainless steel mud pan is a hand finishing pan.,approved
+340413,mud_mixing_tools,USG 30 inch mud mixer mixes joint compound.,approved
+340414,drywall_saws,USG jab saw cuts drywall openings during hanging.,approved
+340416,drywall_squares,USG heavy duty T-square measures and marks drywall sheets.,approved
+340417,drywall_squares,USG heavy duty T-square measures and marks drywall sheets.,approved
+340310,bead_rollers,USG 90 degree outside corner roller seats paper-faced corner bead.,approved
+340311,bead_tools,USG paper face bead hopper coats corner bead with compound.,approved
+340800,fastener_setting_tools,USG Dimpler sets drywall screws during board hanging.,approved
+CC,bead_rollers,Columbia Corner Cobra description identifies structural corner bead setting.,approved
+COL-OUTSIDE-CORNER-ROLLER,bead_rollers,Columbia outside corner roller family seats paper-faced outside corner bead.,approved
+4-746,applicator_heads,LEVEL5 identifies SKU 4-746 as an Outside Corner Applicator Head attached to a compound tube or corner applicator: https://www.level5tools.com/outside-corner-applicator-head/,approved
 4-772,powered_compound_applicators,LEVEL5 manufacturer identifies MiniShot as a gas-assisted compound tube / powered compound-delivery tool rather than a passive applicator head: https://www.level5tools.com/minishot/,approved
 COL-ANGLE-HEAD,automatic_corner_finishers,LEVEL5 identifies a corner finisher as also called an Anglehead; Columbia Angle Heads therefore normalize to the cross-brand Corner Finishers class: https://www.level5tools.com/3-drywall-corner-finisher/,approved
 COL-THROTTLE-CORNER-FLUSHER-BOX,automatic_angle_boxes_corner_applicators,Columbia manufacturer catalog identifies the ThrottleBox as a Corner Box with automatic capabilities used with angle heads or applicator heads: https://www.columbiatools.com/wp-content/uploads/2022/03/2021_Columbia_Catalogue.pdf,approved

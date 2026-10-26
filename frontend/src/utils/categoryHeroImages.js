@@ -23,7 +23,9 @@ const CATEGORY_HERO_FILENAME_ALIASES = {
   // Legacy live filenames. New files must use the exact category slug.
   'compound-applicators': 'compound-applicator',
   'corner-applicators-angle-boxes': 'corner-applicators',
+  'angle-boxes-corner-applicators': 'corner-applicators',
   'loading-compound-pumps': 'loading-pumps',
+  'handles': 'handles-extensions',
 };
 
 function getHeroFilename(slug) {

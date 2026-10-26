@@ -52,12 +52,15 @@ const CATEGORY_THUMBNAIL_FILE_BY_SLUG = {
   'corner-flushers': 'corner-flushers',
   'corner-rollers': 'corner-rollers',
   'loading-compound-pumps': 'loading-pumps',
+  'loading-pumps': 'loading-pumps',
   'automatic-goosenecks-box-fillers': 'goosenecks-box-fillers-adapters',
   'goosenecks-box-fillers-adapters': 'goosenecks-box-fillers-adapters',
   'handles-extensions': 'handles-extensions',
+  'handles': 'handles-extensions',
   'tool-sets-kits': 'automatic-taping-tool-sets',
   'tool-storage-cases': 'automatic-taping-tool-cases',
   'semi-automatic-tapers-banjos': 'semi-automatic-tapers',
+  'drywall-stilts': 'stilts',
 
   // Historical URL/term compatibility.
   'angle-boxes': 'corner-boxes',

@@ -9,9 +9,9 @@ import {
 const FRESH_CACHE_TTL = 5 * 60 * 1000;
 const STALE_CACHE_TTL = 24 * 60 * 60 * 1000;
 const CACHE_VERSION = 'v14-tool-family';
-export const CATALOG_FACETS_CONTRACT_VERSION = '2.0';
-const FACETS_CACHE_VERSION = 'v14-contract-2';
-const CATEGORY_CACHE_VERSION = 'v14-contract-2';
+export const CATALOG_FACETS_CONTRACT_VERSION = '2.1';
+const FACETS_CACHE_VERSION = 'v15-contract-2-1';
+const CATEGORY_CACHE_VERSION = 'v15-contract-2-1';
 const PRODUCT_STORAGE_PREFIX = `dtb:catalog-products:${CACHE_VERSION}:`;
 const FACETS_STORAGE_PREFIX = `dtb:catalog-facets:${FACETS_CACHE_VERSION}:`;
 const CATALOG_SNAPSHOTS_ENABLED = /^(1|true|yes|on)$/i.test(

@@ -15,7 +15,7 @@ final class DTB_CatalogTaxonomyMigration {
 	 * historical `goosenecks` term. Bump the idempotent migration so existing
 	 * installations reconcile that live legacy term on their next init.
 	 */
-	private const VERSION        = 2;
+	private const VERSION        = 3;
 	private const BATCH_SIZE     = 100;
 
 	public static function maybe_run(): void {
@@ -23,7 +23,11 @@ final class DTB_CatalogTaxonomyMigration {
 			return;
 		}
 
-		$result = self::migrate_goosenecks_term();
+		$current_version = (int) get_option( self::OPTION_VERSION, 0 );
+		$result = $current_version < 2 ? self::migrate_goosenecks_term() : true;
+		if ( ! is_wp_error( $result ) ) {
+			$result = self::migrate_category_hierarchy();
+		}
 		if ( is_wp_error( $result ) ) {
 			if ( class_exists( 'DTB_Logger' ) ) {
 				DTB_Logger::error( 'Catalog taxonomy migration failed', [
@@ -36,6 +40,82 @@ final class DTB_CatalogTaxonomyMigration {
 
 		update_option( self::OPTION_VERSION, self::VERSION, false );
 		dtb_catalog_cache_invalidate_all();
+	}
+
+	/**
+	 * Move existing Woo terms before a CSV import creates duplicate child slugs.
+	 * Existing term IDs and product relationships are preserved.
+	 *
+	 * @return true|WP_Error
+	 */
+	private static function migrate_category_hierarchy() {
+		$roots = [
+			'automatic-taping-tools'  => 'Automatic Taping Tools',
+			'corner-bead-tools'       => 'Corner Bead Tools',
+			'hanging-tools'           => 'Hanging Tools',
+			'accessories'             => 'Accessories',
+			'materials-consumables'   => 'Materials & Consumables',
+		];
+		foreach ( $roots as $slug => $label ) {
+			$term = get_term_by( 'slug', $slug, 'product_cat' );
+			if ( $term instanceof WP_Term ) {
+				if ( 0 !== (int) $term->parent ) {
+					return new WP_Error( 'catalog_taxonomy_root_conflict', 'Catalog root slug already belongs to a child term: ' . $slug );
+				}
+				continue;
+			}
+			$created = wp_insert_term( $label, 'product_cat', [ 'slug' => $slug, 'parent' => 0 ] );
+			if ( is_wp_error( $created ) ) {
+				return $created;
+			}
+		}
+
+		$move = [
+			[ 'automatic-tapers', 'automatic-tapers', 'Automatic Tapers', 'automatic-taping-tools' ],
+			[ 'flat-boxes', 'flat-boxes', 'Flat Boxes', 'automatic-taping-tools' ],
+			[ 'corner-finishers', 'corner-finishers', 'Corner Finishers', 'automatic-taping-tools' ],
+			[ 'corner-applicators-angle-boxes', 'angle-boxes-corner-applicators', 'Angle Boxes & Corner Applicators', 'automatic-taping-tools' ],
+			[ 'compound-tubes', 'compound-tubes', 'Compound Tubes', 'automatic-taping-tools' ],
+			[ 'powered-compound-applicators', 'powered-compound-applicators', 'Powered Compound Applicators', 'automatic-taping-tools' ],
+			[ 'applicator-heads', 'applicator-heads', 'Applicator Heads', 'automatic-taping-tools' ],
+			[ 'corner-flushers', 'corner-flushers', 'Corner Flushers', 'automatic-taping-tools' ],
+			[ 'corner-rollers', 'corner-rollers', 'Corner Rollers', 'automatic-taping-tools' ],
+			[ 'nail-spotters', 'nail-spotters', 'Nail Spotters', 'automatic-taping-tools' ],
+			[ 'loading-compound-pumps', 'loading-pumps', 'Loading Pumps', 'automatic-taping-tools' ],
+			[ 'goosenecks-box-fillers-adapters', 'goosenecks-box-fillers-adapters', 'Goosenecks, Box Fillers & Adapters', 'automatic-taping-tools' ],
+			[ 'handles-extensions', 'handles', 'Handles', 'automatic-taping-tools' ],
+			[ 'tool-storage-cases', 'tool-cases', 'Tool Cases', 'accessories' ],
+			[ 'bead-tools', 'bead-hoppers', 'Bead Hoppers', 'corner-bead-tools' ],
+			[ 'drywall-sealants', 'sealants', 'Sealants', 'materials-consumables' ],
+			[ 'stilts', 'drywall-stilts', 'Drywall Stilts', '' ],
+		];
+		foreach ( $move as [ $old_slug, $new_slug, $label, $parent_slug ] ) {
+			$source = get_term_by( 'slug', $old_slug, 'product_cat' );
+			$target = get_term_by( 'slug', $new_slug, 'product_cat' );
+			if ( ! $source instanceof WP_Term ) {
+				continue;
+			}
+			if ( $target instanceof WP_Term && (int) $target->term_id !== (int) $source->term_id ) {
+				return new WP_Error( 'catalog_taxonomy_term_conflict', 'Catalog category slug already belongs to another term: ' . $new_slug );
+			}
+			$parent = '' === $parent_slug ? null : get_term_by( 'slug', $parent_slug, 'product_cat' );
+			if ( '' !== $parent_slug && ! $parent instanceof WP_Term ) {
+				return new WP_Error( 'catalog_taxonomy_parent_missing', 'Catalog parent category is missing: ' . $parent_slug );
+			}
+			$parent_id = $parent instanceof WP_Term ? (int) $parent->term_id : 0;
+			if ( $source->slug === $new_slug && (int) $source->parent === $parent_id && $source->name === $label ) {
+				continue;
+			}
+			$updated = wp_update_term( $source->term_id, 'product_cat', [
+				'name' => $label,
+				'slug' => $new_slug,
+				'parent' => $parent_id,
+			] );
+			if ( is_wp_error( $updated ) ) {
+				return $updated;
+			}
+		}
+		return true;
 	}
 
 	/** @return true|WP_Error */

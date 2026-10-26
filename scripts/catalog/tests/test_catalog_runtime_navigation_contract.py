@@ -22,7 +22,9 @@ def test_generated_owner_assignments_use_only_canonical_taxon_keys() -> None:
     canonical_keys = {taxon["key"] for taxon in registry["taxa"]}
     with ASSIGNMENTS.open(encoding="utf-8-sig", newline="") as handle:
         rows = list(csv.DictReader(handle))
-    assert len(rows) == 444
+    with (ROOT / "products/launch/official/dtb_official_catalog.csv").open(encoding="utf-8-sig", newline="") as handle:
+        owners = [row for row in csv.DictReader(handle) if row["Type"] != "variation"]
+    assert len(rows) == len(owners)
     assert {row["taxon_key"] for row in rows} <= canonical_keys
     assert len({row["sku"] for row in rows}) == len(rows)
 
@@ -36,6 +38,6 @@ def test_frontend_desktop_menu_contains_no_parallel_taxonomy_registry() -> None:
 def test_backend_and_frontend_facets_contract_versions_match() -> None:
     backend = BACKEND_NAVIGATION.read_text(encoding="utf-8")
     frontend = FRONTEND_CACHE.read_text(encoding="utf-8")
-    assert "CONTRACT_VERSION = '2.0'" in backend
-    assert "CATALOG_FACETS_CONTRACT_VERSION = '2.0'" in frontend
-    assert "FACETS_CACHE_VERSION = 'v14-contract-2'" in frontend
+    assert "CONTRACT_VERSION = '2.1'" in backend
+    assert "CATALOG_FACETS_CONTRACT_VERSION = '2.1'" in frontend
+    assert "FACETS_CACHE_VERSION = 'v15-contract-2-1'" in frontend

@@ -13,14 +13,19 @@ defined( 'ABSPATH' ) || exit;
 
 final class DTB_CatalogNavigationService {
 
-	public const CONTRACT_VERSION = '2.0';
+	public const CONTRACT_VERSION = '2.1';
 
 	private const REGISTRY_PATH = __DIR__ . '/../Resources/catalog-taxonomy.json';
 
 	/** Replacement Parts has a dedicated primary navigation surface. */
 	private const STOREFRONT_ROOT_KEYS = [
+		'automatic_taping_tools',
 		'taping_finishing_tools',
-		'stilts_accessories',
+		'corner_bead_tools',
+		'hanging_tools',
+		'stilts',
+		'accessories',
+		'materials_consumables',
 	];
 
 	/** @return array<int,array<string,mixed>> */
@@ -95,13 +100,14 @@ final class DTB_CatalogNavigationService {
 			}
 
 			usort( $children, [ self::class, 'compare_sort' ] );
-			if ( [] === $children && empty( $root_taxon['publish_when_empty'] ) ) {
+			if ( [] === $children && absint( $root_term->count ) < 1 && empty( $root_taxon['publish_when_empty'] ) ) {
 				continue;
 			}
 
 			$group                 = self::term_dto( $root_term, $root_taxon );
-			$group['label']        = 'stilts-accessories' === $root_slug ? 'Stilts' : $group['label'];
-			$group['productCount'] = array_sum( array_map( static fn ( array $child ): int => absint( $child['productCount'] ?? 0 ), $children ) );
+			$group['productCount'] = [] === $children
+				? absint( $root_term->count )
+				: array_sum( array_map( static fn ( array $child ): int => absint( $child['productCount'] ?? 0 ), $children ) );
 			$group['children']     = $children;
 			$groups[]              = $group;
 		}

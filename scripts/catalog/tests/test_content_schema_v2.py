@@ -2,6 +2,7 @@
 """V2 column migration and feature metadata contract checks."""
 import csv
 import importlib.util
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -48,7 +49,12 @@ class V2CatalogTests(unittest.TestCase):
             rows = list(reader)
         self.assertEqual(len(rows), 1134)
         self.assertEqual(len({r["SKU"] for r in rows}), 1134)
-        self.assertTrue(all(not r["Meta: _dtb_features_json"] and not r["Meta: _dtb_content_schema_version"] for r in rows))
+        for row in rows:
+            features = row["Meta: _dtb_features_json"]
+            version = row["Meta: _dtb_content_schema_version"]
+            self.assertEqual(version, "2" if features else "")
+            if features:
+                self.assertIsInstance(json.loads(features), dict)
 
 
 if __name__ == "__main__":

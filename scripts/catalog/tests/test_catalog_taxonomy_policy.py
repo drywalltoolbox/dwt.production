@@ -119,16 +119,16 @@ def test_normalizer_writes_complete_canonical_tuples_and_reports_unknown_paths()
 def test_reviewed_assignment_requires_an_exact_owner_path() -> None:
     owner = {"SKU": "OWNER", "Type": "variable"}
     by_sku = {"OWNER": owner}
-    path = "Taping & Finishing Tools > Handles & Extensions"
+    path = "Automatic Taping Tools > Handles"
     assert parse_assignments([f"OWNER={path}"], by_sku) == {"OWNER": path}
 
 
 def test_new_catalog_paths_resolve_to_complete_taxonomy_tuples() -> None:
     cases = {
-        "Drywall Hand Tools": ("hand_tools", "drywall_hand_tools"),
-        "Drywall Screws & Fasteners": ("fasteners", "drywall_screws_fasteners"),
-        "Drywall Sealants": ("sealants", "drywall_sealants"),
-        "Taping & Finishing Tools > Bead Tools": ("finishing", "bead_tools"),
+        "Taping & Finishing Tools > Mud Pans": ("finishing", "mud_pans"),
+        "Corner Bead Tools > Bead Hoppers": ("corner", "bead_hoppers"),
+        "Materials & Consumables > Sealants": ("materials", "sealants"),
+        "Hanging Tools > Drywall Saws": ("hanging", "drywall_saws"),
         "Taping & Finishing Tools > Goosenecks": ("mudboxes", "automatic_goosenecks_box_fillers"),
     }
     for path, (category_key, display_key) in cases.items():
@@ -147,7 +147,7 @@ def test_new_catalog_paths_resolve_to_complete_taxonomy_tuples() -> None:
             ("Meta: _dtb_display_category_key", display_key),
         }
         if path.endswith("Goosenecks"):
-            expected_changes.add(("Categories", r"Taping & Finishing Tools > Goosenecks\, Box Fillers & Adapters"))
+            expected_changes.add(("Categories", r"Automatic Taping Tools > Goosenecks\, Box Fillers & Adapters"))
         assert {(change["field"], change["expected"]) for change in changes} == expected_changes
 
 

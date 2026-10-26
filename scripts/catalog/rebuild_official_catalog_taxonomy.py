@@ -10,9 +10,10 @@ import json
 import os
 import shutil
 import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 
-from catalog_taxonomy_policy import woocommerce_category_path
+from catalog_taxonomy_policy import COMPATIBILITY_BY_TAXON, woocommerce_category_path
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CATALOG = ROOT / "products/launch/official/dtb_official_catalog.csv"
@@ -25,27 +26,7 @@ LEGACY_TAXON_ALIASES = {
     "semi_automatic_tools": "semi_automatic_tapers_banjos",
 }
 
-COMPATIBILITY_KEYS = {
-    "automatic_tapers": ("taping", "automatic_tapers"),
-    "semi_automatic_tapers_banjos": ("taping", "semi_automatic_tapers_banjos"),
-    "flat_boxes": ("finishing", "flat_boxes"),
-    "automatic_corner_finishers": ("corner", "corner_finishers"),
-    "automatic_angle_boxes_corner_applicators": ("corner", "automatic_angle_boxes_corner_applicators"),
-    "automatic_compound_tubes": ("corner", "compound_tubes"),
-    "powered_compound_applicators": ("corner", "powered_compound_applicators"),
-    "applicator_heads": ("corner", "applicator_heads"),
-    "automatic_corner_flushers": ("corner", "automatic_corner_flushers"),
-    "automatic_corner_rollers": ("corner", "automatic_corner_rollers"),
-    "automatic_nail_spotters": ("taping", "automatic_nail_spotters"),
-    "automatic_loading_pumps": ("mudboxes", "automatic_loading_pumps"),
-    "automatic_goosenecks_box_fillers": ("mudboxes", "automatic_goosenecks_box_fillers"),
-    "automatic_continuous_flow_tools": ("taping", "automatic_continuous_flow_tools"),
-    "automatic_handles_extensions": ("handles", "handles"),
-    "automatic_tool_sets": ("taping", "toolsets"),
-    "tool_storage_cases": ("accessories", "tool_storage_cases"),
-    "replacement_parts": ("parts", "parts"),
-    "stilts": ("stilts", "stilts"),
-}
+COMPATIBILITY_KEYS = COMPATIBILITY_BY_TAXON
 
 
 def digest(path: Path) -> str:
@@ -192,7 +173,10 @@ def main() -> int:
     }
 
     if args.apply and total_changes:
-        backup = catalog.with_name(catalog.name + ".bak")
+        stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+        backup = catalog.with_name(catalog.name + f".pre-taxonomy-rebuild-{stamp}.bak")
+        if backup.exists():
+            raise FileExistsError(f"refusing to replace existing backup: {backup}")
         temp_backup = backup.with_name(backup.name + ".tmp")
         shutil.copy2(catalog, temp_backup)
         os.replace(temp_backup, backup)

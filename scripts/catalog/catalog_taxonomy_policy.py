@@ -22,7 +22,7 @@ KIND_FIELD = "Meta: _dtb_product_kind"
 PARENT_FIELD = "Meta: _dtb_parent_product_sku"
 
 DRYWALL_ROOT = "Taping & Finishing Tools"
-STILT_ROOT = "Stilts & Accessories"
+STILT_ROOT = "Drywall Stilts"
 
 
 def normalize_key(value: object) -> str:
@@ -141,13 +141,17 @@ COMPATIBILITY_BY_TAXON: dict[str, tuple[str, str]] = {
     "automatic_handles_extensions": ("handles", "handles"),
     "automatic_tool_sets": ("taping", "toolsets"),
     "tool_storage_cases": ("accessories", "tool_storage_cases"),
-    "bead_tools": ("finishing", "bead_tools"),
+    "bead_tools": ("corner", "bead_hoppers"),
+    "bead_rollers": ("corner", "bead_rollers"),
+    "mud_pans": ("finishing", "mud_pans"),
+    "mud_mixing_tools": ("finishing", "mud_mixing_tools"),
+    "drywall_squares": ("hanging", "drywall_squares"),
+    "drywall_saws": ("hanging", "drywall_saws"),
+    "fastener_setting_tools": ("hanging", "fastener_setting_tools"),
+    "mud_pan_accessories": ("accessories", "mud_pan_accessories"),
     "replacement_parts": ("parts", "parts"),
     "stilts": ("stilts", "stilts"),
-    "stilt_parts": ("parts", "parts"),
-    "drywall_hand_tools": ("hand_tools", "drywall_hand_tools"),
-    "drywall_screws_fasteners": ("fasteners", "drywall_screws_fasteners"),
-    "drywall_sealants": ("sealants", "drywall_sealants"),
+    "drywall_sealants": ("materials", "sealants"),
 }
 
 
@@ -214,11 +218,17 @@ for legacy_suffix, target_key in LEGACY_PATH_TARGETS.items():
         PATH_ALIASES[normalize_key(f"{legacy_root} > {legacy_suffix}")] = normalize_key(target.path)
 PATH_ALIASES[normalize_key("Drywall Finishing Tools > Parts")] = normalize_key("Replacement Parts")
 PATH_ALIASES[normalize_key("Taping & Finishing Tools > Goosenecks")] = normalize_key(
-    "Taping & Finishing Tools > Goosenecks, Box Fillers & Adapters"
+    "Automatic Taping Tools > Goosenecks, Box Fillers & Adapters"
 )
 PATH_ALIASES[normalize_key("Box Fillers & Adapters")] = normalize_key(
-    "Taping & Finishing Tools > Goosenecks, Box Fillers & Adapters"
+    "Automatic Taping Tools > Goosenecks, Box Fillers & Adapters"
 )
+PATH_ALIASES[normalize_key("Taping & Finishing Tools > Bead Tools")] = normalize_key("Corner Bead Tools > Bead Hoppers")
+PATH_ALIASES[normalize_key("Drywall Sealants")] = normalize_key("Materials & Consumables > Sealants")
+PATH_ALIASES[normalize_key("Taping & Finishing Tools > Handles & Extensions")] = normalize_key("Automatic Taping Tools > Handles")
+PATH_ALIASES[normalize_key("Taping & Finishing Tools > Loading & Compound Pumps")] = normalize_key("Automatic Taping Tools > Loading Pumps")
+PATH_ALIASES[normalize_key("Automatic Taping Tools > Handles & Extensions")] = normalize_key("Automatic Taping Tools > Handles")
+PATH_ALIASES[normalize_key("Automatic Taping Tools > Loading & Compound Pumps")] = normalize_key("Automatic Taping Tools > Loading Pumps")
 
 LEAF_ALIASES = {
     "angle_heads": "corner_finishers",
@@ -226,9 +236,9 @@ LEAF_ALIASES = {
     "anglehead": "corner_finishers",
     "finishing_boxes": "flat_boxes",
     "flat_finishing_boxes": "flat_boxes",
-    "compound_pumps": "loading_compound_pumps",
-    "loading_pumps": "loading_compound_pumps",
-    "mud_pumps": "loading_compound_pumps",
+    "compound_pumps": "loading_pumps",
+    "loading_pumps": "loading_pumps",
+    "mud_pumps": "loading_pumps",
     "drywall_stilts": "stilts",
 }
 FAMILY_ONLY_KEYS = {"predator", "predator_family"}
@@ -291,9 +301,6 @@ def navigation_for_row(row: dict[str, str], parent: dict[str, str] | None = None
     if kind in PRODUCT_KIND_DEFAULTS:
         default = PRODUCT_KIND_DEFAULTS[kind]
         if kind == "part":
-            for parts in split_category_paths(row.get("Categories")):
-                if parts and normalize_key(parts[0]) == normalize_key(STILT_ROOT):
-                    return NavigationTaxon("stilt_parts", STILT_ROOT, "Parts", "", "parts", "parts")
             return default
         explicit = taxon_for_path(row.get("Categories"))
         return explicit or default

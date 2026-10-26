@@ -16,7 +16,7 @@ def row(*, sku="SKU", type_="simple", kind="tool", categories="", category="", d
 
 
 def test_cross_brand_flat_boxes_share_universal_navigation_identity():
-    expected = {"Categories": "Taping & Finishing Tools > Flat Boxes", "Meta: _dtb_category_key": "finishing", "Meta: _dtb_display_category_key": "flat_boxes"}
+    expected = {"Categories": "Automatic Taping Tools > Flat Boxes", "Meta: _dtb_category_key": "finishing", "Meta: _dtb_display_category_key": "flat_boxes"}
     assert canonical_values(row(categories=expected["Categories"])) == expected
     assert canonical_values(row(categories="Drywall Finishing Tools > Automatic Taping Tools > Flat Boxes")) == expected
 
@@ -24,9 +24,9 @@ def test_cross_brand_flat_boxes_share_universal_navigation_identity():
 def test_legacy_labels_normalize_to_current_customer_labels():
     cases = {
         "Drywall Finishing Tools > Automatic Taping Tools > Finishing Boxes": "Flat Boxes",
-        "Drywall Finishing Tools > Automatic Taping Tools > Corner Boxes": "Corner Applicators & Angle Boxes",
-        "Drywall Finishing Tools > Automatic Taping Tools > Fixed Handles": "Handles & Extensions",
-        "Drywall Finishing Tools > Automatic Taping Tools > Tool Cases": "Tool Storage & Cases",
+        "Drywall Finishing Tools > Automatic Taping Tools > Corner Boxes": "Angle Boxes & Corner Applicators",
+        "Drywall Finishing Tools > Automatic Taping Tools > Fixed Handles": "Handles",
+        "Drywall Finishing Tools > Automatic Taping Tools > Tool Cases": "Tool Cases",
     }
     for legacy, leaf in cases.items():
         taxon = taxon_for_path(legacy)
@@ -40,13 +40,13 @@ def test_angle_heads_and_corner_finishers_normalize_to_one_taxon():
     assert angle_head and angle_head.display_key == "corner_finishers"
     assert corner_finisher and corner_finisher.display_key == "corner_finishers"
     assert angle_head == corner_finisher
-    assert angle_head.path == "Taping & Finishing Tools > Corner Finishers"
+    assert angle_head.path == "Automatic Taping Tools > Corner Finishers"
 
 
 def test_legacy_handle_paths_collapse_to_handles_identity():
     automatic = taxon_for_path("Taping & Finishing Tools > Automatic Taping Tools > Handles & Extensions")
     assert automatic and automatic.display_key == "handles"
-    assert automatic.path == "Taping & Finishing Tools > Handles & Extensions"
+    assert automatic.path == "Automatic Taping Tools > Handles"
 
 
 def test_duplicate_legacy_handle_paths_resolve_once():
@@ -59,7 +59,7 @@ def test_escaped_comma_remains_inside_one_woocommerce_category_term():
     raw = r"Taping & Finishing Tools > Goosenecks\, Box Fillers & Adapters"
     assert split_category_paths(raw) == [["Taping & Finishing Tools", "Goosenecks, Box Fillers & Adapters"]]
     values = canonical_values(row(categories=raw))
-    assert values and values["Categories"] == raw
+    assert values and values["Categories"] == r"Automatic Taping Tools > Goosenecks\, Box Fillers & Adapters"
 
 
 def test_legacy_semi_automatic_toolset_path_migrates_to_unified_toolsets():
@@ -73,13 +73,13 @@ def test_part_and_stilt_domains_are_separate():
     part = canonical_values(row(kind="part", categories="Taping & Finishing Tools > Flat Boxes"))
     stilt = canonical_values(row(kind="stilt", categories="Stilts & Accessories > Stilts"))
     assert part and part["Categories"] == "Replacement Parts"
-    assert stilt and stilt["Categories"] == "Stilts & Accessories > Stilts"
+    assert stilt and stilt["Categories"] == "Drywall Stilts"
 
 
 def test_variation_inherits_parent_taxonomy():
     parent = row(sku="PARENT", type_="variable", categories="Taping & Finishing Tools > Compound Tubes")
     child = row(sku="CHILD", type_="variation", kind="variation", parent="PARENT")
-    assert canonical_values(child, parent) == {"Categories": "Taping & Finishing Tools > Compound Tubes", "Meta: _dtb_category_key": "corner", "Meta: _dtb_display_category_key": "compound_tubes"}
+    assert canonical_values(child, parent) == {"Categories": "Automatic Taping Tools > Compound Tubes", "Meta: _dtb_category_key": "corner", "Meta: _dtb_display_category_key": "compound_tubes"}
 
 
 def test_ambiguous_legacy_compound_applicator_path_is_not_guessed():
