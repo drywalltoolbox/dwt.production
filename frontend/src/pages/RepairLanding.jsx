@@ -3,6 +3,7 @@ import SEOHead from '../components/shared/SEOHead';
 import RepairHero from '../components/RepairHero';
 import { getOfficialRepairBrands } from '../data/repairCatalogMap.js';
 import { getBrandLogo } from '../utils/brandAssets.js';
+import repairHeroArtwork from '../assets/media/repairs/repair-hero.webp';
 import repairServicePackageArt from '../assets/media/repairs/repair-service-package.webp';
 import { HOME_HERO_CAMPAIGNS } from '../components/home/homeHeroCampaigns.js';
 import '../styles/repair-landing.css';
@@ -78,7 +79,7 @@ export default function RepairLanding() {
   return (
     <div className="repair-landing page-wrapper">
       <SEOHead title="Expert Repair Services | Drywall Toolbox" description={REPAIRS_CAMPAIGN.description} canonical="/repairs" />
-      <RepairHero campaign={REPAIRS_CAMPAIGN} />
+      <RepairHero campaign={REPAIRS_CAMPAIGN} image={repairHeroArtwork} />
 
       <section className="repair-service-details" aria-labelledby="repair-service-paths-title"><div className="repair-section-shell">
         <div className="repair-section-heading repair-section-heading--center"><p className="repair-eyebrow">How Should We Start?</p><h2 id="repair-service-paths-title">Choose the path that matches what you know today.</h2><p>Both options continue into the same structured repair intake, shipping, approval, and tracking workflow.</p></div>
