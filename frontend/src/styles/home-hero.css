@@ -425,7 +425,7 @@
 
 @media (max-width: 47.99rem) {
   .home-hero__stage {
-    height: clamp(590px, 145vw, 650px);
+    height: clamp(510px, calc(100svh - var(--header-height, 160px) - 16px), 560px);
     min-height: 0;
   }
 }
