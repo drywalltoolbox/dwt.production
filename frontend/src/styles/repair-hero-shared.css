@@ -685,3 +685,110 @@
     gap: 8px;
   }
 }
+
+/* Repair landing action details are shown only in the mobile composition. */
+.repair-button__icon, .repair-button__detail { display: none; }
+
+@media (max-width: 47.99rem) {
+  .repair-landing .repair-hero:not(.repair-hero--home-slide) {
+    min-height: clamp(500px, 113vw, 720px);
+    background: #020b1b;
+  }
+  .repair-landing .repair-hero .repair-hero__image { object-position: center top; }
+  .repair-landing .repair-hero .repair-hero__scrim {
+    display: block;
+    background: linear-gradient(90deg, rgba(2, 10, 25, .72), rgba(2, 10, 25, .22) 55%, transparent 85%),
+      linear-gradient(0deg, rgba(2, 10, 25, .9), transparent 45%);
+  }
+  .repair-landing .repair-hero .repair-hero__inner {
+    min-height: inherit;
+    justify-content: flex-start;
+    padding: clamp(88px, 22vw, 150px) clamp(16px, 5vw, 30px) 24px;
+  }
+  .repair-landing .repair-hero .repair-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    color: #a5c9ff;
+    font-size: clamp(9px, 2.2vw, 12px);
+  }
+  .repair-landing .repair-hero .repair-eyebrow::before {
+    content: '';
+    width: 26px;
+    height: 3px;
+    flex: none;
+    border-radius: 2px;
+    background: #2255ee;
+  }
+  .repair-landing .repair-hero h1 {
+    max-width: 52%;
+    margin-bottom: 10px;
+    font-size: clamp(30px, 9.4vw, 58px);
+    line-height: .9;
+  }
+  .repair-landing .repair-hero__lead {
+    max-width: 51%;
+    margin-bottom: 16px;
+    font-size: clamp(13px, 2.9vw, 17px);
+    line-height: 1.3;
+  }
+  .repair-landing .repair-hero__actions {
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+    gap: 8px;
+  }
+  .repair-landing .repair-hero__actions .repair-button {
+    min-height: 64px;
+    padding: 9px;
+    border-radius: 14px;
+    gap: 8px;
+    justify-content: flex-start;
+    font-size: clamp(12px, 3vw, 16px);
+  }
+  .repair-landing .repair-hero__actions .repair-button--primary {
+    border-color: #75c6ff;
+    background: linear-gradient(135deg, #0878ff, #0639de);
+    box-shadow: 0 0 18px rgba(20, 109, 255, .65), inset 0 1px 0 rgba(255,255,255,.35);
+  }
+  .repair-landing .repair-hero__actions .repair-button--secondary {
+    border-color: rgba(125, 168, 232, .75);
+    background: linear-gradient(135deg, rgba(19, 43, 78, .88), rgba(5, 17, 38, .9));
+  }
+  .repair-landing .repair-hero .repair-button__icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 clamp(34px, 9vw, 48px);
+    aspect-ratio: 1;
+    border: 1px solid rgba(143, 194, 255, .7);
+    border-radius: 10px;
+    background: rgba(12, 54, 118, .45);
+  }
+  .repair-landing .repair-hero .repair-button__icon svg { width: 60%; height: 60%; }
+  .repair-landing .repair-hero .repair-button__copy { min-width: 0; flex: 1; }
+  .repair-landing .repair-hero .repair-button__label { display: block; font-weight: 750; }
+  .repair-landing .repair-hero .repair-button__detail {
+    display: block;
+    margin-top: 4px;
+    color: #d6e6ff;
+    font-size: clamp(10px, 2.2vw, 12px);
+    font-weight: 400;
+    line-height: 1.2;
+  }
+  .repair-landing .repair-hero__actions .repair-button__arrow {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+  }
+  .repair-landing .repair-hero__actions .repair-track-link { grid-column: 1 / -1; }
+  .repair-landing .repair-hero__actions .repair-button:focus-visible { outline: 2px solid white; outline-offset: 3px; }
+}
+@media (max-width: 360px) {
+  .repair-landing .repair-hero__actions { grid-template-columns: minmax(0, 1fr); }
+  .repair-landing .repair-hero h1, .repair-landing .repair-hero__lead { max-width: 65%; }
+}
+
+.repair-button__mobile-label { display: none; }
+@media (max-width: 47.99rem) {
+  .repair-landing .repair-hero .repair-button__mobile-label { display: inline; }
+  .repair-landing .repair-hero .repair-button__default-label { display: none; }
+}
