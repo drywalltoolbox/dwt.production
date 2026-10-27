@@ -4,7 +4,7 @@
     "name": "DTB Columbia manufacturer-first rebuild",
     "state": "working_checkpoint_not_import_ready",
     "source_csv": "docs/catalog/columbia-catalog-audit/current-checkpoint/dtb_columbia_catalog_official.csv",
-    "source_csv_sha256": "4fb8af579b797aad5da20e073a53470e5990b344773d2b6b62bf289fd8e641ff",
+    "source_csv_sha256": "b2f7efabf06a4140d04c033b78da6359d60d825160a260e3d9e57229fa361531",
     "currency": "USD",
     "pricing_convention": "Sale price is manufacturer price; regular price is sale price plus 10%, rounded to cents.",
     "csv_columns": [
@@ -225,9 +225,12 @@
       "proposed_from_manufacturer_type_review_required": 464,
       "unresolved_category": 108
     },
-    "matching_review_evidence": "current",
-    "matching_review_changed_inputs": [],
-    "images_populated": 531,
+    "matching_review_evidence": "stale",
+    "matching_review_changed_inputs": [
+      "columbia-manufacturer-first-WORKING-NOT-FOR-IMPORT.csv",
+      "dtb_official_catalog.csv"
+    ],
+    "images_populated": 642,
     "weights_populated": 422,
     "complete_dimensions": 149,
     "price_pairs_not_matching_convention": 0,
@@ -431,7 +434,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -478,7 +480,7 @@
           "Meta: model": "FA268"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa268_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -3078,7 +3080,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -3124,7 +3125,7 @@
           "Meta: model": "CT109"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct109_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -4772,7 +4773,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -4820,7 +4820,7 @@
           "Meta: model": "FA299"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa299_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -4924,7 +4924,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -4971,7 +4970,7 @@
           "Meta: model": "FA295"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa295_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -5075,7 +5074,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -5122,7 +5120,7 @@
           "Meta: model": "FA296"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa296_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -5231,7 +5229,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -5279,7 +5276,7 @@
           "Meta: model": "FA313"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa313_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -5384,7 +5381,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -5432,7 +5428,7 @@
           "Meta: model": "FA300"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa300_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -6069,7 +6065,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -6117,7 +6112,7 @@
           "Meta: model": "FA297"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa297_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -6827,7 +6822,6 @@
           "sale_below_catalog_cost_supplier_verification_required",
           "similar_supplier_sku_has_conflicting_manufacturer_description",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -6875,7 +6869,7 @@
           "Meta: model": "FA320"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa320_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -9935,7 +9929,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -9981,7 +9974,7 @@
           "Meta: model": "FA273"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa273_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -30029,7 +30022,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -30077,7 +30069,7 @@
           "Meta: model": "FA306"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa306_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -30263,7 +30255,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -30311,7 +30302,7 @@
           "Meta: model": "FA305"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa305_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -30867,7 +30858,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -30914,7 +30904,7 @@
           "Meta: model": "FA317"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa317_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -33727,7 +33717,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -33773,7 +33762,7 @@
           "Meta: model": "FA245"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa245_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -34335,7 +34324,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -34383,7 +34371,7 @@
           "Meta: model": "FA227"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa227_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -40854,7 +40842,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -40901,7 +40888,7 @@
           "Meta: model": "FA264"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_fa264_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -44105,7 +44092,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -44151,7 +44137,7 @@
           "Meta: model": "FFB5A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ffb5a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -44699,7 +44685,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -44746,7 +44731,7 @@
           "Meta: model": "MP32"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp32_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -45467,8 +45452,7 @@
         "sale_below_recorded_cost": false,
         "price_pair_matches_convention": true,
         "review_flags": [
-          "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv"
+          "specifications_features_seo_images_and_existing_content_require_reconciliation"
         ]
       },
       "configuration": {
@@ -45513,7 +45497,7 @@
           "Meta: model": "FFB8"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ffb8_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -46102,7 +46086,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -46148,7 +46131,7 @@
           "Meta: model": "CT125A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct125a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -48465,7 +48448,6 @@
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -48511,7 +48493,7 @@
           "Meta: model": "HNS8-2"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hns8_2_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -48636,7 +48618,6 @@
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -48682,7 +48663,7 @@
           "Meta: model": "HNS8-3"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hns8_3_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -48811,7 +48792,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -48858,7 +48838,7 @@
           "Meta: model": "HH16A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh16a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -49388,7 +49368,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -49435,7 +49414,7 @@
           "Meta: model": "HH10B"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh10b_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -51437,7 +51416,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -51483,7 +51461,7 @@
           "Meta: model": "HH7"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh7_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -52288,7 +52266,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -52334,7 +52311,7 @@
           "Meta: model": "HH14"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh14_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -52585,7 +52562,6 @@
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -52631,7 +52607,7 @@
           "Meta: model": "HH17A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh17a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -52756,7 +52732,6 @@
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -52802,7 +52777,7 @@
           "Meta: model": "HH17B"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh17b_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -56768,7 +56743,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -56815,7 +56789,7 @@
           "Meta: model": "HH9"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh9_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -56923,7 +56897,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -56969,7 +56942,7 @@
           "Meta: model": "HP44"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hp44_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -60749,7 +60722,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -60795,7 +60767,7 @@
           "Meta: model": "CT105"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct105_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -60900,7 +60872,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -60946,7 +60917,7 @@
           "Meta: model": "CT10A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct10a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -61631,7 +61602,6 @@
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -61677,7 +61647,7 @@
           "Meta: model": "HNS4-2"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hns4_2_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -63325,8 +63295,7 @@
         "sale_below_recorded_cost": false,
         "price_pair_matches_convention": true,
         "review_flags": [
-          "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv"
+          "specifications_features_seo_images_and_existing_content_require_reconciliation"
         ]
       },
       "configuration": {
@@ -63371,7 +63340,7 @@
           "Meta: model": "FFB17"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ffb17_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -63561,7 +63530,6 @@
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -63607,7 +63575,7 @@
           "Meta: model": "HNS10"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hns10_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -63735,7 +63703,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -63781,7 +63748,7 @@
           "Meta: model": "FFB16"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ffb16_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -63892,7 +63859,6 @@
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -63938,7 +63904,7 @@
           "Meta: model": "HNS10A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hns10a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -65256,7 +65222,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -65302,7 +65267,7 @@
           "Meta: model": "HH5"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh5_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -65407,7 +65372,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -65453,7 +65417,7 @@
           "Meta: model": "HH30"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh30_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -65562,7 +65526,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -65608,7 +65571,7 @@
           "Meta: model": "CT130"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct130_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -65713,7 +65676,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -65759,7 +65721,7 @@
           "Meta: model": "CT127"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct127_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -68697,8 +68659,7 @@
         "sale_below_recorded_cost": false,
         "price_pair_matches_convention": true,
         "review_flags": [
-          "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv"
+          "specifications_features_seo_images_and_existing_content_require_reconciliation"
         ]
       },
       "configuration": {
@@ -68743,7 +68704,7 @@
           "Meta: model": "MP33"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp33_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -68852,7 +68813,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -68898,7 +68858,7 @@
           "Meta: model": "MP28"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp28_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -69007,7 +68967,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -69053,7 +69012,7 @@
           "Meta: model": "MP25"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp25_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -69325,7 +69284,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -69373,7 +69331,7 @@
           "Meta: model": "FFB37"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ffb37_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -71038,7 +70996,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -71085,7 +71042,7 @@
           "Meta: model": "HH35"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh35_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -71262,7 +71219,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -71309,7 +71265,7 @@
           "Meta: model": "CT115"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct115_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -72733,7 +72689,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -72779,7 +72734,7 @@
           "Meta: model": "MP6"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp6_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -73498,7 +73453,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -73544,7 +73498,7 @@
           "Meta: model": "HNS12A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hns12a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -73729,7 +73683,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -73775,7 +73728,7 @@
           "Meta: model": "MP5"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp5_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -73881,7 +73834,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -73928,7 +73880,7 @@
           "Meta: model": "CR1"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_cr1_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -74481,7 +74433,6 @@
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -74527,7 +74478,7 @@
           "Meta: model": "HFFB14-10"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hffb14_10_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -74655,7 +74606,6 @@
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -74700,7 +74650,7 @@
           "Meta: model": "HFFB14-12"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hffb14_12_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -74828,7 +74778,6 @@
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -74873,7 +74822,7 @@
           "Meta: model": "HFFB14"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hffb14_14_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -75147,7 +75096,6 @@
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -75192,7 +75140,7 @@
           "Meta: model": "HFFB14-8"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hffb14_8_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -75967,7 +75915,6 @@
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -76012,7 +75959,7 @@
           "Meta: model": "HNS15-2"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hns15_2_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -76140,8 +76087,7 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv"
+          "variation_parent_not_in_sellable_only_checkpoint"
         ]
       },
       "configuration": {
@@ -76185,7 +76131,7 @@
           "Meta: model": "HNS15-3"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hns15_3_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -78224,7 +78170,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -78271,7 +78216,7 @@
           "Meta: model": "HP47"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hp47_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -80093,7 +80038,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -80140,7 +80084,7 @@
           "Meta: model": "MH8"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh8_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -80244,7 +80188,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -80291,7 +80234,7 @@
           "Meta: model": "MH7"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh7_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -80395,7 +80338,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -80442,7 +80384,7 @@
           "Meta: model": "MH5"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh5_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -80546,7 +80488,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -80593,7 +80534,7 @@
           "Meta: model": "MH16"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh16_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -80697,7 +80638,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -80744,7 +80684,7 @@
           "Meta: model": "MH21"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh21_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -80852,7 +80792,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -80899,7 +80838,7 @@
           "Meta: model": "MH23"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh23_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -81003,7 +80942,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -81050,7 +80988,7 @@
           "Meta: model": "MH22"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh22_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -81158,7 +81096,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -81205,7 +81142,7 @@
           "Meta: model": "MH11"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh11_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -81309,7 +81246,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -81356,7 +81292,7 @@
           "Meta: model": "MH1"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh1_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -81460,7 +81396,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -81507,7 +81442,7 @@
           "Meta: model": "MH6"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh6_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -81611,7 +81546,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -81658,7 +81592,7 @@
           "Meta: model": "MH13"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh13_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -81763,7 +81697,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -81811,7 +81744,7 @@
           "Meta: model": "MH3"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh3_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -81915,7 +81848,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -81962,7 +81894,7 @@
           "Meta: model": "MH3A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh3a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -82066,7 +81998,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -82113,7 +82044,7 @@
           "Meta: model": "MH17"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh17_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -82217,7 +82148,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -82264,7 +82194,7 @@
           "Meta: model": "MH15"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh15_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -82523,7 +82453,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -82570,7 +82499,7 @@
           "Meta: model": "MH18"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh18_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -82794,7 +82723,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -82842,7 +82770,7 @@
           "Meta: model": "MH12"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh12_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -83170,7 +83098,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -83217,7 +83144,7 @@
           "Meta: model": "MH20"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh20_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -83321,7 +83248,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -83368,7 +83294,7 @@
           "Meta: model": "MH4"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh4_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -83782,7 +83708,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -83828,7 +83753,7 @@
           "Meta: model": "MP24"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp24_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -83938,7 +83863,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -83985,7 +83909,7 @@
           "Meta: model": "MP23"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp23_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -84262,7 +84186,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -84308,7 +84231,7 @@
           "Meta: model": "CT96"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct96_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -84978,7 +84901,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -85024,7 +84946,7 @@
           "Meta: model": "CT97"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct97_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -86119,7 +86041,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -86165,7 +86086,7 @@
           "Meta: model": "FFB32"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ffb32_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -86680,7 +86601,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -86728,7 +86648,7 @@
           "Meta: model": "MP23A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp23a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -88707,7 +88627,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -88754,7 +88673,7 @@
           "Meta: model": "MH19"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mh19_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -88937,7 +88856,6 @@
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -88983,7 +88901,7 @@
           "Meta: model": "MP13"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp13_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -89112,7 +89030,6 @@
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -89157,7 +89074,7 @@
           "Meta: model": "MP13A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp13a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -89285,7 +89202,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -89331,7 +89247,7 @@
           "Meta: model": "CT107"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct107_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -89440,7 +89356,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -89486,7 +89401,7 @@
           "Meta: model": "MP14"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp14_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -89817,7 +89732,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -89863,7 +89777,7 @@
           "Meta: model": "HH16"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh16_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -89973,7 +89887,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -90020,7 +89933,7 @@
           "Meta: model": "HH23"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh23_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -90129,7 +90042,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -90176,7 +90088,7 @@
           "Meta: model": "MP11"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp11_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -90280,7 +90192,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -90326,7 +90237,7 @@
           "Meta: model": "HNS18"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hns18_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -92586,7 +92497,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -92632,7 +92542,7 @@
           "Meta: model": "HP1"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hp1_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -92814,7 +92724,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -92860,7 +92769,7 @@
           "Meta: model": "MP3"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp3_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -92969,7 +92878,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -93016,7 +92924,7 @@
           "Meta: model": "MP7"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp7_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -93194,7 +93102,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -93241,7 +93148,7 @@
           "Meta: model": "HP46"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hp46_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -95062,7 +94969,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -95109,7 +95015,7 @@
           "Meta: model": "HH31"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh31_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -95364,7 +95270,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
@@ -95412,7 +95317,7 @@
           "Meta: model": "HH33"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh33_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -96980,7 +96885,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "sale_below_recorded_cost"
         ]
       },
@@ -97026,7 +96930,7 @@
           "Meta: model": "CT101"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct101_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -98842,7 +98746,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -98888,7 +98791,7 @@
           "Meta: model": "CT125"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct125_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -101036,8 +100939,7 @@
         "sale_below_recorded_cost": false,
         "price_pair_matches_convention": true,
         "review_flags": [
-          "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv"
+          "specifications_features_seo_images_and_existing_content_require_reconciliation"
         ]
       },
       "configuration": {
@@ -101082,7 +100984,7 @@
           "Meta: model": "TCS"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_tcs_01.webp, https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_tcs_02.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -101675,7 +101577,6 @@
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -101721,7 +101622,7 @@
           "Meta: model": "FFB7A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ffb7a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -101863,7 +101764,6 @@
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
           "variation_parent_not_in_sellable_only_checkpoint",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -101909,7 +101809,7 @@
           "Meta: model": "FFB7"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ffb7_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "variations": {
@@ -102918,7 +102818,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -102965,7 +102864,7 @@
           "Meta: model": "MP39"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_mp39_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -107890,8 +107789,7 @@
         "sale_below_recorded_cost": false,
         "price_pair_matches_convention": true,
         "review_flags": [
-          "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv"
+          "specifications_features_seo_images_and_existing_content_require_reconciliation"
         ]
       },
       "configuration": {
@@ -107936,7 +107834,7 @@
           "Meta: model": "CT120"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct120_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -108712,7 +108610,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -108758,7 +108655,7 @@
           "Meta: model": "CT111"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct111_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -109595,7 +109492,6 @@
         "review_flags": [
           "sale_below_catalog_cost_supplier_verification_required",
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv",
           "sale_below_recorded_cost"
         ]
@@ -109642,7 +109538,7 @@
           "Meta: model": "FFB32A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ffb32a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -110051,7 +109947,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -110097,7 +109992,7 @@
           "Meta: model": "CT92A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct92a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -110359,7 +110254,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -110406,7 +110300,7 @@
           "Meta: model": "HH10A"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh10a_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -111567,7 +111461,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -111613,7 +111506,7 @@
           "Meta: model": "HH2"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hh2_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {
@@ -112021,7 +111914,6 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "specifications_features_seo_images_and_existing_content_require_reconciliation",
-          "no_image_in_csv",
           "incomplete_dimensions_in_csv"
         ]
       },
@@ -112067,7 +111959,7 @@
           "Meta: model": "HNS20"
         },
         "media": {
-          "Images": "",
+          "Images": "https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_hns20_01.webp",
           "Meta: _dtb_inherit_parent_image": "0"
         },
         "identifiers_and_brand": {

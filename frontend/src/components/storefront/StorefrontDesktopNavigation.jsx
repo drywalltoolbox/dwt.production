@@ -17,12 +17,18 @@ import {
 } from 'lucide-react';
 import '../../styles/storefront-desktop-navigation.css';
 import '../../styles/storefront-navigation-taxonomy.css';
+import automaticToolsIcon from '../../assets/media/category-icons/automatic-taping-tools.webp';
+import drywallStiltsIcon from '../../assets/media/category-icons/drywall-stilts.webp';
 
 const RESILIENT_DROPDOWN_IDS = new Set(['products', 'brands', 'parts', 'repairs', 'schematics']);
 const CATALOG_BACKED_DROPDOWN_IDS = new Set(['products', 'brands', 'parts']);
 const POINTER_OPEN_INTENT_MS = 500;
 const POINTER_SWITCH_INTENT_MS = 500;
 const POINTER_CLOSE_DELAY_MS = 300;
+const PARENT_CATEGORY_IMAGES = {
+  'automatic-taping-tools': automaticToolsIcon,
+  'drywall-stilts': drywallStiltsIcon,
+};
 
 const ENTRY_ICONS = [Wrench, Layers, Box, PenTool, Ruler, Hammer, Package, Settings2, ShoppingBag, Award];
 const ENTRY_ICON_ELEMENTS_LARGE = ENTRY_ICONS.map((Icon, index) => (
@@ -258,6 +264,8 @@ function ProductsPanelRenderer({ item, onNavigate }) {
                 const key = group.slug || group.label;
                 const selected = key === (activeGroup.slug || activeGroup.label);
                 const Icon = parentIconFor(group);
+                const categoryKey = String(group.slug || group.label || '').trim().toLowerCase().replace(/[_\s]+/g, '-');
+                const categoryImage = PARENT_CATEGORY_IMAGES[categoryKey];
                 return (
                   <button
                     key={key}
@@ -268,7 +276,9 @@ function ProductsPanelRenderer({ item, onNavigate }) {
                     onFocus={() => setActiveGroupKey(key)}
                     onClick={() => setActiveGroupKey(key)}
                   >
-                    <Icon size={24} strokeWidth={1.9} aria-hidden="true" />
+                    {categoryImage ? (
+                      <img className="dtb-shop-menu__parent-image" src={categoryImage} alt="" width="42" height="42" decoding="async" />
+                    ) : <Icon size={24} strokeWidth={1.9} aria-hidden="true" />}
                     <span>{group.label}</span>
                     <ChevronRight size={17} strokeWidth={2.1} aria-hidden="true" />
                   </button>

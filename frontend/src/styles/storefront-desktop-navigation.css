@@ -1539,6 +1539,14 @@
     color: #15233b;
   }
 
+  .site-header .dtb-shop-menu__parent-image {
+    display: block;
+    width: 42px;
+    height: 42px;
+    justify-self: center;
+    object-fit: contain;
+  }
+
   .site-header .dtb-shop-menu__parent-card > svg:last-child {
     color: #8a9bb4;
   }

@@ -33,6 +33,7 @@ The current selection contains 1,006 products and excludes merchandise, apparel,
 
 ## Supporting evidence
 
+- [Empty gallery audit](evidence/manufacturer/empty-gallery-audit-report.md): pre-update audit, approved images, remaining gaps, identity risks and public URL checks.
 - [Manufacturer image and JSON audit](evidence/manufacturer/manufacturer-image-and-json-audit-report.md), [image manifest](evidence/manufacturer/columbia-manufacturer-image-manifest.csv), and [product JSON audit](evidence/manufacturer/columbia-products-json-audit.csv). The JSON audit includes the earlier, wider product selection; the image manifest reflects current exclusions.
 - [TSW shipping review](evidence/tsw/tsw-manufacturer-shipping-update-report.md), [shipping changes](evidence/tsw/tsw-manufacturer-shipping-changes.csv), and [flagged matches](evidence/tsw/tsw-manufacturer-shipping-review.csv). Earlier shipping audit counts are historical after exclusions.
 - [TSW cost verification](evidence/tsw/tsw-cost-verification-report.md) and [73-product cost cross-reference](evidence/tsw/tsw-cost-cross-reference.csv).
