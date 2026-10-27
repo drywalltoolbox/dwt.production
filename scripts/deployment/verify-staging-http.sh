@@ -20,6 +20,19 @@ for attempt in 1 2 3; do
     exit 2
   fi
 
+  # Retry identified SiteGround challenges, but never accept them as success.
+  if [[ "$status" == 202 ]] && grep -qiE '^sg-captcha:[[:space:]]*challenge[[:space:]]*$' "$headers"; then
+    echo "SiteGround challenged the staging probe (attempt $attempt/3)." >&2
+    if [[ "$attempt" -lt 3 ]]; then
+      rm -f "$headers" "$body"
+      sleep "$((attempt * 5))"
+      continue
+    fi
+  fi
+
+  if [[ "$status" == 202 ]] && grep -qiE '^sg-captcha:[[:space:]]*challenge[[:space:]]*$' "$headers"; then
+    [[ -z "${GITHUB_OUTPUT:-}" ]] || echo "result=unverified_siteground_challenge" >> "$GITHUB_OUTPUT"
+  fi
   if [[ "$status" != 200 ]]; then
     echo "Staging URL returned HTTP $status; expected 200." >&2
     cat "$headers" >&2
@@ -38,6 +51,7 @@ for attempt in 1 2 3; do
   fi
 
   rm -f "$headers" "$body"
+  [[ -z "${GITHUB_OUTPUT:-}" ]] || echo "result=verified" >> "$GITHUB_OUTPUT"
   echo "Staging HTTP shell and noindex response verified."
   exit 0
 done
