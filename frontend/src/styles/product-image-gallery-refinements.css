@@ -319,8 +319,8 @@
 
 /* The product image is presented directly on the gallery surface. Keep the
    existing image geometry, controls and focus indicator without card chrome. */
-.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__main,
-.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__main:hover {
+.dtb-product-page-shell.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__main,
+.dtb-product-page-shell.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__main:hover {
   border: 0;
   border-radius: 0;
   background: transparent;
