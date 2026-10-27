@@ -346,18 +346,17 @@
   }
 }
 
-/* Mobile commerce hierarchy: comparison price belongs beneath the selling
-   price; compact horizontal actions retain accessible 44px tap height. */
+/* Keep sale and comparison prices aligned, wrapping only when space is tight. */
 @media (max-width: 767px) {
   .dtb-product-card--grid .dtb-product-card__price-group,
   .dtb-product-card--rail .dtb-product-card__price-group,
   .dtb-product-card--list .dtb-product-card__price-group {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    flex-wrap: nowrap;
-    gap: 3px;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 2px 6px;
     width: 100%;
     min-width: 0;
   }
@@ -368,6 +367,7 @@
     display: block;
     max-width: 100%;
     line-height: 1.15;
+    white-space: nowrap;
   }
 
   .dtb-product-card .dtb-product-card__footer .dtb-product-card__action--mobile-icon {
