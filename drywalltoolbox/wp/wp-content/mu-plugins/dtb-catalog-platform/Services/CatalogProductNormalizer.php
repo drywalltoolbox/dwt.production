@@ -322,12 +322,27 @@ final class DTB_CatalogProductNormalizer {
 		$price   = (float) ( $wc['price'] ?? 0 );
 		$regular = '' !== ( $wc['regular_price'] ?? '' ) ? (float) $wc['regular_price'] : $price;
 		$sale    = '' !== ( $wc['sale_price'] ?? '' )    ? (float) $wc['sale_price']    : null;
-		return [
+		$result = [
 			'value'   => $price,
 			'regular' => $regular ?: null,
 			'sale'    => $sale,
 			'onSale'  => (bool) ( $wc['on_sale'] ?? false ),
 		];
+		// WooCommerce owns variation visibility and current prices. Its cached
+		// variation price table excludes unpriced/invisible children and applies
+		// active sale prices without issuing a separate request for every card.
+		if ( 'variable' === ( $wc['type'] ?? '' ) && ! empty( $wc['id'] ) && function_exists( 'wc_get_product' ) ) {
+			$product = wc_get_product( absint( $wc['id'] ) );
+			if ( $product instanceof WC_Product_Variable ) {
+				$prices = $product->get_variation_prices( false );
+				$values = array_values( array_filter( $prices['price'] ?? [], static fn( $value ) => '' !== $value && is_numeric( $value ) && (float) $value >= 0 ) );
+				if ( $values ) {
+					$result['min'] = (float) min( $values );
+					$result['max'] = (float) max( $values );
+				}
+			}
+		}
+		return $result;
 	}
 
 	/** Extract inventory data. */
