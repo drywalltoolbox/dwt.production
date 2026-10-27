@@ -220,6 +220,7 @@ jobs:
           }
 
       - name: Publish with server lock and rollback snapshot
+        id: publish_release
         run: |
           set -euo pipefail
           printf -v remote '%q ' bash -s -- "$RELEASE_ACTION" "$STAGING_ROOT" "$RELEASE_ROOT" "$RELEASE_SHA"
@@ -228,6 +229,7 @@ jobs:
             "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < scripts/deployment/staging-release.sh
 
       - name: Verify published webroot hashes on SiteGround
+        id: webroot_hashes
         run: |
           set -euo pipefail
           printf -v remote '%q ' bash -c 'cd "$1" && sha256sum -c - >/dev/null' -- "$STAGING_ROOT"
@@ -236,6 +238,7 @@ jobs:
             "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < staging-artifact-sha256.txt
 
       - name: Verify public staging shell with bounded transport retry
+        id: public_shell
         run: bash scripts/deployment/verify-staging-http.sh https://drywalltoolbox.com/staging/
 
       - name: Check public staging asset delivery
@@ -315,6 +318,10 @@ jobs:
             echo "| Status | \`$JOB_STATUS\` |"
             echo "| Source | \`$SOURCE_SHA\` |"
             echo "| Release | \`$RELEASE_SHA\` |"
+            echo "| Publish step | \`${{ steps.publish_release.outcome || 'not_checked' }}\` |"
+            echo "| Webroot hash verification | \`${{ steps.webroot_hashes.outcome || 'not_checked' }}\` |"
+            echo "| Public shell verification | \`${{ steps.public_shell.outcome || 'not_checked' }}\` |"
+            echo "| Public shell detail | \`${{ steps.public_shell.outputs.result || 'not_checked' }}\` |"
             echo "| Public asset delivery | \`${{ steps.asset_delivery.outputs.delivery || 'not_checked' }}\` |"
             echo "| Build artifact | \`dtb-staging-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}\` |"
             echo "| Staging URL | https://drywalltoolbox.com/staging/ |"
