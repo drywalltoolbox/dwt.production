@@ -19,9 +19,11 @@ function useIsMobile() {
   return isMobile;
 }
 
+const currencyFormatter = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
 function money(value) {
   const numeric = typeof value === 'number' ? value : parseFloat(String(value || '0'));
-  return Number.isFinite(numeric) ? numeric.toFixed(2) : '0.00';
+  return Number.isFinite(numeric) ? currencyFormatter.format(numeric) : '0.00';
 }
 
 function parsePrice(value) {
@@ -50,8 +52,9 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
 
   const variableMinPrice = isVariable ? parsePrice(displayProduct.min_price ?? displayProduct.price?.min) : null;
   const variableMaxPrice = isVariable ? parsePrice(displayProduct.max_price ?? displayProduct.price?.max) : null;
+  const hasVariableRange = variableMinPrice !== null && variableMaxPrice !== null;
   const priceStr = isVariable
-    ? (variableMinPrice !== null && variableMaxPrice !== null
+    ? (hasVariableRange
       ? `$${money(variableMinPrice)}\n-$${money(variableMaxPrice)}`
       : 'View options')
     : `$${money(commerceProduct.price ?? displayProduct.price ?? 0)}`;
@@ -179,7 +182,9 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
         <div className="dtb-product-card__footer">
         <div className="dtb-product-card__price-col">
           <div className="dtb-product-card__price-group">
-            <strong className="dtb-product-card__price" style={{ color: outOfStock ? 'var(--dtb-muted)' : 'var(--dtb-text)' }}>{priceStr}</strong>
+            <strong className={`dtb-product-card__price${hasVariableRange ? ' dtb-product-card__price--range' : ''}`} style={{ color: outOfStock ? 'var(--dtb-muted)' : 'var(--dtb-text)' }} aria-label={hasVariableRange ? `${money(variableMinPrice)} to ${money(variableMaxPrice)}` : undefined}>
+              {hasVariableRange ? <><span className="dtb-product-card__range-min" aria-hidden="true">${money(variableMinPrice)}</span><span className="dtb-product-card__range-max" aria-hidden="true"><span className="dtb-product-card__range-dash">–</span>${money(variableMaxPrice)}</span></> : priceStr}
+            </strong>
             {comparePriceStr ? <span className="dtb-product-card__compare-price">{comparePriceStr}</span> : null}
           </div>
         </div>
@@ -196,11 +201,11 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
             <span className="dtb-add-to-cart__surface" aria-hidden="true" />
             <span className="dtb-add-to-cart__content">
               <SlidersHorizontal className="dtb-add-to-cart__cart" aria-hidden="true" />
-              <span className="dtb-add-to-cart__label">Options</span>
+              <span className="dtb-add-to-cart__label"><span className="dtb-card-action__desktop-label">Options</span><span className="dtb-card-action__mobile-label">View options</span></span>
             </span>
           </button>
         ) : (
-          <AddToCartButton onClick={handleAddButtonClick} disabled={outOfStock} className="dtb-product-card__action dtb-product-card__action--mobile-icon" size="card" label="Add" productId={displayProduct.id} aria-label={`Add ${name} to cart`} data-dtb-card-action="add" />
+          <AddToCartButton onClick={handleAddButtonClick} disabled={outOfStock} className="dtb-product-card__action dtb-product-card__action--mobile-icon" size="card" label="Add" productId={displayProduct.id} aria-label={`Add ${name} to cart`} data-dtb-card-action="add"><span className="dtb-card-action__desktop-label">Add</span><span className="dtb-card-action__mobile-label">Add to cart</span></AddToCartButton>
         )}
         </div>
       </div>
