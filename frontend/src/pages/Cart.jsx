@@ -1,9 +1,9 @@
 // WooCommerce Store API remains authoritative for cart content, prices, and coupon state.
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { m as Motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import {
-  AlertCircle, ArrowLeft, ArrowRight, Lock, Loader2, Minus, Plus,
+  AlertCircle, ArrowRight, Lock, Loader2, Minus, Plus,
   ShoppingBag, ShoppingCart, ShieldAlert, Tag, Trash2,
 } from 'lucide-react';
 
@@ -48,7 +48,6 @@ function getCouponCode(coupon) {
 
 export default function Cart() {
   const reduceMotion = useReducedMotion();
-  const navigate = useNavigate();
   const {
     cart, cartItems, isLoading, error, updateQuantity, removeFromCart,
     applyCoupon, removeCoupon, refreshCart, isMutating,
@@ -187,12 +186,7 @@ export default function Cart() {
       <Container width="wide" className="dtb-cart-page__container">
         <header className="dtb-cart-page__heading">
           <div className="dtb-cart-page__heading-row">
-            <Link to="/products" className="dtb-cart-page__mobile-back">
-              <ArrowLeft size={15} aria-hidden="true" /><span>Products</span>
-            </Link>
-            <div className="dtb-cart-page__desktop-back">
-              <BackButton onClick={() => navigate('/products')} label="Products" className="dtb-product-nav-back" />
-            </div>
+            <BackButton to="/products" label="Products" />
             <div className="dtb-cart-page__title-group">
               <h1>Shopping cart</h1>
               <p>{cartItems.length} item{cartItems.length !== 1 ? 's' : ''}</p>
@@ -308,9 +302,7 @@ export default function Cart() {
               })}
             </AnimatePresence>
             <div className="dtb-cart-sheet__continue">
-              <Link to="/products" className="dtb-cart-continue">
-                <ArrowLeft size={15} aria-hidden="true" />Continue shopping
-              </Link>
+              <BackButton to="/products" label="Continue shopping" />
             </div>
           </section>
 

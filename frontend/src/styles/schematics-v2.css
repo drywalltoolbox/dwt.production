@@ -792,38 +792,6 @@
   object-position: center;
 }
 
-.back-button.dtb-schematic-viewer__back {
-  position: relative;
-  z-index: 2;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  min-height: 40px;
-  padding: 0 0.75rem;
-  border: 1px solid rgba(15, 23, 42, 0.14);
-  border-radius: 10px;
-  background: #f8fafc;
-  color: #0f172a;
-  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
-  cursor: pointer;
-  font-size: 0.86rem;
-  font-weight: 700;
-  line-height: 1;
-  touch-action: manipulation;
-  transition: background 140ms ease, border-color 140ms ease, transform 120ms ease;
-}
-
-.back-button.dtb-schematic-viewer__back:hover {
-  border-color: rgba(15, 23, 42, 0.24);
-  background: #f1f5f9;
-  transform: none;
-}
-
-.back-button.dtb-schematic-viewer__back:active { transform: scale(0.96); }
-.back-button.dtb-schematic-viewer__back:focus-visible { outline: 2px solid var(--dtb-primary); outline-offset: 2px; }
-.back-button.dtb-schematic-viewer__back svg { width: 20px; height: 20px; flex: 0 0 20px; }
-
 .dtb-schematics-page__content--viewer .dtb-schematic-diagram-wrap {
   flex: 1 1 auto;
   min-height: 0;
@@ -842,15 +810,6 @@
     min-height: 102px;
     padding: 8px;
   }
-
-  .back-button.dtb-schematic-viewer__back {
-    width: 40px;
-    min-width: 40px;
-    height: 40px;
-    padding: 0;
-  }
-
-  .back-button.dtb-schematic-viewer__back span { display: none; }
   .dtb-schematics-page__content--viewer .dtb-schematic-viewer__heading { width: calc(100% - 104px); }
   .dtb-schematic-viewer__title { width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .dtb-schematic-viewer__brand-logo {
@@ -1598,17 +1557,6 @@
   .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__header {
     background: transparent;
     gap: clamp(14px, 2vw, 28px);
-  }
-  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .back-button.dtb-schematic-viewer__back {
-    background: #173a72;
-    color: #fff;
-    border: 1px solid #315c92;
-    border-radius: 11px;
-    min-height: 42px;
-    box-shadow: 0 3px 9px rgba(11,33,67,.1);
-  }
-  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .back-button.dtb-schematic-viewer__back:hover {
-    background: #22508f;
   }
   .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__heading {
     gap: 18px;

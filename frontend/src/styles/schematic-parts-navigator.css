@@ -20,8 +20,6 @@
 .dtb-schematics-page__content--viewer .dtb-schematic-viewer__title { color: #fff; font-weight: 760; letter-spacing: -.025em; }
 .dtb-schematics-page__content--viewer .dtb-schematic-viewer__subtitle { color: #b9c9ea; }
 .dtb-schematics-page__content--viewer .dtb-schematic-viewer__brand-logo { height: clamp(44px, 5vw, 62px); max-width: min(45vw, 180px); padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; object-fit: contain; }
-.dtb-schematics-page__content--viewer .back-button.dtb-schematic-viewer__back { background: rgba(255,255,255,.11); color: #fff; border-color: rgba(255,255,255,.19); box-shadow: none; }
-.dtb-schematics-page__content--viewer .back-button.dtb-schematic-viewer__back:hover { background: rgba(255,255,255,.2); }
 
 .dtb-schematics-page__content--viewer .dtb-schematic-variant-pills,
 .dtb-schematics-page__content--viewer .dtb-schematic-page-tabs {
@@ -510,11 +508,7 @@
   .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__back {
     grid-column: 1; grid-row: 1;
     justify-self: start;
-    min-width: 42px; width: 42px; height: 42px;
-    background: #173a72;
-    border: 1px solid #315c92;
-    border-radius: 11px;
-    color: #fff;
+
   }
   .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__heading {
     grid-column: 2; grid-row: 1;

@@ -1,3 +1,4 @@
+import SmartBackButton from '../components/navigation/SmartBackButton.jsx';
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { getProductById } from '../services/catalog';
@@ -95,7 +96,7 @@ export default function Product() {
           <h2 className="text-2xl font-bold mb-4">Product not found</h2>
           <p className="text-gray-600 mb-6">We couldn't find the product you're looking for.</p>
           <div className="flex items-center justify-center gap-3">
-            <button onClick={() => navigate(-1)} className="px-4 py-2 bg-gray-200 rounded">Go Back</button>
+            <SmartBackButton fallbackTo="/products" label="Go back" />
             <Link to="/products" className="px-4 py-2 bg-primary-600 text-white rounded">Browse Products</Link>
           </div>
         </div>

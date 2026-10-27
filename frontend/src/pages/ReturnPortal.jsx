@@ -1,3 +1,4 @@
+import BackButton from '../components/shared/BackButton.jsx';
 /**
  * frontend/src/pages/ReturnPortal.jsx
  *
@@ -10,7 +11,6 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   AlertCircle,
-  ArrowLeft,
   ArrowRight,
   Check,
   CheckCircle,
@@ -509,9 +509,7 @@ export default function ReturnPortal() {
 
               {step === 2 ? (
                 <form onSubmit={handleSubmit} noValidate>
-                  <button type="button" className="returns-back" onClick={() => setStep(1)}>
-                    <ArrowLeft size={15} /> Back to order items
-                  </button>
+                  <BackButton onClick={() => setStep(1)} label="Back to order items" />
 
                   <div className="returns-section-heading">
                     <span className="returns-kicker">Return details</span>

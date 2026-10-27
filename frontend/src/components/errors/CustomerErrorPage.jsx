@@ -1,4 +1,5 @@
-import { ArrowLeft, Headphones, Home, RefreshCw, Search, ShieldAlert, WifiOff } from 'lucide-react';
+import BackButton from '../shared/BackButton.jsx';
+import { Headphones, Home, RefreshCw, Search, ShieldAlert, WifiOff } from 'lucide-react';
 import { useParams } from 'react-router-dom';
 import SEOHead from '../shared/SEOHead.jsx';
 import { getCustomerErrorContent } from '../../utils/customerErrors.js';
@@ -57,7 +58,7 @@ export default function CustomerErrorPage({
           </div>
 
           <div className="customer-error-card__footer">
-            <button type="button" onClick={() => window.history.back()}><ArrowLeft size={15} /> Go back</button>
+            <BackButton label="Go back" onClick={() => { if (window.history.state?.idx > 0) window.history.back(); else window.location.assign(appHref('/')); }} />
             <a href={appHref('/contact')}><Headphones size={15} /> Contact support</a>
           </div>
 

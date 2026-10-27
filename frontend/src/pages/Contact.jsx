@@ -1,7 +1,8 @@
+import BackButton from '../components/shared/BackButton.jsx';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Check, Clock3, Mail, Phone, X } from 'lucide-react';
+import { ArrowRight, Check, Clock3, Mail, Phone, X } from 'lucide-react';
 import SEOHead from '../components/shared/SEOHead';
 import Dropdown from '../components/ui/Dropdown';
 import { apiClient } from '../api/client';
@@ -283,7 +284,7 @@ export default function Contact() {
                       </div>
                     )}
                     <div className="dtb-contact__wizard-actions">
-                      {step > 0 ? <button type="button" className="dtb-contact__dialog-secondary" onClick={() => { setStep((current) => current - 1); setError(''); }} disabled={submitting}><ArrowLeft size={16} aria-hidden="true" /> Back</button> : <button type="button" className="dtb-contact__dialog-secondary" onClick={() => setWizardOpen(false)}>Cancel</button>}
+                      {step > 0 ? <BackButton onClick={() => { setStep((current) => current - 1); setError(''); }} disabled={submitting} label="Back" /> : <button type="button" className="dtb-contact__dialog-secondary" onClick={() => setWizardOpen(false)}>Cancel</button>}
                       <button type="submit" className="dtb-contact__submit" disabled={submitting}>{step === 2 ? (submitting ? 'Sending…' : 'Submit inquiry') : 'Continue'} <ArrowRight size={17} aria-hidden="true" /></button>
                     </div>
                   </form>

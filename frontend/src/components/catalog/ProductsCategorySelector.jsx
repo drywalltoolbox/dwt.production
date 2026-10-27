@@ -1,5 +1,5 @@
+import BackButton from '../shared/BackButton.jsx';
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
 import { fetchCatalogProducts } from '../../services/catalogPlatformCache.js';
 import { brandToSlug } from '../../utils/catalogUrlState.js';
 import { resolveCategoryThumbnail } from '../../utils/categoryThumbnailImages.js';
@@ -354,15 +354,7 @@ export default function ProductsCategorySelector({
   return (
     <div className="product-selector">
       <div className="product-selector-header">
-        <button
-          type="button"
-          onClick={onBack}
-          className="back-button dtb-product-nav-back dtb-product-nav-back--icon-only"
-          aria-label="Back to brands"
-          title="Back to brands"
-        >
-          <ArrowLeft size={20} aria-hidden="true" />
-        </button>
+        <BackButton onClick={onBack} className="dtb-product-nav-back" label="Back to brands" iconOnly />
         <div className="product-selector-header-content">
           {brandLogo && (
             <img

@@ -113,8 +113,7 @@
 }
 
 .customer-error-button,
-.customer-error-card__footer a,
-.customer-error-card__footer button {
+.customer-error-card__footer a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -162,8 +161,7 @@
   border-top: 1px solid #e2e8f0;
 }
 
-.customer-error-card__footer a,
-.customer-error-card__footer button {
+.customer-error-card__footer a {
   padding: 0;
   border: 0;
   background: transparent;

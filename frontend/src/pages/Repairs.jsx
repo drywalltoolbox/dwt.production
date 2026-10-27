@@ -1,3 +1,4 @@
+import BackButton from '../components/shared/BackButton.jsx';
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import { m as Motion } from 'framer-motion';
@@ -1710,19 +1711,14 @@ export function RepairStartExperience() {
                             onChange={(e) => { set('toolBrand')(e); clearErr('toolBrand'); }}
                             autoFocus
                           />
-                          <button
-                            type="button"
+                          <BackButton
                             onClick={() => {
                               setBrandIsCustom(false);
                               setCategoryIsCustom(false);
                               setModelIsCustom(false);
                               setFormData((prev) => ({ ...prev, toolBrand: '', toolCategory: '', toolModel: '' }));
                               clearErr('toolBrand'); clearErr('toolCategory'); clearErr('toolModel');
-                            }}
-                            style={{ background: 'none', border: 'none', padding: '4px 0 0', cursor: 'pointer', fontSize: '0.78rem', color: 'var(--primary-600)', textDecoration: 'underline' }}
-                          >
-                            ← Back to brand list
-                          </button>
+                            }} label="Back to brand list" />
                         </>
                       ) : (
                         <Dropdown
@@ -1772,18 +1768,13 @@ export function RepairStartExperience() {
                                 onChange={(e) => { set('toolCategory')(e); clearErr('toolCategory'); }}
                                 autoFocus
                               />
-                              <button
-                                type="button"
+                              <BackButton
                                 onClick={() => {
                                   setCategoryIsCustom(false);
                                   setModelIsCustom(false);
                                   setFormData((prev) => ({ ...prev, toolCategory: '', toolModel: '' }));
                                   clearErr('toolCategory'); clearErr('toolModel');
-                                }}
-                                style={{ background: 'none', border: 'none', padding: '4px 0 0', cursor: 'pointer', fontSize: '0.78rem', color: 'var(--primary-600)', textDecoration: 'underline' }}
-                              >
-                                ← Back to category list
-                              </button>
+                                }} label="Back to category list" />
                             </>
                           ) : (
                             <Dropdown
@@ -1824,17 +1815,12 @@ export function RepairStartExperience() {
                                   onChange={(e) => { set('toolModel')(e); clearErr('toolModel'); }}
                                   autoFocus
                                 />
-                                <button
-                                  type="button"
+                                <BackButton
                                   onClick={() => {
                                     setModelIsCustom(false);
                                     setFormData((prev) => ({ ...prev, toolModel: '' }));
                                     clearErr('toolModel');
-                                  }}
-                                  style={{ background: 'none', border: 'none', padding: '4px 0 0', cursor: 'pointer', fontSize: '0.78rem', color: 'var(--primary-600)', textDecoration: 'underline' }}
-                                >
-                                  ← Back to model list
-                                </button>
+                                  }} label="Back to model list" />
                               </>
                             ) : (
                               <Dropdown

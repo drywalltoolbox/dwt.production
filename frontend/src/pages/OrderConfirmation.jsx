@@ -5,7 +5,7 @@
  */
 
 import { useState, useEffect } from 'react';
-import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom';
+import { useParams, useSearchParams, Link } from 'react-router-dom';
 import { getOrder } from '../api/orders.js';
 import {
   CheckCircle,
@@ -14,13 +14,13 @@ import {
   Truck,
   AlertCircle,
   Loader,
-  ArrowLeft,
   CreditCard,
   Mail,
   MapPin,
   User,
 } from 'lucide-react';
 import SEOHead from '../components/shared/SEOHead';
+import SmartBackButton from '../components/navigation/SmartBackButton.jsx';
 import AnimatedOrderSuccess from '../components/order/AnimatedOrderSuccess.jsx';
 import { useOrderItemImageFallbacks } from '../hooks/useOrderItemImageFallbacks.js';
 import { getOrderItemKey, resolveOrderItemImage } from '../utils/orderItemImages.js';
@@ -123,7 +123,6 @@ export default function OrderConfirmation() {
   const { id } = useParams();
   const [searchParams] = useSearchParams();
   const orderKey = searchParams.get('order_key') || '';
-  const navigate = useNavigate();
   const [order, setOrder] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -187,9 +186,7 @@ export default function OrderConfirmation() {
             <h1 className="dtb-order-title">Unable to load order</h1>
             <p className="dtb-order-subtitle">{error}</p>
             <div className="dtb-order-actions">
-              <button type="button" onClick={() => navigate(-1)} className="dtb-order-button dtb-order-button--secondary">
-                <ArrowLeft size={16} /> Go Back
-              </button>
+              <SmartBackButton fallbackTo="/dashboard?tab=orders" label="Go back" />
               <Link to="/products" className="dtb-order-button dtb-order-button--primary">
                 Continue Shopping
               </Link>

@@ -1,9 +1,10 @@
+import BackButton from '../shared/BackButton.jsx';
 /**
  * My Jobs: intentionally small, customer-owned jobsite notebook.
  * No workflow, crew management, or shadow commerce state.
  */
 import { useCallback, useEffect, useState } from 'react';
-import { ArrowLeft, ArrowRight, Archive, ArchiveRestore, Check, ChevronRight, ExternalLink, MapPin, NotebookPen, Pencil, Plus, Search, Trash2, X } from 'lucide-react';
+import { ArrowRight, Archive, ArchiveRestore, Check, ChevronRight, ExternalLink, MapPin, NotebookPen, Pencil, Plus, Search, Trash2, X } from 'lucide-react';
 import { createJob, updateJob, deleteJob, listJobs, listJobNotes, createJobNote, updateJobNote, deleteJobNote } from '../../api/jobs.js';
 import '../../styles/dashboard-experience.css';
 
@@ -207,7 +208,7 @@ export default function JobsTab({ onJobsChanged }) {
       {error && <div role="alert" className="dtb-jobs-error">{error} <button type="button" onClick={refresh}>Retry</button></div>}
       {selected ? (
         <div className="dtb-jobs-detail">
-          <button type="button" className="dtb-jobs-back" onClick={() => { setSelected(null); setEditing(false); refresh(); }}><ArrowLeft size={17}/> All Jobs</button>
+          <BackButton onClick={() => { setSelected(null); setEditing(false); refresh(); }} label="All Jobs" />
           {editing ? <JobEditor key={selected.id} initial={selected} heading="Edit Job" busy={busy} onCancel={() => setEditing(false)} onSave={saveExisting}/> : (
             <div className="dtb-jobs-detail__heading"><div><h3>{selected.name}</h3>{selected.location ? <a className="dtb-jobs-location" target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(selected.location)}`}><MapPin size={15}/>{selected.location}<ExternalLink size={13}/></a> : <p className="dtb-jobs-muted">No location added</p>}</div><div className="dtb-jobs-detail__actions"><button className="dtb-jobs-btn dtb-jobs-btn--subtle" onClick={() => setEditing(true)} type="button"><Pencil size={15}/> Edit Job</button><button className="dtb-jobs-btn dtb-jobs-btn--subtle" onClick={toggleArchive} disabled={busy} type="button">{selected.archived ? <ArchiveRestore size={15}/> : <Archive size={15}/>} {selected.archived ? 'Restore' : 'Archive'}</button><button className="dtb-jobs-btn dtb-jobs-btn--danger" onClick={removeJob} disabled={busy} type="button"><Trash2 size={15}/> Delete</button></div></div>
           )}

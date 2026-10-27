@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Filter, LayoutGrid, List, ShoppingCart } from 'lucide-react';
+import { Filter, LayoutGrid, List, ShoppingCart } from 'lucide-react';
 import SEOHead from '../components/shared/SEOHead';
 import BackButton from '../components/shared/BackButton';
 import SearchBar from '../components/catalog/SearchBar';
@@ -788,15 +788,12 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
             <div className={`dtb-listing-heading${isCategoryProductRoute ? '' : ' dtb-listing-heading--standard'}`}>
               {selectedBrand && getBrandLogo(categoryScopeLabel) ? (
                 <div className="dtb-brand-listing-header">
-                  <button
-                    type="button"
+                  <BackButton
                     className="dtb-brand-listing-header__back"
                     onClick={selectedDisplayCategories.length > 0 ? resetToCategoryCards : resetToBrandList}
-                    aria-label={selectedDisplayCategories.length > 0 ? 'Back to brand categories' : 'Back to brands'}
-                    title={selectedDisplayCategories.length > 0 ? 'Back to brand categories' : 'Back to brands'}
-                  >
-                    <ArrowLeft size={22} strokeWidth={2} aria-hidden="true" />
-                  </button>
+                    label={selectedDisplayCategories.length > 0 ? 'Back to brand categories' : 'Back to brands'}
+                    iconOnly
+                  />
                   <img
                     className="dtb-brand-listing-header__logo"
                     src={getBrandLogo(categoryScopeLabel)}

@@ -19,6 +19,7 @@ import '../../styles/storefront-desktop-navigation.css';
 import '../../styles/storefront-navigation-taxonomy.css';
 import automaticToolsIcon from '../../assets/media/category-icons/automatic-taping-tools.webp';
 import drywallStiltsIcon from '../../assets/media/category-icons/drywall-stilts.webp';
+import replacementPartsIcon from '../../assets/media/category-icons/replacement-parts.webp';
 
 const RESILIENT_DROPDOWN_IDS = new Set(['products', 'brands', 'parts', 'repairs', 'schematics']);
 const CATALOG_BACKED_DROPDOWN_IDS = new Set(['products', 'brands', 'parts']);
@@ -28,6 +29,7 @@ const POINTER_CLOSE_DELAY_MS = 300;
 const PARENT_CATEGORY_IMAGES = {
   'automatic-taping-tools': automaticToolsIcon,
   'drywall-stilts': drywallStiltsIcon,
+  'replacement-parts': replacementPartsIcon,
 };
 
 const ENTRY_ICONS = [Wrench, Layers, Box, PenTool, Ruler, Hammer, Package, Settings2, ShoppingBag, Award];

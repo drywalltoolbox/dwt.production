@@ -12,7 +12,7 @@ export default function SchematicHeader({ title, brandName, categoryName, onBack
 
   return (
     <div className="dtb-schematic-viewer__header">
-      <BackButton onClick={onBack} label="Back" className="dtb-schematic-viewer__back" />
+      <BackButton onClick={onBack} label="Back" hideLabelOnMobile className="dtb-schematic-viewer__back" />
       <div className="dtb-schematic-viewer__heading">
         {brandLogo && (
           <img

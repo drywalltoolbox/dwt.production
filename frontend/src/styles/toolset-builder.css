@@ -1691,20 +1691,6 @@
   min-height: 2.5rem;
   align-items: center;
 }
-.dtb-toolset-workspace__top .back-button.dtb-product-nav-back {
-  min-height: 2.5rem;
-  padding: .45rem .8rem .45rem .65rem;
-  border-color: transparent;
-  background: transparent;
-  box-shadow: none;
-  color: #26466f;
-}
-.dtb-toolset-workspace__top .back-button.dtb-product-nav-back:hover {
-  border-color: rgba(34,85,238,.14);
-  background: rgba(255,255,255,.82);
-  box-shadow: 0 8px 22px rgba(22,55,107,.08);
-  color: var(--dtb-primary-strong);
-}
 .dtb-toolset-workspace__layout {
   grid-template-columns: minmax(12.5rem, 14rem) minmax(0, 1fr) minmax(18rem, 21rem);
   gap: 1.35rem;

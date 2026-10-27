@@ -1,6 +1,6 @@
+import BackButton from '../../components/shared/BackButton.jsx';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
-  ArrowLeft,
   ArrowRight,
   Check,
   ChevronDown,
@@ -232,10 +232,7 @@ function ReviewSet({ workflow, selections, onBackToBuilder }) {
   return (
     <section className="dtb-toolset-review" aria-labelledby="toolset-review-title">
       <div className="dtb-toolset-review__heading">
-        <button type="button" className="dtb-toolset-text-action" onClick={onBackToBuilder}>
-          <ArrowLeft size={17} aria-hidden="true" />
-          Continue editing
-        </button>
+        <BackButton onClick={onBackToBuilder} label="Continue editing" />
         <h1 id="toolset-review-title">{workflow.label}</h1>
         <p>Review your selected products and configurations.</p>
       </div>
@@ -532,15 +529,7 @@ export default function ToolsetBuilderWorkspace({ workflow, onChangeWorkflow }) 
           ) : null}
 
           <div className="dtb-toolset-step-actions">
-            <button
-              type="button"
-              className="dtb-toolset-secondary-action"
-              disabled={currentIndex === 0}
-              onClick={() => setStep(currentIndex - 1)}
-            >
-              <ArrowLeft size={17} aria-hidden="true" />
-              Previous category
-            </button>
+            <BackButton disabled={currentIndex === 0} onClick={() => setStep(currentIndex - 1)} label="Previous category" />
             <button
               type="button"
               className="dtb-toolset-primary-action"

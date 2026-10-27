@@ -69,27 +69,7 @@
   padding: 8px 52px 10px;
   text-align: center;
 }
-.dtb-brand-listing-header__back {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  transform: translateY(-50%);
-  display: grid;
-  place-items: center;
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  color: #0f172a;
-  cursor: pointer;
-}
-.dtb-brand-listing-header__back:hover { background: #f1f5f9; }
-.dtb-brand-listing-header__back:focus-visible {
-  outline: 2px solid #2255ee;
-  outline-offset: 2px;
-}
+.dtb-brand-listing-header__back { position: absolute; top: 50%; left: 0; transform: translateY(-50%); }
 .dtb-brand-listing-header__logo {
   display: block;
   width: auto;
