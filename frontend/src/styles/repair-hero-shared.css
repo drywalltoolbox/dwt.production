@@ -792,3 +792,29 @@
   .repair-landing .repair-hero .repair-button__mobile-label { display: inline; }
   .repair-landing .repair-hero .repair-button__default-label { display: none; }
 }
+
+/* The homepage slider uses the same mobile composition, with room below the
+   actions for its existing slide controls. Content determines the height. */
+@media (max-width: 47.99rem) {
+  .home-hero__repair-surface .repair-hero.repair-hero--home-slide {
+    min-height: clamp(500px, 113vw, 720px);
+  }
+  .home-hero__repair-surface .repair-hero .repair-hero__inner {
+    min-height: inherit;
+    padding-bottom: 56px;
+  }
+  .home-hero__repair-surface .repair-hero h1 {
+    max-width: 60%;
+    overflow-wrap: normal;
+  }
+  .home-hero__repair-surface .repair-hero__lead {
+    max-width: 60%;
+  }
+  .home-hero__repair-surface .repair-hero__actions .repair-track-link {
+    grid-column: 1 / -1;
+  }
+}
+@media (max-width: 360px) {
+  .home-hero__repair-surface .repair-hero h1,
+  .home-hero__repair-surface .repair-hero__lead { max-width: 75%; }
+}
