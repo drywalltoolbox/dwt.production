@@ -810,11 +810,43 @@
   .home-hero__repair-surface .repair-hero__lead {
     max-width: 60%;
   }
+  .home-hero__repair-surface .repair-hero__actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+  }
+  .home-hero__repair-surface .repair-hero__actions .repair-button {
+    display: grid;
+    grid-template-columns: clamp(34px, 9vw, 48px) minmax(0, 1fr) 18px;
+    align-items: center;
+    height: 100%;
+    min-height: 72px;
+    box-sizing: border-box;
+  }
+  .home-hero__repair-surface .repair-hero__actions .repair-button__icon {
+    width: 100%;
+  }
+  .home-hero__repair-surface .repair-hero__actions .repair-button__arrow {
+    justify-self: end;
+  }
   .home-hero__repair-surface .repair-hero__actions .repair-track-link {
     grid-column: 1 / -1;
   }
 }
 @media (max-width: 360px) {
+  .home-hero__repair-surface .repair-hero__actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
   .home-hero__repair-surface .repair-hero h1,
   .home-hero__repair-surface .repair-hero__lead { max-width: 75%; }
+}
+
+/* Match the two homepage actions on wider screens as well. */
+@media (min-width: 48rem) {
+  .home-hero__repair-surface .repair-hero__actions .repair-button--primary,
+  .home-hero__repair-surface .repair-hero__actions .repair-button--secondary {
+    flex: 0 1 245px;
+    min-width: 0;
+    min-height: 58px;
+    box-sizing: border-box;
+  }
 }
