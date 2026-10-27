@@ -20,9 +20,8 @@ for attempt in 1 2 3; do
     exit 2
   fi
 
-  # SiteGround can temporarily challenge automated requests. A challenge is
-  # never a successful verification; retry only this identified response.
-  if [[ "$status" == 202 ]] && grep -qiE '^sg-captcha:[[:space:]]*challenge[[:space:]]*\r?
+  # Retry identified SiteGround challenges, but never accept them as success.
+  if [[ "$status" == 202 ]] && grep -qiE '^sg-captcha:[[:space:]]*challenge[[:space:]]*
     echo "Staging URL returned HTTP $status; expected 200." >&2
     cat "$headers" >&2
     rm -f "$headers" "$body"
