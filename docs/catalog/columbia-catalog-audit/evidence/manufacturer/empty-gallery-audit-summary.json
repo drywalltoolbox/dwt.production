@@ -7,22 +7,24 @@
     "docs/catalog/columbia-catalog-audit/archive/previous-audits/fuzzy-price-changes.csv": "095be968f61a55d5b3e6c419c8fb98bb4795dde4ee2b69e827da1385cc7ff41d",
     "products/launch/official/dtb_official_catalog.csv": "b43573f88f6f1c33b4862fff7a1363f9fb3c64e7c5506ba6d0565c56ed3ba4c0",
     "columbia-catalog-export/product_variants.csv": "bb4ec8d05980314af85be10d582b4226638ac66e9481ab3caf94a7d5ce7e9e5d",
-    "columbia-catalog-export/products.json": "572cd1ffe3061fb00bd1068289d678f6b86fd5fee984fe08bfd3d6123f78456c"
+    "columbia-catalog-export/products.json": "572cd1ffe3061fb00bd1068289d678f6b86fd5fee984fe08bfd3d6123f78456c",
+    "products/launch/media/audit/catalog-image-mapping-manifest.csv": "a3ac281fcf521fade4fa938548e7cd802f73f23563270e7681749a9970e68d50"
   },
   "checkpoint_product_rows": 1006,
   "empty_gallery_products": 475,
   "product_assessment": {
-    "current_dtb_linked_local_candidate": 130,
+    "current_dtb_linked_local_candidate": 128,
     "no_local_candidate": 324,
-    "candidate_requires_review": 21
+    "candidate_requires_review": 23
   },
   "image_candidates": 152,
   "image_assessment": {
-    "existing_dtb_sku_link_review_visual": 131,
-    "candidate_requires_review": 21
+    "existing_dtb_sku_link_review_visual": 129,
+    "candidate_requires_review": 23
   },
   "image_review_flags": {
     "product_identity_review": 18,
+    "filename_contains_different_sku": 8,
     "identical_file_content_used_by_multiple_products": 7,
     "unscaled_file_is_not_same_filename_as_dtb_url": 1,
     "manufacturer_export_assigns_filename_to_different_product": 1
@@ -39,7 +41,7 @@
       "not_found_404": 1
     },
     "per_product_candidate_200": 150,
-    "per_product_existing_dtb_candidate_200": 130
+    "per_product_existing_dtb_candidate_200": 128
   },
   "official_catalog_changed": false,
   "checkpoint_changed": false
