@@ -9,7 +9,7 @@ import '../../styles/category-hero.css';
 import '../../styles/tool-type-merchandising.css';
 import '../../styles/selector-cards.css';
 
-function ToolTypeTile({ category, showSelectorChevron = false, brand = '' }) {
+export function ToolTypeTile({ category, showSelectorChevron = false, brand = '' }) {
   const [imageFailed, setImageFailed] = useState(false);
   const image = resolveCategoryThumbnail(category);
   const hasImage = Boolean(image) && !imageFailed;

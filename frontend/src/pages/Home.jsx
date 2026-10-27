@@ -7,6 +7,16 @@ import StorefrontSection from '../components/storefront/StorefrontSection';
 import StorefrontProductRail from '../components/storefront/StorefrontProductRail';
 import { getBrandLogo } from '../utils/brandAssets.js';
 import { brandToSlug } from '../utils/catalogUrlState.js';
+import { ToolTypeTile } from '../components/catalog/ShopByToolType.jsx';
+import StorefrontRail from '../components/storefront/StorefrontRail.jsx';
+import '../styles/home-commerce-discovery.css';
+
+const HOME_CATEGORIES = [
+  ['Automatic Tapers', 'automatic-tapers'], ['Finishing Boxes', 'flat-boxes'],
+  ['Loading Pumps', 'loading-pumps'], ['Corner Finishers', 'corner-finishers'],
+  ['Corner Rollers', 'corner-rollers'], ['Corner Applicators', 'corner-applicators-angle-boxes'],
+  ['Nail Spotters', 'nail-spotters'], ['Handles', 'flat-box-handles'],
+];
 
 const HOME_BRAND_ORDER = ['TapeTech', 'Columbia Tools', 'Platinum Drywall Tools', 'Level 5', 'SurPro', 'Dura-Stilts'];
 
@@ -73,6 +83,14 @@ export default function Home() {
 
       <div className="page-wrapper dtb-home-page storefront-shell">
         <HomeHero />
+
+        <section className="home-commerce-categories dtb-container dtb-container--fluid" aria-label="Shop popular tool categories">
+          <StorefrontRail label="Shop popular tool categories" className="dtb-tool-type-rail">
+            {HOME_CATEGORIES.map(([name, slug]) => (
+              <ToolTypeTile key={slug} category={{ name, slug }} showSelectorChevron />
+            ))}
+          </StorefrontRail>
+        </section>
 
         <div className="dtb-home-storefront">
           <div className="dtb-container dtb-container--fluid pb-4">
