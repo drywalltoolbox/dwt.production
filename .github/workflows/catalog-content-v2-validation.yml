@@ -24,6 +24,8 @@ jobs:
           php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Domain/ProductMeta.php
           php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Services/CatalogProductNormalizer.php
           php -l drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/bootstrap.php
+      - name: Variation price range contract
+        run: php scripts/catalog/tests/variation_price_range_contract.php
       - name: Features CSV importer regression
         run: php scripts/catalog/tests/catalog_content_csv_contract.php
       - name: Canonical catalog structural validation
