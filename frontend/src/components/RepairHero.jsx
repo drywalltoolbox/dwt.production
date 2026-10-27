@@ -1,7 +1,27 @@
 import { Link } from 'react-router-dom';
+import { ShoppingBag, Tags, Search, BookOpen, Wrench, ClipboardList } from 'lucide-react';
 import RepairGuarantees from './RepairGuarantees';
 import ResponsivePicture from './media/ResponsivePicture.jsx';
 import { RESPONSIVE_HERO_MEDIA } from '../assets/media/responsiveHeroMedia.js';
+
+const ACTION_PRESENTATION = {
+  tools: {
+    primary: { Icon: ShoppingBag, detail: 'Explore professional tools.' },
+    secondary: { Icon: Tags, detail: 'Find your trusted brands.' },
+  },
+  parts: {
+    primary: { Icon: Search, detail: 'Find the part you need.' },
+    secondary: { Icon: BookOpen, detail: 'Explore tool schematics.' },
+  },
+  repairs: {
+    primary: { Icon: Wrench, detail: 'Get your tools back to work faster.' },
+    secondary: { Icon: ClipboardList, detail: 'See all repair solutions.' },
+  },
+};
+
+function ActionIcon({ Icon }) {
+  return <span className="repair-button__icon" aria-hidden="true"><Icon /></span>;
+}
 
 function Arrow() {
   return (
@@ -20,6 +40,8 @@ export default function RepairHero({
   homeSlide = false,
   isActive = true,
 }) {
+  const actionPresentation = ACTION_PRESENTATION[campaign.id];
+
   return (
     <section
       className={`repair-hero${homeSlide ? ' repair-hero--home-slide' : ''}`}
@@ -50,10 +72,12 @@ export default function RepairHero({
           <p className="repair-hero__lead">{campaign.description}</p>
           <div className="repair-hero__actions" aria-label={`${campaign.label} actions`}>
             <Link className="repair-button repair-button--primary" to={campaign.primaryAction.to}>
-              {campaign.primaryAction.label}<Arrow />
+              {actionPresentation && <ActionIcon Icon={actionPresentation.primary.Icon} />}
+              <span className="repair-button__copy"><span className="repair-button__label"><span className={campaign.id === 'repairs' ? 'repair-button__default-label' : undefined}>{campaign.primaryAction.label}</span>{campaign.id === 'repairs' && <span className="repair-button__mobile-label">Start a Repair</span>}</span>{actionPresentation && <span className="repair-button__detail">{actionPresentation.primary.detail}</span>}</span><Arrow />
             </Link>
             <Link className="repair-button repair-button--secondary" to={campaign.secondaryAction.to}>
-              {campaign.secondaryAction.label}<Arrow />
+              {actionPresentation && <ActionIcon Icon={actionPresentation.secondary.Icon} />}
+              <span className="repair-button__copy"><span className="repair-button__label">{campaign.secondaryAction.label}</span>{actionPresentation && <span className="repair-button__detail">{actionPresentation.secondary.detail}</span>}</span><Arrow />
             </Link>
             {campaign.id === 'repairs' && (
               <Link className="repair-track-link" to="/repairs/track">
