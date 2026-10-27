@@ -111,8 +111,7 @@ final class DTB_ProductDetailController {
 			return [];
 		}
 
-		// Keep this rail to explicit operator-curated upsells. WooCommerce's
-		// category/tag fallback is not a relevance signal and can look random.
+		// Toolsets use exact included SKUs; other products keep their existing recommendations.
 		$category_slug = (string) ( $product['displayCategory']['slug'] ?? '' );
 		$is_toolset = in_array( $category_slug, [ 'automatic-tool-sets', 'automatic-tool-sets-kits', 'semi-automatic-tool-sets-kits', 'toolsets', 'tool-sets-kits', 'tool-sets-and-kits' ], true );
 		$candidate_ids = [];
@@ -131,7 +130,7 @@ final class DTB_ProductDetailController {
 				}
 			}
 		} else {
-			$candidate_ids = $source_product->get_upsell_ids();
+			$candidate_ids = array_merge( $source_product->get_upsell_ids(), wc_get_related_products( $product_id, self::RELATED_PRODUCT_LIMIT * 2, [ $product_id ] ) );
 		}
 		$candidate_ids = array_values( array_unique( array_filter( array_map( 'absint', $candidate_ids ) ) ) );
 		$visible_ids   = [];
