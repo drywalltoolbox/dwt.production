@@ -971,3 +971,26 @@
       linear-gradient(0deg, rgba(2, 10, 25, .68), transparent 45%);
   }
 }
+
+@media (max-width: 47.99rem) {
+  .home-hero__repair-surface .repair-hero .repair-hero__content {
+    width: 100%;
+    max-width: 34rem;
+    margin-inline: auto;
+    text-align: center;
+  }
+  .home-hero__repair-surface .repair-hero .repair-eyebrow {
+    justify-content: center;
+  }
+  .home-hero__repair-surface .repair-hero h1 {
+    align-items: center;
+    max-width: 100%;
+  }
+  .home-hero__repair-surface .repair-hero__lead {
+    max-width: min(100%, 32rem);
+    margin-inline: auto;
+  }
+  .home-hero__repair-surface .repair-hero__actions .repair-track-link {
+    justify-self: center;
+  }
+}
