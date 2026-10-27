@@ -958,3 +958,16 @@
   .home-hero__slide[data-campaign="parts"] .repair-hero__image { object-position: 50% 48%; }
   .home-hero__slide[data-campaign="repairs"] .repair-hero__image { object-position: 50% 30%; }
 }
+
+/* Balance the copy and actions inside the taller mobile image frame. */
+@media (max-width: 47.99rem) {
+  .home-hero__repair-surface .repair-hero .repair-hero__inner {
+    justify-content: center;
+    padding-block: 40px 64px;
+  }
+  .home-hero__repair-surface .repair-hero .repair-hero__scrim {
+    background:
+      linear-gradient(90deg, rgba(2, 10, 25, .88), rgba(2, 10, 25, .48) 58%, rgba(2, 10, 25, .08)),
+      linear-gradient(0deg, rgba(2, 10, 25, .68), transparent 45%);
+  }
+}
