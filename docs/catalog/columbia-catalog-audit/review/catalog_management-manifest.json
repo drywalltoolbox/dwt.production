@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "product_rows": 1006,
+  "input_sha256": {
+    "docs/catalog/columbia-catalog-audit/tools/build_catalog_management.py": "a7f78d3e3e9c4dde186f2a18b6b772120a6252b4a8c96734a6bdbed7982fe7e9",
+    "docs/catalog/columbia-catalog-audit/current-checkpoint/dtb_columbia_catalog_official.csv": "4fb8af579b797aad5da20e073a53470e5990b344773d2b6b62bf289fd8e641ff",
+    "docs/catalog/columbia-catalog-audit/current-checkpoint/checkpoint-manifest.json": "7b736bb146918421f38ec6d8fd40ac8e13b86411b4e0d032e430b2950bcf48ac",
+    "docs/catalog/columbia-catalog-audit/review/manufacturer-rebuild-dispositions.csv": "a85f5b24ec33ecae7b4fdaaffa990ec26fa580e21ec2a6d495571e35310cb707",
+    "docs/catalog/columbia-catalog-audit/review/shared-category-manufacturer-assessment.csv": "704cab41387a1f083f61ccbcf7c21cc735e1b702d70776d46de0ce2df47773ef",
+    "docs/catalog/columbia-catalog-audit/evidence/manufacturer/columbia-products-json-audit.csv": "914889f3a4774865d305f5c30d59cac73ec840e94a719b70a1cf91abb239c967",
+    "docs/catalog/columbia-catalog-audit/review/columbia-matched-review-summary.json": "f6b50bd9abe5fcf0c5ec0c968830491328d489a3aca58e59935b985a306087b1",
+    "docs/catalog/columbia-catalog-audit/review/columbia-matched-fields-review.csv": "64eb5a1612a042a2d9c27127d3c6904789714f194041f307fdbb09f82f13c66c",
+    "docs/catalog/columbia-catalog-audit/evidence/tsw/tsw-manufacturer-shipping-changes.csv": "e31f4a03663e222e9494453ee2e14bac6941a0709c1af660d7dc1d4fd1b6b711",
+    "docs/catalog/columbia-catalog-audit/temporary-reference/columbia-manufacturer-woocommerce-reference.csv": "2158e1607d7a35bad2d4d814f1c208fb1f5bf879a9649f7ae966bc1e75d003d4",
+    "docs/catalog/columbia-catalog-audit/temporary-reference/dtb-current-columbia-woocommerce-reference.csv": "f3ead3ea076e6f49cd890b8d3184bbddfa74ed792fdd4dc09b21a4ca9ad973f8",
+    "docs/catalog/columbia-catalog-audit/archive/previous-audits/fuzzy-price-changes.csv": "095be968f61a55d5b3e6c419c8fb98bb4795dde4ee2b69e827da1385cc7ff41d",
+    "products/launch/official/dtb_official_catalog.csv": "c4a9b708d8e9f334845ce037fb9cc5bb3ff74e522443cd3d791c5b25617cc645"
+  },
+  "output_sha256": "50255fa3d0a7f0e8241d303ac51d113378ef451ef08b4c7ff6aae8b862ff604c",
+  "purpose": "Generated read-only management view; the CSV checkpoint remains the source."
+}

@@ -1,0 +1,433 @@
+﻿source_row,manufacturer_sku,manufacturer_name,supplier_sku,supplier_stripped_csv_row,supplier_name,match_method,field,old_value,new_value
+9,FA277,#6 Bellevile Washer,CTTFA277,760,#6 BELLEVILLE WASHER COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+40,FA323,"1/4-20 X 1"" Hex Bolt",CTTFA323,782,"1/4-20 X 1"" HEX BOLT COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+71,FFBR-9-10,"10"" Box Blades Kit",CTTFFBR910,835,"COLUMBIA BOX BLADE KIT 10""",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.1315
+71,FFBR-9-10,"10"" Box Blades Kit",CTTFFBR910,835,"COLUMBIA BOX BLADE KIT 10""",unique_normalized_identifier_and_equal_product_tokens,Length (in),,10
+71,FFBR-9-10,"10"" Box Blades Kit",CTTFFBR910,835,"COLUMBIA BOX BLADE KIT 10""",unique_normalized_identifier_and_equal_product_tokens,Width (in),,2
+71,FFBR-9-10,"10"" Box Blades Kit",CTTFFBR910,835,"COLUMBIA BOX BLADE KIT 10""",unique_normalized_identifier_and_equal_product_tokens,Height (in),,0.5
+73,CGPK10,"10"" Comfort Grip SS Joint Putty Knife",CTTCGPK10,537,"COLUMBIA 10"" COMFORTGRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.454
+73,CGPK10,"10"" Comfort Grip SS Joint Putty Knife",CTTCGPK10,537,"COLUMBIA 10"" COMFORTGRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Length (in),,9
+73,CGPK10,"10"" Comfort Grip SS Joint Putty Knife",CTTCGPK10,537,"COLUMBIA 10"" COMFORTGRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Width (in),,10
+73,CGPK10,"10"" Comfort Grip SS Joint Putty Knife",CTTCGPK10,537,"COLUMBIA 10"" COMFORTGRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Height (in),,1
+75,FSB10,"10"" Fat Boy Smoothing Blade",CTTFSB10,846,"COLUMBIA 10"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Weight (lbs),,0.798
+75,FSB10,"10"" Fat Boy Smoothing Blade",CTTFSB10,846,"COLUMBIA 10"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Length (in),,11
+75,FSB10,"10"" Fat Boy Smoothing Blade",CTTFSB10,846,"COLUMBIA 10"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Width (in),,6
+75,FSB10,"10"" Fat Boy Smoothing Blade",CTTFSB10,846,"COLUMBIA 10"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Height (in),,3
+77,10ITFB,"10"" Inside Track Fat Boy Finishing Box",CTT10ITFB,384,"COLUMBIA 10"" INSIDE TRACK FAT BOY FLAT BOX",exact_manufacturer_supplier_identifier,Weight (lbs),,3.6515
+77,10ITFB,"10"" Inside Track Fat Boy Finishing Box",CTT10ITFB,384,"COLUMBIA 10"" INSIDE TRACK FAT BOY FLAT BOX",exact_manufacturer_supplier_identifier,Length (in),,13
+77,10ITFB,"10"" Inside Track Fat Boy Finishing Box",CTT10ITFB,384,"COLUMBIA 10"" INSIDE TRACK FAT BOY FLAT BOX",exact_manufacturer_supplier_identifier,Width (in),,6
+77,10ITFB,"10"" Inside Track Fat Boy Finishing Box",CTT10ITFB,384,"COLUMBIA 10"" INSIDE TRACK FAT BOY FLAT BOX",exact_manufacturer_supplier_identifier,Height (in),,8
+78,NPK10,"10"" Nylon Grip Joint Putty Knife",CTTNPK10,981,"COLUMBIA 10"" PUTTY KNIFE ",exact_manufacturer_supplier_identifier,Weight (lbs),,0.357
+78,NPK10,"10"" Nylon Grip Joint Putty Knife",CTTNPK10,981,"COLUMBIA 10"" PUTTY KNIFE ",exact_manufacturer_supplier_identifier,Length (in),,9
+78,NPK10,"10"" Nylon Grip Joint Putty Knife",CTTNPK10,981,"COLUMBIA 10"" PUTTY KNIFE ",exact_manufacturer_supplier_identifier,Width (in),,10
+78,NPK10,"10"" Nylon Grip Joint Putty Knife",CTTNPK10,981,"COLUMBIA 10"" PUTTY KNIFE ",exact_manufacturer_supplier_identifier,Height (in),,1
+79,CTK10,"10"" SS Comfort Grip Taping Knife",CTTCTK10,707,"COLUMBIA 10"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.562
+79,CTK10,"10"" SS Comfort Grip Taping Knife",CTTCTK10,707,"COLUMBIA 10"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Length (in),,9
+79,CTK10,"10"" SS Comfort Grip Taping Knife",CTTCTK10,707,"COLUMBIA 10"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Width (in),,10
+79,CTK10,"10"" SS Comfort Grip Taping Knife",CTTCTK10,707,"COLUMBIA 10"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Height (in),,1
+81,TSB-10,"10"" Tomahawk Smoothing Blade",CTTTSB10,1056,"COLUMBIA 10"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,2.5
+117,FFBR-9-12,"12"" Box Blades Kit",CTTFFBR912,836,"COLUMBIA BOX BLADE KIT 12""",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.1525
+117,FFBR-9-12,"12"" Box Blades Kit",CTTFFBR912,836,"COLUMBIA BOX BLADE KIT 12""",unique_normalized_identifier_and_equal_product_tokens,Length (in),,12.75
+117,FFBR-9-12,"12"" Box Blades Kit",CTTFFBR912,836,"COLUMBIA BOX BLADE KIT 12""",unique_normalized_identifier_and_equal_product_tokens,Width (in),,2.5
+117,FFBR-9-12,"12"" Box Blades Kit",CTTFFBR912,836,"COLUMBIA BOX BLADE KIT 12""",unique_normalized_identifier_and_equal_product_tokens,Height (in),,0.25
+121,FSB12,"12"" Fat Boy Smoothing Blade",CTTFSB12,847,"COLUMBIA 12"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Weight (lbs),,0.9505
+121,FSB12,"12"" Fat Boy Smoothing Blade",CTTFSB12,847,"COLUMBIA 12"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Length (in),,13
+121,FSB12,"12"" Fat Boy Smoothing Blade",CTTFSB12,847,"COLUMBIA 12"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Width (in),,6
+121,FSB12,"12"" Fat Boy Smoothing Blade",CTTFSB12,847,"COLUMBIA 12"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Height (in),,3
+123,12-4.7-0.7-G-C-C,"12"" Gold Curved Trowel",CTT124707GCC,388,"12"" GOLD CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,1.2185
+123,12-4.7-0.7-G-C-C,"12"" Gold Curved Trowel",CTT124707GCC,388,"12"" GOLD CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Length (in),,13
+123,12-4.7-0.7-G-C-C,"12"" Gold Curved Trowel",CTT124707GCC,388,"12"" GOLD CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Width (in),,5
+123,12-4.7-0.7-G-C-C,"12"" Gold Curved Trowel",CTT124707GCC,388,"12"" GOLD CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Height (in),,4
+127,12ITFB,"12"" Inside Track Fat Boy Finishing Box",CTT12ITFB,393,"COLUMBIA 12"" INSIDE TRACK FAT BOY FLAT BOX",exact_manufacturer_supplier_identifier,Weight (lbs),,4.105
+127,12ITFB,"12"" Inside Track Fat Boy Finishing Box",CTT12ITFB,393,"COLUMBIA 12"" INSIDE TRACK FAT BOY FLAT BOX",exact_manufacturer_supplier_identifier,Length (in),,13
+127,12ITFB,"12"" Inside Track Fat Boy Finishing Box",CTT12ITFB,393,"COLUMBIA 12"" INSIDE TRACK FAT BOY FLAT BOX",exact_manufacturer_supplier_identifier,Width (in),,7
+127,12ITFB,"12"" Inside Track Fat Boy Finishing Box",CTT12ITFB,393,"COLUMBIA 12"" INSIDE TRACK FAT BOY FLAT BOX",exact_manufacturer_supplier_identifier,Height (in),,6
+128,MRR12,"12"" Mud Roller Replacement",CTTMRR12,977,"COLUMBIA 12""X18MM REPLACE MUD ROLLER",exact_manufacturer_supplier_identifier,Weight (lbs),,0.4495
+128,MRR12,"12"" Mud Roller Replacement",CTTMRR12,977,"COLUMBIA 12""X18MM REPLACE MUD ROLLER",exact_manufacturer_supplier_identifier,Length (in),,13
+128,MRR12,"12"" Mud Roller Replacement",CTTMRR12,977,"COLUMBIA 12""X18MM REPLACE MUD ROLLER",exact_manufacturer_supplier_identifier,Width (in),,4
+128,MRR12,"12"" Mud Roller Replacement",CTTMRR12,977,"COLUMBIA 12""X18MM REPLACE MUD ROLLER",exact_manufacturer_supplier_identifier,Height (in),,4
+129,12-4.7-0.4-S-C-C,"12"" Silver Curved Trowel",CTT124704SCC,386,"12"" SILVER CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,1.077
+129,12-4.7-0.4-S-C-C,"12"" Silver Curved Trowel",CTT124704SCC,386,"12"" SILVER CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Length (in),,13
+129,12-4.7-0.4-S-C-C,"12"" Silver Curved Trowel",CTT124704SCC,386,"12"" SILVER CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Width (in),,5
+129,12-4.7-0.4-S-C-C,"12"" Silver Curved Trowel",CTT124704SCC,386,"12"" SILVER CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Height (in),,4
+130,CTK12,"12"" SS Comfort Grip Taping Knife",CTTCTK12,709,"COLUMBIA 12"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.6325
+130,CTK12,"12"" SS Comfort Grip Taping Knife",CTTCTK12,709,"COLUMBIA 12"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Length (in),,9.5
+130,CTK12,"12"" SS Comfort Grip Taping Knife",CTTCTK12,709,"COLUMBIA 12"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Width (in),,12
+130,CTK12,"12"" SS Comfort Grip Taping Knife",CTTCTK12,709,"COLUMBIA 12"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Height (in),,1
+132,TSB-12,"12"" Tomahawk Smoothing Blade",CTTTSB12,1057,"COLUMBIA 12"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,3
+138,FFBR-9-14,"14"" Box Blades Kit",CTTFFBR914,837,"BOX BLADES KIT 14"" COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.5
+140,FSB14,"14"" Fat Boy Smoothing Blade",CTTFSB14,848,"COLUMBIA 14"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Weight (lbs),,1.1135
+140,FSB14,"14"" Fat Boy Smoothing Blade",CTTFSB14,848,"COLUMBIA 14"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Length (in),,15
+140,FSB14,"14"" Fat Boy Smoothing Blade",CTTFSB14,848,"COLUMBIA 14"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Width (in),,6
+140,FSB14,"14"" Fat Boy Smoothing Blade",CTTFSB14,848,"COLUMBIA 14"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Height (in),,3
+142,14-4.7-0.7-G-C-C,"14"" Gold Curved Trowel",CTT144707GCC,398,"14"" GOLD CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,1.353
+142,14-4.7-0.7-G-C-C,"14"" Gold Curved Trowel",CTT144707GCC,398,"14"" GOLD CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Length (in),,15
+142,14-4.7-0.7-G-C-C,"14"" Gold Curved Trowel",CTT144707GCC,398,"14"" GOLD CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Width (in),,5
+142,14-4.7-0.7-G-C-C,"14"" Gold Curved Trowel",CTT144707GCC,398,"14"" GOLD CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Height (in),,4
+146,14-4.7-0.4-S-C-C,"14"" Silver Curved Trowel",CTT144704SCC,396,"14"" SILVER CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,1.191
+146,14-4.7-0.4-S-C-C,"14"" Silver Curved Trowel",CTT144704SCC,396,"14"" SILVER CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Length (in),,15
+146,14-4.7-0.4-S-C-C,"14"" Silver Curved Trowel",CTT144704SCC,396,"14"" SILVER CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Width (in),,5
+146,14-4.7-0.4-S-C-C,"14"" Silver Curved Trowel",CTT144704SCC,396,"14"" SILVER CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Height (in),,4
+147,CTK14,"14"" SS Comfort Grip Taping Knife",CTTCTK14,711,"COLUMBIA 14"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.6975
+147,CTK14,"14"" SS Comfort Grip Taping Knife",CTTCTK14,711,"COLUMBIA 14"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Length (in),,14
+147,CTK14,"14"" SS Comfort Grip Taping Knife",CTTCTK14,711,"COLUMBIA 14"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Width (in),,9
+147,CTK14,"14"" SS Comfort Grip Taping Knife",CTTCTK14,711,"COLUMBIA 14"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Height (in),,1
+149,TSB-14,"14"" Tomahawk Smoothing Blade",CTTTSB14,1058,"COLUMBIA 14"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,3
+150,FSB16,"16"" Fat Boy Smoothing Blade",CTTFSB16,849,"COLUMBIA 16"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Weight (lbs),,1.2795
+150,FSB16,"16"" Fat Boy Smoothing Blade",CTTFSB16,849,"COLUMBIA 16"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Length (in),,17
+150,FSB16,"16"" Fat Boy Smoothing Blade",CTTFSB16,849,"COLUMBIA 16"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Width (in),,6
+150,FSB16,"16"" Fat Boy Smoothing Blade",CTTFSB16,849,"COLUMBIA 16"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Height (in),,3
+151,16-4.7-0.7-G-C-C,"16"" Gold Curved Trowel",CTT164707GCC,402,"16"" GOLD CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,1.509
+151,16-4.7-0.7-G-C-C,"16"" Gold Curved Trowel",CTT164707GCC,402,"16"" GOLD CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Length (in),,17
+151,16-4.7-0.7-G-C-C,"16"" Gold Curved Trowel",CTT164707GCC,402,"16"" GOLD CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Width (in),,5
+151,16-4.7-0.7-G-C-C,"16"" Gold Curved Trowel",CTT164707GCC,402,"16"" GOLD CURVE TROWEL COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Height (in),,4
+153,FSB18,"18"" Fat Boy Smoothing Blade",CTTFSB18,850,"COLUMBIA 18"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Weight (lbs),,1.4875
+153,FSB18,"18"" Fat Boy Smoothing Blade",CTTFSB18,850,"COLUMBIA 18"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Length (in),,19
+153,FSB18,"18"" Fat Boy Smoothing Blade",CTTFSB18,850,"COLUMBIA 18"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Width (in),,6
+153,FSB18,"18"" Fat Boy Smoothing Blade",CTTFSB18,850,"COLUMBIA 18"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Height (in),,3
+156,TSB-18,"18"" Tomahawk Smoothing Blade",CTTTSB18,1059,"COLUMBIA 18"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,3.75
+159,CGPK2,"2"" Comfort Grip SS Joint Putty Knife",CTTCGPK2,539,"COLUMBIA 2"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.278
+159,CGPK2,"2"" Comfort Grip SS Joint Putty Knife",CTTCGPK2,539,"COLUMBIA 2"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Length (in),,9
+159,CGPK2,"2"" Comfort Grip SS Joint Putty Knife",CTTCGPK2,539,"COLUMBIA 2"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Width (in),,2
+159,CGPK2,"2"" Comfort Grip SS Joint Putty Knife",CTTCGPK2,539,"COLUMBIA 2"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Height (in),,1
+163,HNSA-5-2,"2"" Nail Spotter Wheel Kit",CTTHNSA52,926,"2"" NAIL SPOTTER WHEEL KIT COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.072
+163,HNSA-5-2,"2"" Nail Spotter Wheel Kit",CTTHNSA52,926,"2"" NAIL SPOTTER WHEEL KIT COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Length (in),,5.5
+163,HNSA-5-2,"2"" Nail Spotter Wheel Kit",CTTHNSA52,926,"2"" NAIL SPOTTER WHEEL KIT COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Width (in),,2
+163,HNSA-5-2,"2"" Nail Spotter Wheel Kit",CTTHNSA52,926,"2"" NAIL SPOTTER WHEEL KIT COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Height (in),,2
+165,NPK2,"2"" Nylon Grip Joint Putty Knife",CTTNPK2,983,"2"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.169
+165,NPK2,"2"" Nylon Grip Joint Putty Knife",CTTNPK2,983,"2"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,8
+165,NPK2,"2"" Nylon Grip Joint Putty Knife",CTTNPK2,983,"2"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,2
+165,NPK2,"2"" Nylon Grip Joint Putty Knife",CTTNPK2,983,"2"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+166,OPPK2,"2"" One Piece SS Joint Putty Knife",CTTOPPK2,998,"2"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.2
+166,OPPK2,"2"" One Piece SS Joint Putty Knife",CTTOPPK2,998,"2"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,9
+166,OPPK2,"2"" One Piece SS Joint Putty Knife",CTTOPPK2,998,"2"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,2
+166,OPPK2,"2"" One Piece SS Joint Putty Knife",CTTOPPK2,998,"2"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+176,FSB24,"24"" Fatboy Smoothing Blade",CTTFSB24,851,"COLUMBIA 24"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Weight (lbs),,1.8055
+176,FSB24,"24"" Fatboy Smoothing Blade",CTTFSB24,851,"COLUMBIA 24"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Length (in),,25
+176,FSB24,"24"" Fatboy Smoothing Blade",CTTFSB24,851,"COLUMBIA 24"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Width (in),,6
+176,FSB24,"24"" Fatboy Smoothing Blade",CTTFSB24,851,"COLUMBIA 24"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Height (in),,3
+178,TSB-24,"24"" Tomahawk Smoothing Blade",CTTTSB24,1060,"COLUMBIA 24"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,3.494
+178,TSB-24,"24"" Tomahawk Smoothing Blade",CTTTSB24,1060,"COLUMBIA 24"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Length (in),,24
+178,TSB-24,"24"" Tomahawk Smoothing Blade",CTTTSB24,1060,"COLUMBIA 24"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Width (in),,6
+178,TSB-24,"24"" Tomahawk Smoothing Blade",CTTTSB24,1060,"COLUMBIA 24"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Height (in),,3
+183,CGPK3,"3"" Comfort Grip SS Joint Putty Knife",CTTCGPK3,540,"COLUMBIA 3"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.2925
+183,CGPK3,"3"" Comfort Grip SS Joint Putty Knife",CTTCGPK3,540,"COLUMBIA 3"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Length (in),,9
+183,CGPK3,"3"" Comfort Grip SS Joint Putty Knife",CTTCGPK3,540,"COLUMBIA 3"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Width (in),,3
+183,CGPK3,"3"" Comfort Grip SS Joint Putty Knife",CTTCGPK3,540,"COLUMBIA 3"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Height (in),,1
+184,3DF,"3"" Direct Flusher",CTT3DF,425,"3"" DIRECT FLUSHER - WHEEL KIT INCLD COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,1
+188,HNSA-5-3,"3"" Nail Spotter Wheel Kit",CTTHNSA53,927,"3"" NAIL SPOTTER WHEEL KIT COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.01
+190,NPK3,"3"" Nylon Grip Joint Putty Knife",CTTNPK3,984,"3"" PUTTY KNIFE STAINLESS STEEL COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.2045
+190,NPK3,"3"" Nylon Grip Joint Putty Knife",CTTNPK3,984,"3"" PUTTY KNIFE STAINLESS STEEL COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,8
+190,NPK3,"3"" Nylon Grip Joint Putty Knife",CTTNPK3,984,"3"" PUTTY KNIFE STAINLESS STEEL COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,3
+190,NPK3,"3"" Nylon Grip Joint Putty Knife",CTTNPK3,984,"3"" PUTTY KNIFE STAINLESS STEEL COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+191,OPPK3,"3"" One Piece SS Joint Putty Knife",CTTOPPK3,999,"3"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.2725
+191,OPPK3,"3"" One Piece SS Joint Putty Knife",CTTOPPK3,999,"3"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,9
+191,OPPK3,"3"" One Piece SS Joint Putty Knife",CTTOPPK3,999,"3"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,3
+191,OPPK3,"3"" One Piece SS Joint Putty Knife",CTTOPPK3,999,"3"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+192,3SF,"3"" Standard Flusher",CTT3SF,430,"3"" STANDARD FLUSHER - WHEEL KIT INCLD COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.484
+192,3SF,"3"" Standard Flusher",CTT3SF,430,"3"" STANDARD FLUSHER - WHEEL KIT INCLD COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,4
+192,3SF,"3"" Standard Flusher",CTT3SF,430,"3"" STANDARD FLUSHER - WHEEL KIT INCLD COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,5
+192,3SF,"3"" Standard Flusher",CTT3SF,430,"3"" STANDARD FLUSHER - WHEEL KIT INCLD COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,2
+194,3WTDF,"3"" Widetrack Direct Flusher",CTT3WTDF,431,"3"" WIDETRACK DIR FLUSH - WHEEL KIT INCLD COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,1
+195,3WTSF,"3"" Widetrack Standard Flusher",CTT3WTSF,432,"3"" WIDETRACK STD FLUSH - WHEEL KIT INCLD COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,1
+213,FSB32,"32"" Fat Boy Smoothing Blade",CTTFSB32,852,"COLUMBIA 32"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Weight (lbs),,4.5
+215,TSB-32,"32"" Tomahawk Smoothing Blade",CTTTSB32,1061,"COLUMBIA 32"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,4.5445
+215,TSB-32,"32"" Tomahawk Smoothing Blade",CTTTSB32,1061,"COLUMBIA 32"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Length (in),,33.75
+215,TSB-32,"32"" Tomahawk Smoothing Blade",CTTTSB32,1061,"COLUMBIA 32"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Width (in),,6.25
+215,TSB-32,"32"" Tomahawk Smoothing Blade",CTTTSB32,1061,"COLUMBIA 32"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Height (in),,2.75
+216,3CGPK4,"4"" 3 Way Comfort Grip SS Joint Putty Knife",CTT3CGPK4,421,"COLUMBIA 4"" THREE WAY SS COMFORT GRIP PUTTY KNIFE",exact_manufacturer_supplier_identifier,Weight (lbs),,0.3075
+216,3CGPK4,"4"" 3 Way Comfort Grip SS Joint Putty Knife",CTT3CGPK4,421,"COLUMBIA 4"" THREE WAY SS COMFORT GRIP PUTTY KNIFE",exact_manufacturer_supplier_identifier,Length (in),,4
+216,3CGPK4,"4"" 3 Way Comfort Grip SS Joint Putty Knife",CTT3CGPK4,421,"COLUMBIA 4"" THREE WAY SS COMFORT GRIP PUTTY KNIFE",exact_manufacturer_supplier_identifier,Width (in),,9
+216,3CGPK4,"4"" 3 Way Comfort Grip SS Joint Putty Knife",CTT3CGPK4,421,"COLUMBIA 4"" THREE WAY SS COMFORT GRIP PUTTY KNIFE",exact_manufacturer_supplier_identifier,Height (in),,1
+217,3NPK4,"4"" 3 Way Nylon Grip Joint Putty Knife",CTT3NPK4,426,"4"" THREE WAY NYLON PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.22
+217,3NPK4,"4"" 3 Way Nylon Grip Joint Putty Knife",CTT3NPK4,426,"4"" THREE WAY NYLON PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,8
+217,3NPK4,"4"" 3 Way Nylon Grip Joint Putty Knife",CTT3NPK4,426,"4"" THREE WAY NYLON PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,4
+217,3NPK4,"4"" 3 Way Nylon Grip Joint Putty Knife",CTT3NPK4,426,"4"" THREE WAY NYLON PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+218,2KMR4,"4"" Comfort Grip Mud Roller Cage With Roller",CTT2KMR4,411,"CTT 4"" MUD ROLLER W/ 2K QUICK CONNECT FRAME",exact_manufacturer_supplier_identifier,Weight (lbs),,0.575
+218,2KMR4,"4"" Comfort Grip Mud Roller Cage With Roller",CTT2KMR4,411,"CTT 4"" MUD ROLLER W/ 2K QUICK CONNECT FRAME",exact_manufacturer_supplier_identifier,Length (in),,12
+218,2KMR4,"4"" Comfort Grip Mud Roller Cage With Roller",CTT2KMR4,411,"CTT 4"" MUD ROLLER W/ 2K QUICK CONNECT FRAME",exact_manufacturer_supplier_identifier,Width (in),,5
+218,2KMR4,"4"" Comfort Grip Mud Roller Cage With Roller",CTT2KMR4,411,"CTT 4"" MUD ROLLER W/ 2K QUICK CONNECT FRAME",exact_manufacturer_supplier_identifier,Height (in),,4
+219,CGPK4,"4"" Comfort Grip SS Joint Putty Knife",CTTCGPK4,541,"COLUMBIA 4"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.313
+219,CGPK4,"4"" Comfort Grip SS Joint Putty Knife",CTTCGPK4,541,"COLUMBIA 4"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Length (in),,9
+219,CGPK4,"4"" Comfort Grip SS Joint Putty Knife",CTTCGPK4,541,"COLUMBIA 4"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Width (in),,4
+219,CGPK4,"4"" Comfort Grip SS Joint Putty Knife",CTTCGPK4,541,"COLUMBIA 4"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Height (in),,1
+221,MRR4,"4"" Mud Roller Replacement",CTTMRR4,978,"COLUMBIA 4""X18MM REPLACE MUD ROLLER",exact_manufacturer_supplier_identifier,Weight (lbs),,0.1815
+221,MRR4,"4"" Mud Roller Replacement",CTTMRR4,978,"COLUMBIA 4""X18MM REPLACE MUD ROLLER",exact_manufacturer_supplier_identifier,Length (in),,3
+221,MRR4,"4"" Mud Roller Replacement",CTTMRR4,978,"COLUMBIA 4""X18MM REPLACE MUD ROLLER",exact_manufacturer_supplier_identifier,Width (in),,3
+221,MRR4,"4"" Mud Roller Replacement",CTTMRR4,978,"COLUMBIA 4""X18MM REPLACE MUD ROLLER",exact_manufacturer_supplier_identifier,Height (in),,4
+222,NPK4,"4"" Nylon Grip Joint Putty Knife",CTTNPK4,985,"4"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.228
+222,NPK4,"4"" Nylon Grip Joint Putty Knife",CTTNPK4,985,"4"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,9
+222,NPK4,"4"" Nylon Grip Joint Putty Knife",CTTNPK4,985,"4"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,4
+222,NPK4,"4"" Nylon Grip Joint Putty Knife",CTTNPK4,985,"4"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+223,OPPK4,"4"" One Piece SS Joint Putty Knife",CTTOPPK4,1000,"4"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.22
+223,OPPK4,"4"" One Piece SS Joint Putty Knife",CTTOPPK4,1000,"4"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,9
+223,OPPK4,"4"" One Piece SS Joint Putty Knife",CTTOPPK4,1000,"4"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,4
+223,OPPK4,"4"" One Piece SS Joint Putty Knife",CTTOPPK4,1000,"4"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+239,FA209,4/40 X 1/8 Flat Slot,CTTFA209,726,"4-40 X 1/8"" FLAT HEAD SCREW COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+249,FSB40,"40"" Fat Boy Smoothing Blade",CTTFSB40,853,"COLUMBIA 40"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Weight (lbs),,3.0705
+249,FSB40,"40"" Fat Boy Smoothing Blade",CTTFSB40,853,"COLUMBIA 40"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Length (in),,41
+249,FSB40,"40"" Fat Boy Smoothing Blade",CTTFSB40,853,"COLUMBIA 40"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Width (in),,6
+249,FSB40,"40"" Fat Boy Smoothing Blade",CTTFSB40,853,"COLUMBIA 40"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Height (in),,3
+251,TSB-40,"40"" Tomahawk Smoothing Blade",CTTTSB40,1062,"COLUMBIA 40"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,5.6535
+251,TSB-40,"40"" Tomahawk Smoothing Blade",CTTTSB40,1062,"COLUMBIA 40"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Length (in),,42
+251,TSB-40,"40"" Tomahawk Smoothing Blade",CTTTSB40,1062,"COLUMBIA 40"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Width (in),,6.5
+251,TSB-40,"40"" Tomahawk Smoothing Blade",CTTTSB40,1062,"COLUMBIA 40"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Height (in),,2.75
+252,42BBH,"42"" 180 Grip Bent Flat Box Handle",CTT42BBH,433,"42"" 180-GRIP BENT FLAT BOX HANDLE COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,4
+256,FSB48,"48"" Fat Boy Smoothing Blade",CTTFSB48,854,"COLUMBIA 48"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Weight (lbs),,3.6165
+256,FSB48,"48"" Fat Boy Smoothing Blade",CTTFSB48,854,"COLUMBIA 48"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Length (in),,49
+256,FSB48,"48"" Fat Boy Smoothing Blade",CTTFSB48,854,"COLUMBIA 48"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Width (in),,6
+256,FSB48,"48"" Fat Boy Smoothing Blade",CTTFSB48,854,"COLUMBIA 48"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Height (in),,3
+258,TSB-48,"48"" Tomahawk Smoothing Blade",CTTTSB48,1063,"COLUMBIA 48"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,6
+259,3CGPK5,"5"" 3 Way Comfort Grip SS Joint Putty Knife",CTT3CGPK5,422,"COLUMBIA 5"" THREE WAY SS COMFORT GRIP PUTTY KNIFE",exact_manufacturer_supplier_identifier,Weight (lbs),,0.345
+259,3CGPK5,"5"" 3 Way Comfort Grip SS Joint Putty Knife",CTT3CGPK5,422,"COLUMBIA 5"" THREE WAY SS COMFORT GRIP PUTTY KNIFE",exact_manufacturer_supplier_identifier,Length (in),,9
+259,3CGPK5,"5"" 3 Way Comfort Grip SS Joint Putty Knife",CTT3CGPK5,422,"COLUMBIA 5"" THREE WAY SS COMFORT GRIP PUTTY KNIFE",exact_manufacturer_supplier_identifier,Width (in),,5
+259,3CGPK5,"5"" 3 Way Comfort Grip SS Joint Putty Knife",CTT3CGPK5,422,"COLUMBIA 5"" THREE WAY SS COMFORT GRIP PUTTY KNIFE",exact_manufacturer_supplier_identifier,Height (in),,1
+260,3NPK5,"5"" 3 Way Nylon Grip Joint Putty Knife",CTT3NPK5,427,"5"" THREE WAY NYLON PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.21
+260,3NPK5,"5"" 3 Way Nylon Grip Joint Putty Knife",CTT3NPK5,427,"5"" THREE WAY NYLON PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,9
+260,3NPK5,"5"" 3 Way Nylon Grip Joint Putty Knife",CTT3NPK5,427,"5"" THREE WAY NYLON PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,5
+260,3NPK5,"5"" 3 Way Nylon Grip Joint Putty Knife",CTT3NPK5,427,"5"" THREE WAY NYLON PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+261,CGPK5,"5"" Comfort Grip SS Joint Putty Knife",CTTCGPK5,542,"COLUMBIA 5"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.3465
+261,CGPK5,"5"" Comfort Grip SS Joint Putty Knife",CTTCGPK5,542,"COLUMBIA 5"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Length (in),,9
+261,CGPK5,"5"" Comfort Grip SS Joint Putty Knife",CTTCGPK5,542,"COLUMBIA 5"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Width (in),,5
+261,CGPK5,"5"" Comfort Grip SS Joint Putty Knife",CTTCGPK5,542,"COLUMBIA 5"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Height (in),,1
+262,NPK5,"5"" Nylon Grip Joint Putty Knife",CTTNPK5,986,"5"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.267
+262,NPK5,"5"" Nylon Grip Joint Putty Knife",CTTNPK5,986,"5"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,9
+262,NPK5,"5"" Nylon Grip Joint Putty Knife",CTTNPK5,986,"5"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,5
+262,NPK5,"5"" Nylon Grip Joint Putty Knife",CTTNPK5,986,"5"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+263,OPPK5,"5"" One Piece SS Joint Putty Knife",CTTOPPK5,1001,"5"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.306
+263,OPPK5,"5"" One Piece SS Joint Putty Knife",CTTOPPK5,1001,"5"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,9
+263,OPPK5,"5"" One Piece SS Joint Putty Knife",CTTOPPK5,1001,"5"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,5
+263,OPPK5,"5"" One Piece SS Joint Putty Knife",CTTOPPK5,1001,"5"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+269,FFBR-9-5.5,"5.5"" Box Blades Kit",CTTFFBR955,838,"BOX BLADES KIT 5.5"" COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.0815
+269,FFBR-9-5.5,"5.5"" Box Blades Kit",CTTFFBR955,838,"BOX BLADES KIT 5.5"" COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Length (in),,7
+269,FFBR-9-5.5,"5.5"" Box Blades Kit",CTTFFBR955,838,"BOX BLADES KIT 5.5"" COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Width (in),,3
+269,FFBR-9-5.5,"5.5"" Box Blades Kit",CTTFFBR955,838,"BOX BLADES KIT 5.5"" COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Height (in),,0.2
+288,3CGPK6,"6"" 3 Way Comfort Grip SS Joint Putty Knife",CTT3CGPK6,423,"COLUMBIA 6"" THREE WAY SS COMFORT GRIP PUTTY KNIFE",exact_manufacturer_supplier_identifier,Weight (lbs),,0.388
+288,3CGPK6,"6"" 3 Way Comfort Grip SS Joint Putty Knife",CTT3CGPK6,423,"COLUMBIA 6"" THREE WAY SS COMFORT GRIP PUTTY KNIFE",exact_manufacturer_supplier_identifier,Length (in),,9.5
+288,3CGPK6,"6"" 3 Way Comfort Grip SS Joint Putty Knife",CTT3CGPK6,423,"COLUMBIA 6"" THREE WAY SS COMFORT GRIP PUTTY KNIFE",exact_manufacturer_supplier_identifier,Width (in),,6
+288,3CGPK6,"6"" 3 Way Comfort Grip SS Joint Putty Knife",CTT3CGPK6,423,"COLUMBIA 6"" THREE WAY SS COMFORT GRIP PUTTY KNIFE",exact_manufacturer_supplier_identifier,Height (in),,1
+289,3NPK6,"6"" 3 Way Nylon Grip Joint Putty Knife",CTT3NPK6,428,"6"" THREE WAY NYLON PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.3085
+289,3NPK6,"6"" 3 Way Nylon Grip Joint Putty Knife",CTT3NPK6,428,"6"" THREE WAY NYLON PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,9
+289,3NPK6,"6"" 3 Way Nylon Grip Joint Putty Knife",CTT3NPK6,428,"6"" THREE WAY NYLON PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,6
+289,3NPK6,"6"" 3 Way Nylon Grip Joint Putty Knife",CTT3NPK6,428,"6"" THREE WAY NYLON PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+291,CGCK6,"6"" Comfort Grip Clipped Knife",CTTCGCK6,536,"COLUMBIA 6"" COMFORT GRIP CLIPPED KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.5
+292,CGPK6,"6"" Comfort Grip SS Joint Putty Knife",CTTCGPK6,543,"COLUMBIA 6"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.3675
+292,CGPK6,"6"" Comfort Grip SS Joint Putty Knife",CTTCGPK6,543,"COLUMBIA 6"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Length (in),,9
+292,CGPK6,"6"" Comfort Grip SS Joint Putty Knife",CTTCGPK6,543,"COLUMBIA 6"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Width (in),,6
+292,CGPK6,"6"" Comfort Grip SS Joint Putty Knife",CTTCGPK6,543,"COLUMBIA 6"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Height (in),,1
+293,BSNC,"6"" Natural Cork Grip Bucket Scoop",CTTBSNC,498,"COLUMBIA 6"" BUCKET SCOOP NATURAL",exact_manufacturer_supplier_identifier,Weight (lbs),,0.519
+293,BSNC,"6"" Natural Cork Grip Bucket Scoop",CTTBSNC,498,"COLUMBIA 6"" BUCKET SCOOP NATURAL",exact_manufacturer_supplier_identifier,Length (in),,10
+293,BSNC,"6"" Natural Cork Grip Bucket Scoop",CTTBSNC,498,"COLUMBIA 6"" BUCKET SCOOP NATURAL",exact_manufacturer_supplier_identifier,Width (in),,7
+293,BSNC,"6"" Natural Cork Grip Bucket Scoop",CTTBSNC,498,"COLUMBIA 6"" BUCKET SCOOP NATURAL",exact_manufacturer_supplier_identifier,Height (in),,4
+294,CJK6,"6"" Nylon Grip Clipped Joint Knife",CTTCJK6,546,"COLUMBIA 6"" CLIPPED JOINT KNIFE SS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.227
+294,CJK6,"6"" Nylon Grip Clipped Joint Knife",CTTCJK6,546,"COLUMBIA 6"" CLIPPED JOINT KNIFE SS",exact_manufacturer_supplier_identifier,Length (in),,9
+294,CJK6,"6"" Nylon Grip Clipped Joint Knife",CTTCJK6,546,"COLUMBIA 6"" CLIPPED JOINT KNIFE SS",exact_manufacturer_supplier_identifier,Width (in),,6
+294,CJK6,"6"" Nylon Grip Clipped Joint Knife",CTTCJK6,546,"COLUMBIA 6"" CLIPPED JOINT KNIFE SS",exact_manufacturer_supplier_identifier,Height (in),,1
+295,NPK6,"6"" Nylon Grip Joint Putty Knife",CTTNPK6,987,"6"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.2715
+295,NPK6,"6"" Nylon Grip Joint Putty Knife",CTTNPK6,987,"6"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,9
+295,NPK6,"6"" Nylon Grip Joint Putty Knife",CTTNPK6,987,"6"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,6
+295,NPK6,"6"" Nylon Grip Joint Putty Knife",CTTNPK6,987,"6"" PUTTY KNIFE COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+296,OPBS,"6"" One Piece SS Bucket Scoop",CTTOPBS,995,"COLUMBIA 6"" ONE PIECE BUCKET SCOOP",exact_manufacturer_supplier_identifier,Weight (lbs),,0.5485
+296,OPBS,"6"" One Piece SS Bucket Scoop",CTTOPBS,995,"COLUMBIA 6"" ONE PIECE BUCKET SCOOP",exact_manufacturer_supplier_identifier,Length (in),,9
+296,OPBS,"6"" One Piece SS Bucket Scoop",CTTOPBS,995,"COLUMBIA 6"" ONE PIECE BUCKET SCOOP",exact_manufacturer_supplier_identifier,Width (in),,6.5
+296,OPBS,"6"" One Piece SS Bucket Scoop",CTTOPBS,995,"COLUMBIA 6"" ONE PIECE BUCKET SCOOP",exact_manufacturer_supplier_identifier,Height (in),,1
+297,OPPK6,"6"" One Piece SS Joint Putty Knife",CTTOPPK6,1002,"6"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.3695
+297,OPPK6,"6"" One Piece SS Joint Putty Knife",CTTOPPK6,1002,"6"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,9
+297,OPPK6,"6"" One Piece SS Joint Putty Knife",CTTOPPK6,1002,"6"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,7
+297,OPPK6,"6"" One Piece SS Joint Putty Knife",CTTOPPK6,1002,"6"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+330,FFBR-9-7,"7"" Box Blades Kit",CTTFFBR97,839,"BOX BLADES KIT 7"" COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.1
+330,FFBR-9-7,"7"" Box Blades Kit",CTTFFBR97,839,"BOX BLADES KIT 7"" COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Length (in),,0.1
+330,FFBR-9-7,"7"" Box Blades Kit",CTTFFBR97,839,"BOX BLADES KIT 7"" COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Width (in),,2.5
+330,FFBR-9-7,"7"" Box Blades Kit",CTTFFBR97,839,"BOX BLADES KIT 7"" COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Height (in),,8.5
+331,FSB7,"7"" Fat Boy Smoothing Blade",CTTFSB7,855,"COLUMBIA 7"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Weight (lbs),,0.556
+331,FSB7,"7"" Fat Boy Smoothing Blade",CTTFSB7,855,"COLUMBIA 7"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Length (in),,8
+331,FSB7,"7"" Fat Boy Smoothing Blade",CTTFSB7,855,"COLUMBIA 7"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Width (in),,6
+331,FSB7,"7"" Fat Boy Smoothing Blade",CTTFSB7,855,"COLUMBIA 7"" FAT BOY SMOOTHING BLADE",exact_manufacturer_supplier_identifier,Height (in),,3
+336,TSB-7,"7"" Tomahawk Smoothing Blade",CTTTSB7,1064,"COLUMBIA 7"" TOMAHAWK SMOOTHING BLADE",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,2
+343,FFBR-9-8,"8"" Box Blades Kit",CTTFFBR98,840,"COLUMBIA BOX BLADE KIT 8""",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.1105
+343,FFBR-9-8,"8"" Box Blades Kit",CTTFFBR98,840,"COLUMBIA BOX BLADE KIT 8""",unique_normalized_identifier_and_equal_product_tokens,Length (in),,10
+343,FFBR-9-8,"8"" Box Blades Kit",CTTFFBR98,840,"COLUMBIA BOX BLADE KIT 8""",unique_normalized_identifier_and_equal_product_tokens,Width (in),,2
+343,FFBR-9-8,"8"" Box Blades Kit",CTTFFBR98,840,"COLUMBIA BOX BLADE KIT 8""",unique_normalized_identifier_and_equal_product_tokens,Height (in),,0.5
+345,CGPK8,"8"" Comfort Grip SS Joint Putty Knife",CTTCGPK8,544,"COLUMBIA 8"" COMFORT GRIP PUTTY KNIFE STAINLESS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.55
+348,8ITFB,"8"" Inside Track Fat Boy Finishing Box",CTT8ITFB,450,"COLUMBIA 8"" INSIDE TRACK FAT BOY FLAT BOX",exact_manufacturer_supplier_identifier,Weight (lbs),,5
+349,NPK8,"8"" Nylon Grip Joint Putty Knife",CTTNPK8,988,"COLUMBIA 8"" PUTTY KNIFE ",exact_manufacturer_supplier_identifier,Weight (lbs),,0.328
+349,NPK8,"8"" Nylon Grip Joint Putty Knife",CTTNPK8,988,"COLUMBIA 8"" PUTTY KNIFE ",exact_manufacturer_supplier_identifier,Length (in),,9
+349,NPK8,"8"" Nylon Grip Joint Putty Knife",CTTNPK8,988,"COLUMBIA 8"" PUTTY KNIFE ",exact_manufacturer_supplier_identifier,Width (in),,8
+349,NPK8,"8"" Nylon Grip Joint Putty Knife",CTTNPK8,988,"COLUMBIA 8"" PUTTY KNIFE ",exact_manufacturer_supplier_identifier,Height (in),,1
+350,OPPK8,"8"" One Piece SS Joint Putty Knife",CTTOPPK8,1003,"8"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.414
+350,OPPK8,"8"" One Piece SS Joint Putty Knife",CTTOPPK8,1003,"8"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,9
+350,OPPK8,"8"" One Piece SS Joint Putty Knife",CTTOPPK8,1003,"8"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,8
+350,OPPK8,"8"" One Piece SS Joint Putty Knife",CTTOPPK8,1003,"8"" ONE PIECE PUTTY KNIFE SS COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,1
+351,CTK8,"8"" SS Comfort Grip Taping Knife",CTTCTK8,713,"COLUMBIA 8"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Weight (lbs),,0.4955
+351,CTK8,"8"" SS Comfort Grip Taping Knife",CTTCTK8,713,"COLUMBIA 8"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Length (in),,9
+351,CTK8,"8"" SS Comfort Grip Taping Knife",CTTCTK8,713,"COLUMBIA 8"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Width (in),,8
+351,CTK8,"8"" SS Comfort Grip Taping Knife",CTTCTK8,713,"COLUMBIA 8"" COMFORT GRIP TAPING KNIFE SS",exact_manufacturer_supplier_identifier,Height (in),,1
+376,91CGMT,9 In 1 Comfort Grip Multi Tool,CTT91CGMT,451,COLUMBIA 9 IN 1 COMFORT GRIP MULTI TOOL SS,exact_manufacturer_supplier_identifier,Weight (lbs),,0.3515
+376,91CGMT,9 In 1 Comfort Grip Multi Tool,CTT91CGMT,451,COLUMBIA 9 IN 1 COMFORT GRIP MULTI TOOL SS,exact_manufacturer_supplier_identifier,Length (in),,9
+376,91CGMT,9 In 1 Comfort Grip Multi Tool,CTT91CGMT,451,COLUMBIA 9 IN 1 COMFORT GRIP MULTI TOOL SS,exact_manufacturer_supplier_identifier,Width (in),,3
+376,91CGMT,9 In 1 Comfort Grip Multi Tool,CTT91CGMT,451,COLUMBIA 9 IN 1 COMFORT GRIP MULTI TOOL SS,exact_manufacturer_supplier_identifier,Height (in),,1
+378,2KMR9,"9"" Comfort Grip Mud Roller Cage With Roller",CTT2KMR9,412,"CTT 9"" MUD ROLLER W/ 2K QUICK CONNECT FRAME",exact_manufacturer_supplier_identifier,Weight (lbs),,0.911
+378,2KMR9,"9"" Comfort Grip Mud Roller Cage With Roller",CTT2KMR9,412,"CTT 9"" MUD ROLLER W/ 2K QUICK CONNECT FRAME",exact_manufacturer_supplier_identifier,Length (in),,13
+378,2KMR9,"9"" Comfort Grip Mud Roller Cage With Roller",CTT2KMR9,412,"CTT 9"" MUD ROLLER W/ 2K QUICK CONNECT FRAME",exact_manufacturer_supplier_identifier,Width (in),,10
+378,2KMR9,"9"" Comfort Grip Mud Roller Cage With Roller",CTT2KMR9,412,"CTT 9"" MUD ROLLER W/ 2K QUICK CONNECT FRAME",exact_manufacturer_supplier_identifier,Height (in),,4
+379,MRR9,"9"" Mud Roller Replacement",CTTMRR9,979,"COLUMBIA 9""X18MM REPLACE MUD ROLLER",exact_manufacturer_supplier_identifier,Weight (lbs),,0.3645
+379,MRR9,"9"" Mud Roller Replacement",CTTMRR9,979,"COLUMBIA 9""X18MM REPLACE MUD ROLLER",exact_manufacturer_supplier_identifier,Length (in),,10
+379,MRR9,"9"" Mud Roller Replacement",CTTMRR9,979,"COLUMBIA 9""X18MM REPLACE MUD ROLLER",exact_manufacturer_supplier_identifier,Width (in),,4
+379,MRR9,"9"" Mud Roller Replacement",CTTMRR9,979,"COLUMBIA 9""X18MM REPLACE MUD ROLLER",exact_manufacturer_supplier_identifier,Height (in),,3
+383,CT14,Adjustable Brake Holder,CTTCT14,610,ADJUSTABLE BRAKE HOLDER COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+385,FFB2A,Adjuster Pin Bushing,CTTFFB2A,799,BUSHING COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+408,HFFB5-10,"Axle 10""",CTTHFFB510,873,"10"" AXLE COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.01
+410,HFFB5-14,"Axle 14""",CTTHFFB514,874,"14"" AXLE COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.01
+412,HFFB5-8,"Axle 8""",CTTHFFB58,876,"8"" AXLE COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.01
+439,FFBA-41,Bead Wheel Kit,CTTFFBA41,829,COLUMBIA BEAD WHEEL KIT ,unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.138
+439,FFBA-41,Bead Wheel Kit,CTTFFBA41,829,COLUMBIA BEAD WHEEL KIT ,unique_normalized_identifier_and_equal_product_tokens,Length (in),,5
+439,FFBA-41,Bead Wheel Kit,CTTFFBA41,829,COLUMBIA BEAD WHEEL KIT ,unique_normalized_identifier_and_equal_product_tokens,Width (in),,3
+439,FFBA-41,Bead Wheel Kit,CTTFFBA41,829,COLUMBIA BEAD WHEEL KIT ,unique_normalized_identifier_and_equal_product_tokens,Height (in),,1
+442,CR3,Bearing Sleeve,CTTCR3,572,BEARING SLEEVE COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+450,BBH9,Bent Handle Common Strap,CTTBBH9,486,COMMON TOP STRAP COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+453,"FFB9-10""","Blade 10""",CTTFFB910,814,"10"" BLADE COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.02
+453,"FFB9-10""","Blade 10""",CTTFFB910,814,"10"" BLADE COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Length (in),,11
+453,"FFB9-10""","Blade 10""",CTTFFB910,814,"10"" BLADE COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Width (in),,0.1
+453,"FFB9-10""","Blade 10""",CTTFFB910,814,"10"" BLADE COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Height (in),,0.1
+454,"FFB9-12""","Blade 12""",CTTFFB912,815,"12"" BLADE COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.027
+454,"FFB9-12""","Blade 12""",CTTFFB912,815,"12"" BLADE COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Length (in),,12.5
+454,"FFB9-12""","Blade 12""",CTTFFB912,815,"12"" BLADE COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Width (in),,0.001
+454,"FFB9-12""","Blade 12""",CTTFFB912,815,"12"" BLADE COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Height (in),,0.001
+456,"FFB9-5.5""","Blade 5.5""",CTTFFB955,817,"5.5"" BLADE COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.01
+459,FFBA10-14,"Blade Bar Assembly 14""",CTTFFBA1014,822,"BLADE BAR ASSEMBLY 14"" COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.01
+460,FFBA10-5.5,"Blade Bar Assembly 5.5""",CTTFFBA1055,823,"BLADE BAR ASSEMBLY 5.5"" COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.01
+489,FFBR-7-7A,Box Shoes Kit,CTTFFBR77A,834,COLUMBIA BOX SHOES KIT,unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.0615
+489,FFBR-7-7A,Box Shoes Kit,CTTFFBR77A,834,COLUMBIA BOX SHOES KIT,unique_normalized_identifier_and_equal_product_tokens,Length (in),,3
+489,FFBR-7-7A,Box Shoes Kit,CTTFFBR77A,834,COLUMBIA BOX SHOES KIT,unique_normalized_identifier_and_equal_product_tokens,Width (in),,5
+489,FFBR-7-7A,Box Shoes Kit,CTTFFBR77A,834,COLUMBIA BOX SHOES KIT,unique_normalized_identifier_and_equal_product_tokens,Height (in),,1.5
+524,CT87-CL,Cam Lock Taper Cap,CTTCT87CL,683,COLUMBIA CAM LOCK TAPER CAP,unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.075
+524,CT87-CL,Cam Lock Taper Cap,CTTCT87CL,683,COLUMBIA CAM LOCK TAPER CAP,unique_normalized_identifier_and_equal_product_tokens,Length (in),,0.25
+524,CT87-CL,Cam Lock Taper Cap,CTTCT87CL,683,COLUMBIA CAM LOCK TAPER CAP,unique_normalized_identifier_and_equal_product_tokens,Width (in),,2.5
+524,CT87-CL,Cam Lock Taper Cap,CTTCT87CL,683,COLUMBIA CAM LOCK TAPER CAP,unique_normalized_identifier_and_equal_product_tokens,Height (in),,3.25
+546,CPG,Columbia Mud Pan Grip,CTTCPG,568,COLUMBIA MUD PAN GRIP ,exact_manufacturer_supplier_identifier,Weight (lbs),,0.4265
+546,CPG,Columbia Mud Pan Grip,CTTCPG,568,COLUMBIA MUD PAN GRIP ,exact_manufacturer_supplier_identifier,Length (in),,8
+546,CPG,Columbia Mud Pan Grip,CTTCPG,568,COLUMBIA MUD PAN GRIP ,exact_manufacturer_supplier_identifier,Width (in),,9
+546,CPG,Columbia Mud Pan Grip,CTTCPG,568,COLUMBIA MUD PAN GRIP ,exact_manufacturer_supplier_identifier,Height (in),,1
+576,2KCMR,Corner Mud Roller Cage With Roller,CTT2KCMR,409,"CTT 1.5"" MUD ROLLER W/ 2K QUICK CONNECT FRAME",exact_manufacturer_supplier_identifier,Weight (lbs),,0.4305
+576,2KCMR,Corner Mud Roller Cage With Roller,CTT2KCMR,409,"CTT 1.5"" MUD ROLLER W/ 2K QUICK CONNECT FRAME",exact_manufacturer_supplier_identifier,Length (in),,12
+576,2KCMR,Corner Mud Roller Cage With Roller,CTT2KCMR,409,"CTT 1.5"" MUD ROLLER W/ 2K QUICK CONNECT FRAME",exact_manufacturer_supplier_identifier,Width (in),,5
+576,2KCMR,Corner Mud Roller Cage With Roller,CTT2KCMR,409,"CTT 1.5"" MUD ROLLER W/ 2K QUICK CONNECT FRAME",exact_manufacturer_supplier_identifier,Height (in),,2
+577,CMRR,Corner Mud Roller Replacement,CTTCMRR,557,"COLUMBIA 1.5""X18MM REPL MUD ROLLER",exact_manufacturer_supplier_identifier,Weight (lbs),,0.108
+577,CMRR,Corner Mud Roller Replacement,CTTCMRR,557,"COLUMBIA 1.5""X18MM REPL MUD ROLLER",exact_manufacturer_supplier_identifier,Length (in),,4
+577,CMRR,Corner Mud Roller Replacement,CTTCMRR,557,"COLUMBIA 1.5""X18MM REPL MUD ROLLER",exact_manufacturer_supplier_identifier,Width (in),,4
+577,CMRR,Corner Mud Roller Replacement,CTTCMRR,557,"COLUMBIA 1.5""X18MM REPL MUD ROLLER",exact_manufacturer_supplier_identifier,Height (in),,1
+581,CT34,Cover Plate Attachment Block,CTTCT34,629,COVER PLATE ATTACHMENT BLOCK COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+589,FFBA12,"Dial Assembly (5.5,7,8,10"")",CTTFFBA12,826,"(5.5,7,8,10) ADJUSTER DIAL ASSY COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.0435
+589,FFBA12,"Dial Assembly (5.5,7,8,10"")",CTTFFBA12,826,"(5.5,7,8,10) ADJUSTER DIAL ASSY COLUMBIA",exact_manufacturer_supplier_identifier,Length (in),,2
+589,FFBA12,"Dial Assembly (5.5,7,8,10"")",CTTFFBA12,826,"(5.5,7,8,10) ADJUSTER DIAL ASSY COLUMBIA",exact_manufacturer_supplier_identifier,Width (in),,0.5
+589,FFBA12,"Dial Assembly (5.5,7,8,10"")",CTTFFBA12,826,"(5.5,7,8,10) ADJUSTER DIAL ASSY COLUMBIA",exact_manufacturer_supplier_identifier,Height (in),,4
+606,AB46,Door Spring Automatic Box,CTTAB46,454,DOOR SPRING AUTOMATIC BOX COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.5
+612,CT66,Drive Drum,CTTCT66,661,DRIVE DRUM COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+617,CS,Drywall Sander,CTTCS,575,COLUMBIA POLE SANDER HEAD,exact_manufacturer_supplier_identifier,Weight (lbs),,0.902
+617,CS,Drywall Sander,CTTCS,575,COLUMBIA POLE SANDER HEAD,exact_manufacturer_supplier_identifier,Length (in),,9
+617,CS,Drywall Sander,CTTCS,575,COLUMBIA POLE SANDER HEAD,exact_manufacturer_supplier_identifier,Width (in),,3
+617,CS,Drywall Sander,CTTCS,575,COLUMBIA POLE SANDER HEAD,exact_manufacturer_supplier_identifier,Height (in),,1
+618,CSH,Drywall Sander Pole,CTTCSH,576,COLUMBIA POLE SANDER HANDLE,exact_manufacturer_supplier_identifier,Weight (lbs),,1
+658,FSBC,Fatboy Smoothing Blade Claw Handle Adaptor,CTTFSBC,856,COLUMBIA FAT BOY BLADE ADAPTOR,exact_manufacturer_supplier_identifier,Weight (lbs),,0.342
+658,FSBC,Fatboy Smoothing Blade Claw Handle Adaptor,CTTFSBC,856,COLUMBIA FAT BOY BLADE ADAPTOR,exact_manufacturer_supplier_identifier,Length (in),,3
+658,FSBC,Fatboy Smoothing Blade Claw Handle Adaptor,CTTFSBC,856,COLUMBIA FAT BOY BLADE ADAPTOR,exact_manufacturer_supplier_identifier,Width (in),,8
+658,FSBC,Fatboy Smoothing Blade Claw Handle Adaptor,CTTFSBC,856,COLUMBIA FAT BOY BLADE ADAPTOR,exact_manufacturer_supplier_identifier,Height (in),,4
+677,MP27C,Gooseneck O Ring Retainer,CTTMP27C,963,O RING RETAINER COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+691,FFH14,Handle Grip,CTTFFH14,841,HANDLE GRIP COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+696,HNS14C,Handle Link Connector,CTTHNS14C,909,HANDLE LINK CONNECTOR COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+700,HPA48,Handle Pin,CTTHPA48,932,HANDLE PIN COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+702,HNS14,Handle Spring,CTTHNS14,906,HANDLE SPRING COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+729,ICA3,ICA Wheel,CTTICA3,936,ICA REPLACEMENT WHEEL COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.1
+738,ITC-K,Inside Track Conversion Kit,CTTITCK,940,INSIDE TRACK CONVERSION KIT COLUMBIA,unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,1
+739,CT27,Knife Guide Bracket - Left,CTTCT27,623,KNIFE GUIDE BRACKET LEFT COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+740,CT26,Knife Guide Bracket Right,CTTCT26,622,KNIFE GUIDE BRACKET RIGHT COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+741,CT25,Knife Guide Square Tube,CTTCT25,621,KNIFE GUIDE SQUARE TUBE COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+744,CT39,Knife Return Spring,CTTCT39,636,COLUMBIA RETURN SPRING KNIFE,exact_manufacturer_supplier_identifier,Weight (lbs),,0.2
+766,MHR-K,Matrix Handle  Repair Kit,CTTMHRK,952,MATRIX HANDLE REPAIR KIT COLUMBIA,unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.15
+766,MHR-K,Matrix Handle  Repair Kit,CTTMHRK,952,MATRIX HANDLE REPAIR KIT COLUMBIA,unique_normalized_identifier_and_equal_product_tokens,Length (in),,5.5
+766,MHR-K,Matrix Handle  Repair Kit,CTTMHRK,952,MATRIX HANDLE REPAIR KIT COLUMBIA,unique_normalized_identifier_and_equal_product_tokens,Width (in),,1.5
+766,MHR-K,Matrix Handle  Repair Kit,CTTMHRK,952,MATRIX HANDLE REPAIR KIT COLUMBIA,unique_normalized_identifier_and_equal_product_tokens,Height (in),,1.5
+785,CT11,Mud Gate Plate,CTTCT11,587,MUD GUARD PLATE COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+788,MRW,Mud Roller Washer,CTTMRW,980,COLUMBIA MUD ROLLER WASHER,exact_manufacturer_supplier_identifier,Weight (lbs),,0.6215
+788,MRW,Mud Roller Washer,CTTMRW,980,COLUMBIA MUD ROLLER WASHER,exact_manufacturer_supplier_identifier,Length (in),,16
+788,MRW,Mud Roller Washer,CTTMRW,980,COLUMBIA MUD ROLLER WASHER,exact_manufacturer_supplier_identifier,Width (in),,4
+788,MRW,Mud Roller Washer,CTTMRW,980,COLUMBIA MUD ROLLER WASHER,exact_manufacturer_supplier_identifier,Height (in),,4
+806,CFB19,Nylatron Bushings,CTTCFB19,521,NYLATRON BUSHING COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.0055
+806,CFB19,Nylatron Bushings,CTTCFB19,521,NYLATRON BUSHING COLUMBIA,exact_manufacturer_supplier_identifier,Length (in),,0.5
+806,CFB19,Nylatron Bushings,CTTCFB19,521,NYLATRON BUSHING COLUMBIA,exact_manufacturer_supplier_identifier,Width (in),,0.5
+806,CFB19,Nylatron Bushings,CTTCFB19,521,NYLATRON BUSHING COLUMBIA,exact_manufacturer_supplier_identifier,Height (in),,0.2
+810,AH21,O-Ring For Angle Head Wheels,CTTAH21,460,O-RING FOR ANGLE HEAD WHEELS COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.0035
+810,AH21,O-Ring For Angle Head Wheels,CTTAH21,460,O-RING FOR ANGLE HEAD WHEELS COLUMBIA,exact_manufacturer_supplier_identifier,Length (in),,0.1
+810,AH21,O-Ring For Angle Head Wheels,CTTAH21,460,O-RING FOR ANGLE HEAD WHEELS COLUMBIA,exact_manufacturer_supplier_identifier,Width (in),,0.5
+810,AH21,O-Ring For Angle Head Wheels,CTTAH21,460,O-RING FOR ANGLE HEAD WHEELS COLUMBIA,exact_manufacturer_supplier_identifier,Height (in),,0.5
+820,COBCRW,Outside Wide Bead Corner Roller,CTTCOBCRW,565,TOOLS WIDE OUTSIDE BEAD ROLLER COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,1
+824,PDDM,Phantom Dustless Drywall Sander,CTTPDDM,1009,PHANTOM DUSTLESS POLE SANDER COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,8
+835,HH27,Piston Driver Adapter,CTTHH27,889,PISTON DRIVER ADAPTER COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+855,PTS,Predator Tactical Set,CTTPTS,1018,PREDATOR TACTICAL SET COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,87
+865,MPR-1,Pump Repair Kit,CTTMPR1,976,COLUMBIA PUMP REPAIR KIT,unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.125
+865,MPR-1,Pump Repair Kit,CTTMPR1,976,COLUMBIA PUMP REPAIR KIT,unique_normalized_identifier_and_equal_product_tokens,Length (in),,6
+865,MPR-1,Pump Repair Kit,CTTMPR1,976,COLUMBIA PUMP REPAIR KIT,unique_normalized_identifier_and_equal_product_tokens,Width (in),,4
+865,MPR-1,Pump Repair Kit,CTTMPR1,976,COLUMBIA PUMP REPAIR KIT,unique_normalized_identifier_and_equal_product_tokens,Height (in),,1
+882,CT91,Release Clip Bushing,CTTCT91,689,RELEASE CLIP BUSHING COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+886,CT6R,Removable Cap Sideplate Screw,CTTCT6R,665,REMOVABLE COVERPLATE SIDEPLATE SCREW COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+894,HH21,Reservoir Piston Return Spring,CTTHH21,885,RESERVOIR PISTON SPRING COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+902,CT123A,Retaining Spring Shaft (New),CTTCT123A,601,RETAINING SPRING SHAFT (QUICK RELEASE) COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+910,RC,Road Case,CTTRC,1019,COLUMBIA ROAD CASE TOOL CASE,exact_manufacturer_supplier_identifier,Weight (lbs),,15
+916,CC5,Roller,CTTCC5,509,ROLLER FOR CORNER COBRA COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+923,HNS2A,Rollface Post,CTTHNS2A,918,ROLLFACE POST COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+932,FFB25-8,"Rubber Gasket Retainer 8""",CTTFFB258,798,"8"" RUBBER GASKET RETAINER COLUMBIA",unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.01
+935,SBSET,Sabre Smoothing Blade Set,CTTSBSET,1029,COLUMBIA SABRE BLADE SET ,exact_manufacturer_supplier_identifier,Weight (lbs),,15.18125
+935,SBSET,Sabre Smoothing Blade Set,CTTSBSET,1029,COLUMBIA SABRE BLADE SET ,exact_manufacturer_supplier_identifier,Length (in),,47
+935,SBSET,Sabre Smoothing Blade Set,CTTSBSET,1029,COLUMBIA SABRE BLADE SET ,exact_manufacturer_supplier_identifier,Width (in),,13
+935,SBSET,Sabre Smoothing Blade Set,CTTSBSET,1029,COLUMBIA SABRE BLADE SET ,exact_manufacturer_supplier_identifier,Height (in),,4.75
+938,DDM15,Sanding Pad,CTTDDM15,720,PHANTOM REPLACEMENT PAD COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.1
+939,CF3A,Screw For Flusher Wheels,CTTCF3A,515,SCREW FOR CORNER FLUSHER WHEEL COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+942,TCS,Semi Automatic Tool Case,CTTTCS,1053,COLUMBIA SEMI AUTOMATIC TOOL CASE,exact_manufacturer_supplier_identifier,Weight (lbs),,11.5745
+942,TCS,Semi Automatic Tool Case,CTTTCS,1053,COLUMBIA SEMI AUTOMATIC TOOL CASE,exact_manufacturer_supplier_identifier,Length (in),,55
+942,TCS,Semi Automatic Tool Case,CTTTCS,1053,COLUMBIA SEMI AUTOMATIC TOOL CASE,exact_manufacturer_supplier_identifier,Width (in),,17.5
+942,TCS,Semi Automatic Tool Case,CTTTCS,1053,COLUMBIA SEMI AUTOMATIC TOOL CASE,exact_manufacturer_supplier_identifier,Height (in),,5.5
+949,FFB7,Shoe - Right,CTTFFB7,811,"SHOE, RIGHT COLUMBIA",exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+951,SF5,Shrink Fit Handle Grips,CTTSF5,1030,COLUMBIA SHRINK FIT GRIP PUTTY KNIVES [5],exact_manufacturer_supplier_identifier,Weight (lbs),,0.045
+951,SF5,Shrink Fit Handle Grips,CTTSF5,1030,COLUMBIA SHRINK FIT GRIP PUTTY KNIVES [5],exact_manufacturer_supplier_identifier,Length (in),,6
+951,SF5,Shrink Fit Handle Grips,CTTSF5,1030,COLUMBIA SHRINK FIT GRIP PUTTY KNIVES [5],exact_manufacturer_supplier_identifier,Width (in),,4
+951,SF5,Shrink Fit Handle Grips,CTTSF5,1030,COLUMBIA SHRINK FIT GRIP PUTTY KNIVES [5],exact_manufacturer_supplier_identifier,Height (in),,1
+957,CF3,Skid,CTTCF3,514,SKID - FLUSHER COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+959,CT129B,Sleeve,CTTCT129B,608,SLEEVE (PLASTIC ROLLER) COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+963,CT51,Spacer Bar,CTTCT51,649,SPACER BAR COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+965,AB45,Spring Catcher,CTTAB45,453,DOOR SPRING CATCHER COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.5
+969,CT48,SS Crimping Arm Left,CTTCT48,645,CRIMPING ARM LEFT COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+976,MP9,Standard Fitting,CTTMP9,974,STANDARD FITTING COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+979,CC4,Step Roller,CTTCC4,508,STEP ROLLER FOR CORNER COBRA COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+991,SSA,Super Sander Adapter,CTTSSA,1036,COLUMBIA SUPER SANDER ADAPTER,exact_manufacturer_supplier_identifier,Weight (lbs),,1
+994,TS,Tactical Set,CTTTS,1055,COLUMBIA TACTICAL SET ,exact_manufacturer_supplier_identifier,Weight (lbs),,87
+994,TS,Tactical Set,CTTTS,1055,COLUMBIA TACTICAL SET ,exact_manufacturer_supplier_identifier,Length (in),,58
+994,TS,Tactical Set,CTTTS,1055,COLUMBIA TACTICAL SET ,exact_manufacturer_supplier_identifier,Width (in),,20.5
+994,TS,Tactical Set,CTTTS,1055,COLUMBIA TACTICAL SET ,exact_manufacturer_supplier_identifier,Height (in),,12
+1001,CTA57,Tape Advance Carriage Assembly,CTTCTA57,701,COLUMBIA CARRIAGE ASSEMBLY,exact_manufacturer_supplier_identifier,Weight (lbs),,1
+1011,CTR-42A,Taper Blades Kit,CTTCTR42A,717,COLUMBIA TAPER BLADES KIT,unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.027
+1011,CTR-42A,Taper Blades Kit,CTTCTR42A,717,COLUMBIA TAPER BLADES KIT,unique_normalized_identifier_and_equal_product_tokens,Length (in),,3
+1011,CTR-42A,Taper Blades Kit,CTTCTR42A,717,COLUMBIA TAPER BLADES KIT,unique_normalized_identifier_and_equal_product_tokens,Width (in),,4.5
+1011,CTR-42A,Taper Blades Kit,CTTCTR42A,717,COLUMBIA TAPER BLADES KIT,unique_normalized_identifier_and_equal_product_tokens,Height (in),,2
+1013,CTR-72,Taper Cables Kit,CTTCTR72,719,COLUMBIA TAPER CABLES KIT,unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.089
+1013,CTR-72,Taper Cables Kit,CTTCTR72,719,COLUMBIA TAPER CABLES KIT,unique_normalized_identifier_and_equal_product_tokens,Length (in),,6
+1013,CTR-72,Taper Cables Kit,CTTCTR72,719,COLUMBIA TAPER CABLES KIT,unique_normalized_identifier_and_equal_product_tokens,Width (in),,4
+1013,CTR-72,Taper Cables Kit,CTTCTR72,719,COLUMBIA TAPER CABLES KIT,unique_normalized_identifier_and_equal_product_tokens,Height (in),,1.5
+1017,CTR-2,Taper Head Repair Kit,CTTCTR2,716,COLUMBIA TAPER HEAD REPAIR KIT,unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.1195
+1017,CTR-2,Taper Head Repair Kit,CTTCTR2,716,COLUMBIA TAPER HEAD REPAIR KIT,unique_normalized_identifier_and_equal_product_tokens,Length (in),,5
+1017,CTR-2,Taper Head Repair Kit,CTTCTR2,716,COLUMBIA TAPER HEAD REPAIR KIT,unique_normalized_identifier_and_equal_product_tokens,Width (in),,4
+1017,CTR-2,Taper Head Repair Kit,CTTCTR2,716,COLUMBIA TAPER HEAD REPAIR KIT,unique_normalized_identifier_and_equal_product_tokens,Height (in),,2
+1018,CTR-63,Taper Needles Kit,CTTCTR63,718,COLUMBIA TAPER NEEDLES KIT,unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,1
+1020,CTR-1,Taper Repair Kit,CTTCTR1,715,COLUMBIA TAPER REPAIR KIT,unique_normalized_identifier_and_equal_product_tokens,Weight (lbs),,0.064
+1020,CTR-1,Taper Repair Kit,CTTCTR1,715,COLUMBIA TAPER REPAIR KIT,unique_normalized_identifier_and_equal_product_tokens,Length (in),,6
+1020,CTR-1,Taper Repair Kit,CTTCTR1,715,COLUMBIA TAPER REPAIR KIT,unique_normalized_identifier_and_equal_product_tokens,Width (in),,4
+1020,CTR-1,Taper Repair Kit,CTTCTR1,715,COLUMBIA TAPER REPAIR KIT,unique_normalized_identifier_and_equal_product_tokens,Height (in),,1
+1036,CLTHA,Tomalock Handle Adaptor,CTTCLTHA,555,COLUMBIA TOMALOCK CAM LOCK HANDLE ADAPTOR,exact_manufacturer_supplier_identifier,Weight (lbs),,0.8
+1036,CLTHA,Tomalock Handle Adaptor,CTTCLTHA,555,COLUMBIA TOMALOCK CAM LOCK HANDLE ADAPTOR,exact_manufacturer_supplier_identifier,Length (in),,5
+1036,CLTHA,Tomalock Handle Adaptor,CTTCLTHA,555,COLUMBIA TOMALOCK CAM LOCK HANDLE ADAPTOR,exact_manufacturer_supplier_identifier,Width (in),,5
+1036,CLTHA,Tomalock Handle Adaptor,CTTCLTHA,555,COLUMBIA TOMALOCK CAM LOCK HANDLE ADAPTOR,exact_manufacturer_supplier_identifier,Height (in),,2
+1043,CT38,Tube Holding Bracket Lower,CTTCT38,635,TUBE HOLDING BRACKET LOWER COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01
+1047,UTA,Universal Thread Adaptor - Quick Connect,CTTUTA,1066,COLUMBIA THREAD ADAPTER UNIVERSAL QUICK CONNECT,exact_manufacturer_supplier_identifier,Weight (lbs),,0.1145
+1047,UTA,Universal Thread Adaptor - Quick Connect,CTTUTA,1066,COLUMBIA THREAD ADAPTER UNIVERSAL QUICK CONNECT,exact_manufacturer_supplier_identifier,Length (in),,7
+1047,UTA,Universal Thread Adaptor - Quick Connect,CTTUTA,1066,COLUMBIA THREAD ADAPTER UNIVERSAL QUICK CONNECT,exact_manufacturer_supplier_identifier,Width (in),,1
+1047,UTA,Universal Thread Adaptor - Quick Connect,CTTUTA,1066,COLUMBIA THREAD ADAPTER UNIVERSAL QUICK CONNECT,exact_manufacturer_supplier_identifier,Height (in),,1
+1053,CF3B,Wheel For Flusher,CTTCF3B,516,WHEEL FOR CORNER FLUSHER COLUMBIA,exact_manufacturer_supplier_identifier,Weight (lbs),,0.01

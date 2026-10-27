@@ -1,6 +1,6 @@
 # Columbia manufacturer export and DTB catalog audit
 
-Audit date: 2026-10-26. Manufacturer export generated 2026-10-26 16:50 UTC. The files are snapshots; this report does not establish live storefront state. Input SHA-256 hashes and machine-readable counts are in `audit-summary.json`.
+Audit date: 2026-10-26. Manufacturer export generated 2026-10-26 16:50 UTC. The files are snapshots; this report does not establish live storefront state. Input SHA-256 hashes and machine-readable counts are in [audit-summary.json](audit-summary.json).
 
 ## Executive findings
 
@@ -22,7 +22,7 @@ The manufacturer JSON image paths are unusable as local paths: all 1,563 point t
 | No identifier match | 599 | Includes products with or without ranked name candidates. |
 | **Total** | **1,060** | Every source variant is represented in the reconciliation. |
 
-DTB coverage reconciles to 434 unique exact SKU matches, four manufacturer-identifier review links, 77 unmatched sellable rows, and 51 family parents. Parents are reported separately and are not treated as sellable SKU matches. `family-coverage.csv` lists their children and match coverage.
+DTB coverage reconciles to 434 unique exact SKU matches, four manufacturer-identifier review links, 77 unmatched sellable rows, and 51 family parents. Parents are reported separately and are not treated as sellable SKU matches. [family-coverage.csv](family-coverage.csv) lists their children and match coverage.
 
 `CT45-BLACK` appears on two manufacturer product pages, `predator-connecting-rod` and `predator-connecting-rod-1`; investigate whether these represent duplicate source listings. There are six blank source SKUs and no duplicate source product IDs. All 28 collection counts reconcile against product memberships, and the 1,060 product/variant-ID and SKU pairs reconcile between JSON and CSV as multisets. Basic product metadata and uniquely resolvable variant prices also agree across those files.
 
@@ -36,18 +36,18 @@ The four manufacturer-identifier links are `CR3` → `CR-3`, `HFFB1A` → `HFFB1
 2. **Repair the image-path manifest.** JSON's 1,563 stale local paths and the valid CSV paths describe the same export at different locations. Trace exporter behavior and establish a single consistent local-path contract. Do not blindly substitute paths by SKU where identifiers collide or are blank.
 3. **Prioritize exact-SKU image opportunities.** Of the 438 linked rows including four requiring identity review, 33 DTB image fields reference placeholders; 16 also have a manufacturer CSV image and 17 have none. Examples with local manufacturer images include `FA201`, `FA285`, and `CT34R`. Verify the product identity, image relevance, rights, and intended variation/parent ownership before proposing an image-only update. The manufacturer source has no CSV image for 481 variant rows, predominantly parts; missing source imagery does not imply the DTB image is wrong. Local inspection does not verify DTB URLs or deployed image sync.
 4. **Triage assortment gaps by product type.** The 622 unresolved manufacturer variants include 433 parts, 46 parts kits, 40 joint knives, 23 smoothing blades, and 13 hand trowels. Review against existing identifiers and purchasing/assortment policy before creating any products. Conversely, review the 77 unmatched DTB sellable rows for aliases, legacy products, sourcing and intentional assortment; absence from a snapshot is not proof of discontinuation.
-5. **Review field differences in context.** `matched-field-comparison.csv` exposes source and DTB titles, descriptions, classification, variation labels, specs, image configuration, prices, and availability side by side for all 438 linked rows. There are 310 literal title differences, many expected from DTB brand and variation naming; this is a review signal, not an error count. Of linked source descriptions, 345 contain 50 or fewer characters and 93 exceed 150, so do not assume the export supplies complete enrichment for every part. Preserve existing verified attributes and avoid unsupported compatibility claims.
+5. **Review field differences in context.** [matched-field-comparison.csv](matched-field-comparison.csv) exposes source and DTB titles, descriptions, classification, variation labels, specs, image configuration, prices, and availability side by side for all 438 linked rows. There are 310 literal title differences, many expected from DTB brand and variation naming; this is a review signal, not an error count. Of linked source descriptions, 345 contain 50 or fewer characters and 93 exceed 150, so do not assume the export supplies complete enrichment for every part. Preserve existing verified attributes and avoid unsupported compatibility claims.
 6. **Investigate pricing separately.** Among 438 linked rows, DTB regular price is numerically higher for 396, equal for 31, lower for 8, and missing or nonnumeric on at least one side for 3. The manufacturer snapshot does not establish currency, tax treatment, pricing policy, or whether values are wholesale, MAP, or comparable retail; do not bulk-reprice from these figures. The field comparison includes DTB sale prices for separate review and does not determine an active sale or live WooCommerce price.
 7. **Resolve the taxonomy validation discrepancy before catalog import.** Running `python scripts/catalog/validate_official_catalog.py` on the existing catalog reported 17 taxonomy errors across brands. The Columbia entry `SACS` is assigned `Taping & Finishing Tools > Semi-Automatic Tool Sets & Kits` while the validator expects `Taping & Finishing Tools > Tool Sets & Kits`. Review the current category policy and intended navigation before changing either source data or validation; this audit does not establish which is correct.
 
 ## Files and interpretation
 
-- `source-reconciliation.csv`: one row per manufacturer variant, including exact status, source page and local image mapping.
-- `dtb-reconciliation.csv`: one row per Columbia catalog row, including parent and manufacturer identifiers.
-- `match-candidates.csv`: ranked possibilities for unresolved source rows, with explicit numeric-conflict flag.
-- `matched-field-comparison.csv`: paired product details for 434 exact SKU matches plus four manufacturer-identifier review links.
-- `findings.csv`: item-level price, placeholder, identity and unresolved coverage review queue. Finding rows can overlap and are not independent product counts.
-- `family-coverage.csv`, `collection-coverage.csv`, `image-mapping.csv`: family, collection and image traceability. `source-integrity-findings.csv` and `image-integrity-findings.csv` record checks.
-- `audit-summary.json`: counts, input hashes and snapshot timestamp. `build_audit.py` and `inspect_details.py` reproduce the primary reconciliation and field/image inspection from the current input files; family, collection, image mapping and this narrative are audit artifacts for this run.
+- [source-reconciliation.csv](source-reconciliation.csv): one row per manufacturer variant, including exact status, source page and local image mapping.
+- [dtb-reconciliation.csv](dtb-reconciliation.csv): one row per Columbia catalog row, including parent and manufacturer identifiers.
+- [match-candidates.csv](match-candidates.csv): ranked possibilities for unresolved source rows, with explicit numeric-conflict flag.
+- [matched-field-comparison.csv](matched-field-comparison.csv): paired product details for 434 exact SKU matches plus four manufacturer-identifier review links.
+- [findings.csv](findings.csv): item-level price, placeholder, identity and unresolved coverage review queue. Finding rows can overlap and are not independent product counts.
+- [family-coverage.csv](family-coverage.csv), [collection-coverage.csv](collection-coverage.csv), [image-mapping.csv](image-mapping.csv): family, collection and image traceability. [source-integrity-findings.csv](source-integrity-findings.csv) and [image-integrity-findings.csv](image-integrity-findings.csv) record checks.
+- [audit-summary.json](audit-summary.json): counts, input hashes and snapshot timestamp. [build_audit.py](../../tools/build_audit.py) and [inspect_details.py](../../tools/inspect_details.py) reproduce the primary reconciliation and field/image inspection from the current input files; family, collection, image mapping and this narrative are audit artifacts for this run.
 
 Source titles, field differences, name candidates, and price differences are automatically surfaced for review; they have not all been individually adjudicated. No live product pages, public media URLs, WooCommerce runtime records, actual warehouse stock, image rights, or pricing currency were verified. No official catalog data was changed.

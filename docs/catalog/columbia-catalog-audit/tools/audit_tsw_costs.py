@@ -2,7 +2,7 @@ import csv,json,hashlib,re,collections,xml.etree.ElementTree as ET
 from pathlib import Path
 from zipfile import ZipFile
 from decimal import Decimal
-R=Path(__file__).resolve().parents[3];O=Path(__file__).resolve().parent;T=R/'products/catalog/source/tsw-costs.csv';C=R/'products/launch/official/dtb_official_catalog.csv';W=R/'docs/reference/data/TSW/TSW Product Data.xlsx';P=O/'price-below-cost-review.csv';B=R/'docs/reference/data/TSW/TSW Product Data - DTB Brands.csv';M=R/'scripts/supplier-catalog/results/cost/tsw-supplier-cost-migration-report.json'
+R=Path(__file__).resolve().parents[4];O=Path(__file__).resolve().parent.parent;T=R/'products/catalog/source/tsw-costs.csv';C=R/'products/launch/official/dtb_official_catalog.csv';W=R/'docs/reference/data/TSW/TSW Product Data.xlsx';P=O/'evidence/tsw/price-below-cost-review.csv';B=R/'docs/reference/data/TSW/TSW Product Data - DTB Brands.csv';M=R/'scripts/supplier-catalog/results/cost/tsw-supplier-cost-migration-report.json'
 def read(p):
  with p.open(encoding='utf-8-sig',newline='') as f:return list(csv.DictReader(f))
 def norm(s):return re.sub(r'[^a-z0-9]','',s.casefold())
@@ -10,10 +10,10 @@ def key(s):return s.strip().casefold()
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
 def safe(s):
  s=str(s or '');return "'"+s if s.startswith(('=','+','-','@','\t','\r')) else s
-low=read(P);cat={x['SKU']:x for x in read(C)};tsw=[x for x in read(T) if key(x['brand'])=='columbia tools'];brandrows=[x for x in read(B) if key(x['brand'])=='columbia tools'];prior=json.loads(M.read_text(encoding='utf8'));priorby={x['catalog_sku']:x for x in prior['resolved_mappings']};source=read(O/'source-reconciliation.csv');srcidx=collections.defaultdict(list)
+low=read(P);cat={x['SKU']:x for x in read(C)};tsw=[x for x in read(T) if key(x['brand'])=='columbia tools'];brandrows=[x for x in read(B) if key(x['brand'])=='columbia tools'];prior=json.loads(M.read_text(encoding='utf8'));priorby={x['catalog_sku']:x for x in prior['resolved_mappings']};source=read(O/'archive/previous-audits/source-reconciliation.csv');srcidx=collections.defaultdict(list)
 for x in source:
  if x['dtb_sku']:srcidx[x['dtb_sku']].append(x)
-for x in read(O/'fuzzy-price-changes.csv'):
+for x in read(O/'archive/previous-audits/fuzzy-price-changes.csv'):
  srcidx[x['dtb_sku']].extend(y for y in source if y['source_row']==x['source_row'])
 ns={'s':'http://schemas.openxmlformats.org/spreadsheetml/2006/main'};raw=[]
 with ZipFile(W) as z:
@@ -42,8 +42,8 @@ for x in low:
   for y in sorted(tsw,key=lambda y:__import__('difflib').SequenceMatcher(None,norm(sku),norm(y['sku'])).ratio(),reverse=True)[:3]:
    sim=__import__('difflib').SequenceMatcher(None,norm(sku),norm(y['sku'])).ratio()
    if sim>=.55:candidates.append(dict(dtb_sku=sku,dtb_name=row['Name'],supplier_sku=y['sku'],supplier_name=y['product_name'],supplier_cost=y['supplier_cost'],identifier_similarity=f'{sim:.3f}',status='unverified_candidate_not_cost_evidence'))
-for name,items in [('tsw-cost-cross-reference.csv',out),('tsw-unmatched-candidates.csv',candidates)]:
+for name,items in [('evidence/tsw/tsw-cost-cross-reference.csv',out),('evidence/tsw/tsw-unmatched-candidates.csv',candidates)]:
  with (O/name).open('w',encoding='utf-8-sig',newline='') as f:
   writer=csv.DictWriter(f,fieldnames=items[0].keys());writer.writeheader();writer.writerows([{k:safe(v) for k,v in x.items()} for x in items])
 summary={'source_hashes':{str(p.relative_to(R)).replace('\\','/'):sha(p) for p in [T,C,W,P,B,M]},'rows':len(out),'cost_status':dict(collections.Counter(x['cost_status'] for x in out)),'product_status':dict(collections.Counter(x['tsw_product_status'] for x in out)),'raw_ctt_rows':len(raw),'tsw_columbia_cost_rows':len(tsw),'unmatched_candidate_rows':len(candidates)}
-(O/'tsw-cost-audit-summary.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf8');print(json.dumps(summary,indent=2))
+(O/'evidence/tsw/tsw-cost-audit-summary.json').write_text(json.dumps(summary,indent=2)+'\n',encoding='utf8');print(json.dumps(summary,indent=2))

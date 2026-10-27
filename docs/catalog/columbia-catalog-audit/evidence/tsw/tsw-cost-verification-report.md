@@ -1,6 +1,6 @@
 # TSW cost verification: 73 Columbia products below recorded cost
 
-Audit date: 2026-10-26. This audit compares the 73-row below-cost list with the current official CSV, the canonical `products/catalog/source/tsw-costs.csv`, the TSW Product Data workbook, the TSW brand extract, and the earlier cost migration report. File hashes are in `tsw-cost-audit-summary.json`. No supplier login, live quotation, invoice, or current purchase order was available; snapshot agreement is not proof of current invoiced cost.
+Audit date: 2026-10-26. This audit compares the 73-row below-cost list with the current official CSV, the canonical `products/catalog/source/tsw-costs.csv`, the TSW Product Data workbook, the TSW brand extract, and the earlier cost migration report. File hashes are in [tsw-cost-audit-summary.json](tsw-cost-audit-summary.json). No supplier login, live quotation, invoice, or current purchase order was available; snapshot agreement is not proof of current invoiced cost.
 
 ## Results
 
@@ -11,7 +11,7 @@ Audit date: 2026-10-26. This audit compares the 73-row below-cost list with the 
 | TSW cost record exists, pack quantity unclear | 1 | `FA262`: TSW's product workbook says `(2)` while the manufacturer title does not specify quantity. TSW lists selling and stocking unit `EACH`, conversion 1; that does not establish whether an each contains two screws. |
 | Previous cost attribution conflicts with product type | 1 | `CR1`: the former cost migration mapped the corner-roller head to TSW `CT1`, a taper head. The $93.08 cost is not verified for `CR1`. |
 | No matching TSW cost record in supplied cost snapshot | 64 | Existing catalog costs have not been substantiated by the inspected TSW price file. |
-| **Total** | **73** | Each product has a row in `tsw-cost-cross-reference.csv`. |
+| **Total** | **73** | Each product has a row in [tsw-cost-cross-reference.csv](tsw-cost-cross-reference.csv). |
 
 The five amount agreements are:
 
@@ -40,6 +40,6 @@ The prior COGS reconciliation itself labeled those 64 existing costs `EXISTING_C
 
 The other local TSW cost snapshots were checked: the supplier-results and reference copies have the same 301 Columbia SKU/cost/name entries as the canonical source. The older validated copy has 297 Columbia SKUs and differences elsewhere; the eight exact-match cost amounts above agree across the two copies. Local timestamps and historical reports do not prove any of them current.
 
-`tsw-cost-cross-reference.csv` contains every product, Columbia and TSW identifiers, source names, workbook row/unit evidence, prices, costs, prior-mapping information and disposition. `tsw-unmatched-candidates.csv` contains identifier-similarity leads only: similar SKUs are not evidence of equivalent parts and must not be used to change costs automatically. `tsw-cost-audit-summary.json` records input hashes and reconciled counts.
+[tsw-cost-cross-reference.csv](tsw-cost-cross-reference.csv) contains every product, Columbia and TSW identifiers, source names, workbook row/unit evidence, prices, costs, prior-mapping information and disposition. [tsw-unmatched-candidates.csv](tsw-unmatched-candidates.csv) contains identifier-similarity leads only: similar SKUs are not evidence of equivalent parts and must not be used to change costs automatically. [tsw-cost-audit-summary.json](tsw-cost-audit-summary.json) records input hashes and reconciled counts.
 
 No costs, SKU identities, retail prices, or supplier records were changed by this audit. The 64 unsupported costs and the three conflict/quantity cases cannot be verified without additional authoritative supplier evidence. WooCommerce's documented cost-floor behavior can affect imported sale prices; runtime behavior was not tested here.

@@ -1,0 +1,127 @@
+﻿source_row,manufacturer_sku,manufacturer_name,match_status,supplier_sku,supplier_csv_row,supplier_name,supplier_stock_unit,supplier_selling_unit,supplier_selling_conversion,supplier_weight,supplier_length,supplier_width,supplier_height,fields_filled,measurement_conflicts,review_reasons
+17,CGPK1.5,"1.5"" Comfort Grip SS Joint Putty Knife",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+18,NPK1.5,"1.5"" Nylon Grip Joint Putty Knife",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+19,OPPK1.5,"1.5"" One Piece SS Joint Putty Knife",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+24,FA203,1/16 X 3/4 Cotter Pin,exact_manufacturer_supplier_identifier,CTTFA203,723,1/16 X 3/4 COTTER PIN COLUMBIA,EACH,EACH,1,0.0001,1,0.5,0.5,,,weight:implausibly_small_review
+26,FA308,"1/2 X 7/8"" Flat Washer",held_for_identity_review,CTTFA308,778,"33/64 X 7/8"" FLAT WASHER COLUMBIA",EACH,EACH,1,0.01,,,,,,supplier/manufacturer washer dimensions conflict and existing identifier collision
+29,FA380,1/4 Ss E-Clip,held_for_identity_review,CTTFA380,784,"COLUMBIA 1/8"" E-CLIP FOR MATRIX HANDLE",EACH,EACH,1,0,,,,,,TSW/Columbia E-clip size conflict
+57,FA302,"1/4-28 X 1/4"" Set Screw",held_for_identity_review,CTTFA302,775,1/4 -28-3/8 SOCKET SET SCREW HYDRA HDL COLUMBIA,EACH,EACH,1,0.01,,,,,,TSW/Columbia screw length conflict
+64,FA225,1/8 X 3/8 Aluminum Backup Wash,held_for_identity_review,CTTFA225,734,1/8 X 3/8 SPECIAL WASHER #6010 COLUMBIA,EACH,EACH,1,0,,,,,,product_description_disagreement_review
+66,FA379,"1/8"" Ss E-Clip",held_for_identity_review,CTTFA379,783,"COLUMBIA 1/4"" E-CLIP FOR MATRIX HANDLE",EACH,EACH,1,0,,,,,,TSW/Columbia E-clip size conflict
+72,CTK10-B,"10"" BS Comfort Grip Taping Knife",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+82,OPPK10-1,10-1 One Piece SS Joint Putty Knife,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+86,FA279,"10-24 X 1"" Fillister Slot",held_for_identity_review,CTTFA279,762,"10-24 X 1-1/4"" HEX BOLT COLUMBIA",EACH,EACH,1,0.01,,,,,,TSW/Columbia fastener size/type conflict
+96,FA281,10-32 Nyloc Jam Nut,held_for_identity_review,CTTFA281,764,10-32 NYLOC JAM NUT COLUMBIA (2),EACH,EACH,1,0,,,,,,supplier_pack_quantity_review
+118,CTK12-B,"12"" BS Comfort Grip Taping Knife",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+119,2KMR12,"12"" Comfort Grip Mud Roller Cage With Roller",held_for_identity_review,CTT2KMR12,410,"COLUMBIA 12""X18MM ROLLER W/ QUICK CONNECT FRAME",EACH,EACH,1,1.098,14,12,4,,,product_description_disagreement_review
+124,12-4.7-0.7-G-C,"12"" Gold Finishing Trowel",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+126,12-4.3-0.3-G-C,"12"" Gold Finishing Trowel .3MM",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+133,13-H-S,"13"" X 13"" Aluminum Hawk",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+139,CTK14-B,"14"" BS Comfort Grip Taping Knife",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+143,14-4.7-0.7-G-C,"14"" Gold Finishing Trowel",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+145,14-4.3-0.3-G-C,"14"" Gold Finishing Trowel .3MM",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+152,16-4.7-0.7-G-C,"16"" Gold Finishing Trowel",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+154,18-4.7-0.7-G-C,"18"" Gold Finishing Trowel",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+157,BH2,180 Grip Head Anodize Black,held_for_identity_review,CTTBH2,493,180 GRIP PLATE - COL HANDLES COLUMBIA,EACH,EACH,1,0.01,,,,,,product_description_disagreement_review
+161,HNS7-2,"2"" Nail Spotter Blade",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+167,AH3-2,"2"" Top Blade",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+168,2.5AH,"2.5"" Angle Head",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+170,2.5DF,"2.5"" Direct Flusher",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+171,2.5SF,"2.5"" Standard Flusher",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+172,AH3-2.5,"2.5"" Top Blade",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+186,HNS7-3,"3"" Nail Spotter Blade",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+193,AH3-3,"3"" Top Blade",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+196,3BBH,3' 180 Grip Bent Flat Box Handle,held_for_identity_review,CTT3BBH,419,"36"" 180-GRIP BENT FLAT BOX HANDLE COLUMBIA",EACH,EACH,1,2,,,,,,product_name_numeric_disagreement
+198,3.5AH,"3.5"" Angle Head",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+200,CGCK3.5,"3.5"" Comfort Grip Pointing Joint Knife",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+201,3.5DF,"3.5"" Direct Flusher",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+202,PJK3.5,"3.5"" Nylon Grip Pointing Putty Joint Knife",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+203,3.5SF,"3.5"" Standard Flusher",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+204,AH3-3.5,"3.5"" Top Blade",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+210,HNS14B,3/32 X 5/16 Solid Round Head,held_for_identity_review,CTTHNS14B,908,HANDLE RIVET COLUMBIA,EACH,EACH,1,0.01,,,,,,product_description_disagreement_review
+238,FA208,4/40 X 1/8 Binder Slot,held_for_identity_review,CTTFA208,725,"COLUMBIA 4-40 X 1/8"" BINDER SLOT",EACH,EACH,1,0,,,,,,existing manufacturer identifier collision
+264,5BBH,5' 180 Grip Bent Flat Box Handle,held_for_identity_review,CTT5BBH,439,"60"" 180-GRIP BENT FLAT BOX HANDLE COLUMBIA",EACH,EACH,1,8,,,,,,product_name_numeric_disagreement
+270,5.5FBB,"5.5"" Fat Boy Finishing Box",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+271,5.5FFB,"5.5"" Flat Finishing Box",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+282,FA222,5/40 X 7/16 Fillister Slot,held_for_identity_review,CTTFA222,732,"5-40 X 3/8"" PAN SLOT COLUMBIA",EACH,EACH,1,0,,,,,,TSW/Columbia fastener size/type conflict
+290,CBS2K,"6"" Comfort Grip Bucket Scoop",held_for_identity_review,CTTCBS2K,505,COLUMBIA 2K BUCKET SCOOP,EACH,EACH,1,0.4875,9,6,1,,,product_name_numeric_disagreement
+298,6BBH,6' 180 Grip Bent Flat Box Handle,held_for_identity_review,CTT6BBH,441,"72"" 180-GRIP BENT FLAT BOX HANDLE COLUMBIA",EACH,EACH,1,10,,,,,,product_name_numeric_disagreement
+328,FA231,6/32 X 3/8 Hex Bolt,held_for_identity_review,CTTFA231,737,"#6 X 3/8"" HEX BOLT FA231 COLUMBIA",EACH,EACH,1,0.01,,,,,,product_name_numeric_disagreement
+339,AB4-8,"8"" Automatic Box Door",held_for_identity_review,,,,,,,,,,,,,normalized_identifier_collision
+344,CTK8-B,"8"" BS Comfort Grip Taping Knife",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+357,FA262,"8-32 X 1/2"" Socket Head",held_for_identity_review,CTTFA262,750,"8-32 X 1/2"" SOCKET HEAD COLUMBIA (2)",EACH,EACH,1,0,,,,,,supplier product description indicates a possible two-piece pack
+361,FA256,"8-32 X 3/16"" Pan Slot",held_for_identity_review,CTTFA256,747,"8-32 X 3/16"" SET SCREW COLUMBIA",EACH,EACH,1,0.0045,4,3,0.1,,,TSW/Columbia screw type conflict
+368,FA259,"8-32 X 5/16"" Binder Slot",held_for_identity_review,CTTFA259,748,"8-32X3/8"" BINDER SLOT COLUMBIA",EACH,EACH,1,0.1,,,,,,TSW/Columbia fastener length conflict
+377,9-1MT,9 In 1 Nylon Multi Tool,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+391,AHR-BK-2,"Angle Head Blade Kit 2""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+392,AHR-BK-2.5,"Angle Head Blade Kit 2.5""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+393,AHR-BK-3,"Angle Head Blade Kit 3""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+394,AHR-BK-3.5,"Angle Head Blade Kit 3.5""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+396,AHR-K,Angle Head Repair Kit,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+400,CEXT3,Applicator Wheels,held_for_identity_review,CTTCEXT3,511,WHEEL FOR ICATW COLUMBIA,EACH,EACH,1,0.01,,,,,,product_description_disagreement_review
+416,FFB20A,Axle Roller Sleeve,held_for_identity_review,CTTFFB20A,794,AXEL ROLLER BEARING COLUMBIA (2),EACH,EACH,1,0,,,,,,product_description_disagreement_review | supplier_pack_quantity_review
+423,CT122A,Band Adaptor,held_for_identity_review,CTTCT122A,599,COLUMBIA TAPER STRAP ,EACH,EACH,1,0,,,,,,product_description_disagreement_review
+424,CT116A,Band Adaptor,held_for_identity_review,CTTCT116A,593,NEW STYLE STRAP FOR AUTO TAPER COLUMBIA,EACH,EACH,1,0,,,,,,product_description_disagreement_review
+431,FFBR-40-10,"Bead Wheel Axel Kit 10""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+432,FFBR-40-12,"Bead Wheel Axel Kit 12""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+434,FFBR-40-5.5,"Bead Wheel Axel Kit 5.5""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+435,FFBR-40-8,"Bead Wheel Axel Kit 8""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+455,FFB9-14,"Blade 14""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+458,"FFB9-8""","Blade 8""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+461,FFBA10-10,"Blade Bar Sub Assembly 10""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+462,FFBA10-12,"Blade Bar Sub Assembly 12""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+463,FFBA10-7,"Blade Bar Sub Assembly 7""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+464,FFBA10-8,"Blade Bar Sub Assembly 8""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+468,CT34R,Block For Removable Cap,held_for_identity_review,CTTCT34R,631,REMOVABLE COVER PLATE ATTACHMENT BLK COLUMBIA,EACH,EACH,1,0.3,,,,,,product_description_disagreement_review
+490,HFFB1A,Box T Seal,held_for_identity_review,CTTHFFB1A,870,MUD SEAL STRIP - TRIM TO FIT COLUMBIA,EACH,EACH,1,0.0105,14,0.2,0.2,,,product_description_disagreement_review
+519,CLT-BF,Cam Lock Box Filler Attachment,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+522,CTA99-CL,Cam Lock Cap Release Pin Assy,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+523,CT34-CL,Cam Lock Cap Side Block,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+527,CT87-CS,Cap Seal,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+532,CLT15,Clip Pins,held_for_identity_review,CTTCLT15,548,COLUMBIA HINGE PIN ,EACH,EACH,1,0,,,,,,product_description_disagreement_review
+560,JKBP,"Comfort Grip SS Joint Putty Knife Blister Pack 4""/5""/6""",held_for_identity_review,CTTJKBP,941,COLUMBIA COMFORT GRIP KNIVES BLISTER PACK 456,EACH,EACH,1,1.2745,12,9,1,,,product_name_numeric_disagreement
+571,CFB3-8,"Corner Box Side Plate 8""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+588,DDM-HOSE,DDM Vacuum Hose,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+597,CFB7-7,"Door Gasket 7""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+598,CFB7-8,"Door Gasket 8""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+634,HFBB14-10,"Fat Boy Door Gasket 10""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+635,HFBB14-12,"Fat Boy Door Gasket 12""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+657,HFBB14-8,"Fatboy Hinge Door Gasket 8""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+659,FTH4-6,Fiberglass Telescopic Handle 4'-6',held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+660,FTH5-8,Fiberglass Telescopic Handle 5'-8',held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+665,FFBA-36,Flat Box Wheel Kit,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+671,AH7-2.5,"Frame Tension Spring 2.5""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+672,AH7-3,"Frame Tension Spring 3""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+681,CT115A,Guard Ring O-Ring,held_for_identity_review,CTTCT115A,592,GASKET NEW STYLE END RING COLUMBIA,EACH,EACH,1,0.01,,,,,,product_description_disagreement_review
+685,PROMO 1,HAND TOOL PROMOTION,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+690,AH15,Handle Connecting Link Assembl,held_for_identity_review,CTTAH15,457,HANDLE BALL COLUMBIA,EACH,EACH,1,0.01,,,,,,product_description_disagreement_review
+697,BH1,Handle Mounting Base Anodized Black,held_for_identity_review,CTTBH1,490,MOUNTING PLATE (180 GRIP) COLUMBIA,EACH,EACH,1,1,,,,,,product_description_disagreement_review
+709,HFFB14-10,"Hinge Box Door Gasket 10""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+710,HFFB14-12,"Hinge Box Door Gasket 12""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+711,HFFB14-14,"Hinge Box Door Gasket 14""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+713,HFFB14-7,"Hinge Box Door Gasket 7""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+714,HFFB14-8,"Hinge Box Door Gasket 8""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+720,HNS15-2,"Hinged Nail Spotter Door Gasket 2""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+721,HNS15-3,"Hinged Nail Spotter Door Gasket 3""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+725,HHR-1,Hydra-Reach Repair Kit,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+732,ICATW2,ICATW Wheel Screw,held_for_identity_review,CTTICATW2,939,AXEL SLEEVE FOR ICATW COLUMBIA,EACH,EACH,1,0.01,,,,,,product_description_disagreement_review
+734,ICA2-1,Inside Corner Applicator 2 Wheel,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+735,ICA4-1,Inside Corner Applicator 4 Wheel,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+743,CT41A,Knife Retainer Cap,held_for_identity_review,CTTCT41A,640,CUTTER BLOCK CLAMP COLUMBIA,EACH,EACH,1,0.0045,0.15,0.25,0.6,,,product_description_disagreement_review
+748,CT4,Left Wafer Bushing,exact_manufacturer_supplier_identifier,CTTCT4,638,LEFT WAFER BUSHING COLUMBIA,EACH,EACH,1,0.0001,0.25,0.25,0.25,,,weight:implausibly_small_review
+846,CT45-BLACK,Predator Connecting Rod,held_for_identity_review,,,,,,,,,,,,,blank_or_duplicate_manufacturer_sku
+847,CT45-BLACK,Predator Connecting Rod,held_for_identity_review,,,,,,,,,,,,,blank_or_duplicate_manufacturer_sku
+852,PMH,"Predator Matrix 40"" - 60"" Flat Box Handle",held_for_identity_review,CTTPMH,1013,"COLUMBIA 40""-58 PREDATOR MATRIX HANDLE",EACH,EACH,1,2.9885,40,5,6,,,TSW/Columbia extension-length conflict
+872,HNS1-2,"Rear Plate 2""",held_for_identity_review,,,,,,,,,,,,,normalized_identifier_collision
+873,HNS1-3,"Rear Plate 3""",held_for_identity_review,,,,,,,,,,,,,normalized_identifier_collision
+879,HFFB3,Regular Side Plate-Both Sides,held_for_identity_review,CTTHFFB3,872,HINGE BOX END PLATE UNIVERSAL COLUMBIA,EACH,EACH,1,0,,,,,,product_description_disagreement_review
+904,CT101,Return Spring,exact_manufacturer_supplier_identifier,CTTCT101,579,RETURN SPRING COLUMBIA,EACH,EACH,1,0.0005,0.1,0.1,0.75,,,weight:implausibly_small_review
+918,CRA-2,Roller Replacement Kit,held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+943,BB,Semi-Automatic Drywall Taping Banjo,held_for_identity_review,CTTBB,485,COLUMBIA BLACK BANJO ALUMINUM W/ WOOD HANDLE,EACH,EACH,1,4.15,23,10,3,,,product_description_disagreement_review
+960,CT112,Slotted Bolt,held_for_identity_review,CTTCT112,589,CONNECTING STUD COLUMBIA,EACH,EACH,1,0.01,,,,,,product_description_disagreement_review
+967,AH11,Spring Reduction Pin,held_for_identity_review,CTTAH11,456,RETURN SPRING POST COLUMBIA,EACH,EACH,1,0.01,,,,,,product_description_disagreement_review
+977,MP36,Steel Bushing,held_for_identity_review,CTTMP36,969,NYLATRON BUSHING COLUMBIA,EACH,EACH,1,0.01,,,,,,TSW/Columbia bushing material conflict
+987,CTA59,Sub Assembled Magnet,held_for_identity_review,CTTCTA59,702,MAGNET WITH CASING FOR AUTO TAPER COLUMBIA,EACH,EACH,1,0,,,,,,product_description_disagreement_review
+1040,HNS19-2,"Triangle Adaptor 2""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+1041,HNS19-3,"Triangle Adaptor 3""",held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review
+1044,TL3-8,Twist Lock Handle 3'-8',held_for_identity_review,,,,,,,,,,,,,fuzzy_name_or_variant_requires_review

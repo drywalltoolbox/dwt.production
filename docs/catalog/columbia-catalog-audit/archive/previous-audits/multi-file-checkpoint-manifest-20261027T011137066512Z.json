@@ -1,0 +1,103 @@
+{
+  "schema_version": 1,
+  "created_utc": "2026-10-27T01:09:42.857112+00:00",
+  "purpose": "Review checkpoint; not a WooCommerce import or catalog authority.",
+  "matched_review_input_freshness": {
+    "status": "current",
+    "checked": [
+      {
+        "historical_path": "docs/catalog/columbia-catalog-audit/temporary-reference/columbia-manufacturer-woocommerce-reference.csv",
+        "current_path": "docs/catalog/columbia-catalog-audit/temporary-reference/columbia-manufacturer-woocommerce-reference.csv"
+      },
+      {
+        "historical_path": "docs/catalog/columbia-catalog-audit/temporary-reference/dtb-current-columbia-woocommerce-reference.csv",
+        "current_path": "docs/catalog/columbia-catalog-audit/temporary-reference/dtb-current-columbia-woocommerce-reference.csv"
+      },
+      {
+        "historical_path": "docs/catalog/columbia-catalog-audit/temporary-reference/columbia-manufacturer-first-WORKING-NOT-FOR-IMPORT.csv",
+        "current_path": "docs/catalog/columbia-catalog-audit/temporary-reference/columbia-manufacturer-first-WORKING-NOT-FOR-IMPORT.csv"
+      },
+      {
+        "historical_path": "docs/catalog/columbia-catalog-audit/manufacturer-rebuild-dispositions.csv",
+        "current_path": "docs/catalog/columbia-catalog-audit/review/manufacturer-rebuild-dispositions.csv"
+      },
+      {
+        "historical_path": "docs/catalog/columbia-catalog-audit/fuzzy-price-changes.csv",
+        "current_path": "docs/catalog/columbia-catalog-audit/archive/previous-audits/fuzzy-price-changes.csv"
+      },
+      {
+        "historical_path": "products/launch/official/dtb_official_catalog.csv",
+        "current_path": "products/launch/official/dtb_official_catalog.csv"
+      }
+    ],
+    "changed": []
+  },
+  "files": [
+    {
+      "checkpoint_file": "01-manufacturer-first-working.csv",
+      "source_path": "temporary-reference/columbia-manufacturer-first-WORKING-NOT-FOR-IMPORT.csv",
+      "rows": 1006,
+      "sha256": "4fb8af579b797aad5da20e073a53470e5990b344773d2b6b62bf289fd8e641ff"
+    },
+    {
+      "checkpoint_file": "02-manufacturer-baseline.csv",
+      "source_path": "temporary-reference/columbia-manufacturer-woocommerce-reference.csv",
+      "rows": 1006,
+      "sha256": "2158e1607d7a35bad2d4d814f1c208fb1f5bf879a9649f7ae966bc1e75d003d4"
+    },
+    {
+      "checkpoint_file": "03-existing-dtb-columbia.csv",
+      "source_path": "temporary-reference/dtb-current-columbia-woocommerce-reference.csv",
+      "rows": 515,
+      "sha256": "f3ead3ea076e6f49cd890b8d3184bbddfa74ed792fdd4dc09b21a4ca9ad973f8"
+    },
+    {
+      "checkpoint_file": "04-matched-products-side-by-side.csv",
+      "source_path": "review/columbia-matched-products-side-by-side.csv",
+      "rows": 445,
+      "sha256": "55127a5893791eab8339f0fd3a738b2b9b9053d3818c2eb7687c5c6b4d7e7e99"
+    },
+    {
+      "checkpoint_file": "05-matched-field-review.csv",
+      "source_path": "review/columbia-matched-fields-review.csv",
+      "rows": 67195,
+      "sha256": "64eb5a1612a042a2d9c27127d3c6904789714f194041f307fdbb09f82f13c66c"
+    },
+    {
+      "checkpoint_file": "06-manufacturer-dispositions.csv",
+      "source_path": "review/manufacturer-rebuild-dispositions.csv",
+      "rows": 1006,
+      "sha256": "a85f5b24ec33ecae7b4fdaaffa990ec26fa580e21ec2a6d495571e35310cb707"
+    },
+    {
+      "checkpoint_file": "07-dtb-dispositions.csv",
+      "source_path": "review/dtb-rebuild-dispositions.csv",
+      "rows": 515,
+      "sha256": "b8e007ed0f16c1f14d54d75f6b713a5988ca0ae6bb8619020c0aa80a1c1d92c0"
+    },
+    {
+      "checkpoint_file": "08-category-assessment.csv",
+      "source_path": "review/shared-category-manufacturer-assessment.csv",
+      "rows": 1006,
+      "sha256": "704cab41387a1f083f61ccbcf7c21cc735e1b702d70776d46de0ce2df47773ef"
+    },
+    {
+      "checkpoint_file": "09-variation-dependencies.csv",
+      "source_path": "review/existing-variation-dependencies.csv",
+      "rows": 160,
+      "sha256": "1d5a090a80c29a4e921d8b5837efc46f940d51049d6e3bbf6360874665c96bc6"
+    },
+    {
+      "checkpoint_file": "10-excluded-part-kits.csv",
+      "source_path": "review/excluded-manufacturer-part-kits.csv",
+      "rows": 46,
+      "sha256": "ee3d0393aa46cc52b1916c3f7a8a212e283d03a7b7875ac11be7008d9aaa5338"
+    },
+    {
+      "checkpoint_file": "11-excluded-packs.csv",
+      "source_path": "review/excluded-manufacturer-packs.csv",
+      "rows": 2,
+      "sha256": "0e138cd898582af913acfc3bd12d8f7082744ee7ae91b4e73d0452ae5cfa9352"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# Columbia matched-product review
+
+[columbia-matched-products-side-by-side.csv](columbia-matched-products-side-by-side.csv) has 445 rows. Each row contains the manufacturer reference, current DTB reference, and manufacturer-first working value for all 151 official CSV fields. Product identifiers, source URL, match basis, and review flags appear first. The current DTB sellable reference was verified field-for-field against the current official catalog when this report was generated.
+
+[columbia-matched-fields-review.csv](columbia-matched-fields-review.csv) has 67,195 rows: one for every field on every matched product. Filter by `match_id`, SKU, `field`, `recommended_source`, or `review_status`. Each row shows all three values, a proposed source/value, and the reason. `pending` means that a human or evidence-backed review must resolve the field; `no_action` means the field is empty across all three sources. Recommendations are a starting point and do not mutate either catalog.
+
+There are 434 unique exact-SKU matches. Eleven are strong name/size plus identifier-format candidates with different manufacturer and DTB SKUs; their identity and external mapping must be verified before treating them as aliases or changing protected SKUs. More ambiguous candidates and SKU collisions are deliberately not in this confident-match file; consult [manufacturer-rebuild-dispositions.csv](manufacturer-rebuild-dispositions.csv) for the full 1,006-product scope. Merchandise, part kits, and packs remain excluded.
+
+The manufacturer product name, description, source price, and mapped local image URLs are the starting values where supplied. Manufacturer blank image fields stay blank per the user's instruction; live URL availability and variation parent fallback still require verification. DTB product type/parent, taxonomy, protected IDs, independently supported metadata, and operational state are shown for review rather than presumed correct. Shipping values and costs require supplier/unit verification; 73 matched products are flagged where sale price is below recorded cost.
+
+The current working file is not import-ready. The official catalog was not changed by this comparison. [columbia-matched-review-summary.json](columbia-matched-review-summary.json) records source hashes.

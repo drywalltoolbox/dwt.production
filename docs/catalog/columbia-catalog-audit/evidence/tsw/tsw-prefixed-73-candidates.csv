@@ -1,0 +1,318 @@
+﻿dtb_sku,dtb_name,manufacturer_name,tsw_sku,tsw_name,score,basis,number_disagreement,tsw_cost_sku,tsw_cost,disposition
+FA380,1/4 Ss E-Clip,1/4 Ss E-Clip,CTTFA380,"COLUMBIA 1/8"" E-CLIP FOR MATRIX HANDLE",0.900,normalized_identifier; title_similarity=0.490; token_overlap=0.250,yes,FA380,1.71,review_only_not_identity_proof
+FA380,1/4 Ss E-Clip,1/4 Ss E-Clip,CTTFA379,"COLUMBIA 1/4"" E-CLIP FOR MATRIX HANDLE",0.485,title_similarity=0.531; token_overlap=0.429,no,FA379,1.71,review_only_not_identity_proof
+FA288,"1/4"" X 3/4"" Split Pin","1/4"" X 3/4"" Split Pin",CTTFA288,COLUMBIA 1/4 X 3/4 SPLIT PIN,0.900,normalized_identifier; title_similarity=0.792; token_overlap=0.833,no,,,review_only_not_identity_proof
+FA288,"1/4"" X 3/4"" Split Pin","1/4"" X 3/4"" Split Pin",CTTFA224,"1/8"" X 3/8"" SPLIT PIN COLUMBIA",0.737,title_similarity=0.931; token_overlap=0.500,yes,FA224,0.48,review_only_not_identity_proof
+FA288,"1/4"" X 3/4"" Split Pin","1/4"" X 3/4"" Split Pin",CTTFA201,"1/16"" X 3/8"" SPLIT PIN COLUMBIA",0.728,title_similarity=0.915; token_overlap=0.500,yes,FA201,0.32,review_only_not_identity_proof
+FA288,"1/4"" X 3/4"" Split Pin","1/4"" X 3/4"" Split Pin",CTTFA289,"1/4"" X 2"" SPLIT PIN OLD STYLE COLUMBIA",0.683,title_similarity=0.788; token_overlap=0.556,yes,FA289,1.21,review_only_not_identity_proof
+FA288,"1/4"" X 3/4"" Split Pin","1/4"" X 3/4"" Split Pin",CTTFA317,"5/32"" X 7/8"" ROLL PIN COLUMBIA",0.548,title_similarity=0.724; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FA291,1/4-20 Hex Nut,1/4-20 Hex Nut,CTTFA232,6-32 HEX NUT COLUMBIA,0.648,title_similarity=0.769; token_overlap=0.500,yes,FA232,0.89,review_only_not_identity_proof
+FA291,1/4-20 Hex Nut,1/4-20 Hex Nut,CTTFA290,1/4-20 NYLOC NUT COLUMBIA,0.628,title_similarity=0.733; token_overlap=0.500,no,FA290,0.89,review_only_not_identity_proof
+FA291,1/4-20 Hex Nut,1/4-20 Hex Nut,CTTFA292,1/4-20 NYLOC JAM NUT COLUMBIA,0.536,title_similarity=0.647; token_overlap=0.400,no,FA292,0.81,review_only_not_identity_proof
+FA291,1/4-20 Hex Nut,1/4-20 Hex Nut,CTTFA323,"1/4-20 X 1"" HEX BOLT COLUMBIA",0.476,title_similarity=0.632; token_overlap=0.286,yes,,,review_only_not_identity_proof
+FA291,1/4-20 Hex Nut,1/4-20 Hex Nut,CTTFA296,"1/4-20 X 1/2"" HEX BOLT COLUMBIA",0.459,title_similarity=0.600; token_overlap=0.286,yes,FA296,0.41,review_only_not_identity_proof
+FA299,1/4-20 X 1-1/2 Hex Bolt,1/4-20 X 1-1/2 Hex Bolt,CTTFA296,"1/4-20 X 1/2"" HEX BOLT COLUMBIA",0.729,title_similarity=0.857; token_overlap=0.571,yes,FA296,0.41,review_only_not_identity_proof
+FA299,1/4-20 X 1-1/2 Hex Bolt,1/4-20 X 1-1/2 Hex Bolt,CTTFA323,"1/4-20 X 1"" HEX BOLT COLUMBIA",0.702,title_similarity=0.809; token_overlap=0.571,yes,,,review_only_not_identity_proof
+FA299,1/4-20 X 1-1/2 Hex Bolt,1/4-20 X 1-1/2 Hex Bolt,CTTFA306,5/16-18 X 1-1/4 HEX BOLT COLUMBIA,0.614,title_similarity=0.766; token_overlap=0.429,yes,FA306,1.63,review_only_not_identity_proof
+FA299,1/4-20 X 1-1/2 Hex Bolt,1/4-20 X 1-1/2 Hex Bolt,CTTFA279,"10-24 X 1-1/4"" HEX BOLT COLUMBIA",0.587,title_similarity=0.760; token_overlap=0.375,yes,FA279,0.8,review_only_not_identity_proof
+FA299,1/4-20 X 1-1/2 Hex Bolt,1/4-20 X 1-1/2 Hex Bolt,CTTCFA299,"1/4-20 X 1 1/2"" HEX SLOT COLUMBIA",0.581,title_similarity=0.784; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FA313,1/4-20 X 1/4 Socket Head Set Screw,1/4-20 X 1/4 Soc Head Setscrew,CTTFA295,"1/4-20 X 1/2"" FLAT HEAD SOCKET COLUMBIA",0.513,title_similarity=0.688; token_overlap=0.300,yes,FA295,0.32,review_only_not_identity_proof
+FA313,1/4-20 X 1/4 Socket Head Set Screw,1/4-20 X 1/4 Soc Head Setscrew,CTTFA312,"10-24 X 1/4"" SET SCREW COLUMBIA",0.503,title_similarity=0.750; token_overlap=0.200,yes,FA312,0.89,review_only_not_identity_proof
+FA313,1/4-20 X 1/4 Socket Head Set Screw,1/4-20 X 1/4 Soc Head Setscrew,CTTFA276,10-24 X 7/8 PAN HEAD SCREW COLUMBIA,0.463,title_similarity=0.679; token_overlap=0.200,yes,FA276,0.32,review_only_not_identity_proof
+FA313,1/4-20 X 1/4 Socket Head Set Screw,1/4-20 X 1/4 Soc Head Setscrew,CTTFA209,"4-40 X 1/8"" FLAT HEAD SCREW COLUMBIA",0.461,title_similarity=0.689; token_overlap=0.182,yes,,,review_only_not_identity_proof
+FA313,1/4-20 X 1/4 Socket Head Set Screw,1/4-20 X 1/4 Soc Head Setscrew,CTTFA219,"4-40 X 1/2"" FILL. HEAD SCREW COLUMBIA",0.461,title_similarity=0.689; token_overlap=0.182,yes,,,review_only_not_identity_proof
+FA300,"1/4-20 x 2"" Hex Bolt","1/4-20 X 2"" Hex Bolt",CTTFA300,"COLUMBIA HEX BOLT 1/4-20 X 2""",0.900,normalized_identifier; title_similarity=0.625; token_overlap=1.000,no,FA300,1.63,review_only_not_identity_proof
+FA300,"1/4-20 x 2"" Hex Bolt","1/4-20 X 2"" Hex Bolt",CTTFA296,"1/4-20 X 1/2"" HEX BOLT COLUMBIA",0.849,title_similarity=0.960; token_overlap=0.714,yes,FA296,0.41,review_only_not_identity_proof
+FA300,"1/4-20 x 2"" Hex Bolt","1/4-20 X 2"" Hex Bolt",CTTFA323,"1/4-20 X 1"" HEX BOLT COLUMBIA",0.849,title_similarity=0.958; token_overlap=0.714,yes,,,review_only_not_identity_proof
+FA300,"1/4-20 x 2"" Hex Bolt","1/4-20 X 2"" Hex Bolt",CTTFA273,"10-24 X 1"" HEX BOLT COLUMBIA",0.693,title_similarity=0.851; token_overlap=0.500,yes,FA273,0.89,review_only_not_identity_proof
+FA300,"1/4-20 x 2"" Hex Bolt","1/4-20 X 2"" Hex Bolt",CTTFA275,"10-24X7/8"" HEX BOLT COLUMBIA",0.674,title_similarity=0.816; token_overlap=0.500,yes,FA275,0.89,review_only_not_identity_proof
+FA301,"1/4-20 x 2 1/4"" Hex Bolt","1/4-20 X 2-1/4"" Hex Bolt",CTTFA296,"1/4-20 X 1/2"" HEX BOLT COLUMBIA",0.831,title_similarity=0.926; token_overlap=0.714,yes,FA296,0.41,review_only_not_identity_proof
+FA301,"1/4-20 x 2 1/4"" Hex Bolt","1/4-20 X 2-1/4"" Hex Bolt",CTTFA323,"1/4-20 X 1"" HEX BOLT COLUMBIA",0.829,title_similarity=0.923; token_overlap=0.714,yes,,,review_only_not_identity_proof
+FA301,"1/4-20 x 2 1/4"" Hex Bolt","1/4-20 X 2-1/4"" Hex Bolt",CTTFA279,"10-24 X 1-1/4"" HEX BOLT COLUMBIA",0.705,title_similarity=0.873; token_overlap=0.500,yes,FA279,0.8,review_only_not_identity_proof
+FA301,"1/4-20 x 2 1/4"" Hex Bolt","1/4-20 X 2-1/4"" Hex Bolt",CTTFA273,"10-24 X 1"" HEX BOLT COLUMBIA",0.678,title_similarity=0.824; token_overlap=0.500,yes,FA273,0.89,review_only_not_identity_proof
+FA301,"1/4-20 x 2 1/4"" Hex Bolt","1/4-20 X 2-1/4"" Hex Bolt",CTTFA275,"10-24X7/8"" HEX BOLT COLUMBIA",0.661,title_similarity=0.792; token_overlap=0.500,yes,FA275,0.89,review_only_not_identity_proof
+FA294,"1/4-20 X 3/8"" Socket Head","1/4-20 X 3/8"" Socket Head",CTTFA294,"1/4-20 X 3/8"" SOCKET COLUMBIA",0.900,normalized_identifier; title_similarity=0.906; token_overlap=0.833,no,FA294,1.21,review_only_not_identity_proof
+FA294,"1/4-20 X 3/8"" Socket Head","1/4-20 X 3/8"" Socket Head",CTTFA274,"10-24 X 3/8"" SOCKET HD SCREW COLUMBIA",0.735,title_similarity=0.825; token_overlap=0.625,yes,FA274,1.21,review_only_not_identity_proof
+FA294,"1/4-20 X 3/8"" Socket Head","1/4-20 X 3/8"" Socket Head",CTTFA261,"8-32 X 3/8"" SOCKET COLUMBIA",0.689,title_similarity=0.784; token_overlap=0.571,yes,FA261,0.43,review_only_not_identity_proof
+FA294,"1/4-20 X 3/8"" Socket Head","1/4-20 X 3/8"" Socket Head",CTTFA295,"1/4-20 X 1/2"" FLAT HEAD SOCKET COLUMBIA",0.665,title_similarity=0.698; token_overlap=0.625,yes,FA295,0.32,review_only_not_identity_proof
+FA294,"1/4-20 X 3/8"" Socket Head","1/4-20 X 3/8"" Socket Head",CTTFA262,"8-32 X 1/2"" SOCKET HEAD COLUMBIA (2)",0.636,title_similarity=0.793; token_overlap=0.444,yes,FA262,1.11,review_only_not_identity_proof
+FA297,"1/4-20 x 5/8"" Socket","1/4-20 X 5/8"" Socket Head",CTTFA294,"1/4-20 X 3/8"" SOCKET COLUMBIA",0.735,title_similarity=0.868; token_overlap=0.571,yes,FA294,1.21,review_only_not_identity_proof
+FA297,"1/4-20 x 5/8"" Socket","1/4-20 X 5/8"" Socket Head",CTTFA295,"1/4-20 X 1/2"" FLAT HEAD SOCKET COLUMBIA",0.665,title_similarity=0.698; token_overlap=0.625,yes,FA295,0.32,review_only_not_identity_proof
+FA297,"1/4-20 x 5/8"" Socket","1/4-20 X 5/8"" Socket Head",CTTFA274,"10-24 X 3/8"" SOCKET HD SCREW COLUMBIA",0.637,title_similarity=0.794; token_overlap=0.444,yes,FA274,1.21,review_only_not_identity_proof
+FA297,"1/4-20 x 5/8"" Socket","1/4-20 X 5/8"" Socket Head",CTTFA262,"8-32 X 1/2"" SOCKET HEAD COLUMBIA (2)",0.636,title_similarity=0.793; token_overlap=0.444,yes,FA262,1.11,review_only_not_identity_proof
+FA297,"1/4-20 x 5/8"" Socket","1/4-20 X 5/8"" Socket Head",CTTFA261,"8-32 X 3/8"" SOCKET COLUMBIA",0.579,title_similarity=0.745; token_overlap=0.375,yes,FA261,0.43,review_only_not_identity_proof
+FA311,"FA311 1/4-28 X 1/2"" Socket Head","1/4-28 X 1/2"" Socket Head",CTTFA262,"8-32 X 1/2"" SOCKET HEAD COLUMBIA (2)",0.755,title_similarity=0.862; token_overlap=0.625,yes,FA262,1.11,review_only_not_identity_proof
+FA311,"FA311 1/4-28 X 1/2"" Socket Head","1/4-28 X 1/2"" Socket Head",CTTFA295,"1/4-20 X 1/2"" FLAT HEAD SOCKET COLUMBIA",0.683,title_similarity=0.730; token_overlap=0.625,yes,FA295,0.32,review_only_not_identity_proof
+FA311,"FA311 1/4-28 X 1/2"" Socket Head","1/4-28 X 1/2"" Socket Head",CTTFA274,"10-24 X 3/8"" SOCKET HD SCREW COLUMBIA",0.619,title_similarity=0.762; token_overlap=0.444,yes,FA274,1.21,review_only_not_identity_proof
+FA311,"FA311 1/4-28 X 1/2"" Socket Head","1/4-28 X 1/2"" Socket Head",CTTFA294,"1/4-20 X 3/8"" SOCKET COLUMBIA",0.605,title_similarity=0.792; token_overlap=0.375,yes,FA294,1.21,review_only_not_identity_proof
+FA311,"FA311 1/4-28 X 1/2"" Socket Head","1/4-28 X 1/2"" Socket Head",CTTFA261,"8-32 X 3/8"" SOCKET COLUMBIA",0.557,title_similarity=0.706; token_overlap=0.375,yes,FA261,0.43,review_only_not_identity_proof
+FA320,"1/4-28-3/8"" Socket Set Screw",1/4-28 X 3/8 Socket Set Screw,CTTFA274,"10-24 X 3/8"" SOCKET HD SCREW COLUMBIA",0.619,title_similarity=0.762; token_overlap=0.444,yes,FA274,1.21,review_only_not_identity_proof
+FA320,"1/4-28-3/8"" Socket Set Screw",1/4-28 X 3/8 Socket Set Screw,CTTFA302,1/4 -28-3/8 SOCKET SET SCREW HYDRA HDL COLUMBIA,0.552,title_similarity=0.758; token_overlap=0.300,yes,FA302,0.89,conflict_supplier_description_vs_manufacturer_for_candidate_sku
+FA320,"1/4-28-3/8"" Socket Set Screw",1/4-28 X 3/8 Socket Set Screw,CTTFA294,"1/4-20 X 3/8"" SOCKET COLUMBIA",0.542,title_similarity=0.679; token_overlap=0.375,yes,FA294,1.21,review_only_not_identity_proof
+FA320,"1/4-28-3/8"" Socket Set Screw",1/4-28 X 3/8 Socket Set Screw,CTTFA256,"8-32 X 3/16"" SET SCREW COLUMBIA",0.530,title_similarity=0.691; token_overlap=0.333,yes,FA256,0.32,review_only_not_identity_proof
+FA320,"1/4-28-3/8"" Socket Set Screw",1/4-28 X 3/8 Socket Set Screw,CTTFA261,"8-32 X 3/8"" SOCKET COLUMBIA",0.492,title_similarity=0.588; token_overlap=0.375,yes,FA261,0.43,review_only_not_identity_proof
+FA379,"1/8"" Ss E-Clip","1/8"" Ss E-Clip",CTTFA379,"COLUMBIA 1/4"" E-CLIP FOR MATRIX HANDLE",0.900,normalized_identifier; title_similarity=0.519; token_overlap=0.375,yes,FA379,1.71,review_only_not_identity_proof
+FA379,"1/8"" Ss E-Clip","1/8"" Ss E-Clip",CTTFA380,"COLUMBIA 1/8"" E-CLIP FOR MATRIX HANDLE",0.563,title_similarity=0.556; token_overlap=0.571,no,FA380,1.71,review_only_not_identity_proof
+FA379,"1/8"" Ss E-Clip","1/8"" Ss E-Clip",CTTC12MPX6,"COLUMBIA 12"" MUD PAN STAINLESS STEEL (6)",0.450,title_similarity=0.655; token_overlap=0.200,yes,C12MPX6,92.95,review_only_not_identity_proof
+FA379,"1/8"" Ss E-Clip","1/8"" Ss E-Clip",CTTC14MPX6,"COLUMBIA 14"" MUD PAN STAINLESS STEEL (6)",0.450,title_similarity=0.655; token_overlap=0.200,yes,C14MPX6,95.93,review_only_not_identity_proof
+FA379,"1/8"" Ss E-Clip","1/8"" Ss E-Clip",CTTC16MPX6,"COLUMBIA 16"" MUD PAN STAINLESS STEEL (6)",0.450,title_similarity=0.655; token_overlap=0.200,yes,,,review_only_not_identity_proof
+FA271,10-24 Nyloc Nut,10-24 Nyloc Nut,CTTFA271,COLUMBIA 10-24 NYLOC NUT ,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+FA271,10-24 Nyloc Nut,10-24 Nyloc Nut,CTTFA290,1/4-20 NYLOC NUT COLUMBIA,0.686,title_similarity=0.839; token_overlap=0.500,yes,FA290,0.89,review_only_not_identity_proof
+FA271,10-24 Nyloc Nut,10-24 Nyloc Nut,CTTFA292,1/4-20 NYLOC JAM NUT COLUMBIA,0.589,title_similarity=0.743; token_overlap=0.400,yes,FA292,0.81,review_only_not_identity_proof
+FA271,10-24 Nyloc Nut,10-24 Nyloc Nut,CTTFA234,6-32 NYLOC JAM NUT COLUMBIA,0.580,title_similarity=0.727; token_overlap=0.400,yes,FA234,0.79,review_only_not_identity_proof
+FA271,10-24 Nyloc Nut,10-24 Nyloc Nut,CTTFA281,10-32 NYLOC JAM NUT COLUMBIA (2),0.578,title_similarity=0.778; token_overlap=0.333,yes,FA281,0.89,review_only_not_identity_proof
+FA272,10-24 Wing Nut,10-24 Wing Nut,CTTFA271,COLUMBIA 10-24 NYLOC NUT ,0.642,title_similarity=0.759; token_overlap=0.500,no,,,review_only_not_identity_proof
+FA272,10-24 Wing Nut,10-24 Wing Nut,CTTFA290,1/4-20 NYLOC NUT COLUMBIA,0.420,title_similarity=0.600; token_overlap=0.200,yes,FA290,0.89,review_only_not_identity_proof
+FA274,"10-24 x 3/8"" Socket","10-24 X 3/8"" Socket Head",CTTFA274,"10-24 X 3/8"" SOCKET HD SCREW COLUMBIA",0.900,normalized_identifier; title_similarity=0.903; token_overlap=0.857,no,FA274,1.21,review_only_not_identity_proof
+FA274,"10-24 x 3/8"" Socket","10-24 X 3/8"" Socket Head",CTTFA294,"1/4-20 X 3/8"" SOCKET COLUMBIA",0.701,title_similarity=0.808; token_overlap=0.571,yes,FA294,1.21,review_only_not_identity_proof
+FA274,"10-24 x 3/8"" Socket","10-24 X 3/8"" Socket Head",CTTFA261,"8-32 X 3/8"" SOCKET COLUMBIA",0.697,title_similarity=0.800; token_overlap=0.571,yes,FA261,0.43,review_only_not_identity_proof
+FA274,"10-24 x 3/8"" Socket","10-24 X 3/8"" Socket Head",CTTFA262,"8-32 X 1/2"" SOCKET HEAD COLUMBIA (2)",0.644,title_similarity=0.807; token_overlap=0.444,yes,FA262,1.11,review_only_not_identity_proof
+FA274,"10-24 x 3/8"" Socket","10-24 X 3/8"" Socket Head",CTTFA312,"10-24 X 1/4"" SET SCREW COLUMBIA",0.557,title_similarity=0.741; token_overlap=0.333,yes,FA312,0.89,review_only_not_identity_proof
+FA316,"10-32 X 1/2"" Flat Socket Head","10-32 X 1/2"" Flat Socket Head",CTTFA295,"1/4-20 X 1/2"" FLAT HEAD SOCKET COLUMBIA",0.748,title_similarity=0.746; token_overlap=0.750,yes,FA295,0.32,review_only_not_identity_proof
+FA316,"10-32 X 1/2"" Flat Socket Head","10-32 X 1/2"" Flat Socket Head",CTTFA262,"8-32 X 1/2"" SOCKET HEAD COLUMBIA (2)",0.711,title_similarity=0.839; token_overlap=0.556,yes,FA262,1.11,review_only_not_identity_proof
+FA316,"10-32 X 1/2"" Flat Socket Head","10-32 X 1/2"" Flat Socket Head",CTTFA274,"10-24 X 3/8"" SOCKET HD SCREW COLUMBIA",0.590,title_similarity=0.746; token_overlap=0.400,yes,FA274,1.21,review_only_not_identity_proof
+FA316,"10-32 X 1/2"" Flat Socket Head","10-32 X 1/2"" Flat Socket Head",CTTFA245,"6-32 X 1/2"" FILL. HEAD SCREW COLUMBIA",0.558,title_similarity=0.688; token_overlap=0.400,yes,FA245,0.41,review_only_not_identity_proof
+FA316,"10-32 X 1/2"" Flat Socket Head","10-32 X 1/2"" Flat Socket Head",CTTFA209,"4-40 X 1/8"" FLAT HEAD SCREW COLUMBIA",0.541,title_similarity=0.656; token_overlap=0.400,yes,,,review_only_not_identity_proof
+FA315,"FA315 10-32 X 3/8"" Flat Socket Head",10/32 X 3/8 Flat Socket Head,CTTFA274,"10-24 X 3/8"" SOCKET HD SCREW COLUMBIA",0.590,title_similarity=0.710; token_overlap=0.444,yes,FA274,1.21,review_only_not_identity_proof
+FA315,"FA315 10-32 X 3/8"" Flat Socket Head",10/32 X 3/8 Flat Socket Head,CTTFA218,4/40 X 3/8 FLAT SLOT COLUMBIA,0.535,title_similarity=0.667; token_overlap=0.375,yes,,,review_only_not_identity_proof
+FA315,"FA315 10-32 X 3/8"" Flat Socket Head",10/32 X 3/8 Flat Socket Head,CTTFA261,"8-32 X 3/8"" SOCKET COLUMBIA",0.521,title_similarity=0.640; token_overlap=0.375,yes,FA261,0.43,review_only_not_identity_proof
+FA315,"FA315 10-32 X 3/8"" Flat Socket Head",10/32 X 3/8 Flat Socket Head,CTTFA295,"1/4-20 X 1/2"" FLAT HEAD SOCKET COLUMBIA",0.519,title_similarity=0.581; token_overlap=0.444,yes,FA295,0.32,review_only_not_identity_proof
+FA315,"FA315 10-32 X 3/8"" Flat Socket Head",10/32 X 3/8 Flat Socket Head,CTTFA294,"1/4-20 X 3/8"" SOCKET COLUMBIA",0.507,title_similarity=0.615; token_overlap=0.375,yes,FA294,1.21,review_only_not_identity_proof
+FA365,"3/16 x 1"" Sping Pin SS","3/16 X 1"" Spring Pin Ss",CTTOPPK101,"10-IN-1"" ONE PIECE MULTI TOOL SS COLUMBIA",0.479,title_similarity=0.667; token_overlap=0.250,yes,,,review_only_not_identity_proof
+FA365,"3/16 x 1"" Sping Pin SS","3/16 X 1"" Spring Pin Ss",CTTFA201,"1/16"" X 3/8"" SPLIT PIN COLUMBIA",0.462,title_similarity=0.594; token_overlap=0.300,yes,FA201,0.32,review_only_not_identity_proof
+FA365,"3/16 x 1"" Sping Pin SS","3/16 X 1"" Spring Pin Ss",CTTFA289,"1/4"" X 2"" SPLIT PIN OLD STYLE COLUMBIA",0.453,title_similarity=0.620; token_overlap=0.250,yes,FA289,1.21,review_only_not_identity_proof
+FA365,"3/16 x 1"" Sping Pin SS","3/16 X 1"" Spring Pin Ss",CTTPJK35,"COLUMBIA 3.5"" POINTED JOINT KNIFE SS",0.433,title_similarity=0.639; token_overlap=0.182,yes,,,review_only_not_identity_proof
+FA365,"3/16 x 1"" Sping Pin SS","3/16 X 1"" Spring Pin Ss",CTTFA224,"1/8"" X 3/8"" SPLIT PIN COLUMBIA",0.432,title_similarity=0.540; token_overlap=0.300,yes,FA224,0.48,review_only_not_identity_proof
+FA206,4-40 Hex Nut,4/40 Hex Nut,CTTFA232,6-32 HEX NUT COLUMBIA,0.592,title_similarity=0.667; token_overlap=0.500,yes,FA232,0.89,review_only_not_identity_proof
+FA207,4-40 Nyloc Nut,4/40 Nyloc Nut,CTTFA207,4-40 NYLOCK NUT COLUMBIA,0.900,normalized_identifier; title_similarity=0.897; token_overlap=0.200,yes,,,review_only_not_identity_proof
+FA207,4-40 Nyloc Nut,4/40 Nyloc Nut,CTTFA290,1/4-20 NYLOC NUT COLUMBIA,0.702,title_similarity=0.867; token_overlap=0.500,yes,FA290,0.89,review_only_not_identity_proof
+FA207,4-40 Nyloc Nut,4/40 Nyloc Nut,CTTFA271,COLUMBIA 10-24 NYLOC NUT ,0.642,title_similarity=0.759; token_overlap=0.500,yes,,,review_only_not_identity_proof
+FA207,4-40 Nyloc Nut,4/40 Nyloc Nut,CTTFA292,1/4-20 NYLOC JAM NUT COLUMBIA,0.601,title_similarity=0.765; token_overlap=0.400,yes,FA292,0.81,review_only_not_identity_proof
+FA207,4-40 Nyloc Nut,4/40 Nyloc Nut,CTTFA234,6-32 NYLOC JAM NUT COLUMBIA,0.524,title_similarity=0.625; token_overlap=0.400,yes,FA234,0.79,review_only_not_identity_proof
+FA216,4-40 X 3/8” Fillister Slot,4/40 X 3/8 Fillister Slot,CTTFA221,4/40 X 1/4 FILLISTER SLOT COLUMBIA,0.806,title_similarity=0.920; token_overlap=0.667,yes,,,review_only_not_identity_proof
+FA216,4-40 X 3/8” Fillister Slot,4/40 X 3/8 Fillister Slot,CTTFA218,4/40 X 3/8 FLAT SLOT COLUMBIA,0.764,title_similarity=0.844; token_overlap=0.667,no,,,review_only_not_identity_proof
+FA216,4-40 X 3/8” Fillister Slot,4/40 X 3/8 Fillister Slot,CTTFA241,"COLUMBIA 6-32# X 3/8"" BINDER SLOT",0.507,title_similarity=0.615; token_overlap=0.375,yes,,,review_only_not_identity_proof
+FA216,4-40 X 3/8” Fillister Slot,4/40 X 3/8 Fillister Slot,CTTFA259,"8-32X3/8"" BINDER SLOT COLUMBIA",0.507,title_similarity=0.615; token_overlap=0.375,yes,,,review_only_not_identity_proof
+FA216,4-40 X 3/8” Fillister Slot,4/40 X 3/8 Fillister Slot,CTTFA222,"5-40 X 3/8"" PAN SLOT COLUMBIA",0.505,title_similarity=0.612; token_overlap=0.375,yes,FA222,0.32,review_only_not_identity_proof
+FA303,5-16 Flat Washer,5-16 Flat Washer,CTTFA268,COLUMBIA #10 FLAT WASHER,0.702,title_similarity=0.867; token_overlap=0.500,yes,FA268,0.32,review_only_not_identity_proof
+FA303,5-16 Flat Washer,5-16 Flat Washer,CTTFA253,#8 FLAT WASHER COLUMBIA,0.680,title_similarity=0.828; token_overlap=0.500,yes,FA253,0.32,review_only_not_identity_proof
+FA303,5-16 Flat Washer,5-16 Flat Washer,CTTFA230,#6 STAR WASHER COLUMBIA,0.469,title_similarity=0.690; token_overlap=0.200,yes,,,review_only_not_identity_proof
+FA303,5-16 Flat Washer,5-16 Flat Washer,CTTCT76,NYLATRON WASHER COLUMBIA,0.467,title_similarity=0.645; token_overlap=0.250,no,,,review_only_not_identity_proof
+FA303,5-16 Flat Washer,5-16 Flat Washer,CTTFA308,"33/64 X 7/8"" FLAT WASHER COLUMBIA",0.454,title_similarity=0.591; token_overlap=0.286,yes,FA308,0.89,review_only_not_identity_proof
+FA306,"5/16-18 x 1 1/4"" Hex Bolt","5/16-18 X 1-1/4"" Hex Bolt",CTTFA306,5/16-18 X 1-1/4 HEX BOLT COLUMBIA,0.900,normalized_identifier; title_similarity=0.906; token_overlap=0.833,no,FA306,1.63,review_only_not_identity_proof
+FA306,"5/16-18 x 1 1/4"" Hex Bolt","5/16-18 X 1-1/4"" Hex Bolt",CTTFA305,"5/16-18 X 3/4"" HEX BOLT COLUMBIA",0.832,title_similarity=0.929; token_overlap=0.714,yes,FA305,1.63,review_only_not_identity_proof
+FA306,"5/16-18 x 1 1/4"" Hex Bolt","5/16-18 X 1-1/4"" Hex Bolt",CTTFA279,"10-24 X 1-1/4"" HEX BOLT COLUMBIA",0.793,title_similarity=0.857; token_overlap=0.714,yes,FA279,0.8,review_only_not_identity_proof
+FA306,"5/16-18 x 1 1/4"" Hex Bolt","5/16-18 X 1-1/4"" Hex Bolt",CTTFA273,"10-24 X 1"" HEX BOLT COLUMBIA",0.648,title_similarity=0.769; token_overlap=0.500,yes,FA273,0.89,review_only_not_identity_proof
+FA306,"5/16-18 x 1 1/4"" Hex Bolt","5/16-18 X 1-1/4"" Hex Bolt",CTTFA296,"1/4-20 X 1/2"" HEX BOLT COLUMBIA",0.645,title_similarity=0.764; token_overlap=0.500,yes,FA296,0.41,review_only_not_identity_proof
+FA305,"5/16 -18 x 3/4"" Hex Bolt","5/16-18 X 3/4"" Hex Bolt",CTTFA305,"5/16-18 X 3/4"" HEX BOLT COLUMBIA",1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,FA305,1.63,review_only_not_identity_proof
+FA305,"5/16 -18 x 3/4"" Hex Bolt","5/16-18 X 3/4"" Hex Bolt",CTTFA306,5/16-18 X 1-1/4 HEX BOLT COLUMBIA,0.710,title_similarity=0.824; token_overlap=0.571,yes,FA306,1.63,review_only_not_identity_proof
+FA305,"5/16 -18 x 3/4"" Hex Bolt","5/16-18 X 3/4"" Hex Bolt",CTTFA247,"6-32 X 5/8"" HEX BOLT COLUMBIA",0.656,title_similarity=0.784; token_overlap=0.500,yes,FA247,0.8,review_only_not_identity_proof
+FA305,"5/16 -18 x 3/4"" Hex Bolt","5/16-18 X 3/4"" Hex Bolt",CTTFA279,"10-24 X 1-1/4"" HEX BOLT COLUMBIA",0.653,title_similarity=0.778; token_overlap=0.500,yes,FA279,0.8,review_only_not_identity_proof
+FA305,"5/16 -18 x 3/4"" Hex Bolt","5/16-18 X 3/4"" Hex Bolt",CTTFA275,"10-24X7/8"" HEX BOLT COLUMBIA",0.648,title_similarity=0.769; token_overlap=0.500,yes,FA275,0.89,review_only_not_identity_proof
+FA307,5-16 x 24 Jam Nut,5/16-24 Jam Nut,CTTFA234,6-32 NYLOC JAM NUT COLUMBIA,0.547,title_similarity=0.667; token_overlap=0.400,yes,FA234,0.79,review_only_not_identity_proof
+FA307,5-16 x 24 Jam Nut,5/16-24 Jam Nut,CTTFA292,1/4-20 NYLOC JAM NUT COLUMBIA,0.526,title_similarity=0.629; token_overlap=0.400,yes,FA292,0.81,review_only_not_identity_proof
+FA307,5-16 x 24 Jam Nut,5/16-24 Jam Nut,CTTFA281,10-32 NYLOC JAM NUT COLUMBIA (2),0.486,title_similarity=0.611; token_overlap=0.333,yes,FA281,0.89,review_only_not_identity_proof
+FA307,5-16 x 24 Jam Nut,5/16-24 Jam Nut,CTTFA271,COLUMBIA 10-24 NYLOC NUT ,0.420,title_similarity=0.600; token_overlap=0.200,yes,,,review_only_not_identity_proof
+FA317,"5/32"" x 7/8"" Roll Pin","5/32 X 7/8"" Roll Pin",CTTFA317,"5/32"" X 7/8"" ROLL PIN COLUMBIA",0.948,normalized_identifier; title_similarity=0.906; token_overlap=1.000,no,,,review_only_not_identity_proof
+FA317,"5/32"" x 7/8"" Roll Pin","5/32 X 7/8"" Roll Pin",CTTFA201,"1/16"" X 3/8"" SPLIT PIN COLUMBIA",0.496,title_similarity=0.630; token_overlap=0.333,yes,FA201,0.32,review_only_not_identity_proof
+FA317,"5/32"" x 7/8"" Roll Pin","5/32 X 7/8"" Roll Pin",CTTFA275,"10-24X7/8"" HEX BOLT COLUMBIA",0.487,title_similarity=0.612; token_overlap=0.333,yes,FA275,0.89,review_only_not_identity_proof
+FA317,"5/32"" x 7/8"" Roll Pin","5/32 X 7/8"" Roll Pin",CTTFA308,"33/64 X 7/8"" FLAT WASHER COLUMBIA",0.446,title_similarity=0.538; token_overlap=0.333,yes,FA308,0.89,review_only_not_identity_proof
+FA317,"5/32"" x 7/8"" Roll Pin","5/32 X 7/8"" Roll Pin",CTTFA261,"8-32 X 3/8"" SOCKET COLUMBIA",0.435,title_similarity=0.609; token_overlap=0.222,yes,FA261,0.43,review_only_not_identity_proof
+FA227,"6-32 X 1/4"" Flat Slot","6-32 X 1/4"" Flat Slot",CTTFA243,"6-32 X 3/8"" FLAT SLOT COLUMBIA",0.827,title_similarity=0.920; token_overlap=0.714,yes,,,review_only_not_identity_proof
+FA227,"6-32 X 1/4"" Flat Slot","6-32 X 1/4"" Flat Slot",CTTFA239,"COLUMBIA 6-32# X 1/4"" BINDER SLOT",0.766,title_similarity=0.808; token_overlap=0.714,no,,,review_only_not_identity_proof
+FA227,"6-32 X 1/4"" Flat Slot","6-32 X 1/4"" Flat Slot",CTTFA241,"COLUMBIA 6-32# X 3/8"" BINDER SLOT",0.627,title_similarity=0.731; token_overlap=0.500,yes,,,review_only_not_identity_proof
+FA227,"6-32 X 1/4"" Flat Slot","6-32 X 1/4"" Flat Slot",CTTFA265,"8-32 X 3/4"" TRUSS SLOT COLUMBIA",0.581,title_similarity=0.784; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FA227,"6-32 X 1/4"" Flat Slot","6-32 X 1/4"" Flat Slot",CTTFA222,"5-40 X 3/8"" PAN SLOT COLUMBIA",0.532,title_similarity=0.694; token_overlap=0.333,yes,FA222,0.32,review_only_not_identity_proof
+FA235,"6-32 X 1/8"" Set Screw",6-32 X 1/8 Set Screw SS,CTTFA256,"8-32 X 3/16"" SET SCREW COLUMBIA",0.484,title_similarity=0.607; token_overlap=0.333,yes,FA256,0.32,review_only_not_identity_proof
+FA235,"6-32 X 1/8"" Set Screw",6-32 X 1/8 Set Screw SS,CTTFA312,"10-24 X 1/4"" SET SCREW COLUMBIA",0.484,title_similarity=0.607; token_overlap=0.333,yes,FA312,0.89,review_only_not_identity_proof
+FA235,"6-32 X 1/8"" Set Screw",6-32 X 1/8 Set Screw SS,CTTFA245,"6-32 X 1/2"" FILL. HEAD SCREW COLUMBIA",0.442,title_similarity=0.557; token_overlap=0.300,yes,FA245,0.41,review_only_not_identity_proof
+FA238,"6-32 X 3/16"" Fillister Slot","6-32 X 3/16"" Fillister Slot",CTTFA243,"6-32 X 3/8"" FLAT SLOT COLUMBIA",0.677,title_similarity=0.821; token_overlap=0.500,yes,,,review_only_not_identity_proof
+FA238,"6-32 X 3/16"" Fillister Slot","6-32 X 3/16"" Fillister Slot",CTTFA241,"COLUMBIA 6-32# X 3/8"" BINDER SLOT",0.661,title_similarity=0.793; token_overlap=0.500,yes,,,review_only_not_identity_proof
+FA238,"6-32 X 3/16"" Fillister Slot","6-32 X 3/16"" Fillister Slot",CTTFA239,"COLUMBIA 6-32# X 1/4"" BINDER SLOT",0.642,title_similarity=0.759; token_overlap=0.500,yes,,,review_only_not_identity_proof
+FA238,"6-32 X 3/16"" Fillister Slot","6-32 X 3/16"" Fillister Slot",CTTFA259,"8-32X3/8"" BINDER SLOT COLUMBIA",0.567,title_similarity=0.759; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FA238,"6-32 X 3/16"" Fillister Slot","6-32 X 3/16"" Fillister Slot",CTTFA221,4/40 X 1/4 FILLISTER SLOT COLUMBIA,0.542,title_similarity=0.679; token_overlap=0.375,yes,,,review_only_not_identity_proof
+FA262,"8-32 x 1/2"" Socket","8-32 X 1/2"" Socket Head",CTTFA262,"8-32 X 1/2"" SOCKET HEAD COLUMBIA (2)",0.916,normalized_identifier; title_similarity=0.964; token_overlap=0.857,yes,FA262,1.11,review_only_not_identity_proof
+FA262,"8-32 x 1/2"" Socket","8-32 X 1/2"" Socket Head",CTTFA261,"8-32 X 3/8"" SOCKET COLUMBIA",0.706,title_similarity=0.816; token_overlap=0.571,yes,FA261,0.43,review_only_not_identity_proof
+FA262,"8-32 x 1/2"" Socket","8-32 X 1/2"" Socket Head",CTTFA267,"8-32 X 1-1/2"" PAN HEAD COLUMBIA",0.661,title_similarity=0.792; token_overlap=0.500,yes,FA267,0.41,review_only_not_identity_proof
+FA262,"8-32 x 1/2"" Socket","8-32 X 1/2"" Socket Head",CTTFA295,"1/4-20 X 1/2"" FLAT HEAD SOCKET COLUMBIA",0.642,title_similarity=0.656; token_overlap=0.625,yes,FA295,0.32,review_only_not_identity_proof
+FA262,"8-32 x 1/2"" Socket","8-32 X 1/2"" Socket Head",CTTFA274,"10-24 X 3/8"" SOCKET HD SCREW COLUMBIA",0.615,title_similarity=0.754; token_overlap=0.444,yes,FA274,1.21,review_only_not_identity_proof
+FA249,"8-32X3/16"" Set Screw","8-32 X 3/16"" Set Screw",CTTFA256,"8-32 X 3/16"" SET SCREW COLUMBIA",1.000,title_similarity=1.000; token_overlap=1.000,no,FA256,0.32,conflict_supplier_description_vs_manufacturer_for_candidate_sku
+FA249,"8-32X3/16"" Set Screw","8-32 X 3/16"" Set Screw",CTTFA312,"10-24 X 1/4"" SET SCREW COLUMBIA",0.669,title_similarity=0.808; token_overlap=0.500,yes,FA312,0.89,review_only_not_identity_proof
+FA249,"8-32X3/16"" Set Screw","8-32 X 3/16"" Set Screw",CTTFA261,"8-32 X 3/8"" SOCKET COLUMBIA",0.581,title_similarity=0.750; token_overlap=0.375,yes,FA261,0.43,review_only_not_identity_proof
+FA249,"8-32X3/16"" Set Screw","8-32 X 3/16"" Set Screw",CTTFA274,"10-24 X 3/8"" SOCKET HD SCREW COLUMBIA",0.538,title_similarity=0.733; token_overlap=0.300,yes,FA274,1.21,review_only_not_identity_proof
+FA249,"8-32X3/16"" Set Screw","8-32 X 3/16"" Set Screw",CTTFA265,"8-32 X 3/4"" TRUSS SLOT COLUMBIA",0.531,title_similarity=0.692; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FA376,8-32 x 5/16 SS Socket Head,8-32 X 5/16 Ss Socket Head,CTTFA262,"8-32 X 1/2"" SOCKET HEAD COLUMBIA (2)",0.608,title_similarity=0.742; token_overlap=0.444,yes,FA262,1.11,review_only_not_identity_proof
+FA376,8-32 x 5/16 SS Socket Head,8-32 X 5/16 Ss Socket Head,CTTFA261,"8-32 X 3/8"" SOCKET COLUMBIA",0.529,title_similarity=0.655; token_overlap=0.375,yes,FA261,0.43,review_only_not_identity_proof
+FA376,8-32 x 5/16 SS Socket Head,8-32 X 5/16 Ss Socket Head,CTTFA274,"10-24 X 3/8"" SOCKET HD SCREW COLUMBIA",0.480,title_similarity=0.627; token_overlap=0.300,yes,FA274,1.21,review_only_not_identity_proof
+FA376,8-32 x 5/16 SS Socket Head,8-32 X 5/16 Ss Socket Head,CTTFA267,"8-32 X 1-1/2"" PAN HEAD COLUMBIA",0.467,title_similarity=0.576; token_overlap=0.333,yes,FA267,0.41,review_only_not_identity_proof
+FA376,8-32 x 5/16 SS Socket Head,8-32 X 5/16 Ss Socket Head,CTTFA256,"8-32 X 3/16"" SET SCREW COLUMBIA",0.444,title_similarity=0.644; token_overlap=0.200,yes,FA256,0.32,review_only_not_identity_proof
+FA254,8-32 Nyloc Nut,8/32 Nyloc Nut,CTTFA290,1/4-20 NYLOC NUT COLUMBIA,0.665,title_similarity=0.800; token_overlap=0.500,yes,FA290,0.89,review_only_not_identity_proof
+FA254,8-32 Nyloc Nut,8/32 Nyloc Nut,CTTFA271,COLUMBIA 10-24 NYLOC NUT ,0.642,title_similarity=0.759; token_overlap=0.500,yes,,,review_only_not_identity_proof
+FA254,8-32 Nyloc Nut,8/32 Nyloc Nut,CTTFA234,6-32 NYLOC JAM NUT COLUMBIA,0.593,title_similarity=0.750; token_overlap=0.400,yes,FA234,0.79,review_only_not_identity_proof
+FA254,8-32 Nyloc Nut,8/32 Nyloc Nut,CTTFA292,1/4-20 NYLOC JAM NUT COLUMBIA,0.568,title_similarity=0.706; token_overlap=0.400,yes,FA292,0.81,review_only_not_identity_proof
+FA254,8-32 Nyloc Nut,8/32 Nyloc Nut,CTTFA281,10-32 NYLOC JAM NUT COLUMBIA (2),0.527,title_similarity=0.686; token_overlap=0.333,yes,FA281,0.89,review_only_not_identity_proof
+FA258,8-32X 1/4 Half Dog Set,8/32 X 1/4 Half Dog Set Screw,CTTFA312,"10-24 X 1/4"" SET SCREW COLUMBIA",0.580,title_similarity=0.691; token_overlap=0.444,yes,FA312,0.89,review_only_not_identity_proof
+FA258,8-32X 1/4 Half Dog Set,8/32 X 1/4 Half Dog Set Screw,CTTFA256,"8-32 X 3/16"" SET SCREW COLUMBIA",0.515,title_similarity=0.691; token_overlap=0.300,yes,FA256,0.32,review_only_not_identity_proof
+MP32,Backing Washer Locator,Backing Washer Locator,CTTMP32,BACKING WASHER LOCATOR COLUMBIA,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+MP32,Backing Washer Locator,Backing Washer Locator,CTTMP13,(LARGE) PISTON BACKING WASHER COLUMBIA,0.494,title_similarity=0.571; token_overlap=0.400,no,,,review_only_not_identity_proof
+MP32,Backing Washer Locator,Backing Washer Locator,CTTMP13A,(SMALL) PISTON BACKING WASHER COLUMBIA,0.494,title_similarity=0.571; token_overlap=0.400,no,,,review_only_not_identity_proof
+MP32,Backing Washer Locator,Backing Washer Locator,CTTFFB4B,STAINLESS STEEL BACKING WASHER COLUMBIA,0.476,title_similarity=0.538; token_overlap=0.400,no,,,review_only_not_identity_proof
+FFB9-14,"Columbia Tools FFB9 Flat Finishing Box Blade - 14""","Blade 14""",CTTFFB914,"COLUMBIA  14"" FLAT BOX BLADE",0.900,normalized_identifier; title_similarity=0.400; token_overlap=0.600,no,,,review_only_not_identity_proof
+FFB9-14,"Columbia Tools FFB9 Flat Finishing Box Blade - 14""","Blade 14""",CTTFFBA1014,"BLADE BAR ASSEMBLY 14"" COLUMBIA",0.637,title_similarity=0.667; token_overlap=0.600,no,,,review_only_not_identity_proof
+FFB9-14,"Columbia Tools FFB9 Flat Finishing Box Blade - 14""","Blade 14""",CTTFFBR914,"BOX BLADES KIT 14"" COLUMBIA",0.559,title_similarity=0.743; token_overlap=0.333,no,,,review_only_not_identity_proof
+FFB9-14,"Columbia Tools FFB9 Flat Finishing Box Blade - 14""","Blade 14""",CTTFFBR910,"COLUMBIA BOX BLADE KIT 10""",0.538,title_similarity=0.706; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FFB9-14,"Columbia Tools FFB9 Flat Finishing Box Blade - 14""","Blade 14""",CTTFFBR912,"COLUMBIA BOX BLADE KIT 12""",0.538,title_similarity=0.706; token_overlap=0.333,yes,,,review_only_not_identity_proof
+HH16A,Bleeder Screw,Bleeder Screw,CTTHH16A,BRASS BLEEDER SCREW COLUMBIA,0.900,normalized_identifier; title_similarity=0.812; token_overlap=0.667,no,,,review_only_not_identity_proof
+BH26,Columbia Tools BH26 Cam for 180 Grip Box Handle,Cam,CTTBH26,CAM FOR 180 HANDLE COLUMBIA,0.900,normalized_identifier; title_similarity=0.353; token_overlap=0.333,no,,,review_only_not_identity_proof
+BH26,Columbia Tools BH26 Cam for 180 Grip Box Handle,Cam,CTTBH07,CAM FOLLOWER COLUMBIA,0.445,title_similarity=0.400; token_overlap=0.500,no,BH07,8.05,review_only_not_identity_proof
+CT104,Connection Strap,Connection Strap,CTTCT104,COLUMBIA CONNECTION STRAP,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+CT104,Connection Strap,Connection Strap,CTTCT122,STRAP COLUMBIA ,0.487,title_similarity=0.476; token_overlap=0.500,no,,,review_only_not_identity_proof
+CT104,Connection Strap,Connection Strap,CTTBBH9,COMMON TOP STRAP COLUMBIA,0.456,title_similarity=0.625; token_overlap=0.250,no,,,review_only_not_identity_proof
+CT104,Connection Strap,Connection Strap,CTTBH11,COLUMBIA STRAP CONNECTING PIN,0.449,title_similarity=0.611; token_overlap=0.250,no,,,review_only_not_identity_proof
+CT104,Connection Strap,Connection Strap,CTTCT122A,COLUMBIA TAPER STRAP ,0.435,title_similarity=0.519; token_overlap=0.333,no,CT122A,11.64,review_only_not_identity_proof
+HNS10,Columbia Tools Door Spring - Long,Door Spring Long,CTTHNS10,DOOR SPRING LONG- LEFT COLUMBIA,0.900,normalized_identifier; title_similarity=0.865; token_overlap=0.750,no,,,review_only_not_identity_proof
+HNS10,Columbia Tools Door Spring - Long,Door Spring Long,CTTFFB17,COLUMBIA DOOR SPRING ,0.748,title_similarity=0.815; token_overlap=0.667,no,FFB17,2.72,review_only_not_identity_proof
+HNS10,Columbia Tools Door Spring - Long,Door Spring Long,CTTNS10,DOOR SPRING COLUMBIA,0.748,title_similarity=0.815; token_overlap=0.667,no,,,review_only_not_identity_proof
+HNS10,Columbia Tools Door Spring - Long,Door Spring Long,CTTFFB16,DOOR SPRING NUT COLUMBIA,0.686,title_similarity=0.839; token_overlap=0.500,no,,,review_only_not_identity_proof
+HNS10,Columbia Tools Door Spring - Long,Door Spring Long,CTTNS11,DOOR SPRING NUT COLUMBIA ,0.686,title_similarity=0.839; token_overlap=0.500,no,,,review_only_not_identity_proof
+HNS10A,Columbia Tools Door Spring - Short,Door Spring Short,CTTHNS10A,DOOR SPRING SHORT- RIGHT COLUMBIA,0.900,normalized_identifier; title_similarity=0.850; token_overlap=0.750,no,,,review_only_not_identity_proof
+HNS10A,Columbia Tools Door Spring - Short,Door Spring Short,CTTFFB17,COLUMBIA DOOR SPRING ,0.732,title_similarity=0.786; token_overlap=0.667,no,FFB17,2.72,review_only_not_identity_proof
+HNS10A,Columbia Tools Door Spring - Short,Door Spring Short,CTTNS10,DOOR SPRING COLUMBIA,0.732,title_similarity=0.786; token_overlap=0.667,no,,,review_only_not_identity_proof
+HNS10A,Columbia Tools Door Spring - Short,Door Spring Short,CTTFFB16,DOOR SPRING NUT COLUMBIA,0.672,title_similarity=0.812; token_overlap=0.500,no,,,review_only_not_identity_proof
+HNS10A,Columbia Tools Door Spring - Short,Door Spring Short,CTTNS11,DOOR SPRING NUT COLUMBIA ,0.672,title_similarity=0.812; token_overlap=0.500,no,,,review_only_not_identity_proof
+FFB37,Rubber for Box Wheel,Flat Box Wheel O-ring,CTTFFBA36,COLUMBIA BOX WHEEL KIT,0.506,title_similarity=0.647; token_overlap=0.333,no,,,review_only_not_identity_proof
+FFB37,Rubber for Box Wheel,Flat Box Wheel O-ring,CTTCFB5C,CONE O-RING COLUMBIA ,0.459,title_similarity=0.562; token_overlap=0.333,no,,,review_only_not_identity_proof
+FFB37,Rubber for Box Wheel,Flat Box Wheel O-ring,CTTHH23,PISTON O-RING COLUMBIA,0.441,title_similarity=0.529; token_overlap=0.333,no,,,review_only_not_identity_proof
+FFB37,Rubber for Box Wheel,Flat Box Wheel O-ring,CTTHP44,COLLAR O-RING COLUMBIA,0.441,title_similarity=0.529; token_overlap=0.333,no,,,review_only_not_identity_proof
+FFB37,Rubber for Box Wheel,Flat Box Wheel O-ring,CTTMP23A,O RING COLUMBIA ,0.424,title_similarity=0.444; token_overlap=0.400,no,,,review_only_not_identity_proof
+HH15,Grip Sleeve Octagon,Hand Protector,CTTPROMO1,COLUMBIA HAND TOOL PROMO SET,0.466,title_similarity=0.643; token_overlap=0.250,no,,,review_only_not_identity_proof
+CR1,Columbia Tools Head Casting (CR1),Head Casting,CTTHPA4S,HEAD CASTING ASSEMBLY COLUMBIA,0.700,title_similarity=0.727; token_overlap=0.667,no,,,review_only_not_identity_proof
+CR1,Columbia Tools Head Casting (CR1),Head Casting,CTTMP5,HEAD BUSHING COLUMBIA,0.562,title_similarity=0.750; token_overlap=0.333,no,,,review_only_not_identity_proof
+CR1,Columbia Tools Head Casting (CR1),Head Casting,CTTCFB8,HANDLE MOUNT CASTING COLUMBIA,0.456,title_similarity=0.625; token_overlap=0.250,no,CFB8,27.15,review_only_not_identity_proof
+CR1,Columbia Tools Head Casting (CR1),Head Casting,CTTCT1,TAPER HEAD - CLASSIC COLUMBIA,0.443,title_similarity=0.600; token_overlap=0.250,no,CT1,93.08,review_only_not_identity_proof
+CR1,Columbia Tools Head Casting (CR1),Head Casting,CTTMP2,FOOT VALVE CASTING COLUMBIA,0.443,title_similarity=0.600; token_overlap=0.250,no,,,review_only_not_identity_proof
+CFB15A,Hinge Bushing (Plastic Washer),Hinge Bushing Plastic Washer,CTTCFB15A,HINGE BUSHING COLUMBIA,0.900,normalized_identifier; title_similarity=0.634; token_overlap=0.500,no,,,review_only_not_identity_proof
+CFB15A,Hinge Bushing (Plastic Washer),Hinge Bushing Plastic Washer,CTTFA285,"1/4"" PLASTIC WASHER COLUMBIA",0.538,title_similarity=0.706; token_overlap=0.333,no,FA285,0.77,review_only_not_identity_proof
+CT4,Wafer Bushing - Left,Left Wafer Bushing,CTTCT4,LEFT WAFER BUSHING COLUMBIA,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+CT4,Wafer Bushing - Left,Left Wafer Bushing,CTTCT3A,(LEFT) INSERT BUSHING COLUMBIA,0.671,title_similarity=0.811; token_overlap=0.500,no,,,review_only_not_identity_proof
+CT4,Wafer Bushing - Left,Left Wafer Bushing,CTTCT5,RIGHT WAFER BUSHING COLUMBIA,0.671,title_similarity=0.811; token_overlap=0.500,no,CT5,0.77,review_only_not_identity_proof
+CT4,Wafer Bushing - Left,Left Wafer Bushing,CTTCT28,ROLLER BUSHING COLUMBIA,0.491,title_similarity=0.688; token_overlap=0.250,no,CT28,2.32,review_only_not_identity_proof
+CT4,Wafer Bushing - Left,Left Wafer Bushing,CTTFFB5A,AXLE BUSHING COLUMBIA,0.479,title_similarity=0.667; token_overlap=0.250,no,,,review_only_not_identity_proof
+MH3,Lower Mount Bracket,Matrix Lower Mounting Bracket,CTTFFH3,LOWER MOUNTING BRACKET COLUMBIA,0.812,title_similarity=0.863; token_overlap=0.750,no,,,review_only_not_identity_proof
+MH3,Lower Mount Bracket,Matrix Lower Mounting Bracket,CTTHH2,UPPER MOUNTING BRACKET COLUMBIA,0.590,title_similarity=0.745; token_overlap=0.400,no,,,review_only_not_identity_proof
+MH3,Lower Mount Bracket,Matrix Lower Mounting Bracket,CTTBH5,UPPER MOUNTING BRACKET (180 GRIP) COLUMBIA,0.477,title_similarity=0.633; token_overlap=0.286,no,BH5,5.43,review_only_not_identity_proof
+MH3,Lower Mount Bracket,Matrix Lower Mounting Bracket,CTTCT38,TUBE HOLDING BRACKET LOWER COLUMBIA,0.430,title_similarity=0.509; token_overlap=0.333,no,CT38,13.19,review_only_not_identity_proof
+MH3,Lower Mount Bracket,Matrix Lower Mounting Bracket,CTTMH17,COLUMBIA MATRIX PINCH BRAKE,0.426,title_similarity=0.638; token_overlap=0.167,no,MH17,10.77,review_only_not_identity_proof
+MH12,PinchBrake Spring,Matrix Pinch Brake Spring,CTTMH17,COLUMBIA MATRIX PINCH BRAKE,0.798,title_similarity=0.837; token_overlap=0.750,no,MH17,10.77,review_only_not_identity_proof
+MH12,PinchBrake Spring,Matrix Pinch Brake Spring,CTTMH24,COLUMBIA MATRIX PINCH BRAKE BUSHING,0.766,title_similarity=0.902; token_overlap=0.600,no,MH24,5.88,review_only_not_identity_proof
+MH12,PinchBrake Spring,Matrix Pinch Brake Spring,CTTMH9,COLUMBIA MATRIX PINCH BRAKE ROD,0.738,title_similarity=0.851; token_overlap=0.600,no,MH9,10.31,review_only_not_identity_proof
+MH12,PinchBrake Spring,Matrix Pinch Brake Spring,CTTMH25,COLUMBIA MATRIX PINCH BRAKE STEM,0.728,title_similarity=0.833; token_overlap=0.600,no,MH25,6.36,review_only_not_identity_proof
+MH12,PinchBrake Spring,Matrix Pinch Brake Spring,CTTHH12,BRAKE SPRING COLUMBIA,0.582,title_similarity=0.649; token_overlap=0.500,no,,,review_only_not_identity_proof
+MP23,Mud Pump Seal,Mud Pump Seal (U-Cup),CTTMP23,COLUMBIA MUD PUMP SEAL,0.900,normalized_identifier; title_similarity=0.812; token_overlap=0.600,no,,,review_only_not_identity_proof
+MP23,Mud Pump Seal,Mud Pump Seal (U-Cup),CTTHMP,COLUMBIA MUD PUMP ,0.506,title_similarity=0.593; token_overlap=0.400,no,HMP,277.45,review_only_not_identity_proof
+MP23,Mud Pump Seal,Mud Pump Seal (U-Cup),CTTCT98,MUD SUPPLY SEAL PLATE COLUMBIA,0.486,title_similarity=0.650; token_overlap=0.286,no,CT98,3.09,review_only_not_identity_proof
+MP23,Mud Pump Seal,Mud Pump Seal (U-Cup),CTTHMPP,COLUMBIA MUD PUMP PROMO,0.483,title_similarity=0.606; token_overlap=0.333,no,,,review_only_not_identity_proof
+MP23,Mud Pump Seal,Mud Pump Seal (U-Cup),CTTMP24,MUD PUMP SCREEN (COARSE) COLUMBIA,0.477,title_similarity=0.634; token_overlap=0.286,no,,,review_only_not_identity_proof
+CT63,Needle,Needle,CTTCT63,GOOSER NEEDLE - LONG COLUMBIA,0.900,normalized_identifier; title_similarity=0.500; token_overlap=0.333,no,,,review_only_not_identity_proof
+CT76,Nylatron Washer,Nylatron Washer,CTTCT76,NYLATRON WASHER COLUMBIA,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+CT76,Nylatron Washer,Nylatron Washer,CTTCFB19,NYLATRON BUSHING COLUMBIA,0.540,title_similarity=0.710; token_overlap=0.333,no,,,review_only_not_identity_proof
+CT76,Nylatron Washer,Nylatron Washer,CTTMP36,NYLATRON BUSHING COLUMBIA,0.540,title_similarity=0.710; token_overlap=0.333,no,,,review_only_not_identity_proof
+CT76,Nylatron Washer,Nylatron Washer,CTTFA228,WASHER COLUMBIA,0.539,title_similarity=0.571; token_overlap=0.500,no,,,review_only_not_identity_proof
+CT76,Nylatron Washer,Nylatron Washer,CTTFA253,#8 FLAT WASHER COLUMBIA,0.505,title_similarity=0.714; token_overlap=0.250,no,FA253,0.32,review_only_not_identity_proof
+MP23A,Columbia Tools O-Ring (MP23A),O-Ring,CTTMP23A,O RING COLUMBIA ,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+MP23A,Columbia Tools O-Ring (MP23A),O-Ring,CTTFFB6A,O RING COLUMBIA (2) ,0.771,title_similarity=0.857; token_overlap=0.667,no,,,review_only_not_identity_proof
+MP23A,Columbia Tools O-Ring (MP23A),O-Ring,CTTCFB5C,CONE O-RING COLUMBIA ,0.688,title_similarity=0.706; token_overlap=0.667,no,,,review_only_not_identity_proof
+MP23A,Columbia Tools O-Ring (MP23A),O-Ring,CTTHH23,PISTON O-RING COLUMBIA,0.647,title_similarity=0.632; token_overlap=0.667,no,,,review_only_not_identity_proof
+MP23A,Columbia Tools O-Ring (MP23A),O-Ring,CTTHP44,COLLAR O-RING COLUMBIA,0.647,title_similarity=0.632; token_overlap=0.667,no,,,review_only_not_identity_proof
+MP13,Piston Backing Washer - Large,Piston Backing Washer (Large),CTTMP13,(LARGE) PISTON BACKING WASHER COLUMBIA,0.900,normalized_identifier; title_similarity=0.778; token_overlap=1.000,no,,,review_only_not_identity_proof
+MP13,Piston Backing Washer - Large,Piston Backing Washer (Large),CTTMP13A,(SMALL) PISTON BACKING WASHER COLUMBIA,0.698,title_similarity=0.778; token_overlap=0.600,no,,,review_only_not_identity_proof
+MP13,Piston Backing Washer - Large,Piston Backing Washer (Large),CTTMP32,BACKING WASHER LOCATOR COLUMBIA,0.584,title_similarity=0.735; token_overlap=0.400,no,,,review_only_not_identity_proof
+MP13,Piston Backing Washer - Large,Piston Backing Washer (Large),CTTFFB4B,STAINLESS STEEL BACKING WASHER COLUMBIA,0.497,title_similarity=0.632; token_overlap=0.333,no,,,review_only_not_identity_proof
+HH23,Piston O-Ring,Piston O-Ring,CTTHH23,PISTON O-RING COLUMBIA,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+HH23,Piston O-Ring,Piston O-Ring,CTTMP23A,O RING COLUMBIA ,0.647,title_similarity=0.632; token_overlap=0.667,no,,,review_only_not_identity_proof
+HH23,Piston O-Ring,Piston O-Ring,CTTCFB5C,CONE O-RING COLUMBIA ,0.638,title_similarity=0.750; token_overlap=0.500,no,,,review_only_not_identity_proof
+HH23,Piston O-Ring,Piston O-Ring,CTTHP44,COLLAR O-RING COLUMBIA,0.563,title_similarity=0.615; token_overlap=0.500,no,,,review_only_not_identity_proof
+HH23,Piston O-Ring,Piston O-Ring,CTTHH16,PISTON HOUSING COLUMBIA,0.561,title_similarity=0.815; token_overlap=0.250,no,,,review_only_not_identity_proof
+HP46,Latch Keeper,Pump Latch Keeper,CTTHP46,LATCH KEEPER COLUMBIA,0.900,normalized_identifier; title_similarity=0.828; token_overlap=0.667,no,,,review_only_not_identity_proof
+HH33,Rlease Trigger Spring,Release Trigger Spring,CTTHH33,RELEASE TRIGGER SPRING COLUMBIA,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+HH33,Rlease Trigger Spring,Release Trigger Spring,CTTHH31,COLUMBIA RELEASE CLIP PIN,0.466,title_similarity=0.684; token_overlap=0.200,no,,,review_only_not_identity_proof
+HH33,Rlease Trigger Spring,Release Trigger Spring,CTTCT101,RETURN SPRING COLUMBIA,0.458,title_similarity=0.629; token_overlap=0.250,no,,,review_only_not_identity_proof
+HH33,Rlease Trigger Spring,Release Trigger Spring,CTTCT54,RETURN SPRING COLUMBIA,0.458,title_similarity=0.629; token_overlap=0.250,no,,,review_only_not_identity_proof
+HH33,Rlease Trigger Spring,Release Trigger Spring,CTTCT91,RELEASE CLIP BUSHING COLUMBIA,0.457,title_similarity=0.667; token_overlap=0.200,no,,,review_only_not_identity_proof
+CT101,Columbia Tools CT101 Return Spring,Return Spring,CTTCT101,RETURN SPRING COLUMBIA,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+CT101,Columbia Tools CT101 Return Spring,Return Spring,CTTCT54,RETURN SPRING COLUMBIA,1.000,title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+CT101,Columbia Tools CT101 Return Spring,Return Spring,CTTAH11,RETURN SPRING POST COLUMBIA,0.761,title_similarity=0.839; token_overlap=0.667,no,,,review_only_not_identity_proof
+CT101,Columbia Tools CT101 Return Spring,Return Spring,CTTCT36,RETURN SPRING TUBE COLUMBIA,0.761,title_similarity=0.839; token_overlap=0.667,no,CT36,20.16,review_only_not_identity_proof
+CT101,Columbia Tools CT101 Return Spring,Return Spring,CTTCT39,COLUMBIA RETURN SPRING KNIFE,0.747,title_similarity=0.812; token_overlap=0.667,no,,,review_only_not_identity_proof
+CT40,Return Spring Ring,Return Spring Ring,CTTCT101,RETURN SPRING COLUMBIA,0.761,title_similarity=0.839; token_overlap=0.667,no,,,review_only_not_identity_proof
+CT40,Return Spring Ring,Return Spring Ring,CTTCT54,RETURN SPRING COLUMBIA,0.761,title_similarity=0.839; token_overlap=0.667,no,,,review_only_not_identity_proof
+CT40,Return Spring Ring,Return Spring Ring,CTTCT39,COLUMBIA RETURN SPRING KNIFE,0.671,title_similarity=0.811; token_overlap=0.500,no,,,review_only_not_identity_proof
+CT40,Return Spring Ring,Return Spring Ring,CTTAH11,RETURN SPRING POST COLUMBIA,0.653,title_similarity=0.778; token_overlap=0.500,no,,,review_only_not_identity_proof
+CT40,Return Spring Ring,Return Spring Ring,CTTCT36,RETURN SPRING TUBE COLUMBIA,0.653,title_similarity=0.778; token_overlap=0.500,no,CT36,20.16,review_only_not_identity_proof
+HNS13,Roll Pin Bushing,Roll Pin Bushing,CTTHNS13,ROLL PIN BUSHING COLUMBIA,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+HNS13,Roll Pin Bushing,Roll Pin Bushing,CTTHH32,PIN BUSHING COLUMBIA ,0.748,title_similarity=0.815; token_overlap=0.667,no,,,review_only_not_identity_proof
+HNS13,Roll Pin Bushing,Roll Pin Bushing,CTTCT28,ROLLER BUSHING COLUMBIA,0.553,title_similarity=0.800; token_overlap=0.250,no,CT28,2.32,review_only_not_identity_proof
+HNS13,Roll Pin Bushing,Roll Pin Bushing,CTTHNS12A,HANDLE ROLL PIN COLUMBIA,0.509,title_similarity=0.516; token_overlap=0.500,no,,,review_only_not_identity_proof
+HNS13,Roll Pin Bushing,Roll Pin Bushing,CTTCFB15A,HINGE BUSHING COLUMBIA,0.492,title_similarity=0.690; token_overlap=0.250,no,,,review_only_not_identity_proof
+FFB25-12,"Rubber Gasket Retainer - 12""","Rubber Gasket Retainer 12""",CTTFFB2512,"12"" RUBBER GASKET RETAINER COLUMBIA",0.900,normalized_identifier; title_similarity=0.733; token_overlap=1.000,no,,,review_only_not_identity_proof
+FFB25-12,"Rubber Gasket Retainer - 12""","Rubber Gasket Retainer 12""",CTTFFB2510,"RUBBER GASKET RETAINER 10"" COLUMBIA",0.832,title_similarity=0.967; token_overlap=0.667,yes,,,review_only_not_identity_proof
+FFB25-12,"Rubber Gasket Retainer - 12""","Rubber Gasket Retainer 12""",CTTFFB257,"7"" RUBBER GASKET RETAINER COLUMBIA",0.710,title_similarity=0.746; token_overlap=0.667,yes,,,review_only_not_identity_proof
+FFB25-12,"Rubber Gasket Retainer - 12""","Rubber Gasket Retainer 12""",CTTFFB258,"8"" RUBBER GASKET RETAINER COLUMBIA",0.710,title_similarity=0.746; token_overlap=0.667,yes,,,review_only_not_identity_proof
+FFB25-12,"Rubber Gasket Retainer - 12""","Rubber Gasket Retainer 12""",CTTFFB112,"REAR PLATE 12"" COLUMBIA",0.449,title_similarity=0.583; token_overlap=0.286,no,,,review_only_not_identity_proof
+FFB25-10,"Rubber Gasket Retainer - 10""","Rubber Gasket Retainer-10""",CTTFFB2510,"RUBBER GASKET RETAINER 10"" COLUMBIA",1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+FFB25-10,"Rubber Gasket Retainer - 10""","Rubber Gasket Retainer-10""",CTTFFB257,"7"" RUBBER GASKET RETAINER COLUMBIA",0.710,title_similarity=0.746; token_overlap=0.667,yes,,,review_only_not_identity_proof
+FFB25-10,"Rubber Gasket Retainer - 10""","Rubber Gasket Retainer-10""",CTTFFB258,"8"" RUBBER GASKET RETAINER COLUMBIA",0.710,title_similarity=0.746; token_overlap=0.667,yes,,,review_only_not_identity_proof
+FFB25-10,"Rubber Gasket Retainer - 10""","Rubber Gasket Retainer-10""",CTTFFB2512,"12"" RUBBER GASKET RETAINER COLUMBIA",0.703,title_similarity=0.733; token_overlap=0.667,yes,,,review_only_not_identity_proof
+FFB25-10,"Rubber Gasket Retainer - 10""","Rubber Gasket Retainer-10""",CTTHNS153,"COLUMBIA DOOR GASKET 3""",0.449,title_similarity=0.583; token_overlap=0.286,yes,,,review_only_not_identity_proof
+FFB7A,Shoe - Left,Shoe - Left,CTTFFB7A,"SHOE, LEFT COLUMBIA",1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+FFB7A,Shoe - Left,Shoe - Left,CTTFFB7,"SHOE, RIGHT COLUMBIA",0.497,title_similarity=0.632; token_overlap=0.333,no,,,review_only_not_identity_proof
+FFB7A,Shoe - Left,Shoe - Left,CTTCT6A,SIDE PLATE LEFT COLUMBIA,0.433,title_similarity=0.583; token_overlap=0.250,no,CT6A,22.32,review_only_not_identity_proof
+FFB7,Shoe - Right,Shoe - Right,CTTFFB7,"SHOE, RIGHT COLUMBIA",1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+FFB7,Shoe - Right,Shoe - Right,CTTFFB7A,"SHOE, LEFT COLUMBIA",0.497,title_similarity=0.632; token_overlap=0.333,no,,,review_only_not_identity_proof
+FFB7,Shoe - Right,Shoe - Right,CTTCT6,SIDE PLATE RIGHT COLUMBIA,0.451,title_similarity=0.615; token_overlap=0.250,no,CT6,18.63,review_only_not_identity_proof
+MP39,Sleeve,Sleeve,CTTMP39,SLEEVE COLUMBIA,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+MP39,Sleeve,Sleeve,CTTBH24A,COLUMBIA BEARING SLEEVE ,0.555,title_similarity=0.600; token_overlap=0.500,no,,,review_only_not_identity_proof
+MP39,Sleeve,Sleeve,CTTCR3,BEARING SLEEVE COLUMBIA,0.555,title_similarity=0.600; token_overlap=0.500,no,,,review_only_not_identity_proof
+MP39,Sleeve,Sleeve,CTTICATW2,AXEL SLEEVE FOR ICATW COLUMBIA,0.437,title_similarity=0.522; token_overlap=0.333,no,,,review_only_not_identity_proof
+MP39,Sleeve,Sleeve,CTTCT89,RELEASE ROD SLEEVE COLUMBIA,0.425,title_similarity=0.500; token_overlap=0.333,no,CT89,9.31,review_only_not_identity_proof
+MP36,Columbia Tools Nylatron Bushing (MP36),Steel Bushing,CTTMP36,NYLATRON BUSHING COLUMBIA,0.900,normalized_identifier; title_similarity=0.621; token_overlap=0.333,no,,,review_only_not_identity_proof
+MP36,Columbia Tools Nylatron Bushing (MP36),Steel Bushing,CTTFFB2A,BUSHING COLUMBIA,0.610,title_similarity=0.700; token_overlap=0.500,no,,,review_only_not_identity_proof
+MP36,Columbia Tools Nylatron Bushing (MP36),Steel Bushing,CTTCT2,INSERT BUSHING COLUMBIA,0.557,title_similarity=0.741; token_overlap=0.333,no,CT2,2.32,review_only_not_identity_proof
+MP36,Columbia Tools Nylatron Bushing (MP36),Steel Bushing,CTTFFB5A,AXLE BUSHING COLUMBIA,0.546,title_similarity=0.720; token_overlap=0.333,no,,,review_only_not_identity_proof
+MP36,Columbia Tools Nylatron Bushing (MP36),Steel Bushing,CTTMP5,HEAD BUSHING COLUMBIA,0.546,title_similarity=0.720; token_overlap=0.333,no,,,review_only_not_identity_proof
+BH11,Strap Connecting Pin,Strap Connecting Pin-Old Style,CTTBH11,COLUMBIA STRAP CONNECTING PIN,0.900,normalized_identifier; title_similarity=0.800; token_overlap=0.600,no,,,review_only_not_identity_proof
+FFB32A,Thumb Release Clip Screw,Thumb Release Clip Screw,CTTFFB32A,THUMB RELEASE CLIP SCREW COLUMBIA,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+FFB32A,Thumb Release Clip Screw,Thumb Release Clip Screw,CTTFFB32,THUMB RELEASE CLIP COLUMBIA,0.809,title_similarity=0.857; token_overlap=0.750,no,,,review_only_not_identity_proof
+FFB32A,Thumb Release Clip Screw,Thumb Release Clip Screw,CTTCT92,RELEASE CLIP COLUMBIA,0.592,title_similarity=0.667; token_overlap=0.500,no,CT92,6.21,review_only_not_identity_proof
+FFB32A,Thumb Release Clip Screw,Thumb Release Clip Screw,CTTHH31,COLUMBIA RELEASE CLIP PIN,0.538,title_similarity=0.650; token_overlap=0.400,no,,,review_only_not_identity_proof
+FFB32A,Thumb Release Clip Screw,Thumb Release Clip Screw,CTTCT91,RELEASE CLIP BUSHING COLUMBIA,0.530,title_similarity=0.636; token_overlap=0.400,no,,,review_only_not_identity_proof
+AH8A,"Top Retainer Corner Clip - 3.5""",Top Retainer Corner Clip,CTTAH8A,COLUMBIA TOP RETAINER CORNER CLIP,1.000,normalized_identifier; title_similarity=1.000; token_overlap=1.000,no,,,review_only_not_identity_proof
+AH8A,"Top Retainer Corner Clip - 3.5""",Top Retainer Corner Clip,CTTAH9A,COLUMBIA BOTTOM RETAINER CORNER CLIP,0.766,title_similarity=0.902; token_overlap=0.600,no,,,review_only_not_identity_proof
+AH8A,"Top Retainer Corner Clip - 3.5""",Top Retainer Corner Clip,CTTAH9,(LONG) RETAINER CLIP COLUMBIA,0.573,title_similarity=0.714; token_overlap=0.400,no,AH9,5.07,review_only_not_identity_proof
+AH8A,"Top Retainer Corner Clip - 3.5""",Top Retainer Corner Clip,CTTAH8,(SHORT) RETAINER CLIP COLUMBIA,0.564,title_similarity=0.698; token_overlap=0.400,no,AH8,3.84,review_only_not_identity_proof
+AH8A,"Top Retainer Corner Clip - 3.5""",Top Retainer Corner Clip,CTTFFB8,BAR RETAINER CLIP COLUMBIA,0.556,title_similarity=0.683; token_overlap=0.400,no,,,review_only_not_identity_proof
+FFB9-10,"Columbia Tools FFB9 Flat Finishing Box Blade - 10""","Blade 10""",CTTFFB910,"10"" BLADE COLUMBIA",0.900,normalized_identifier; title_similarity=0.538; token_overlap=1.000,no,,,review_only_not_identity_proof
+FFB9-10,"Columbia Tools FFB9 Flat Finishing Box Blade - 10""","Blade 10""",CTTFFBR910,"COLUMBIA BOX BLADE KIT 10""",0.691,title_similarity=0.765; token_overlap=0.600,no,,,review_only_not_identity_proof
+FFB9-10,"Columbia Tools FFB9 Flat Finishing Box Blade - 10""","Blade 10""",CTTFFBR912,"COLUMBIA BOX BLADE KIT 12""",0.538,title_similarity=0.706; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FFB9-10,"Columbia Tools FFB9 Flat Finishing Box Blade - 10""","Blade 10""",CTTFFB1310,"DOOR HINGE 10"" COLUMBIA",0.535,title_similarity=0.645; token_overlap=0.400,no,,,review_only_not_identity_proof
+FFB9-10,"Columbia Tools FFB9 Flat Finishing Box Blade - 10""","Blade 10""",CTTHFFB510,"10"" AXLE COLUMBIA",0.533,title_similarity=0.560; token_overlap=0.500,no,,,review_only_not_identity_proof
+FFB9-12,"Columbia Tools FFB9 Flat Finishing Box Blade - 12""","Blade 12""",CTTFFB912,"12"" BLADE COLUMBIA",0.900,normalized_identifier; title_similarity=0.538; token_overlap=1.000,no,,,review_only_not_identity_proof
+FFB9-12,"Columbia Tools FFB9 Flat Finishing Box Blade - 12""","Blade 12""",CTTFFBR912,"COLUMBIA BOX BLADE KIT 12""",0.691,title_similarity=0.765; token_overlap=0.600,no,,,review_only_not_identity_proof
+FFB9-12,"Columbia Tools FFB9 Flat Finishing Box Blade - 12""","Blade 12""",CTTFFB112,"REAR PLATE 12"" COLUMBIA",0.570,title_similarity=0.710; token_overlap=0.400,no,,,review_only_not_identity_proof
+FFB9-12,"Columbia Tools FFB9 Flat Finishing Box Blade - 12""","Blade 12""",CTTFFBR910,"COLUMBIA BOX BLADE KIT 10""",0.538,title_similarity=0.706; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FFB9-12,"Columbia Tools FFB9 Flat Finishing Box Blade - 12""","Blade 12""",CTTFFBR98,"COLUMBIA BOX BLADE KIT 8""",0.517,title_similarity=0.667; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FFB9-5.5,"Columbia Tools FFB9 Flat Finishing Box Blade - 5.5""","Blade 5.5""",CTTFFB955,"5.5"" BLADE COLUMBIA",0.900,normalized_identifier; title_similarity=0.571; token_overlap=1.000,no,,,review_only_not_identity_proof
+FFB9-5.5,"Columbia Tools FFB9 Flat Finishing Box Blade - 5.5""","Blade 5.5""",CTTFFBA1055,"BLADE BAR ASSEMBLY 5.5"" COLUMBIA",0.646,title_similarity=0.683; token_overlap=0.600,no,,,review_only_not_identity_proof
+FFB9-5.5,"Columbia Tools FFB9 Flat Finishing Box Blade - 5.5""","Blade 5.5""",CTTFFBR955,"BOX BLADES KIT 5.5"" COLUMBIA",0.566,title_similarity=0.757; token_overlap=0.333,no,,,review_only_not_identity_proof
+FFB9-5.5,"Columbia Tools FFB9 Flat Finishing Box Blade - 5.5""","Blade 5.5""",CTTFFBR98,"COLUMBIA BOX BLADE KIT 8""",0.506,title_similarity=0.647; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FFB9-5.5,"Columbia Tools FFB9 Flat Finishing Box Blade - 5.5""","Blade 5.5""",CTTFFBR910,"COLUMBIA BOX BLADE KIT 10""",0.496,title_similarity=0.629; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FFB9-7,"Columbia Tools FFB9 Flat Finishing Box Blade - 7""","Blade 7""",CTTFFB97,"7"" BLADE COLUMBIA ",0.900,normalized_identifier; title_similarity=0.500; token_overlap=1.000,no,,,review_only_not_identity_proof
+FFB9-7,"Columbia Tools FFB9 Flat Finishing Box Blade - 7""","Blade 7""",CTTFFBA107,"BLADE BAR ASSEMBLY 7"" COLUMBIA",0.627,title_similarity=0.649; token_overlap=0.600,no,,,review_only_not_identity_proof
+FFB9-7,"Columbia Tools FFB9 Flat Finishing Box Blade - 7""","Blade 7""",CTTFFBR97,"BOX BLADES KIT 7"" COLUMBIA",0.550,title_similarity=0.727; token_overlap=0.333,no,,,review_only_not_identity_proof
+FFB9-7,"Columbia Tools FFB9 Flat Finishing Box Blade - 7""","Blade 7""",CTTFFBR98,"COLUMBIA BOX BLADE KIT 8""",0.528,title_similarity=0.688; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FFB9-7,"Columbia Tools FFB9 Flat Finishing Box Blade - 7""","Blade 7""",CTTFFBR910,"COLUMBIA BOX BLADE KIT 10""",0.517,title_similarity=0.667; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FFB9-8,"Columbia Tools FFB9 Flat Finishing Box Blade - 8""","Blade 8""",CTTFFB98,"COLUMBIA  8"" FLAT BOX BLADE",0.900,normalized_identifier; title_similarity=0.364; token_overlap=0.600,no,,,review_only_not_identity_proof
+FFB9-8,"Columbia Tools FFB9 Flat Finishing Box Blade - 8""","Blade 8""",CTTFFBR98,"COLUMBIA BOX BLADE KIT 8""",0.683,title_similarity=0.750; token_overlap=0.600,no,,,review_only_not_identity_proof
+FFB9-8,"Columbia Tools FFB9 Flat Finishing Box Blade - 8""","Blade 8""",CTTCFB28,"ROLL FACE 8"" COLUMBIA",0.573,title_similarity=0.714; token_overlap=0.400,no,CFB28,27.15,review_only_not_identity_proof
+FFB9-8,"Columbia Tools FFB9 Flat Finishing Box Blade - 8""","Blade 8""",CTTFFBR910,"COLUMBIA BOX BLADE KIT 10""",0.517,title_similarity=0.667; token_overlap=0.333,yes,,,review_only_not_identity_proof
+FFB9-8,"Columbia Tools FFB9 Flat Finishing Box Blade - 8""","Blade 8""",CTTFFBR912,"COLUMBIA BOX BLADE KIT 12""",0.517,title_similarity=0.667; token_overlap=0.333,yes,,,review_only_not_identity_proof

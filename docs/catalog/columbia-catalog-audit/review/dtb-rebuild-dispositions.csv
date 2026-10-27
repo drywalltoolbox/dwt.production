@@ -1,0 +1,516 @@
+﻿dtb_sku,dtb_name,dtb_type,dtb_parent,dtb_published,dtb_sale_price,dtb_cost,disposition,source_skus,source_dispositions,flags
+BF,Columbia Box Filler - Standard,variation,COL-BOX-FILLER,1,76.00,41.82,exact_existing_match,BF,exact_existing_match,retain_existing_record_and_parent_relationship
+TBBF,Columbia Box Filler - Tall Boy,variation,COL-BOX-FILLER,1,76.00,41.82,exact_existing_match,TBBF,exact_existing_match,retain_existing_record_and_parent_relationship
+GN,Columbia Gooseneck - Standard,variation,COL-GOOSENECK,1,109.00,68.28,exact_existing_match,GN,exact_existing_match,retain_existing_record_and_parent_relationship
+TBGN,Columbia Gooseneck - Tall Boy,variation,COL-GOOSENECK,1,146.00,99,exact_existing_match,TBGN,exact_existing_match,retain_existing_record_and_parent_relationship
+CPFGN,Columbia Powerfill 5 Gallon Taper Gooseneck Fill Tube,simple,,1,275.00,160.99,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+FA280,#10 Belleville Washer,simple,,1,1.10,0.32,exact_existing_match,FA280,exact_existing_match,retain_existing_record_until_review
+FA268,#10 Flat Washer,simple,,1,1.10,0.32,exact_existing_match,FA268,exact_existing_match,retain_existing_record_until_review
+FA270,"#10 x 3/4"" Fender Washer",simple,,1,1.10,0.89,exact_existing_match,FA270,exact_existing_match,retain_existing_record_until_review
+FA228,#6 Flat Washer,simple,,1,1.10,0.65,exact_existing_match,FA228,exact_existing_match,retain_existing_record_until_review
+FA229,#6 Lock Washer,simple,,1,1.10,0.65,exact_existing_match,FA229,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA230,#6 Star Washer,simple,,1,1.10,0.65,exact_existing_match,FA230,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA253,#8 Flat Washer,simple,,1,1.10,0.32,exact_existing_match,FA253,exact_existing_match,retain_existing_record_until_review
+FA252,#8 Star Washer,simple,,1,1.10,0.32,exact_existing_match,FA252,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA202,"1/16 X 1/2"" Cotter Pin",simple,,1,1.10,0.65,exact_existing_match,FA202,exact_existing_match,retain_existing_record_until_review
+FA200,"1/16 x 1/4"" Split Pin",simple,,1,1.10,0.65,exact_existing_match,FA200,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA203,"1/16 x 3/4"" Cotter Pin",simple,,1,1.10,0.65,exact_existing_match,FA203,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA3,"1/2"" x 7/8"" Flat Washer",simple,,1,2.50,0.89,existing_no_confirmed_source_link,,,retain_existing_record_until_review | source_name_candidates_require_review
+CT109,1/4 - 20 Castle Nut,simple,,1,4.53,2.72,exact_existing_match,CT109,exact_existing_match,retain_existing_record_until_review
+FA296,"1/4 -20 x 1/2"" Hex Bolt",simple,,1,1.10,0.41,exact_existing_match,FA296,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA295,"1/4 x 1/2"" Flathead Socket",simple,,1,1.10,0.32,exact_existing_match,FA295,exact_existing_match,retain_existing_record_until_review
+FA379,"1/8"" Ss E-Clip",simple,,1,1.10,1.71,exact_existing_match,FA379,exact_existing_match,retain_existing_record_until_review
+FA286,"1/4"" x 1/2"" Flat Washer",simple,,1,1.10,0.65,exact_existing_match,FA286,exact_existing_match,retain_existing_record_until_review
+FA288,"1/4"" X 3/4"" Split Pin",simple,,1,1.10,1.46,exact_existing_match,FA288,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA291,1/4-20 Hex Nut,simple,,1,1.10,1.3,exact_existing_match,FA291,exact_existing_match,retain_existing_record_until_review
+FA299,1/4-20 X 1-1/2 Hex Bolt,simple,,1,1.10,2.6,exact_existing_match,FA299,exact_existing_match,retain_existing_record_until_review
+FA313,1/4-20 X 1/4 Socket Head Set Screw,simple,,1,1.10,1.3,exact_existing_match,FA313,exact_existing_match,retain_existing_record_until_review
+FA301,"1/4-20 x 2 1/4"" Hex Bolt",simple,,1,1.10,1.95,exact_existing_match,FA301,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA300,"1/4-20 x 2"" Hex Bolt",simple,,1,1.10,1.63,exact_existing_match,FA300,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA294,"1/4-20 X 3/8"" Socket Head",simple,,1,1.10,1.21,exact_existing_match,FA294,exact_existing_match,retain_existing_record_until_review
+FA297,"1/4-20 x 5/8"" Socket",simple,,1,1.10,1.3,exact_existing_match,FA297,exact_existing_match,retain_existing_record_until_review
+FA298,"1/4-20 x 7/8"" Flat Socket",simple,,1,1.10,0.32,exact_existing_match,FA298,exact_existing_match,retain_existing_record_until_review
+FA302,"1/4-28 x 1/4"" Set Screw",simple,,1,1.10,0.89,exact_existing_match,FA302,exact_existing_match,retain_existing_record_until_review
+FA320,"1/4-28-3/8"" Socket Set Screw",simple,,1,1.10,1.3,exact_existing_match,FA320,exact_existing_match,retain_existing_record_until_review
+FA380,1/4 Ss E-Clip,simple,,1,1.10,1.71,exact_existing_match,FA380,exact_existing_match,retain_existing_record_until_review
+FA225,1/8 X 3/8 Aluminum Backup Wash,simple,,1,1.10,0.89,exact_existing_match,FA225,exact_existing_match,retain_existing_record_until_review
+FA224,"1/8"" x 3/8"" Split Pin",simple,,1,1.10,0.48,exact_existing_match,FA224,exact_existing_match,retain_existing_record_until_review
+FA271,10-24 Nyloc Nut,simple,,1,1.10,1.3,exact_existing_match,FA271,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA272,10-24 Wing Nut,simple,,1,1.10,1.3,exact_existing_match,FA272,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA273,"10-24 x 1"" Hex Bolt",simple,,1,1.10,0.89,exact_existing_match,FA273,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA312,"10-24 X 1/4"" Socket Hand Set",simple,,1,1.10,0.89,exact_existing_match,FA312,exact_existing_match,retain_existing_record_until_review
+FA274,"10-24 x 3/8"" Socket",simple,,1,1.10,1.21,exact_existing_match,FA274,exact_existing_match,retain_existing_record_until_review
+FA275,"10-24 x 7/8"" Hex Bolt",simple,,1,1.10,0.89,exact_existing_match,FA275,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA276,"10-24 x 7/8"" Pan Slot",simple,,1,1.10,0.32,exact_existing_match,FA276,exact_existing_match,retain_existing_record_until_review
+FA316,"10-32 X 1/2"" Flat Socket Head",simple,,1,1.10,1.3,exact_existing_match,FA316,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA382,"10-32 x 1/4"" SS Set Screw",simple,,1,1.10,0.65,exact_existing_match,FA382,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA199,"2-56 x 3/16"" Binder Slot",simple,,1,1.10,0.65,exact_existing_match,FA199,exact_existing_match,retain_existing_record_until_review
+FA365,"3/16 x 1"" Sping Pin SS",simple,,1,1.10,1.95,exact_existing_match,FA365,exact_existing_match,retain_existing_record_until_review
+FA206,4-40 Hex Nut,simple,,1,1.10,1.3,exact_existing_match,FA206,exact_existing_match,retain_existing_record_until_review
+FA207,4-40 Nyloc Nut,simple,,1,1.10,1.63,exact_existing_match,FA207,exact_existing_match,retain_existing_record_until_review
+FA219,"4-40 x 1/2"" Fillister Slot",simple,,1,1.10,0.65,exact_existing_match,FA219,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA213,"4-40 x 1/4"" Binder Slot",simple,,1,1.10,0.65,exact_existing_match,FA213,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA214,"4-40 x 1/4"" Flat Slot",simple,,1,1.10,0.65,exact_existing_match,FA214,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA2,"4-40 x 1/8"" Binder Slot",simple,,1,1.65,0.32,existing_no_confirmed_source_link,,,retain_existing_record_until_review | source_name_candidates_require_review
+FA210,"4-40 x 3/16"" Binder Slot",simple,,1,1.10,0.65,exact_existing_match,FA210,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA212,"4-40 x 3/16"" Truss Slot",simple,,1,1.10,0.65,exact_existing_match,FA212,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA220,"4-40 x 3/4"" Hex Bolt",simple,,1,1.10,0.32,exact_existing_match,FA220,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA218,"4-40 x 3/8"" Flat Slot",simple,,1,1.10,0.65,exact_existing_match,FA218,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA216,4-40 X 3/8” Fillister Slot,simple,,1,1.10,1.3,exact_existing_match,FA216,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA215,"4-40 x 5/16"" Binder Slot",simple,,1,1.10,0.32,exact_existing_match,FA215,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA303,5-16 Flat Washer,simple,,1,1.10,1.95,exact_existing_match,FA303,exact_existing_match,retain_existing_record_until_review
+FA307,5-16 x 24 Jam Nut,simple,,1,1.10,1.95,exact_existing_match,FA307,exact_existing_match,retain_existing_record_until_review
+FA305,"5/16 -18 x 3/4"" Hex Bolt",simple,,1,1.10,1.63,exact_existing_match,FA305,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA306,"5/16-18 x 1 1/4"" Hex Bolt",simple,,1,1.10,1.63,exact_existing_match,FA306,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+CFB10,"5/16-18 x 3/4"" Thumb Screw",simple,,1,7.30,3.9,existing_no_confirmed_source_link,,,retain_existing_record_until_review | source_name_candidates_require_review
+FA317,"5/32"" x 7/8"" Roll Pin",simple,,1,1.10,1.3,exact_existing_match,FA317,exact_existing_match,retain_existing_record_until_review
+FA232,6-32 Hex Nut,simple,,1,1.10,0.89,exact_existing_match,FA232,exact_existing_match,retain_existing_record_until_review
+FA234,6-32 Nyloc Jam Nut,simple,,1,1.10,0.79,exact_existing_match,FA234,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA233,6-32 Nyloc Nut,simple,,1,1.10,0.79,exact_existing_match,FA233,exact_existing_match,retain_existing_record_until_review
+FA245,"6-32 x 1/2"" Fillister Slot",simple,,1,1.10,0.41,exact_existing_match,FA245,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA244,"6-32 x 1/2"" Pan Slot",simple,,1,1.10,0.65,exact_existing_match,FA244,exact_existing_match,retain_existing_record_until_review
+FA239,"6-32 X 1/4"" Binder Slot",simple,,1,1.10,0.65,exact_existing_match,FA239,exact_existing_match,retain_existing_record_until_review
+FA227,"6-32 X 1/4"" Flat Slot",simple,,1,1.10,1.3,exact_existing_match,FA227,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA236,"6-32 X 1/8"" Binder Slot",simple,,1,1.10,0.65,exact_existing_match,FA236,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA235,"6-32 X 1/8"" Set Screw",simple,,1,1.10,1.3,exact_existing_match,FA235,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA237,"6-32 x 3/16"" Binder Slot",simple,,1,1.10,0.65,exact_existing_match,FA237,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA238,"6-32 X 3/16"" Fillister Slot",simple,,1,1.10,1.3,exact_existing_match,FA238,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA241,"6-32 X 3/8"" Binder Slot",simple,,1,1.10,0.65,exact_existing_match,FA241,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA243,"6-32 x 3/8"" Flat Slot",simple,,1,1.10,0.65,exact_existing_match,FA243,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA231,"6-32 x 3/8"" Hex Bolt",simple,,1,1.10,0.64,exact_existing_match,FA231,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA247,"6-32 X 5/8"" Hex Bolt",simple,,1,1.10,0.8,exact_existing_match,FA247,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA254,8-32 Nyloc Nut,simple,,1,1.10,1.3,exact_existing_match,FA254,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA267,"8-32 x 1 1/2"" Pan Slot",simple,,1,1.10,0.41,exact_existing_match,FA267,exact_existing_match,retain_existing_record_until_review
+FA262,"8-32 x 1/2"" Socket",simple,,1,1.10,1.11,exact_existing_match,FA262,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA257,"8-32 x 1/4"" Fillister Slot",simple,,1,1.10,0.65,exact_existing_match,FA257,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA256,"8-32 X 3/16"" Pan Slot",simple,,1,1.10,0.32,exact_existing_match,FA256,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA265,"8-32 x 3/4"" Truss Slot",simple,,1,1.10,0.65,exact_existing_match,FA265,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA260,"8-32 x 3/8"" Pan Slot",simple,,1,1.10,0.65,exact_existing_match,FA260,exact_existing_match,retain_existing_record_until_review
+FA261,"8-32 X 3/8"" Socket Screw",simple,,1,1.10,0.43,exact_existing_match,FA261,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA376,8-32 x 5/16 SS Socket Head,simple,,1,1.10,1.3,exact_existing_match,FA376,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA264,"8-32 x 5/8"" Truss Slot",simple,,1,1.10,0.65,exact_existing_match,FA264,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA258,8-32X 1/4 Half Dog Set,simple,,1,1.10,1.3,exact_existing_match,FA258,exact_existing_match,retain_existing_record_until_review
+FA249,"8-32X3/16"" Set Screw",simple,,1,1.10,1.3,exact_existing_match,FA249,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FFB11-8,"Adjuster Spring - 8""",variation,FFB11,1,10.05,5.2,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+FFB11-10,"Adjuster Spring - 10""",variation,FFB11,1,10.05,5.2,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+FFB11-12,"Adjuster Spring - 12""",variation,FFB11,1,7.11,5.2,exact_existing_match,FFB11-12,exact_existing_match,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+AHA,Angle Head Adapter,simple,,1,24.87,14.56,existing_no_confirmed_source_link,,,retain_existing_record_until_review | source_name_candidates_require_review
+FFB5A,Axel Bushing,simple,,1,2.60,1.95,exact_existing_match,FFB5A,exact_existing_match,retain_existing_record_until_review
+FFB5-7,"Axle - 7""",variation,FFB5,1,44.00,28.6,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+FFB5-8,"Axle - 8""",variation,FFB5,1,44.00,28.6,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+FFB5-10,"Axle - 10""",variation,FFB5,1,44.00,28.6,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+FFB5-12,"Axle - 12""",variation,FFB5,1,44.00,28.6,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+FFB5-14,"Axle - 14""",variation,FFB5,1,44.00,28.6,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+MP32,Backing Washer Locator,simple,,1,1.96,12.32,exact_existing_match,MP32,exact_existing_match,retain_existing_record_until_review
+FFB8,Bar Retainer Clip,simple,,1,2.01,1.3,exact_existing_match,FFB8,exact_existing_match,retain_existing_record_until_review
+CT103,Barrel- Main Body,simple,,1,129.30,77.59,exact_existing_match,CT103,exact_existing_match,retain_existing_record_until_review
+CT125A,Columbia Tools Bearing CT125A,simple,,1,3.23,1.93,exact_existing_match,CT125A,exact_existing_match,retain_existing_record_until_review
+BH24A,Columbia Tools Bearing Sleeve (BH24A),simple,,1,3.72,2.6,exact_existing_match,BH24A,exact_existing_match,retain_existing_record_until_review
+CFB16,Columbia Tools Bearing Sleeve (CFB16),simple,,1,4.78,3.09,exact_existing_match,CFB16,exact_existing_match,retain_existing_record_until_review
+CR-3,Columbia Tools CR-3 Bearing Sleeve,simple,,1,9.45,12.99,unresolved_possible_source_match,CR3,unresolved_identifier_conflict,retain_existing_record_until_review
+FFB9-5.5,"Columbia Tools FFB9 Flat Finishing Box Blade - 5.5""",variation,FFB9,1,3.23,12.19,unresolved_possible_source_match,"FFB9-5.5""",unresolved_alternate_identifier,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+FFB9-7,"Columbia Tools FFB9 Flat Finishing Box Blade - 7""",variation,FFB9,1,3.23,14.63,unresolved_possible_source_match,"FFB9-7""",unresolved_alternate_identifier,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+FFB9-8,"Columbia Tools FFB9 Flat Finishing Box Blade - 8""",variation,FFB9,1,3.23,16.22,unresolved_possible_source_match,"FFB9-8""",unresolved_alternate_identifier,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+FFB9-10,"Columbia Tools FFB9 Flat Finishing Box Blade - 10""",variation,FFB9,1,3.23,18.82,unresolved_possible_source_match,"FFB9-10""",unresolved_alternate_identifier,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+FFB9-12,"Columbia Tools FFB9 Flat Finishing Box Blade - 12""",variation,FFB9,1,3.23,21.13,unresolved_possible_source_match,"FFB9-12""",unresolved_alternate_identifier,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+FFB9-14,"Columbia Tools FFB9 Flat Finishing Box Blade - 14""",variation,FFB9,1,3.23,24.02,exact_existing_match,FFB9-14,exact_existing_match,retain_existing_record_and_parent_relationship
+HNS7-2,"Columbia Tools HNS7 Hinged Nailspotter Blade - 2""",variation,HNS7,1,23.08,14.95,exact_existing_match,HNS7-2,exact_existing_match,retain_existing_record_and_parent_relationship
+HNS7-3,"Columbia Tools HNS7 Hinged Nailspotter Blade - 3""",variation,HNS7,1,23.08,14.95,exact_existing_match,HNS7-3,exact_existing_match,retain_existing_record_and_parent_relationship
+HNS8-2,"Blade Holder - 2""",variation,HNS8,1,32.99,21.45,exact_existing_match,HNS8-2,exact_existing_match,retain_existing_record_and_parent_relationship
+HNS8-3,"Blade Holder - 3""",variation,HNS8,1,32.99,21.45,exact_existing_match,HNS8-3,exact_existing_match,retain_existing_record_and_parent_relationship
+HH16A,Bleeder Screw,simple,,1,4.82,11.05,exact_existing_match,HH16A,exact_existing_match,retain_existing_record_until_review
+HH10B,Bottom Cap,simple,,1,1.58,1.3,exact_existing_match,HH10B,exact_existing_match,retain_existing_record_until_review
+AH9A,"Bottom Retainer Corner Clip - 3.5""",variation,AH9-CLIP,1,9.71,7.48,exact_existing_match,AH9A,exact_existing_match,retain_existing_record_and_parent_relationship
+AH9,Bottom Retainer Corner Clip - Standard,variation,AH9-CLIP,1,7.80,5.07,exact_existing_match,AH9,exact_existing_match,retain_existing_record_and_parent_relationship
+CFB8,Box Mount,simple,,1,52.72,27.15,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+FFB36,Box Wheel,simple,,1,6.44,3.25,exact_existing_match,FFB36,exact_existing_match,retain_existing_record_until_review
+CT87A,Bracket Brace,simple,,1,7.77,4.67,exact_existing_match,CT87A,exact_existing_match,retain_existing_record_until_review
+HH7,Brake,simple,,1,23.44,14.3,exact_existing_match,HH7,exact_existing_match,retain_existing_record_until_review
+MH9A,Brake Activation Rod,simple,,1,24.00,15.6,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+BH9-3,Brake Connecting Strap - 3',variation,BH9,1,24.79,17.55,unresolved_possible_source_match,BH9-3',unresolved_alternate_identifier,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+BH9-42,"Brake Connecting Strap - 42""",variation,BH9,1,26.84,18.85,unresolved_possible_source_match,"BH9-42""",unresolved_alternate_identifier,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+BH9-4,Brake Connecting Strap - 4',variation,BH9,1,28.90,20.15,unresolved_possible_source_match,BH9-4',unresolved_alternate_identifier,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+BH9-5,Brake Connecting Strap - 5',variation,BH9,1,30.96,21.45,unresolved_possible_source_match,BH9-5',unresolved_alternate_identifier,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+BH9-6,Brake Connecting Strap - 6',variation,BH9,1,33.02,22.75,unresolved_possible_source_match,BH9-6',unresolved_alternate_identifier,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+CT16,Brake Dog,simple,,1,16.16,9.75,exact_existing_match,CT16,exact_existing_match,retain_existing_record_until_review
+HH13,Brake Pin,simple,,1,17.21,10.4,exact_existing_match,HH13,exact_existing_match,retain_existing_record_until_review
+HH14,Brake Piston,simple,,1,17.42,11.05,exact_existing_match,HH14,exact_existing_match,retain_existing_record_until_review
+MH8,Brake Rod Bushing,simple,,1,6.40,5.2,exact_existing_match,MH8,exact_existing_match,retain_existing_record_until_review
+HH12,Brake Spring,simple,,1,4.76,3.25,exact_existing_match,HH12,exact_existing_match,retain_existing_record_until_review
+HH17A,Brass Connector - 1,variation,HH-BRASS-CONNECTOR,1,4.82,3.25,exact_existing_match,HH17A,exact_existing_match,retain_existing_record_and_parent_relationship
+HH17B,Brass Connector - 2,variation,HH-BRASS-CONNECTOR,1,4.76,3.25,exact_existing_match,HH17B,exact_existing_match,retain_existing_record_and_parent_relationship
+CT72,Columbia Tools Cable (CT72),simple,,1,7.77,6.5,exact_existing_match,CT72,exact_existing_match,retain_existing_record_until_review
+CT73,Columbia Tools Cable Drum (CT73),simple,,1,38.77,23.27,exact_existing_match,CT73,exact_existing_match,retain_existing_record_until_review
+BH26,Columbia Tools BH26 Cam for 180 Grip Box Handle,simple,,1,8.25,14.27,exact_existing_match,BH26,exact_existing_match,retain_existing_record_until_review
+BH7,Cam Follower,simple,,1,13.43,8.05,exact_existing_match,BH7,exact_existing_match,retain_existing_record_until_review
+HH19,Cap,simple,,1,17.00,11.05,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CT35,Cap Reinforcing Tab,simple,,1,3.24,1.93,exact_existing_match,CT35,exact_existing_match,retain_existing_record_until_review
+CT55,Carriage Guide Rod,simple,,1,12.93,7.8,exact_existing_match,CT55,exact_existing_match,retain_existing_record_until_review
+CT56,Carriage Guide Rod Stop,simple,,1,6.48,4.55,exact_existing_match,CT56,exact_existing_match,retain_existing_record_until_review
+CT31,Chain Tension & Guide Bracket,simple,,1,5.82,3.49,exact_existing_match,CT31,exact_existing_match,retain_existing_record_until_review
+CT83,Clutch Dog,simple,,1,3.23,1.95,exact_existing_match,CT83,exact_existing_match,retain_existing_record_until_review
+CT82,Clutch Lever,simple,,1,25.84,12.84,exact_existing_match,CT82,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+CT88,Clutch Release Rod,simple,,1,15.52,9.31,exact_existing_match,CT88,exact_existing_match,retain_existing_record_until_review
+CT85,Clutch Release Shaft,simple,,1,38.77,23.27,exact_existing_match,CT85,exact_existing_match,retain_existing_record_until_review
+CT81,Clutch Return Spring,simple,,1,2.60,1.56,exact_existing_match,CT81,exact_existing_match,retain_existing_record_until_review
+HH9,Coiled Hydraulic Line,simple,,1,44.20,26,exact_existing_match,HH9,exact_existing_match,retain_existing_record_until_review
+HP44,Collar O-Ring,simple,,1,1.62,1.3,exact_existing_match,HP44,exact_existing_match,retain_existing_record_until_review
+FA278,Columbia #8 Belleville Washer,simple,,-1,1.05,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+FA201,"Columbia 1/16"" X 3/8"" Split Pin",simple,,-1,1.10,,exact_existing_match,FA201,exact_existing_match,retain_existing_record_until_review
+FA285,"Columbia 1/4"" Plastic Washer",simple,,-1,1.10,,exact_existing_match,FA285,exact_existing_match,retain_existing_record_until_review
+FA290,Columbia 1/4-20 Nyloc Nut,simple,,-1,1.10,,exact_existing_match,FA290,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+FA314,Columbia 10-24 X 1-1/2 Pan Slot,simple,,-1,1.10,,exact_existing_match,FA314,exact_existing_match,retain_existing_record_until_review
+FA279,"10-24 X 1"" Fillister Slot",simple,,-1,1.10,,exact_existing_match,FA279,exact_existing_match,retain_existing_record_until_review
+FA281,Columbia 10-32 X Nyloc Jam Nut-2 per pack,simple,,-1,1.10,,exact_existing_match,FA281,exact_existing_match,retain_existing_record_until_review
+AH32,"Columbia 2"" Angle Head Carbide Blade",simple,,-1,30.28,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+AH72,"Columbia 2"" Angle Head Frame Tension Spring",simple,,-1,1.52,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+AH325,"Columbia 2.5"" Angle Head Carbide Blade",simple,,-1,30.28,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+AH725,"Columbia 2.5"" Angle Head Frame Tension Spring",simple,,-1,1.52,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+AH33,"Columbia 3"" Angle Head Carbide Blade",simple,,-1,30.28,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+AH73,"Columbia 3"" Angle Head Tension Spring",simple,,-1,1.52,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+AH335,"Columbia 3.5"" Angle Head Carbide Blade",simple,,-1,30.28,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+AH735,"Columbia 3.5"" Angle Head Frame Tension Spring",simple,,-1,1.52,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+FA308,"Columbia 33/64 X 7/8"" Flat Washer",simple,,-1,1.79,,existing_no_confirmed_source_link,,,retain_existing_record_until_review | source_name_candidates_require_review
+FA208,"Columbia 4-40 x 1/8"" Binder Slot",simple,,-1,0.55,,existing_no_confirmed_source_link,,,retain_existing_record_until_review | source_name_candidates_require_review
+FA222,5/40 X 7/16 Fillister Slot,simple,,-1,1.10,,exact_existing_match,FA222,exact_existing_match,retain_existing_record_until_review
+CFB77,"Columbia 7"" Angle Box Door Gasket",simple,,-1,,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CFB47,"Columbia 7"" Pressure Door",simple,,-1,,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CFB78,"Columbia 8"" Door Gasket for Angle Box",simple,,-1,,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CFB48,"Columbia 8"" Pressure Door",simple,,-1,,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CFB28,"Columbia 8"" Roll Face",simple,,-1,45.25,,unresolved_possible_source_match,CFB2-8,unresolved_alternate_identifier,retain_existing_record_until_review | source_name_candidates_require_review
+FA266,"Columbia 8-32 X 1"" Flat Head Screw",simple,,-1,1.10,,exact_existing_match,FA266,exact_existing_match,retain_existing_record_until_review
+CF4L,Columbia Ball Spring Long Flusher,simple,,-1,7.05,,exact_existing_match,CF4L,exact_existing_match,retain_existing_record_until_review
+FFB43,Columbia Bead Wheel Bushing,simple,,-1,2.48,,exact_existing_match,FFB43,exact_existing_match,retain_existing_record_until_review
+CTA84,Columbia Cable Pulley Guide,simple,,-1,12.93,,exact_existing_match,CTA84,exact_existing_match,retain_existing_record_until_review
+CLTBF,Columbia Compound Tube Box Filler,simple,,-1,70.47,,existing_no_confirmed_source_link,,,retain_existing_record_until_review | source_name_candidates_require_review
+CTA87CL,Columbia Cover Plate Assembly,simple,,-1,,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CT87CS,Columbia Cover Plate Cork Seal,simple,,-1,8.12,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CF1B,Columbia Direct Plate - Flusher,simple,,-1,14.35,,exact_existing_match,CF1B,exact_existing_match,retain_existing_record_until_review
+CFB1A,Columbia Hinge Seal,simple,,-1,3.87,,exact_existing_match,CFB1A,exact_existing_match,retain_existing_record_until_review
+CFB8A,Columbia ONE Angle Box Door Adaptor,simple,,-1,52.72,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CT34R,Columbia Removable Cover Plate Attachment Block,simple,,-1,5.40,,exact_existing_match,CT34R,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+CTA99,Columbia Removable Cover Plate Pin,simple,,-1,14.11,,existing_no_confirmed_source_link,,,retain_existing_record_until_review | source_name_candidates_require_review
+SB212,"Columbia Replacement 12"" Blade for Tomahawk",simple,,-1,,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CT118A,Columbia Retaining Quick Release Spring Clip,simple,,-1,5.82,,exact_existing_match,CT118A,exact_existing_match,retain_existing_record_until_review
+CT123,Columbia Retaining Quick Release Spring Shaft,simple,,-1,10.36,,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+FA289,"Columbia Split Pin 1/4"" X 2""",simple,,-1,1.10,,exact_existing_match,FA289,exact_existing_match,retain_existing_record_until_review
+CT22,Columbia Taper Brass Bracket,simple,,-1,20.69,,exact_existing_match,CT22,exact_existing_match,retain_existing_record_until_review
+CT95,Columbia Taper Control Valve,simple,,-1,7.77,,exact_existing_match,CT95,exact_existing_match,retain_existing_record_until_review
+CT10,Columbia Taper Crimping Arm Bushing Right,simple,,-1,4.85,,exact_existing_match,CT10,exact_existing_match,retain_existing_record_until_review
+CT49,Columbia Taper Crimping Arm Right,simple,,-1,58.14,,exact_existing_match,CT49,exact_existing_match,retain_existing_record_until_review
+CT41,Columbia Taper Cutter Block,simple,,-1,1.62,,exact_existing_match,CT41,exact_existing_match,retain_existing_record_until_review
+CT115A,Columbia Taper Gasket New Style End Ring,simple,,-1,1.93,,exact_existing_match,CT115A,exact_existing_match,retain_existing_record_until_review
+CT93,Columbia Taper Mud Shut Off Lever Arm,simple,,-1,51.72,,exact_existing_match,CT93,exact_existing_match,retain_existing_record_until_review
+CT94,Columbia Taper Mud Shut Off Upper Plate,simple,,-1,4.53,,exact_existing_match,CT94,exact_existing_match,retain_existing_record_until_review
+CT23,Columbia Taper Reinforcing Rod,simple,,-1,7.77,,exact_existing_match,CT23,exact_existing_match,retain_existing_record_until_review
+CT17,Columbia Taper Separation Plate,simple,,-1,18.08,,exact_existing_match,CT17,exact_existing_match,retain_existing_record_until_review
+CT128A,Columbia Taper Shaft Guide Roller Bushing,simple,,-1,25.85,,exact_existing_match,CT128A,exact_existing_match,retain_existing_record_until_review
+CT6,Columbia Taper Side Plate Right,simple,,-1,31.04,,exact_existing_match,CT6,exact_existing_match,retain_existing_record_until_review
+CT7,Columbia Taper Side Plate Support Left,simple,,-1,58.83,,exact_existing_match,CT7,exact_existing_match,retain_existing_record_until_review
+CT8,Columbia Taper Side Plate Support Right,simple,,-1,58.83,,exact_existing_match,CT8,exact_existing_match,retain_existing_record_until_review
+CT122A,Columbia Taper Strap,simple,,-1,19.41,,exact_existing_match,CT122A,exact_existing_match,retain_existing_record_until_review
+CT12,Columbia Taper Tape Advance Release Bracket,simple,,-1,7.11,,exact_existing_match,CT12,exact_existing_match,retain_existing_record_until_review
+CFB5B,Cone Ball,simple,,1,16.71,10.4,exact_existing_match,CFB5B,exact_existing_match,retain_existing_record_until_review
+CT132,Connecting Link,simple,,1,2.00,1.3,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+MH7,Connecting Link Fork,simple,,1,22.96,18.85,exact_existing_match,MH7,exact_existing_match,retain_existing_record_until_review
+MH5,Connecting Link Pin,simple,,1,3.85,3.25,exact_existing_match,MH5,exact_existing_match,retain_existing_record_until_review
+CT45,Columbia Tools CT45 Connecting Rod,simple,,1,17.46,10.48,exact_existing_match,CT45,exact_existing_match,retain_existing_record_until_review
+MH16,Connecting Rod Housing,simple,,1,6.12,5.2,exact_existing_match,MH16,exact_existing_match,retain_existing_record_until_review
+CT112,Connecting Stud,simple,,1,10.85,6.51,exact_existing_match,CT112,exact_existing_match,retain_existing_record_until_review
+CT104,Connection Strap,simple,,1,11.64,12.32,exact_existing_match,CT104,exact_existing_match,retain_existing_record_until_review
+CT105,Crimper Lever,simple,,1,29.72,17.83,exact_existing_match,CT105,exact_existing_match,retain_existing_record_until_review
+CT10A,Crimping Arm Shaft Bushing - L,simple,,1,4.85,2.91,exact_existing_match,CT10A,exact_existing_match,retain_existing_record_until_review
+CT47,Crimping Wheel,simple,,1,12.93,7.76,exact_existing_match,CT47,exact_existing_match,retain_existing_record_until_review
+CT50,Crimping Wheel Bushing,simple,,1,5.82,3.49,exact_existing_match,CT50,exact_existing_match,retain_existing_record_until_review
+CT86,CT86 – Toe Kicker Cable,simple,,1,19.41,11.64,exact_existing_match,CT86,exact_existing_match,retain_existing_record_until_review
+MH9,CTTMH9,simple,,-1,15.96,,exact_existing_match,MH9,exact_existing_match,retain_existing_record_until_review
+CR4,Cut Washer,simple,,1,5.40,1.95,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CT42A,Diamond Blade,simple,,1,2.95,1.3,exact_existing_match,CT42A,exact_existing_match,retain_existing_record_until_review
+CT13,Dog Base Bracket,simple,,1,14.46,7.44,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CFB4-7,"Columbia Tools Corner Flusher Box Door - 7""",variation,CFB4,1,12.93,7.76,exact_existing_match,CFB4-7,exact_existing_match,retain_existing_record_and_parent_relationship
+CFB4-8,"Columbia Tools Corner Flusher Box Door - 8""",variation,CFB4,1,12.93,7.76,exact_existing_match,CFB4-8,exact_existing_match,retain_existing_record_and_parent_relationship
+HNS4-2,"Columbia Tools Hinged Nailspotter Door - 2""",variation,HNS4,1,32.99,21.45,exact_existing_match,HNS4-2,exact_existing_match,retain_existing_record_and_parent_relationship
+HNS4-3,"Columbia Tools Hinged Nailspotter Door - 3""",variation,HNS4,1,32.99,21.45,exact_existing_match,HNS4-3,exact_existing_match,retain_existing_record_and_parent_relationship
+CFB7-7,"Columbia Tools Door Gasket - 7""",variation,CFB7,1,38.77,23.27,exact_existing_match,CFB7-7,exact_existing_match,retain_existing_record_and_parent_relationship
+CFB7-8,"Columbia Tools Door Gasket - 8""",variation,CFB7,1,38.77,23.27,exact_existing_match,CFB7-8,exact_existing_match,retain_existing_record_and_parent_relationship
+HNS15-2,"Columbia Tools Door Gasket for Hinged Nailspotters - 2""",variation,HNS15,1,37.54,23.4,exact_existing_match,HNS15-2,exact_existing_match,retain_existing_record_and_parent_relationship
+HNS15-3,"Columbia Tools Door Gasket for Hinged Nailspotters - 3""",variation,HNS15,1,37.54,22.75,exact_existing_match,HNS15-3,exact_existing_match,retain_existing_record_and_parent_relationship
+CFB15,Door Hinge,simple,,1,24.00,15.51,exact_existing_match,CFB15,exact_existing_match,retain_existing_record_until_review
+FFB17,Columbia Tools Door Spring (FFB17),simple,,1,4.53,2.72,exact_existing_match,FFB17,exact_existing_match,retain_existing_record_until_review
+HNS10A,Columbia Tools Door Spring - Short,variation,HNS-DOOR-SPRING,1,4.16,12.19,exact_existing_match,HNS10A,exact_existing_match,retain_existing_record_and_parent_relationship
+HNS10,Columbia Tools Door Spring - Long,variation,HNS-DOOR-SPRING,1,4.51,12.19,exact_existing_match,HNS10,exact_existing_match,retain_existing_record_and_parent_relationship
+FFB16,Door Spring Nut,simple,,1,5.20,3.25,exact_existing_match,FFB16,exact_existing_match,retain_existing_record_until_review
+CFB11A,Columbia Tools Door Stop (CFB11A),simple,,1,3.68,1.95,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+FFB32,Columbia Tools Door Stop (FFB32),simple,,1,2.60,1.95,exact_existing_match,FFB32,exact_existing_match,retain_existing_record_until_review
+CT78,Drive Chain,simple,,1,85.33,51.2,exact_existing_match,CT78,exact_existing_match,retain_existing_record_until_review
+CT70,Drive Shaft,simple,,1,32.32,21.45,exact_existing_match,CT70,exact_existing_match,retain_existing_record_until_review
+CT71,Drive Sprocket - Small,variation,CT-SPROCKET,1,15.52,9.31,exact_existing_match,CT71,exact_existing_match,retain_existing_record_and_parent_relationship
+CT77,Drive Sprocket - Large,variation,CT-SPROCKET,1,64.63,38.77,exact_existing_match,CT77,exact_existing_match,retain_existing_record_and_parent_relationship
+CT87,Engraved Cover Plate Cap,simple,,1,42.00,27.3,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+HH5,Extension Housing,simple,,1,32.64,21.45,exact_existing_match,HH5,exact_existing_match,retain_existing_record_until_review
+HH30,Extension Release Trigger,simple,,1,18.08,9.26,exact_existing_match,HH30,exact_existing_match,retain_existing_record_until_review
+CT130,Extension Shaft,simple,,1,23.29,13.97,exact_existing_match,CT130,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+CT127,Extension Shaft Bracket,simple,,1,32.32,19.39,exact_existing_match,CT127,exact_existing_match,retain_existing_record_until_review
+FA259,"FA259 8-32 X 5/16"" Binder Slot",simple,,1,1.10,0.65,exact_existing_match,FA259,exact_existing_match,retain_existing_record_until_review
+FA292,FA292 1/4-20 Nyloc Jam Nut,simple,,1,1.10,0.81,exact_existing_match,FA292,exact_existing_match,retain_existing_record_until_review
+FA311,"FA311 1/4-28 X 1/2"" Socket Head",simple,,1,1.10,1.3,exact_existing_match,FA311,exact_existing_match,retain_existing_record_until_review
+FA315,"FA315 10-32 X 3/8"" Flat Socket Head",simple,,1,1.10,1.3,exact_existing_match,FA315,exact_existing_match,retain_existing_record_until_review
+MP33,Filler Gasket,simple,,1,1.48,1.3,exact_existing_match,MP33,exact_existing_match,retain_existing_record_until_review
+MP28,Filler Nut,simple,,1,8.42,7.96,exact_existing_match,MP28,exact_existing_match,retain_existing_record_until_review
+MP25,Filler Studs,simple,,1,9.71,6.5,exact_existing_match,MP25,exact_existing_match,retain_existing_record_until_review
+HFFB14-8,"Flat Box Hinged Door Gasket - 8""",variation,HFFB14,1,38.79,10.72,exact_existing_match,HFFB14-8,exact_existing_match,retain_existing_record_and_parent_relationship
+HFFB14-10,"Flat Box Hinged Door Gasket - 10""",variation,HFFB14,1,38.79,27.3,exact_existing_match,HFFB14-10,exact_existing_match,retain_existing_record_and_parent_relationship
+HFFB14-12,"Flat Box Hinged Door Gasket - 12""",variation,HFFB14,1,38.79,27.3,exact_existing_match,HFFB14-12,exact_existing_match,retain_existing_record_and_parent_relationship
+HFFB14-14,"Flat Box Hinged Door Gasket - 14""",variation,HFFB14,1,38.79,27.3,exact_existing_match,HFFB14-14,exact_existing_match,retain_existing_record_and_parent_relationship
+MP2,Foot Valve Casting,simple,,1,29.10,18.85,exact_existing_match,MP2,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+AH5,Frame Retainer Clip,simple,,1,1.62,1.3,exact_existing_match,AH5,exact_existing_match,retain_existing_record_until_review
+AH7-2,"Frame Tension Spring - 2""",variation,AH7,1,1.31,0.79,exact_existing_match,AH7-2,exact_existing_match,retain_existing_record_and_parent_relationship
+AH7-2.5,"Frame Tension Spring - 2.5""",variation,AH7,1,1.31,0.79,exact_existing_match,AH7-2.5,exact_existing_match,retain_existing_record_and_parent_relationship
+AH7-3,"Frame Tension Spring - 3""",variation,AH7,1,1.31,0.79,exact_existing_match,AH7-3,exact_existing_match,retain_existing_record_and_parent_relationship
+AH7-3.5,"Frame Tension Spring - 3.5""",variation,AH7,1,1.31,0.79,exact_existing_match,AH7-3.5,exact_existing_match,retain_existing_record_and_parent_relationship
+AH6A,Funnel Retainer Clip,simple,,1,20.02,12.03,exact_existing_match,AH6A,exact_existing_match,retain_existing_record_until_review
+MH21,Grip Adjuster Housing,simple,,1,7.34,4.4,exact_existing_match,MH21,exact_existing_match,retain_existing_record_until_review
+MH23,Grip Adjusting Fastener,simple,,1,8.97,7.15,exact_existing_match,MH23,exact_existing_match,retain_existing_record_until_review
+MH22,Grip Adjustment Pin,simple,,1,9.02,7.15,exact_existing_match,MH22,exact_existing_match,retain_existing_record_until_review
+HH15,Grip Sleeve Octagon,simple,,1,3.53,9.75,exact_existing_match,HH15,exact_existing_match,retain_existing_record_until_review
+CT115,Guard Ring,simple,,1,19.41,11.64,exact_existing_match,CT115,exact_existing_match,retain_existing_record_until_review
+CT58,Guide Rod Bushing,simple,,1,7.77,4.67,exact_existing_match,CT58,exact_existing_match,retain_existing_record_until_review
+CT126,Hand Grip Body,simple,,1,65.00,42.9,existing_no_confirmed_source_link,,,retain_existing_record_until_review | source_name_candidates_require_review
+CT124,Hand Grip Guard Ring,simple,,1,,13,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+HNS12,Handle Clamp,simple,,1,16.49,11.05,exact_existing_match,HNS12,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+CR11,Handle Connecting Link,simple,,1,25.84,12.32,exact_existing_match,CR11,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+HH35,Columbia Tools Handle Grip (HH35),simple,,1,6.68,4.55,exact_existing_match,HH35,exact_existing_match,retain_existing_record_until_review
+MH4,Columbia Tools MH4 Handle Grip for Matrix Handle,simple,,1,28.00,24.05,exact_existing_match,MH4,exact_existing_match,retain_existing_record_until_review
+MH11,Handle Grip Bushing,simple,,1,4.49,3.9,exact_existing_match,MH11,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+MP6,Handle Link,simple,,1,32.32,21.45,exact_existing_match,MP6,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+HNSA-14,Handle Link Assembly,simple,,1,45.00,29.25,unresolved_possible_source_match,HNSA14,unresolved_identifier_conflict,retain_existing_record_until_review
+MH1,Handle Mount Plate,simple,,1,61.90,48.75,exact_existing_match,MH1,exact_existing_match,retain_existing_record_until_review
+CR6,Handle Mounting Swivel,simple,,1,15.18,9.11,exact_existing_match,CR6,exact_existing_match,retain_existing_record_until_review
+HPA-48,Handle Pin Assembly,simple,,1,5.00,3.25,unresolved_possible_source_match,HPA48,unresolved_identifier_conflict,retain_existing_record_until_review
+HH8,Handle Tube,simple,,1,44.00,29.25,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+MP5,Head Bushing,simple,,1,22.64,9.07,exact_existing_match,MP5,exact_existing_match,retain_existing_record_until_review
+AH1-2,"Columbia Tools Head Casting for AH1 Angle Heads - 2""",variation,AH1,1,175.48,99.45,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+AH1-2.5,"Columbia Tools Head Casting for AH1 Angle Heads - 2.5""",variation,AH1,1,175.48,113,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship
+AH1-3,"Columbia Tools Head Casting for AH1 Angle Heads - 3""",variation,AH1,1,153.00,99.45,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship
+AH1-3.5,"Columbia Tools Head Casting for AH1 Angle Heads - 3.5""",variation,AH1,1,175.48,99.45,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship
+CR1,Columbia Tools Head Casting (CR1),simple,,1,51.72,93.08,exact_existing_match,CR1,exact_existing_match,retain_existing_record_until_review
+FFB39,Hex Bolt,simple,,1,3.51,1.95,exact_existing_match,FFB39,exact_existing_match,retain_existing_record_until_review
+CT20,Hinge Block,simple,,1,10.36,6.21,exact_existing_match,CT20,exact_existing_match,retain_existing_record_until_review
+HFFB3,Hinge Box End Plate - Right,variation,HFFB3-PLATE,1,38.17,23.4,exact_existing_match,HFFB3,exact_existing_match,retain_existing_record_and_parent_relationship
+HFFB3A,Hinge Box End Plate - Left,variation,HFFB3-PLATE,1,36.00,23.4,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship
+CFB15A,Hinge Bushing (Plastic Washer),simple,,1,1.83,5.53,exact_existing_match,CFB15A,exact_existing_match,retain_existing_record_until_review
+BH6,Columbia Tools BH6 Hinge Pin,simple,,1,9.05,7.31,exact_existing_match,BH6,exact_existing_match,retain_existing_record_until_review
+MH6,Columbia Tools Hinge Pin (MH6),simple,,1,3.20,2.6,exact_existing_match,MH6,exact_existing_match,retain_existing_record_until_review
+CT79,Hollow Shaft,simple,,1,38.77,23.27,exact_existing_match,CT79,exact_existing_match,retain_existing_record_until_review
+CT68,Hub,simple,,1,15.52,9.31,exact_existing_match,CT68,exact_existing_match,retain_existing_record_until_review
+CT3,Insert Bushing - Right,variation,CT-INSERT-BUSHING,1,11.64,7.8,exact_existing_match,CT3,exact_existing_match,retain_existing_record_and_parent_relationship
+CT3A,Insert Bushing - Left,variation,CT-INSERT-BUSHING,1,11.64,9.43,exact_existing_match,CT3A,exact_existing_match,retain_existing_record_and_parent_relationship
+CT2,Insert Bushing for CT#7A,simple,,1,3.87,2.32,exact_existing_match,CT2,exact_existing_match,retain_existing_record_until_review
+MH13,Large Nyliner Bushing,simple,,1,3.55,3.25,exact_existing_match,MH13,exact_existing_match,retain_existing_record_until_review
+HP47,Latch Clamp Assembly,simple,,1,28.44,18.82,exact_existing_match,HP47,exact_existing_match,retain_existing_record_until_review
+HP46,Latch Keeper,simple,,1,3.87,12.84,exact_existing_match,HP46,exact_existing_match,retain_existing_record_until_review
+MP8,Leg,simple,,1,86.62,46.15,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+HH17C,Line Pincher,simple,,1,4.00,2.6,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+BH4,Lower Brake Lever,simple,,1,25.53,15.32,exact_existing_match,BH4,exact_existing_match,retain_existing_record_until_review
+MH3,Lower Mount Bracket,simple,,1,9.60,21.45,exact_existing_match,MH3,exact_existing_match,retain_existing_record_until_review
+BH3,Lower Mounting Bracket,simple,,1,29.92,20.8,exact_existing_match,BH3,exact_existing_match,retain_existing_record_until_review
+CT80,Manual Drive Grip,simple,,1,38.77,12.19,exact_existing_match,CT80,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+MH2,Matrix Handle Head,simple,,1,4.00,2.6,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CT43,Micro Chain,simple,,1,32.32,19.39,exact_existing_match,CT43,exact_existing_match,retain_existing_record_until_review
+MH3A,Mounting Bracket Stem,simple,,1,9.57,2.6,exact_existing_match,MH3A,exact_existing_match,retain_existing_record_until_review
+BH1,Mounting Plate,simple,,1,61.90,37.15,exact_existing_match,BH1,exact_existing_match,retain_existing_record_until_review
+MP24,Mud Pump Screen,simple,,1,3.87,2.6,exact_existing_match,MP24,exact_existing_match,retain_existing_record_until_review
+MP23,Mud Pump Seal,simple,,1,3.87,10.72,exact_existing_match,MP23,exact_existing_match,retain_existing_record_until_review
+HFFB1A-10,"Mud Seal Strip - 10""",simple,,1,10.00,6.5,unresolved_possible_source_match,HFFB1A,unresolved_identifier_conflict,retain_existing_record_until_review
+CT96,Mud Shut-Off Gasket,simple,,1,2.26,1.36,exact_existing_match,CT96,exact_existing_match,retain_existing_record_until_review
+CT98,Mud Supply Seal Plate & Shaft,simple,,1,5.16,3.09,exact_existing_match,CT98,exact_existing_match,retain_existing_record_until_review
+CT97,Mud Supply Valve Body,simple,,1,25.86,15.52,exact_existing_match,CT97,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+CFB6,Mud Supply Valve Unit,simple,,1,28.44,17.07,exact_existing_match,CFB6,exact_existing_match,retain_existing_record_until_review
+HNS17A,Nail Spotter Handle Tightness Screw,simple,,1,4.82,3.25,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CT63,Needle,simple,,1,1.29,1.3,exact_existing_match,CT63,exact_existing_match,retain_existing_record_until_review
+CT62,Needle Holding Shaft,simple,,1,16.79,10.4,exact_existing_match,CT62,exact_existing_match,retain_existing_record_until_review
+CT64,Needle Return Shaft,simple,,1,5.16,3.09,exact_existing_match,CT64,exact_existing_match,retain_existing_record_until_review
+CT65,Needle Return Spring,simple,,1,3.56,2.13,exact_existing_match,CT65,exact_existing_match,retain_existing_record_until_review
+HFFB4D,Columbia Tools Nylatron Bushing HFFB4D,simple,,1,3.00,1.95,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+MP36,Columbia Tools Nylatron Bushing (MP36),simple,,1,5.16,7.48,exact_existing_match,MP36,exact_existing_match,retain_existing_record_until_review
+CT29,Nylatron Chain Roller - Right (Small),variation,CT-NYLATRON-CHAIN-ROLLER,1,3.23,1.93,exact_existing_match,CT29,exact_existing_match,retain_existing_record_and_parent_relationship
+CT29A,Nylatron Chain Roller - Left (Large),variation,CT-NYLATRON-CHAIN-ROLLER,1,3.23,1.93,exact_existing_match,CT29A,exact_existing_match,retain_existing_record_and_parent_relationship
+CT76,Nylatron Washer,simple,,1,0.98,4.06,exact_existing_match,CT76,exact_existing_match,retain_existing_record_until_review
+FFB38,Nyliner Bearing,simple,,1,2.04,1.3,exact_existing_match,FFB38,exact_existing_match,retain_existing_record_until_review
+HP45,O Ring Enclosure,simple,,1,22.60,14.3,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CT121A,Columbia Tools O-Ring (CT121A),simple,,1,2.00,1.3,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+MP23A,Columbia Tools O-Ring (MP23A),simple,,1,1.29,1.3,exact_existing_match,MP23A,exact_existing_match,retain_existing_record_until_review
+MH10,Octagon,simple,,1,36.00,23.4,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CT19,Paper Feed Guide,simple,,1,34.93,20.96,exact_existing_match,CT19,exact_existing_match,retain_existing_record_until_review
+MH17,Pinch Brake,simple,,1,17.95,10.77,exact_existing_match,MH17,exact_existing_match,retain_existing_record_until_review
+MH15,Pinch Brake Activator,simple,,1,17.95,14.3,exact_existing_match,MH15,exact_existing_match,retain_existing_record_until_review
+MH24,Pinch Brake Bushing,simple,,1,9.80,5.88,exact_existing_match,MH24,exact_existing_match,retain_existing_record_until_review
+MH18,Pinch Brake Housing,simple,,1,16.48,13,exact_existing_match,MH18,exact_existing_match,retain_existing_record_until_review
+MH19,Pinch Brake Sleeve,simple,,1,23.34,18.2,exact_existing_match,MH19,exact_existing_match,retain_existing_record_until_review
+MH25,Pinch Brake Stem,simple,,1,10.61,6.36,exact_existing_match,MH25,exact_existing_match,retain_existing_record_until_review
+MH12,PinchBrake Spring,simple,,1,1.80,2.6,exact_existing_match,MH12,exact_existing_match,retain_existing_record_until_review
+MP13A,Piston Backing Washer - Small,variation,MP-PISTON-BACKING-WASHER,1,11.64,8.13,exact_existing_match,MP13A,exact_existing_match,retain_existing_record_and_parent_relationship
+MP13,Piston Backing Washer - Large,variation,MP-PISTON-BACKING-WASHER,1,7.77,9.26,exact_existing_match,MP13,exact_existing_match,retain_existing_record_and_parent_relationship
+CT107,Piston Body,simple,,1,25.84,15.51,exact_existing_match,CT107,exact_existing_match,retain_existing_record_until_review
+CT111,Columbia Tools Piston Cup (CT111),simple,,1,15.52,9.31,exact_existing_match,CT111,exact_existing_match,retain_existing_record_until_review
+MP14,Columbia Tools Piston Cup (MP14),simple,,1,11.64,7.64,exact_existing_match,MP14,exact_existing_match,retain_existing_record_until_review
+HH16,Piston Housing,simple,,1,27.71,17.55,exact_existing_match,HH16,exact_existing_match,retain_existing_record_until_review
+HH23,Piston O-Ring,simple,,1,1.26,1.3,exact_existing_match,HH23,exact_existing_match,retain_existing_record_until_review
+MP11,Piston Shaft,simple,,1,51.72,18.53,exact_existing_match,MP11,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+HNS18,Pivot,simple,,1,3.53,2.6,exact_existing_match,HNS18,exact_existing_match,retain_existing_record_until_review
+BH2,Plate,simple,,1,38.20,22.92,exact_existing_match,BH2,exact_existing_match,retain_existing_record_until_review
+HP1,Pump Cylinder,simple,,1,51.72,33.8,exact_existing_match,HP1,exact_existing_match,retain_existing_record_until_review
+MP3,Pump Flapper Valve,simple,,1,3.23,2.6,exact_existing_match,MP3,exact_existing_match,retain_existing_record_until_review
+MP7,Pump Handle,simple,,1,90.49,56.55,exact_existing_match,MP7,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+CT67,Ratchet Gear,simple,,1,5.16,3.09,exact_existing_match,CT67,exact_existing_match,retain_existing_record_until_review
+CT15,Ratchet Rod for Adjustable Brake,simple,,1,5.85,3.9,exact_existing_match,CT15,exact_existing_match,retain_existing_record_until_review
+CT92,Release Clip Bushing,simple,,1,10.36,6.21,exact_existing_match,CT92,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+HH31,Release Clip Pin,simple,,1,14.46,8.42,exact_existing_match,HH31,exact_existing_match,retain_existing_record_until_review
+HH32,Release Clip Washer,simple,,1,24.09,14.3,exact_existing_match,HH32,exact_existing_match,retain_existing_record_until_review
+CT89,Release Rod Sleeve,simple,,1,15.52,9.31,exact_existing_match,CT89,exact_existing_match,retain_existing_record_until_review
+AH1B,Columbia Tools Return Spring (AH1B),simple,,1,3.00,1.95,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+CT101,Columbia Tools CT101 Return Spring,simple,,1,2.84,6.01,exact_existing_match,CT101,exact_existing_match,retain_existing_record_until_review
+CT54,Columbia Tools CT54 Return Spring,simple,,1,3.23,1.95,exact_existing_match,CT54,exact_existing_match,retain_existing_record_until_review
+CT40,Return Spring Ring,simple,,1,1.29,1.3,exact_existing_match,CT40,exact_existing_match,retain_existing_record_until_review
+CT36,Return Spring Tube,simple,,1,33.61,20.16,exact_existing_match,CT36,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+HH33,Rlease Trigger Spring,simple,,1,5.17,7.64,exact_existing_match,HH33,exact_existing_match,retain_existing_record_until_review
+CT90,Rod Sleeve Housing,simple,,1,25.84,14.63,exact_existing_match,CT90,exact_existing_match,retain_existing_record_until_review
+HNS12A,Roll Pin,simple,,1,5.50,3.9,exact_existing_match,HNS12A,exact_existing_match,retain_existing_record_until_review
+HNS13,Roll Pin Bushing,simple,,1,3.29,6.47,exact_existing_match,HNS13,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+CR2,Roller,simple,,1,20.64,7.8,existing_no_confirmed_source_link,,,retain_existing_record_until_review | source_name_candidates_require_review
+CT28,Roller Bushing,simple,,1,3.87,2.32,exact_existing_match,CT28,exact_existing_match,retain_existing_record_until_review
+CT125,Rollers,simple,,1,3.23,1.93,exact_existing_match,CT125,exact_existing_match,retain_existing_record_until_review
+FFB37,Rubber for Box Wheel,simple,,1,1.29,1.3,exact_existing_match,FFB37,exact_existing_match,retain_existing_record_until_review
+FFB25-10,"Rubber Gasket Retainer - 10""",variation,FFB25,1,5.15,16.22,exact_existing_match,FFB25-10,exact_existing_match,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+FFB25-12,"Rubber Gasket Retainer - 12""",variation,FFB25,1,5.15,18.53,exact_existing_match,FFB25-12,exact_existing_match,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+CT87-CS,Rubber Seal,simple,,1,7.08,4.25,exact_existing_match,CT87-CS,exact_existing_match,retain_existing_record_until_review
+FFB7,Shoe - Right,variation,FFB7-SHOE,1,2.60,27.92,exact_existing_match,FFB7,exact_existing_match,retain_existing_record_and_parent_relationship
+FFB7A,Shoe - Left,variation,FFB7-SHOE,1,2.60,27.92,exact_existing_match,FFB7A,exact_existing_match,retain_existing_record_and_parent_relationship
+AH4,Side Blade,simple,,1,3.56,2.13,exact_existing_match,AH4,exact_existing_match,retain_existing_record_until_review
+CFB3-7,"Columbia Tools CFB3 Side Plate - 7""",variation,CFB3,1,38.77,26,exact_existing_match,CFB3-7,exact_existing_match,retain_existing_record_and_parent_relationship
+CFB3-8,"Columbia Tools CFB3 Side Plate - 8""",variation,CFB3,1,38.77,26,exact_existing_match,CFB3-8,exact_existing_match,retain_existing_record_and_parent_relationship
+CT7A,Side Plate Hub,simple,,1,12.93,7.76,exact_existing_match,CT7A,exact_existing_match,retain_existing_record_until_review
+MP39,Sleeve,simple,,1,2.26,9.59,exact_existing_match,MP39,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+MH20,Small Nyliner Bushing,simple,,1,2.06,1.95,exact_existing_match,MH20,exact_existing_match,retain_existing_record_until_review
+AH18,Socket Wear Cap,simple,,1,8.72,5.85,exact_existing_match,AH18,exact_existing_match,retain_existing_record_until_review
+CT119,Spool Retaining Spring,simple,,1,5.82,3.49,exact_existing_match,CT119,exact_existing_match,retain_existing_record_until_review
+AH1A,Spring Housing,simple,,1,7.80,5.2,exact_existing_match,AH1A,exact_existing_match,retain_existing_record_until_review
+FFB4B,Stainless Steel Backing Washer,simple,,1,3.68,2.6,exact_existing_match,FFB4B,exact_existing_match,retain_existing_record_until_review
+CT6A,Stainless Steel Side Plate - Left,simple,,1,37.22,22.32,exact_existing_match,CT6A,exact_existing_match,retain_existing_record_until_review
+FFB4A,Stainless Steel Washer,simple,,1,4.30,3.25,exact_existing_match,FFB4A,exact_existing_match,retain_existing_record_until_review
+CT116A,Strap,simple,,1,19.41,11.64,exact_existing_match,CT116A,exact_existing_match,retain_existing_record_until_review
+BH11,Strap Connecting Pin,simple,,1,2.36,5.17,exact_existing_match,BH11,exact_existing_match,retain_existing_record_until_review
+CR12,Swivel Coupling Pin,simple,,1,3.99,2.4,exact_existing_match,CR12,exact_existing_match,retain_existing_record_until_review
+CT57,Tape Advance Carriage,simple,,1,87.90,52.75,exact_existing_match,CT57,exact_existing_match,retain_existing_record_until_review | source_name_candidates_require_review
+CT120,Tape Spool,simple,,1,25.84,15.51,exact_existing_match,CT120,exact_existing_match,retain_existing_record_until_review
+CT14A,Taper Adjustable Brake,simple,,1,6.16,3.69,exact_existing_match,CT14A,exact_existing_match,retain_existing_record_until_review
+FFB32A,Thumb Release Clip Screw,simple,,1,1.20,8.13,exact_existing_match,FFB32A,exact_existing_match,retain_existing_record_until_review
+CT53,Toe Kicker,simple,,1,22.64,13.59,exact_existing_match,CT53,exact_existing_match,retain_existing_record_until_review
+CT92A,Columbia Tools Toe Kicker Cable Retainer Clip (CT92A),simple,,1,2.60,1.56,exact_existing_match,CT92A,exact_existing_match,retain_existing_record_until_review
+AH3-2,"Top Blade - 2""",variation,AH3,1,31.19,18.72,exact_existing_match,AH3-2,exact_existing_match,retain_existing_record_and_parent_relationship
+AH3-2.5,"Top Blade - 2.5""",variation,AH3,1,31.19,18.72,exact_existing_match,AH3-2.5,exact_existing_match,retain_existing_record_and_parent_relationship
+AH3-3,"Top Blade - 3""",variation,AH3,1,31.19,18.72,exact_existing_match,AH3-3,exact_existing_match,retain_existing_record_and_parent_relationship
+AH3-3.5,"Top Blade - 3.5""",variation,AH3,1,31.19,18.72,exact_existing_match,AH3-3.5,exact_existing_match,retain_existing_record_and_parent_relationship
+HH10A,Top Cap,simple,,1,1.67,1.3,exact_existing_match,HH10A,exact_existing_match,retain_existing_record_until_review
+AH8A,"Top Retainer Corner Clip - 3.5""",variation,AH8-CLIP,1,5.82,6.34,exact_existing_match,AH8A,exact_existing_match,retain_existing_record_and_parent_relationship
+AH8,Top Retainer Corner Clip - Standard,variation,AH8-CLIP,1,4.25,3.84,exact_existing_match,AH8,exact_existing_match,retain_existing_record_and_parent_relationship
+BH5,Columbia Tools Upper Mounting Bracket (BH5),simple,,1,9.05,5.43,exact_existing_match,BH5,exact_existing_match,retain_existing_record_until_review
+HH2,Columbia Tools Upper Mounting Bracket (HH2),simple,,1,68.50,42.9,exact_existing_match,HH2,exact_existing_match,retain_existing_record_until_review
+CT4,Wafer Bushing - Left,variation,CT-WAFER-BUSHING,1,1.29,1.3,exact_existing_match,CT4,exact_existing_match,retain_existing_record_and_parent_relationship
+CT5,Wafer Bushing - Right,variation,CT-WAFER-BUSHING,1,1.29,0.77,exact_existing_match,CT5,exact_existing_match,retain_existing_record_and_parent_relationship
+HNS20,Wedge,simple,,1,17.55,14.63,exact_existing_match,HNS20,exact_existing_match,retain_existing_record_until_review
+ICA2-1,"Columbia Billet Mud Applicator - Inside Corner - 2 Wheels - 1""",variation,COL-BILLET-MUD-APPLICATOR,1,69.00,39.41,exact_existing_match,ICA2-1,exact_existing_match,retain_existing_record_and_parent_relationship
+ICA4-1,"Columbia Billet Mud Applicator - Inside Corner - 4 Wheels - 1""",variation,COL-BILLET-MUD-APPLICATOR,1,86.00,50.51,exact_existing_match,ICA4-1,exact_existing_match,retain_existing_record_and_parent_relationship
+ICATW,Columbia Billet Mud Applicator - Two-Way Internal Corner - 4 Wheels,variation,COL-BILLET-MUD-APPLICATOR,1,117.00,66.51,exact_existing_match,ICATW,exact_existing_match,retain_existing_record_and_parent_relationship
+CEXT90,Columbia Billet Mud Applicator - External 90,variation,COL-BILLET-MUD-APPLICATOR,1,128.00,78.82,exact_existing_match,CEXT90,exact_existing_match,retain_existing_record_and_parent_relationship
+CFLT,Columbia Billet Mud Applicator - Flat,variation,COL-BILLET-MUD-APPLICATOR,1,92.00,48.04,exact_existing_match,CFLT,exact_existing_match,retain_existing_record_and_parent_relationship
+FMH,Columbia UHMW Mud Applicator - L-Trim,variation,COL-UHMW-MUD-APPLICATOR,1,92.00,60.09,exact_existing_match,FMH,exact_existing_match,retain_existing_record_and_parent_relationship
+IA90,Columbia UHMW Mud Applicator - Inside 90°,variation,COL-UHMW-MUD-APPLICATOR,1,92.00,60.09,exact_existing_match,IA90,exact_existing_match,retain_existing_record_and_parent_relationship
+OA90,Columbia UHMW Mud Applicator - Outside 90°,variation,COL-UHMW-MUD-APPLICATOR,1,92.00,60.09,exact_existing_match,OA90,exact_existing_match,retain_existing_record_and_parent_relationship
+OA90-325,Columbia UHMW Mud Applicator - Outside 90° 325,variation,COL-UHMW-MUD-APPLICATOR,1,92.00,58.01,exact_existing_match,OA90-325,exact_existing_match,retain_existing_record_and_parent_relationship
+TAPER,"Columbia Automatic Taper - Standard 53""",variation,COL-AUTOMATIC-TAPER,1,1650.00,1166.49,exact_existing_match,TAPER,exact_existing_match,retain_existing_record_and_parent_relationship
+STAPER,"Columbia Automatic Taper - Sawed Off 39""",variation,COL-AUTOMATIC-TAPER,1,1649.29,1166.49,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship
+PTAPER,Columbia One Predator Taper,simple,,1,1838.55,1458.91,existing_no_confirmed_source_link,,,retain_existing_record_until_review | source_name_candidates_require_review
+CLT24,"Columbia Cam Lock Tube - 24""",variation,COL-CAM-LOCK-TUBE,1,258.00,189.66,exact_existing_match,CLT24,exact_existing_match,retain_existing_record_and_parent_relationship
+CLT32,"Columbia Cam Lock Tube - 32""",variation,COL-CAM-LOCK-TUBE,1,269.00,195.8,exact_existing_match,CLT32,exact_existing_match,retain_existing_record_and_parent_relationship
+CLT42,"Columbia Cam Lock Tube - 42""",variation,COL-CAM-LOCK-TUBE,1,281.00,208.13,exact_existing_match,CLT42,exact_existing_match,retain_existing_record_and_parent_relationship
+CLT55,"Columbia Cam Lock Tube - 55""",variation,COL-CAM-LOCK-TUBE,1,279.00,215.52,exact_existing_match,CLT55,exact_existing_match,retain_existing_record_and_parent_relationship
+CMT24,"Columbia Compound Tube - 24""",variation,COL-COMPOUND-TUBE,1,198.00,128.07,exact_existing_match,CMT24,exact_existing_match,retain_existing_record_and_parent_relationship
+CMT32,"Columbia Compound Tube - 32""",variation,COL-COMPOUND-TUBE,1,209.00,134.24,exact_existing_match,CMT32,exact_existing_match,retain_existing_record_and_parent_relationship
+CMT42,"Columbia Compound Tube - 42""",variation,COL-COMPOUND-TUBE,1,222.00,146.56,exact_existing_match,CMT42,exact_existing_match,retain_existing_record_and_parent_relationship
+CMT55,"Columbia Compound Tube - 55""",variation,COL-COMPOUND-TUBE,1,233.00,153.95,exact_existing_match,CMT55,exact_existing_match,retain_existing_record_and_parent_relationship
+PCLT42,Columbia Predator Camlock Tube,simple,,1,369.00,242.69,exact_existing_match,PCLT42,exact_existing_match,retain_existing_record_until_review
+PCMT42,"Columbia Predator Compound Tube 42""",simple,,1,275.00,181.28,exact_existing_match,PCMT42,exact_existing_match,retain_existing_record_until_review
+7CFB,"Columbia Throttle Corner Flusher Box - 7""",variation,COL-THROTTLE-CORNER-FLUSHER-BOX,1,314.00,210.29,exact_existing_match,7CFB,exact_existing_match,retain_existing_record_and_parent_relationship
+8CFB,"Columbia Throttle Corner Flusher Box - 8""",variation,COL-THROTTLE-CORNER-FLUSHER-BOX,1,325.00,227.37,exact_existing_match,8CFB,exact_existing_match,retain_existing_record_and_parent_relationship
+2AH,"Columbia Angle Head - 2""",variation,COL-ANGLE-HEAD,1,411.00,268.93,exact_existing_match,2AH,exact_existing_match,retain_existing_record_and_parent_relationship
+2.5AH,"Columbia Angle Head - 2.5""",variation,COL-ANGLE-HEAD,1,422.00,277.45,exact_existing_match,2.5AH,exact_existing_match,retain_existing_record_and_parent_relationship
+3AH,"Columbia Angle Head - 3""",variation,COL-ANGLE-HEAD,1,444.00,285.99,exact_existing_match,3AH,exact_existing_match,retain_existing_record_and_parent_relationship
+3.5AH,"Columbia Angle Head - 3.5""",variation,COL-ANGLE-HEAD,1,455.00,320.14,exact_existing_match,3.5AH,exact_existing_match,retain_existing_record_and_parent_relationship
+2.5CSF,"Columbia Combo Flusher - 2.5""",variation,COL-COMBO-FLUSHER,1,164.00,117.01,exact_existing_match,2.5CSF,exact_existing_match,retain_existing_record_and_parent_relationship
+3CSF,"Columbia Combo Flusher - 3""",variation,COL-COMBO-FLUSHER,1,169.00,120.69,exact_existing_match,3CSF,exact_existing_match,retain_existing_record_and_parent_relationship
+3WTCSF,"Columbia Combo Flusher - 3"" Widetrack",variation,COL-COMBO-FLUSHER,1,196.25,120.69,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship
+3.5CSF,"Columbia Combo Flusher - 3.5""",variation,COL-COMBO-FLUSHER,1,182.00,124.38,exact_existing_match,3.5CSF,exact_existing_match,retain_existing_record_and_parent_relationship
+2.5DF,"Columbia Direct Flusher - 2.5""",variation,COL-DIRECT-FLUSHER,1,128.00,76.37,exact_existing_match,2.5DF,exact_existing_match,retain_existing_record_and_parent_relationship
+3DF,"Columbia Direct Flusher - 3""",variation,COL-DIRECT-FLUSHER,1,134.00,78.82,exact_existing_match,3DF,exact_existing_match,retain_existing_record_and_parent_relationship
+3WTDF,"Columbia Direct Flusher - 3"" Widetrack",variation,COL-DIRECT-FLUSHER,1,141.00,81.28,exact_existing_match,3WTDF,exact_existing_match,retain_existing_record_and_parent_relationship
+3.5DF,"Columbia Direct Flusher - 3.5""",variation,COL-DIRECT-FLUSHER,1,146.00,83.75,exact_existing_match,3.5DF,exact_existing_match,retain_existing_record_and_parent_relationship
+4DF,"Columbia Direct Flusher - 4""",variation,COL-DIRECT-FLUSHER,1,152.00,70.2,exact_existing_match,4DF,exact_existing_match,retain_existing_record_and_parent_relationship
+2.5SF,"Columbia Standard Flusher - 2.5""",variation,COL-STANDARD-FLUSHER,1,117.00,70.2,exact_existing_match,2.5SF,exact_existing_match,retain_existing_record_and_parent_relationship
+3SF,"Columbia Standard Flusher - 3""",variation,COL-STANDARD-FLUSHER,1,123.00,73.91,exact_existing_match,3SF,exact_existing_match,retain_existing_record_and_parent_relationship
+3WTSF,"Columbia Standard Flusher - 3"" Widetrack",variation,COL-STANDARD-FLUSHER,1,128.00,75.12,exact_existing_match,3WTSF,exact_existing_match,retain_existing_record_and_parent_relationship
+3.5SF,"Columbia Standard Flusher - 3.5""",variation,COL-STANDARD-FLUSHER,1,134.00,77.59,exact_existing_match,3.5SF,exact_existing_match,retain_existing_record_and_parent_relationship
+4SF,"Columbia Standard Flusher - 4""",variation,COL-STANDARD-FLUSHER,1,141.00,68.25,exact_existing_match,4SF,exact_existing_match,retain_existing_record_and_parent_relationship
+CC,Columbia Corner Cobra,simple,,1,368.00,245.62,exact_existing_match,CC,exact_existing_match,retain_existing_record_until_review
+CR,Columbia Corner Roller,simple,,1,168.00,104.43,exact_existing_match,CR,exact_existing_match,retain_existing_record_until_review
+COBCR,Columbia Outside Corner Roller - Standard,variation,COL-OUTSIDE-CORNER-ROLLER,1,87.00,52.97,exact_existing_match,COBCR,exact_existing_match,retain_existing_record_and_parent_relationship
+CBNCR,Columbia Outside Corner Roller - Bullnose,variation,COL-OUTSIDE-CORNER-ROLLER,1,87.00,55.12,exact_existing_match,CBNCR,exact_existing_match,retain_existing_record_and_parent_relationship
+COBCRE,Columbia Outside Corner Roller - European,variation,COL-OUTSIDE-CORNER-ROLLER,1,79.06,52.97,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship
+COBCRW,Columbia Outside Corner Roller - Wide,variation,COL-OUTSIDE-CORNER-ROLLER,1,87.00,55.12,exact_existing_match,COBCRW,exact_existing_match,retain_existing_record_and_parent_relationship
+8FBBA,"Columbia Automatic Fat Boy Box - 8""",variation,COL-AUTOMATIC-FAT-BOY-BOX,1,482.00,313.52,exact_existing_match,8FBBA,exact_existing_match,retain_existing_record_and_parent_relationship
+10FBBA,"Columbia Automatic Fat Boy Box - 10""",variation,COL-AUTOMATIC-FAT-BOY-BOX,1,493.00,317.93,exact_existing_match,10FBBA,exact_existing_match,retain_existing_record_and_parent_relationship
+12FBBA,"Columbia Automatic Fat Boy Box - 12""",variation,COL-AUTOMATIC-FAT-BOY-BOX,1,503.00,324.25,exact_existing_match,12FBBA,exact_existing_match,retain_existing_record_and_parent_relationship
+8FFBA,"Columbia Automatic Flat Box - 8""",variation,COL-AUTOMATIC-FLAT-BOX,1,422.00,281.39,exact_existing_match,8FFBA,exact_existing_match,retain_existing_record_and_parent_relationship
+10FFBA,"Columbia Automatic Flat Box - 10""",variation,COL-AUTOMATIC-FLAT-BOX,1,428.00,283,exact_existing_match,10FFBA,exact_existing_match,retain_existing_record_and_parent_relationship
+12FFBA,"Columbia Automatic Flat Box - 12""",variation,COL-AUTOMATIC-FLAT-BOX,1,433.00,287.07,exact_existing_match,12FFBA,exact_existing_match,retain_existing_record_and_parent_relationship
+14FFBA,"Columbia Automatic Flat Box - 14""",variation,COL-AUTOMATIC-FLAT-BOX,1,439.00,289.14,exact_existing_match,14FFBA,exact_existing_match,retain_existing_record_and_parent_relationship
+5.5FBB,"Columbia Fat Boy Flat Box - 5.5""",variation,COL-FAT-BOY-FLAT-BOX,1,435.00,269.07,exact_existing_match,5.5FBB,exact_existing_match,retain_existing_record_and_parent_relationship
+8FBB,"Columbia Fat Boy Flat Box - 8""",variation,COL-FAT-BOY-FLAT-BOX,1,444.00,285.99,exact_existing_match,8FBB,exact_existing_match,retain_existing_record_and_parent_relationship
+10FBB,"Columbia Fat Boy Flat Box - 10""",variation,COL-FAT-BOY-FLAT-BOX,1,455.00,294.51,exact_existing_match,10FBB,exact_existing_match,retain_existing_record_and_parent_relationship
+12FBB,"Columbia Fat Boy Flat Box - 12""",variation,COL-FAT-BOY-FLAT-BOX,1,466.00,303.46,exact_existing_match,12FBB,exact_existing_match,retain_existing_record_and_parent_relationship
+5.5FFB,"Columbia Flat Finisher Box - 5.5""",variation,COL-FLAT-FINISHER-BOX,1,368.00,252.99,exact_existing_match,5.5FFB,exact_existing_match,retain_existing_record_and_parent_relationship
+7FFB,"Columbia Flat Finisher Box - 7""",variation,COL-FLAT-FINISHER-BOX,1,379.00,255.24,exact_existing_match,7FFB,exact_existing_match,retain_existing_record_and_parent_relationship
+8FFB,"Columbia Flat Finisher Box - 8""",variation,COL-FLAT-FINISHER-BOX,1,390.00,256.12,exact_existing_match,8FFB,exact_existing_match,retain_existing_record_and_parent_relationship
+10FFB,"Columbia Flat Finisher Box - 10""",variation,COL-FLAT-FINISHER-BOX,1,401.00,257.82,exact_existing_match,10FFB,exact_existing_match,retain_existing_record_and_parent_relationship
+12FFB,"Columbia Flat Finisher Box - 12""",variation,COL-FLAT-FINISHER-BOX,1,411.00,262.08,exact_existing_match,12FFB,exact_existing_match,retain_existing_record_and_parent_relationship
+14FFB,"Columbia Flat Finisher Box - 14""",variation,COL-FLAT-FINISHER-BOX,1,422.00,264.05,exact_existing_match,14FFB,exact_existing_match,retain_existing_record_and_parent_relationship
+3BH,Columbia 180° Grip Flat Box Handle - 3',variation,COL-180-GRIP-FLAT-BOX-HANDLE,1,190.00,127.21,exact_existing_match,3BH,exact_existing_match,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+42BH,"Columbia 180° Grip Flat Box Handle - 42""",variation,COL-180-GRIP-FLAT-BOX-HANDLE,1,206.00,128.92,exact_existing_match,42BH,exact_existing_match,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+4BH,Columbia 180° Grip Flat Box Handle - 4',variation,COL-180-GRIP-FLAT-BOX-HANDLE,1,211.00,130.59,exact_existing_match,4BH,exact_existing_match,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+5BH,Columbia 180° Grip Flat Box Handle - 5',variation,COL-180-GRIP-FLAT-BOX-HANDLE,1,222.00,132.32,exact_existing_match,5BH,exact_existing_match,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+6BH,Columbia 180° Grip Flat Box Handle - 6',variation,COL-180-GRIP-FLAT-BOX-HANDLE,1,233.00,134.04,exact_existing_match,6BH,exact_existing_match,retain_existing_record_and_parent_relationship | source_name_candidates_require_review
+CMH,Columbia Closet Monster Handle,simple,,1,114.00,83.83,exact_existing_match,CMH,exact_existing_match,retain_existing_record_until_review
+MHS,"Columbia Matrix Flat Box Handle - 29""-39""",variation,COL-MATRIX-FLAT-BOX-HANDLE,1,341.00,221.07,exact_existing_match,MHS,exact_existing_match,retain_existing_record_and_parent_relationship
+MH,"Columbia Matrix Flat Box Handle - 40""-60""",variation,COL-MATRIX-FLAT-BOX-HANDLE,1,352.00,232.76,exact_existing_match,MH,exact_existing_match,retain_existing_record_and_parent_relationship
+MHL,"Columbia Matrix Flat Box Handle - 56""-76""",variation,COL-MATRIX-FLAT-BOX-HANDLE,1,374.00,256.15,exact_existing_match,MHL,exact_existing_match,retain_existing_record_and_parent_relationship
+C1HEXT,Columbia One Handle - Extendable 3'-5',variation,COL-ONE-HANDLE,1,136.00,92.1,exact_existing_match,C1HEXT,exact_existing_match,retain_existing_record_and_parent_relationship
+CHXL,Columbia One Handle - Long Extendable 4'-8',variation,COL-ONE-HANDLE,1,174.00,118.65,exact_existing_match,CHXL,exact_existing_match,retain_existing_record_and_parent_relationship
+C1HS,Columbia One Handle - Stubby,variation,COL-ONE-HANDLE,1,50.00,26,exact_existing_match,C1HS,exact_existing_match,retain_existing_record_and_parent_relationship
+C1H,Columbia One Handle - Fixed,variation,COL-ONE-HANDLE,1,65.00,27.9,exact_existing_match,C1H,exact_existing_match,retain_existing_record_and_parent_relationship
+PMHS,"Columbia Predator Matrix Handle - Short 29""-39""",variation,COL-PREDATOR-MATRIX-HANDLE,1,380.00,250.07,exact_existing_match,PMHS,exact_existing_match,retain_existing_record_and_parent_relationship
+PMH,"Columbia Predator Matrix Handle - 40""-60""",variation,COL-PREDATOR-MATRIX-HANDLE,1,389.00,256.05,exact_existing_match,PMH,exact_existing_match,retain_existing_record_and_parent_relationship
+PMHL,"Columbia Predator Matrix Handle - Long 56""-76""",variation,COL-PREDATOR-MATRIX-HANDLE,1,434.00,285.59,exact_existing_match,PMHL,exact_existing_match,retain_existing_record_and_parent_relationship
+PC1HEXT,Columbia Predator One Handle - Extendable 3'-5',variation,COL-PREDATOR-ONE-HANDLE,1,161.00,115.39,exact_existing_match,PC1HEXT,exact_existing_match,retain_existing_record_and_parent_relationship
+PC1H,Columbia Predator One Handle - 4' Fixed,variation,COL-PREDATOR-ONE-HANDLE,1,96.00,57.33,exact_existing_match,PC1H,exact_existing_match,retain_existing_record_and_parent_relationship
+PCHXL,Columbia Predator One Handle - Long Extendable 4'-8',variation,COL-PREDATOR-ONE-HANDLE,1,217.00,142.51,exact_existing_match,PCHXL,exact_existing_match,retain_existing_record_and_parent_relationship
+HMP,Columbia Hot Mud Pump - Standard,variation,COL-HOT-MUD-PUMP,1,411.00,277.45,exact_existing_match,HMP,exact_existing_match,retain_existing_record_and_parent_relationship
+TBMP,Columbia Hot Mud Pump - Tall Boy,variation,COL-HOT-MUD-PUMP,1,493.00,367.22,exact_existing_match,TBMP,exact_existing_match,retain_existing_record_and_parent_relationship
+HMP-C,Columbia Hot Mud Pump - CDN,variation,COL-HOT-MUD-PUMP,1,380.00,247,existing_no_confirmed_source_link,,,retain_existing_record_and_parent_relationship
+CPFP,Columbia PowerFill 3.5 Pro Series Cordless Loading Pump,simple,,1,1473.00,990.71,existing_no_confirmed_source_link,,,retain_existing_record_until_review
+PHMP,Columbia Predator Mud Pump,simple,,1,497.00,327.49,exact_existing_match,PHMP,exact_existing_match,retain_existing_record_until_review
+2NS,"Columbia Nail Spotter - 2""",variation,COL-NAIL-SPOTTER,1,298.00,189.8,exact_existing_match,2NS,exact_existing_match,retain_existing_record_and_parent_relationship
+3NS,"Columbia Nail Spotter - 3""",variation,COL-NAIL-SPOTTER,1,309.00,198.35,exact_existing_match,3NS,exact_existing_match,retain_existing_record_and_parent_relationship
+SAT,Columbia Semi Automatic Taper,simple,,1,244.00,166.26,exact_existing_match,SAT,exact_existing_match,retain_existing_record_until_review
+SACS,Columbia Commando Set,simple,,1,1158.00,718.35,exact_existing_match,SACS,exact_existing_match,retain_existing_record_until_review
+RC,Columbia Road Case,simple,,1,1021.00,658.08,exact_existing_match,RC,exact_existing_match,retain_existing_record_until_review
+TCS,Columbia Semi-Automatic Tool Case,simple,,1,202.00,138.38,exact_existing_match,TCS,exact_existing_match,retain_existing_record_until_review

@@ -1,13 +1,13 @@
 from pathlib import Path
 import csv,json,hashlib,io,re,html,collections
 import bleach
-R=Path(__file__).resolve().parents[3]; O=Path(__file__).resolve().parent; C=R/'products/launch/official/dtb_official_catalog.csv'; E=R/'columbia-catalog-export'
+R=Path(__file__).resolve().parents[4]; O=Path(__file__).resolve().parent.parent; C=R/'products/launch/official/dtb_official_catalog.csv'; E=R/'columbia-catalog-export'
 def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
-audit=json.loads((O/'audit-summary.json').read_text(encoding='utf-8'))
+audit=json.loads((O/'archive/previous-audits/audit-summary.json').read_text(encoding='utf-8'))
 for name,hashvalue in audit['hashes'].items():
  if sha(R/name)!=hashvalue:raise SystemExit('Source differs from audit snapshot: '+name)
 with C.open(encoding='utf-8-sig',newline='') as f:reader=csv.DictReader(f);fields=reader.fieldnames;rows=list(reader)
-with (O/'source-reconciliation.csv').open(encoding='utf-8-sig',newline='') as f:matched=[x for x in csv.DictReader(f) if x['match_status']=='exact_identifier']
+with (O/'archive/previous-audits/source-reconciliation.csv').open(encoding='utf-8-sig',newline='') as f:matched=[x for x in csv.DictReader(f) if x['match_status']=='exact_identifier']
 products={str(x['id']):x for x in json.loads((E/'products.json').read_text(encoding='utf-8'))}; bysku={r['SKU']:r for r in rows};changes=[];review=[]
 allowed={'p','h2','h3','h4','ul','ol','li','strong','em','br'}
 def add(r,field,value,source):
@@ -41,9 +41,9 @@ for x in specs:
  if x.get('label','').strip().casefold()=='length':x['value']='1 in';found=True
 if not found:specs.append({'label':'Length','value':'1 in'})
 add(r,'Meta: _dtb_specs_json',json.dumps(specs,ensure_ascii=False,separators=(',',':')),'Manufacturer FA279 title: 10-24 X 1 inch Fillister Slot')
-with (O/'columbia-catalog-proposed.csv').open('w',encoding='utf-8-sig',newline='') as f:
+with (O/'archive/previous-audits/columbia-catalog-proposed.csv').open('w',encoding='utf-8-sig',newline='') as f:
  w=csv.DictWriter(f,fieldnames=fields,lineterminator='\r\n');w.writeheader();w.writerows(rows)
-for name,data in [('proposed-changes.csv',changes),('metadata-review.csv',review)]:
+for name,data in [('archive/previous-audits/proposed-changes.csv',changes),('archive/previous-audits/metadata-review.csv',review)]:
  with (O/name).open('w',encoding='utf-8-sig',newline='') as f:
   w=csv.DictWriter(f,fieldnames=data[0].keys());w.writeheader();w.writerows(data)
-print('matched',len(matched),'change fields',len(changes),'field counts',dict(collections.Counter(x['field'] for x in changes)),'review',len(review),'proposed hash',sha(O/'columbia-catalog-proposed.csv'))
+print('matched',len(matched),'change fields',len(changes),'field counts',dict(collections.Counter(x['field'] for x in changes)),'review',len(review),'proposed hash',sha(O/'archive/previous-audits/columbia-catalog-proposed.csv'))

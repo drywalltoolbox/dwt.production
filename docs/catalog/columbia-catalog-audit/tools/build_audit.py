@@ -1,8 +1,8 @@
 import csv, json, re, hashlib, html, os, collections, difflib, datetime
 from pathlib import Path
 from decimal import Decimal, InvalidOperation
-ROOT=Path(__file__).resolve().parents[3]
-EXP=ROOT/'columbia-catalog-export'; CAT=ROOT/'products/launch/official/dtb_official_catalog.csv'; OUT=Path(__file__).resolve().parent
+ROOT=Path(__file__).resolve().parents[4]
+EXP=ROOT/'columbia-catalog-export'; CAT=ROOT/'products/launch/official/dtb_official_catalog.csv'; OUT=Path(__file__).resolve().parent.parent
 
 def readcsv(p):
  with p.open(encoding='utf-8-sig',newline='') as f:return list(csv.DictReader(f))
@@ -100,6 +100,6 @@ source_ids=[str(p['id']) for p in products]; csv_ids=collections.Counter(s['spot
 jsonvars=[(str(p['id']),key(v.get('sku'))) for p in products for v in p.get('variants',[])]; csvvars=[(s['spotify_product_id'],key(s['sku'])) for s in source]
 collection_counts={c['handle']:sum(any(x.get('handle')==c['handle'] for x in p.get('collections',[])) for p in products) for c in collections_data}
 counts={'source_products':len(products),'source_variants_csv':len(source),'source_variants_json':len(jsonvars),'dtb_columbia_rows':len(dtb),'dtb_columbia_sellable_rows':len(sell),'dtb_columbia_parent_rows':len(parents),'source_match_status':dict(collections.Counter(x['match_status'] for x in sourceout)),'dtb_match_status':dict(collections.Counter(x['match_status'] for x in dtbout)),'source_blank_skus':sum(not key(x['sku']) for x in source),'duplicate_source_skus':{k:v for k,v in source_skus.items() if v>1},'duplicate_product_ids':{k:v for k,v in collections.Counter(source_ids).items() if v>1},'variant_multiset_mismatches':sum((collections.Counter(jsonvars)-collections.Counter(csvvars)).values())+sum((collections.Counter(csvvars)-collections.Counter(jsonvars)).values()),'json_image_refs':len(jsonrefs),'json_image_paths_missing':sum(not (EXP/x).is_file() for x in jsonrefs),'csv_unique_image_paths':len(source_imgs),'csv_missing_image_refs':len(image_missing),'image_files_on_disk':len(localfiles),'image_files_unreferenced_by_csv':len(localfiles-source_imgs),'image_refs_missing_from_disk':len(source_imgs-localfiles),'collections_mismatches':{c['handle']:{'reported':c.get('products_count'),'calculated':collection_counts[c['handle']]} for c in collections_data if c.get('products_count')!=collection_counts[c['handle']]},'findings':dict(collections.Counter(x['kind'] for x in findings)),'candidate_rows':len(candidates)}
-write('source-reconciliation.csv',sourceout);write('dtb-reconciliation.csv',dtbout);write('match-candidates.csv',candidates);write('findings.csv',findings)
-(OUT/'audit-summary.json').write_text(json.dumps({'source_generated_at':summary.get('generated_at'),'hashes':{str(p.relative_to(ROOT)).replace('\\','/'):sha(p) for p in [CAT,EXP/'products.json',EXP/'product_variants.csv',EXP/'collections.json',EXP/'scrape_summary.json']},'counts':counts},indent=2)+'\n',encoding='utf8')
+write('archive/previous-audits/source-reconciliation.csv',sourceout);write('archive/previous-audits/dtb-reconciliation.csv',dtbout);write('archive/previous-audits/match-candidates.csv',candidates);write('archive/previous-audits/findings.csv',findings)
+(OUT/'archive/previous-audits/audit-summary.json').write_text(json.dumps({'source_generated_at':summary.get('generated_at'),'hashes':{str(p.relative_to(ROOT)).replace('\\','/'):sha(p) for p in [CAT,EXP/'products.json',EXP/'product_variants.csv',EXP/'collections.json',EXP/'scrape_summary.json']},'counts':counts},indent=2)+'\n',encoding='utf8')
 print(json.dumps(counts,indent=2))

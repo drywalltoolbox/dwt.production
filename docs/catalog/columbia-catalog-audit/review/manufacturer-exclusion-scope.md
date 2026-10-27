@@ -1,0 +1,7 @@
+# Columbia manufacturer reference exclusions
+
+The manufacturer-first working reference and manufacturer baseline contain 1,006 products. They exclude merchandise/apparel, all 46 products the manufacturer classifies as `Parts Kit` (including 16 whose names do not end in `Kit`), and two named blister packs: `3WJKBP` and `JKBP`. The 46 parts are listed in [excluded-manufacturer-part-kits.csv](excluded-manufacturer-part-kits.csv); the packs are listed in [excluded-manufacturer-packs.csv](excluded-manufacturer-packs.csv). Complete product/tool sets have not been excluded solely because they are sets.
+
+The current manufacturer product disposition and category assessments have 1,006 source rows. The manufacturer image manifest contains 1,396 linked local images across 531 products. The working reference has 422 populated weights and 149 rows with all three dimensions. These are field-completeness counts, not verification of physical accuracy or publicly reachable image URLs.
+
+The comprehensive [columbia-products-json-audit.csv](../evidence/manufacturer/columbia-products-json-audit.csv) and earlier 1,054-product shipping audit/change files remain historical evidence of the original manufacturer snapshot. Their row counts must not be interpreted as the current product selection. Existing DTB products and the canonical official catalog have not been removed or modified as part of these exclusions. The reconciliation and reference files remain non-import-ready.

@@ -1,0 +1,161 @@
+﻿variation_sku,variation_name,parent_sku,parent_name,source_disposition
+BF,Columbia Box Filler - Standard,COL-BOX-FILLER,Columbia Box Filler,exact_existing_match
+TBBF,Columbia Box Filler - Tall Boy,COL-BOX-FILLER,Columbia Box Filler,exact_existing_match
+GN,Columbia Gooseneck - Standard,COL-GOOSENECK,Columbia Gooseneck,exact_existing_match
+TBGN,Columbia Gooseneck - Tall Boy,COL-GOOSENECK,Columbia Gooseneck,exact_existing_match
+FFB11-8,"Adjuster Spring - 8""",FFB11,Adjuster Spring,existing_absent_from_manufacturer_snapshot
+FFB11-10,"Adjuster Spring - 10""",FFB11,Adjuster Spring,existing_absent_from_manufacturer_snapshot
+FFB11-12,"Adjuster Spring - 12""",FFB11,Adjuster Spring,exact_existing_match
+FFB5-7,"Axle - 7""",FFB5,Axle,existing_absent_from_manufacturer_snapshot
+FFB5-8,"Axle - 8""",FFB5,Axle,existing_absent_from_manufacturer_snapshot
+FFB5-10,"Axle - 10""",FFB5,Axle,existing_absent_from_manufacturer_snapshot
+FFB5-12,"Axle - 12""",FFB5,Axle,existing_absent_from_manufacturer_snapshot
+FFB5-14,"Axle - 14""",FFB5,Axle,existing_absent_from_manufacturer_snapshot
+FFB9-5.5,"Columbia Tools FFB9 Flat Finishing Box Blade - 5.5""",FFB9,Columbia Tools FFB9 Flat Finishing Box Blade,unresolved_possible_source_match
+FFB9-7,"Columbia Tools FFB9 Flat Finishing Box Blade - 7""",FFB9,Columbia Tools FFB9 Flat Finishing Box Blade,unresolved_possible_source_match
+FFB9-8,"Columbia Tools FFB9 Flat Finishing Box Blade - 8""",FFB9,Columbia Tools FFB9 Flat Finishing Box Blade,unresolved_possible_source_match
+FFB9-10,"Columbia Tools FFB9 Flat Finishing Box Blade - 10""",FFB9,Columbia Tools FFB9 Flat Finishing Box Blade,unresolved_possible_source_match
+FFB9-12,"Columbia Tools FFB9 Flat Finishing Box Blade - 12""",FFB9,Columbia Tools FFB9 Flat Finishing Box Blade,unresolved_possible_source_match
+FFB9-14,"Columbia Tools FFB9 Flat Finishing Box Blade - 14""",FFB9,Columbia Tools FFB9 Flat Finishing Box Blade,exact_existing_match
+HNS7-2,"Columbia Tools HNS7 Hinged Nailspotter Blade - 2""",HNS7,Columbia Tools HNS7 Hinged Nailspotter Blade,exact_existing_match
+HNS7-3,"Columbia Tools HNS7 Hinged Nailspotter Blade - 3""",HNS7,Columbia Tools HNS7 Hinged Nailspotter Blade,exact_existing_match
+HNS8-2,"Blade Holder - 2""",HNS8,Blade Holder,exact_existing_match
+HNS8-3,"Blade Holder - 3""",HNS8,Blade Holder,exact_existing_match
+AH9A,"Bottom Retainer Corner Clip - 3.5""",AH9-CLIP,Bottom Retainer Corner Clip,exact_existing_match
+AH9,Bottom Retainer Corner Clip - Standard,AH9-CLIP,Bottom Retainer Corner Clip,exact_existing_match
+BH9-3,Brake Connecting Strap - 3',BH9,Brake Connecting Strap,unresolved_possible_source_match
+BH9-42,"Brake Connecting Strap - 42""",BH9,Brake Connecting Strap,unresolved_possible_source_match
+BH9-4,Brake Connecting Strap - 4',BH9,Brake Connecting Strap,unresolved_possible_source_match
+BH9-5,Brake Connecting Strap - 5',BH9,Brake Connecting Strap,unresolved_possible_source_match
+BH9-6,Brake Connecting Strap - 6',BH9,Brake Connecting Strap,unresolved_possible_source_match
+HH17A,Brass Connector - 1,HH-BRASS-CONNECTOR,Brass Connector,exact_existing_match
+HH17B,Brass Connector - 2,HH-BRASS-CONNECTOR,Brass Connector,exact_existing_match
+CFB4-7,"Columbia Tools Corner Flusher Box Door - 7""",CFB4,Columbia Tools Corner Flusher Box Door,exact_existing_match
+CFB4-8,"Columbia Tools Corner Flusher Box Door - 8""",CFB4,Columbia Tools Corner Flusher Box Door,exact_existing_match
+HNS4-2,"Columbia Tools Hinged Nailspotter Door - 2""",HNS4,Columbia Tools Hinged Nailspotter Door,exact_existing_match
+HNS4-3,"Columbia Tools Hinged Nailspotter Door - 3""",HNS4,Columbia Tools Hinged Nailspotter Door,exact_existing_match
+CFB7-7,"Columbia Tools Door Gasket - 7""",CFB7,Columbia Tools Door Gasket,exact_existing_match
+CFB7-8,"Columbia Tools Door Gasket - 8""",CFB7,Columbia Tools Door Gasket,exact_existing_match
+HNS15-2,"Columbia Tools Door Gasket for Hinged Nailspotters - 2""",HNS15,Columbia Tools Door Gasket for Hinged Nailspotters,exact_existing_match
+HNS15-3,"Columbia Tools Door Gasket for Hinged Nailspotters - 3""",HNS15,Columbia Tools Door Gasket for Hinged Nailspotters,exact_existing_match
+HNS10A,Columbia Tools Door Spring - Short,HNS-DOOR-SPRING,Columbia Tools Door Spring,exact_existing_match
+HNS10,Columbia Tools Door Spring - Long,HNS-DOOR-SPRING,Columbia Tools Door Spring,exact_existing_match
+CT71,Drive Sprocket - Small,CT-SPROCKET,Drive Sprocket,exact_existing_match
+CT77,Drive Sprocket - Large,CT-SPROCKET,Drive Sprocket,exact_existing_match
+HFFB14-8,"Flat Box Hinged Door Gasket - 8""",HFFB14,Flat Box Hinged Door Gasket,exact_existing_match
+HFFB14-10,"Flat Box Hinged Door Gasket - 10""",HFFB14,Flat Box Hinged Door Gasket,exact_existing_match
+HFFB14-12,"Flat Box Hinged Door Gasket - 12""",HFFB14,Flat Box Hinged Door Gasket,exact_existing_match
+HFFB14-14,"Flat Box Hinged Door Gasket - 14""",HFFB14,Flat Box Hinged Door Gasket,exact_existing_match
+AH7-2,"Frame Tension Spring - 2""",AH7,Frame Tension Spring,exact_existing_match
+AH7-2.5,"Frame Tension Spring - 2.5""",AH7,Frame Tension Spring,exact_existing_match
+AH7-3,"Frame Tension Spring - 3""",AH7,Frame Tension Spring,exact_existing_match
+AH7-3.5,"Frame Tension Spring - 3.5""",AH7,Frame Tension Spring,exact_existing_match
+AH1-2,"Columbia Tools Head Casting for AH1 Angle Heads - 2""",AH1,Columbia Tools Head Casting for AH1 Angle Heads,existing_absent_from_manufacturer_snapshot
+AH1-2.5,"Columbia Tools Head Casting for AH1 Angle Heads - 2.5""",AH1,Columbia Tools Head Casting for AH1 Angle Heads,existing_absent_from_manufacturer_snapshot
+AH1-3,"Columbia Tools Head Casting for AH1 Angle Heads - 3""",AH1,Columbia Tools Head Casting for AH1 Angle Heads,existing_absent_from_manufacturer_snapshot
+AH1-3.5,"Columbia Tools Head Casting for AH1 Angle Heads - 3.5""",AH1,Columbia Tools Head Casting for AH1 Angle Heads,existing_absent_from_manufacturer_snapshot
+HFFB3,Hinge Box End Plate - Right,HFFB3-PLATE,Hinge Box End Plate,exact_existing_match
+HFFB3A,Hinge Box End Plate - Left,HFFB3-PLATE,Hinge Box End Plate,existing_absent_from_manufacturer_snapshot
+CT3,Insert Bushing - Right,CT-INSERT-BUSHING,Insert Bushing,exact_existing_match
+CT3A,Insert Bushing - Left,CT-INSERT-BUSHING,Insert Bushing,exact_existing_match
+CT29,Nylatron Chain Roller - Right (Small),CT-NYLATRON-CHAIN-ROLLER,Nylatron Chain Roller,exact_existing_match
+CT29A,Nylatron Chain Roller - Left (Large),CT-NYLATRON-CHAIN-ROLLER,Nylatron Chain Roller,exact_existing_match
+MP13A,Piston Backing Washer - Small,MP-PISTON-BACKING-WASHER,Piston Backing Washer,exact_existing_match
+MP13,Piston Backing Washer - Large,MP-PISTON-BACKING-WASHER,Piston Backing Washer,exact_existing_match
+FFB25-10,"Rubber Gasket Retainer - 10""",FFB25,Rubber Gasket Retainer,exact_existing_match
+FFB25-12,"Rubber Gasket Retainer - 12""",FFB25,Rubber Gasket Retainer,exact_existing_match
+FFB7,Shoe - Right,FFB7-SHOE,Shoe,exact_existing_match
+FFB7A,Shoe - Left,FFB7-SHOE,Shoe,exact_existing_match
+CFB3-7,"Columbia Tools CFB3 Side Plate - 7""",CFB3,Columbia Tools CFB3 Side Plate,exact_existing_match
+CFB3-8,"Columbia Tools CFB3 Side Plate - 8""",CFB3,Columbia Tools CFB3 Side Plate,exact_existing_match
+AH3-2,"Top Blade - 2""",AH3,Top Blade,exact_existing_match
+AH3-2.5,"Top Blade - 2.5""",AH3,Top Blade,exact_existing_match
+AH3-3,"Top Blade - 3""",AH3,Top Blade,exact_existing_match
+AH3-3.5,"Top Blade - 3.5""",AH3,Top Blade,exact_existing_match
+AH8A,"Top Retainer Corner Clip - 3.5""",AH8-CLIP,Top Retainer Corner Clip,exact_existing_match
+AH8,Top Retainer Corner Clip - Standard,AH8-CLIP,Top Retainer Corner Clip,exact_existing_match
+CT4,Wafer Bushing - Left,CT-WAFER-BUSHING,Wafer Bushing,exact_existing_match
+CT5,Wafer Bushing - Right,CT-WAFER-BUSHING,Wafer Bushing,exact_existing_match
+ICA2-1,"Columbia Billet Mud Applicator - Inside Corner - 2 Wheels - 1""",COL-BILLET-MUD-APPLICATOR,Columbia Billet Mud Applicator,exact_existing_match
+ICA4-1,"Columbia Billet Mud Applicator - Inside Corner - 4 Wheels - 1""",COL-BILLET-MUD-APPLICATOR,Columbia Billet Mud Applicator,exact_existing_match
+ICATW,Columbia Billet Mud Applicator - Two-Way Internal Corner - 4 Wheels,COL-BILLET-MUD-APPLICATOR,Columbia Billet Mud Applicator,exact_existing_match
+CEXT90,Columbia Billet Mud Applicator - External 90,COL-BILLET-MUD-APPLICATOR,Columbia Billet Mud Applicator,exact_existing_match
+CFLT,Columbia Billet Mud Applicator - Flat,COL-BILLET-MUD-APPLICATOR,Columbia Billet Mud Applicator,exact_existing_match
+FMH,Columbia UHMW Mud Applicator - L-Trim,COL-UHMW-MUD-APPLICATOR,Columbia UHMW Mud Applicator,exact_existing_match
+IA90,Columbia UHMW Mud Applicator - Inside 90°,COL-UHMW-MUD-APPLICATOR,Columbia UHMW Mud Applicator,exact_existing_match
+OA90,Columbia UHMW Mud Applicator - Outside 90°,COL-UHMW-MUD-APPLICATOR,Columbia UHMW Mud Applicator,exact_existing_match
+OA90-325,Columbia UHMW Mud Applicator - Outside 90° 325,COL-UHMW-MUD-APPLICATOR,Columbia UHMW Mud Applicator,exact_existing_match
+TAPER,"Columbia Automatic Taper - Standard 53""",COL-AUTOMATIC-TAPER,Columbia Automatic Taper,exact_existing_match
+STAPER,"Columbia Automatic Taper - Sawed Off 39""",COL-AUTOMATIC-TAPER,Columbia Automatic Taper,existing_absent_from_manufacturer_snapshot
+CLT24,"Columbia Cam Lock Tube - 24""",COL-CAM-LOCK-TUBE,Columbia Cam Lock Tube,exact_existing_match
+CLT32,"Columbia Cam Lock Tube - 32""",COL-CAM-LOCK-TUBE,Columbia Cam Lock Tube,exact_existing_match
+CLT42,"Columbia Cam Lock Tube - 42""",COL-CAM-LOCK-TUBE,Columbia Cam Lock Tube,exact_existing_match
+CLT55,"Columbia Cam Lock Tube - 55""",COL-CAM-LOCK-TUBE,Columbia Cam Lock Tube,exact_existing_match
+CMT24,"Columbia Compound Tube - 24""",COL-COMPOUND-TUBE,Columbia Compound Tube,exact_existing_match
+CMT32,"Columbia Compound Tube - 32""",COL-COMPOUND-TUBE,Columbia Compound Tube,exact_existing_match
+CMT42,"Columbia Compound Tube - 42""",COL-COMPOUND-TUBE,Columbia Compound Tube,exact_existing_match
+CMT55,"Columbia Compound Tube - 55""",COL-COMPOUND-TUBE,Columbia Compound Tube,exact_existing_match
+7CFB,"Columbia Throttle Corner Flusher Box - 7""",COL-THROTTLE-CORNER-FLUSHER-BOX,Columbia Throttle Corner Flusher Box,exact_existing_match
+8CFB,"Columbia Throttle Corner Flusher Box - 8""",COL-THROTTLE-CORNER-FLUSHER-BOX,Columbia Throttle Corner Flusher Box,exact_existing_match
+2AH,"Columbia Angle Head - 2""",COL-ANGLE-HEAD,Columbia Angle Head,exact_existing_match
+2.5AH,"Columbia Angle Head - 2.5""",COL-ANGLE-HEAD,Columbia Angle Head,exact_existing_match
+3AH,"Columbia Angle Head - 3""",COL-ANGLE-HEAD,Columbia Angle Head,exact_existing_match
+3.5AH,"Columbia Angle Head - 3.5""",COL-ANGLE-HEAD,Columbia Angle Head,exact_existing_match
+2.5CSF,"Columbia Combo Flusher - 2.5""",COL-COMBO-FLUSHER,Columbia Combo Flusher,exact_existing_match
+3CSF,"Columbia Combo Flusher - 3""",COL-COMBO-FLUSHER,Columbia Combo Flusher,exact_existing_match
+3WTCSF,"Columbia Combo Flusher - 3"" Widetrack",COL-COMBO-FLUSHER,Columbia Combo Flusher,existing_absent_from_manufacturer_snapshot
+3.5CSF,"Columbia Combo Flusher - 3.5""",COL-COMBO-FLUSHER,Columbia Combo Flusher,exact_existing_match
+2.5DF,"Columbia Direct Flusher - 2.5""",COL-DIRECT-FLUSHER,Columbia Direct Flusher,exact_existing_match
+3DF,"Columbia Direct Flusher - 3""",COL-DIRECT-FLUSHER,Columbia Direct Flusher,exact_existing_match
+3WTDF,"Columbia Direct Flusher - 3"" Widetrack",COL-DIRECT-FLUSHER,Columbia Direct Flusher,exact_existing_match
+3.5DF,"Columbia Direct Flusher - 3.5""",COL-DIRECT-FLUSHER,Columbia Direct Flusher,exact_existing_match
+4DF,"Columbia Direct Flusher - 4""",COL-DIRECT-FLUSHER,Columbia Direct Flusher,exact_existing_match
+2.5SF,"Columbia Standard Flusher - 2.5""",COL-STANDARD-FLUSHER,Columbia Standard Flusher,exact_existing_match
+3SF,"Columbia Standard Flusher - 3""",COL-STANDARD-FLUSHER,Columbia Standard Flusher,exact_existing_match
+3WTSF,"Columbia Standard Flusher - 3"" Widetrack",COL-STANDARD-FLUSHER,Columbia Standard Flusher,exact_existing_match
+3.5SF,"Columbia Standard Flusher - 3.5""",COL-STANDARD-FLUSHER,Columbia Standard Flusher,exact_existing_match
+4SF,"Columbia Standard Flusher - 4""",COL-STANDARD-FLUSHER,Columbia Standard Flusher,exact_existing_match
+COBCR,Columbia Outside Corner Roller - Standard,COL-OUTSIDE-CORNER-ROLLER,Columbia Outside Corner Roller,exact_existing_match
+CBNCR,Columbia Outside Corner Roller - Bullnose,COL-OUTSIDE-CORNER-ROLLER,Columbia Outside Corner Roller,exact_existing_match
+COBCRE,Columbia Outside Corner Roller - European,COL-OUTSIDE-CORNER-ROLLER,Columbia Outside Corner Roller,existing_absent_from_manufacturer_snapshot
+COBCRW,Columbia Outside Corner Roller - Wide,COL-OUTSIDE-CORNER-ROLLER,Columbia Outside Corner Roller,exact_existing_match
+8FBBA,"Columbia Automatic Fat Boy Box - 8""",COL-AUTOMATIC-FAT-BOY-BOX,Columbia Automatic Fat Boy Box,exact_existing_match
+10FBBA,"Columbia Automatic Fat Boy Box - 10""",COL-AUTOMATIC-FAT-BOY-BOX,Columbia Automatic Fat Boy Box,exact_existing_match
+12FBBA,"Columbia Automatic Fat Boy Box - 12""",COL-AUTOMATIC-FAT-BOY-BOX,Columbia Automatic Fat Boy Box,exact_existing_match
+8FFBA,"Columbia Automatic Flat Box - 8""",COL-AUTOMATIC-FLAT-BOX,Columbia Automatic Flat Box,exact_existing_match
+10FFBA,"Columbia Automatic Flat Box - 10""",COL-AUTOMATIC-FLAT-BOX,Columbia Automatic Flat Box,exact_existing_match
+12FFBA,"Columbia Automatic Flat Box - 12""",COL-AUTOMATIC-FLAT-BOX,Columbia Automatic Flat Box,exact_existing_match
+14FFBA,"Columbia Automatic Flat Box - 14""",COL-AUTOMATIC-FLAT-BOX,Columbia Automatic Flat Box,exact_existing_match
+5.5FBB,"Columbia Fat Boy Flat Box - 5.5""",COL-FAT-BOY-FLAT-BOX,Columbia Fat Boy Flat Box,exact_existing_match
+8FBB,"Columbia Fat Boy Flat Box - 8""",COL-FAT-BOY-FLAT-BOX,Columbia Fat Boy Flat Box,exact_existing_match
+10FBB,"Columbia Fat Boy Flat Box - 10""",COL-FAT-BOY-FLAT-BOX,Columbia Fat Boy Flat Box,exact_existing_match
+12FBB,"Columbia Fat Boy Flat Box - 12""",COL-FAT-BOY-FLAT-BOX,Columbia Fat Boy Flat Box,exact_existing_match
+5.5FFB,"Columbia Flat Finisher Box - 5.5""",COL-FLAT-FINISHER-BOX,Columbia Flat Finisher Box,exact_existing_match
+7FFB,"Columbia Flat Finisher Box - 7""",COL-FLAT-FINISHER-BOX,Columbia Flat Finisher Box,exact_existing_match
+8FFB,"Columbia Flat Finisher Box - 8""",COL-FLAT-FINISHER-BOX,Columbia Flat Finisher Box,exact_existing_match
+10FFB,"Columbia Flat Finisher Box - 10""",COL-FLAT-FINISHER-BOX,Columbia Flat Finisher Box,exact_existing_match
+12FFB,"Columbia Flat Finisher Box - 12""",COL-FLAT-FINISHER-BOX,Columbia Flat Finisher Box,exact_existing_match
+14FFB,"Columbia Flat Finisher Box - 14""",COL-FLAT-FINISHER-BOX,Columbia Flat Finisher Box,exact_existing_match
+3BH,Columbia 180° Grip Flat Box Handle - 3',COL-180-GRIP-FLAT-BOX-HANDLE,Columbia 180° Grip Flat Box Handle,exact_existing_match
+42BH,"Columbia 180° Grip Flat Box Handle - 42""",COL-180-GRIP-FLAT-BOX-HANDLE,Columbia 180° Grip Flat Box Handle,exact_existing_match
+4BH,Columbia 180° Grip Flat Box Handle - 4',COL-180-GRIP-FLAT-BOX-HANDLE,Columbia 180° Grip Flat Box Handle,exact_existing_match
+5BH,Columbia 180° Grip Flat Box Handle - 5',COL-180-GRIP-FLAT-BOX-HANDLE,Columbia 180° Grip Flat Box Handle,exact_existing_match
+6BH,Columbia 180° Grip Flat Box Handle - 6',COL-180-GRIP-FLAT-BOX-HANDLE,Columbia 180° Grip Flat Box Handle,exact_existing_match
+MHS,"Columbia Matrix Flat Box Handle - 29""-39""",COL-MATRIX-FLAT-BOX-HANDLE,Columbia Matrix Flat Box Handle,exact_existing_match
+MH,"Columbia Matrix Flat Box Handle - 40""-60""",COL-MATRIX-FLAT-BOX-HANDLE,Columbia Matrix Flat Box Handle,exact_existing_match
+MHL,"Columbia Matrix Flat Box Handle - 56""-76""",COL-MATRIX-FLAT-BOX-HANDLE,Columbia Matrix Flat Box Handle,exact_existing_match
+C1HEXT,Columbia One Handle - Extendable 3'-5',COL-ONE-HANDLE,Columbia One Handle,exact_existing_match
+CHXL,Columbia One Handle - Long Extendable 4'-8',COL-ONE-HANDLE,Columbia One Handle,exact_existing_match
+C1HS,Columbia One Handle - Stubby,COL-ONE-HANDLE,Columbia One Handle,exact_existing_match
+C1H,Columbia One Handle - Fixed,COL-ONE-HANDLE,Columbia One Handle,exact_existing_match
+PMHS,"Columbia Predator Matrix Handle - Short 29""-39""",COL-PREDATOR-MATRIX-HANDLE,Columbia Predator Matrix Handle,exact_existing_match
+PMH,"Columbia Predator Matrix Handle - 40""-60""",COL-PREDATOR-MATRIX-HANDLE,Columbia Predator Matrix Handle,exact_existing_match
+PMHL,"Columbia Predator Matrix Handle - Long 56""-76""",COL-PREDATOR-MATRIX-HANDLE,Columbia Predator Matrix Handle,exact_existing_match
+PC1HEXT,Columbia Predator One Handle - Extendable 3'-5',COL-PREDATOR-ONE-HANDLE,Columbia Predator One Handle,exact_existing_match
+PC1H,Columbia Predator One Handle - 4' Fixed,COL-PREDATOR-ONE-HANDLE,Columbia Predator One Handle,exact_existing_match
+PCHXL,Columbia Predator One Handle - Long Extendable 4'-8',COL-PREDATOR-ONE-HANDLE,Columbia Predator One Handle,exact_existing_match
+HMP,Columbia Hot Mud Pump - Standard,COL-HOT-MUD-PUMP,Columbia Hot Mud Pump,exact_existing_match
+TBMP,Columbia Hot Mud Pump - Tall Boy,COL-HOT-MUD-PUMP,Columbia Hot Mud Pump,exact_existing_match
+HMP-C,Columbia Hot Mud Pump - CDN,COL-HOT-MUD-PUMP,Columbia Hot Mud Pump,existing_absent_from_manufacturer_snapshot
+2NS,"Columbia Nail Spotter - 2""",COL-NAIL-SPOTTER,Columbia Nail Spotter,exact_existing_match
+3NS,"Columbia Nail Spotter - 3""",COL-NAIL-SPOTTER,Columbia Nail Spotter,exact_existing_match
