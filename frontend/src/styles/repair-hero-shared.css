@@ -797,7 +797,7 @@
    actions for its existing slide controls. Content determines the height. */
 @media (max-width: 47.99rem) {
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide {
-    min-height: clamp(500px, 113vw, 720px);
+    min-height: clamp(540px, 130vw, 720px);
   }
   .home-hero__repair-surface .repair-hero .repair-hero__inner {
     min-height: inherit;
@@ -950,4 +950,11 @@
 }
 @media (max-width: 340px) {
   .home-hero__repair-surface .repair-hero__actions { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Each mobile campaign can retain its own artwork focal point. */
+@media (max-width: 47.99rem) {
+  .home-hero__slide[data-campaign="tools"] .repair-hero__image { object-position: 50% 35%; }
+  .home-hero__slide[data-campaign="parts"] .repair-hero__image { object-position: 50% 48%; }
+  .home-hero__slide[data-campaign="repairs"] .repair-hero__image { object-position: 50% 30%; }
 }
