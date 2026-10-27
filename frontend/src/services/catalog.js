@@ -270,6 +270,9 @@ function adaptPlatformSearchResult(dto) {
     brand: dto?.brand?.label || dto?.brandLabel || '',
     image: dto?.media?.image || card?.image || '',
     price: typeof effectivePrice === 'number' ? effectivePrice : parseFloat(String(effectivePrice || '0')),
+    min_price: dto?.price?.min ?? null,
+    max_price: dto?.price?.max ?? null,
+    is_variable: dto?.type === 'variable',
     type: dto?.type || 'simple',
   };
 }
