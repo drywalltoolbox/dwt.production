@@ -863,6 +863,8 @@
   .home-hero__repair-surface .repair-hero__actions {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+@media (max-width: 360px) {
   .home-hero__repair-surface .repair-hero h1,
   .home-hero__repair-surface .repair-hero__lead { max-width: 75%; }
 }
