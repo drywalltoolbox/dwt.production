@@ -208,3 +208,20 @@
     line-height: 1.6;
   }
 }
+
+/* Keep the SKU and availability distinct in the compact product header. */
+@media (max-width: 767px) {
+  .dtb-product-page-shell .dtb-pdp .dtb-pdp-header__identity-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px 12px;
+  }
+  .dtb-product-page-shell .dtb-pdp .dtb-pdp-header__meta-stock {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: .8rem;
+    line-height: 1.3;
+  }
+}
