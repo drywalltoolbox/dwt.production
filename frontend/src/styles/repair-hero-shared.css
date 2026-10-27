@@ -879,3 +879,21 @@
     box-sizing: border-box;
   }
 }
+
+/* Keep the promise rail aligned to the desktop hero content gutters. */
+@media (min-width: 64rem) {
+  .repair-landing .repair-hero:not(.repair-hero--home-slide) .repair-guarantees,
+  .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-guarantees {
+    right: 0;
+    left: 0;
+    bottom: clamp(24px, 2.25vw, 40px);
+    width: calc(100% - clamp(72px, 12vw, 220px));
+    margin-inline: auto;
+  }
+}
+@media (min-width: 64rem) and (max-width: 79.99rem) {
+  .repair-landing .repair-hero:not(.repair-hero--home-slide) .repair-guarantees,
+  .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-guarantees {
+    width: calc(100% - clamp(48px, 8vw, 100px));
+  }
+}
