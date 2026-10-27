@@ -395,3 +395,36 @@
     line-height: 1.05;
   }
 }
+
+/* Price ranges share the card's selling-price hierarchy, with a quiet
+   separator and a consistent two-line rhythm at every card width. */
+.dtb-product-card .dtb-product-card__price--range {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  max-width: 100%;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(.82rem, 1.05vw, 1rem);
+  font-weight: 750;
+  letter-spacing: -.025em;
+  line-height: 1.18;
+  white-space: normal;
+  overflow-wrap: normal;
+}
+.dtb-product-card__range-min,
+.dtb-product-card__range-max {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+}
+.dtb-product-card__range-max { color: #40516b; font-weight: 650; }
+.dtb-product-card__range-dash { color: #77869b; padding-right: .28em; }
+@media (max-width: 767px) {
+  .dtb-product-card .dtb-product-card__price--range {
+    font-size: clamp(.75rem, 3.35vw, .95rem);
+    line-height: 1.18;
+    gap: 3px;
+    letter-spacing: -.025em;
+  }
+}
