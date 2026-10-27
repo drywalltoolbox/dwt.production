@@ -95,11 +95,14 @@ final class DTB_DefaultVariationResolver {
 		$variation_price = is_array( $default_variation['price'] ?? null )
 			? $default_variation['price']
 			: [];
+		$parent_price = $product_dto['price'] ?? [];
 		$product_dto['price'] = [
 			'value'   => $variation_price['value'] ?? $product_dto['price']['value'] ?? null,
 			'regular' => $variation_price['regular'] ?? $product_dto['price']['regular'] ?? null,
 			'sale'    => $variation_price['sale'] ?? $product_dto['price']['sale'] ?? null,
 			'onSale'  => (bool) ( $variation_price['onSale'] ?? $product_dto['price']['onSale'] ?? false ),
+			'min'     => $parent_price['min'] ?? null,
+			'max'     => $parent_price['max'] ?? null,
 		];
 
 		$product_dto['defaultVariationId'] = $default_variation['id'];
