@@ -17,7 +17,7 @@ defined( 'ABSPATH' ) || exit;
 
 final class DTB_ProductDetailController {
 
-	private const RELATED_PRODUCT_LIMIT = 4;
+	private const RELATED_PRODUCT_LIMIT = 10;
 
 	public static function register_routes(): void {
 		register_rest_route( 'dtb/v1', '/catalog/products/(?P<slug>[a-zA-Z0-9_-]+)/detail', [
@@ -87,7 +87,7 @@ final class DTB_ProductDetailController {
 		$variation_diagnostics = method_exists( 'DTB_VariationReadModelService', 'get_last_diagnostics' )
 			? DTB_VariationReadModelService::get_last_diagnostics()
 			: [ 'available' => false ];
-		$related_products = self::get_related_products( $product['id'] );
+		$related_products = self::get_related_products( $product['id'], $product );
 
 		return new WP_REST_Response( [
 			'product'         => $product,
@@ -105,7 +105,7 @@ final class DTB_ProductDetailController {
 	}
 
 	/** Build the public PDP merchandising rail from WooCommerce relationships. */
-	private static function get_related_products( int $product_id ): array {
+	private static function get_related_products( int $product_id, array $product ): array {
 		$source_product = wc_get_product( $product_id );
 		if ( ! $source_product ) {
 			return [];
@@ -113,7 +113,26 @@ final class DTB_ProductDetailController {
 
 		// Keep this rail to explicit operator-curated upsells. WooCommerce's
 		// category/tag fallback is not a relevance signal and can look random.
-		$candidate_ids = $source_product->get_upsell_ids();
+		$category_slug = (string) ( $product['displayCategory']['slug'] ?? '' );
+		$is_toolset = in_array( $category_slug, [ 'automatic-tool-sets', 'automatic-tool-sets-kits', 'semi-automatic-tool-sets-kits', 'toolsets', 'tool-sets-kits', 'tool-sets-and-kits' ], true );
+		$candidate_ids = [];
+		if ( $is_toolset ) {
+			// Only exact recorded component SKUs qualify; never substitute upsells.
+			for ( $index = 0; $index < 20; $index++ ) {
+				$sku = trim( (string) get_post_meta( $product_id, '_includes_' . $index . '_sku', true ) );
+				if ( '' === $sku ) {
+					continue;
+				}
+				$included_id = wc_get_product_id_by_sku( $sku );
+				$included = $included_id ? wc_get_product( $included_id ) : false;
+				// A variation is not a standalone card and its parent may cover other configurations.
+				if ( $included && ! $included->is_type( 'variation' ) && $included_id !== $product_id ) {
+					$candidate_ids[] = $included_id;
+				}
+			}
+		} else {
+			$candidate_ids = $source_product->get_upsell_ids();
+		}
 		$candidate_ids = array_values( array_unique( array_filter( array_map( 'absint', $candidate_ids ) ) ) );
 		$visible_ids   = [];
 
