@@ -56,8 +56,9 @@ export default function RepairHero({
               {campaign.secondaryAction.label}<Arrow />
             </Link>
             {campaign.id === 'repairs' && (
-              <Link className="repair-button repair-button--utility" to="/repairs/track">
-                Track Repair<Arrow />
+              <Link className="repair-track-link" to="/repairs/track">
+                <span className="repair-track-link__circle" aria-hidden="true"><span className="repair-track-link__arrow" /></span>
+                <span className="repair-track-link__text">Track Repair</span>
               </Link>
             )}
           </div>
