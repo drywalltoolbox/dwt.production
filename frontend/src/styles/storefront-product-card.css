@@ -489,3 +489,24 @@
   .dtb-card-action__desktop-label { display: none; }
   .dtb-card-action__mobile-label { display: inline; }
 }
+
+@media (max-width: 767px) {
+  .dtb-product-card--grid .dtb-product-card__price-group,
+  .dtb-product-card--rail .dtb-product-card__price-group,
+  .dtb-product-card--list .dtb-product-card__price-group {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .dtb-product-card .dtb-product-card__price--range {
+    justify-content: center;
+  }
+
+  .dtb-product-card__action[data-dtb-card-action="options"] .dtb-add-to-cart__cart {
+    display: none;
+  }
+
+  .dtb-product-card__action[data-dtb-card-action="options"] .dtb-add-to-cart__label {
+    display: inline !important;
+  }
+}
