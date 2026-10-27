@@ -361,12 +361,20 @@
     min-width: 0;
   }
 
+  .dtb-product-card:not(.dtb-product-card--variable) .dtb-product-card__price {
+    font-size: clamp(.85rem, 3.7vw, 1rem);
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
   .dtb-product-card--grid .dtb-product-card__compare-price,
   .dtb-product-card--rail .dtb-product-card__compare-price,
   .dtb-product-card--list .dtb-product-card__compare-price {
     display: block;
     max-width: 100%;
-    line-height: 1.15;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
     white-space: nowrap;
   }
 
