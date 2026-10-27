@@ -116,6 +116,7 @@ final class DTB_ProductDetailController {
 		$is_toolset = in_array( $category_slug, [ 'automatic-tool-sets', 'automatic-tool-sets-kits', 'semi-automatic-tool-sets-kits', 'toolsets', 'tool-sets-kits', 'tool-sets-and-kits' ], true );
 		$candidate_ids = [];
 		if ( $is_toolset ) {
+			$included_cards = [];
 			// Only exact recorded component SKUs qualify; never substitute upsells.
 			for ( $index = 0; $index < 20; $index++ ) {
 				$sku = trim( (string) get_post_meta( $product_id, '_includes_' . $index . '_sku', true ) );
@@ -124,11 +125,23 @@ final class DTB_ProductDetailController {
 				}
 				$included_id = wc_get_product_id_by_sku( $sku );
 				$included = $included_id ? wc_get_product( $included_id ) : false;
-				// A variation is not a standalone card and its parent may cover other configurations.
-				if ( $included && ! $included->is_type( 'variation' ) && $included_id !== $product_id ) {
-					$candidate_ids[] = $included_id;
+				if ( ! $included || $included_id === $product_id || 'publish' !== get_post_status( $included_id ) ) continue;
+				if ( $included->is_type( 'variation' ) ) {
+					$parent = wc_get_product( $included->get_parent_id() );
+					if ( ! $parent || 'publish' !== get_post_status( $parent->get_id() ) || ! $parent->is_visible() || ! $included->variation_is_visible() ) continue;
+					$dto = DTB_VariationReadModelService::get_normalized_by_id( $included_id );
+					if ( ! is_array( $dto ) ) continue;
+					$dto['slug'] = $parent->get_slug();
+					$dto['includedVariation'] = true;
+					$dto['parentName'] = $parent->get_name();
+					$included_cards[ $included_id ] = $dto;
+				} elseif ( $included->is_visible() ) {
+					$raw = dtb_catalog_wc_fetch_product_by_id( $included_id );
+					if ( is_array( $raw ) ) $included_cards[ $included_id ] = dtb_catalog_normalize_product( $raw );
 				}
+				if ( count( $included_cards ) >= self::RELATED_PRODUCT_LIMIT ) break;
 			}
+			return array_values( $included_cards );
 		} else {
 			$candidate_ids = array_merge( $source_product->get_upsell_ids(), wc_get_related_products( $product_id, self::RELATED_PRODUCT_LIMIT * 2, [ $product_id ] ) );
 		}

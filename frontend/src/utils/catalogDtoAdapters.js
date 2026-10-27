@@ -501,7 +501,11 @@ export function toProductDetailDTO(payload = {}) {
     ? payload.variations.map((variation) => toLegacyVariationDTO(variation, payload?.product || null))
     : [];
   const relatedProducts = Array.isArray(payload?.relatedProducts)
-    ? payload.relatedProducts.map((relatedProduct) => toLegacyProductCardDTO(relatedProduct))
+    ? payload.relatedProducts.map((relatedProduct) => {
+        if (!relatedProduct?.includedVariation) return toLegacyProductCardDTO(relatedProduct);
+        const variation = toLegacyVariationDTO(relatedProduct, { id: relatedProduct.parentId, name: relatedProduct.parentName, brand: relatedProduct.brand });
+        return { ...variation, type: 'variation', is_variable: false, includedVariation: true, brand: relatedProduct.brand?.label || '', cardProduct: variation };
+      })
     : [];
 
   const defaultVariation = payload?.computed?.defaultVariation

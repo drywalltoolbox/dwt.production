@@ -72,7 +72,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const image = variationContext?.image_thumbnail || variationContext?.image || displayProduct.image_thumbnail || displayProduct.image;
   const imageSrcset = variationContext?.image_srcset || displayProduct.image_srcset;
   const slug = displayProduct.slug || commerceProduct.slug;
-  const productUrl = slug ? `/products/${slug}` : null;
+  const productUrl = slug ? `/products/${slug}${displayProduct.includedVariation ? `?variant=${encodeURIComponent(displayProduct.id)}` : ''}` : null;
   const isMobile = useIsMobile();
   const showDesktopOverlay = !isMobile && variant !== 'list';
   const [overlayActive, setOverlayActive] = useState(false);

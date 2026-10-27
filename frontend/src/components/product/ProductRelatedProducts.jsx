@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import StorefrontRail from '../storefront/StorefrontRail';
 import StorefrontProductTile from '../storefront/StorefrontProductTile';
+import { useNavigate } from 'react-router-dom';
 
 const MAX_RELATED_PRODUCTS = 10;
 
@@ -33,6 +34,7 @@ export default function ProductRelatedProducts({
   onOpenProduct,
   id = 'product-related',
 }) {
+  const navigate = useNavigate();
   if (!Array.isArray(products) || products.length === 0) return null;
 
   const visibleProducts = products.slice(0, MAX_RELATED_PRODUCTS);
@@ -58,7 +60,7 @@ export default function ProductRelatedProducts({
               cardProduct={cardProduct}
               variant="grid"
               index={index}
-              onOpenModal={() => onOpenProduct?.(relatedProduct)}
+              onOpenModal={() => relatedProduct.includedVariation ? navigate(`/products/${encodeURIComponent(relatedProduct.slug)}?variant=${encodeURIComponent(relatedProduct.id)}`) : onOpenProduct?.(relatedProduct)}
               onAddToCart={() => onAddToCart?.(cardProduct, 1)}
             />
           );
