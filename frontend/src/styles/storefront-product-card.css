@@ -346,20 +346,26 @@
   }
 }
 
-/* Mobile commerce hierarchy: comparison price belongs beneath the selling
-   price; compact horizontal actions retain accessible 44px tap height. */
+/* Keep sale and comparison prices aligned, wrapping only when space is tight. */
 @media (max-width: 767px) {
   .dtb-product-card--grid .dtb-product-card__price-group,
   .dtb-product-card--rail .dtb-product-card__price-group,
   .dtb-product-card--list .dtb-product-card__price-group {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    flex-wrap: nowrap;
-    gap: 3px;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 2px 6px;
     width: 100%;
     min-width: 0;
+  }
+
+  .dtb-product-card:not(.dtb-product-card--variable) .dtb-product-card__price {
+    font-size: clamp(.85rem, 3.7vw, 1rem);
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
 
   .dtb-product-card--grid .dtb-product-card__compare-price,
@@ -367,7 +373,9 @@
   .dtb-product-card--list .dtb-product-card__compare-price {
     display: block;
     max-width: 100%;
-    line-height: 1.15;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
 
   .dtb-product-card .dtb-product-card__footer .dtb-product-card__action--mobile-icon {
@@ -480,4 +488,25 @@
   }
   .dtb-card-action__desktop-label { display: none; }
   .dtb-card-action__mobile-label { display: inline; }
+}
+
+@media (max-width: 767px) {
+  .dtb-product-card--grid .dtb-product-card__price-group,
+  .dtb-product-card--rail .dtb-product-card__price-group,
+  .dtb-product-card--list .dtb-product-card__price-group {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .dtb-product-card .dtb-product-card__price--range {
+    justify-content: center;
+  }
+
+  .dtb-product-card__action[data-dtb-card-action="options"] .dtb-add-to-cart__cart {
+    display: none;
+  }
+
+  .dtb-product-card__action[data-dtb-card-action="options"] .dtb-add-to-cart__label {
+    display: inline !important;
+  }
 }
