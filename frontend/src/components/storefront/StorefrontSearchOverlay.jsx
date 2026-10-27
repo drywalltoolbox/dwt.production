@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { X } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState, lazy, Suspense } from 'react';
 import { brandToSlug } from '../../utils/catalogUrlState.js';
 import { buildDisplayCategoryUrl, normalizeCatalogCategoryEntry } from '../../utils/catalogFacets.js';
@@ -139,6 +140,7 @@ export default function StorefrontSearchOverlay({
         />
         <div className="storefront-search-overlay__sheet">
           <div className="storefront-search-overlay__panel" onClick={(event) => event.stopPropagation()}>
+            <button type="button" className="storefront-search-overlay__close" onClick={closeSearch} aria-label="Close search"><X size={20} aria-hidden="true" /></button>
             {hasQuery ? (
               <div className="storefront-search-overlay__topline">
                 <p className="storefront-search-overlay__panel-label">Search results</p>
