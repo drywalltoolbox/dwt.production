@@ -7,8 +7,8 @@ import StorefrontSection from '../components/storefront/StorefrontSection';
 import StorefrontProductRail from '../components/storefront/StorefrontProductRail';
 import { getBrandLogo } from '../utils/brandAssets.js';
 import { brandToSlug } from '../utils/catalogUrlState.js';
-import { Link } from 'react-router-dom';
-import { resolveCategoryThumbnail } from '../utils/categoryThumbnailImages.js';
+import { ToolTypeTile } from '../components/catalog/ShopByToolType.jsx';
+import StorefrontRail from '../components/storefront/StorefrontRail.jsx';
 import '../styles/home-commerce-discovery.css';
 
 const HOME_CATEGORIES = [
@@ -84,16 +84,13 @@ export default function Home() {
       <div className="page-wrapper dtb-home-page storefront-shell">
         <HomeHero />
 
-        <nav className="home-commerce-categories dtb-container dtb-container--fluid" aria-label="Shop popular tool categories">
-          <div className="home-commerce-categories__grid">
+        <section className="home-commerce-categories dtb-container dtb-container--fluid" aria-label="Shop popular tool categories">
+          <StorefrontRail label="Shop popular tool categories" className="dtb-tool-type-rail">
             {HOME_CATEGORIES.map(([name, slug]) => (
-              <Link className="home-commerce-categories__item" to={`/category/${slug}`} key={slug}>
-                <img src={resolveCategoryThumbnail({ slug })} alt="" loading="lazy" decoding="async" />
-                <span>{name}</span>
-              </Link>
+              <ToolTypeTile key={slug} category={{ name, slug }} showSelectorChevron />
             ))}
-          </div>
-        </nav>
+          </StorefrontRail>
+        </section>
 
         <div className="dtb-home-storefront">
           <div className="dtb-container dtb-container--fluid pb-4">
