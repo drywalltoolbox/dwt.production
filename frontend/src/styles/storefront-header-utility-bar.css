@@ -207,31 +207,24 @@
   }
 }
 
-/* Full-width midnight glass material. Header geometry and stacking stay unchanged. */
+/* Full-width midnight glass: layered specular reflections over deep navy. */
 .site-header {
   background:
-    radial-gradient(ellipse 34% 150% at 0% 25%, rgba(34, 85, 238, .48), transparent 72%),
-    radial-gradient(ellipse 18% 12% at 18% 0%, rgba(134, 211, 255, .72), transparent 75%),
-    radial-gradient(ellipse 20% 12% at 66% 100%, rgba(45, 133, 255, .62), transparent 75%),
-    radial-gradient(ellipse 34% 150% at 100% 80%, rgba(34, 85, 238, .38), transparent 72%),
-    linear-gradient(128deg, rgba(126, 190, 255, .15), transparent 17%, transparent 80%, rgba(88, 156, 255, .12) 88%, transparent 94%),
-    linear-gradient(165deg, rgba(9, 32, 73, .94), rgba(4, 17, 41, .93) 52%, rgba(3, 15, 35, .96));
-  box-shadow:
-    inset 0 1px 0 rgba(188, 226, 255, .72),
-    inset 0 2px 7px rgba(34, 117, 255, .38),
-    inset 0 -1px 0 rgba(100, 183, 255, .85),
-    inset 0 -4px 12px rgba(34, 85, 238, .27),
-    0 12px 32px rgba(0, 5, 24, .28),
-    0 5px 22px rgba(34, 85, 238, .12);
-  -webkit-backdrop-filter: blur(22px) saturate(145%);
-  backdrop-filter: blur(22px) saturate(145%);
+    linear-gradient(155deg, rgba(176, 213, 255, .14) 0%, rgba(78, 139, 220, .07) 14%, transparent 32%),
+    linear-gradient(24deg, transparent 48%, rgba(111, 170, 238, .08) 49%, rgba(155, 206, 255, .11) 50%, transparent 52%),
+    linear-gradient(180deg, rgba(19, 49, 91, .96) 0%, rgba(5, 22, 49, .97) 45%, rgba(3, 16, 38, .98) 100%);
+  box-shadow: inset 0 1px 0 rgba(220, 236, 255, .28), inset 0 -1px 0 rgba(143, 185, 238, .20), 0 10px 28px rgba(0, 8, 25, .22);
+  -webkit-backdrop-filter: blur(10px) saturate(125%);
+  backdrop-filter: blur(10px) saturate(125%);
 }
 .site-header > .dtb-header-utility-bar {
-  background: linear-gradient(90deg, rgba(26, 76, 163, .26), rgba(2, 15, 40, .28) 50%, rgba(15, 59, 132, .24));
-  border-bottom-color: rgba(119, 184, 255, .44);
-  box-shadow: inset 0 -1px 8px rgba(34, 112, 255, .22);
+  background: linear-gradient(180deg, rgba(51, 92, 148, .18), rgba(4, 19, 43, .16));
+  border-bottom-color: rgba(177, 205, 240, .17);
+  box-shadow: inset 0 1px 0 rgba(220, 236, 255, .08);
 }
-.site-header .site-header-inner { background: transparent; }
+.site-header .site-header-inner {
+  background: linear-gradient(180deg, rgba(111, 163, 223, .06), transparent 42%, rgba(4, 17, 38, .12));
+}
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .site-header { background-color: #061832; }
 }
