@@ -424,6 +424,7 @@ export function toLegacyProductCardDTO(dto = {}, computed = null) {
         regular: dto?.regular_price ?? dto?.regularPrice,
         sale: dto?.sale_price ?? dto?.salePrice,
         min: dto?.min_price ?? dto?.minPrice,
+        max: dto?.max_price ?? dto?.maxPrice,
       };
   const inventory = dto?.inventory || {};
   const media = dto?.media || {};
@@ -471,6 +472,7 @@ export function toLegacyProductCardDTO(dto = {}, computed = null) {
     sale_price: price?.sale != null ? String(price.sale) : '',
     on_sale: Boolean(price?.onSale),
     min_price: price?.min != null ? toNumber(price.min, 0) : null,
+    max_price: price?.max != null ? toNumber(price.max, 0) : null,
     stock_status: inventory?.stockStatus || dto?.stock_status || 'instock',
     stock_quantity: inventory?.stockQuantity ?? null,
     purchasable: inventory?.purchasable ?? true,
