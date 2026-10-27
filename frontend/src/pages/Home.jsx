@@ -7,6 +7,16 @@ import StorefrontSection from '../components/storefront/StorefrontSection';
 import StorefrontProductRail from '../components/storefront/StorefrontProductRail';
 import { getBrandLogo } from '../utils/brandAssets.js';
 import { brandToSlug } from '../utils/catalogUrlState.js';
+import { Link } from 'react-router-dom';
+import { resolveCategoryThumbnail } from '../utils/categoryThumbnailImages.js';
+import '../styles/home-commerce-discovery.css';
+
+const HOME_CATEGORIES = [
+  ['Automatic Tapers', 'automatic-tapers'], ['Finishing Boxes', 'flat-boxes'],
+  ['Loading Pumps', 'loading-pumps'], ['Corner Finishers', 'corner-finishers'],
+  ['Corner Rollers', 'corner-rollers'], ['Corner Applicators', 'corner-applicators-angle-boxes'],
+  ['Nail Spotters', 'nail-spotters'], ['Handles', 'flat-box-handles'],
+];
 
 const HOME_BRAND_ORDER = ['TapeTech', 'Columbia Tools', 'Platinum Drywall Tools', 'Level 5', 'SurPro', 'Dura-Stilts'];
 
@@ -73,6 +83,17 @@ export default function Home() {
 
       <div className="page-wrapper dtb-home-page storefront-shell">
         <HomeHero />
+
+        <nav className="home-commerce-categories dtb-container dtb-container--fluid" aria-label="Shop popular tool categories">
+          <div className="home-commerce-categories__grid">
+            {HOME_CATEGORIES.map(([name, slug]) => (
+              <Link className="home-commerce-categories__item" to={`/category/${slug}`} key={slug}>
+                <img src={resolveCategoryThumbnail({ slug })} alt="" loading="lazy" decoding="async" />
+                <span>{name}</span>
+              </Link>
+            ))}
+          </div>
+        </nav>
 
         <div className="dtb-home-storefront">
           <div className="dtb-container dtb-container--fluid pb-4">
