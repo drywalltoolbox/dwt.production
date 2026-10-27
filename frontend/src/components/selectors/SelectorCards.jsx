@@ -1,4 +1,5 @@
 import { ChevronRight, ImageOff } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export function SelectorGrid({ children, variant = 'categories', className = '' }) {
   return (
@@ -18,12 +19,14 @@ export function MediaSelectorCard({
   imageLoading = 'lazy',
   imageFetchPriority,
   onClick,
+  to,
   className = '',
   media,
 }) {
+  const Element = to ? Link : 'button';
   return (
-    <button
-      type="button"
+    <Element
+      {...(to ? { to } : { type: 'button' })}
       className={`dtb-selector-card dtb-selector-card--media${className ? ` ${className}` : ''}`}
       onClick={onClick}
     >
@@ -53,7 +56,7 @@ export function MediaSelectorCard({
         </span>
         <ChevronRight className="dtb-selector-card__chevron" size={18} aria-hidden="true" />
       </span>
-    </button>
+    </Element>
   );
 }
 

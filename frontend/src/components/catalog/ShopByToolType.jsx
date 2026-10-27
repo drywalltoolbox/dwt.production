@@ -2,16 +2,30 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, ChevronRight, Wrench } from 'lucide-react';
 import StorefrontRail from '../storefront/StorefrontRail.jsx';
+import { MediaSelectorCard } from '../selectors/SelectorCards.jsx';
 import { buildCategoryPageUrl } from '../../utils/catalogFacets.js';
 import { resolveCategoryThumbnail } from '../../utils/categoryThumbnailImages.js';
 import '../../styles/category-hero.css';
 import '../../styles/tool-type-merchandising.css';
+import '../../styles/selector-cards.css';
 
 function ToolTypeTile({ category, showSelectorChevron = false, brand = '' }) {
   const [imageFailed, setImageFailed] = useState(false);
   const image = resolveCategoryThumbnail(category);
   const hasImage = Boolean(image) && !imageFailed;
   const description = String(category?.description || '').replace(/<[^>]*>/g, '').trim();
+
+  if (brand && !showSelectorChevron) {
+    const count = Number(category.count || 0);
+    return (
+      <MediaSelectorCard
+        to={buildCategoryPageUrl(category.slug, brand)}
+        title={category.name}
+        meta={count > 0 ? `${count.toLocaleString()} ${count === 1 ? 'product' : 'products'}` : ''}
+        media={hasImage ? <img src={image} alt="" className="dtb-selector-card__image" loading="lazy" decoding="async" onError={() => setImageFailed(true)} /> : undefined}
+      />
+    );
+  }
 
   return (
     <Link
