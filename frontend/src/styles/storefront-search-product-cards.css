@@ -372,3 +372,39 @@
 }
 
 
+
+/* Full-width mobile search sheet with a translucent, readable glass surface. */
+.storefront-search-overlay__close { display: none; }
+@media (max-width: 767px) {
+  .storefront-search-overlay .storefront-mobile-drawer__backdrop {
+    background: rgba(3, 10, 24, .18);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .storefront-search-overlay__sheet { padding: 0; }
+  .storefront-search-overlay__panel {
+    border-radius: 16px 16px 0 0;
+    border-inline: 0;
+    background: linear-gradient(155deg, rgba(25, 48, 87, .78), rgba(7, 20, 45, .83));
+    -webkit-backdrop-filter: blur(28px) saturate(155%);
+    backdrop-filter: blur(28px) saturate(155%);
+  }
+  .storefront-search-overlay__close {
+    display: inline-flex;
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    z-index: 2;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(210, 227, 255, .3);
+    border-radius: 50%;
+    color: #fff;
+    background: rgba(9, 24, 51, .65);
+    cursor: pointer;
+  }
+  .storefront-search-overlay__close:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+  .storefront-search-overlay__panel::before { margin-bottom: 34px; }
+}
