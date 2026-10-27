@@ -135,7 +135,7 @@ function CategoryTabs({ groups, activeGroupId, focusGroupId, onChange }) {
 
   return (
     <div className="repair-package-tabs-wrap" aria-label="Repair package tool categories">
-      <div ref={tabsRef} className="repair-package-tabs" role="tablist" aria-orientation="horizontal">
+      <div ref={tabsRef} className="repair-package-tabs" role="tablist" aria-label="Repair package tool categories" aria-orientation="horizontal">
         <div
           className={`repair-package-tabs__active${activeMetrics.width > 0 ? ' is-ready' : ''}`}
           style={{
