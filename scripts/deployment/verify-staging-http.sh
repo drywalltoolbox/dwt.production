@@ -21,30 +21,7 @@ for attempt in 1 2 3; do
   fi
 
   # Retry identified SiteGround challenges, but never accept them as success.
-  if [[ "$status" == 202 ]] && grep -qiE '^sg-captcha:[[:space:]]*challenge[[:space:]]*
-    echo "Staging URL returned HTTP $status; expected 200." >&2
-    cat "$headers" >&2
-    rm -f "$headers" "$body"
-    exit 2
-  fi
-  if ! grep -qi '<html' "$body"; then
-    echo "Staging response is not HTML." >&2
-    rm -f "$headers" "$body"
-    exit 2
-  fi
-  if ! grep -qi 'x-robots-tag:.*noindex' "$headers"; then
-    echo "Staging noindex header is missing." >&2
-    rm -f "$headers" "$body"
-    exit 2
-  fi
-
-  rm -f "$headers" "$body"
-  echo "Staging HTTP shell and noindex response verified."
-  exit 0
-done
-
-exit 2
- "$headers"; then
+  if [[ "$status" == 202 ]] && grep -qiE '^sg-captcha:[[:space:]]*challenge[[:space:]]*$' "$headers"; then
     echo "SiteGround challenged the staging probe (attempt $attempt/3)." >&2
     if [[ "$attempt" -lt 3 ]]; then
       rm -f "$headers" "$body"
