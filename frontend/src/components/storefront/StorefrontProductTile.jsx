@@ -35,7 +35,7 @@ function isNestedInteractiveTarget(target) {
 }
 
 export default function StorefrontProductTile({ product, cardProduct, onOpenModal, onAddToCart, index = 0, variant = 'grid' }) {
-  const isVariable = Boolean(product?.is_variable);
+  const isVariable = Boolean(product?.is_variable || product?.type === 'variable');
   const variationContext = isVariable ? cardProduct : null;
   const displayProduct = product || {};
   const commerceProduct = variationContext || displayProduct;
