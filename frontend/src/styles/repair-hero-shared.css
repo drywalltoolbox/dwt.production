@@ -923,3 +923,31 @@
     box-shadow: 0 6px 18px rgba(20, 70, 180, .32), inset 0 1px 0 rgba(255,255,255,.22);
   }
 }
+
+@media (max-width: 47.99rem) {
+  .home-hero__repair-surface .repair-hero__actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .home-hero__repair-surface .repair-hero__actions .repair-button {
+    grid-template-columns: minmax(0, 1fr) 14px;
+    min-height: 52px;
+    padding: 8px 10px;
+    gap: 4px;
+  }
+  .home-hero__repair-surface .repair-hero__actions .repair-button__icon { display: none; }
+  .home-hero__repair-surface .repair-hero__actions .repair-button__label {
+    font-size: clamp(11px, 2.8vw, 14px);
+    letter-spacing: -.02em;
+  }
+  .home-hero__repair-surface .repair-hero__actions .repair-button__detail {
+    font-size: clamp(10px, 2.3vw, 11px);
+  }
+  .home-hero__repair-surface .repair-hero__actions .repair-button__arrow {
+    width: 14px;
+    height: 14px;
+  }
+}
+@media (max-width: 340px) {
+  .home-hero__repair-surface .repair-hero__actions { grid-template-columns: minmax(0, 1fr); }
+}
