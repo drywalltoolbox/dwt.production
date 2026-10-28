@@ -17,13 +17,14 @@
 /* Product-led homepage composition; the shared repair landing remains intact. */
 .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__content { text-align: left; align-items: flex-start; }
 @media (max-width: 767px) {
-  .home-hero__repair-surface .repair-hero.repair-hero--home-slide { min-height: 0; }
+  .home-hero__repair-surface .repair-hero.repair-hero--home-slide { min-height: clamp(370px, 102vw, 430px); }
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__inner {
-    min-height: clamp(32rem, 135vw, 39rem);
-    justify-content: flex-end;
-    padding: clamp(10rem, 42vw, 16rem) clamp(1rem, 5vw, 2rem) 4rem;
+    min-height: inherit;
+    justify-content: center;
+    padding: clamp(54px, 16vw, 72px) clamp(1rem, 5vw, 2rem) 52px;
+    box-sizing: border-box;
   }
-  .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__content { width: 100%; max-width: 34rem; margin: 0; align-items: flex-start; text-align: left; }
+  .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__content { width: 100%; max-width: 34rem; margin: 0; padding: 0; align-items: flex-start; text-align: left; }
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide h1,
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__lead { max-width: 100%; text-align: left; }
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide h1 { align-items: flex-start; font-size: clamp(2rem, 8vw, 3rem); line-height: 1.02; }
