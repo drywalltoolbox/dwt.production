@@ -17,21 +17,12 @@ import {
 } from 'lucide-react';
 import '../../styles/storefront-desktop-navigation.css';
 import '../../styles/storefront-navigation-taxonomy.css';
-import automaticToolsIcon from '../../assets/media/category-icons/automatic-taping-tools.webp';
-import drywallStiltsIcon from '../../assets/media/category-icons/drywall-stilts.webp';
-import replacementPartsIcon from '../../assets/media/category-icons/replacement-parts.webp';
 
 const RESILIENT_DROPDOWN_IDS = new Set(['products', 'brands', 'parts', 'repairs', 'schematics']);
 const CATALOG_BACKED_DROPDOWN_IDS = new Set(['products', 'brands', 'parts']);
-const POINTER_OPEN_INTENT_MS = 500;
-const POINTER_SWITCH_INTENT_MS = 500;
+const POINTER_OPEN_INTENT_MS = 450;
+const POINTER_SWITCH_INTENT_MS = 450;
 const POINTER_CLOSE_DELAY_MS = 300;
-const PARENT_CATEGORY_IMAGES = {
-  'automatic-taping-tools': automaticToolsIcon,
-  'drywall-stilts': drywallStiltsIcon,
-  'replacement-parts': replacementPartsIcon,
-};
-
 const ENTRY_ICONS = [Wrench, Layers, Box, PenTool, Ruler, Hammer, Package, Settings2, ShoppingBag, Award];
 const ENTRY_ICON_ELEMENTS_LARGE = ENTRY_ICONS.map((Icon, index) => (
   <Icon key={index} size={30} strokeWidth={1.6} />
@@ -100,13 +91,15 @@ function MegaMenuThumb({ label, logo, thumbnail }) {
 
 function MegaMenuHero({ item, onNavigate }) {
   const eyebrow = item.eyebrow || (item.id === 'products' ? 'Our Products' : item.label);
+  const heading = item.heading || item.label;
+  const showEyebrow = String(eyebrow || '').trim().toLowerCase() !== String(heading || '').trim().toLowerCase();
   const ctaLabel = item.heroCtaLabel || item.landingLabel || `View all ${String(item.label || '').toLowerCase()}`;
 
   return (
     <div className="dtb-mega-menu__hero">
       <div className="dtb-mega-menu__hero-copy">
-        <span className="dtb-mega-menu__eyebrow">{eyebrow}</span>
-        <p className="dtb-mega-menu__heading">{item.heading || item.label}</p>
+        {showEyebrow ? <span className="dtb-mega-menu__eyebrow">{eyebrow}</span> : null}
+        <p className="dtb-mega-menu__heading">{heading}</p>
         {item.description ? <p className="dtb-mega-menu__description">{item.description}</p> : null}
         {item.landingTo ? (
           <Link to={item.landingTo} className="dtb-mega-menu__hero-cta" onClick={onNavigate}>
@@ -235,18 +228,6 @@ function ProductsPanelRenderer({ item, onNavigate }) {
     ? (Array.isArray(activeGroup.children) && activeGroup.children.length > 0 ? activeGroup.children : [activeGroup])
     : [];
 
-  const parentIconFor = (group) => {
-    const slug = String(group?.slug || '').toLowerCase();
-    if (slug.includes('automatic')) return Wrench;
-    if (slug.includes('taping') || slug.includes('finishing') || slug.includes('hand-tools')) return PenTool;
-    if (slug.includes('corner') || slug.includes('bead')) return Ruler;
-    if (slug.includes('stilt')) return Hammer;
-    if (slug.includes('replacement') || slug.includes('parts')) return Settings2;
-    if (slug.includes('accessor')) return ShoppingBag;
-    if (slug.includes('material') || slug.includes('consumable')) return Package;
-    return Layers;
-  };
-
   return (
     <>
       <header className="dtb-shop-menu__header">
@@ -259,15 +240,11 @@ function ProductsPanelRenderer({ item, onNavigate }) {
           <aside className="dtb-shop-menu__category-rail" aria-label="Shop categories">
             <div className="dtb-shop-menu__rail-heading">
               <span className="dtb-mega-menu__eyebrow">Shop Categories</span>
-              <p>Explore our full range of professional drywall tools and supplies.</p>
             </div>
             <div className="dtb-shop-menu__parent-list" role="group" aria-label="Product categories">
               {groups.map((group) => {
                 const key = group.slug || group.label;
                 const selected = key === (activeGroup.slug || activeGroup.label);
-                const Icon = parentIconFor(group);
-                const categoryKey = String(group.slug || group.label || '').trim().toLowerCase().replace(/[_\s]+/g, '-');
-                const categoryImage = PARENT_CATEGORY_IMAGES[categoryKey];
                 return (
                   <Link
                     key={key}
@@ -277,9 +254,6 @@ function ProductsPanelRenderer({ item, onNavigate }) {
                     onFocus={() => setActiveGroupKey(key)}
                     onClick={onNavigate}
                   >
-                    {categoryImage ? (
-                      <img className="dtb-shop-menu__parent-image" src={categoryImage} alt="" width="42" height="42" decoding="async" />
-                    ) : <Icon size={24} strokeWidth={1.9} aria-hidden="true" />}
                     <span>{group.label}</span>
                     <ChevronRight size={17} strokeWidth={2.1} aria-hidden="true" />
                   </Link>
@@ -290,7 +264,6 @@ function ProductsPanelRenderer({ item, onNavigate }) {
           <section className="dtb-shop-menu__category-content" aria-live="polite" aria-label={`${activeGroup.label} subcategories`}>
             <div className="dtb-shop-menu__category-heading">
               <div>
-                <span className="dtb-mega-menu__eyebrow">{activeGroup.label}</span>
                 <h3>{activeGroup.label}</h3>
                 <p>{activeGroup.description || `Browse ${String(activeGroup.label || '').toLowerCase()} and related products.`}</p>
               </div>
@@ -302,7 +275,7 @@ function ProductsPanelRenderer({ item, onNavigate }) {
               ) : null}
             </div>
             {entries.length > 0 ? (
-              <div className="dtb-mega-menu__products-grid">
+              <div className={`dtb-mega-menu__products-grid${entries.length <= 2 ? ' is-compact' : ''}`}>
                 {entries.map((entry) => (
                   <ProductCard key={entry.to || entry.slug || entry.label} entry={entry} onNavigate={onNavigate} />
                 ))}
@@ -638,7 +611,6 @@ export default function StorefrontDesktopNavigation({ items, openMenuId, onOpen,
               }
             }}
             style={{
-              '--mega-panel-width': renderedItem.id === 'products' ? '1180px' : undefined,
               opacity: sheetVisible && shellOpen ? 1 : 0,
               visibility: shellOpen ? 'visible' : 'hidden',
               pointerEvents: shellOpen ? 'auto' : 'none',
