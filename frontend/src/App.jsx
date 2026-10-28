@@ -266,6 +266,9 @@ function AppRoutes() {
         <Route path="/products/:slug/variations/:variationId" element={<ProductDetailPage />} />
         <Route path="/products/:slug" element={<ProductDetailPage />} />
         <Route path="/all-products" element={<RedirectToProducts />} />
+        <Route path="/product-category/accessories" element={<Navigate to="/products" replace />} />
+        <Route path="/product-category/accessories/tool-cases" element={<Navigate to="/category/tool-cases" replace />} />
+        <Route path="/product-category/accessories/mud-pan-accessories" element={<Navigate to="/category/mud-pan-accessories" replace />} />
         <Route path="/parts" element={<Parts />} />
         <Route path="/product/:partNumber" element={<Product />} />
         <Route path="/category/taping-finishing-tools" element={<RedirectToProducts />} />

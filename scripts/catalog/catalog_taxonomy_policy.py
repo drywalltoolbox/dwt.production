@@ -139,7 +139,8 @@ COMPATIBILITY_BY_TAXON: dict[str, tuple[str, str]] = {
     "automatic_goosenecks_box_fillers": ("mudboxes", "automatic_goosenecks_box_fillers"),
     "automatic_continuous_flow_tools": ("taping", "automatic_continuous_flow_tools"),
     "automatic_handles_extensions": ("handles", "handles"),
-    "automatic_tool_sets": ("taping", "toolsets"),
+    "automatic_tool_sets_kits": ("taping", "toolsets"),
+    "semi_automatic_tool_sets_kits": ("taping", "toolsets"),
     "tool_storage_cases": ("accessories", "tool_storage_cases"),
     "bead_tools": ("corner", "bead_hoppers"),
     "bead_rollers": ("corner", "bead_rollers"),
@@ -203,8 +204,8 @@ LEGACY_PATH_TARGETS = {
     "automatic taping tools > fixed handles": "automatic_handles_extensions",
     "automatic taping tools > extendable handles": "automatic_handles_extensions",
     "automatic taping tools > flat box handles": "automatic_handles_extensions",
-    "automatic taping tools > tool sets": "automatic_tool_sets",
-    "automatic taping tools > automatic taping tool sets": "automatic_tool_sets",
+    "automatic taping tools > tool sets": "automatic_tool_sets_kits",
+    "automatic taping tools > automatic taping tool sets": "automatic_tool_sets_kits",
     "automatic taping tools > semi-automatic tools": "semi_automatic_tapers_banjos",
     "semi-automatic tools > semi-automatic tapers": "semi_automatic_tapers_banjos",
     "semi-automatic taping tools > semi-automatic tapers": "semi_automatic_tapers_banjos",
@@ -225,7 +226,7 @@ PATH_ALIASES[normalize_key("Box Fillers & Adapters")] = normalize_key(
     "Automatic Taping Tools > Goosenecks, Box Fillers & Adapters"
 )
 PATH_ALIASES[normalize_key("Taping & Finishing Tools > Bead Tools")] = normalize_key("Corner Bead Tools > Bead Hoppers")
-PATH_ALIASES[normalize_key("Drywall Sealants")] = normalize_key("Materials & Consumables > Sealants")
+PATH_ALIASES[normalize_key("Drywall Sealants")] = normalize_key("Drywall Supplies > Sealants")
 PATH_ALIASES[normalize_key("Taping & Finishing Tools > Handles & Extensions")] = normalize_key("Automatic Taping Tools > Handles")
 PATH_ALIASES[normalize_key("Taping & Finishing Tools > Loading & Compound Pumps")] = normalize_key("Automatic Taping Tools > Loading Pumps")
 PATH_ALIASES[normalize_key("Automatic Taping Tools > Handles & Extensions")] = normalize_key("Automatic Taping Tools > Handles")
@@ -246,8 +247,8 @@ FAMILY_ONLY_KEYS = {"predator", "predator_family"}
 
 PRODUCT_KIND_DEFAULTS = {
     "part": _navigation_taxon("replacement_parts"),
-    "toolset": _navigation_taxon("automatic_tool_sets"),
-    "kit": _navigation_taxon("automatic_tool_sets"),
+    "toolset": _navigation_taxon("automatic_tool_sets_kits"),
+    "kit": _navigation_taxon("automatic_tool_sets_kits"),
     "stilt": _navigation_taxon("stilts"),
 }
 

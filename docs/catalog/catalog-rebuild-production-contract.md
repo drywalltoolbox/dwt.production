@@ -134,5 +134,5 @@ These must be resolved before a rebuilt import artifact can be considered produc
 - Taxonomy label/path changes are allowed because the user approved a rebuild, but they require a complete old-to-new manifest and redirect/canonical/sitemap analysis before live import.
 - Handles and toolsets may receive automatic, semi-automatic, or dual category assignments only from exact product, compatibility, or component evidence.
 - `Continuous Flow Tools` is contract-valid; empty Woo term publication remains a deployment decision.
-- Tool cases and products outside the approved tree remain explicit taxonomy exceptions until assigned to an approved separate accessories/storage domain.
+- Tool cases are classified at the top level, and Mud Pan Accessories are under Taping & Finishing Tools; neither uses a generic Accessories parent.
 - Parts and stilts retain their current separate domains until their own approved taxonomy contracts are defined.

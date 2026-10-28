@@ -173,7 +173,7 @@ export default function TrendingProducts() {
                   cardProduct={cardProduct}
                   variant="rail"
                   onOpenModal={() => openModal(product)}
-                  onAddToCart={() => handleAddToCart(cardProduct)}
+                  onAddToCart={(quantity) => handleAddToCart(cardProduct, quantity)}
                   index={index}
                 />
               );

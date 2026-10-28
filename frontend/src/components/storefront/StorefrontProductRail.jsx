@@ -113,9 +113,9 @@ export default function StorefrontProductRail({
     return () => { mounted = false; };
   }, [category, brand, sort, maxItems, shouldLoad]);
 
-  const handleAddToCart = async (product) => {
+  const handleAddToCart = async (product, quantity = 1) => {
     try {
-      await addToCart(product, 1);
+      await addToCart(product, quantity);
     } catch (err) {
       setToast({ message: err?.message || 'Could not add item to cart. Please try again.', type: 'error' });
       throw err;
@@ -152,7 +152,7 @@ export default function StorefrontProductRail({
                   cardProduct={cardProduct}
                   variant="rail"
                   onOpenModal={() => openModal(product)}
-                  onAddToCart={() => handleAddToCart(cardProduct)}
+                  onAddToCart={(quantity) => handleAddToCart(cardProduct, quantity)}
                   index={index}
                 />
               );

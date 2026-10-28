@@ -15,7 +15,7 @@ final class DTB_CatalogTaxonomyMigration {
 	 * historical `goosenecks` term. Bump the idempotent migration so existing
 	 * installations reconcile that live legacy term on their next init.
 	 */
-	private const VERSION        = 3;
+	private const VERSION        = 4;
 	private const BATCH_SIZE     = 100;
 
 	public static function maybe_run(): void {
@@ -53,13 +53,13 @@ final class DTB_CatalogTaxonomyMigration {
 			'automatic-taping-tools'  => 'Automatic Taping Tools',
 			'corner-bead-tools'       => 'Corner Bead Tools',
 			'hanging-tools'           => 'Hanging Tools',
-			'accessories'             => 'Accessories',
-			'materials-consumables'   => 'Materials & Consumables',
+			'tool-cases'              => 'Tool Cases',
+			'materials-consumables'   => 'Drywall Supplies',
 		];
 		foreach ( $roots as $slug => $label ) {
 			$term = get_term_by( 'slug', $slug, 'product_cat' );
 			if ( $term instanceof WP_Term ) {
-				if ( 0 !== (int) $term->parent ) {
+				if ( 0 !== (int) $term->parent && 'tool-cases' !== $slug ) {
 					return new WP_Error( 'catalog_taxonomy_root_conflict', 'Catalog root slug already belongs to a child term: ' . $slug );
 				}
 				continue;
@@ -84,7 +84,9 @@ final class DTB_CatalogTaxonomyMigration {
 			[ 'loading-compound-pumps', 'loading-pumps', 'Loading Pumps', 'automatic-taping-tools' ],
 			[ 'goosenecks-box-fillers-adapters', 'goosenecks-box-fillers-adapters', 'Goosenecks, Box Fillers & Adapters', 'automatic-taping-tools' ],
 			[ 'handles-extensions', 'handles', 'Handles', 'automatic-taping-tools' ],
-			[ 'tool-storage-cases', 'tool-cases', 'Tool Cases', 'accessories' ],
+			[ 'tool-storage-cases', 'tool-cases', 'Tool Cases', '' ],
+			[ 'tool-cases', 'tool-cases', 'Tool Cases', '' ],
+			[ 'mud-pan-accessories', 'mud-pan-accessories', 'Mud Pan Accessories', 'taping-finishing-tools' ],
 			[ 'bead-tools', 'bead-hoppers', 'Bead Hoppers', 'corner-bead-tools' ],
 			[ 'drywall-sealants', 'sealants', 'Sealants', 'materials-consumables' ],
 			[ 'stilts', 'drywall-stilts', 'Drywall Stilts', '' ],
@@ -115,7 +117,71 @@ final class DTB_CatalogTaxonomyMigration {
 				return $updated;
 			}
 		}
+		$removed = self::remove_empty_accessories_root();
+		if ( is_wp_error( $removed ) ) {
+			return $removed;
+		}
 		return true;
+	}
+
+	/** Remove the retired parent only when no direct products or child terms remain. */
+	private static function remove_empty_accessories_root() {
+		$term = get_term_by( 'slug', 'accessories', 'product_cat' );
+		if ( ! $term instanceof WP_Term ) {
+			return true;
+		}
+		$children = get_terms( [
+			'taxonomy'   => 'product_cat',
+			'parent'     => (int) $term->term_id,
+			'hide_empty' => false,
+			'fields'     => 'ids',
+		] );
+		if ( is_wp_error( $children ) ) {
+			return $children;
+		}
+		if ( 0 !== (int) $term->count || ! empty( $children ) ) {
+			return new WP_Error( 'catalog_accessories_root_not_empty', 'Accessories still has direct products or child terms.' );
+		}
+		$deleted = wp_delete_term( (int) $term->term_id, 'product_cat' );
+		return is_wp_error( $deleted ) ? $deleted : true;
+	}
+
+	/** Preserve category archive URLs after removing the Accessories ancestry. */
+	public static function redirect_legacy_category_archives(): void {
+		if ( is_admin() || ( function_exists( 'wp_doing_ajax' ) && wp_doing_ajax() ) || ! in_array( strtoupper( (string) ( $_SERVER['REQUEST_METHOD'] ?? '' ) ), [ 'GET', 'HEAD' ], true ) ) {
+			return;
+		}
+		$permalinks = function_exists( 'wc_get_permalink_structure' ) ? wc_get_permalink_structure() : [];
+		$base       = trim( (string) ( $permalinks['category_rewrite_slug'] ?? 'product-category' ), '/' );
+		$path       = trim( (string) wp_parse_url( wp_unslash( (string) ( $_SERVER['REQUEST_URI'] ?? '' ) ), PHP_URL_PATH ), '/' );
+		$home_path  = trim( (string) wp_parse_url( home_url( '/' ), PHP_URL_PATH ), '/' );
+		if ( '' !== $home_path && str_starts_with( $path, $home_path . '/' ) ) {
+			$path = substr( $path, strlen( $home_path ) + 1 );
+		}
+		$legacy_root = '' === $base ? 'accessories' : $base . '/accessories';
+		$destination = '';
+		if ( $path === $legacy_root ) {
+			$destination = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'shop' ) : '';
+			if ( '' === $destination ) {
+				$destination = home_url( '/' );
+			}
+		} elseif ( $path === $legacy_root . '/tool-cases' ) {
+			$term = get_term_by( 'slug', 'tool-cases', 'product_cat' );
+			if ( $term instanceof WP_Term ) {
+				$link = get_term_link( $term, 'product_cat' );
+				$destination = is_wp_error( $link ) ? '' : $link;
+			}
+		} elseif ( $path === $legacy_root . '/mud-pan-accessories' ) {
+			$term = get_term_by( 'slug', 'mud-pan-accessories', 'product_cat' );
+			if ( $term instanceof WP_Term ) {
+				$link = get_term_link( $term, 'product_cat' );
+				$destination = is_wp_error( $link ) ? '' : $link;
+			}
+		}
+		if ( '' !== $destination ) {
+			wp_safe_redirect( $destination, 301, 'DTB Catalog Taxonomy' );
+			exit;
+		}
 	}
 
 	/** @return true|WP_Error */

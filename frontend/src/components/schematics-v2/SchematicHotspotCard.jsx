@@ -41,26 +41,9 @@ function getTitleFitStyle(name = '') {
   };
 }
 
-function StockBadge({ stockStatus }) {
-  const label =
-    stockStatus === 'instock' ? '● In Stock'
-      : stockStatus === 'outofstock' ? '● Out of Stock'
-        : stockStatus == null ? '…'
-          : '● Unavailable';
-  const color =
-    stockStatus === 'instock' ? '#16a34a'
-      : stockStatus === 'outofstock' ? '#dc2626'
-        : '#6b7280';
-  return <span style={{ fontWeight: 700, color, fontSize: 'inherit' }}>{label}</span>;
-}
-
 function HotspotCardSkeleton({ displayCode, codeLabel }) {
   return (
     <div className="schematic-hotspot-card__skeleton" aria-hidden="true">
-      <div className="schematic-hotspot-card__stock">
-        <span className="schematic-hotspot-card__stock-skeleton" />
-      </div>
-
       <div className="schematic-hotspot-card__title-skeleton">
         <span />
         <span />
@@ -251,10 +234,6 @@ export default function SchematicHotspotCard({ part, schematicContext, onClose, 
           <HotspotCardSkeleton displayCode={displayCode} codeLabel={codeLabel} />
         ) : (
           <>
-            <div className="schematic-hotspot-card__stock">
-              <StockBadge stockStatus={stockStatus} />
-            </div>
-
             <h3 className="schematic-hotspot-card__title" style={getTitleFitStyle(displayName)}>
               {titleNode}
             </h3>

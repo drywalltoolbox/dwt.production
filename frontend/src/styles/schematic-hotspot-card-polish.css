@@ -104,7 +104,6 @@
   justify-content: flex-start;
 }
 
-.schematic-hotspot-card__stock-skeleton,
 .schematic-hotspot-card__title-skeleton span,
 .schematic-hotspot-card__price-skeleton,
 .schematic-hotspot-card__cta-skeleton {
@@ -123,16 +122,9 @@
   animation: dtb-loading-pulse 1.6s ease-in-out infinite;
 }
 
-.schematic-hotspot-card__stock-skeleton,
 .schematic-hotspot-card__title-skeleton span,
 .schematic-hotspot-card__price-skeleton {
   border-radius: 999px;
-}
-
-.schematic-hotspot-card__stock-skeleton {
-  width: 70px;
-  height: 10px;
-  margin: 1px 0 5px;
 }
 
 .schematic-hotspot-card__title-skeleton {
@@ -204,7 +196,6 @@
   animation: schematicHotspotImageResolve var(--dtb-document-fade-duration, 180ms) var(--dtb-loading-ease, cubic-bezier(.22, 1, .36, 1)) both;
 }
 
-.schematic-hotspot-card:not(.schematic-hotspot-card--resolving) .schematic-hotspot-card__stock,
 .schematic-hotspot-card:not(.schematic-hotspot-card--resolving) .schematic-hotspot-card__title,
 .schematic-hotspot-card:not(.schematic-hotspot-card--resolving) .schematic-hotspot-card__sku,
 .schematic-hotspot-card:not(.schematic-hotspot-card--resolving) .schematic-hotspot-card__footer {
@@ -236,11 +227,6 @@
 
   .part-modal-detached .schematic-hotspot-card__info {
     padding: 14px 16px 13px;
-  }
-
-  .part-modal-detached .schematic-hotspot-card__stock {
-    margin-bottom: 4px;
-    font-size: 12px;
   }
 
   .part-modal-detached .schematic-hotspot-card__title {
@@ -301,14 +287,6 @@
     padding: 10px 11px 9px;
   }
 
-  .mobile-part-modal-overlay .schematic-hotspot-card__stock {
-    order: -1;
-    margin: 0 0 3px;
-    padding-right: 31px;
-    line-height: 1.15;
-    font-size: 11px;
-  }
-
   .mobile-part-modal-overlay .schematic-hotspot-card__title {
     margin: 0 0 3px;
     padding-right: 31px;
@@ -357,12 +335,6 @@
   .mobile-part-modal-overlay .schematic-hotspot-card__close svg {
     width: 13px;
     height: 13px;
-  }
-
-  .mobile-part-modal-overlay .schematic-hotspot-card__stock-skeleton {
-    width: 64px;
-    height: 9px;
-    margin-bottom: 4px;
   }
 
   .mobile-part-modal-overlay .schematic-hotspot-card__title-skeleton {
@@ -458,7 +430,6 @@
     color: #2255EE;
   }
 
-  .schematic-hotspot-card__stock-skeleton,
   .schematic-hotspot-card__title-skeleton span,
   .schematic-hotspot-card__price-skeleton,
   .schematic-hotspot-card__cta-skeleton {
@@ -476,13 +447,11 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .schematic-hotspot-card__stock-skeleton,
   .schematic-hotspot-card__title-skeleton span,
   .schematic-hotspot-card__price-skeleton,
   .schematic-hotspot-card__cta-skeleton,
   .schematic-hotspot-card--resolving .hotspot-modal-image-skeleton,
   .schematic-hotspot-card:not(.schematic-hotspot-card--resolving) .schematic-hotspot-card__image img,
-  .schematic-hotspot-card:not(.schematic-hotspot-card--resolving) .schematic-hotspot-card__stock,
   .schematic-hotspot-card:not(.schematic-hotspot-card--resolving) .schematic-hotspot-card__title,
   .schematic-hotspot-card:not(.schematic-hotspot-card--resolving) .schematic-hotspot-card__sku,
   .schematic-hotspot-card:not(.schematic-hotspot-card--resolving) .schematic-hotspot-card__footer {

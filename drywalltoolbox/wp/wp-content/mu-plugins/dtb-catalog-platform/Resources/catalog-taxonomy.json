@@ -1,6 +1,6 @@
 {
   "schema_version": 4,
-  "root_taxa": ["automatic_taping_tools", "taping_finishing_tools", "corner_bead_tools", "hanging_tools", "stilts", "replacement_parts", "accessories", "materials_consumables"],
+  "root_taxa": ["automatic_taping_tools", "taping_finishing_tools", "corner_bead_tools", "hanging_tools", "stilts", "replacement_parts", "tool_storage_cases", "materials_consumables"],
   "taxa": [
     {"key":"automatic_taping_tools","parent_key":null,"label":"Automatic Taping Tools","slug":"automatic-taping-tools","sort":100,"publish_when_empty":false},
     {"key":"automatic_tapers","parent_key":"automatic_taping_tools","label":"Automatic Tapers","slug":"automatic-tapers","sort":110,"publish_when_empty":false},
@@ -32,10 +32,9 @@
     {"key":"fastener_setting_tools","parent_key":"hanging_tools","label":"Fastener Setting Tools","slug":"fastener-setting-tools","sort":530,"publish_when_empty":false},
     {"key":"stilts","parent_key":null,"label":"Drywall Stilts","slug":"drywall-stilts","sort":600,"publish_when_empty":false},
     {"key":"replacement_parts","parent_key":null,"label":"Replacement Parts","slug":"replacement-parts","sort":700,"publish_when_empty":false},
-    {"key":"accessories","parent_key":null,"label":"Accessories","slug":"accessories","sort":800,"publish_when_empty":false},
-    {"key":"tool_storage_cases","parent_key":"accessories","label":"Tool Cases","slug":"tool-cases","sort":810,"publish_when_empty":false},
-    {"key":"mud_pan_accessories","parent_key":"accessories","label":"Mud Pan Accessories","slug":"mud-pan-accessories","sort":820,"publish_when_empty":false},
-    {"key":"materials_consumables","parent_key":null,"label":"Materials & Consumables","slug":"materials-consumables","sort":900,"publish_when_empty":true},
+    {"key":"tool_storage_cases","parent_key":null,"label":"Tool Cases","slug":"tool-cases","sort":800,"publish_when_empty":false},
+    {"key":"mud_pan_accessories","parent_key":"taping_finishing_tools","label":"Mud Pan Accessories","slug":"mud-pan-accessories","sort":325,"publish_when_empty":false},
+    {"key":"materials_consumables","parent_key":null,"label":"Drywall Supplies","slug":"materials-consumables","sort":900,"publish_when_empty":true},
     {"key":"drywall_sealants","parent_key":"materials_consumables","label":"Sealants","slug":"sealants","sort":910,"publish_when_empty":false}
   ]
 }

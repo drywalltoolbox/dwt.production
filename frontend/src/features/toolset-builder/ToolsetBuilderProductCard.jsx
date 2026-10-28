@@ -222,9 +222,6 @@ export default function ToolsetBuilderProductCard({
 
         <div className="dtb-toolset-product-card__commerce">
           <strong>{formatCurrency(price)}</strong>
-          <span className={'dtb-toolset-product-card__stock ' + (isOutOfStock ? 'is-out' : 'is-in')}>
-            {isOutOfStock ? 'Out of stock' : 'In Stock'}
-          </span>
         </div>
 
         {isVariable ? (

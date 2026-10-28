@@ -25,7 +25,7 @@ final class DTB_CatalogNavigationService {
 		'hanging_tools',
 		'stilts',
 		'replacement_parts',
-		'accessories',
+		'tool_storage_cases',
 		'materials_consumables',
 	];
 

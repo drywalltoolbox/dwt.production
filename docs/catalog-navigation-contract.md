@@ -47,12 +47,14 @@ Automatic Taping Tools
   Goosenecks, Box Fillers & Adapters
   Handles
   Continuous Flow Tools
+  Automatic Tool Sets & Kits
 
 Taping & Finishing Tools
   Semi-Automatic Tapers & Banjos
   Mud Pans
+  Mud Pan Accessories
   Mud Mixing Tools
-  Tool Sets & Kits
+  Semi-Automatic Tool Sets & Kits
 
 Corner Bead Tools
   Bead Hoppers
@@ -65,12 +67,9 @@ Hanging Tools
 
 Drywall Stilts
 Replacement Parts
+Tool Cases
 
-Accessories
-  Tool Cases
-  Mud Pan Accessories
-
-Materials & Consumables
+Drywall Supplies
   Sealants
 ```
 
@@ -102,7 +101,7 @@ Semi-automatic tapers/banjos are a functional product class directly under `Tapi
 
 ### Tool sets
 
-`Tool Sets & Kits` is cross-functional. Sets may contain automatic, semi-automatic, flat-joint, corner-finishing, bead, or mixed equipment, so set classification must not imply one automation system.
+Tool sets use `Automatic Tool Sets & Kits` or `Semi-Automatic Tool Sets & Kits` when their equipment and use are verified. Mixed or other kits remain assigned by their supported product function; the `toolsets` compatibility facet remains common across tool-set categories.
 
 ### Handles
 
@@ -114,7 +113,7 @@ Fixed, extendable, box, corner-tool, and related compatible handles remain conso
 
 Outside bead rollers and inside tape rollers are distinct. Reviewed outside bead rollers may be assigned to both `Corner Bead Tools > Corner Bead Rollers` and `Automatic Taping Tools > Corner Rollers`; inside-only rollers belong under `Automatic Taping Tools > Corner Rollers`. The official catalog now separates the reviewed TapeTech and Platinum inside/outside roller families while preserving manufacturer sellable SKUs. Variations inherit their parent's category tuple. Runtime WooCommerce and schematic-family reconciliation remains a separate migration step.
 
-`Accessories` contains optional add-ons and cases. `Materials & Consumables` contains installation products used up in the work, such as sealants. Neither is a replacement-parts synonym.
+`Mud Pan Accessories` belongs under `Taping & Finishing Tools`. `Tool Cases` is a top-level storage category because cases may hold tools across multiple functional groups. The retired `Accessories` root is not part of the canonical tree. `Drywall Supplies` contains installation products used up in the work, such as sealants. It is not a replacement-parts synonym.
 
 ## Canonical compatibility facets
 
@@ -149,7 +148,7 @@ Automatic Taping Tools > Handles
   -> handles
   -> handles
 
-Taping & Finishing Tools > Tool Sets & Kits
+Taping & Finishing Tools > Semi-Automatic Tool Sets & Kits
   -> taping
   -> toolsets
 
@@ -186,7 +185,7 @@ Variation-specific category drift is invalid. If choices require materially diff
 
 `GET /wp-json/dtb/v1/catalog/facets` derives `navigationGroups` from active WooCommerce `product_cat` ancestry.
 
-The response contract is version `2.1`. Primary `navigationGroups` are read through `DTB_CatalogNavigationService` using one bounded query restricted to registered taxonomy slugs. WooCommerce owns term existence, ancestry, counts, descriptions, and media; the deployed registry projection supplies the canonical allowlist and `sort` order. Scoped brand/display facets may still scan the bounded paginated product projection, but primary navigation must never be rebuilt by scanning every product.
+The response contract is version `2.3`. Primary `navigationGroups` are read through `DTB_CatalogNavigationService` using one bounded query restricted to registered taxonomy slugs. WooCommerce owns term existence, ancestry, counts, descriptions, and media; the deployed registry projection supplies the canonical allowlist and `sort` order. Scoped brand/display facets may still scan the bounded paginated product projection, but primary navigation must never be rebuilt by scanning every product.
 
 Supported customer navigation roots are ordered:
 
@@ -195,18 +194,18 @@ Supported customer navigation roots are ordered:
 3. `Corner Bead Tools`
 4. `Hanging Tools`
 5. `Drywall Stilts`
-6. `Accessories`
-7. `Materials & Consumables`
+6. `Tool Cases`
+7. `Drywall Supplies`
 
 Replacement Parts remain a dedicated storefront navigation surface.
 
-The frontend renders the same backend-owned groups and children for desktop and mobile navigation, preserves backend order, and defensively deduplicates canonical slugs. Historical URL aliases may redirect old category slugs to deterministic new equivalents, but frontend compatibility code must not become a taxonomy authority. Facet and category caches are namespaced to the response contract version; responses with a different contract version are not persisted.
+The frontend renders the same backend-owned groups and children for desktop and mobile navigation, preserves backend order, and defensively deduplicates canonical slugs. The catalog backend redirects the old Accessories archive to the shop, the old nested Tool Cases archive to the top-level Tool Cases archive, and the old nested Mud Pan Accessories archive to its new Taping & Finishing Tools path. Frontend compatibility code must not become a taxonomy authority. Facet and category caches are namespaced to the response contract version; responses with a different contract version are not persisted.
 
 WooCommerce treats unescaped commas in `Categories` as separators between separate terms. Canonical category labels containing a comma must therefore escape it as `\,` in the official CSV. The canonical Goosenecks path is serialized as `Automatic Taping Tools > Goosenecks\, Box Fillers & Adapters` while its human-facing term name remains `Goosenecks, Box Fillers & Adapters`.
 
 Runtime taxonomy migration version `2` idempotently renames the historical `goosenecks` child, merges product relationships and media from any pre-existing canonical/legacy terms, removes the accidental top-level `box-fillers-adapters` split term, and invalidates catalog caches. Version `2` replays the migration for installations where an import recreated the legacy term after version `1` had completed. The migration version is recorded only after every required mutation succeeds.
 
-Migration version `3` creates the new storefront roots and reparents or renames existing exact-slug WooCommerce terms before the revised official CSV is imported. It preserves term IDs and existing product relationships, refuses a conflicting target slug, and records completion only after all moves succeed. Deploy and verify this migration before the CSV update-existing import so WooCommerce reuses the intended term slugs. The CSV import then moves owner products and their variations into the registered paths; review and remove empty historical terms only after the import is reconciled. Do not make empty proposed product families visible merely to mirror another retailer.
+Migration version `3` creates the new storefront roots and reparents or renames existing exact-slug WooCommerce terms before the revised official CSV is imported. It preserves term IDs and existing product relationships, refuses a conflicting target slug, and records completion only after all moves succeed. Migration version `4` moves `Tool Cases` to the top level, moves `Mud Pan Accessories` under `Taping & Finishing Tools`, and removes `Accessories` only after confirming it has no direct products or child terms. It preserves the existing child term IDs and relationships. Deploy and verify this migration before the CSV update-existing import so WooCommerce reuses the intended term slugs. The CSV import then reconciles owner products and their variations into the registered paths. Do not make empty proposed product families visible merely to mirror another retailer.
 
 ## Runtime compatibility
 

@@ -650,19 +650,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.dtb-toolset-product-card__stock {
-  font-size: 0.72rem;
-  font-weight: 750;
-}
-
-.dtb-toolset-product-card__stock.is-in {
-  color: var(--dtb-success);
-}
-
-.dtb-toolset-product-card__stock.is-out {
-  color: var(--dtb-danger);
-}
-
 .dtb-toolset-product-card__select,
 .dtb-toolset-product-card__options-toggle,
 .dtb-toolset-primary-action,
@@ -2521,10 +2508,6 @@
 
   .dtb-toolset-product-card__commerce strong {
     font-size: 0.82rem;
-  }
-
-  .dtb-toolset-product-card__stock {
-    font-size: 0.56rem;
   }
 
   .dtb-toolset-product-card__select,

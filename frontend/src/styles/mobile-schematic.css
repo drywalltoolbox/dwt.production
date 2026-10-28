@@ -348,12 +348,6 @@
   word-break: normal;
 }
 
-.schematic-hotspot-card__stock {
-  font-size: clamp(11px, 2vw, 13px);
-  margin: 0 0 5px;
-  line-height: 1.25;
-}
-
 .schematic-hotspot-card__footer {
   display: flex;
   align-items: center;
@@ -466,12 +460,6 @@
 
   .mobile-part-modal-overlay .schematic-hotspot-card__info {
     padding: 12px 12px 11px;
-  }
-
-  .mobile-part-modal-overlay .schematic-hotspot-card__stock {
-    order: -1;
-    margin-bottom: 4px;
-    padding-right: 34px;
   }
 
   .mobile-part-modal-overlay .schematic-hotspot-card__title {

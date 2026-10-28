@@ -64,7 +64,7 @@ export default function ProductRelatedProducts({
               variant="grid"
               index={index}
               onOpenModal={() => relatedProduct.includedVariation ? navigate(`/products/${encodeURIComponent(relatedProduct.slug)}?variant=${encodeURIComponent(relatedProduct.id)}`) : onOpenProduct?.(relatedProduct)}
-              onAddToCart={() => onAddToCart?.(cardProduct, 1)}
+              onAddToCart={(quantity) => onAddToCart?.(cardProduct, quantity)}
             />
           );
         })}

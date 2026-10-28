@@ -113,7 +113,7 @@ export default function StorefrontSearchOverlay({
             variant="search"
             index={index}
             onOpenModal={() => openQuickView(product)}
-            onAddToCart={() => handleAddToCart(product, 1)}
+            onAddToCart={(quantity) => handleAddToCart(product, quantity)}
           />
         </div>
       ))}
