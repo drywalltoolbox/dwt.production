@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, ChevronDown, Eye, SlidersHorizontal, X } from 'lucide-react';
+import { Check, ChevronDown, Eye, SlidersHorizontal } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import ProductCardImage from '../product/ProductCardImage';
 import AddToCartButton from '../ui/AddToCartButton.jsx';
@@ -44,8 +44,8 @@ function getQuantityMenuPosition(trigger) {
   const viewportHeight = window.innerHeight;
   const gutter = Math.min(12, viewportWidth / 2);
   const gap = 8;
-  const preferredHeight = 196;
-  const width = Math.max(0, Math.min(104, viewportWidth - gutter * 2));
+  const preferredHeight = 198;
+  const width = Math.max(0, Math.min(128, viewportWidth - gutter * 2));
   const minLeft = gutter;
   const maxLeft = Math.max(minLeft, viewportWidth - width - gutter);
   const left = Math.min(Math.max(minLeft, rect.left + (rect.width - width) / 2), maxLeft);
@@ -53,10 +53,18 @@ function getQuantityMenuPosition(trigger) {
   const availableAbove = Math.max(0, rect.top - gap - gutter);
   const openBelow = availableBelow >= preferredHeight || availableBelow >= availableAbove;
   const availableHeight = openBelow ? availableBelow : availableAbove;
-  const maxHeight = Math.min(preferredHeight, availableHeight);
-  if (maxHeight < 40 || width === 0) return null;
-  const top = openBelow ? rect.bottom + gap : rect.top - gap - maxHeight;
-  return { top, left, width, maxHeight };
+  const maxHeight = Math.max(40, Math.min(preferredHeight, availableHeight, viewportHeight - gutter * 2));
+  if (width === 0) return null;
+  const desiredTop = openBelow ? rect.bottom + gap : rect.top - gap - maxHeight;
+  const top = Math.min(Math.max(gutter, desiredTop), Math.max(gutter, viewportHeight - gutter - maxHeight));
+  return {
+    top,
+    left,
+    width,
+    maxHeight,
+    '--dtb-quantity-menu-origin': openBelow ? 'top center' : 'bottom center',
+    '--dtb-quantity-menu-offset': openBelow ? '-3px' : '3px',
+  };
 }
 
 export default function StorefrontProductTile({ product, cardProduct, onOpenModal, onAddToCart, index = 0, variant = 'grid' }) {
@@ -104,9 +112,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const [quantityOpen, setQuantityOpen] = useState(false);
   const [quantityMenuPosition, setQuantityMenuPosition] = useState(null);
   const quantityTriggerRef = useRef(null);
-  const quantitySheetRef = useRef(null);
   const quantityMenuRef = useRef(null);
-  const firstQuantityOptionRef = useRef(null);
   const imageButtonRef = useRef(null);
   const overlayRef = useRef(null);
   const navigate = useNavigate();
@@ -118,37 +124,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   }, []);
 
   useEffect(() => {
-    if (!quantityOpen || !isMobile) return undefined;
-    const focusFrame = window.requestAnimationFrame(() => firstQuantityOptionRef.current?.focus());
-    const handleKeyDown = (event) => {
-      if (event.key === 'Escape') {
-        event.preventDefault();
-        setQuantityOpen(false);
-        window.requestAnimationFrame(() => quantityTriggerRef.current?.focus());
-        return;
-      }
-      if (event.key !== 'Tab' || !quantitySheetRef.current) return;
-      const focusable = Array.from(quantitySheetRef.current.querySelectorAll('button:not(:disabled)'));
-      if (!focusable.length) return;
-      const first = focusable[0];
-      const last = focusable[focusable.length - 1];
-      if (event.shiftKey && document.activeElement === first) {
-        event.preventDefault();
-        last.focus();
-      } else if (!event.shiftKey && document.activeElement === last) {
-        event.preventDefault();
-        first.focus();
-      }
-    };
-    document.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.cancelAnimationFrame(focusFrame);
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isMobile, quantityOpen]);
-
-  useEffect(() => {
-    if (!quantityOpen || isMobile) return undefined;
+    if (!quantityOpen) return undefined;
     const updatePosition = () => setQuantityMenuPosition(getQuantityMenuPosition(quantityTriggerRef.current));
     const handlePointerDown = (event) => {
       if (quantityTriggerRef.current?.contains(event.target) || quantityMenuRef.current?.contains(event.target)) return;
@@ -165,20 +141,21 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
       window.requestAnimationFrame(() => quantityTriggerRef.current?.focus());
     };
     updatePosition();
-    window.requestAnimationFrame(() => quantityMenuRef.current?.querySelector('[aria-pressed="true"]')?.focus());
+    const focusFrame = window.requestAnimationFrame(() => quantityMenuRef.current?.querySelector('[aria-pressed="true"]')?.focus());
     document.addEventListener('pointerdown', handlePointerDown);
     document.addEventListener('focusin', handleFocusIn);
     document.addEventListener('keydown', handleKeyDown);
     window.addEventListener('resize', updatePosition);
     window.addEventListener('scroll', updatePosition, true);
     return () => {
+      window.cancelAnimationFrame(focusFrame);
       document.removeEventListener('pointerdown', handlePointerDown);
       document.removeEventListener('focusin', handleFocusIn);
       document.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('resize', updatePosition);
       window.removeEventListener('scroll', updatePosition, true);
     };
-  }, [isMobile, quantityOpen]);
+  }, [quantityOpen]);
 
   const openQuantitySelector = useCallback((event) => {
     event.stopPropagation();
@@ -186,15 +163,11 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
       setQuantityOpen(false);
       return;
     }
-    if (isMobile) {
-      setQuantityOpen(true);
-      return;
-    }
     setQuantityMenuPosition(getQuantityMenuPosition(quantityTriggerRef.current));
     setQuantityOpen(true);
-  }, [isMobile, quantityOpen]);
+  }, [quantityOpen]);
 
-  const closeQuantitySheet = useCallback(() => {
+  const closeQuantitySelector = useCallback(() => {
     setQuantityOpen(false);
     window.requestAnimationFrame(() => quantityTriggerRef.current?.focus());
   }, []);
@@ -372,7 +345,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
         </div>
         </div>
       </div>
-      {!isMobile && quantityOpen && quantityMenuPosition && createPortal(
+      {quantityOpen && quantityMenuPosition && createPortal(
         <div
           ref={quantityMenuRef}
           className="dtb-quantity-menu"
@@ -387,52 +360,20 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
               type="button"
               className={`dtb-quantity-menu__option${quantity === value ? ' dtb-quantity-menu__option--selected' : ''}`}
               aria-pressed={quantity === value}
-              onClick={() => { setQuantity(value); closeQuantitySheet(); }}
+              onKeyDown={(event) => {
+                if (!['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) return;
+                event.preventDefault();
+                const options = Array.from(quantityMenuRef.current?.querySelectorAll('.dtb-quantity-menu__option') || []);
+                const currentIndex = options.indexOf(event.currentTarget);
+                const nextIndex = event.key === 'Home' ? 0 : event.key === 'End' ? options.length - 1 : (currentIndex + (event.key === 'ArrowDown' ? 1 : -1) + options.length) % options.length;
+                options[nextIndex]?.focus();
+              }}
+              onClick={() => { setQuantity(value); closeQuantitySelector(); }}
             >
               <span>{value}</span>
               {quantity === value ? <Check size={15} strokeWidth={2.5} aria-hidden="true" /> : null}
             </button>
           ))}
-        </div>,
-        document.body,
-      )}
-      {isMobile && quantityOpen && createPortal(
-        <div className="dtb-quantity-sheet-backdrop" onClick={(event) => { event.stopPropagation(); closeQuantitySheet(); }}>
-          <section
-            ref={quantitySheetRef}
-            className="dtb-quantity-sheet"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="dtb-quantity-sheet-title"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="dtb-quantity-sheet__handle" aria-hidden="true" />
-            <header className="dtb-quantity-sheet__header">
-              <div>
-                <span className="dtb-quantity-sheet__eyebrow">QUANTITY</span>
-                <h2 id="dtb-quantity-sheet-title">Choose quantity</h2>
-              </div>
-              <button type="button" className="dtb-quantity-sheet__close" onClick={closeQuantitySheet} aria-label="Close quantity selector">
-                <X size={18} aria-hidden="true" />
-              </button>
-            </header>
-            <p className="dtb-quantity-sheet__product" title={name}>{name}</p>
-            <div className="dtb-quantity-sheet__options" aria-label="Available quantities">
-              {Array.from({ length: 10 }, (_, optionIndex) => optionIndex + 1).map((value) => (
-                <button
-                  key={value}
-                  ref={value === quantity ? firstQuantityOptionRef : undefined}
-                  type="button"
-                  className={`dtb-quantity-sheet__option${quantity === value ? ' dtb-quantity-sheet__option--selected' : ''}`}
-                  aria-pressed={quantity === value}
-                  onClick={() => { setQuantity(value); closeQuantitySheet(); }}
-                >
-                  <span>{value}</span>
-                  {quantity === value ? <Check size={17} strokeWidth={2.5} aria-hidden="true" /> : null}
-                </button>
-              ))}
-            </div>
-          </section>
         </div>,
         document.body,
       )}

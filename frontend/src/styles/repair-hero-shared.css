@@ -802,82 +802,6 @@
   .repair-landing .repair-hero .repair-button__default-label { display: none; }
 }
 
-/* The homepage slider uses the same mobile composition, with room below the
-   actions for its existing slide controls. Content determines the height. */
-@media (max-width: 47.99rem) {
-  .home-hero__repair-surface .repair-hero.repair-hero--home-slide {
-    min-height: clamp(540px, 130vw, 720px);
-  }
-  .home-hero__repair-surface .repair-hero .repair-hero__inner {
-    min-height: inherit;
-    padding-bottom: 56px;
-  }
-  .home-hero__repair-surface .repair-hero h1 {
-    max-width: 60%;
-    overflow-wrap: normal;
-  }
-  .home-hero__repair-surface .repair-hero__lead {
-    max-width: 60%;
-  }
-  .home-hero__repair-surface .repair-hero__actions {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    align-items: stretch;
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-button {
-    display: grid;
-    grid-template-columns: clamp(30px, 8vw, 44px) minmax(0, 1fr) 16px;
-    align-items: center;
-    align-self: stretch;
-    height: auto;
-    min-height: 72px;
-    padding: clamp(8px, 2.2vw, 12px);
-    gap: clamp(5px, 1.4vw, 8px);
-    box-sizing: border-box;
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-button__copy {
-    min-width: 0;
-    text-align: left;
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-button__label,
-  .home-hero__repair-surface .repair-hero__actions .repair-button__detail {
-    max-width: 100%;
-    white-space: nowrap;
-    overflow-wrap: normal;
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-button__label {
-    font-size: clamp(12px, 3.05vw, 16px);
-    line-height: 1.15;
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-button__detail {
-    font-size: clamp(10px, 2.55vw, 12px);
-    line-height: 1.25;
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-button__icon {
-    width: 100%;
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-button__arrow {
-    width: 16px;
-    height: 16px;
-    justify-self: end;
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-button__arrow svg {
-    width: 100%;
-    height: 100%;
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-track-link {
-    grid-column: 1 / -1;
-  }
-}
-@media (max-width: 540px) {
-  .home-hero__repair-surface .repair-hero__actions {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-@media (max-width: 360px) {
-  .home-hero__repair-surface .repair-hero h1,
-  .home-hero__repair-surface .repair-hero__lead { max-width: 75%; }
-}
-
 /* Match the two homepage actions on wider screens as well. */
 @media (min-width: 48rem) {
   .home-hero__repair-surface .repair-hero__actions .repair-button--primary,
@@ -907,99 +831,110 @@
   }
 }
 
-/* Mobile homepage: compact actions and a wider reading measure. */
+/* Compact mobile homepage campaign frame. The slide remains image-led while
+   copy, actions and controls share the viewport without a full-screen hero. */
 @media (max-width: 47.99rem) {
-  .home-hero__repair-surface .repair-hero .repair-hero__inner {
-    padding-top: clamp(80px, 20vw, 120px);
+  .home-hero__repair-surface .repair-hero.repair-hero--home-slide {
+    min-height: clamp(336px, 86vw, 390px);
   }
-  .home-hero__repair-surface .repair-hero h1,
-  .home-hero__repair-surface .repair-hero__lead {
-    max-width: min(78%, 27rem);
+  .home-hero__repair-surface .repair-hero .repair-hero__inner {
+    min-height: inherit;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    padding: clamp(42px, 12vw, 62px) 24px 58px;
+    box-sizing: border-box;
+  }
+  .home-hero__repair-surface .repair-hero .repair-hero__content {
+    width: 100%;
+    max-width: 34rem;
+    margin: 0 auto;
+    text-align: left;
+  }
+  .home-hero__repair-surface .repair-hero .repair-eyebrow {
+    justify-content: flex-start;
+    margin-bottom: 8px;
   }
   .home-hero__repair-surface .repair-hero h1 {
-    font-size: clamp(30px, 8vw, 48px);
-    line-height: .98;
+    align-items: flex-start;
+    max-width: 100%;
+    margin-bottom: 14px;
+    font-size: clamp(27px, 7.7vw, 36px);
+    line-height: .99;
+    overflow-wrap: normal;
   }
   .home-hero__repair-surface .repair-hero__lead {
-    font-size: clamp(14px, 3.4vw, 16px);
-    line-height: 1.4;
+    max-width: 35ch;
+    margin: 0 0 18px;
+    font-size: clamp(13px, 3.6vw, 15px);
+    line-height: 1.38;
   }
-  .home-hero__repair-surface .repair-hero__actions .repair-button {
-    min-height: 56px;
-    border-radius: 11px;
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-button--primary {
-    box-shadow: 0 6px 18px rgba(20, 70, 180, .32), inset 0 1px 0 rgba(255,255,255,.22);
-  }
-}
-
-@media (max-width: 47.99rem) {
   .home-hero__repair-surface .repair-hero__actions {
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
     gap: 8px;
+    width: 100%;
   }
   .home-hero__repair-surface .repair-hero__actions .repair-button {
+    display: grid;
     grid-template-columns: minmax(0, 1fr) 14px;
+    align-items: center;
+    min-width: 0;
     min-height: 52px;
+    height: auto;
     padding: 8px 10px;
     gap: 4px;
+    border-radius: 11px;
+    box-sizing: border-box;
   }
-  .home-hero__repair-surface .repair-hero__actions .repair-button__icon { display: none; }
+  .home-hero__repair-surface .repair-hero__actions .repair-button__icon,
+  .home-hero__repair-surface .repair-hero__actions .repair-button__detail {
+    display: none;
+  }
+  .home-hero__repair-surface .repair-hero__actions .repair-button__copy {
+    min-width: 0;
+    text-align: left;
+  }
   .home-hero__repair-surface .repair-hero__actions .repair-button__label {
+    max-width: 100%;
     font-size: clamp(11px, 2.8vw, 14px);
     letter-spacing: -.02em;
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-button__detail {
-    font-size: clamp(10px, 2.3vw, 11px);
+    line-height: 1.15;
+    white-space: normal;
   }
   .home-hero__repair-surface .repair-hero__actions .repair-button__arrow {
     width: 14px;
     height: 14px;
+    justify-self: end;
   }
-}
-@media (max-width: 340px) {
-  .home-hero__repair-surface .repair-hero__actions { grid-template-columns: minmax(0, 1fr); }
-}
-
-/* Each mobile campaign can retain its own artwork focal point. */
-@media (max-width: 47.99rem) {
-  .home-hero__slide[data-campaign="tools"] .repair-hero__image,
-  .home-hero__slide[data-campaign="parts"] .repair-hero__image { object-position: 50% 48%; }
-  .home-hero__slide[data-campaign="repairs"] .repair-hero__image { object-position: 50% 30%; }
-}
-
-/* Balance the copy and actions inside the taller mobile image frame. */
-@media (max-width: 47.99rem) {
-  .home-hero__repair-surface .repair-hero .repair-hero__inner {
-    justify-content: center;
-    padding-block: 40px 64px;
+  .home-hero__repair-surface .repair-hero__actions .repair-button__arrow svg {
+    width: 100%;
+    height: 100%;
+  }
+  .home-hero__repair-surface .repair-hero__actions .repair-button--primary {
+    box-shadow: 0 6px 18px rgba(20, 70, 180, .32), inset 0 1px 0 rgba(255, 255, 255, .22);
+  }
+  .home-hero__repair-surface .repair-hero__actions .repair-track-link {
+    grid-column: 1 / -1;
+    justify-self: start;
   }
   .home-hero__repair-surface .repair-hero .repair-hero__scrim {
     background:
-      linear-gradient(90deg, rgba(2, 10, 25, .88), rgba(2, 10, 25, .48) 58%, rgba(2, 10, 25, .08)),
-      linear-gradient(0deg, rgba(2, 10, 25, .68), transparent 45%);
+      linear-gradient(90deg, rgba(2, 10, 25, .9), rgba(2, 10, 25, .62) 58%, rgba(2, 10, 25, .28)),
+      linear-gradient(0deg, rgba(2, 10, 25, .62), transparent 48%);
   }
+  .home-hero__slide[data-campaign="tools"] .repair-hero__image,
+  .home-hero__slide[data-campaign="parts"] .repair-hero__image { object-position: 58% 46%; }
+  .home-hero__slide[data-campaign="repairs"] .repair-hero__image { object-position: 50% 30%; }
+  .home-hero-carousel { bottom: 4px; }
 }
 
-@media (max-width: 47.99rem) {
-  .home-hero__repair-surface .repair-hero .repair-hero__content {
-    width: 100%;
-    max-width: 34rem;
-    margin-inline: auto;
-    text-align: center;
+@media (max-width: 340px) {
+  .home-hero__repair-surface .repair-hero .repair-hero__inner {
+    padding-inline: 18px;
   }
-  .home-hero__repair-surface .repair-hero .repair-eyebrow {
-    justify-content: center;
-  }
-  .home-hero__repair-surface .repair-hero h1 {
-    align-items: center;
-    max-width: 100%;
-  }
-  .home-hero__repair-surface .repair-hero__lead {
-    max-width: min(100%, 32rem);
-    margin-inline: auto;
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-track-link {
-    justify-self: center;
+  .home-hero__repair-surface .repair-hero__actions {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
