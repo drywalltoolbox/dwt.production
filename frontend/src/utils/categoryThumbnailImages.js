@@ -51,6 +51,7 @@ const CATEGORY_THUMBNAIL_FILE_BY_SLUG = {
   'applicator-heads': 'compound-applicators',
   'corner-flushers': 'corner-flushers',
   'corner-rollers': 'corner-rollers',
+  'flat-box-handles': 'handles-extensions',
   'loading-compound-pumps': 'loading-pumps',
   'loading-pumps': 'loading-pumps',
   'automatic-goosenecks-box-fillers': 'goosenecks-box-fillers-adapters',

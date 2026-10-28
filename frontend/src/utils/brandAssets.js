@@ -1,13 +1,17 @@
-import tapeTechLogo from '/brands/TapeTech/tapetech_logo.svg';
-import columbiaLogo from '/brands/Columbia/columbia_taping_tools_logo.svg';
-import surproLogo from '/brands/SurPro/surpro_logo.svg';
-import asgardLogo from '/brands/Asgard/asgard_logo.svg';
-import platinumLogo from '/brands/Platinum/platinum_logo.svg';
-import duraStiltsLogo from '/brands/Dura-Stilts/dura-stilts-logo.svg';
-import gracoLogo from '/brands/Graco/graco_logo.svg';
-import level5Logo from '/brands/Level5/Level5.svg';
-const usgSheetrockToolsLogo = 'https://drywalltoolbox.com/staging/assets/images/usg-sheetrock-tools.2ee7ec43.svg';
 import { brandToSlug, canonicalBrandLabel } from './catalogUrlState.js';
+
+const BRAND_LOGO_ROOT = 'https://drywalltoolbox.com/logos';
+const brandLogo = (filename) => `${BRAND_LOGO_ROOT}/${filename}`;
+
+const tapeTechLogo = brandLogo('tapetech_logo.svg');
+const columbiaLogo = brandLogo('columbia_taping_tools_logo.svg');
+const surproLogo = brandLogo('surpro_logo.svg');
+const asgardLogo = brandLogo('asgard_logo.svg');
+const platinumLogo = brandLogo('platinum_logo.svg');
+const duraStiltsLogo = brandLogo('dura-stilts-logo.svg');
+const gracoLogo = brandLogo('graco_logo.svg');
+const level5Logo = brandLogo('Level5.svg');
+const usgSheetrockToolsLogo = brandLogo('usg-sheetrock-tools.svg');
 
 export const BRAND_LOGOS_BY_LABEL = {
   TapeTech: tapeTechLogo,

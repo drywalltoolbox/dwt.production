@@ -1,11 +1,13 @@
 import { normalizeBrandAssetKey, resolveBrandLogo } from './brandLogoAssets.js';
-import asgardSelectorLogo from '/brands/Asgard/asgard_logo2.svg';
-import columbiaSelectorLogo from '/brands/Columbia/columbia_logo_white.svg';
-import level5SelectorLogo from '/brands/Level5/Level5-white.svg';
 import level5SelectorBackground from '/brands/Level5/level5-background.webp';
-import surproSelectorLogo from '/brands/SurPro/surpro_logo_white.svg';
-import usgSelectorLogo from '/brands/USG-Sheetrock-Tools/usg-sheetrock-tools-transparent.svg';
 import usgSelectorBackground from '/brands/USG-Sheetrock-Tools/USG-background.webp';
+
+const BRAND_LOGO_ROOT = 'https://drywalltoolbox.com/logos';
+const asgardSelectorLogo = `${BRAND_LOGO_ROOT}/asgard_logo2.svg`;
+const columbiaSelectorLogo = `${BRAND_LOGO_ROOT}/columbia_logo_white.svg`;
+const level5SelectorLogo = `${BRAND_LOGO_ROOT}/Level5-white.svg`;
+const surproSelectorLogo = `${BRAND_LOGO_ROOT}/surpro_logo_white.svg`;
+const usgSelectorLogo = `${BRAND_LOGO_ROOT}/usg-sheetrock-tools-transparent.svg`;
 
 export const FEATURED_BRAND_PRESENTATION = {
   asgard: {
