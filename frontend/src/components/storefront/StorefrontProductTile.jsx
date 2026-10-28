@@ -72,9 +72,10 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   // Never expose their internal/canonical parent SKU on customer product cards.
   // A real variation SKU belongs to the selected variation and is surfaced by the PDP/selector.
   const sku = isVariable ? '' : (displayProduct.sku || commerceProduct.sku || '');
-  const showDesktopOverlay = !isMobile && variant !== 'list';
   const [overlayActive, setOverlayActive] = useState(false);
   const [overlayHasFocus, setOverlayHasFocus] = useState(false);
+  const isMobile = useIsMobile();
+  const showDesktopOverlay = !isMobile && variant !== 'list';
 
   const variableMinPrice = isVariable ? parsePrice(displayProduct.min_price ?? displayProduct.price?.min) : null;
   const variableMaxPrice = isVariable ? parsePrice(displayProduct.max_price ?? displayProduct.price?.max) : null;
@@ -99,7 +100,6 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const imageSrcset = variationContext?.image_srcset || displayProduct.image_srcset;
   const slug = displayProduct.slug || commerceProduct.slug;
   const productUrl = slug ? `/products/${slug}${displayProduct.includedVariation ? `?variant=${encodeURIComponent(displayProduct.id)}` : ''}` : null;
-  const isMobile = useIsMobile();
   const [quantity, setQuantity] = useState(1);
   const [quantityOpen, setQuantityOpen] = useState(false);
   const [quantityMenuPosition, setQuantityMenuPosition] = useState(null);
