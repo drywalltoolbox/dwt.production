@@ -35,7 +35,6 @@
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-button__label { font-size: .875rem; white-space: normal; }
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-button__icon,
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-button__detail { display: none; }
-  .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-track-link { justify-self: start; }
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__scrim {
     background: linear-gradient(180deg, rgba(2, 10, 25, .05) 0%, rgba(2, 10, 25, .48) 35%, #020b1b 82%);
   }

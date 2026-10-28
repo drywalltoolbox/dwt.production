@@ -79,12 +79,6 @@ export default function RepairHero({
               {actionPresentation && <ActionIcon Icon={actionPresentation.secondary.Icon} />}
               <span className="repair-button__copy"><span className="repair-button__label">{campaign.secondaryAction.label}</span>{actionPresentation && <span className="repair-button__detail">{homeSlide ? actionPresentation.secondary.homeDetail : actionPresentation.secondary.detail}</span>}</span><Arrow />
             </Link>
-            {campaign.id === 'repairs' && (
-              <Link className="repair-track-link" to="/repairs/track">
-                <span className="repair-track-link__circle" aria-hidden="true"><span className="repair-track-link__arrow" /></span>
-                <span className="repair-track-link__text">Track Repair</span>
-              </Link>
-            )}
           </div>
         </div>
       </div>

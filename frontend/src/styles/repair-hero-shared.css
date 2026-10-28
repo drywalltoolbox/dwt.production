@@ -614,79 +614,6 @@
   }
 }
 
-/* Track Repair uses the same expanding-circle interaction on both heroes. */
-.repair-hero__actions .repair-track-link {
-  position: relative;
-  display: inline-block;
-  flex: 0 0 12rem;
-  width: 12rem;
-  padding: 0;
-  color: inherit;
-  font-family: var(--dtb-font-display, "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
-  font-size: clamp(.94rem, .88vw, 1.02rem);
-  text-decoration: none;
-  vertical-align: middle;
-}
-.repair-track-link__circle {
-  position: relative;
-  display: block;
-  width: 3rem;
-  height: 3rem;
-  background: linear-gradient(135deg, color-mix(in srgb, var(--dtb-primary, #1769ff) 90%, white), color-mix(in srgb, var(--dtb-primary, #1769ff) 88%, #06183f));
-  border-radius: 1.625rem;
-  box-shadow: 0 8px 22px color-mix(in srgb, var(--dtb-primary, #1769ff) 36%, transparent), inset 0 1px 0 rgba(255, 255, 255, .32);
-  transition: all .45s cubic-bezier(.65, 0, .076, 1);
-}
-.repair-track-link__arrow {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: .625rem;
-  width: 1.125rem;
-  height: .125rem;
-  margin: auto;
-  background: none;
-  transition: all .45s cubic-bezier(.65, 0, .076, 1);
-}
-.repair-track-link__arrow::before {
-  position: absolute;
-  top: -.29rem;
-  right: .0625rem;
-  width: .625rem;
-  height: .625rem;
-  border-top: .125rem solid #fff;
-  border-right: .125rem solid #fff;
-  content: '';
-  transform: rotate(45deg);
-}
-.repair-track-link__text {
-  position: absolute;
-  inset: 0;
-  padding: .75rem 0;
-  margin: 0 0 0 1.85rem;
-  color: #fff;
-  font-weight: 750;
-  line-height: 1.6;
-  text-align: center;
-  text-shadow: 0 1px 4px rgba(0, 0, 0, .5);
-  text-transform: uppercase;
-  transition: all .45s cubic-bezier(.65, 0, .076, 1);
-}
-.repair-track-link:is(:hover, :focus-visible) .repair-track-link__circle { width: 100%; box-shadow: 0 10px 28px color-mix(in srgb, var(--dtb-primary, #1769ff) 45%, transparent), inset 0 1px 0 rgba(255, 255, 255, .32); }
-.repair-track-link:is(:hover, :focus-visible) .repair-track-link__text { color: #fff; transform: translate(-1.7rem, 0); }
-.repair-track-link:is(:hover, :focus-visible) .repair-track-link__arrow { background: #fff; transform: translate(8.7rem, 0); }
-.repair-track-link:active .repair-track-link__arrow { transform: translate(9.5rem, 0); transition: all .3s; }
-.repair-track-link:active .repair-track-link__circle { transform: scale(.9); transition: all .3s; box-shadow: 0 4px 12px color-mix(in srgb, var(--dtb-primary, #1769ff) 36%, transparent); }
-.repair-track-link:active .repair-track-link__text { color: rgba(255, 255, 255, .85); }
-.repair-track-link:focus-visible { outline: 2px solid white; outline-offset: 4px; border-radius: 1.625rem; }
-@media (prefers-reduced-motion: reduce) {
-  .repair-track-link .repair-track-link__circle,
-  .repair-track-link .repair-track-link__arrow,
-  .repair-track-link .repair-track-link__text,
-  .repair-track-link:active .repair-track-link__circle,
-  .repair-track-link:active .repair-track-link__arrow { transition: none; }
-}
-
 @media (max-width: 360px) {
   .repair-landing .repair-hero__actions,
   .home-hero__repair-surface .repair-hero__actions {
@@ -788,7 +715,6 @@
     height: 18px;
     margin: 0;
   }
-  .repair-landing .repair-hero__actions .repair-track-link { grid-column: 1 / -1; }
   .repair-landing .repair-hero__actions .repair-button:focus-visible { outline: 2px solid white; outline-offset: 3px; }
 }
 @media (max-width: 360px) {
@@ -914,10 +840,6 @@
   }
   .home-hero__repair-surface .repair-hero__actions .repair-button--primary {
     box-shadow: 0 6px 18px rgba(20, 70, 180, .32), inset 0 1px 0 rgba(255, 255, 255, .22);
-  }
-  .home-hero__repair-surface .repair-hero__actions .repair-track-link {
-    grid-column: 1 / -1;
-    justify-self: start;
   }
   .home-hero__repair-surface .repair-hero .repair-hero__scrim {
     background:
