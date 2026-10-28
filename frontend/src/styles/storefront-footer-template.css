@@ -53,22 +53,17 @@
 }
 
 .dtb-footer-template__link {
-  display: inline-flex;
-  width: fit-content;
-  padding: 0.35rem 0.55rem !important;
-  margin: -0.35rem -0.55rem;
-  border-radius: 6px;
+  padding: 0 !important;
   color: rgba(226, 232, 240, 0.78);
   font-size: 0.84rem;
   line-height: 1.45;
   text-decoration: none;
-  transition: color 180ms var(--dtb-ease, ease), background-color 180ms var(--dtb-ease, ease);
+  transition: color 180ms var(--dtb-ease, ease);
 }
 
 .dtb-footer-template__link:hover,
 .dtb-footer-template__link:focus-visible {
-  color: #fff;
-  background-color: #2255ee;
+  color: #2255ee;
   outline: 0;
 }
 
