@@ -1,0 +1,22 @@
+{
+  "catalog_rows": 1134,
+  "columns": 151,
+  "gallery_references": 2222,
+  "unique_referenced_images": 1271,
+  "scaled_references_repaired": 186,
+  "catalog_rows_with_image_fixes": 87,
+  "user_report_primary_references_verified": 167,
+  "user_report_unique_images": 166,
+  "fresh_upload_files": 1271,
+  "all_image_hashes_verified": true,
+  "all_images_decoded_and_verified": true,
+  "all_references_present_in_upload_folder": true,
+  "non_image_catalog_fields_changed": 0,
+  "csv_encoding": "UTF-8 BOM",
+  "csv_line_endings": "CRLF",
+  "catalog_sha256_before": "c24d15fe8c1472874fc40a7af3a6f8d085c30f6b8427247f4ad7a249c59fecfd",
+  "catalog_sha256_after": "666c96a65029a8ba549677fb6640651d9c4df38f7dd2f2fbbf5e4d0b50f4a860",
+  "byte_exact_backup": "D:\\AMD\\projects\\dwt.production\\products\\launch\\official\\dtb_official_catalog.csv.pre-media-refresh-2026-10-28.bak",
+  "upload_folder": "D:\\AMD\\projects\\dwt.production\\products\\launch\\media\\fresh-catalog-media-20261028\\media",
+  "package_root": "D:\\AMD\\projects\\dwt.production\\products\\launch\\media\\fresh-catalog-media-20261028"
+}

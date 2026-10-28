@@ -1,0 +1,2739 @@
+// gemini.ts
+// Production Grade — v3.0
+// Elite prompt architecture, circuit-breaker resilience, precision generation
+
+import { GoogleGenAI, Type, ThinkingLevel } from "@google/genai";
+
+import { SchematicExtractionSession } from "./SchematicExtractionSession";
+import {
+  AspectRatio,
+  AspectRatioOption,
+  ImageSize,
+  ModelVersion,
+  OutputQuality,
+  ErrorCode,
+  AppError,
+  ValidationResult,
+  GenerationMetadata,
+  ProcessingComplexity,
+  ImageMimeType,
+  RawHotspot,
+} from "../types";
+
+export const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+let lastCallTime = 0;
+export const rateLimit = async () => {
+  const now = Date.now();
+  const elapsed = now - lastCallTime;
+  if (elapsed < 3000) {
+    await sleep(3000 - elapsed);
+  }
+  lastCallTime = Date.now();
+};
+
+// ============================================================================
+// STYLE SYSTEM
+// ============================================================================
+
+export type SchematicStyle =
+  | "modern"
+  | "blueprint"
+  | "patent"
+  | "artistic"
+  | "minimalist"
+  | "isometric"
+  | "vintage"
+  | "realistic"
+  | "modern_realism"
+  | "mobile_responsive";
+
+export interface StyleDescriptor {
+  /** Injected verbatim into the generation prompt */
+  prompt: string;
+  /** Blend weight when multiple styles are selected (0.0–1.0) */
+  weight: number;
+  /** Short human-readable description for UI display */
+  label: string;
+  /** Temperature offset applied on top of the base value */
+  temperatureDelta: number;
+}
+
+// ============================================================================
+// CONFIGURATION CONTRACT
+// ============================================================================
+
+export interface SchematicEnhancementConfig {
+  mode?: 'enhance' | 'creative' | 'style_transfer' | 'upscale';
+  styles: SchematicStyle[];
+  keepLabels: boolean;
+  aspectRatio: AspectRatioOption;
+  imageSize: ImageSize;
+  model: ModelVersion;
+  customPrompt: string;
+  preserveGeometry: boolean;
+  enhanceDetails: boolean;
+  outputQuality: OutputQuality;
+  seed?: number;
+}
+
+export interface RetryPolicy {
+  maxAttempts: number;
+  baseDelayMs: number;
+  maxDelayMs: number;
+  backoffMultiplier: number;
+}
+
+export interface GenerationResult {
+  dataUri: string;
+  mimeType: ImageMimeType;
+  metadata: Omit<GenerationMetadata, "durationMs" | "timestamp">;
+  durationMs: number;
+}
+
+function mapImageSizeToApi(size: ImageSize): string {
+  switch (size) {
+    case "720p":   return "0.5K";
+    case "1080p":  return "1K";
+    case "1440p":  return "2K";
+    case "2K":     return "2K";
+    case "4K":     return "4K";
+    case "8K":     return "4K";
+    default:       return "1K";
+  }
+}
+
+// ============================================================================
+// STYLE REGISTRY
+// ============================================================================
+
+const STYLE_REGISTRY: Record<SchematicStyle, StyleDescriptor> = {
+  modern: {
+    label: "Modern CAD",
+    temperatureDelta: 0,
+    weight: 1.0,
+    prompt: `
+STYLE — Modern CAD Technical Drawing:
+  • Background: pure white (#FFFFFF), zero bleed. ABSOLUTELY NO shadows, ambient occlusion, or soft glows.
+  • Stroke weights: outer contour 2–3 px, primary features 1–2 px, fine detail 0.5–1 px
+  • Colour: monochrome black (#000000); optional single accent (#0055CC) for dimension arrows only
+  • Shading: ABSOLUTELY NO shading, zero ambient occlusion, zero gradient fills, and zero drop/contact shadows to guarantee a 100% flat white background
+  • Typography: ISO 3098B sans-serif for any retained annotations
+  • Aesthetic: ISO 128 / ASME Y14.3 compliant; professional engineering CAD output`,
+  },
+
+  blueprint: {
+    label: "Blueprint",
+    temperatureDelta: 0,
+    weight: 1.0,
+    prompt: `
+STYLE — Classic Engineering Blueprint:
+  • Background: deep blueprint blue (#1A3A5C), uniform flat fill
+  • Lines: crisp white (#FFFFFF), weight 1–2 px; hairlines at 0.5 px
+  • Grid: 5 mm reference grid overlay at 15% white opacity
+  • Typography: condensed technical sans-serif, white, uppercase
+  • Contrast ratio: minimum 10:1 (WCAG AAA equivalent for technical drawings)
+  • Optional: subtle paper-fibre grain at 3% opacity for authenticity`,
+  },
+
+  patent: {
+    label: "Patent Drawing",
+    temperatureDelta: -0.05,
+    weight: 1.0,
+    prompt: `
+STYLE — US Patent Office Illustration (37 CFR 1.84 compliant):
+  • Background: off-white (#F8F8F2), simulating 21.6 × 27.9 cm patent paper
+  • Ink: solid black (#000000) ONLY — no grey, no gradients, no colour
+  • Shading technique: parallel hatching at 45° (section views), stippling for curved surfaces
+  • Cross-hatching: 2 mm line spacing at 90° for material sections
+  • Line weights: outlines 0.35 mm, section lines 0.18 mm, centre lines 0.18 mm dashed
+  • Leader lines: straight with closed arrowheads; reference numerals in 10 pt serif
+  • No decorative borders, logos, or non-standard annotation styles`,
+  },
+
+  artistic: {
+    label: "Artistic Technical",
+    temperatureDelta: +0.1,
+    weight: 0.9,
+    prompt: `
+STYLE — Technical Art / Marker-Style Rendering:
+  • Line quality: varied stroke weight (0.5–4 px) for visual hierarchy and depth
+  • Shading: warm marker-style gradients with hard-edge termination; avoid soft airbrush
+  • Colour palette: desaturated warm base (parchment, steel-grey) + 1–2 accent tones
+  • Highlight: sharp white specular on radii and edges
+  • Perspective: slight three-quarter view acceptable if it improves readability
+  • Priority: mechanical accuracy preserved; artistic treatment is supplementary`,
+  },
+
+  minimalist: {
+    label: "Minimalist",
+    temperatureDelta: -0.1,
+    weight: 1.0,
+    prompt: `
+STYLE — Minimalist Line Art:
+  • Background: pure white (#FFFFFF)
+  • Strokes: single weight, uniform 0.75 px, solid black (#000000)
+  • Zero shading, zero fills, zero gradients, zero textures
+  • Geometry only: every non-essential decorative line removed
+  • Whitespace: generous; components breathe within the frame
+  • Result: maximum clarity through radical simplification`,
+  },
+
+  isometric: {
+    label: "Isometric",
+    temperatureDelta: 0,
+    weight: 1.0,
+    prompt: `
+STYLE — True Isometric Technical Projection:
+  • Projection: 30° isometric (IEC 60617 dimetric variant acceptable for complex assemblies)
+  • Background: white (#FFFFFF) or very light grey (#F2F2F2)
+  • Colour coding: structural body in cool grey (#6B7280), moving/actuated parts in blue (#2563EB), critical/safety components in red (#DC2626), fluid/pneumatic in green (#16A34A)
+  • Strokes: uniform 1 px outlines, 0.5 px internal detail lines
+  • Perspective distortion: strictly forbidden — all axes must be mathematically correct
+  • Hidden lines: optional 0.25 px dashed grey (#BDBDBD)`,
+  },
+
+  vintage: {
+    label: "Vintage",
+    temperatureDelta: +0.05,
+    weight: 0.95,
+    prompt: `
+STYLE — Early 20th-Century Engineering Drawing:
+  • Background: aged cream / yellowed paper (#EDE5C8) with subtle irregular grain texture
+  • Ink: warm sepia (#3D2B1A) with natural ink-spread variation (±5% stroke width)
+  • Imperfections: slight letter-press impression, minor ink bleed at intersections — must look organic, not digitally uniform
+  • Typography: serif typeface (Clarendon or Century Schoolbook), mixed caps
+  • Title block: simple ruled border in sepia, manufacturer-era styling
+  • Authenticity range: 1900–1950 drafting table aesthetic`,
+  },
+
+  realistic: {
+    label: "Photorealistic",
+    temperatureDelta: +0.15,
+    weight: 0.85,
+    prompt: `
+STYLE — Photorealistic Technical Render:
+  • Renderer: PBR (Physically Based Rendering) output quality
+  • Materials: differentiate metal (brushed aluminium, anodised, cast iron), rubber seals (black, slight gloss), transparent components (glass/lexan with refraction), and polymer housings
+  • Lighting: three-point studio setup — key light at 45° elevation, fill at 0.4 intensity, rim light for edge separation
+  • Shadows: ABSOLUTELY NO shadows under any circumstances. No ambient shading, ground shadows, contact shadows, floor reflections, or dropshadows. The background must remain 100% flat, pure, seamless white (#FFFFFF) with absolutely zero ambient occlusion or gradients. 
+  • Depth of field: minimal, all components in acceptable sharpness
+  • Tone mapping: neutral to slightly warm, avoid oversaturation
+  • Anti-aliasing: maximum quality; no aliased edges`,
+  },
+
+  modern_realism: {
+    label: "Modern Realism",
+    temperatureDelta: -0.05, // Lower temperature for more stability and precision
+    weight: 1.0,
+    prompt: `
+STYLE — Modern Realism (High-Fidelity Product Rendering):
+  • Visual Philosophy: A premium industrial design "hero shot" that maintains 100% geometric accuracy. Looks like a pristine, high-end studio photograph or a high-fidelity CAD render.
+  • FRESH GENERATION: You must DRAW a completely new asset. Do not just upscale or filter the source image.
+  • ZERO HALLUCINATION POLICY: You are absolutely FORBIDDEN from adding any parts, details, features, or geometry that do not explicitly exist in the source image. Pixel-perfect replication is required.
+  • Line quality: Modern CAD strokes (solid black, 0.5–1.5 px). Lines MUST strictly follow the edges present in the source image.
+  • Structural Fidelity: DO NOT add, remove, or rearrange any components. Maintain the exact spatial 3D relationship and exact shape of the parts as shown in the original diagram.
+  • Materials: High-fidelity materials—polished stainless steel, matte powder-coated metals, satin polymers, and clean technical textures. NO hyper-realistic grit, micro-scratches, or surface imperfections.
+  • Lighting: Professional studio lighting with soft, clean highlights. Emphasize form and material quality through "idealized" lighting setups.
+  • Background: Pure white (#FFFFFF) with ABSOLUTELY NO shadows, drop shadows, contact shadows, ambient occlusion, reflection lines, or gradients. Both the background and adjacent object margins must be 100% flat pure white.
+  • Detail: Clean and sharp. Deliver super realistic material properties (reflectivity, gloss, diffuse) without venturing into the "gritty" hyper-realism territory. The goal is "perfectly manufactured" strict 1-to-1 replication.`,
+  },
+
+  mobile_responsive: {
+    label: "Mobile-First Layout",
+    temperatureDelta: -0.05, // negatively offset temperature to strictly force geometric constraints
+    weight: 1.0, 
+    prompt: `
+STYLE — Mobile-First Responsive/Optimized Technical Drawing:
+  • FRESH GENERATION: You must DRAW a completely new asset. Do not just upscale or pass the source image through a filter. Treat the source as a blueprint to map out the new artwork.
+  • ZERO HALLUCINATION POLICY: You are absolutely FORBIDDEN from adding any parts, details, features, callouts, or labels that do not explicitly exist in the source image.
+  • EXACT LABELS (CRITICAL): You MUST transcribe and generate all labels, part numbers, and annotations EXACTLY as they appear in the original schematic. Under no circumstances should you alter, shorten, compress, or replace lists, stacked numbers, commas, slashes, or reference codes with generic words like "Details". Character-for-character, verbatim reproduction of all original characters is an absolute requirement. DO NOT inject generic text like "Nut", "Bolt", or "Screw" unless it is literally written in the original schematic.
+  • NO DUPLICATES: Do not duplicate any parts or labels. Each part and label from the original must appear exactly once. Never copy a label or hardware piece to fill vertical space.
+  • Structural Fidelity (CRITICAL): You MUST maintain the EXACT exploded view layout, part quantities, scale, and spatial relationships of the original schematic. DO NOT re-arrange, re-assemble, skip, or change the internal relative positions of any mechanical parts.
+  • Exact Parts: A pin must remain a pin (smooth shaft), a screw must remain a screw (threads). Do not hallucinate threads, hexagonal heads, or other features. Do not mutate the type of part.
+  • Leader Lines & Targets (CRITICAL): You MUST trace every leader line to its EXACT target component in the original image. Never arbitrarily attach a label to a different part. Ensure each label points to the specific hardware it was assigned to in the source. Do not mix up the parts that the labels refer to.
+  • Re-framing: You may space parts out vertically if necessary to fit a portrait shape, but you MUST NOT hallucinate new parts to fill space. Exactly the same number of parts as the original image must be present.
+  • Typography (CRITICAL): ALL text, numbering, callouts, and labels must remain perfectly horizontal and upright for immediate readability.
+  • Typography Sizing & Thin Weight: Use highly legible sans-serif fonts with ultra-light, delicate, or standard regular font weight (strictly never bold, semi-bold, thick, or bloated). Ensure characters have extremely crisp, thin strokes (uniform 1px stroke weight max) at comfortable point sizes for clear, pixel-perfect technical drawings.
+  • Callouts & Leaders: Ensure leader lines are thin, sharp, and deeply contrasted. DO NOT add solid bounding boxes, circular bubbles, pill shapes, badges, or shapes around part numbers under any circumstances. Just use clean, legible, crisp text optimized for digital screens. Ensure labels are properly and optimally sized, physically spaced out, guaranteeing a minimum of 44x44 pixel tap-target density. No two callout labels may overlap or touch each other.
+  • Outline Weights: Use natural, precise primary hardware outline weights (1px to 1.5px scale with zero shadows, flat styling, no ambient gradients) to remain elegant, sharp, and clean on all screens.`,
+  },
+};
+
+// ============================================================================
+// PROMPT ARCHITECTURE
+// ============================================================================
+
+/**
+ * Canonical system role injected at the top of every prompt.
+ * Written using role-framing + expertise-signalling for best instruction-following.
+ */
+const SYSTEM_ROLE = `You are a Principal Industrial Design Engineer and Senior Technical Illustrator with 25 years of experience across aerospace, automotive, and precision manufacturing. You hold deep expertise in:
+
+• Mechanical assemblies, tolerance stacks, and GD&T (ASME Y14.5)
+• Engineering drawing standards: ISO 128, ANSI Y14.2, DIN 199, ASME Y14.3
+• Technical illustration: isometric/orthographic projection, exploded views, section views
+• CAD systems: SolidWorks, CATIA V5, AutoCAD, Fusion 360 — you understand how they generate output
+• Material science, surface treatments, and manufacturing processes
+• Patent illustration: 37 CFR 1.84 and EPO drawing requirements
+
+CRITICAL FIDELITY MANDATE:
+1. Do NOT change the shape, form, or outline of ANY part. Preserve EXACT geometry of all parts. Do not hallucinate generic parts. If a component is a smooth solid cylinder, spacer, plate, or collar in the original drawing, it is strictly NOT a spring or screw. You are FORBIDDEN from drawing coils, ridges, threads, or hex heads for these parts without explicit visual evidence. Hallucinating threads or textures where there are none is a critical failure.
+2. Labels MUST be EXACT literal transcriptions. You are FORBIDDEN from inventing descriptions like "Nut" or "Screw" for callouts. Character-for-character exact reproduction is required.
+
+Your outputs are used directly in production engineering documentation, patent filings, and ISO-certified technical manuals. Errors are unacceptable.`.trim();
+
+/**
+ * Chain-of-thought preamble that forces systematic image analysis before generation.
+ * This dramatically reduces omissions and geometric errors.
+ */
+const ANALYSIS_CHAIN_OF_THOUGHT = `
+<INTERNAL_ANALYSIS — Execute before generating output>
+Step 1 — MICRO-SCAN: Zoom in mentally on every square centimetre of the source image. Identify and catalog ALL hardware features. Note the EXACT shape: if it is a smooth pin without threads, memorize it as a smooth pin. Do not guess hidden parts.
+Step 2 — FUNCTIONAL TOPOLOGY: Trace the mechanical connections. NEVER extrapolate or guess parts that are not explicitly drawn.
+Step 3 — GEOMETRIC VALIDATION: Verify every circle, arc, border, and symmetry axis to accurately capture true bounds.
+Step 4 — LABEL & ANNOTATION AUDIT: Explicitly read all part numbers exactly as written in the original image. You MUST copy the text character-for-character. NEVER invent or inject new descriptive words like "Nut", "Bolt", etc. If a single label contains a literal list of multiple distinct part numbers or variants (e.g., separated by commas or stacked), replace the entire cluster with the word "Details".
+Step 5 — STYLE SYNTHESIS: Confirm application of style rules while strictly preserving the mechanical inventory and exact labels identified in Steps 1 and 4.
+Step 6 — PRODUCTION PLAN: Structure the drawing sequence to ensure zero hallucination, perfect 1-to-1 visual correspondence, and absolute clarity of overlapping parts.
+</INTERNAL_ANALYSIS>`.trim();
+
+/** Quality tier system prompts */
+const QUALITY_DIRECTIVES: Record<OutputQuality, string> = {
+  standard:
+    "Output Quality: Standard. Balanced fidelity and generation speed. Acceptable minor geometric simplifications on sub-5mm features.",
+  high:
+    "Output Quality: High. Enhanced line precision, complete component inventory, sharp intersections. No visible approximations on visible features.",
+  maximum:
+    "Output Quality: Maximum — Production Ready. Absolute geometric precision. Every existing thread correctly rendered. Every existing chamfer and fillet accurately captured. Zero acceptable omissions. Extracted parts must be indistinguishable from a professional CAD rendering of the exact original pieces.",
+};
+
+/** Generate the complete system-level task prompt */
+function buildEnhancePrompt(
+  config: SchematicEnhancementConfig,
+  styleBlock: string,
+  labelDirective: string,
+  hasReferenceImages: boolean = false
+): string {
+  if (config.mode === 'upscale') {
+    return `
+<TASK>
+You are an elite, world-class image processing AI and AI upscaler. Your sole primary task is to upscale, clarify, and enhance the resolution and quality of the provided schematic diagram without altering ANY of its original structural design, line geometry, layout, or content.
+</TASK>
+
+<UPSCALER_REQUIREMENTS>
+1. PERFECT 1:1 ARCHITECTURAL CLONING: Reconstruct every single pixel, line, and piece of text in high definition exactly where it is.
+2. ENHANCE CLARITY: Trace and redraw all lines so they are perfectly crisp and sharp. Remove blur, jpeg artifacts, scanning noise, and pixelation. Make the text perfectly clear, legible, and dark black.
+3. NO STYLE CHANGES: Do NOT apply "modern", "blueprint", "artistic" or any other creative styles. The image must look strictly like the original, same color scheme, same everything—just in absolute 4K high-definition digital crispness.
+4. WHITE BACKGROUND: The background must be completely seamless, flat, bright pure white (#FFFFFF). Remove any yellowing, stains, or shadows from a physical paper scan.
+5. NO HALLUCINATIONS: Do not add or remove components. Do not invent new details. Do not change the label text values or add random hardware.
+
+<TEXT_AND_LABELS>
+${labelDirective}
+</TEXT_AND_LABELS>
+</UPSCALER_REQUIREMENTS>
+
+<CRITICAL_USER_INSTRUCTION_PRIORITY_OVERRIDE>
+• DIRECTIVE: Any instruction passed within the <CUSTOM_INSTRUCTION> block strictly overrides default guidelines.
+• BRANDING PRESERVATION: If the original image has branding, logos, or headers, you MUST PRESERVE AND CLARIFY THEM 1:1 if the user specifies keeping them. If they do not specify keeping them, standardly remove them.
+</CRITICAL_USER_INSTRUCTION_PRIORITY_OVERRIDE>
+
+${config.customPrompt?.trim() ? `<CUSTOM_INSTRUCTION>\n${config.customPrompt.trim()}\n</CUSTOM_INSTRUCTION>` : ''}
+    `.trim();
+  }
+
+  if (config.mode === 'creative') {
+    return `
+<TASK>
+You are a master industrial design technical illustrator and high-fidelity CAD rendering engine.
+Your task is to generate a highly detailed, stunning, professional, unique one-of-one custom stylised REDESIGN and creative interpretation of the provided mechanical assembly schematic.
+You must use the provided image as an initial concept blueprint, but you are ENCOURAGED to completely rethink, professionally style, and artistically reimagine the visual layout, components, arrangement, and design into a completely new, unique and beautiful creative rendering. Do not just copy the source image; creatively synthesize a brand new artistic presentation.
+</TASK>
+
+<STYLE>
+${styleBlock}
+</STYLE>
+
+${config.keepLabels ? `<LABEL_INSTRUCTIONS>\nYou may creatively reinterpret labels or typography to suit the professional design aesthetic. Keep the text if possible but ensure it matches the new stylized layout.\n</LABEL_INSTRUCTIONS>` : ''}
+
+<BACKGROUND>
+Pure white background (#FFFFFF). The assembly must sit on a completely flat, seamless, pure-white background. Only clean, soft, natural contact shadows are permitted. DO NOT generate environments or studio floors.
+</BACKGROUND>
+
+<MANDATORY_REQUIREMENTS>
+1. UNIQUE EXPLORATIVE CAD REDESIGN:
+   • Generate a completely unique, customized MASTERPIECE. Be creative! You do not need to strictly adhere to the original layout or engineering arrangement. Redesign the object, change component orientations, and apply breathtaking styling.
+2. CREATIVE FREEDOM OVER GEOMETRIC FIDELITY:
+   • DO NOT just copy the source. Use it as a conceptual prompt and output a gorgeous new industrial artifact based on the theme.
+3. PROFESSIONAL HIGH-END FINISH:
+   • Apply stunning realistic material features, clean lighting, and gorgeous detailing.
+</MANDATORY_REQUIREMENTS>
+
+<CRITICAL_USER_INSTRUCTION_PRIORITY_OVERRIDE>
+• DIRECTIVE: Any instruction passed within the <CUSTOM_INSTRUCTION> block represents a top-priority engineering constraint that STRICTLY overrides the general creative freedom or background default settings.
+• HEADER & FORMAT REPLICATION SENSITIVITY: If the user explicitly instructs to "use the same top header format and style from our original image" (or similar), you MUST meticulously replicate the exact top header/banner structure of the original image (e.g. the rounded accent line box on the left, the dark blue rectangular background bar, white bold technical titles, alignment, and sub-headers). Even though this is creative mode, you must build that pristine, exact top header frame/format and wrap your newly redesigned creative mechanical components beautifully within/beneath it!
+• DEFAULT BRANDING REMOVAL: However, if the user DOES NOT explicitly instruct you to keep or replicate the original header, branding, or logos, you MUST aggressively remove all branding, logos, borders, and headers as per standard defaults.
+• ZERO COMPROMISE ON SPECIFIC DIRECTIVES: Do not let general 'creative redirection' guidelines dilute, override, or ignore specific visual replication rules stated in the user's custom instruction.
+</CRITICAL_USER_INSTRUCTION_PRIORITY_OVERRIDE>
+
+${config.customPrompt?.trim() ? `<CUSTOM_INSTRUCTION>\n${config.customPrompt.trim()}\n</CUSTOM_INSTRUCTION>` : ''}
+    `.trim();
+  }
+
+  if (config.mode === 'style_transfer') {
+    return `
+<TASK>
+You are a master industrial design technical illustrator and high-fidelity CAD rendering engine.
+Your task is to generate a highly detailed, stunning, professional custom redrawing of the provided structural schematic diagram (YOUR SUBJECT), but you MUST aggressively adopt and mimic the precise VISUAL STYLE, AESTHETIC, COLOR PALETTE, LINE WEIGHTS, and OVERALL DESIGN LANGUAGE of the provided reference schematic images (YOUR STYLE GUIDE).
+Do not copy or incorporate any structural elements, machine types, or components from the reference schematic(s)! The reference is purely a visual style guide (mood board); the content and layout must be 100% determined by the primary schematic input.
+</TASK>
+
+<STYLE_TRANSFER_REQUIREMENTS>
+1. STRICT GEOMETRIC AND LABEL FIDELITY TO PRIMARY INPUT:
+   • The core structure, shapes, components, layout, and **EVERY SINGLE TEXT LABEL OR NUMBER** must perfectly match the *primary schematic input*.
+   • The primary schematic input and the reference image(s) may depict completely different models or entirely different machines/diagrams. Do NOT attempt to merge their structures, swap components, or assume they are the same object. The reference image is strictly a MOOD BOARD for lighting, shading, rendering style, colors, and line weights.
+   • NEVER transcribe or copy label numbers from the reference image(s). The reference is purely for style. If the input image says "47.3" and the style reference says "47.2", you MUST purely draw "47.3" as shown in the primary schematic input.
+2. AGGRESSIVE STYLE ADOPTION FROM REFERENCE IMAGE(S):
+   • Analyze the provided reference image(s) deeply. Are they blueprint blue? Minimalist wireframe? Hyper-realistic CAD? Vintage patent? 
+   • You MUST perfectly mimic the lighting, shading, textures, line styles, typography style (font, weight), and color palette of the reference image(s). DO NOT copy the actual text content from the reference, only its stylistic representation.
+3. MATERIAL & FINISH SYMMETRY:
+   • If the reference image uses specific materials (brass, matte plastic, isometric shadows), apply those exact same materials to the primary structural schematic.
+   • DO NOT add objects, shadows, or background elements from the reference image that are not part of the primary structural schematic.
+4. HEADINGS & TITLES (COMBINE CONTENT + STYLE):
+   • Identify any prominent title, heading, or top-level text (such as "DURA-III 24-40" or "Diagram") in the primary schematic input. You MUST completely preserve these titles.
+   • However, you must apply the reference image's header/title formatting (e.g., surrounding shapes, underline bars, font styling) to the title from the primary input. Do not copy the text of the reference image's title, but DO copy its visual framing and graphic lines.
+</STYLE_TRANSFER_REQUIREMENTS>
+
+${config.keepLabels ? `<LABEL_INSTRUCTIONS>\n${labelDirective}\nEnsure all labels match the typography style of the reference image, but strictly use the TEXT/NUMBERS from the primary schematic input.\n</LABEL_INSTRUCTIONS>` : ''}
+
+<BACKGROUND>
+Match the background color and style of the reference schematic perfectly. If the reference is pure white, use pure white. If it's a blueprint blue, use that exact blue.
+</BACKGROUND>
+
+<CRITICAL_USER_INSTRUCTION_PRIORITY_OVERRIDE>
+• DIRECTIVE: Any instruction passed within the <CUSTOM_INSTRUCTION> block represents a top-priority engineering constraint that STRICTLY overrides the defaults in <STYLE_TRANSFER_REQUIREMENTS> or <BACKGROUND>!
+• HEADER & FORMAT REPLICATION SENSITIVITY: If the user explicitly instructs to "use the same top header format and style from our original image" (or similar), you MUST retrieve and replicate the exact top header/banner structure of the original diagram (e.g., the specific logo/rounded corner styling, blue header bar, white bold writing, page layout outline) rather than erasing or replacing it with the reference schematic's format. Prioritize the user's instructions on preserving original framing elements.
+• DEFAULT BRANDING REMOVAL: However, if the user DOES NOT explicitly instruct you to keep or replicate the original header, branding, or logos, you MUST aggressively remove all branding, logos, borders, and headers as per standard defaults. Never keep the original branding unless requested via custom instructions.
+</CRITICAL_USER_INSTRUCTION_PRIORITY_OVERRIDE>
+
+${config.customPrompt?.trim() ? `<CUSTOM_INSTRUCTION>\n${config.customPrompt.trim()}\n</CUSTOM_INSTRUCTION>` : ''}
+    `.trim();
+  }
+
+  if (config.model.includes('image')) {
+    return `
+<TASK>
+You are a master industrial design technical illustrator and high-fidelity CAD rendering engine.
+Your task is to generate a highly detailed, stunning, professional, unique one-of-one custom redrawing and color CAD render of the provided mechanical assembly schematic.
+You must use the provided image as a strict structural blueprint, but draw a completely NEW, crisp, high-fidelity version using the requested style and designated materials.
+</TASK>
+
+<STYLE>
+${styleBlock}
+</STYLE>
+
+<LABEL_INSTRUCTIONS>
+${labelDirective}
+</LABEL_INSTRUCTIONS>
+
+<BACKGROUND>
+Pure white background (#FFFFFF). Regardless of the selected theme or style, the background MUST be pure white with ABSOLUTELY ZERO shadows, grounding shadows, floor reflections, contact shadows, float shadows, gradients, or off-white framing. The assembly and callouts must sit on a completely flat, seamless, pure-white background with NO shadows whatsoever.
+</BACKGROUND>
+
+<COMPOSITION_AND_ZOOM_BOUNDS — CRITICAL FOR SIZING, FIT, & CROPPING>
+• COMPLETE ERADICATION OF OUTER BOX BORDER: You MUST completely erase, ignore, and crop out any outer black rectangular box/grid border line enclosing the drawing. The output image must have ABSOLUTELY ZERO rectangular borders, bounding lines, frames, or bounding boxes. There should be only the freestanding top-left notes block (if and only if it explicitly begins with "Note:" or "NOTE:") and the mechanical assembly on a seamless, pure white background.
+• NO DOCUMENT HEADERS/FOOTERS: Erase and crop out bottom-right title blocks (such as branding/logo boxes), page numbers (e.g. "1 of 2"), dates (e.g. "Updated ..."), sheet indices, and any document metadata.
+• NO BRANDING BOX TEXT GENERATION (CRITICAL): You are STRICTLY FORBIDDEN from generating, redrawing, or placing any text, notes, details, disclaimers, assembly names, or kit details that are found in the bottom-right branding/title block box area of the original drawing (e.g., "Blue Sold as part of kit 200 / Maroon sold as part of kit 340", or tool description/attribution text). This text is not a "Note" and must be completely omitted from the canvas!
+• PRESERVE & REDRAW TOP-LEFT "NOTE" BLOCK ONLY: You MUST preserve and redraw the important block of technical guidelines/notes ONLY if they are explicitly prefixed or begin with "NOTE:" or "Note:" (e.g., "NOTE: THIS DRAWING TO BE USED FOR..."). Render this text block cleanly using highly legible black digital characters in the top-left corner. If there is no such "Note:" / "NOTE:" block in the original image, do NOT generate any text block; the top-left area must remain completely white and empty.
+• MAXIMUM ZOOM & CANVAS FILL: Scale up the central mechanical drawing and its matching labels aggressively so they expand to fill at least 95% of the overall width and height of the requested aspect ratio (${config.aspectRatio}) canvas!
+• ZERO EXCESS MARGINAL EMPTY SPACE: Do NOT keep empty canvas margins on any side. The safety padding at the outer boundaries must be minimal (2% to 4% margin max). Make the mechanical device assembly the absolute hero of the canvas, stretching to near the edges of the canvas without any clipping.
+• ABSOLUTELY NO SHADOWS (CRITICAL): Under no circumstances may any grounding shadow, drop shadow, floor reflection, or contact shading be added underneath or around the assembly. The background must be completely flat white.
+</COMPOSITION_AND_ZOOM_BOUNDS>
+
+<MANDATORY_REQUIREMENTS>
+1. UNIQUE ONE-OF-ONE CAD RENDER & ESTHETICS (NO DULL FLAT COPIES):
+   • Generate a completely unique, customized masterpiece with stunning realistic material textures, surface finishes, and lighting.
+   • Refine and draw components in beautiful industrial materials based on the reference guide (e.g., gold anodized metals, shining stainless steel, brushed gold or brass, matte black polymers, satin plastics, or rubber rings). Keep textures crisp and clean under idealized studio lighting, but with ABSOLUTELY NO ground shadows, floor reflections, or contact shadow rendering underneath or around the parts. The parts must float beautifully on a seamless, flat, pure-white canvas.
+2. PERFECT GEOMETRIC FIDELITY:
+   • All lines that should be straight: perfectly straight and sharp.
+   • All circles: perfect circles (not wobbly hand-drawn approximations or hand-drawn squiggles).
+   • All parallel lines: dual-axis alignment verified parallel.
+   • All parallel components, gear teeth, and shafts must align cleanly.
+   • Springs, threads, pins, bracket details must maintain exact original shape bounds.
+3. ZERO UNAUTHORIZED CHANGES:
+   • Do NOT add, remove, relocate, or omit any components or hardware callouts. Maintain complete component inventory (screws, washers, spacers, brackets). Only render parts belonging to the tool.
+4. INCORPORATE SYSTEM AUDITS & GUIDES:
+   • If a <SCHEMATIC_AUDIT_REPORT> is appended to this prompt, you MUST treat it as a master-class parts audit. Replicate the precise quantity, relative position, and geometric shape of all pieces and labels exactly without deviation.
+   • If a <MATERIAL_AND_COLOR_GUIDE> is appended to this prompt, you MUST apply its exact colors, material coatings, and finishes (such as metallic color schemes, paint colors, and polymer textures) to the corresponding parts in the schematic geometry. We require high-resolution material accuracy matching the original physical tool.
+</MANDATORY_REQUIREMENTS>
+
+<CRITICAL_USER_INSTRUCTION_PRIORITY_OVERRIDE>
+• DIRECTIVE: Any instruction passed within the <CUSTOM_INSTRUCTION> block represents a top-priority engineering constraint that STRICTLY overrides the defaults in <MANDATORY_REQUIREMENTS>, <BACKGROUND>, or <COMPOSITION_AND_ZOOM_BOUNDS>!
+• HEADER & FORMAT REPLICATION SENSITIVITY: If the user explicitly instructs to "use the same top header format and style from our original image" (or similar), you MUST retrieve and replicate the exact top header/banner structure of the original diagram (e.g., the specific logo/rounded corner styling, blue header bar, white bold writing, page layout outline) rather than erasing or replacing it. Do not let "NO DOCUMENT HEADERS/FOOTERS" erase this if the user explicitly commanded to preserve or use it. Prioritize the user's instructions on preserving original framing elements.
+• DEFAULT BRANDING REMOVAL: However, if the user DOES NOT explicitly instruct you to keep or replicate the original header, branding, or logos, you MUST aggressively remove all branding, logos, borders, and headers as per standard defaults.
+</CRITICAL_USER_INSTRUCTION_PRIORITY_OVERRIDE>
+
+${config.customPrompt?.trim() ? `<CUSTOM_INSTRUCTION>\n${config.customPrompt.trim()}\n</CUSTOM_INSTRUCTION>` : ''}
+    `.trim();
+  }
+
+  const isFlash = config.model.includes('flash');
+  const cotBlock = isFlash ? "" : ANALYSIS_CHAIN_OF_THOUGHT;
+
+  return `
+<ROLE>
+${SYSTEM_ROLE}
+</ROLE>
+
+${cotBlock}
+
+<PRIMARY_TASK>
+DRAW A BRAND NEW, completely synthesized digital vector-style illustration from scratch.
+You must use the attached image EXACTLY as a dimensional blueprint, but you are strictly forbidden from simply copying, pasting, or applying a filter/upscaler to the original pixels.
+
+You MUST act as an exact Visual Translation Engine for the GEOMETRY. You must map out the exact geometry and layout of every single part, and then redraw it with crisp, modern digital strokes in the requested style.
+The final image MUST NOT look like an old, scanned document or a filtered raster image. It must look like a completely new digital asset created today in Illustrator or CAD software.
+
+Do not mutate the type of any hardware. If the original shows a smooth pin, you must output a smooth pin. Do not add threads or screw heads. If the original shows a bolt, you must output a bolt.
+For part callouts: Analyze the original labels, erase the messy raster text, and dynamically generate fresh, clean typography in its place. Do NOT copy the original image's text blobs. The new text values must match the original, but the text rendering must be a completely synthesized, crisp digital font.
+</PRIMARY_TASK>
+
+<MANDATORY_REQUIREMENTS>
+
+1. COMPLETENESS & FIDELITY — ABSOLUTE MANDATE
+   Every single physical feature and component visible in the original MUST be precisely reproduced.
+   This includes:
+   • MICRO-HARDWARE: Screws, bolts, nuts, washers (flat, split, lock), snap rings, retaining clips, set screws.
+   • PRECISION PARTS: Springs (coil, leaf, torsion), pins (dowel, cotter, roll), ball/roller bearings, seals, O-rings, gaskets.
+   • ABSOLUTELY FORBIDDEN: Do not omit, group, or simplify any cluster of small parts (e.g., a stack of 4 washers MUST show exactly 4 distinct washers).
+   • GEOMETRIC FEATURES: Chamfers, fillets, radii, chamfered holes, counterbores, countersinks, keyways, splines, gear teeth.
+   • STRUCTURAL MEMBERS: Plates, housings, shafts, gearboxes, tubes, collars, spacers.
+   • INVENTORY COUNT: You must mentally count and verify the quantity of every part. If there are 3 bolts, the output MUST have exactly 3 bolts.
+   • PART ACCURACY: A pin MUST remain a pin. A flat-head screw MUST remain a flat-head screw. A blank rod MUST remain a blank rod. DO NOT hallucinate threads on a smooth pin. DO NOT turn a screw into a bolt. EXACT shape preservation is critical.
+   • LEADER LINES & TARGET MAPPING (CRITICAL): You MUST trace every leader line to its EXACT target component in the original image. Never arbitrarily attach a label to a different part. Be extremely careful not to confuse adjacent or overlapping parts.
+
+2. ZERO UNAUTHORIZED MODIFICATIONS AND REDRAWING CONSTRAINT
+   • Do NOT add, remove, or relocate any parts of the assembly.
+   • Do NOT hallucinate or invent new components that are not in the source image. This is a strict constraint.
+   • Do NOT "improve" or alter the engineering design by changing component shapes, geometry, or connections.
+   • The generated GEOMETRY MUST be a strict 1-to-1 high-fidelity replica of the ORIGINAL engineering structure, but the RENDER MUST BE BRAND NEW. Do not try to replicate the messy page/document itself.
+   • You MUST draw fresh lines and colors. This is NOT an upscaler. Treat the input as a reference blueprint.
+
+3. GEOMETRIC ACCURACY
+   • All lines that should be straight: perfectly straight
+   • All circles: perfect circles (not ovals) unless explicitly an ellipse in the design
+   • All parallel lines: verified parallel
+   • All perpendicular intersections: exactly 90°
+   • Gear teeth: consistent involute profile and uniform tooth count
+   • Threads: consistent helix pitch matching thread standard (UNC/UNF/M-series)
+
+4. ORIENTATION — Absolute requirement
+   Output MUST be upright. The primary assembly axis aligns with the vertical centre of the image.
+   Do NOT rotate, tilt, skew, or reframe.
+   Top of the assembly = top of the output image.
+   PERFECTLY CENTRED both horizontally and vertically, with minimal uniform padding (approx 3% to 5% padding max) on all sides, ensuring the subject is not cropped and is scaled beautifully to fit and fill the canvas.
+
+5. LABEL HANDLING
+${labelDirective}
+
+6. STYLE APPLICATION
+   Apply the following style specification precisely. Where multiple styles are listed, blend them using the stated hierarchy:
+${styleBlock}
+${
+  config.styles.includes('modern') && config.styles.includes('artistic') && config.styles.includes('realistic')
+    ? `
+   SPECIAL STYLE BLEND — Realistic Modern Schematic:
+   - CRITICAL: Structural and Textural Fidelity.
+   - Analyze the original schematic's part structures, surface textures, and material finishes with absolute precision.
+   - The generated schematic MUST precisely replicate the original's part geometry, surface textures, and material properties.
+   - Use realistic colors and textures based on the original materials.
+   - Maintain technical schematic clarity.
+   - AVOID hyper-realistic rendering (no extreme PBR, no excessive gloss, no dramatic studio lighting).
+   - Aim for a clean, professional, and grounded technical illustration style.`
+    : ""
+}
+
+6. BACKGROUND COLOR
+   STRICTLY pure white (#FFFFFF). Regardless of the selected style, the background MUST be pure white. Do not use tan, beige, or any other background color.
+
+7. DETAIL ENHANCEMENT
+${
+  config.enhanceDetails
+    ? `   Sharpen and clarify existing manufacturing details without hallucinating new ones:
+   • Clarify existing edge chamfers and internal fillets
+   • Only render screw threads if they are unambiguously visible in the source (NEVER add threads to smooth pins/rods)
+   • Clarify existing surface finish symbols where functionally significant
+   • DO NOT invent, guess, or synthesize any details not present in the original design
+   The result should look like a highly polished CAD model of the EXACT parts drawn, nothing more.`
+    : `   Preserve the existing level of detail exactly. Do not add or remove features not visible in the source.`
+}
+
+7. GEOMETRY PRESERVATION
+${
+  config.preserveGeometry
+    ? `   STRICTLY maintain exact proportional relationships, part structures, and geometry from the source image.
+   Correct errors (straighten lines, perfect circles) but do NOT rescale, recompose, or hallucinate new components.
+   Relative sizes, positions, and spatial relationships MUST be preserved.
+   The output must be a flawlessly drawn NEW illustration of the original structure, not just a filtered copy.`
+    : `   Optimise proportions for visual clarity and compositional balance while keeping the design recognisable.`
+}
+
+8. MATERIAL AND COLOR FIDELITY
+${
+  hasReferenceImages
+    ? `   CRITICAL: You have been provided with a <MATERIAL_AND_COLOR_GUIDE> at the end of this prompt.
+   This guide describes the exact colors, material textures, and finishes of the real tool based on reference photos.
+   The generated schematic MUST precisely match the colors and materials described in the <MATERIAL_AND_COLOR_GUIDE>, not the black-and-white schematic.
+   Apply these realistic materials and colors to the corresponding parts in the schematic geometry.
+   STRICTLY maintain the original part structures from the schematic, but render them with the colors and materials from the guide.`
+    : `   The original schematic is just a dimensional blueprint. 
+   You MUST apply the colors, textures, and material finishes defined by the requested STYLE (e.g. Modern CAD, Blueprint, Minimalist). 
+   Do NOT simply copy the colors of the original image if they conflict with the requested style.
+   Apply the new style across the entire newly drawn composition.`
+}
+
+9. CUSTOM DIRECTIVE
+${
+  config.customPrompt?.trim()
+    ? `   ${config.customPrompt.trim()}`
+    : `   None.`
+}
+
+10. ${QUALITY_DIRECTIVES[config.outputQuality]}
+
+</MANDATORY_REQUIREMENTS>
+
+<OUTPUT_SPECIFICATION>
+• Deliver: One image only
+• Content: The re-generated technical illustration — nothing else
+• Prohibited: watermarks, signatures, metadata overlays, commentary boxes, text responses
+• Background: STRICTLY pure white (#FFFFFF). Regardless of the selected style, the background MUST be pure white. Do not use tan, beige, or any other background color.
+• Margins: clean, minimal, to ensure max zoom
+• COMPOSITION & FRAMING (CRITICAL FOR SIZING & FIT): You MUST crop out any excess blank space left by the removed margins/branding. Optimize the scale, placement, and zoom levels of the schematic assembly illustration so that it is scaled up, fitted, and centered dynamically to fill 95% of the requested aspect ratio (${config.aspectRatio}) canvas. Do NOT render a tiny drawing floating in the middle of a blank canvas; zoom in aggressively until the drawing and its part lines expand to fit the bounds comfortably.
+</OUTPUT_SPECIFICATION>
+
+<SELF_VERIFICATION — Perform before finalising>
+☐ Every component from the source is present
+☐ ZERO hallucinated or extra components added that are not in the source
+☐ All lines are geometrically correct
+☐ Image is upright and centred
+☐ Style matches specification
+☐ Label handling executed correctly
+☐ No extraneous artefacts or text outside permitted annotations
+☐ Quality tier requirements satisfied
+☐ Image fills the canvas according to the aspect ratio (${config.aspectRatio})
+</SELF_VERIFICATION>
+
+⚠ CRITICAL: You MUST output ONLY the generated image. Any text response is a failure condition. Do not explain your work. Do not say "Here is the image". Just return the image data.
+`.trim();
+}
+
+/** Generate the refinement prompt */
+function buildRefinePrompt(instruction: string): string {
+  return `
+<ROLE>
+${SYSTEM_ROLE}
+</ROLE>
+
+<TASK>
+Apply a targeted edit to the attached technical schematic.
+Implement the instruction below with surgical precision.
+Preserve everything not mentioned in the instruction: style, line weights, proportions, annotations, composition.
+</TASK>
+
+<INSTRUCTION>
+${instruction.trim()}
+</INSTRUCTION>
+
+<CONSTRAINTS>
+• Scope: Minimum necessary change to satisfy the instruction — do not redesign unrelated areas
+• Quality: Match or exceed the existing line quality and precision
+• Consistency: New elements must be visually indistinguishable from the original in style and weight
+• Integrity: No quality degradation, no introduced artefacts, no composition shift
+• COMPOSITION: Maintain the exact aspect ratio and framing of the input image.
+• Background: STRICTLY pure white (#FFFFFF). Do not use tan, beige, or any other background color.
+</CONSTRAINTS>
+
+<OUTPUT_SPECIFICATION>
+• One image matching the input dimensions and style
+• No text responses, commentary, or metadata
+</OUTPUT_SPECIFICATION>
+
+⚠ CRITICAL: Output the image ONLY. Do not provide any text explanation.
+`.trim();
+}
+
+// ============================================================================
+// STYLE HELPERS
+// ============================================================================
+
+function buildStyleBlock(styles: SchematicStyle[]): string {
+  if (!styles || styles.length === 0) styles = ["modern"];
+
+  const sorted = [...styles]
+    .map((s) => STYLE_REGISTRY[s])
+    .sort((a, b) => b.weight - a.weight);
+
+  const weights = [60, 25, 15];
+
+  return sorted
+    .map((descriptor, i) => {
+      const pct = weights[i] ?? 10;
+      return `   [${pct}% influence]\n${descriptor.prompt
+        .split("\n")
+        .map((l) => `   ${l}`)
+        .join("\n")}`;
+    })
+    .join("\n\n");
+}
+
+function buildLabelDirective(keepLabels: boolean): string {
+  if (keepLabels) {
+    return `   RETAIN, REGENERATE & ENHANCE all part locator numbers / reference designators / hotspots:
+    • REGENERATION MANDATE: You are STRICTLY FORBIDDEN from copy-pasting or reusing the original diagram's blurry, pixelated, gray, or low-resolution raster text. You MUST erase the original text pixels completely and draw brand-new, perfectly legible, clean solid-black characters from scratch in a pristine modern digital sans-serif font using an ultra-light or standard regular weight (do NOT draw them excessively thick or bolded).
+    • The original labels are EXACT text (e.g. "059067"). You MUST strictly retain the original text and part numbers. Do NOT invent descriptive labels or new part numbers.
+    • ULTRA-CRISP BLACK TEXT: Generate the exact same text value rendered in a highly sharp, pure solid black, high-contrast digital sans-serif typeface. Every character and digit must be perfectly crisp with razor-sharp vector edges and absolutely zero blurring, feathering, blending, or fuzzy fringes.
+    • ULTRA-ELEGANT LIGHT WEIGHT (CRITICAL - NO BOLD/THICK TEXT): All part locator numbers, labels, and reference codes MUST be drawn using an ultra-thin, light-to-regular font weight with thin clean glyph lines (uniform stroke thickness of 1px maximum). Under no circumstances are bold, semi-bold, medium, thick, heavy, or bloated typefaces allowed. The text must look extremely elegant, thin, sleek, and delicate for perfect high-definition display.
+    • SYNTHESIZE NEW TYPOGRAPHY: Reposition the new razor-sharp characters at their exact original locations pointing to the exact same physical part.
+    • ENHANCE LEGIBILITY & INTERACTIVITY: Ensure labels are perfectly horizontal, solid, legible, optimally sized, and properly spaced.
+    • ABSOLUTELY NO SHAPES OR SHADOWS: Do NOT use solid bounding boxes, pill shapes, badges, circles, bubbles, outlines, or drop shadows around the text under any circumstances. Just use clean, boldly legible, solid black characters.
+    • Render precise, clean leader lines (with thin solid black lines and filled arrowheads or tether dots) pointing directly to the correct component to establish an unambiguous visual connection.
+    • Font: Modern, high-definition thin or regular-weight technical sans-serif for absolute digital legibility.
+    • EXACT PART NUMBERS & STACKED VARIANTS (CRITICAL): You MUST transcribe all labels, part numbers, slashes, stacked lists, commas, and variants exactly and literally character-for-character as written in the original schematic. DO NOT compress, group, abstract, shorten, or replace them with generic words like "Details". Complete 1-to-1 exact transcription is required!
+    • CRITICAL ANTI-DUPLICATION: You MUST NOT invent, duplicate, or hallucinate any extra labels or part numbers. Every part label found in the original must appear exactly once in the generated output.
+    
+    CRITICAL — REMOVE COMPLETELY (ERASE THE BORDER BOX & BRANDING BOX TEXT):
+    All brand names, company logos, manufacturer watermarks, copyright notices,
+    tool names, part-number tables, title blocks, border frames, page numbers, sheet numbers, revision dates, and document footer metrics (such as "1 of 2", "Updated ...", "Sheet ..."). These must be completely removed, erased, and cropped out from the image area. Specifically, the outer black rectangular box border framing and enclosing the entire sheet must be completely erased.
+    You are STRICTLY FORBIDDEN from redrawing, rendering, or transcribing any text, notes, details, disclaimers, assembly names, or kit details contained originally inside the bottom-right branding/title block box area (e.g., "Blue Sold as part of kit 200 / Maroon sold as part of kit 340", or tool descriptions/attributions). Completely wipe and erase all such text. Feel free to erase the background pixels completely.
+    
+    CRITICAL — KEEP & PRESERVE:
+    You MUST preserve, redraw, and keep the top-left notes block or any multi-line paragraph notes/guidelines ONLY if they are explicitly prefixed or begin with "Note:" or "NOTE:" (such as "NOTE: THIS DRAWING TO BE USED FOR THE ASSEMBLIES LISTED BELOW...", etc.) at its original location in the top-left corner. Render these notes in extremely crisp, digital, razor-sharp black characters directly on the white canvas. You MUST completely erase, ignore, and remove any outer black box lines or rectangular borders originally positioned around or behind these notes. The notes block must be 100% freestanding and borderless. If no text block starting with "Note:" or "NOTE:" exists, the top-left area must remain completely clear and empty of any text or notes.
+    
+    Result: clearly defined, razor-sharp, pure black text part labels without bubbles/pills + crisp leader lines + pure technical drawing zoomed to fill the frame, with ZERO branding, branding box text, document borders, or footer details.`;
+  }
+
+  return `   CRITICAL — REMOVE COMPLETELY:
+   All text, numerals, letters, labels, leader lines, arrowheads,
+   dimension lines, extension lines, centre-line marks, title blocks, border frames,
+   logos, branding, manufacturer watermarks, copyright notices, notes, revision blocks,
+   and any other annotation layer.
+   
+   Result: pure geometric illustration with zero text elements and zero branding.`;
+}
+
+// ============================================================================
+// MODEL CONFIGURATION
+// ============================================================================
+
+/**
+ * Per-model generation parameters tuned for technical illustration output.
+ * Lower temperature = more deterministic geometry.
+ * Higher temperature = better artistic style blending.
+ */
+const MODEL_DEFAULTS: Record<
+  ModelVersion,
+  { temperature: number; topP: number; topK: number }
+> = {
+  "gemini-3.1-flash-image": {
+    temperature: 0.40,
+    topP: 0.95,
+    topK: 40,
+  },
+  "gemini-3.5-flash": {
+    temperature: 0.65,
+    topP: 0.92,
+    topK: 40,
+  },
+  "gemini-2.5-flash-image": {
+    temperature: 0.50,
+    topP: 0.95,
+    topK: 40,
+  },
+  "gemini-3.1-flash-lite": {
+    temperature: 0.65,
+    topP: 0.92,
+    topK: 40,
+  },
+  "gemini-3-flash-preview": {
+    temperature: 0.65,
+    topP: 0.92,
+    topK: 40,
+  },
+  "gemini-2.5-flash": {
+    temperature: 0.65,
+    topP: 0.92,
+    topK: 40,
+  },
+};
+
+function resolveTemperature(
+  model: ModelVersion,
+  styles: SchematicStyle[],
+  quality: OutputQuality
+): number {
+  const modelParams = MODEL_DEFAULTS[model] || MODEL_DEFAULTS['gemini-3.1-flash-image'];
+  const base = modelParams.temperature;
+  const styleDelta = styles.reduce(
+    (acc, s) => acc + (STYLE_REGISTRY[s]?.temperatureDelta ?? 0),
+    0
+  ) / Math.max(styles.length, 1);
+  const qualityDelta = quality === "maximum" ? -0.10 : quality === "high" ? -0.05 : 0;
+
+  return Math.max(0.01, Math.min(1.0, base + styleDelta + qualityDelta));
+}
+
+// ============================================================================
+// ERROR FACTORY
+// ============================================================================
+
+function classifyError(raw: unknown, attempt: number): AppError {
+  let msg: string;
+  if (raw instanceof Error) {
+    msg = raw.message;
+  } else if (typeof raw === "string") {
+    msg = raw;
+  } else if (typeof raw === "object" && raw !== null) {
+    try {
+      msg = JSON.stringify(raw);
+    } catch {
+      msg = String(raw);
+    }
+  } else {
+    msg = String(raw);
+  }
+  
+  const lc = msg.toLowerCase();
+  
+  console.log(`[DEBUG] classifyError: Error message: ${msg}`);
+
+  const isOverloaded = 
+    lc.includes("rate") || 
+    lc.includes("429") || 
+    lc.includes("503") || 
+    lc.includes("unavailable") || 
+    lc.includes("high demand") || 
+    lc.includes("overloaded") ||
+    lc.includes("exhausted") ||
+    lc.includes("timeout") ||
+    lc.includes("deadline");
+
+  const retryable = isOverloaded || !(
+    lc.includes("api_key") ||
+    lc.includes("authentication") ||
+    lc.includes("billing") ||
+    lc.includes("permission") ||
+    lc.includes("invalid argument")
+  );
+  
+  console.log(`[DEBUG] classifyError: Retryable: ${retryable} | IsOverloaded: ${isOverloaded}`);
+
+  let code = ErrorCode.UNKNOWN;
+  if (lc.includes("api_key") || lc.includes("api key")) code = ErrorCode.MISSING_API_KEY;
+  else if (lc.includes("quota") || lc.includes("exhausted")) code = ErrorCode.QUOTA_EXCEEDED;
+  else if (lc.includes("billing"))                        code = ErrorCode.BILLING_REQUIRED;
+  else if (isOverloaded)                                  code = ErrorCode.RATE_LIMITED;
+  else if (lc.includes("timeout"))                        code = ErrorCode.TIMEOUT;
+  else if (lc.includes("network") || lc.includes("fetch"))code = ErrorCode.NETWORK_ERROR;
+  else if (lc.includes("no candidates"))                  code = ErrorCode.NO_CANDIDATES;
+  else if (lc.includes("text instead of image"))          code = ErrorCode.TEXT_RESPONSE;
+  else if (lc.includes("no image"))                       code = ErrorCode.NO_IMAGE_IN_RESPONSE;
+  else if (lc.includes("content") && lc.includes("filter"))code = ErrorCode.CONTENT_FILTERED;
+
+  return { code, message: msg, retryable, attempt, originalError: raw };
+}
+
+// ============================================================================
+// RETRY ENGINE — Exponential backoff with jitter
+// ============================================================================
+
+const DEFAULT_RETRY: RetryPolicy = {
+  maxAttempts: 5,
+  baseDelayMs: 1500,
+  maxDelayMs: 8000,
+  backoffMultiplier: 2.0,
+};
+
+export async function generateContentStreamAndLog(
+  ai: any,
+  caller: string,
+  model: string,
+  params: any
+): Promise<{ text: string }> {
+  const startTime = Date.now();
+  
+  // Transform deprecated / high-demand preview model to the stable 3.5-flash model
+  const resolvedModel = model === "gemini-3-flash-preview" ? "gemini-3.5-flash" : model;
+  
+  console.info(`[gemini] Starting generation with model: ${resolvedModel} (requested: ${model}) - Caller: ${caller}`);
+
+  try {
+    const msgId = Math.random().toString(36).substring(2, 9);
+    
+    const stream = await ai.models.generateContentStream({ ...params, model: resolvedModel });
+    let text = "";
+    let chunkCount = 0;
+    let lastChunkTime = Date.now();
+
+    for await (const chunk of stream) {
+      if (chunk.text) {
+        text += chunk.text;
+        chunkCount++;
+        const now = Date.now();
+        const timeSinceLast = now - lastChunkTime;
+        lastChunkTime = now;
+        
+        // Stream to browser console which is captured by the AI Studio terminal
+        console.log(`[${caller}] Chunk #${chunkCount} | +${timeSinceLast}ms | Text Length: ${text.length} | Preview: ${chunk.text.substring(0, 100).replace(/\n/g, '\\n')}...`);
+      }
+    }
+    
+    const duration = Date.now() - startTime;
+    console.info(`[gemini] ✓ Completed generation from ${caller} in ${duration}ms. Total chunks: ${chunkCount}, Total length: ${text.length}`);
+
+    return { text };
+  } catch (error) {
+    const duration = Date.now() - startTime;
+    console.error(`[gemini] ❌ Error during generation from ${caller} after ${duration}ms:`, error);
+    
+    throw error;
+  }
+}
+
+export async function withRetry<T>(
+  fn: (attempt: number, model: string) => Promise<T>,
+  modelType: 'text' | 'image' = 'text',
+  policy: RetryPolicy = DEFAULT_RETRY,
+  primaryModel?: string
+): Promise<T> {
+  let lastError: AppError | null = null;
+
+  for (let attempt = 1; attempt <= policy.maxAttempts; attempt++) {
+    const model = getModelForAttempt(attempt, modelType, primaryModel);
+    try {
+      return await fn(attempt, model);
+    } catch (raw) {
+      lastError = classifyError(raw, attempt);
+
+      if (!lastError.retryable) throw lastError;
+
+      if (attempt < policy.maxAttempts) {
+        const jitter = Math.random() * 500;
+        const delay = Math.min(
+          policy.baseDelayMs * Math.pow(policy.backoffMultiplier, attempt - 1) + jitter,
+          policy.maxDelayMs
+        );
+        const nextModel = getModelForAttempt(attempt + 1, modelType, primaryModel);
+        const errorPreview = lastError.message.substring(0, 100).replace(/\n/g, ' ');
+        
+        console.warn(
+          `[gemini] Attempt ${attempt}/${policy.maxAttempts} failed — ${lastError.code} (${errorPreview}). Switch to ${nextModel}. Retrying in ${Math.round(delay)}ms.`
+        );
+        await new Promise<void>((r) => setTimeout(r, delay));
+      }
+    }
+  }
+  throw lastError;
+}
+
+export function getModelForAttempt(attempt: number, type: 'text' | 'image' = 'text', primaryModel?: string): string {
+  let models: string[] = [];
+
+  if (type === 'text') {
+    models = [
+      "gemini-3.5-flash",
+      "gemini-3.1-flash-lite",
+      "gemini-3-flash-preview",
+      "gemini-2.5-flash"
+    ];
+  } else {
+    models = [
+      "gemini-3.1-flash-image",
+      "gemini-3.5-flash",
+      "gemini-2.5-flash-image"
+    ];
+  }
+
+  // If a primaryModel is strictly requested via the UI, ensure it's the first one attempted
+  // and we rotate through the others as fallbacks.
+  if (primaryModel && models.includes(primaryModel)) {
+    const primaryIndex = models.indexOf(primaryModel);
+    models.splice(primaryIndex, 1);
+    models.unshift(primaryModel);
+  }
+
+  const index = (attempt - 1) % models.length;
+  return models[index];
+}
+
+// ============================================================================
+// INPUT VALIDATION
+// ============================================================================
+
+function validateBase64Image(data: string, caller: string): void {
+  if (!data || typeof data !== "string") {
+    throw {
+      code: ErrorCode.INVALID_IMAGE,
+      message: `[${caller}] base64Image is null or not a string.`,
+      retryable: false,
+    } satisfies AppError;
+  }
+  if (data.length < 100) {
+    throw {
+      code: ErrorCode.INVALID_IMAGE,
+      message: `[${caller}] base64Image appears truncated (length: ${data.length}).`,
+      retryable: false,
+    } satisfies AppError;
+  }
+}
+
+function validateApiKey(caller: string): void {
+  if (!process.env.GEMINI_API_KEY) {
+    throw {
+      code: ErrorCode.MISSING_API_KEY,
+      message: `[${caller}] GEMINI_API_KEY is not set. Call window.aistudio.openSelectKey() to configure.`,
+      retryable: false,
+    } satisfies AppError;
+  }
+}
+
+// ============================================================================
+// RESPONSE EXTRACTION
+// ============================================================================
+
+function extractImageFromResponse(candidate: {
+  content?: { parts?: Array<{ inlineData?: { data?: string; mimeType?: string }; text?: string }> };
+  finishReason?: string;
+}): { data: string; mimeType: ImageMimeType } {
+  const parts = candidate.content?.parts ?? [];
+
+  for (const part of parts) {
+    if (part.inlineData?.data) {
+      return {
+        data: part.inlineData.data,
+        mimeType: (part.inlineData.mimeType as ImageMimeType) ?? "image/png",
+      };
+    }
+  }
+
+  const textPart = parts.find((p) => p.text);
+  if (textPart?.text) {
+    const preview = textPart.text.substring(0, 400);
+    throw {
+      code: ErrorCode.TEXT_RESPONSE,
+      message: `Model returned a text response instead of an image: "${preview}…"`,
+      retryable: true,
+    } satisfies AppError;
+  }
+
+  throw {
+    code: ErrorCode.NO_IMAGE_IN_RESPONSE,
+    message: `No image data in response. Finish reason: ${candidate.finishReason ?? "UNKNOWN"}`,
+    retryable: true,
+  } satisfies AppError;
+}
+
+// ============================================================================
+// ASPECT RATIO DETECTION
+// ============================================================================
+
+/**
+ * Automatically computes the pixel-perfect aspect ratio of the input image on the client-side.
+ * This is 100% deterministic, 100% reliable, zero-latency, and zero-cost compared to an LLM call.
+ */
+export function getPixelAspectRatio(base64Data: string, mimeType: string): Promise<AspectRatio> {
+  if (typeof window === 'undefined' || typeof Image === 'undefined') {
+    return Promise.resolve("4:3"); // Safe landscape default if in non-browser env
+  }
+  return new Promise((resolve) => {
+    try {
+      const img = new Image();
+      img.onload = () => {
+        const width = img.naturalWidth || img.width;
+        const height = img.naturalHeight || img.height;
+        if (!width || !height) {
+          resolve("4:3");
+          return;
+        }
+        const ratio = width / height;
+        
+        // Supported standard output ratios
+        const candidates: { ratio: AspectRatio; value: number }[] = [
+          { ratio: "1:1", value: 1.0 },
+          { ratio: "4:3", value: 4 / 3 },     // 1.333
+          { ratio: "3:4", value: 3 / 4 },     // 0.75
+          { ratio: "16:9", value: 16 / 9 },   // 1.777
+          { ratio: "9:16", value: 9 / 16 },   // 0.5625
+          { ratio: "1:4", value: 0.25 },
+          { ratio: "1:8", value: 0.125 },
+          { ratio: "4:1", value: 4.0 },
+          { ratio: "8:1", value: 8.0 },
+        ];
+        
+        let bestRatio: AspectRatio = "4:3";
+        let minDiff = Infinity;
+        
+        for (const candidate of candidates) {
+          const diff = Math.abs(ratio - candidate.value);
+          if (diff < minDiff) {
+            minDiff = diff;
+            bestRatio = candidate.ratio;
+          }
+        }
+        
+        console.info(`[gemini] Programmatic aspect ratio auto-detected: ${bestRatio} (original: ${width}x${height}, calculated ratio: ${ratio.toFixed(4)})`);
+        resolve(bestRatio);
+      };
+      
+      img.onerror = () => {
+        console.warn("[gemini] Error loading image for aspect ratio evaluation, defaulting to 4:3");
+        resolve("4:3");
+      };
+      
+      if (base64Data.startsWith('data:')) {
+        img.src = base64Data;
+      } else {
+        const cleanMime = mimeType || 'image/png';
+        img.src = `data:${cleanMime};base64,${base64Data}`;
+      }
+    } catch (e) {
+      console.error("[gemini] Error computing aspect ratio:", e);
+      resolve("4:3");
+    }
+  });
+}
+
+/**
+ * Uses programmatic client-side analyzer to determine the exact aspect ratio of the input image.
+ * This guarantees consistent output image dimensions without wasteful margins or stretching.
+ */
+export async function detectOptimalAspectRatio(
+  base64Image: string,
+  mimeType: string,
+  model: ModelVersion,
+  styles?: string[]
+): Promise<AspectRatio> {
+  const caller = "detectOptimalAspectRatio";
+
+  if (styles?.includes("mobile_responsive")) {
+    return "9:16";
+  }
+
+  try {
+    return await getPixelAspectRatio(base64Image, mimeType);
+  } catch (e) {
+    console.warn(`[gemini] Programmatic aspect ratio detection failed, falling back to 4:3`, e);
+    return "4:3";
+  }
+}
+
+// ============================================================================
+// PUBLIC API — enhanceSchematic
+// ============================================================================
+
+// ============================================================================
+// SEMANTIC IMAGE CLASSIFIER
+// ============================================================================
+
+export type SchematicType =
+  | "exploded_view"
+  | "cross_section"
+  | "wiring_diagram"
+  | "assembly_drawing"
+  | "parts_breakdown"
+  | "unknown";
+
+interface ClassificationResult {
+  type: SchematicType;
+  confidence: number;
+  dominantFeatures: string[];
+  estimatedPartCount: number;
+  hasLeaderLines: boolean;
+  hasCalloutBubbles: boolean;
+  viewAngle: "isometric" | "orthographic" | "perspective" | "flat";
+}
+
+const CLASSIFICATION_PROMPT = `You are a precision optical classifier for engineering drawings.
+Analyze this image and return a JSON object ONLY. No explanation.
+Schema:
+{
+  "type": "exploded_view" | "cross_section" | "wiring_diagram" | "assembly_drawing" | "parts_breakdown" | "unknown",
+  "confidence": 0.0-1.0,
+  "dominantFeatures": ["string"],  // max 5, e.g. ["leader_lines", "hatching", "coil_springs"]
+  "estimatedPartCount": number,    // integer 0-999
+  "hasLeaderLines": boolean,
+  "hasCalloutBubbles": boolean,
+  "viewAngle": "isometric" | "orthographic" | "perspective" | "flat"
+}`;
+
+const classificationCache = new Map<string, ClassificationResult>();
+
+export async function classifySchematic(
+  base64Image: string,
+  mimeType: string
+): Promise<ClassificationResult> {
+  const cacheKey = base64Image.substring(0, 80);
+  if (classificationCache.has(cacheKey)) {
+    return classificationCache.get(cacheKey)!;
+  }
+
+  const fallback: ClassificationResult = {
+    type: "unknown",
+    confidence: 0,
+    dominantFeatures: [],
+    estimatedPartCount: 0,
+    hasLeaderLines: false,
+    hasCalloutBubbles: false,
+    viewAngle: "flat",
+  };
+
+  try {
+    const result = await withRetry(async (attempt, model) => {
+      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+      const response = await ai.models.generateContent({
+        model,
+        contents: {
+          parts: [
+            { text: CLASSIFICATION_PROMPT },
+            { inlineData: { mimeType, data: base64Image } },
+          ],
+        },
+        config: { temperature: 0.05, responseMimeType: "application/json" },
+      });
+      const clean = (response.text || "{}").replace(/```json|```/g, "").trim();
+      return JSON.parse(clean) as ClassificationResult;
+    }, 'text');
+
+    classificationCache.set(cacheKey, result);
+    return result;
+  } catch (e) {
+    console.warn("[gemini] classifySchematic failed, using fallback:", e);
+    return fallback;
+  }
+}
+
+// ============================================================================
+// SPECIALIZATION BLOCKS — Injected per image type
+// ============================================================================
+
+const SPECIALIZATION_BLOCKS: Record<SchematicType, string> = {
+  exploded_view: `
+<IMAGE_TYPE_SPECIALIZATION — Exploded View Assembly>
+• This is an EXPLODED VIEW. Parts are spatially separated along one or more blast axes to show assembly sequence.
+• AXIS PRESERVATION (CRITICAL): Maintain the exact explosion axis (vertical, horizontal, or diagonal) of every part cluster. Do NOT reassemble parts.
+• SPACING FIDELITY: The gap between each part indicates its position in the assembly stack. These gaps are intentional and must be preserved proportionally.
+• PART COUNT LOCK: Count every discrete component. The output must contain the IDENTICAL number of discrete parts.
+• LEADER LINE TARGETS: In exploded views, leader lines often point to parts displaced from their assembled position. Map each line to its true target, not the nearest visible part.
+</IMAGE_TYPE_SPECIALIZATION>`,
+
+  cross_section: `
+<IMAGE_TYPE_SPECIALIZATION — Cross-Section / Cut View>
+• This is a CROSS-SECTION. Internal geometry is exposed by an imaginary cutting plane.
+• CUTTING PLANE IDENTITY: Preserve the exact hatching pattern, angle, and density of all sectioned material faces.
+• INTERNAL GEOMETRY: Render hidden internal cavities, bores, counterbores, and wall thicknesses with absolute precision.
+• HATCHING STANDARD: Material hatching lines must be perfectly parallel and evenly spaced at exactly 45°. Do not curve or waver them.
+• SECTION LINE: Preserve the section indicator line (A-A, B-B) and its arrowheads exactly.
+</IMAGE_TYPE_SPECIALIZATION>`,
+
+  wiring_diagram: `
+<IMAGE_TYPE_SPECIALIZATION — Wiring / Electrical Schematic>
+• This is a WIRING DIAGRAM. Logical connectivity is more important than physical geometry.
+• WIRE ROUTING: Preserve all wire paths, including 90° bends, junctions (T-nodes, dots), and crossing bridges.
+• SYMBOL FIDELITY: Every IEC/ANSI component symbol (resistor, capacitor, relay, ground) must be redrawn to standard, not approximated.
+• COLOUR CODING: Wire colours are electrically significant. Preserve exact wire colour assignments.
+• NET LABELS: Pin names, net identifiers, and connector designators must be exact character-for-character transcriptions.
+</IMAGE_TYPE_SPECIALIZATION>`,
+
+  assembly_drawing: `
+<IMAGE_TYPE_SPECIALIZATION — Assembly Drawing>
+• This is an ASSEMBLED VIEW showing components in their final mated positions.
+• MATING SURFACES: Where parts interface, the boundary must be geometrically exact — no overlap, no gap unless a clearance fit is shown.
+• FASTENER CONTEXT: Bolts, screws, and pins shown in-situ must align with their holes. Thread engagement depth must look plausible.
+• DATUM REFERENCES: If datum triangles or reference planes appear, preserve them with exact symbol geometry.
+</IMAGE_TYPE_SPECIALIZATION>`,
+
+  parts_breakdown: `
+<IMAGE_TYPE_SPECIALIZATION — Parts Breakdown / Catalog View>
+• This is a PARTS CATALOG diagram with isolated individual components.
+• PART ISOLATION: Each part is shown individually. Do not combine or overlap parts.
+• UNIFORM SCALE: If a parts breakdown uses a consistent scale grid, maintain relative sizes between parts.
+• CALLOUT DENSITY: Parts catalog diagrams often have many closely-spaced labels. Ensure zero label overlap and adequate tap-target spacing.
+</IMAGE_TYPE_SPECIALIZATION>`,
+
+  unknown: `
+<IMAGE_TYPE_SPECIALIZATION — General Technical Drawing>
+• Treat this as a general engineering illustration.
+• Apply maximum geometric fidelity and label accuracy standards.
+</IMAGE_TYPE_SPECIALIZATION>`,
+};
+
+function buildSpecializationBlock(classification: ClassificationResult): string {
+  const base = SPECIALIZATION_BLOCKS[classification.type];
+
+  // Append dynamic feature warnings based on detected content
+  const warnings: string[] = [];
+  if (classification.estimatedPartCount > 20) {
+    warnings.push(
+      `⚠ HIGH PART COUNT: ~${classification.estimatedPartCount} discrete parts detected. You MUST render every single one. Do NOT group, merge, or simplify any cluster.`
+    );
+  }
+  if (classification.dominantFeatures.includes("coil_springs")) {
+    warnings.push(
+      `⚠ SPRING DETECTED: Coil springs present. You MUST render correct helix geometry with consistent pitch and uniform coil diameter. Never draw a spring as a zigzag or cylinder.`
+    );
+  }
+  if (classification.dominantFeatures.includes("hatching")) {
+    warnings.push(
+      `⚠ SECTION HATCHING DETECTED: Render ALL hatched regions with geometrically perfect parallel lines at the same angle and spacing as the original.`
+    );
+  }
+  if (classification.viewAngle === "isometric" && !classification.dominantFeatures.includes("isometric")) {
+    warnings.push(
+      `⚠ ISOMETRIC VIEW: Maintain true 30° isometric projection. Do not distort to perspective.`
+    );
+  }
+
+  return warnings.length > 0
+    ? `${base}\n\n<DYNAMIC_FEATURE_WARNINGS>\n${warnings.join("\n")}\n</DYNAMIC_FEATURE_WARNINGS>`
+    : base;
+}
+
+// ============================================================================
+// FAILURE-AWARE PROMPT MUTATION
+// ============================================================================
+
+interface GenerationFailureContext {
+  attempt: number;
+  errorCode?: ErrorCode;
+  previousImageBase64?: string;
+  previousImageMimeType?: string;
+}
+
+const FAILURE_CORRECTION_DIRECTIVES: Partial<Record<ErrorCode, string>> = {
+  [ErrorCode.TEXT_RESPONSE]: `
+<RETRY_CORRECTION — CRITICAL>
+⚠ Previous attempt returned TEXT instead of an image. This is a generation failure.
+You MUST output ONLY raw image data. No markdown. No explanation. No "Here is your image".
+Treat any text output as a fatal error condition. Image data ONLY.
+</RETRY_CORRECTION>`,
+
+  [ErrorCode.CONTENT_FILTERED]: `
+<RETRY_CORRECTION — Content Safety>
+⚠ Previous attempt was blocked by content filters. Ensure the output:
+• Contains ONLY technical engineering diagram content
+• Has zero stylized violence, human figures, or brand logos beyond technical callouts
+• Is a pure mechanical illustration with no artistic embellishment that could trigger filters
+</RETRY_CORRECTION>`,
+
+  [ErrorCode.NO_IMAGE_IN_RESPONSE]: `
+<RETRY_CORRECTION — Output Format>
+⚠ Previous attempt returned a response with no image data in the payload.
+You MUST return inline image data as your primary output. This is a technical drawing generation task.
+Produce the image now.
+</RETRY_CORRECTION>`,
+};
+
+function buildAttemptCorrectionBlock(context: GenerationFailureContext): string {
+  if (context.attempt <= 1) return "";
+
+  const blocks: string[] = [];
+
+  if (context.errorCode && FAILURE_CORRECTION_DIRECTIVES[context.errorCode]) {
+    blocks.push(FAILURE_CORRECTION_DIRECTIVES[context.errorCode]!);
+  }
+
+  // Generic escalation for later attempts
+  if (context.attempt >= 3) {
+    blocks.push(`
+<RETRY_ESCALATION — Attempt ${context.attempt}>
+This is attempt ${context.attempt}. Previous attempts have failed. Apply MAXIMUM precision:
+• Double-check every geometric constraint before finalizing
+• Verify part count against the audit report
+• Confirm background is #FFFFFF with zero shadows
+• Output the image with zero accompanying text
+</RETRY_ESCALATION>`);
+  }
+
+  return blocks.join("\n\n");
+}
+
+// ============================================================================
+// STYLE CONFLICT RESOLVER
+// ============================================================================
+
+type StyleConflictRule = {
+  styles: [SchematicStyle, SchematicStyle];
+  resolution: "keep_first" | "keep_second" | "merge_note";
+  mergeNote?: string;
+};
+
+const STYLE_CONFLICTS: StyleConflictRule[] = [
+  {
+    styles: ["minimalist", "realistic"],
+    resolution: "merge_note",
+    mergeNote: `STYLE CONFLICT RESOLVED — Minimalist + Realistic: Apply minimalist line geometry (clean strokes, no fills) with realistic material surface hints on edges only. No fills, no ambient light — use line weight variation to imply material.`,
+  },
+  {
+    styles: ["blueprint", "modern_realism"],
+    resolution: "merge_note",
+    mergeNote: `STYLE CONFLICT RESOLVED — Blueprint + Modern Realism: Use blueprint colour palette (deep blue bg, white lines) but apply realistic material edge highlighting. No photorealistic fills.`,
+  },
+  {
+    styles: ["minimalist", "artistic"],
+    resolution: "keep_first",
+  },
+  {
+    styles: ["patent", "realistic"],
+    resolution: "keep_first", // Patent rules forbid gradients/colour — enforce them
+  },
+  {
+    styles: ["patent", "isometric"],
+    resolution: "merge_note",
+    mergeNote: `STYLE CONFLICT RESOLVED — Patent + Isometric: Use isometric 30° projection geometry, but render in strict patent style (black ink only, hatching for shading, no colour fills).`,
+  },
+];
+
+export function resolveStyleConflicts(styles: SchematicStyle[]): {
+  resolvedStyles: SchematicStyle[];
+  conflictNote: string;
+} {
+  let resolvedStyles = [...styles];
+  const notes: string[] = [];
+
+  for (const rule of STYLE_CONFLICTS) {
+    const [a, b] = rule.styles;
+    if (resolvedStyles.includes(a) && resolvedStyles.includes(b)) {
+      if (rule.resolution === "keep_first") {
+        resolvedStyles = resolvedStyles.filter((s) => s !== b);
+        notes.push(`Removed conflicting style '${b}' in favour of '${a}'.`);
+      } else if (rule.resolution === "keep_second") {
+        resolvedStyles = resolvedStyles.filter((s) => s !== a);
+        notes.push(`Removed conflicting style '${a}' in favour of '${b}'.`);
+      } else if (rule.resolution === "merge_note" && rule.mergeNote) {
+        notes.push(rule.mergeNote);
+      }
+    }
+  }
+
+  return {
+    resolvedStyles,
+    conflictNote: notes.join("\n"),
+  };
+}
+
+const schematicAuditCache = new Map<string, string>();
+
+function buildAuditPrompt(classification: ClassificationResult): string {
+  const typeSpecific: Partial<Record<SchematicType, string>> = {
+    exploded_view: `
+EXPLODED VIEW SPECIFIC AUDIT:
+- Document the explosion axis direction (vertical/horizontal/diagonal)
+- For each part, state its ordinal position along the explosion axis (e.g., "3rd from top")
+- Note the gap distance between adjacent parts as a % of total image height
+- Flag any parts that share the same leader-line label (shared callout bubbles)`,
+
+    cross_section: `
+CROSS-SECTION SPECIFIC AUDIT:
+- Identify the cutting plane label (e.g., "A-A")
+- List all hatched material regions with their hatch angle and pitch (mm equivalent)
+- Document all internal cavity dimensions and bore depths where visible
+- Note all wall thickness indicators`,
+
+    wiring_diagram: `
+WIRING DIAGRAM SPECIFIC AUDIT:
+- List all component symbols and their designators (R1, C4, Q2, etc.)
+- Document wire colour assignments for each net
+- Note all connector pinouts and their net connections
+- Flag any bus lines and their member signals`,
+  };
+
+  const additionalInstructions = typeSpecific[classification.type] ?? "";
+  const densityWarning = classification.estimatedPartCount > 15
+    ? `\n⚠ HIGH DENSITY WARNING: ~${classification.estimatedPartCount} parts estimated. Be exhaustive — do not skip any part, even if it appears duplicated or very small.`
+    : "";
+
+  return `You are a meticulous technical engineer performing a pixel-perfect audit of an engineering schematic.
+Detected drawing type: ${classification.type.toUpperCase()} (confidence: ${(classification.confidence * 100).toFixed(0)}%)
+${densityWarning}
+
+CRITICAL INSTRUCTIONS:
+- You are extracting factual data. Do NOT invent parts, do NOT hypothesize labels.
+- If a part is unlabeled, describe it briefly and its location relative to a labeled part.
+- If a part is a smooth pin, state "smooth pin, no threads". If it is threaded, state "threaded screw/bolt".
+- ALL label transcriptions MUST be exact (e.g., "1234AB"). DO NOT inject generic text like "Nut" or "Screw" or material descriptions into the labels if it's not written.
+- IMPORTANT FOR VARIANTS: If a single label/bubble contains a literal list of multiple distinct part numbers stacked together or separated by commas, slashes, or otherwise pointing to the same location, you MUST transcribe ALL of the characters, letters, separators, and numbers exactly as written on the schematic. DO NOT replace, compress, or simplify them with generic words like "Details". Precise 1-to-1 exact visual transcription of every character is required.
+- STRICT LIMITATION: Do NOT add material names (e.g., "Natural Brushed Aluminum") as labels. Only transcribe what is physically printed as a callout.
+
+${additionalInstructions}
+
+Please provide a structured report covering:
+1. INVENTORY & LABELS: List every single callout/label exactly as written.
+2. GEOMETRY & FEATURES: For every part (labeled or unlabeled), describe its exact physical shape, type (pin, bolt, washer, plate), and any specific features (chamfers, holes, threads).
+3. SPATIAL RELATIONSHIPS: How do the parts connect or align in the exploded view?
+4. POTENTIAL GENERATION RISKS: Features most likely to be hallucinated or mis-rendered (e.g., "smooth pins may be drawn with threads", "small washers may be omitted").
+
+Output your report as clear, concise plain text.`;
+}
+
+const LEGACY_AUDIT_PROMPT = `You are a meticulous technical engineer performing a pixel-perfect audit of an engineering schematic.
+I am providing a schematic diagram. Your sole purpose is to document exactly what is visible.
+
+CRITICAL INSTRUCTIONS:
+- You are extracting factual data. Do NOT invent parts, do NOT hypothesize labels.
+- If a part is unlabeled, describe it briefly and its location relative to a labeled part.
+- If a part is a smooth pin, state "smooth pin, no threads". If it is threaded, state "threaded screw/bolt".
+- ALL label transcriptions MUST be exact (e.g., "1234AB"). DO NOT inject generic text like "Nut" or "Screw" or material descriptions into the labels if it's not written.
+- IMPORTANT FOR VARIANTS: If a single label/bubble contains a literal list of multiple distinct part numbers stacked together or separated by commas, slashes, or otherwise pointing to the same location, you MUST transcribe ALL of the characters, letters, separators, and numbers exactly as written on the schematic. DO NOT replace, compress, or simplify them with generic words like "Details". Precise 1-to-1 exact visual transcription of every character is required.
+- STRICT LIMITATION: Do NOT add material names (e.g., "Natural Brushed Aluminum") as labels. Only transcribe what is physically printed as a callout.
+
+Please provide a structured report covering:
+1. INVENTORY & LABELS: List every single callout/label exactly as written.
+2. GEOMETRY & FEATURES: For every part (labeled or unlabeled), describe its exact physical shape, type (pin, bolt, washer, plate), and any specific features (chamfers, holes, threads).
+3. SPATIAL RELATIONSHIPS: How do the parts connect or align in the exploded view?
+
+Output your report as clear, concise plain text.`;
+
+async function extractSchematicAudit(
+  schematicBase64: string,
+  schematicMimeType: string,
+  classification?: ClassificationResult
+): Promise<string> {
+  const caller = "extractSchematicAudit";
+  validateApiKey(caller);
+
+  const cacheKey = schematicBase64.substring(0, 100);
+  if (schematicAuditCache.has(cacheKey)) {
+    console.info(`[gemini] ${caller} — returning cached audit`);
+    return schematicAuditCache.get(cacheKey)!;
+  }
+
+  const prompt = classification ? buildAuditPrompt(classification) : LEGACY_AUDIT_PROMPT;
+
+  const parts: any[] = [
+    { text: prompt },
+    { inlineData: { mimeType: schematicMimeType, data: schematicBase64 } },
+  ];
+
+  return withRetry(async (attempt, model) => {
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    console.info(`[gemini] ${caller} — attempt ${attempt} | executing schematic audit using ${model}`);
+
+    try {
+      const response = await ai.models.generateContent({
+        model,
+        contents: { parts },
+      });
+      const result = response.text || "Audit failed to produce output.";
+      schematicAuditCache.set(cacheKey, result);
+      return result;
+    } catch (error) {
+      console.error(`[gemini] ${caller} attempt ${attempt} failed:`, error);
+      throw error;
+    }
+  }, 'text').catch(error => {
+    console.error("[gemini] All attempts failed for extractSchematicAudit:", error);
+    return "Audit failed. Follow original prompt strictly.";
+  });
+}
+
+const materialDescriptionCache = new Map<string, string>();
+
+async function extractMaterialDescription(
+  schematicBase64: string,
+  schematicMimeType: string,
+  referenceImages: { url: string; mimeType: string }[]
+): Promise<string> {
+  const caller = "extractMaterialDescription";
+  validateApiKey(caller);
+
+  const cacheKey = schematicBase64.substring(0, 100) + referenceImages.map(r => r.url.substring(0, 50)).join("");
+  if (materialDescriptionCache.has(cacheKey)) {
+    console.info(`[gemini] ${caller} — returning cached material description`);
+    return materialDescriptionCache.get(cacheKey)!;
+  }
+
+  const prompt = `You are an expert industrial designer.
+I am providing a black-and-white schematic diagram and reference photos of the real product.
+Map colors, materials, textures, and finishes to the corresponding parts in the schematic.
+
+CRITICAL: Return ONLY a succinct bulleted list or comma-separated string mapping parts to their material/color. NO conversational preamble, NO intro, NO outro. Example:
+- Outer housing: matte dark grey plastic
+- Front nozzle: brushed aluminum
+- Trigger: bright red glossy plastic
+- Screws: black oxide steel`;
+
+  const parts: any[] = [
+    { text: prompt },
+    { text: "SCHEMATIC DIAGRAM:" },
+    { inlineData: { mimeType: schematicMimeType, data: schematicBase64 } },
+    { text: "REFERENCE PHOTOS:" }
+  ];
+
+  referenceImages.forEach(ref => {
+    const [, base64Data] = ref.url.split(';base64,');
+    parts.push({ inlineData: { mimeType: ref.mimeType, data: base64Data || ref.url } });
+  });
+
+  return withRetry(async (attempt, model) => {
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    console.info(`[gemini] ${caller} — attempt ${attempt} | extracting material description using ${model}`);
+
+    try {
+      const response = await generateContentStreamAndLog(ai, caller, model, {
+        contents: { parts },
+      });
+      const result = response.text || "Use realistic materials and colors.";
+      materialDescriptionCache.set(cacheKey, result);
+      return result;
+    } catch (error) {
+      console.error(`[gemini] ${caller} attempt ${attempt} failed:`, error);
+      throw error;
+    }
+  }, 'text').catch(error => {
+    console.error("[gemini] All attempts failed for extractMaterialDescription:", error);
+    return "Use realistic materials and colors based on standard industrial design practices.";
+  });
+}
+
+export async function enhanceSchematic(
+  base64Image: string,
+  mimeType: string,
+  styles: SchematicStyle[] = ["modern"],
+  keepLabels: boolean = true,
+  aspectRatio: AspectRatioOption = "1:1",
+  imageSize: ImageSize = "1440p",
+  model: ModelVersion = "gemini-3.1-flash-image",
+  customPrompt: string = "",
+  preserveGeometry: boolean = true,
+  enhanceDetails: boolean = true,
+  outputQuality: OutputQuality = "high",
+  referenceImages?: { url: string; mimeType: string }[],
+  seed?: number,
+  mode: 'enhance' | 'creative' | 'style_transfer' | 'upscale' = 'enhance'
+): Promise<{ imageUrl: string; aspectRatio: AspectRatio }> {
+  const caller = "enhanceSchematic";
+
+  // Validate
+  validateApiKey(caller);
+  validateBase64Image(base64Image, caller);
+  if (referenceImages && referenceImages.length > 0) {
+    referenceImages.forEach(ref => validateBase64Image(ref.url, caller));
+  }
+
+  // Normalise styles and resolve conflicts
+  const normalizedStyles = normalizeStyles(styles);
+  const { resolvedStyles, conflictNote } = resolveStyleConflicts(normalizedStyles);
+
+  // Handle Auto Aspect Ratio
+  let targetAspectRatio: AspectRatio;
+  if (aspectRatio === "auto") {
+    try {
+      targetAspectRatio = await detectOptimalAspectRatio(base64Image, mimeType, model, resolvedStyles);
+    } catch (e) {
+      console.error("[gemini] Failed to detect aspect ratio, defaulting to 1:1", e);
+      targetAspectRatio = "1:1";
+    }
+  } else {
+    targetAspectRatio = aspectRatio;
+  }
+
+  const config: SchematicEnhancementConfig = {
+    mode,
+    styles: resolvedStyles,
+    keepLabels,
+    aspectRatio: targetAspectRatio,
+    imageSize,
+    model,
+    customPrompt,
+    preserveGeometry,
+    enhanceDetails,
+    outputQuality,
+    seed,
+  };
+
+  // Build prompt components
+  const styleBlock   = buildStyleBlock(resolvedStyles);
+  const labelDirective = buildLabelDirective(keepLabels);
+  const hasReferenceImages = referenceImages !== undefined && referenceImages.length > 0;
+  let prompt       = buildEnhancePrompt(config, styleBlock, labelDirective, hasReferenceImages);
+
+  if (conflictNote) {
+    prompt += `\n\n<STYLE_RESOLUTION_NOTES>\n${conflictNote}\n</STYLE_RESOLUTION_NOTES>`;
+  }
+
+  console.info(`[gemini] ${caller} — Received entry request. Converted base64 length: ${base64Image.length} bytes | mimeType: ${mimeType} | styles: ${resolvedStyles.join(", ")} | keepLabels: ${keepLabels} | aspectRatioOption: ${aspectRatio} | imageSize: ${imageSize} | model: ${model}`);
+
+  const promises: Promise<void>[] = [];
+
+  // Enable text-based pre-processing audits for absolute highest fidelity and colorized rendering
+  console.info(`[gemini] ${caller} — Dispatching schematic classification tasks...`);
+  const classificationPromise = classifySchematic(base64Image, mimeType);
+
+  console.info(`[gemini] ${caller} — Dispatching schematic audit tasks...`);
+  const auditPromise = classificationPromise.then(async (classification) => {
+    console.info(`[gemini] Classification: ${classification.type} (${(classification.confidence * 100).toFixed(0)}% confidence) | ~${classification.estimatedPartCount} parts`);
+
+    if (config.mode !== 'creative') {
+      const specializationBlock = buildSpecializationBlock(classification);
+      prompt += `\n\n${specializationBlock}`;
+
+      console.info(`[gemini] ${caller} — Successfully compiled specialization block. Appending to prompt...`);
+    }
+
+    const auditInstruction = config.mode === 'creative'
+      ? `The following is a geometric and label audit performed by an engineer. Use this inventory as a conceptual understanding of the physical parts that make up this mechanical assembly. As you creatively redesign and rethink the rendering, ensure all major structural components exist in your new vision, but you are free to artistically reshape, style, and reinterpret them:\n\n`
+      : `The following is a meticulous geometric and label audit performed by a master engineer. You MUST use this inventory to ensure absolute 1-to-1 pixel fidelity and prevent hallucinations. Do not miss any label or part outlined here. Do not mutate shapes (e.g., do not add threads if the audit says "smooth pin"):\n\n`;
+
+    const auditReport = await extractSchematicAudit(base64Image, mimeType, classification);
+    console.info(`[gemini] ${caller} — Successfully compiled schematic audit. Appending technical inventory guidelines...`);
+    prompt += `\n\n<SCHEMATIC_AUDIT_REPORT>\n${auditInstruction}${auditReport}\n</SCHEMATIC_AUDIT_REPORT>`;
+  });
+  promises.push(auditPromise);
+
+  if (hasReferenceImages && referenceImages && config.mode !== 'style_transfer') {
+    console.info(`[gemini] ${caller} — Dispatching material color description tasks from reference files...`);
+    const materialPromise = extractMaterialDescription(base64Image, mimeType, referenceImages).then(materialDescription => {
+      console.info(`[gemini] ${caller} — Successfully compiled material mapping description. Appending colorization keys...`);
+      prompt += `\n\n<MATERIAL_AND_COLOR_GUIDE>\nThe following is a detailed description of the materials, colors, and finishes extracted from the reference photos of the real product. You MUST use this description to accurately colorize and texture the schematic diagram:\n\n${materialDescription}\n</MATERIAL_AND_COLOR_GUIDE>`;
+    });
+    promises.push(materialPromise);
+  }
+
+  await Promise.all(promises);
+
+  // Resolve temperature
+  const modelParams  = MODEL_DEFAULTS[model] || MODEL_DEFAULTS['gemini-3.1-flash-image'];
+  const temperature  = resolveTemperature(model, resolvedStyles, outputQuality);
+
+  console.info(`[gemini] ${caller} — Setup completed. Final prompt character size: ${prompt.length}. Invoking retry handler for generation...`);
+
+  let lastAttemptError: unknown;
+
+  return withRetry(async (attempt, model) => {
+    // Re-initialise client on every attempt to guarantee fresh API key pickup
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    const currentModel = model;
+
+    console.info(
+      `[gemini] [INITIATED] ${caller} — attempt ${attempt} | model=${currentModel} | quality=${outputQuality} | styles=${resolvedStyles.join(",")} | ratio=${targetAspectRatio} | temp=${temperature.toFixed(2)}`
+    );
+    console.info(`[gemini] [ALERT] Sending monolithic technical drawing synthesis request to "${currentModel}". IMAGE COMPILING TENDS TO TAKE 10-25 SECONDS. This operation cannot be streamed. Please stand by...`);
+
+    const correctionBlock = buildAttemptCorrectionBlock({
+      attempt,
+      errorCode: attempt > 1 ? classifyError(lastAttemptError, attempt - 1).code : undefined,
+    });
+
+    const finalPrompt = correctionBlock
+      ? `${correctionBlock}\n\n${prompt}`
+      : prompt;
+
+    const parts: any[] = [
+      { text: finalPrompt },
+      { inlineData: { mimeType, data: base64Image } },
+    ];
+
+    if (config.mode === 'style_transfer' && referenceImages) {
+      referenceImages.forEach(ref => {
+        const [, base64Data] = ref.url.split(';base64,');
+        parts.push({ inlineData: { mimeType: ref.mimeType, data: base64Data || ref.url } });
+      });
+    }
+
+    const generationConfig: any = {
+      temperature,
+      topP: modelParams.topP,
+      topK: modelParams.topK,
+      seed: seed !== undefined ? seed : 42,
+    };
+
+    if (currentModel.includes('image')) {
+      generationConfig.imageConfig = { imageSize: mapImageSizeToApi(imageSize) };
+      const hasImageInput = parts.some((p: any) => p.inlineData);
+      if (!hasImageInput) {
+        generationConfig.imageConfig.aspectRatio = targetAspectRatio;
+      }
+    }
+
+    const startTime = Date.now();
+    try {
+      const response = await ai.models.generateContent({
+        model: currentModel,
+        contents: {
+          parts,
+        },
+        config: generationConfig,
+      });
+      const duration = Date.now() - startTime;
+      console.info(`[gemini] [SUCCESS] Received technical diagram content candidate successfully from Gemini "${currentModel}" in ${duration}ms! Unpacking payload...`);
+
+      const candidate = response.candidates?.[0];
+      if (!candidate) {
+        console.error(`[gemini] [FAILED] "${currentModel}" returned zero candidates. Throwing AppError...`);
+        throw {
+          code: ErrorCode.NO_CANDIDATES,
+          message: "Gemini API returned zero candidates.",
+          retryable: true,
+        } satisfies AppError;
+      }
+
+      // Warn on unusual finish reasons but don't block extraction
+      const fr = candidate.finishReason;
+      if (fr && !["STOP", "MAX_TOKENS"].includes(fr)) {
+        console.warn(`[gemini] Warning finish reason for model execution: ${fr}`);
+      }
+
+      const { data, mimeType: outMime } = extractImageFromResponse(candidate as Parameters<typeof extractImageFromResponse>[0]);
+      console.info(`[gemini] [FINISHED] Successfully parsed enhanced schematic image stream: mimeType=${outMime}, dataSize=${data.length} characters.`);
+      return {
+        imageUrl: `data:${outMime};base64,${data}`,
+        aspectRatio: targetAspectRatio
+      };
+    } catch (e) {
+      lastAttemptError = e;
+      throw e;
+    }
+  }, 'image', undefined, config.model);
+}
+
+// ============================================================================
+// PUBLIC API — refineSchematic
+// ============================================================================
+
+export async function refineSchematic(
+  base64Image: string,
+  mimeType: string,
+  instruction: string,
+  aspectRatio: AspectRatioOption = "1:1",
+  imageSize: ImageSize = "1440p",
+  model: ModelVersion = "gemini-3.1-flash-image",
+  referenceImages?: { url: string; mimeType: string }[],
+  hotspots?: RawHotspot[],
+  originalImage?: string
+): Promise<{ imageUrl: string; aspectRatio: AspectRatio; hotspots: RawHotspot[] }> {
+  const caller = "refineSchematic";
+
+  validateApiKey(caller);
+  validateBase64Image(base64Image, caller);
+  if (referenceImages && referenceImages.length > 0) {
+    referenceImages.forEach(ref => validateBase64Image(ref.url, caller));
+  }
+
+  if (!instruction?.trim()) {
+    throw {
+      code: ErrorCode.EMPTY_INSTRUCTION,
+      message: `[${caller}] Refinement instruction cannot be empty.`,
+      retryable: false,
+    } satisfies AppError;
+  }
+
+  // Handle Auto Aspect Ratio
+  let targetAspectRatio: AspectRatio;
+  if (aspectRatio === "auto") {
+    try {
+      targetAspectRatio = await detectOptimalAspectRatio(base64Image, mimeType, model);
+    } catch (e) {
+      console.error("[gemini] Failed to detect aspect ratio, defaulting to 1:1", e);
+      targetAspectRatio = "1:1";
+    }
+  } else {
+    targetAspectRatio = aspectRatio;
+  }
+
+  let prompt = `
+    <ROLE>
+    You are an elite, masterful industrial technical illustrator and AI rendering engine.
+    </ROLE>
+
+    <TASK>
+    Refine and surgically edit the attached <CURRENT_IMAGE> schematic based on the following meticulous instruction from the user:
+    "${instruction}"
+    </TASK>
+
+    <CRITICAL_USER_INSTRUCTION_PRIORITY_OVERRIDE>
+    • INTELLIGENT REFERENCE ANALYSIS: We have attached both the <CURRENT_IMAGE> (the active working image) and potentially the <ORIGINAL_SOURCE_IMAGE> (the original blueprint) and/or <STYLE_TRANSFER_REFERENCE_IMAGES> (reference aesthetic guides).
+    • If the user's instruction asks to "reference our original image", "use the same top header format from the original", "restore from original", or mentions any explicit reference context, you MUST intelligently look at the <ORIGINAL_SOURCE_IMAGE> or <STYLE_TRANSFER_REFERENCE_IMAGES> provided to extract EXACT configurations, headers, text, line-weights, colors, or structures and truthfully apply them to your <CURRENT_IMAGE> refinement output.
+    • You have full access to these additional source images right here in this prompt, so you MUST accurately execute visual transfer operations to fulfill the user's explicit directive.
+    </CRITICAL_USER_INSTRUCTION_PRIORITY_OVERRIDE>
+
+    CRITICAL QUALITY REQUIREMENTS:
+    1. Output ONLY the refined image. Do NOT output any text, markdown, or explanations.
+    2. Maintain the technical accuracy and style of the original.
+    3. Ensure the schematic is PERFECTLY CENTRED and zoomed in to fill at least 95% of the frame without any clipping.
+    4. Maintain crisp, high-definition lines and perfectly positioned label elements. Ensure the drawings are optimally sized and fitted to the ${targetAspectRatio} aspect ratio canvas.
+    5. Completely remove all page footer details like "1 of 2", "Updated ...", "Sheet ...". Do NOT include them anywhere in the output: crop them out completely to maximize the zoom and space for the schematic drawing.
+    6. NO BRANDING BOX TEXT GENERATION: Do NOT preserve or reproduce any notes, descriptions, or values (such as "Blue Sold as part of kit 200..." or "Maroon sold as part of kit 340...") that are found in the bottom-right title block or logo/branding box area of the original drawing unless explicitly instructed to. You must ONLY output text blocks or notes that explicitly begin with "Note:" or "NOTE:". If no such "Note:" block exists in the original image, then NO notes or general text blocks should be rendered on the page at all. Ensure any general information or disclaimer text from the bottom right block is completely removed and NOT generated.
+    7. ULTRA-CRISP REGENERATED TECHNICAL LABELS: All part labels, numbers, and reference designators MUST be regenerated from scratch as crisp, clean, solid-black characters in a modern, highly legible technical sans-serif font using a professional regular-to-medium weight. Do NOT make them overly thick, bold, or bloated.
+  `;
+
+  const promises: Promise<void>[] = [];
+
+  // Enable text-based pre-processing audits for high fidelity
+  const auditPromise = extractSchematicAudit(base64Image, mimeType).then(auditReport => {
+    prompt += `\n\n<SCHEMATIC_AUDIT_REPORT>\nThe following is a geometric and label audit of the current schematic. You MUST preserve the correct shapes and labels listed here unless explicitly instructed to change them by the user. Do not hallucinate generic labels or mutate non-threaded rods into threaded screws:\n\n${auditReport}\n</SCHEMATIC_AUDIT_REPORT>`;
+  });
+  promises.push(auditPromise);
+
+  if (referenceImages && referenceImages.length > 0) {
+    const materialPromise = extractMaterialDescription(base64Image, mimeType, referenceImages).then(materialDescription => {
+      prompt += `\n\n<MATERIAL_AND_COLOR_GUIDE>\nThe following is a detailed description of the materials, colors, and finishes extracted from the reference photos of the real product. You MUST use this description to accurately colorize and texture the refined schematic diagram:\n\n${materialDescription}\n\nDO NOT generate or include the reference image itself inside the output. The output MUST ONLY be the refined schematic diagram, colored using the reference image as a guide.</MATERIAL_AND_COLOR_GUIDE>`;
+    });
+    promises.push(materialPromise);
+  }
+
+  await Promise.all(promises);
+
+  const modelParams = MODEL_DEFAULTS[model] || MODEL_DEFAULTS['gemini-3.1-flash-image'];
+  // Lower temperature for surgical edits
+  const temperature = Math.max(0.1, modelParams.temperature - 0.15);
+
+  const refinePolicy: RetryPolicy = {
+    maxAttempts: 2,
+    baseDelayMs: 600,
+    maxDelayMs: 3000,
+    backoffMultiplier: 2.0,
+  };
+
+  return withRetry(async (attempt, currentModel) => {
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+    console.info(
+      `[gemini] ${caller} — attempt ${attempt} | model=${currentModel} | temp=${temperature.toFixed(2)} | ratio=${targetAspectRatio} | instruction="${instruction.substring(0, 60)}…"`
+    );
+
+    const parts: any[] = [
+      { text: prompt },
+      { text: "\n<CURRENT_IMAGE>\nHere is the current state of the generated image:" },
+      { inlineData: { mimeType, data: base64Image } },
+    ];
+
+    if (originalImage) {
+      const [origMimePrefix, origBase64] = originalImage.split(';base64,');
+      const origMime = origMimePrefix ? origMimePrefix.split(':')[1] : 'image/jpeg';
+      parts.push({ text: "\n</CURRENT_IMAGE>\n<ORIGINAL_SOURCE_IMAGE>\nHere is the exact original blue-print or schematic upload. If the user refers to the 'original image' or asks for things to match the original, analyze this image carefully to retrieve the required details, headers, tables, logos, or format:" });
+      parts.push({ inlineData: { mimeType: origMime, data: origBase64 || originalImage } });
+    }
+
+    if (referenceImages && referenceImages.length > 0) {
+      parts.push({ text: (originalImage ? "\n</ORIGINAL_SOURCE_IMAGE>" : "\n</CURRENT_IMAGE>") + "\n<STYLE_TRANSFER_REFERENCE_IMAGES>\nHere are the style transfer reference images provided. If the user refers to 'reference image', 'style image', 'transfer image', or asks to adopt a specific visual format or style, analyze these images to adopt their rendering, color, fonts, or styling:" });
+      referenceImages.forEach(ref => {
+        const [, base64Data] = ref.url.split(';base64,');
+        parts.push({ inlineData: { mimeType: ref.mimeType, data: base64Data || ref.url } });
+      });
+      parts.push({ text: "\n</STYLE_TRANSFER_REFERENCE_IMAGES>\n" });
+    }
+
+    const response = await ai.models.generateContent({
+      model: currentModel,
+      contents: {
+        parts,
+      },
+      config: {
+        imageConfig: (() => {
+          const cfg: any = { imageSize: mapImageSizeToApi(imageSize) };
+          if (!parts.some((p: any) => p.inlineData)) cfg.aspectRatio = targetAspectRatio;
+          return cfg;
+        })(),
+        temperature,
+        topP: modelParams.topP,
+        topK: modelParams.topK,
+      },
+    });
+
+    const candidate = response.candidates?.[0];
+    if (!candidate) {
+      throw {
+        code: ErrorCode.NO_CANDIDATES,
+        message: "Gemini API returned zero candidates.",
+        retryable: true,
+      } satisfies AppError;
+    }
+
+    const { data, mimeType: outMime } = extractImageFromResponse(candidate as Parameters<typeof extractImageFromResponse>[0]);
+    return {
+      imageUrl: `data:${outMime};base64,${data}`,
+      aspectRatio: targetAspectRatio,
+      hotspots: hotspots || []
+    };
+  }, 'image', refinePolicy, model);
+}
+
+// ============================================================================
+// PROMPT ENGINEERING — regenerateImage
+// ============================================================================
+
+const BASE_PROMPT = `\
+You are an elite industrial photographer and precision imaging specialist.
+Your task is to take the provided reference image and generate a highly-accurate, photorealistic image of the subject.
+
+SUBJECT RECOGNITION & RENDERING STANDARDS:
+1. AUTHENTICITY AND REALISM: The final image MUST look like a true, real-life photograph of a physical object. Avoid overly glossy, plasticky, or "AI-generated" 3D rendering looks. Use natural lighting and realistic surface imperfections if applicable.
+2. RAW INDUSTRIAL PARTS: Match tactile surfaces like matte anodizing, sand-cast aluminum, natural metal grain, tool marks, and brushed steel perfectly. For fasteners (screws/bolts), strictly preserve the true-to-life head type (e.g., slotted, fillister), thread density, and tip.
+3. SCENE INTEGRITY: Render everything shown in the reference image exactly as it is structured. Preserve specific geometric proportions, lengths, widths, thickness, and authentic attributes. FIGHT THE TENDENCY to make thin objects look chunky or thick.
+4. ITEM COUNT (CRITICAL): Do NOT duplicate items! Output EXACTLY what is in the reference. If there is only a single simple object, generate exactly one single simple object. Never hallucinate extra items, extra packaging, or entirely new objects.
+
+OUTPUT STANDARD:
+• Branding: Recreate all visible text, logos, and typography completely accurately in the correct colors if any exist. Do not hallucinate or garble text.
+• Focus: The complete scene must be fully in focus and razor-sharp, like high-end macro photography.
+• Background: STRICTLY pure white (#FFFFFF). The background MUST be pure, flat, seamless white with NO environments, studio settings, or floor textures. Only a clean, soft, natural contact shadow is permitted beneath the object.
+`;
+
+const CLONE_PROMPT = `\
+${BASE_PROMPT}
+
+MODE: 1:1 CLONE (STUDIO UPGRADE)
+- Maintain the EXACT layout, positioning, framing, and camera angle of the original image.
+- Your entire focus is on drastically upgrading the LIGHTING and MATERIAL SHADERS to photorealistic quality.
+- Inject magnificent, high-contrast, professional-grade surface details and flawless natural lighting. 
+- Ensure the physical width, height, and overall silhouette perfectly match the original structurally.
+- ECOMMERCE WHITE BACKGROUND: You MUST place the products on a pure, flat, seamless white (#FFFFFF) background. Do NOT generate any environments, backdrops, scenes, floors, or dramatic surfaces. Only include a clean, soft, natural contact shadow beneath the part.
+`;
+
+const PRODUCT_HERO_PROMPT = `\
+${BASE_PROMPT}
+
+MODE: TOTALLY NEW PHOTOGRAPHY COMPOSITION (PRODUCT HERO)
+You MUST create a significantly different visual arrangement than the reference image. The reference image is ONLY for the visual identity and mechanical design of the objects. Do not copy its spatial layout or camera angle.
+
+1. CAMERA AND PERSPECTIVE: Radically change the camera angle. Render from a dramatic low angle, a high isometric perspective, or a close-up wide-angle view. The objects MUST be viewed from a completely different side than the reference. 
+2. ARRANGEMENT (CRUCIAL): Never place the items exactly as they were. If there are multiple items, you must overlap them elegantly and arrange them professionally. If there is a single item, place it dynamically.
+3. DO NOT BE REPETITIVE: Ensure the new layout does NOT resemble the old layout in any way, shape, or form. Show the objects interacting dynamically in a premium catalog grouping.
+4. STRICT ITEM COUNT: Reproduce EXACTLY the items shown in the original image. No more, no less. If the original shows ONE single screw, output exactly one single screw. If the original shows one left piece and one right piece, output exactly that. Do not hallucinate extra items!
+5. ECOMMERCE WHITE BACKGROUND: You MUST place the products on a pure, flat, seamless white (#FFFFFF) background. Do NOT generate any environments, backdrops, scenes, floors, or dramatic studio surfaces. Only include a clean, soft, natural contact shadow beneath the part.
+`;
+
+function buildPrompt(
+  mode: 'product_hero' | 'hardware_part' | 'clone',
+  customPrompt: string = "",
+  hasReferenceImage: boolean = true
+): string {
+  const hardwarePrompt = hasReferenceImage ? `\
+${BASE_PROMPT}
+
+MODE: HARDWARE PART (CREATIVE PRECISION SYNTHESIS)
+You are an expert industrial artist. You MUST creatively synthesize an entirely new, breathtaking macro-photography shot featuring the exact hardware part shown in the reference image.
+
+1. EXACT STRUCTURAL CLONING (CRITICAL): While the shot is new, the hardware part itself MUST be an absolutely flawless clone of the geometry in the reference image. You must perfectly lock onto the exact length, exact head thickness, exact hole diameter, spatial proportions, and thread pitch. DO NOT DISTORT, stretch, fatten, or compress the original shape. If the original screw is thin, make it exactly that thin. If the O-ring has a tiny thickness, keep it tiny.
+2. ECOMMERCE WHITE BACKGROUND: You MUST place the hardware part on a pure, flat, seamless white (#FFFFFF) background. Do NOT generate any environments, backdrops, scenes, floors, or dramatic surfaces. Only include a clean, soft, natural contact shadow beneath the part. YOU MUST however change the camera angle and lighting from the reference image to create a completely new creative composition on the pure white stage.
+3. MATERIAL ENHANCEMENT: Maintain the physical realism of the material from the image (e.g., zinc, brass, rubber) but enhance it with photorealistic specular highlights, reflections, and micro-textures that respond dynamically to your newly invented lighting environment.
+4. STRICT ITEM COUNT: Output exactly the singular part that exists in the image. No more, no less!
+` : `\
+${BASE_PROMPT}
+
+MODE: HARDWARE PART (NATIVE TEXT-TO-IMAGE PRECISION SYNTHESIS)
+You MUST generate a completely NEW, pristine, high-fidelity, photorealistic macro photograph of the hardware part described in the strict textual specification below. 
+There is NO reference image provided. You will synthesize the visual strictly from the structural engineering properties meticulously detailed in the specification.
+
+1. GEOMETRIC PRECISION (CRITICAL): You MUST perfectly emulate the aspect ratios, dimensions, lengths, head thicknesses, and thread counts described. The mathematical measurements in the text are absolute truths.
+2. ANTI-HALLUCINATION PROTOCOL (THICKNESS & LENGTH): Image models naturally want to draw "generic" chunky screws or fat donuts. YOU MUST FIGHT THIS TENDENCY. If the text says the screw is thin, make it mathematically thin. If the text says the O-ring or washer has a very thin cross-section compared to its hole, you MUST NOT default to a thick rubber donut. Obey the ratios! Do not make parts excessively long, short, fat, or thick compared to the audit.
+3. NATURAL MATERIAL PURITY: Follow the material descriptions flawlessly (e.g., dull zinc-plated, raw stainless steel, matte black oxide, tarnished brass). Ensure microscopic physical textures exist—do not output fake, glossy 3D CAD renders.
+4. ECOMMERCE WHITE BACKGROUND: You MUST place the hardware part on a pure, flat, seamless white (#FFFFFF) background. Do NOT generate any environments, backdrops, scenes, floors, or dramatic surfaces. Only include a clean, soft, natural contact shadow beneath the part.
+`;
+
+  const heroPrompt = hasReferenceImage ? `\
+${BASE_PROMPT}
+
+MODE: TOTALLY NEW PHOTOGRAPHY COMPOSITION (PRODUCT HERO)
+You MUST create a significantly different visual arrangement than the reference image. The reference image is ONLY for the visual identity and mechanical design of the objects. Do not copy its spatial layout or camera angle.
+
+1. CAMERA AND PERSPECTIVE: Radically change the camera angle. Render from a dramatic low angle, a high isometric perspective, or a close-up wide-angle view. The objects MUST be viewed from a completely different side than the reference. 
+2. ARRANGEMENT (CRUCIAL): Never place the items exactly as they were. If there are multiple items, you must overlap them elegantly and arrange them professionally. If there is a single item, place it dynamically.
+3. DO NOT BE REPETITIVE: Ensure the new layout does NOT resemble the old layout in any way, shape, or form. Show the objects interacting dynamically in a premium catalog grouping.
+4. STRICT ITEM COUNT: Reproduce EXACTLY the items shown in the original image. No more, no less.
+5. ECOMMERCE WHITE BACKGROUND: You MUST place the objects on a pure, flat, seamless white (#FFFFFF) background. Do NOT generate any environments, backdrops, scenes, studio floors, or dramatic surfaces. Only include a clean, soft, natural contact shadow beneath the part.
+` : `\
+${BASE_PROMPT}
+
+MODE: NATIVE PHOTOGRAPHY COMPOSITION (PRODUCT HERO)
+You are synthesizing a brand new, highly-premium catalog photograph strictly from the textual specification.
+Render a high-end, studio-lit hero shot.
+
+1. CAMERA AND PERSPECTIVE: Render from a dramatic low angle, a high isometric perspective, or a close-up wide-angle view. 
+2. ARRANGEMENT: Position the objects elegantly and professionally.
+3. HIGH-END FINISH: Synthesize absolutely breathtaking lighting, refractions, and deep material specular highlights.
+4. STRICT ITEM COUNT: Obey the exact quantity boundaries set in the textual specification.
+5. ECOMMERCE WHITE BACKGROUND: You MUST place the objects on a pure, flat, seamless white (#FFFFFF) background. Do NOT generate any environments, backdrops, scenes, studio floors, or dramatic surfaces. Only include a clean, soft, natural contact shadow beneath the part.
+`;
+
+  const base = mode === 'clone' 
+    ? CLONE_PROMPT 
+    : mode === 'hardware_part'
+      ? hardwarePrompt
+      : heroPrompt;
+
+  if (!customPrompt.trim()) return base;
+
+  return `${base}
+
+ADDITIONAL INSTRUCTIONS FROM USER:
+${customPrompt.trim()}`;
+}
+
+// ============================================================================
+// ============================================================================
+// PUBLIC API — regenerateImage
+// ============================================================================
+
+const productSpecCache = new Map<string, string>();
+
+export async function extractProductSpecification(
+  base64Image: string,
+  mimeType: string,
+  mode?: 'product_hero' | 'hardware_part' | 'clone'
+): Promise<string> {
+  const caller = "extractProductSpecification";
+  validateApiKey(caller);
+
+  // Use length and a slice from the middle of the base64 string to ensure a more unique cache key. Add v4 to invalidate bad caches.
+  const cacheKey = `v4_len_${base64Image.length}_mid_${base64Image.substring(Math.floor(base64Image.length / 2), Math.floor(base64Image.length / 2) + 100)}_${mode}`;
+  if (productSpecCache.has(cacheKey)) {
+    console.info(`[gemini] ${caller} — returning cached product specification`);
+    return productSpecCache.get(cacheKey)!;
+  }
+
+  const prompt = `You are a master industrial designer, macro photographer, and mechanical engineer.
+Analyze this raw photo or product image and extract an extremely precise, professional, and dense textual specification for recreation purposes.
+
+We need to feed this highly descriptive specification into an AI image generator to produce a highly-accurate, photorealistic image of this exact physical product.
+
+Provide an exhaustive and detailed analysis of the following categories:
+
+1. PRODUCT IDENTITY & INVENTORY:
+  - Exact brand name, logos, typography, styling, trademark markings, and sub-labels.
+  - Precise list of all items present in the reference image. Count items accurately to prevent duplication or omission! Describe exactly what the object is (e.g. a specific type of screw like a "#4-40 fillister head machine screw", a specific hardware tool, a piece of equipment, or retail packaging).
+
+2. PRODUCT DESIGN & MECHANICAL ANATOMY:
+  - Detailed physical structure of each object.
+  - For hardware/fasteners (like screws, bolts, nuts), explicitly state the head type (e.g., pan, flat, truss, binder, fillister), drive type (Phillips, slotted, hex), thread density, and tip style.
+  - For complex assemblies, describe shapes, parts, joints, springs, adjusters, shafts, clips, etc.
+
+3. MATERIALS, SHADERS, & TEXTURE FINISHES:
+  - Describe the exact textures and material shaders: sand-cast aluminum, matte-anodized metal, high-gloss painted surfaces, textured cardboard box material, fabric nylon thread weave, rubber treads, shiny metal screws, zinc-plated steel, stainless steel, plastic fasteners, etc.
+
+4. BRAND COLOR SCHEME:
+  - Exact color specifications. Include graphic design accents, stripe patterns, and typographic colors if packaging or branding is present.
+
+5. BOX & PACKAGING GRAPHICS DETAIL (IF ANY):
+  - If packaging is present, detail the geometry, proportions, and colors of the box panels. Where is text positioned? What drawings or line arts are shown?
+  - If NO packaging is present, explicitly state "No packaging present".
+${mode === 'hardware_part' ? `
+6. GEOMETRIC AUDIT & PHYSICAL MEASUREMENTS (CRITICAL FOR HARDWARE):
+  - Analyze the precise height-to-width aspect ratio of each physical item.
+  - Determine visual approximations for specific part sizes, lengths, widths, threads, thicknesses, and overall scale.
+  - For hardware (screws, bolts, nuts, washers): perform a meticulous dimensional breakdown. What is the exact ratio of the head diameter to the head thickness? What is the ratio of the thread length to the overall bolt length? Are the threads coarse or fine pitch? Estimate the total visible thread count.
+  - For O-rings, washers, and gaskets: What is the EXACT ratio of the material cross-section (thickness) to the inner hole diameter? If it is a thin wire-like ring, explicitly state "EXTREMELY THIN cross-section with a massive inner hole".
+  - Explicitly mandate the exact geometric proportions to prevent any stubbiness, stretching, squashed parts, or overly fat/wide dimensions. You MUST instruct the image generator against hallucinating "generic" or "chunky" hardware variants. Provide strict length-to-thickness bounding rules.
+
+7. WHITE SPACE & CANVAS FRAMING (CRITICAL):
+  - How does the object sit relative to the full image frame boundaries?
+  - If a long thin screw is in a square image, it only occupies a narrow band and there is huge empty space above/below it. State this explicitly!
+  - Give a strict directive to the downstream generator about framing, e.g. "Do NOT stretch the item to fill the canvas. Render it small/narrow in the center with 40% empty space above and below."` : ''}
+
+Output only your high-fidelity, professional specification in clear paragraphs. Be highly descriptive and accurate, transcribing text character-by-character where applicable.`;
+
+  return withRetry(async (attempt, model) => {
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+    console.info(`[gemini] ${caller} — attempt ${attempt} | extracting product details using vision model ${model}`);
+
+    const parts = [
+      { text: prompt },
+      { inlineData: { mimeType, data: base64Image } }
+    ];
+
+    try {
+      const response = await ai.models.generateContent({
+        model,
+        contents: { parts },
+      });
+      const result = response.text || "Failed to extract product details.";
+      productSpecCache.set(cacheKey, result);
+      return result;
+    } catch (error) {
+      console.error(`[gemini] ${caller} attempt ${attempt} failed:`, error);
+      throw error;
+    }
+  }, 'text', undefined, 'gemini-3.5-flash');
+}
+
+export async function regenerateImage(
+  base64Image: string,
+  mimeType: string,
+  customPrompt: string = "",
+  aspectRatio: AspectRatioOption = "1:1",
+  imageSize: ImageSize = "1440p",
+  model: ModelVersion = "gemini-3.1-flash-image",
+  mode: 'product_hero' | 'hardware_part' | 'clone' = 'product_hero',
+  onProgress?: (message: string) => void
+): Promise<{ imageUrl: string; aspectRatio: AspectRatio }> {
+  const caller = "regenerateImage";
+
+  validateApiKey(caller);
+  validateBase64Image(base64Image, caller);
+  
+  const logProgress = (msg: string) => {
+    console.info(`[gemini] ${caller} — ${msg}`);
+    if (onProgress) onProgress(msg);
+  };
+
+  // Handle Auto Aspect Ratio
+  let targetAspectRatio: AspectRatio;
+  if (aspectRatio === "auto") {
+    try {
+      logProgress("Detecting optimal aspect ratio...");
+      targetAspectRatio = await detectOptimalAspectRatio(base64Image, mimeType, model);
+      logProgress(`Aspect ratio detected: ${targetAspectRatio}`);
+    } catch (e) {
+      console.error("[gemini] Failed to detect aspect ratio, defaulting to 1:1", e);
+      targetAspectRatio = "1:1";
+    }
+  } else {
+    targetAspectRatio = aspectRatio;
+  }
+
+  // Define strategy parameters based on selected mode
+  let finalPrompt = "";
+  let useParts: any[] = [];
+  const modelParams = MODEL_DEFAULTS[model] || MODEL_DEFAULTS['gemini-3.1-flash-image'];
+  const temperature = mode === 'clone' 
+    ? 0.05 
+    : mode === 'hardware_part' 
+      ? 0.15 
+      : 0.75;
+
+  if (mode === 'clone') {
+    // Standard clone: pass input photo as reference and keep layout 1:1 with low temperature
+    finalPrompt = buildPrompt(mode, customPrompt);
+    useParts = [
+      { text: finalPrompt },
+      { inlineData: { mimeType, data: base64Image } },
+    ];
+    logProgress("Clone mode active: strict 1:1 visual anchoring configured.");
+  } else {
+    // Creative or POV Mode: Use Vision-to-Text extraction to form a master catalog prompt
+    let productSpec = "";
+    try {
+      logProgress("Stage 1/2: Executing pre-processing vision audit for premium product specification...");
+      productSpec = await extractProductSpecification(base64Image, mimeType, mode);
+      logProgress("Stage 1/2: Product specifications extracted successfully. \n\n" + productSpec);
+    } catch (e) {
+      console.warn(`[gemini] ${caller} — vision pre-processing failed due to API limits or high demand. Falling back to direct multimodal reference image transfer!`, e);
+      logProgress("Stage 1/2 WARNING: Vision analysis failed. Falling back to direct image reference.");
+    }
+
+    const hasReferenceImage = true;
+
+    if (productSpec) {
+      finalPrompt = `${buildPrompt(mode, customPrompt, hasReferenceImage)}
+
+PRODUCT STRUCTURE TO RENDERING SPECIFICATION:
+<HARDWARE_AUDIT_REPORT>
+The following is a meticulous geometric specification and measurements audit performed by a master engineer. You MUST use this inventory to ensure absolute 1-to-1 pixel fidelity and prevent hallucinations. Do not mutate shapes. If the dimensions or aspect ratios mentioned here differ from your visual assumption of the image, the text below is the absolute truth.
+
+${productSpec}
+</HARDWARE_AUDIT_REPORT>
+`;
+    } else {
+      finalPrompt = buildPrompt(mode, customPrompt, hasReferenceImage);
+    }
+
+    useParts = [
+      { text: finalPrompt },
+      { inlineData: { mimeType, data: base64Image } }
+    ];
+    logProgress("Stage 2/2: Proceeding with multimodal structural synthesis. Anchoring output to physical image reference...");
+  }
+
+  const regeneratePolicy: RetryPolicy = {
+    maxAttempts: 5,
+    baseDelayMs: 3000,
+    maxDelayMs: 15000,
+    backoffMultiplier: 2.0,
+  };
+
+  return withRetry(async (attempt, currentModel) => {
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+    logProgress(`Generation Attempt ${attempt} | Model = ${currentModel} | Temp = ${temperature.toFixed(2)}`);
+
+    const response = await ai.models.generateContent({
+      model: currentModel,
+      contents: {
+        parts: useParts,
+      },
+      config: {
+        imageConfig: (() => {
+          const cfg: any = { imageSize: mapImageSizeToApi(imageSize) };
+          if (!useParts.some((p: any) => p.inlineData)) cfg.aspectRatio = targetAspectRatio;
+          return cfg;
+        })(),
+        temperature,
+        topP: modelParams.topP,
+        topK: modelParams.topK,
+      },
+    });
+
+    const candidate = response.candidates?.[0];
+    if (!candidate) {
+      throw {
+        code: ErrorCode.NO_CANDIDATES,
+        message: "Gemini API returned zero candidates.",
+        retryable: true,
+      } satisfies AppError;
+    }
+
+    logProgress(`Stage 2/2 SUCCESS: Received candidate natively generated from structural text specification.`);
+
+    const { data, mimeType: outMime } = extractImageFromResponse(candidate as Parameters<typeof extractImageFromResponse>[0]);
+    return {
+      imageUrl: `data:${outMime};base64,${data}`,
+      aspectRatio: targetAspectRatio,
+    };
+  }, 'image', regeneratePolicy, model);
+}
+
+// ============================================================================
+// PUBLIC API — refineImage
+// ============================================================================
+
+export async function refineImage(
+  base64Image: string,
+  mimeType: string,
+  refinementPrompt: string,
+  aspectRatio: AspectRatioOption = "1:1",
+  imageSize: ImageSize = "1440p",
+  model: ModelVersion = "gemini-3.1-flash-image",
+  mode: 'product_hero' | 'hardware_part' | 'clone' = 'product_hero',
+  onProgress?: (message: string) => void
+): Promise<{ imageUrl: string; aspectRatio: AspectRatio }> {
+  const caller = "refineImage";
+
+  validateApiKey(caller);
+  validateBase64Image(base64Image, caller);
+  
+  const logProgress = (msg: string) => {
+    console.info(`[gemini] ${caller} — ${msg}`);
+    if (onProgress) onProgress(msg);
+  };
+
+  if (!refinementPrompt || !refinementPrompt.trim()) {
+    throw new Error("A refinement prompt is required to apply revisions.");
+  }
+
+  // Handle Auto Aspect Ratio
+  let targetAspectRatio: AspectRatio;
+  if (aspectRatio === "auto") {
+    try {
+      logProgress("Detecting optimal aspect ratio...");
+      targetAspectRatio = await detectOptimalAspectRatio(base64Image, mimeType, model);
+      logProgress(`Aspect ratio determined: ${targetAspectRatio}`);
+    } catch (e) {
+      console.error("[gemini] Failed to detect aspect ratio, defaulting to 1:1", e);
+      targetAspectRatio = "1:1";
+    }
+  } else {
+    targetAspectRatio = aspectRatio;
+  }
+
+  const prompt = `
+    You are an expert photographic retoucher and industrial imaging specialist. Your task is to apply specific revisions to the provided image using a Difference-Aware pipeline.
+    
+    CRITICAL INSTRUCTIONS:
+    1. RE-RENDER STRUCTURALLY ACCURATE: You MUST compare the original provided rendering with the requested changes. Maintain identical product size, dimensions, geometric proportions, thread styling, and positioning. Maintain lifelike, photorealistic textures unless asked otherwise.
+    2. TARGETED MODIFICATION: Only apply the requested visual style or modification to the specific product identified. Do NOT hallucinate entirely new parts, tools, or packaging not present in the input image. Ensure that the part images remain authentically photorealistic and are not overly creative/enhanced to the point of being unrecognizable from their true, physical mechanical shape.
+    3. ACT ON USER REVISIONS: ${refinementPrompt}
+    4. RETAIN BRANDING: ONLY preserve text, branding, or logos that actually exist in the reference image. Do NOT add new text or logos that aren't there. Keep any existing text crisp and clear.
+    5. PURE WHITE BACKGROUND: Always place the object on a flat, pure, seamless white (#FFFFFF) background. Do NOT generate any environments, backdrops, scenes, floors, or dramatic studio surfaces. Only include a clean, soft, natural contact shadow beneath the part.
+  `;
+
+  const modelParams = MODEL_DEFAULTS[model] || MODEL_DEFAULTS['gemini-3.1-flash-image'];
+  const temperature = mode === 'clone' 
+    ? 0.05 
+    : mode === 'hardware_part' 
+      ? 0.2 
+      : 0.85;
+
+  const refinePolicy: RetryPolicy = {
+    maxAttempts: 3,
+    baseDelayMs: 600,
+    maxDelayMs: 3000,
+    backoffMultiplier: 2.0,
+  };
+
+  return withRetry(async (attempt, currentModel) => {
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+    logProgress(`Attempt ${attempt} | Model = ${currentModel} | Target Ratio = ${targetAspectRatio}`);
+
+    const parts: any[] = [
+      { text: prompt },
+      { inlineData: { mimeType, data: base64Image } },
+    ];
+
+    const response = await ai.models.generateContent({
+      model: currentModel,
+      contents: {
+        parts,
+      },
+      config: {
+        imageConfig: (() => {
+          const cfg: any = { imageSize: mapImageSizeToApi(imageSize) };
+          if (!parts.some((p: any) => p.inlineData)) cfg.aspectRatio = targetAspectRatio;
+          return cfg;
+        })(),
+        temperature,
+        topP: modelParams.topP,
+        topK: modelParams.topK,
+      },
+    });
+
+    const candidate = response.candidates?.[0];
+    if (!candidate) {
+      throw {
+        code: ErrorCode.NO_CANDIDATES,
+        message: "Gemini API returned zero candidates.",
+        retryable: true,
+      } satisfies AppError;
+    }
+
+    logProgress(`Stage 2 Success: Received refined candidate image stream.`);
+
+    const { data, mimeType: outMime } = extractImageFromResponse(candidate as Parameters<typeof extractImageFromResponse>[0]);
+    return {
+      imageUrl: `data:${outMime};base64,${data}`,
+      aspectRatio: targetAspectRatio,
+    };
+  }, 'image', refinePolicy, model);
+}
+
+// ============================================================================
+// PUBLIC API — extractHotspots
+// ============================================================================
+
+export async function extractHotspots(
+  base64Image: string,
+  mimeType: string,
+): Promise<RawHotspot[]> {
+  const caller = "extractHotspots";
+  console.log(`[DEBUG] ${caller}: Starting`);
+  validateApiKey(caller);
+  validateBase64Image(base64Image, caller);
+
+  const systemInstruction = `You are an elite, highly precise computer vision and engineering graphics analyst. Your classifications are consumed by commercial optical systems for interactive parts catalog mapping — errors cascade and are strictly unacceptable. Accuracy, precision and custom boundary detection is absolute.`;
+
+  return withRetry(async (attempt, model) => {
+    console.log(`[DEBUG] ${caller}: Attempt ${attempt}`);
+    const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+
+    console.info(`[gemini] ${caller} — attempt ${attempt} | Stage 1: extracting precise centers | model=${model}`);
+    
+    // STAGE 1: Extract labels and their precise center points
+    const stage1Prompt = `Analyze this technical schematic/parts blueprint diagram.
+Your objective is to identify EVERY single numeric/alphanumeric part label, callout capsule, numbering balloon, hexagonal target, or text block pointing to parts in the schematic.
+
+SYSTEMATIC PLAN:
+1. Scan the image carefully, row by row (from top-to-bottom) and column by column (from left-to-right) so no details or sub-labels are overlooked.
+2. For each detected callout or bubble, find the exact, normalized center point coordinates [y, x] on a scale of 0 to 1000.
+   - Coordinate Scale Guide: [0, 0] is the top-left corner, and [1000, 1000] is the bottom-right corner.
+   - First coordinate (Y): vertical axis, running from 0 at the absolute top row to 1000 at the absolute bottom row of the image.
+   - Second coordinate (X): horizontal axis, running from 0 at the absolute left column to 1000 at the absolute right column of the image.
+3. Transcribe the raw text inside or next to the callout label with LITERAL character accuracy.
+   - Include any part number, quantity multipliers, brand names, or notes (e.g. "729063\n X 4", "724061F", "722003C", "X 2 (LOCTITE 243)", "726018").
+   - Do NOT omit any letters or suffix.
+   - Format exactly what you see.
+
+Output format is a JSON array of objects, containing:
+'label': exact transcribed text
+'center_point': [y, x] normalized coordinates (0-1000) representing the absolute visual center of the label characters.`;
+
+    const stage1Response = await generateContentStreamAndLog(ai, caller + "_stage1", model, {
+      contents: {
+        parts: [
+          { text: stage1Prompt },
+          { inlineData: { mimeType, data: base64Image } },
+        ],
+      },
+      config: {
+        systemInstruction,
+        temperature: 0.1,
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              label: { type: Type.STRING, description: "The exact text of the part number, label, or callout." },
+              center_point: {
+                type: Type.ARRAY,
+                items: { type: Type.NUMBER },
+                description: "The precise center point [y, x] of the label, normalized 0-1000."
+              }
+            },
+            required: ["label", "center_point"]
+          }
+        }
+      }
+    });
+
+    const stage1Text = stage1Response.text?.trim();
+    if (!stage1Text) throw new Error("Stage 1 failed: No response text.");
+    
+    const stage1Parsed = JSON.parse(stage1Text);
+    console.log(`[DEBUG] ${caller}: Stage 1 parsed ${stage1Parsed.length} center points`);
+
+    // STAGE 2: Determine perfect shapes/boxes around the precise center points
+    console.info(`[gemini] ${caller} — attempt ${attempt} | Stage 2: extracting precise boxes based on centers | model=${model}`);
+    
+    const stage2Prompt = `Analyze this technical schematic/parts blueprint diagram image.
+You are provided with a previously detected list of center coordinates for all part hotspot labels.
+Your objective is to determine the absolute pixel-perfect, ultra-tight bounding box [ymin, xmin, ymax, xmax] (normalized 0-1000) and shape category for each label.
+
+CRITICAL INSTRUCTIONS FOR ULTRA-PRECISE GEOMETRIC ALIGNMENT:
+1. Shape Classification:
+   - 'circle': Use this shape ONLY for perfectly round numbering bubbles or circular balloons.
+   - 'polygon': Use this shape for irregular, tilted, or non-rectilinear shapes. Trace the exact outer boundary with sequential vertices in 'polygon_2d'.
+   - 'rectangle': Use this shape for standard rectangular callout shapes, plaintext labels, or oval/oblong capsules.
+
+2. Ultra-Tight Fitting Limit (NO OVERSIZING, NO LOOSE PADDING):
+   - The bounding boxes MUST tightly hug the actual ink of the text characters or the exact outer stroke of the capsule/bubble. 
+   - DO NOT include leader lines, arrows, trailing strings, or diagram background space inside the bounding box.
+   - The width and height of the box should be exactly the width and height of the text/balloon. If the result looks like a wide rectangle but the text is short, YOU HAVE FAILED.
+
+3. Proximity Awareness & Overlap Prevention:
+   - Close hotspots MUST NOT OVERLAP. If padding causes collisions, trim constraints immediately to create distinct gaps.
+   - Each label must be a precise, independent click target spanning only its own textual area.
+
+4. Coordinate Alignment (NO ARTIFICIAL OFFSETS):
+   - Visual alignment with the actual printed graphic is the absolute source of truth. If the previously detected center point is slightly off, correct it in your final ultra-tight bounding box structure.
+
+5. Part Bounding Box Correlation ('part_box_2d'):
+   - For each label, inspect the leader lines or arrows pointing from the label to the physical hardware part.
+   - If a distinct indicator line exists, locate the physical component/part being pointed to, and capture its bounding box in 'part_box_2d' as [ymin, xmin, ymax, xmax] normalized 0-1000. This must cover ONLY the actual physical hardware item (e.g. a screw, ring, tube, washer).
+
+Input Search References (JSON):
+${JSON.stringify(stage1Parsed, null, 2)}
+
+Output the final list of precise hotspots as a JSON array of objects. All hotspots must be mapped.`;
+
+    const stage2Response = await generateContentStreamAndLog(ai, caller + "_stage2", model, {
+      contents: {
+        parts: [
+          { text: stage2Prompt },
+          { inlineData: { mimeType, data: base64Image } },
+        ],
+      },
+      config: {
+        systemInstruction,
+        temperature: 0.1,
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.ARRAY,
+          items: {
+            type: Type.OBJECT,
+            properties: {
+              label: {
+                type: Type.STRING,
+                description: "The exact text of the part number.",
+              },
+              box_2d: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.NUMBER,
+                },
+                description: "The precise bounding box [ymin, xmin, ymax, xmax] normalized 0-1000. This tightly wraps around the printed text capsule boundaries.",
+              },
+              shape: {
+                type: Type.STRING,
+                description: "Must be one of: 'circle', 'rectangle', or 'polygon'.",
+              },
+              polygon_2d: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.ARRAY,
+                  items: {
+                    type: Type.NUMBER,
+                  },
+                },
+                description: "Sequential [y, x] coordinates tracing the exact custom profile (0-1000). Required if shape is 'polygon'.",
+              },
+              part_box_2d: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.NUMBER,
+                },
+                description: "Optional. The bounding box [ymin, xmin, ymax, xmax] normalized 0-1000 of the physical component or hardware being pointed to by this callout line, if visible.",
+              },
+              confidence: {
+                type: Type.NUMBER,
+                description: "Confidence score (0.0 to 1.0).",
+              },
+            },
+            required: ["label", "box_2d", "shape", "confidence"],
+          },
+        },
+      },
+    });
+
+    const text = stage2Response.text?.trim();
+    console.log(`[DEBUG] ${caller}: Stage 2 received response text (length: ${text?.length})`);
+    if (!text) {
+      console.error(`[DEBUG] ${caller}: No text in response`);
+      throw new Error("No hotspots returned from Stage 2 analysis.");
+    }
+
+    try {
+      const parsed = JSON.parse(text);
+      console.log(`[DEBUG] ${caller}: Parsed ${parsed.length} hotspots`);
+      if (!Array.isArray(parsed)) {
+        throw new Error("Response is not an array");
+      }
+      return parsed.map((item: any) => ({
+        id: Math.random().toString(36).substr(2, 9),
+        label: normalizeLabelToDetails(item.label),
+        box_2d: item.box_2d,
+        part_box_2d: item.part_box_2d,
+        polygon_2d: item.polygon_2d,
+        shape: item.shape || 'rectangle',
+        confidence: item.confidence,
+      })) as RawHotspot[];
+    } catch (e) {
+      console.error(`[DEBUG] ${caller}: Failed to parse Stage 2 JSON`, e);
+      throw new Error("Failed to parse hotspots Stage 2 JSON: " + (e instanceof Error ? e.message : String(e)));
+    }
+  }, 'text', undefined, 'gemini-3.5-flash');
+}
+
+import { getHotspotMemoryStore } from "./HotspotMemoryStore";
+
+export async function refineHotspots(
+  base64Image: string,
+  mimeType: string,
+  currentHotspots: RawHotspot[],
+  instruction: string = "Refine the hotspots."
+): Promise<RawHotspot[]> {
+  const caller = "refineHotspots";
+  console.log(`[DEBUG] ${caller}: Starting`);
+  validateApiKey(caller);
+  validateBase64Image(base64Image, caller);
+
+  const store = getHotspotMemoryStore(process.env.GEMINI_API_KEY!);
+  console.log(`[DEBUG] ${caller}: Calling store.refine`);
+  const result = await store.refine(base64Image, mimeType, instruction, currentHotspots);
+  console.log(`[DEBUG] ${caller}: store.refine returned ${result.length} hotspots`);
+  return result;
+}
+
+// ============================================================================
+// UTILITY FUNCTIONS
+// ============================================================================
+
+/**
+ * Detects if a label contains multiple distinct part numbers (e.g., list of variants or equations mapping parts)
+ * and normalizes it to "Details" to consolidate hotspots for multi-part stacks.
+ */
+export function normalizeLabelToDetails(label: string): string {
+  if (!label) return label;
+  return label.trim();
+}
+
+/** Normalise styles input to a valid, deduplicated array */
+export function normalizeStyles(
+  input: SchematicStyle[] | SchematicStyle | undefined | null
+): SchematicStyle[] {
+  if (!input) return ["modern"];
+  const arr = Array.isArray(input) ? input : [input];
+  const valid = arr.filter((s) => s in STYLE_REGISTRY) as SchematicStyle[];
+  return valid.length > 0 ? [...new Set(valid)] : ["modern"];
+}
+
+/** Human-readable style label */
+export function getStyleLabel(style: SchematicStyle): string {
+  return STYLE_REGISTRY[style]?.label ?? style;
+}
+
+/** Human-readable style description for tooltips */
+export function getStyleDescription(style: SchematicStyle): string {
+  const prompt = STYLE_REGISTRY[style]?.prompt ?? "";
+  // Extract first bullet as description
+  const match = prompt.match(/•\s+(.+)/);
+  return match ? match[1].trim() : style;
+}
+
+/** All available styles */
+export function getAvailableStyles(): SchematicStyle[] {
+  return Object.keys(STYLE_REGISTRY) as SchematicStyle[];
+}
+
+/** Validate a configuration before sending to the API */
+export function validateConfig(
+  config: Partial<SchematicEnhancementConfig>
+): ValidationResult {
+  const errors: string[] = [];
+  const warnings: string[] = [];
+
+  if (!config.styles || config.styles.length === 0) {
+    warnings.push("No styles specified — defaulting to 'modern'.");
+  } else {
+    const invalid = config.styles.filter((s) => !(s in STYLE_REGISTRY));
+    if (invalid.length > 0) {
+      errors.push(`Unknown styles: ${invalid.join(", ")}`);
+    }
+    if (config.styles.length > 3) {
+      warnings.push(
+        "More than 3 styles may produce inconsistent output. Recommend 1–3."
+      );
+    }
+  }
+
+  if (config.customPrompt && config.customPrompt.length > 1000) {
+    warnings.push(
+      "Custom prompt exceeds 1000 characters; extremely long instructions may be partially ignored."
+    );
+  }
+
+  return {
+    valid: errors.length === 0,
+    errors,
+    warnings,
+  };
+}
+
+/** Estimate processing complexity for a given configuration */
+export function estimateComplexity(
+  config: Partial<SchematicEnhancementConfig>
+): ProcessingComplexity {
+  let score = 0;
+  score += (config.styles?.length ?? 1) * 2;
+  score += config.outputQuality === "high" ? 3 : config.outputQuality === "maximum" ? 6 : 1;
+  score += config.customPrompt && config.customPrompt.trim().length > 0 ? 2 : 0;
+  score += config.enhanceDetails ? 2 : 0;
+  score += config.preserveGeometry ? 1 : 0;
+
+  if (score <= 6)  return "low";
+  if (score <= 12) return "medium";
+  return "high";
+}
+
+/** Estimated latency in seconds (rough heuristic for UI hints) */
+export function estimateLatencySeconds(
+  model: ModelVersion,
+  imageSize: ImageSize,
+  quality: OutputQuality
+): number {
+  const base: Record<ModelVersion, number> = {
+    "gemini-3.1-flash-image": 8,
+    "gemini-3.5-flash": 4,
+    "gemini-2.5-flash-image": 8,
+    "gemini-3.1-flash-lite": 2,
+    "gemini-3-flash-preview": 4,
+    "gemini-2.5-flash": 3,
+  };
+  const sizeMultiplier: Record<ImageSize, number> = {
+    "720p": 0.5, "1080p": 1.0, "1440p": 1.5, "2K": 1.8, "4K": 4.0, "8K": 8.0,
+  };
+  const qualityMultiplier: Record<OutputQuality, number> = {
+    standard: 1.0, high: 1.3, maximum: 1.7,
+  };
+
+  return Math.round(
+    base[model] * sizeMultiplier[imageSize] * qualityMultiplier[quality]
+  );
+}
