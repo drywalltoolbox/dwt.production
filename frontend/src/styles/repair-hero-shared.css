@@ -458,7 +458,7 @@
   width: calc(100% - clamp(56px, 12vw, 224px));
 }
 
-.home-hero__stage { min-height: 660px; }
+.home-hero__stage { min-height: 32rem; }
 .home-hero-carousel { bottom: 4px; }
 
 @media (max-width: 63.99rem) {

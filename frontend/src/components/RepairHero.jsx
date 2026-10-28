@@ -88,7 +88,7 @@ export default function RepairHero({
           </div>
         </div>
       </div>
-      <RepairGuarantees />
+      {!homeSlide && <RepairGuarantees />}
     </section>
   );
 }

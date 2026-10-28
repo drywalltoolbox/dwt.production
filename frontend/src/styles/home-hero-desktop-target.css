@@ -2,7 +2,7 @@
 
 @media (min-width: 901px) {
   .home-hero__stage {
-    height: clamp(36rem, calc(100svh - 10.875rem), 49.375rem);
+    height: clamp(32rem, 62svh, 43rem);
     min-height: 0;
   }
 
