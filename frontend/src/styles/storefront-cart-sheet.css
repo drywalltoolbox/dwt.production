@@ -678,10 +678,53 @@
 @media (max-width: 480px) {
   .storefront-cart-sheet--premium .scs-header { min-height: 68px; padding-inline: 16px; }
   .storefront-cart-sheet--premium .scs-header-icon { display: none; }
-  .storefront-cart-sheet--premium .scs-item { grid-template-columns: 72px minmax(0, 1fr); gap: 12px; padding: 18px 16px; }
-  .storefront-cart-sheet--premium .scs-item-img { width: 72px; height: 84px; }
   .storefront-cart-sheet--premium .scs-footer { padding-inline: 16px; }
   .storefront-cart-sheet--premium .scs-clear-cart { padding-inline: 9px; }
+}
+@media (max-width: 767px) {
+  .storefront-cart-sheet--premium .scs-item-list { padding-top: 0; }
+  .storefront-cart-sheet--premium .scs-item {
+    grid-template-columns: clamp(92px, 28vw, 120px) minmax(0, 1fr);
+    align-items: stretch;
+    gap: 0;
+    padding: 0;
+  }
+  .storefront-cart-sheet--premium .scs-item-img {
+    position: relative;
+    width: 100%;
+    height: auto;
+    min-height: 132px;
+    border: 0;
+    border-radius: 0;
+    background: #fff;
+  }
+  .storefront-cart-sheet--premium .scs-item-img img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    object-fit: contain;
+  }
+  .storefront-cart-sheet--premium .scs-item-img:focus-visible { outline-offset: -3px; }
+  .storefront-cart-sheet--premium .scs-item-body {
+    min-width: 0;
+    gap: 5px;
+    padding: 14px clamp(12px, 4vw, 16px) 14px 12px;
+  }
+  .storefront-cart-sheet--premium .scs-item-name { line-height: 1.3; overflow-wrap: anywhere; }
+  .storefront-cart-sheet--premium .scs-item-remove {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    margin: -8px -8px 0 0;
+    border-radius: 0;
+    background: transparent;
+    color: #52627a;
+  }
+  .storefront-cart-sheet--premium .scs-item-bottom { gap: 8px; margin-top: auto; }
+  .storefront-cart-sheet--premium .scs-item-qty-row { border-radius: 8px; }
+  .storefront-cart-sheet--premium .scs-item-line-total { font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 }
 @media (prefers-reduced-motion: reduce) {
   .storefront-cart-sheet--premium .scs-item,

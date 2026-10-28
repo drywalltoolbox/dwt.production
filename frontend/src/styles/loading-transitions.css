@@ -71,10 +71,10 @@
   min-width: 0;
   width: 100%;
   overflow: hidden;
-  border: 1px solid rgba(203, 213, 225, 0.72);
-  border-radius: var(--dtb-radius-lg, 14px);
-  background: #fff;
-  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .dtb-product-card-skeleton__image {
@@ -118,6 +118,8 @@
   padding: var(--dtb-space-2) var(--dtb-space-2) var(--dtb-space-2);
   background: #fff;
 }
+.dtb-product-card-skeleton--grid .dtb-product-card-skeleton__meta,
+.dtb-product-card-skeleton--rail .dtb-product-card-skeleton__meta { padding-inline: 0; background: transparent; }
 
 .dtb-product-card-skeleton__brand {
   width: 42%;
@@ -142,7 +144,7 @@
   display: block;
   height: 1px;
   margin-top: var(--dtb-space-1);
-  background: rgba(226, 232, 240, 0.95);
+  background: transparent;
 }
 
 .dtb-product-card-skeleton__footer {
@@ -375,7 +377,6 @@ html.dtb-checkout-route-booting #dtb-checkout-route-loader {
 
   .dtb-product-card-skeleton--grid {
     min-height: clamp(350px, 29vw, 430px);
-    border-radius: 10px;
     box-shadow: none;
   }
 
@@ -387,9 +388,9 @@ html.dtb-checkout-route-booting #dtb-checkout-route-loader {
 
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__meta {
     min-height: 112px;
-    padding: var(--dtb-space-3) var(--dtb-space-3) var(--dtb-space-3);
-    background: #f4f4f4;
-    border-top: 1px solid rgba(15, 23, 42, 0.08);
+    padding: var(--dtb-space-3) 0;
+    background: transparent;
+    border-top: 0;
   }
 
   .dtb-product-card-skeleton--rail {

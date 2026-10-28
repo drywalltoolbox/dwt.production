@@ -30,17 +30,6 @@
 .home-commerce-categories .dtb-tool-type-tile:hover .dtb-tool-type-tile__label { color: var(--dtb-primary); }
 .home-commerce-categories .dtb-tool-type-tile:focus-visible { outline-offset: -2px; }
 
-.dtb-home-storefront .dtb-product-card,
-.dtb-home-storefront .dtb-product-card:hover,
-.dtb-home-storefront .dtb-product-card-skeleton {
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-  transform: none;
-}
-.dtb-home-storefront .dtb-product-card--rail .dtb-product-card__meta { padding-inline: 0; border-top: 0; background: transparent; }
-.dtb-home-storefront .dtb-product-card--rail .dtb-product-card__divider { background: transparent; }
 .dtb-home-storefront .dtb-home-product-section .storefront-section__view-all,
 .dtb-home-storefront .dtb-home-product-section .storefront-section__view-all:hover {
   min-height: 44px;

@@ -47,11 +47,6 @@
       transform 180ms ease !important;
   }
 
-  .dtb-product-card--grid:hover {
-    transform: translateY(-1px) !important;
-    box-shadow: 0 14px 28px rgba(15, 23, 42, 0.12) !important;
-  }
-
   .dtb-product-card--grid .dtb-product-card__image .product-card-image,
   .dtb-product-card--grid:hover .dtb-product-card__image .product-card-image {
     transform: none !important;
