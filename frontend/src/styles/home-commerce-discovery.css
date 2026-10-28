@@ -54,10 +54,6 @@
 .dtb-home-storefront .dtb-ui-trusted-brands--home { border: 0; background: transparent; }
 /* Product-led homepage composition; the shared repair landing remains intact. */
 .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__content { text-align: left; align-items: flex-start; }
-.home-hero__slide[data-campaign="tools"] .repair-hero__scrim { background: linear-gradient(105deg, #f8fbff 0%, rgba(231, 240, 255, .97) 43%, rgba(231, 240, 255, .1) 70%, transparent 100%); }
-.home-hero__slide[data-campaign="tools"] .repair-hero__content .repair-eyebrow,
-.home-hero__slide[data-campaign="tools"] .repair-hero__content .repair-hero__title-line--primary { color: #0b1d3f; }
-.home-hero__slide[data-campaign="tools"] .repair-hero__lead { color: #405472; }
 @media (max-width: 767px) {
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide { min-height: 0; }
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__inner {
@@ -80,11 +76,6 @@
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__scrim {
     background: linear-gradient(180deg, rgba(2, 10, 25, .05) 0%, rgba(2, 10, 25, .48) 35%, #020b1b 82%);
   }
-  .home-hero__slide[data-campaign="tools"] .repair-hero.repair-hero--home-slide .repair-hero__scrim {
-    background: linear-gradient(180deg, rgba(235, 243, 255, .08) 0%, rgba(238, 245, 255, .88) 42%, #f8fbff 78%);
-  }
-  .home-hero__stage[data-campaign="tools"] .home-hero-carousel__dot::before { background: rgba(11, 29, 63, .35); }
-  .home-hero__stage[data-campaign="tools"] .home-hero-carousel__dot:focus-visible { outline-color: #0b1d3f; }
   .home-hero-carousel__dot { height: 44px; }
   .home-hero-carousel__dot::before,
   .home-hero-carousel__dot.is-active::after { top: 21px; }

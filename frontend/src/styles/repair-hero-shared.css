@@ -954,7 +954,7 @@
 
 /* Each mobile campaign can retain its own artwork focal point. */
 @media (max-width: 47.99rem) {
-  .home-hero__slide[data-campaign="tools"] .repair-hero__image { object-position: 50% 35%; }
+  .home-hero__slide[data-campaign="tools"] .repair-hero__image,
   .home-hero__slide[data-campaign="parts"] .repair-hero__image { object-position: 50% 48%; }
   .home-hero__slide[data-campaign="repairs"] .repair-hero__image { object-position: 50% 30%; }
 }
