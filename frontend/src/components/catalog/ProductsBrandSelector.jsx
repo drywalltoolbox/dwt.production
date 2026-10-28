@@ -37,7 +37,7 @@ export default function ProductsBrandSelector({ brands, onSelectBrand, showHero 
         />
       )}
 
-      <SelectorGrid variant="brands">
+      <SelectorGrid variant="brands" className="products-brand-grid">
         {sortedBrands.map((brand) => {
           const label = brand.label || brand.key || '';
           return (

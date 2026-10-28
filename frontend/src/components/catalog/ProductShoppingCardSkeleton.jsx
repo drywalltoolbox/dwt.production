@@ -10,18 +10,22 @@ export default function ProductShoppingCardSkeleton({ variant = 'grid' }) {
     <article className={`dtb-product-card-skeleton dtb-product-card-skeleton--${variant}`} aria-hidden="true">
       <span className="dtb-product-card-skeleton__image">
         <span className="dtb-product-card-skeleton__image-shimmer" />
-        <SkeletonBar className="dtb-product-card-skeleton__stock" />
       </span>
 
       <span className="dtb-product-card-skeleton__meta">
         <SkeletonBar className="dtb-product-card-skeleton__brand" />
-        <SkeletonBar className="dtb-product-card-skeleton__name" />
-        <SkeletonBar className="dtb-product-card-skeleton__name dtb-product-card-skeleton__name--short" />
+        <span className="dtb-product-card-skeleton__name-lines">
+          <SkeletonBar className="dtb-product-card-skeleton__name" />
+          <SkeletonBar className="dtb-product-card-skeleton__name dtb-product-card-skeleton__name--short" />
+        </span>
         <SkeletonBar className="dtb-product-card-skeleton__sku" />
         <span className="dtb-product-card-skeleton__divider" />
         <span className="dtb-product-card-skeleton__footer">
           <SkeletonBar className="dtb-product-card-skeleton__price" />
-          <SkeletonBar className="dtb-product-card-skeleton__action" />
+          <span className="dtb-product-card-skeleton__controls">
+            <SkeletonBar className="dtb-product-card-skeleton__quantity" />
+            <SkeletonBar className="dtb-product-card-skeleton__action" />
+          </span>
         </span>
       </span>
     </article>

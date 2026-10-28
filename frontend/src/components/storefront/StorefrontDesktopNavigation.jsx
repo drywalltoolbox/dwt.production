@@ -327,26 +327,7 @@ function BrandsPanelRenderer(props) {
 }
 
 function PartsPanelRenderer({ item, onNavigate }) {
-  const brands = Array.isArray(item.items) ? item.items : [];
-  return (
-    <>
-      <MegaMenuHero item={item} onNavigate={onNavigate} />
-      {brands.length > 0 ? (
-        <section className="dtb-mega-menu__parts-section" aria-label="Shop parts by brand">
-          <div className="dtb-mega-menu__section-heading"><h3>Shop Parts by Brand</h3></div>
-          <div className="dtb-mega-menu__brand-grid">
-            {brands.map((entry) => (
-              <Link key={entry.to || entry.label} to={entry.to} className="dtb-mega-menu__selector-card dtb-mega-menu__selector-card--brand" onClick={onNavigate}>
-                <MegaMenuThumb label={entry.label} logo={entry.logo} />
-                <span className="dtb-mega-menu__selector-label">{entry.label}</span>
-                <ChevronRight size={15} className="dtb-mega-menu__selector-chevron" aria-hidden="true" />
-              </Link>
-            ))}
-          </div>
-        </section>
-      ) : <MegaMenuDeferredState item={item} />}
-    </>
-  );
+  return <BrandGridPanelRenderer item={item} onNavigate={onNavigate} />;
 }
 
 function SchematicsPanelRenderer(props) {
