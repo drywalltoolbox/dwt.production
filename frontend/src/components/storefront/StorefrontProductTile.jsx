@@ -201,11 +201,11 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
             <span className="dtb-add-to-cart__surface" aria-hidden="true" />
             <span className="dtb-add-to-cart__content">
               <SlidersHorizontal className="dtb-add-to-cart__cart" aria-hidden="true" />
-              <span className="dtb-add-to-cart__label"><span className="dtb-card-action__desktop-label">Options</span><span className="dtb-card-action__mobile-label">View Options</span></span>
+              <span className="dtb-add-to-cart__label"><span className="dtb-card-action__desktop-label">View Options</span><span className="dtb-card-action__mobile-label">View Options</span></span>
             </span>
           </button>
         ) : (
-          <AddToCartButton onClick={handleAddButtonClick} disabled={outOfStock} className="dtb-product-card__action dtb-product-card__action--mobile-icon" size="card" label="Add" productId={displayProduct.id} aria-label={`Add ${name} to cart`} data-dtb-card-action="add"><span className="dtb-card-action__desktop-label">Add</span><span className="dtb-card-action__mobile-label">Add to cart</span></AddToCartButton>
+          <AddToCartButton onClick={handleAddButtonClick} disabled={outOfStock} className="dtb-product-card__action dtb-product-card__action--mobile-icon" size="card" label="Add" productId={displayProduct.id} aria-label={`Add ${name} to cart`} data-dtb-card-action="add"><span className="dtb-card-action__desktop-label">Add to Cart</span><span className="dtb-card-action__mobile-label">Add to cart</span></AddToCartButton>
         )}
         </div>
       </div>

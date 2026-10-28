@@ -16,7 +16,7 @@ const ProductModal = lazy(() => import('../product/ProductModal'));
 
 function ProductQuickViewRecommendations({ product, onAddToCart, onOpenProduct }) {
   const slug = product?.slug || product?.post_name || '';
-  const { relatedProducts, computed } = useCatalogProductDetail(slug);
+  const { relatedProducts, computed, status } = useCatalogProductDetail(slug);
 
   return (
     <ProductRelatedProducts
@@ -25,6 +25,8 @@ function ProductQuickViewRecommendations({ product, onAddToCart, onOpenProduct }
       onAddToCart={onAddToCart}
       onOpenProduct={onOpenProduct}
       id="quick-view-related"
+      status={status}
+      showStatus
     />
   );
 }

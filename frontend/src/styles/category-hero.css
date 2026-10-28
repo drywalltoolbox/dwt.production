@@ -818,6 +818,36 @@
   line-height: 1.2;
 }
 
+/* Shared flat navigation treatment for the home and All Products rails. */
+.dtb-tool-type-rail { gap: clamp(.75rem, 2vw, 1.5rem); }
+.dtb-tool-type-rail .dtb-tool-type-tile {
+  position: relative;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.dtb-tool-type-rail .dtb-tool-type-tile:hover { box-shadow: none; transform: none; }
+.dtb-tool-type-rail .dtb-tool-type-tile__media,
+.dtb-tool-type-rail .dtb-tool-type-tile--no-image .dtb-tool-type-tile__media {
+  height: clamp(5rem, 20vw, 7rem);
+  flex-basis: clamp(5rem, 20vw, 7rem);
+  padding: .5rem;
+  background: transparent;
+}
+.dtb-tool-type-rail .dtb-tool-type-tile__label {
+  min-height: 0;
+  padding: .6rem 1.1rem .5rem;
+  font-size: .875rem;
+  line-height: 1.3;
+  text-align: center;
+}
+.dtb-tool-type-rail .dtb-tool-type-tile__count { padding: 0 1.1rem .5rem; text-align: center; }
+.dtb-tool-type-rail .dtb-tool-type-tile__chevron { position: absolute; right: 0; top: calc(clamp(5rem, 20vw, 7rem) + .65rem); color: var(--dtb-primary); }
+.dtb-tool-type-rail .dtb-tool-type-tile:hover .dtb-tool-type-tile__label { color: var(--dtb-primary); }
+.dtb-tool-type-rail .dtb-tool-type-tile:focus-visible { outline-offset: -2px; }
+
 @media (min-width: 768px) {
   .dtb-tool-type-rail {
     grid-auto-columns: clamp(168px, 14vw, 198px);

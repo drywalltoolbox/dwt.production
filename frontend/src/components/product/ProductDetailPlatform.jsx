@@ -64,6 +64,8 @@ export default function ProductDetailPlatform({
         onAddToCart={onAddToCart}
         onOpenProduct={onOpenProduct}
         id="catalog-quick-view-related"
+        status={status}
+        showStatus
       />
     </>
   );

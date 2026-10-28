@@ -7,7 +7,7 @@ import ProductModal from '../product/ProductModal.jsx';
 
 // Lazy-loaded: only needed when a search-result quick-view is actually opened.
 // See StorefrontCartSheet.jsx for the same pattern/rationale.
-const ProductDetail = lazy(() => import('../product/ProductDetail.jsx'));
+const ProductDetailPlatform = lazy(() => import('../product/ProductDetailPlatform.jsx'));
 import LoadingCardTransition from '../shared/LoadingCardTransition.jsx';
 import StorefrontProductTile from './StorefrontProductTile.jsx';
 import StorefrontSearchLoading from './StorefrontSearchLoading.jsx';
@@ -217,7 +217,7 @@ export default function StorefrontSearchOverlay({
       <ProductModal isOpen={isModalOpen && !!modalProduct} product={modalProduct} onClose={closeQuickView}>
         {modalProduct ? (
           <Suspense fallback={<div className="storefront-search-overlay__product-detail-loading" aria-busy="true" />}>
-            <ProductDetail product={modalProduct} onAddToCart={handleAddToCart} onClose={closeQuickView} initialVariations={[]} />
+            <ProductDetailPlatform key={modalProduct.id} product={modalProduct} onAddToCart={handleAddToCart} onClose={closeQuickView} onOpenProduct={openQuickView} />
           </Suspense>
         ) : null}
       </ProductModal>

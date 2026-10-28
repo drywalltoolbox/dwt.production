@@ -282,6 +282,7 @@ export default function ProductImageGallery({ product }) {
   const [lightbox, setLightbox] = useState({ open: false, index: 0, dir: 0 });
   const [parentImageMeta, setParentImageMeta] = useState([]);
   const [thumbRailState, setThumbRailState] = useState({ canScrollBack: false, canScrollForward: false });
+  const [magnifier, setMagnifier] = useState(null);
 
   const thumbsRef = useRef(null);
   const galleryRef = useRef(null);
@@ -608,6 +609,28 @@ export default function ProductImageGallery({ product }) {
     : fadeTransition;
   const hasLoadedGalleryImage = Object.values(imgLoaded).some(Boolean);
 
+  const handleMagnifierMove = (event) => {
+    if (event.pointerType !== 'mouse' || !window.matchMedia('(hover: hover) and (pointer: fine)').matches || !isActiveImageLoaded || lightbox.open || event.target.closest('button')) {
+      setMagnifier(null);
+      return;
+    }
+    const stage = event.currentTarget;
+    const image = stage.querySelector('.product-image-gallery__image');
+    if (!image || image.currentSrc.includes(PLACEHOLDER_IMAGE)) return;
+    const rect = stage.getBoundingClientRect();
+    const padding = window.getComputedStyle(image);
+    setMagnifier({
+      x: event.clientX - rect.left,
+      y: event.clientY - rect.top,
+      width: rect.width,
+      height: rect.height,
+      padding: [padding.paddingTop, padding.paddingRight, padding.paddingBottom, padding.paddingLeft]
+        .map((value) => `${(parseFloat(value) || 0) * 2}px`).join(' '),
+      fallbackSrc: image.currentSrc || image.src,
+      imageKey: activeImageKey,
+    });
+  };
+
   return (
     <>
       <div className="flex flex-col gap-3">
@@ -617,6 +640,9 @@ export default function ProductImageGallery({ product }) {
           onClick={onGalleryClick}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
+          onPointerMove={handleMagnifierMove}
+          onPointerLeave={() => setMagnifier(null)}
+          onPointerDown={() => setMagnifier(null)}
           role="button"
           tabIndex={0}
           aria-label="Tap to view fullscreen"
@@ -670,6 +696,17 @@ export default function ProductImageGallery({ product }) {
               }}
             />
           </AnimatePresence>
+
+          {magnifier && magnifier.imageKey === activeImageKey && !lightbox.open && isActiveImageLoaded && (
+            <span className="product-image-gallery__magnifier" aria-hidden="true" style={{ left: magnifier.x, top: magnifier.y }}>
+              <img
+                src={magnifier.fallbackSrc}
+                alt=""
+                draggable={false}
+                style={{ width: magnifier.width * 2, height: magnifier.height * 2, maxWidth: 'none', maxHeight: 'none', left: `calc(50% - ${magnifier.x * 2}px)`, top: `calc(50% - ${magnifier.y * 2}px)`, padding: magnifier.padding }}
+              />
+            </span>
+          )}
 
           {hasMultiple && (
             <>

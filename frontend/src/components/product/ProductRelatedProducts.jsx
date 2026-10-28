@@ -33,11 +33,14 @@ export default function ProductRelatedProducts({
   onAddToCart,
   onOpenProduct,
   id = 'product-related',
+  status = 'ready',
+  showStatus = false,
 }) {
   const navigate = useNavigate();
-  if (!Array.isArray(products) || products.length === 0) return null;
+  const hasProducts = Array.isArray(products) && products.length > 0;
+  if (!hasProducts && !showStatus) return null;
 
-  const visibleProducts = products.slice(0, MAX_RELATED_PRODUCTS);
+  const visibleProducts = hasProducts ? products.slice(0, MAX_RELATED_PRODUCTS) : [];
   const copy = getRelatedProductsCopy(context);
   const titleId = `${id}-title`;
 
@@ -50,7 +53,7 @@ export default function ProductRelatedProducts({
         </div>
         <Link to="/products" className="product-related__browse">Browse all products</Link>
       </div>
-      <StorefrontRail label={copy.railLabel} className="storefront-rail--fixed-tiles">
+      {visibleProducts.length > 0 ? <StorefrontRail label={copy.railLabel} className="storefront-rail--fixed-tiles">
         {visibleProducts.map((relatedProduct, index) => {
           const cardProduct = relatedProduct.cardProduct || relatedProduct;
           return (
@@ -65,7 +68,15 @@ export default function ProductRelatedProducts({
             />
           );
         })}
-      </StorefrontRail>
+      </StorefrontRail> : (
+        <p className="product-related__status" role="status">
+          {status === 'loading' || status === 'idle'
+            ? 'Loading related products…'
+            : status === 'error' || status === 'not_found'
+              ? 'Related products are temporarily unavailable.'
+              : 'No related products are available for this item.'}
+        </p>
+      )}
     </section>
   );
 }

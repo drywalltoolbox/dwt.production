@@ -45,6 +45,20 @@
 .dtb-listing-toolbar__view-button.is-active { background: #0f172a; color: #fff; box-shadow: 0 10px 22px rgba(15,23,42,.22); }
 .dtb-listing-toolbar__count { justify-self: end; color: var(--dtb-muted,#52657d); font-size: .88rem; font-weight: 500; line-height: 1.3; white-space: nowrap; }
 
+@media (min-width: 768px) {
+  .dtb-listing-toolbar__pill,
+  .dtb-listing-toolbar__view-toggle {
+    min-height: 42px;
+    box-sizing: border-box;
+    border: 1.5px solid rgba(15, 23, 42, .12);
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, .06);
+  }
+  .dtb-listing-toolbar__view-button { border-radius: 7px; }
+  .dtb-listing-toolbar__view-button:focus-visible { outline: 2px solid var(--dtb-primary, #2255ee); outline-offset: 1px; }
+}
+
 @media (max-width:767px) {
   .dtb-listing-heading__title { font-size: clamp(1.8rem,8vw,2.15rem); }
   .dtb-listing-toolbar { grid-template-columns: minmax(88px,.8fr) minmax(128px,1fr) auto; gap: 8px; }

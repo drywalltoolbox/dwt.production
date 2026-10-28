@@ -108,7 +108,7 @@
     max-width: none;
   }
 
-  .dtb-pdp--modal .product-image-gallery__main img {
+  .dtb-pdp--modal .product-image-gallery__main > img {
     inset: 0 !important;
     width: 100% !important;
     height: 100% !important;
@@ -2188,7 +2188,7 @@
        the page background. */
   }
 
-  .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__main img {
+  .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__main > img {
     padding: clamp(var(--dtb-space-4), 2.2vw, var(--dtb-space-6)) !important;
   }
 

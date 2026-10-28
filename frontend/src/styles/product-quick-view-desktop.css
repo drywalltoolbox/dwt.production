@@ -485,6 +485,13 @@
   max-width: 100%;
 }
 
+.product-modal-content > .product-related .product-related__status {
+  margin: 0;
+  color: var(--dtb-muted, #52657d);
+  font-size: .9rem;
+  line-height: 1.5;
+}
+
 @media (min-width: 48rem) {
   .product-modal-card-shell.dtb-product-page-shell > .product-modal-content {
     border-radius: 26px;
@@ -494,5 +501,9 @@
 @media (min-width: 64rem) {
   .product-modal-card-shell.dtb-product-page-shell > .product-modal-content {
     border-radius: 20px;
+  }
+
+  .product-modal-content > .dtb-pdp.dtb-pdp--modal {
+    min-height: calc(100svh - 6rem);
   }
 }

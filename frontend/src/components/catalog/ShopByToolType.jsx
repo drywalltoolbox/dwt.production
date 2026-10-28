@@ -9,7 +9,7 @@ import '../../styles/category-hero.css';
 import '../../styles/tool-type-merchandising.css';
 import '../../styles/selector-cards.css';
 
-export function ToolTypeTile({ category, showSelectorChevron = false, brand = '' }) {
+export function ToolTypeTile({ category, showSelectorChevron = false, showCount = true, brand = '' }) {
   const [imageFailed, setImageFailed] = useState(false);
   const image = resolveCategoryThumbnail(category);
   const hasImage = Boolean(image) && !imageFailed;
@@ -47,7 +47,7 @@ export function ToolTypeTile({ category, showSelectorChevron = false, brand = ''
         )}
       </span>
       <span className="dtb-tool-type-tile__label">{category.name}</span>
-      {Number(category.count) > 0 && <span className="dtb-tool-type-tile__count">{Number(category.count).toLocaleString()} products</span>}
+      {showCount && Number(category.count) > 0 && <span className="dtb-tool-type-tile__count">{Number(category.count).toLocaleString()} products</span>}
       {description && !showSelectorChevron && <span className="dtb-tool-type-tile__description">{description}</span>}
       {showSelectorChevron && <ChevronRight size={15} strokeWidth={2} className="dtb-tool-type-tile__chevron" aria-hidden="true" />}
     </Link>
@@ -100,7 +100,7 @@ export default function ShopByToolType({ categories = [], onOpenFilters, parentL
       {isAllProductsRoute ? (
         <StorefrontRail label="Shop by tool type" className="dtb-tool-type-rail">
           {items.map((category) => (
-            <ToolTypeTile key={category.slug} category={category} showSelectorChevron brand={brand} />
+            <ToolTypeTile key={category.slug} category={category} showSelectorChevron showCount={false} brand={brand} />
           ))}
           <a
             href="#dtb-category-filters"

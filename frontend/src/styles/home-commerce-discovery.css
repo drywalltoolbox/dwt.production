@@ -3,33 +3,6 @@
 /* One continuous homepage surface; keep shared catalog cards unchanged elsewhere. */
 .dtb-home-storefront { border: 0; }
 .dtb-home-storefront .storefront-section + .storefront-section { border: 0; }
-.home-commerce-categories .dtb-tool-type-rail { gap: clamp(.75rem, 2vw, 1.5rem); }
-.home-commerce-categories .dtb-tool-type-tile {
-  position: relative;
-  min-height: 0;
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  box-shadow: none;
-}
-.home-commerce-categories .dtb-tool-type-tile:hover { box-shadow: none; transform: none; }
-.home-commerce-categories .dtb-tool-type-tile__media,
-.home-commerce-categories .dtb-tool-type-tile--no-image .dtb-tool-type-tile__media {
-  height: clamp(5rem, 20vw, 7rem);
-  flex-basis: clamp(5rem, 20vw, 7rem);
-  padding: .5rem;
-  background: transparent;
-}
-.home-commerce-categories .dtb-tool-type-tile__label {
-  min-height: 0;
-  padding: .6rem 1.1rem .5rem 0;
-  font-size: .875rem;
-  line-height: 1.3;
-}
-.home-commerce-categories .dtb-tool-type-tile__chevron { position: absolute; right: 0; bottom: .55rem; color: var(--dtb-primary); }
-.home-commerce-categories .dtb-tool-type-tile:hover .dtb-tool-type-tile__label { color: var(--dtb-primary); }
-.home-commerce-categories .dtb-tool-type-tile:focus-visible { outline-offset: -2px; }
-
 .dtb-home-storefront .dtb-home-product-section .storefront-section__view-all,
 .dtb-home-storefront .dtb-home-product-section .storefront-section__view-all:hover {
   min-height: 44px;
