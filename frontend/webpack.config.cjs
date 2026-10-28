@@ -538,9 +538,11 @@ module.exports = (envFlags, argv) => {
           parallel: true,
           terserOptions: {
             compress: {
-              drop_console: true,
+              // Preserve console.error so the production error boundary can
+              // report render failures; remove routine console output.
+              drop_console: false,
               drop_debugger: true,
-              pure_funcs: ['console.log', 'console.info', 'console.debug'],
+              pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
             },
             output: { comments: false },
           },

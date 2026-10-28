@@ -42,10 +42,13 @@ export default class AppErrorBoundary extends React.Component {
     // - internal telemetry endpoint
     if (typeof window !== 'undefined') {
       console.error('[DTB Frontend Error Boundary]', {
-        error,
-        errorInfo,
+        error: {
+          name: error?.name || 'Error',
+          message: String(error?.message || error || 'Unknown render error'),
+          stack: error?.stack || '',
+        },
+        componentStack: errorInfo?.componentStack || '',
         path: window.location.pathname,
-        href: window.location.href,
       });
     }
   }
