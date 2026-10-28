@@ -596,7 +596,7 @@ export default function AccountHubSheet({ isOpen, onClose, user, onLogin, onRegi
                   links={[
                     { to: '/contact', label: 'Contact Us', icon: LifeBuoy },
                     { to: '/returns', label: 'Returns Portal', icon: RotateCcw },
-                    { to: '/faq', label: 'FAQ', icon: BookOpen },
+                    { to: '/help', label: 'Help', icon: BookOpen },
                   ]}
                 />
               </div>

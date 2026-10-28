@@ -27,7 +27,7 @@ const moduleLoaders = {
   resetPassword: () => import('../pages/ResetPassword.jsx'),
   dashboard: () => import('../pages/Dashboard.jsx'),
   calculators: () => import('../pages/Calculators.jsx'),
-  faq: () => import('../pages/FAQ.jsx'),
+  help: () => import('../pages/Help.jsx'),
   shippingPolicy: () => import('../pages/ShippingPolicy.jsx'),
   returnPortal: () => import('../pages/ReturnPortal.jsx'),
   storePolicies: () => import('../pages/StorePolicies.jsx'),
@@ -108,7 +108,7 @@ export function resolveRouteModuleKey(input) {
   if (pathname === '/reset-password') return 'resetPassword';
   if (pathname === '/dashboard') return 'dashboard';
   if (pathname === '/calculators') return 'calculators';
-  if (pathname === '/faq') return 'faq';
+  if (pathname === '/help' || pathname === '/faq') return 'help';
   if (pathname === '/shipping-policy') return 'shippingPolicy';
   if (pathname === '/preview/technical-specifications') return 'technicalSpecificationsPreview';
 

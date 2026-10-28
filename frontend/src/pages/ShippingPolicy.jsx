@@ -93,7 +93,7 @@ const SHIPPING_FAQS = [
 const CTA_LINKS = [
   { Icon: RotateCcw, title: 'Start a Return', text: 'Initiate a return or exchange request', to: '/returns', action: 'Start a return' },
   { Icon: LifeBuoy, title: 'Contact Support', text: 'Questions about your shipment? We’re here.', to: '/contact', action: 'Get help' },
-  { Icon: FileText, title: 'Full FAQ', text: 'Shipping, warranty, repairs & more', to: '/faq', action: 'Read FAQ' },
+  { Icon: FileText, title: 'Help Center', text: 'Shipping, warranty, repairs & more', to: '/help', action: 'Get help' },
   { Icon: ShieldCheck, title: 'Return Policy', text: 'Returns, warranty, cancellations & payment', to: '/return-policy', action: 'View policy' },
 ];
 

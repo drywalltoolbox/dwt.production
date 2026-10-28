@@ -80,7 +80,7 @@ const FAQ_CATEGORIES = [
   },
 ];
 
-export default function FAQ() {
+export default function Help() {
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedCategory = searchParams.get('category');
   const activeCategory = FAQ_CATEGORIES.some((category) => category.id === requestedCategory)
@@ -107,9 +107,9 @@ export default function FAQ() {
   return (
     <div style={{ minHeight: '100vh' }} className="page-wrapper">
       <SEOHead
-        title="FAQ — Drywall Tool Repair & Maintenance"
+        title="Help Center — Drywall Toolbox"
         description="Answers about tool sets, shipping, orders, repair services, warranties, maintenance, parts, and accounts."
-        canonical="/faq"
+        canonical="/help"
       />
 
       <section style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #2255ee 100%)', padding: 'clamp(3.5rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3rem) clamp(3rem, 6vw, 5rem)', position: 'relative', overflow: 'hidden' }}>

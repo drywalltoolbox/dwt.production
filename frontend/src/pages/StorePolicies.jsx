@@ -51,8 +51,8 @@ const POLICY_CARDS = [
     Icon: CreditCard,
     title: 'Payments & Orders',
     text: 'Order changes, cancellations before fulfillment, accepted payment methods, and checkout support.',
-    to: '/faq',
-    action: 'Read FAQ',
+    to: '/help',
+    action: 'Visit Help Center',
   },
   {
     Icon: LifeBuoy,

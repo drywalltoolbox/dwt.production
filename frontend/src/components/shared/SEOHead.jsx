@@ -36,7 +36,7 @@ const STATIC_ROUTE_TITLES = {
   '/repairs/start': 'Start a Repair',
   '/repairs/packages': 'Repair Packages',
   '/repairs/track': 'Track a Repair',
-  '/faq': 'FAQ',
+  '/help': 'Help Center',
   '/calculators': 'Calculators',
   '/shipping-policy': 'Shipping Policy',
   '/returns': 'Returns',

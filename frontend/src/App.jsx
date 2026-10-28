@@ -80,7 +80,7 @@ const ForgotPassword = createLazyRoute('forgotPassword');
 const ResetPassword = createLazyRoute('resetPassword');
 const Dashboard = createLazyRoute('dashboard');
 const Calculators = createLazyRoute('calculators');
-const FAQ = createLazyRoute('faq');
+const Help = createLazyRoute('help');
 const ShippingPolicy = createLazyRoute('shippingPolicy');
 const ReturnPortal = createLazyRoute('returnPortal');
 const StorePolicies = createLazyRoute('storePolicies');
@@ -279,7 +279,8 @@ function AppRoutes() {
         <Route path="/repairs/packages" element={<RepairPackages />} />
         <Route path="/repairs/track" element={<RepairTrack />} />
         <Route path="/repairs/status/:id" element={<RepairStatus />} />
-        <Route path="/faq" element={<FAQ />} />
+        <Route path="/help" element={<Help />} />
+        <Route path="/faq" element={<Navigate to={`/help${location.search}`} replace />} />
         <Route path="/calculators" element={<Calculators />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
         <Route path="/returns" element={<ReturnPortal />} />

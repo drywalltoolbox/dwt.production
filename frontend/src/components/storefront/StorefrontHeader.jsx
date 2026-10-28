@@ -40,7 +40,7 @@ const SHOW_CALCULATORS_NAV = false;
 const DRAWER_NAV_ROWS = [
   { to: '/products?sort=newest', label: 'New Arrivals' },
   ...(SHOW_CALCULATORS_NAV ? [{ to: '/calculators', label: 'Calculators' }] : []),
-  { to: '/faq', label: 'FAQ' },
+  { to: '/help', label: 'Help' },
   { to: '/contact', label: 'Contact' },
 ];
 

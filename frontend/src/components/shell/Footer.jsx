@@ -27,7 +27,7 @@ const FOOTER_GROUPS = [
     links: [
       { label: 'Contact Us', to: '/contact' },
       { label: 'Shipping & Returns', to: '/policies' },
-      { label: 'FAQs', to: '/faq' },
+      { label: 'Help', to: '/help' },
     ],
   },
   {
