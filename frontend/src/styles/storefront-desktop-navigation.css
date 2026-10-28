@@ -1334,7 +1334,11 @@
     grid-row: 2;
     justify-content: center;
     height: 68px;
-    border-top: 1px solid rgba(175, 198, 237, .16);
+    border-top: 1px solid transparent;
+    background-image: linear-gradient(90deg, transparent 0%, rgba(166, 194, 233, .10) 5%, rgba(166, 194, 233, .30) 17%, rgba(190, 211, 241, .38) 50%, rgba(166, 194, 233, .30) 83%, rgba(166, 194, 233, .10) 95%, transparent 100%);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: 100% 1px;
   }
   .site-header .dtb-desktop-nav { justify-content: center; gap: clamp(20px, 2.5vw, 44px); }
   .site-header .dtb-desktop-nav-tab { font-size: clamp(.94rem, .98vw, 1.08rem); }
@@ -1403,7 +1407,11 @@
     grid-row: 2;
     height: 48px;
     min-height: 48px;
-    border-top: 1px solid rgba(113,149,206,.17);
+    border-top: 1px solid transparent;
+    background-image: linear-gradient(90deg, transparent 0%, rgba(166, 194, 233, .10) 5%, rgba(166, 194, 233, .30) 17%, rgba(190, 211, 241, .38) 50%, rgba(166, 194, 233, .30) 83%, rgba(166, 194, 233, .10) 95%, transparent 100%);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: 100% 1px;
   }
   .site-header .dtb-desktop-nav { gap: clamp(12px, 1.8vw, 30px); }
 }

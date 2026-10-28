@@ -173,6 +173,8 @@
 /* Mobile commerce bay: keep the price spacious and the primary icon action at
    the far edge of every shared card layout. */
 @media (max-width: 767px) {
+  .dtb-product-card--rail { width:100%; }
+
   .dtb-product-card--grid .dtb-product-card__footer,
   .dtb-product-card--rail .dtb-product-card__footer,
   .dtb-product-card--list .dtb-product-card__footer {
@@ -274,7 +276,7 @@
 
   .dtb-product-card--grid .dtb-product-card__divider,
   .dtb-product-card--rail .dtb-product-card__divider {
-    background: transparent;
+    background: linear-gradient(90deg,transparent 0%,rgba(112,132,162,.12) 5%,rgba(112,132,162,.38) 17%,rgba(112,132,162,.48) 50%,rgba(112,132,162,.38) 83%,rgba(112,132,162,.12) 95%,transparent 100%);
   }
 
   .dtb-product-card--grid .dtb-product-card__footer,
@@ -534,43 +536,37 @@
   }
 
   .dtb-product-card__quantity-wrap {
-    position:relative;
     display:block;
     flex:0 0 52px;
     width:52px;
     height:40px;
   }
 
-  .dtb-product-card__quantity-wrap::after {
-    position:absolute;
-    top:50%;
-    right:9px;
-    width:6px;
-    height:6px;
-    border-right:1.5px solid #53627a;
-    border-bottom:1.5px solid #53627a;
-    content:"";
-    pointer-events:none;
-    transform:translateY(-70%) rotate(45deg);
-  }
-
   .dtb-product-card__quantity {
     width:100%;
     height:100%;
-    appearance:none;
-    -webkit-appearance:none;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:3px;
     border:1px solid #d7dfeb;
     border-radius:12px;
-    padding:0 20px 0 10px;
+    padding:0 6px;
     background:linear-gradient(180deg,#fff 0%,#f4f6fa 100%);
     color:#172033;
     font-family:inherit;
     font-size:.82rem;
     font-weight:700;
     line-height:1;
-    text-align:center;
     box-shadow:0 1px 2px rgba(15,23,42,.06),inset 0 1px 0 rgba(255,255,255,.9);
     cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+    transition:border-color 160ms ease,background 160ms ease,box-shadow 160ms ease;
+  }
+
+  .dtb-product-card__quantity:hover {
+    border-color:#b9c8df;
+    background:#fff;
   }
 
   .dtb-product-card__quantity:focus-visible {
@@ -589,9 +585,129 @@
     border-radius:12px;
   }
 
-  .dtb-product-card__action--mobile-icon .dtb-add-to-cart__cart { display:none; }
-  .dtb-product-card__action--mobile-icon .dtb-add-to-cart__content { gap:0; }
-  .dtb-product-card__action--mobile-icon .dtb-add-to-cart__label { font-size:clamp(.62rem,2.7vw,.73rem); }
+  .dtb-product-card__action--mobile-icon .dtb-add-to-cart__content { gap:5px; }
+  .dtb-product-card__action--mobile-icon .dtb-add-to-cart__cart { display:inline-flex !important;width:14px;height:14px; }
+  .dtb-product-card__action--mobile-icon .dtb-add-to-cart__label { display:inline !important;font-size:clamp(.62rem,2.7vw,.73rem);line-height:1.1;white-space:nowrap; }
+
+  .dtb-quantity-sheet-backdrop {
+    position:fixed;
+    z-index:10020;
+    inset:0;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding-top:24px;
+    background:rgba(9,17,34,.42);
+    -webkit-backdrop-filter:blur(5px);
+    backdrop-filter:blur(5px);
+    overscroll-behavior:contain;
+    animation:dtb-quantity-backdrop-in 160ms ease-out both;
+  }
+
+  .dtb-quantity-sheet {
+    width:min(100%,480px);
+    max-height:min(78svh,560px);
+    overflow-y:auto;
+    padding:10px 20px calc(22px + env(safe-area-inset-bottom, 0px));
+    border:1px solid rgba(215,224,238,.9);
+    border-bottom:0;
+    border-radius:26px 26px 0 0;
+    background:linear-gradient(180deg,rgba(255,255,255,.99),#f8faff 100%);
+    box-shadow:0 -18px 56px rgba(8,22,48,.2),inset 0 1px 0 #fff;
+    color:#172033;
+    animation:dtb-quantity-sheet-in 220ms cubic-bezier(.2,.8,.2,1) both;
+  }
+
+  .dtb-quantity-sheet__handle {
+    width:38px;
+    height:4px;
+    margin:0 auto 18px;
+    border-radius:999px;
+    background:#c6d0df;
+  }
+
+  .dtb-quantity-sheet__header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+
+  .dtb-quantity-sheet__eyebrow {
+    color:#63738d;
+    font-size:.63rem;
+    font-weight:800;
+    letter-spacing:.14em;
+  }
+
+  .dtb-quantity-sheet__header h2 {
+    margin:3px 0 0;
+    color:#14213a;
+    font-size:1.25rem;
+    font-weight:800;
+    letter-spacing:-.035em;
+    line-height:1.15;
+  }
+
+  .dtb-quantity-sheet__close {
+    display:grid;
+    width:38px;
+    height:38px;
+    flex:0 0 auto;
+    place-items:center;
+    border:1px solid #e1e7f0;
+    border-radius:50%;
+    background:rgba(255,255,255,.86);
+    color:#40516b;
+    box-shadow:0 2px 8px rgba(15,23,42,.06);
+  }
+
+  .dtb-quantity-sheet__product {
+    display:-webkit-box;
+    margin:12px 0 16px;
+    overflow:hidden;
+    color:#66758d;
+    font-size:.82rem;
+    line-height:1.35;
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
+  }
+
+  .dtb-quantity-sheet__options {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:9px;
+  }
+
+  .dtb-quantity-sheet__option {
+    display:flex;
+    min-height:48px;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding:0 15px;
+    border:1px solid #e0e7f1;
+    border-radius:14px;
+    background:rgba(255,255,255,.84);
+    color:#26364f;
+    font-size:.95rem;
+    font-weight:700;
+    box-shadow:0 2px 6px rgba(19,39,74,.035),inset 0 1px 0 rgba(255,255,255,.9);
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  .dtb-quantity-sheet__option--selected {
+    border-color:rgba(34,85,238,.42);
+    background:linear-gradient(135deg,#f0f5ff,#fff 78%);
+    color:#2255ee;
+    box-shadow:0 5px 14px rgba(34,85,238,.11),inset 0 0 0 1px rgba(34,85,238,.08);
+  }
+
+  .dtb-quantity-sheet__close:focus-visible,
+  .dtb-quantity-sheet__option:focus-visible {
+    outline:2px solid rgba(34,85,238,.45);
+    outline-offset:2px;
+  }
 
   .dtb-product-card--grid .dtb-product-card__meta,
   .dtb-product-card--rail .dtb-product-card__meta {
@@ -609,4 +725,13 @@
     align-self:stretch;
     margin:2px auto 0;
   }
+}
+
+@keyframes dtb-quantity-backdrop-in { from { opacity:0; } to { opacity:1; } }
+@keyframes dtb-quantity-sheet-in { from { opacity:.85;transform:translateY(24px); } to { opacity:1;transform:translateY(0); } }
+
+@media (prefers-reduced-motion:reduce) {
+  .dtb-product-card__quantity,
+  .dtb-quantity-sheet-backdrop,
+  .dtb-quantity-sheet { animation:none;transition:none; }
 }

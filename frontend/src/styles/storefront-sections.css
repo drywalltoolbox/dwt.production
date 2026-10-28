@@ -201,6 +201,7 @@
     scroll-snap-stop: normal;
   }
 }
+
 .storefront-rail-arrow { display:none; }
 
 /* Product rails deliberately stretch one shared implicit grid row. This is the
@@ -224,6 +225,45 @@
 @media (min-width:768px) { .storefront-rail--fixed-tiles { grid-auto-columns:var(--dtb-rail-tile-w-desktop,clamp(210px,22vw,248px)); } }
 .storefront-rail--category { grid-auto-columns:clamp(140px,38vw,200px); }
 .storefront-rail--brand { grid-auto-columns:clamp(150px,40vw,192px); }
+
+/* Product rail tracks divide the mobile viewport into two exact card columns
+   instead of imposing fixed tile widths that can expose a third-card sliver. */
+@media (max-width:767px) {
+  .storefront-rail-shell { width:100%;min-width:0; }
+  .storefront-rail { width:100%;min-width:0;box-sizing:border-box;gap:12px; }
+  .storefront-rail--fixed-tiles { grid-auto-columns:calc(50% - 6px); }
+  .storefront-rail-shell--products .storefront-rail-arrow {
+    position:absolute;
+    top:44%;
+    z-index:3;
+    display:inline-flex;
+    width:38px;
+    height:52px;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    color:rgba(24,43,73,.48);
+    box-shadow:none;
+    cursor:pointer;
+    transform:translateY(-50%);
+    -webkit-tap-highlight-color:transparent;
+  }
+  .storefront-rail-shell--products .storefront-rail-arrow span {
+    display:block;
+    margin-top:-2px;
+    font-size:36px;
+    font-weight:400;
+    line-height:1;
+    text-shadow:0 1px 2px rgba(255,255,255,.82);
+  }
+  .storefront-rail-shell--products .storefront-rail-arrow--prev { left:0; }
+  .storefront-rail-shell--products .storefront-rail-arrow--next { right:0; }
+  .storefront-rail-shell--products .storefront-rail-arrow:disabled { opacity:0;pointer-events:none; }
+  .storefront-rail-shell--products .storefront-rail-arrow:focus-visible { outline:2px solid rgba(34,85,238,.65);outline-offset:-3px; }
+}
 
 .storefront-category-tile { position:relative; display:flex; flex-direction:column; align-items:flex-start; justify-content:space-between; min-height:130px; padding:14px; border-radius:var(--dtb-radius-md); background:var(--tile-bg,var(--dtb-shell)); color:white; text-decoration:none; overflow:hidden; transition:transform 140ms var(--dtb-ease),box-shadow 140ms var(--dtb-ease); box-shadow:var(--dtb-shadow-card); }
 .storefront-category-tile::before { content:''; position:absolute; inset:0; background-image:radial-gradient(circle,rgba(255,255,255,.1) 1px,transparent 1px); background-size:14px 14px; pointer-events:none; z-index:0; }

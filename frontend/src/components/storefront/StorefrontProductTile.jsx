@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, SlidersHorizontal } from 'lucide-react';
+import { Check, ChevronDown, Eye, SlidersHorizontal, X } from 'lucide-react';
+import { createPortal } from 'react-dom';
 import ProductCardImage from '../product/ProductCardImage';
 import AddToCartButton from '../ui/AddToCartButton.jsx';
 import '../../styles/contractor-shopping.css';
@@ -78,9 +79,13 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const [overlayActive, setOverlayActive] = useState(false);
   const [overlayHasFocus, setOverlayHasFocus] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const [quantityOpen, setQuantityOpen] = useState(false);
   const cardRef = useRef(null);
   const imageButtonRef = useRef(null);
   const overlayRef = useRef(null);
+  const quantityTriggerRef = useRef(null);
+  const quantitySheetRef = useRef(null);
+  const firstQuantityOptionRef = useRef(null);
   const navigate = useNavigate();
 
   const closeOverlay = useCallback(() => {
@@ -95,6 +100,41 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
     document.addEventListener('pointerdown', handler);
     return () => document.removeEventListener('pointerdown', handler);
   }, [overlayActive, isMobile]);
+
+  useEffect(() => {
+    if (!quantityOpen || !isMobile) return undefined;
+    const focusFrame = window.requestAnimationFrame(() => firstQuantityOptionRef.current?.focus());
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setQuantityOpen(false);
+        window.requestAnimationFrame(() => quantityTriggerRef.current?.focus());
+        return;
+      }
+      if (event.key !== 'Tab' || !quantitySheetRef.current) return;
+      const focusable = Array.from(quantitySheetRef.current.querySelectorAll('button:not(:disabled)'));
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMobile, quantityOpen]);
+
+  const closeQuantitySheet = useCallback(() => {
+    setQuantityOpen(false);
+    window.requestAnimationFrame(() => quantityTriggerRef.current?.focus());
+  }, []);
 
   const openModalFromMobileCard = useCallback((event) => {
     if (!isMobile || event?.defaultPrevented || isNestedInteractiveTarget(event?.target)) return;
@@ -189,20 +229,21 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
           </div>
         </div>
         <div className="dtb-product-card__commerce-controls">
-        {!isVariable && <div className="dtb-product-card__quantity-wrap">
-          <select
+        {!isVariable && !outOfStock && <div className="dtb-product-card__quantity-wrap">
+          <button
+            ref={quantityTriggerRef}
+            type="button"
             className="dtb-product-card__quantity"
-            value={quantity}
-            onChange={(event) => setQuantity(Number(event.target.value))}
-            onClick={(event) => event.stopPropagation()}
+            onClick={(event) => { event.stopPropagation(); setQuantityOpen(true); }}
             onPointerDown={(event) => event.stopPropagation()}
-            aria-label={`Quantity for ${name}`}
+            aria-label={`Quantity: ${quantity}`}
+            aria-haspopup="dialog"
+            aria-expanded={quantityOpen}
             data-dtb-card-action="quantity"
           >
-            {Array.from({ length: 10 }, (_, optionIndex) => optionIndex + 1).map((value) => (
-              <option key={value} value={value}>{value}</option>
-            ))}
-          </select>
+            <span>{quantity}</span>
+            <ChevronDown size={15} strokeWidth={2} aria-hidden="true" />
+          </button>
         </div>}
         {isVariable ? (
           <button
@@ -226,6 +267,46 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
         </div>
         </div>
       </div>
+      {isMobile && quantityOpen && createPortal(
+        <div className="dtb-quantity-sheet-backdrop" onClick={(event) => { event.stopPropagation(); closeQuantitySheet(); }}>
+          <section
+            ref={quantitySheetRef}
+            className="dtb-quantity-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="dtb-quantity-sheet-title"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="dtb-quantity-sheet__handle" aria-hidden="true" />
+            <header className="dtb-quantity-sheet__header">
+              <div>
+                <span className="dtb-quantity-sheet__eyebrow">QUANTITY</span>
+                <h2 id="dtb-quantity-sheet-title">Choose quantity</h2>
+              </div>
+              <button type="button" className="dtb-quantity-sheet__close" onClick={closeQuantitySheet} aria-label="Close quantity selector">
+                <X size={18} aria-hidden="true" />
+              </button>
+            </header>
+            <p className="dtb-quantity-sheet__product" title={name}>{name}</p>
+            <div className="dtb-quantity-sheet__options" aria-label="Available quantities">
+              {Array.from({ length: 10 }, (_, optionIndex) => optionIndex + 1).map((value) => (
+                <button
+                  key={value}
+                  ref={value === quantity ? firstQuantityOptionRef : undefined}
+                  type="button"
+                  className={`dtb-quantity-sheet__option${quantity === value ? ' dtb-quantity-sheet__option--selected' : ''}`}
+                  aria-pressed={quantity === value}
+                  onClick={() => { setQuantity(value); closeQuantitySheet(); }}
+                >
+                  <span>{value}</span>
+                  {quantity === value ? <Check size={17} strokeWidth={2.5} aria-hidden="true" /> : null}
+                </button>
+              ))}
+            </div>
+          </section>
+        </div>,
+        document.body,
+      )}
     </article>
   );
 }

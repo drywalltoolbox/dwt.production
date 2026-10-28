@@ -6,6 +6,7 @@ const EDGE_TOLERANCE_PX = 2;
 
 export default function StorefrontRail({ label, className = '', children }) {
   const railRef = useRef(null);
+  const productRail = className.split(/\s+/).includes('storefront-rail--fixed-tiles');
   const [scrollState, setScrollState] = useState({ canScrollPrev: false, canScrollNext: false });
 
   const updateScrollState = useCallback(() => {
@@ -29,12 +30,16 @@ export default function StorefrontRail({ label, className = '', children }) {
     const rail = railRef.current;
     if (!rail) return;
 
-    const amount = Math.max(MIN_SCROLL_AMOUNT, rail.clientWidth * SCROLL_RATIO);
+    const firstCard = rail.firstElementChild;
+    const columnGap = parseFloat(window.getComputedStyle(rail).columnGap) || 0;
+    const pageAmount = productRail && firstCard
+      ? (firstCard.getBoundingClientRect().width + columnGap) * 2
+      : Math.max(MIN_SCROLL_AMOUNT, rail.clientWidth * SCROLL_RATIO);
     rail.scrollBy({
-      left: direction === 'next' ? amount : -amount,
+      left: direction === 'next' ? pageAmount : -pageAmount,
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
     });
-  }, []);
+  }, [productRail]);
 
   const onKeyDown = (event) => {
     if (!railRef.current) return;
@@ -82,7 +87,7 @@ export default function StorefrontRail({ label, className = '', children }) {
   }, [children, updateScrollState]);
 
   return (
-    <div className="storefront-rail-shell">
+    <div className={`storefront-rail-shell${productRail ? ' storefront-rail-shell--products' : ''}`}>
       <button
         type="button"
         className="storefront-rail-arrow storefront-rail-arrow--prev"

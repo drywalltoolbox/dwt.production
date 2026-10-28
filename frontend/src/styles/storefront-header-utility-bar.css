@@ -207,24 +207,35 @@
   }
 }
 
-/* Full-width midnight glass: layered specular reflections over deep navy. */
+/* Deep-navy glass with the homepage's diagonal blue brand geometry. */
 .site-header {
   background:
-    linear-gradient(155deg, rgba(176, 213, 255, .14) 0%, rgba(78, 139, 220, .07) 14%, transparent 32%),
-    linear-gradient(24deg, transparent 48%, rgba(111, 170, 238, .08) 49%, rgba(155, 206, 255, .11) 50%, transparent 52%),
-    linear-gradient(180deg, rgba(19, 49, 91, .96) 0%, rgba(5, 22, 49, .97) 45%, rgba(3, 16, 38, .98) 100%);
-  box-shadow: inset 0 1px 0 rgba(220, 236, 255, .28), inset 0 -1px 0 rgba(143, 185, 238, .20), 0 10px 28px rgba(0, 8, 25, .22);
+    linear-gradient(125deg, transparent 0 7%, rgba(12, 70, 163, .32) 7.1% 12%, rgba(4, 23, 58, .58) 12.1% 17%, transparent 17.1% 24%, rgba(8, 47, 116, .38) 24.1% 30%, transparent 30.1%),
+    radial-gradient(ellipse at 4% 4%, rgba(16, 91, 204, .22), transparent 27%),
+    radial-gradient(ellipse at 88% 0%, rgba(13, 43, 88, .3), transparent 34%),
+    linear-gradient(180deg, rgba(3, 15, 37, .96) 0%, rgba(2, 13, 32, .97) 58%, rgba(1, 10, 26, .98) 100%);
+  box-shadow: inset 0 1px 0 rgba(198, 221, 255, .18), inset 0 -1px 0 rgba(88, 143, 226, .2), 0 10px 28px rgba(0, 8, 25, .22);
   -webkit-backdrop-filter: blur(10px) saturate(125%);
   backdrop-filter: blur(10px) saturate(125%);
 }
 .site-header > .dtb-header-utility-bar {
-  background: linear-gradient(180deg, rgba(51, 92, 148, .18), rgba(4, 19, 43, .16));
-  border-bottom-color: rgba(177, 205, 240, .17);
-  box-shadow: inset 0 1px 0 rgba(220, 236, 255, .08);
+  background: linear-gradient(180deg, rgba(8, 30, 66, .48), rgba(2, 13, 32, .36));
+  border-bottom-color: rgba(111, 160, 225, .18);
+  box-shadow: inset 0 1px 0 rgba(220, 236, 255, .07);
 }
 .site-header .site-header-inner {
-  background: linear-gradient(180deg, rgba(111, 163, 223, .06), transparent 42%, rgba(4, 17, 38, .12));
+  background: linear-gradient(180deg, rgba(51, 98, 164, .055), transparent 48%, rgba(1, 10, 26, .12));
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .site-header { background-color: #061832; }
+  .site-header { background-color: #020d20; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .site-header {
+    background:
+      linear-gradient(125deg, transparent 0 7%, #0b3470 7.1% 12%, #061a3a 12.1% 17%, transparent 17.1% 24%, #0a2a5e 24.1% 30%, transparent 30.1%),
+      linear-gradient(180deg, #03132c 0%, #020d20 100%);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+  .site-header > .dtb-header-utility-bar { background: #03132c; }
 }

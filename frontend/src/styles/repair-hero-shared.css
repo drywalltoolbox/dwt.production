@@ -76,6 +76,15 @@
   text-wrap: balance;
 }
 
+@media (min-width: 48rem) {
+  /* Home campaign titles are intentionally uppercase. Keep their wider glyphs
+     inside the copy column and give the line boxes enough vertical clearance. */
+  .home-hero__repair-surface .repair-hero.repair-hero--home-slide h1 {
+    font-size: clamp(2.8rem, 4vw, 4.25rem);
+    line-height: 1;
+  }
+}
+
 .repair-landing .repair-hero h1 .repair-hero__title-line,
 .home-hero__repair-surface .repair-hero h1 .repair-hero__title-line {
   display: block;
