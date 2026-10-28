@@ -85,6 +85,9 @@ export default function Home() {
         <HomeHero />
 
         <section className="home-commerce-categories dtb-container dtb-container--fluid" aria-label="Shop popular tool categories">
+          <div className="storefront-section__head">
+            <h2 className="storefront-section__title">Shop by Tool Type</h2>
+          </div>
           <StorefrontRail label="Shop popular tool categories" className="dtb-tool-type-rail">
             {HOME_CATEGORIES.map(([name, slug]) => (
               <ToolTypeTile key={slug} category={{ name, slug }} showSelectorChevron />
