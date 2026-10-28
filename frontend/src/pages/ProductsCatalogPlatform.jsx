@@ -852,6 +852,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
             label="Loading product categories"
           >
             <ProductsCategorySelector
+              logoOnlyHeader
               brand={selectedBrandFacet?.label || selectedBrand}
               brandLogo={selectedBrandFacet?.logo || getBrandLogo(selectedBrand)}
               categories={brandCategoryCards}

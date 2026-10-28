@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { shouldShowCompareAtPrice } from '../../utils/productPricing.js';
+import { brandToSlug } from '../../utils/catalogUrlState.js';
 import ProductRating from './ProductRating.jsx';
 import '../../styles/product-detail-overview-refinements.css';
 import '../../styles/product-detail-brand-refinements.css';
@@ -31,11 +32,13 @@ export default function ProductDetailHeader({
   rawPrice,
   money,
   onProductTitleClick,
+  onBrandClick,
   onReviewsClick,
   rating = 0,
   ratingCount = 0,
 }) {
   const productUrl = productUrlOverride || getProductUrl(product);
+  const brandSlug = brandLabel ? brandToSlug(brandLabel) : '';
   const title = effectiveName || product.sku || product.part_number;
   // ProductDetail owns variation resolution and passes the effective selected
   // variation's price explicitly. Do not re-read price fields from `product`
@@ -48,7 +51,7 @@ export default function ProductDetailHeader({
   return (
     <header className="dtb-pdp-header">
       {brandLogoSrc ? (
-        <div className="dtb-pdp-header__brand-logo-wrap">
+        <Link to={`/products/brands/${brandSlug}`} className="dtb-pdp-header__brand-logo-wrap" aria-label={`Shop ${brandLabel} products`} onClick={onBrandClick}>
           <img
             src={brandLogoSrc}
             alt={`${brandLabel || 'Product brand'} logo`}
@@ -56,7 +59,7 @@ export default function ProductDetailHeader({
             loading="eager"
             decoding="async"
           />
-        </div>
+        </Link>
       ) : brandLabel ? (
         <div className="dtb-pdp-header__brand-eyebrow">{brandLabel}</div>
       ) : null}

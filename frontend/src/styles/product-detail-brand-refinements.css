@@ -9,6 +9,12 @@
 .dtb-product-page-shell .dtb-pdp-header__brand-logo-wrap {
   min-height: 36px;
   margin-bottom: 0.55rem;
+  width: fit-content;
+}
+
+.dtb-product-page-shell .dtb-pdp-header__brand-logo-wrap:focus-visible {
+  outline: 2px solid var(--dtb-primary, #2255ee);
+  outline-offset: 3px;
 }
 
 .dtb-product-page-shell .dtb-pdp-header__brand-logo,

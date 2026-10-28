@@ -262,6 +262,15 @@
   object-fit: contain;
 }
 
+.product-selector--brand-products .product-selector-header-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+  width: 100%;
+  padding-inline: 3rem;
+}
+
 .product-selector .dtb-selector-card__image,
 .product-selector .dtb-selector-card__slide {
   box-sizing: border-box;

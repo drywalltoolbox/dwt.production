@@ -266,6 +266,7 @@ export default function ProductsCategorySelector({
   includeAllProducts = true,
   loadAllProductsPreview = true,
   itemLabel = 'product',
+  logoOnlyHeader = false,
 }) {
   const [previewState, setPreviewState] = useState({ brand: '', images: [], total: null });
   const [partsPreview, setPartsPreview] = useState({ brand: '', image: '' });
@@ -352,7 +353,7 @@ export default function ProductsCategorySelector({
     : normalizedCategories;
 
   return (
-    <div className="product-selector">
+    <div className={`product-selector${logoOnlyHeader ? ' product-selector--brand-products' : ''}`}>
       <div className="product-selector-header">
         <BackButton onClick={onBack} className="dtb-product-nav-back" label="Back to brands" iconOnly />
         <div className="product-selector-header-content">
@@ -363,9 +364,9 @@ export default function ProductsCategorySelector({
               className="product-brand-header-logo"
             />
           )}
-          <div className="product-selector-header-copy">
+          <div className={logoOnlyHeader && brandLogo ? 'sr-only' : 'product-selector-header-copy'}>
             <h1>Shop {brand} by category</h1>
-            <p>Choose a category to browse this brand’s products.</p>
+            {!logoOnlyHeader && <p>Choose a category to browse this brand’s products.</p>}
           </div>
         </div>
       </div>

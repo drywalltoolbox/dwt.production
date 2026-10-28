@@ -733,6 +733,8 @@
   position: relative;
   display: inline-flex;
   align-items: center;
+  justify-content: center;
+  text-align: center;
   gap: 0.42rem;
   min-height: 42px;
   border: 1.5px solid rgba(203, 213, 225, 0.9);

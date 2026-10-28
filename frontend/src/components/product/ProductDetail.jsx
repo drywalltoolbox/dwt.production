@@ -1044,6 +1044,9 @@ export default function ProductDetail({
                   brandLabel={brandLabel}
                   brandLogoSrc={brandLabel ? getBrandLogo(brandLabel) : null}
                   brandLogoClassName="product-detail-brand-logo"
+                  onBrandClick={(event) => {
+                    if (!event.defaultPrevented && event.button === 0 && !event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) onClose?.();
+                  }}
                   displayPrice={displayPrice}
                   pricePrefix={pricePrefix}
                   compareAt={compareAt}
