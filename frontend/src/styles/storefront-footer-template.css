@@ -53,17 +53,22 @@
 }
 
 .dtb-footer-template__link {
-  padding: 0 !important;
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.35rem 0.55rem !important;
+  margin: -0.35rem -0.55rem;
+  border-radius: 6px;
   color: rgba(226, 232, 240, 0.78);
   font-size: 0.84rem;
   line-height: 1.45;
   text-decoration: none;
-  transition: color 180ms var(--dtb-ease, ease);
+  transition: color 180ms var(--dtb-ease, ease), background-color 180ms var(--dtb-ease, ease);
 }
 
 .dtb-footer-template__link:hover,
 .dtb-footer-template__link:focus-visible {
-  color: #93c5fd;
+  color: #fff;
+  background-color: #2255ee;
   outline: 0;
 }
 
@@ -195,24 +200,37 @@
   }
 }
 
-/* Keep the footer brand artwork and social row on one shared center axis. */
+/* Keep the logo and social links in one centered footer identity column. */
 .dtb-footer-template__brand {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-.dtb-footer-template__brand > a {
-  display: block;
-  width: fit-content;
-  max-width: 100%;
+.dtb-footer-template__identity {
+  display: flex;
+  width: min(100%, 230px);
+  flex-direction: column;
+  align-items: center;
+  margin-inline: auto;
 }
-.dtb-footer-template__brand .dtb-footer-template__socials {
+.dtb-footer-template__identity > a {
+  display: block;
+  width: 100%;
+}
+.dtb-footer-template__identity .dtb-footer-template__logo {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  margin: 0;
+}
+.dtb-footer-template__identity .dtb-footer-template__socials {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  width: fit-content;
-  margin: 8px auto 0;
+  width: 100%;
+  margin: 8px 0 0;
   position: static;
 }
 .dtb-footer-template__bottom {
@@ -228,4 +246,10 @@
 .dtb-footer-template__legal {
   margin: 0;
   justify-content: center;
+}
+
+@media (max-width: 700px) {
+  .dtb-footer-template__identity {
+    width: min(100%, 210px);
+  }
 }

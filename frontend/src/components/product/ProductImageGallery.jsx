@@ -716,7 +716,7 @@ export default function ProductImageGallery({ product }) {
                 className="product-image-gallery__nav-btn absolute left-2.5 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9"
                 aria-label="Previous image"
               >
-                <ChevronLeft size={17} />
+                <ChevronLeft size={17} strokeWidth={2.5} />
               </button>
               <button
                 type="button"
@@ -724,7 +724,7 @@ export default function ProductImageGallery({ product }) {
                 className="product-image-gallery__nav-btn absolute right-2.5 top-1/2 -translate-y-1/2 z-10 flex items-center justify-center w-9 h-9"
                 aria-label="Next image"
               >
-                <ChevronRight size={17} />
+                <ChevronRight size={17} strokeWidth={2.5} />
               </button>
 
               {stableImages.length <= 8 && (

@@ -79,23 +79,25 @@ export default function Footer() {
       <div className="dtb-footer-template__inner">
         <div className="dtb-footer-template__grid">
           <section className="dtb-footer-template__brand" aria-label="Drywall Toolbox">
-            <Link to="/" aria-label="Drywall Toolbox home">
-              <img className="dtb-footer-template__logo" src={DTB_LOGO_WHITE_URL} alt="Drywall Toolbox" width="230" height="70" loading="lazy" decoding="async" />
-            </Link>
-          <nav className="dtb-footer-template__socials" aria-label="Social media">
-            {SOCIAL_LINKS.map(({ label, href, Icon }) => (
-              <a
-                key={label}
-                className="dtb-footer-template__social"
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={label}
-              >
-                <Icon size={18} strokeWidth={1.9} aria-hidden="true" />
-              </a>
-            ))}
-          </nav>
+            <div className="dtb-footer-template__identity">
+              <Link to="/" aria-label="Drywall Toolbox home">
+                <img className="dtb-footer-template__logo" src={DTB_LOGO_WHITE_URL} alt="Drywall Toolbox" width="230" height="70" loading="lazy" decoding="async" />
+              </Link>
+              <nav className="dtb-footer-template__socials" aria-label="Social media">
+                {SOCIAL_LINKS.map(({ label, href, Icon }) => (
+                  <a
+                    key={label}
+                    className="dtb-footer-template__social"
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={label}
+                  >
+                    <Icon size={18} strokeWidth={1.9} aria-hidden="true" />
+                  </a>
+                ))}
+              </nav>
+            </div>
           </section>
 
           {FOOTER_GROUPS.map((group) => <FooterLinkGroup key={group.title} {...group} />)}

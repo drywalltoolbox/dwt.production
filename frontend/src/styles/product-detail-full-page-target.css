@@ -80,22 +80,6 @@
     padding: 6px;
   }
 
-  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__nav-btn {
-    width: 44px;
-    height: 44px;
-    border-color: #dce4ee;
-    background: rgba(255, 255, 255, .96);
-    box-shadow: 0 5px 14px rgba(15, 23, 42, .08);
-  }
-
-  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__thumb-nav {
-    width: 38px;
-    height: 38px;
-    border-color: #dce4ee;
-    background: rgba(255, 255, 255, .96);
-    box-shadow: 0 4px 12px rgba(15, 23, 42, .07);
-  }
-
   .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__counter {
     display: none !important;
   }

@@ -198,11 +198,6 @@
     padding: 7px;
   }
 
-  .product-modal-card-shell.dtb-product-page-shell .product-image-gallery__nav-btn,
-  .product-modal-card-shell.dtb-product-page-shell .product-image-gallery__thumb-nav {
-    display: none !important;
-  }
-
   /* Product information ---------------------------------------------- */
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp__info-column {
     min-width: 0;

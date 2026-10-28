@@ -1,12 +1,25 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { m as Motion } from 'framer-motion';
 import SEOHead from '../components/shared/SEOHead';
 import NavbarTabs from '../components/ui/NavbarTabs';
 import Accordion from '../components/ui/Accordion';
+import ToolSetBuyingGuide from '../components/catalog/ToolSetBuyingGuide.jsx';
 import { dtbTransition } from '../motion/dtbMotion.js';
 
 const FAQ_CATEGORIES = [
+  {
+    id: 'tool-sets',
+    label: 'Tool Sets & Kits',
+    questions: [
+      { q: 'How do I choose between semi-automatic and automatic sets?', a: 'Start with the work your crew performs and the tools you want in the setup. Compare the listed set contents and product details for each option; exact configurations vary by product.' },
+      { q: 'How can I confirm what a set includes?', a: 'Use the product listing’s included-items details as the source for what comes with that set. Check the full list before ordering, and ask us if a specific tool, case, handle, or adapter is not clear.' },
+      { q: 'What sizes and working ranges should I compare?', a: 'Review the listed box sizes, corner-finisher sizes, and whether included handles are fixed or extendable. Confirm the range on the product details for the specific set.' },
+      { q: 'How should I compare price and availability?', a: 'Use the current catalog listing for price and stock status. Any set savings should be based on the price shown for that product; do not assume an additional bundle discount.' },
+      { q: 'Where can I check warranty and compatibility details?', a: 'Review the product details for the set and its included tools. If warranty coverage, a required adapter, or a tool’s fit with your existing equipment is unclear, contact us before ordering.' },
+      { q: 'Can someone help me pick a setup for my crew?', a: 'Yes. Contact us with the kind of work you do, the tools you already own, and what you want the set to help your crew accomplish. We can help you compare the listed options.' },
+    ],
+  },
   {
     id: 'shipping-orders',
     label: 'Shipping & Orders',
@@ -68,8 +81,18 @@ const FAQ_CATEGORIES = [
 ];
 
 export default function FAQ() {
-  const [activeCategory, setActiveCategory] = useState('shipping-orders');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const requestedCategory = searchParams.get('category');
+  const activeCategory = FAQ_CATEGORIES.some((category) => category.id === requestedCategory)
+    ? requestedCategory
+    : 'shipping-orders';
   const [isMobile, setIsMobile] = useState(() => (typeof window !== 'undefined' ? window.innerWidth < 768 : false));
+
+  const setActiveCategory = (categoryId) => {
+    const nextParams = new URLSearchParams(searchParams);
+    nextParams.set('category', categoryId);
+    setSearchParams(nextParams, { replace: true });
+  };
 
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 767px)');
@@ -85,7 +108,7 @@ export default function FAQ() {
     <div style={{ minHeight: '100vh' }} className="page-wrapper">
       <SEOHead
         title="FAQ — Drywall Tool Repair & Maintenance"
-        description="Answers to common questions about drywall tool repair services, pricing, warranties, maintenance, parts, accounts, and shipping."
+        description="Answers about tool sets, shipping, orders, repair services, warranties, maintenance, parts, and accounts."
         canonical="/faq"
       />
 
@@ -99,7 +122,7 @@ export default function FAQ() {
             Frequently Asked<br /><span style={{ color: '#93c5fd' }}>Questions</span>
           </h1>
           <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', margin: '0 auto', lineHeight: 1.6, maxWidth: '520px' }}>
-            Everything you need to know about repair services, pricing, warranties, tool maintenance, parts ordering, accounts, and shipping.
+            Answers about tool sets, repair services, warranties, tool maintenance, parts, accounts, orders, and shipping.
           </p>
         </div>
       </section>
@@ -116,9 +139,13 @@ export default function FAQ() {
               />
               <div style={{ marginBottom: '16px' }}>
                 <h2 style={{ fontSize: 'clamp(1.15rem, 4vw, 1.4rem)', fontWeight: 900, color: '#0f172a', margin: '0 0 2px 0', letterSpacing: '-0.02em' }}>{activeData?.label}</h2>
-                <p style={{ fontSize: '0.75rem', color: 'rgba(15,23,42,0.45)', margin: 0 }}>{activeData?.questions.length} questions</p>
+                <p style={{ fontSize: '0.75rem', color: 'rgba(15,23,42,0.45)', margin: 0 }}>{activeCategory === 'tool-sets' ? 'A practical guide to comparing tool sets' : `${activeData?.questions.length} questions`}</p>
               </div>
-              <Motion.div key={activeCategory} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={dtbTransition.standard}><Accordion items={accordionItems} isMobile /></Motion.div>
+              <Motion.div key={activeCategory} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={dtbTransition.standard}>
+                {activeCategory === 'tool-sets'
+                  ? <ToolSetBuyingGuide questions={activeData?.questions || []} />
+                  : <Accordion items={accordionItems} isMobile />}
+              </Motion.div>
             </>
           ) : (
             <div style={{ display: 'flex', gap: 'clamp(2rem, 5vw, 4rem)', alignItems: 'flex-start' }}>
@@ -132,9 +159,13 @@ export default function FAQ() {
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ marginBottom: '28px' }}>
                   <h2 style={{ fontSize: 'clamp(1.25rem, 3vw, 1.6rem)', fontWeight: 900, color: '#0f172a', margin: '0 0 4px 0', letterSpacing: '-0.02em' }}>{activeData?.label}</h2>
-                  <p style={{ fontSize: '0.8rem', color: 'rgba(15,23,42,0.45)', margin: 0 }}>{activeData?.questions.length} questions</p>
+                  <p style={{ fontSize: '0.8rem', color: 'rgba(15,23,42,0.45)', margin: 0 }}>{activeCategory === 'tool-sets' ? 'A practical guide to comparing tool sets' : `${activeData?.questions.length} questions`}</p>
                 </div>
-                <Motion.div key={activeCategory} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={dtbTransition.standard}><Accordion items={accordionItems} /></Motion.div>
+                <Motion.div key={activeCategory} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={dtbTransition.standard}>
+                  {activeCategory === 'tool-sets'
+                    ? <ToolSetBuyingGuide questions={activeData?.questions || []} />
+                    : <Accordion items={accordionItems} />}
+                </Motion.div>
               </div>
             </div>
           )}

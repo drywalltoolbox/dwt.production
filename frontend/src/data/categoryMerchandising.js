@@ -31,42 +31,6 @@ const CATEGORY_INTENT_CONFIG = {
       ],
     },
   },
-  'automatic-tool-sets': {
-    eyebrow: 'Choose a system',
-    title: 'Start with the work your crew performs.',
-    description: 'Use these buying contexts to understand the type of set that fits your workflow, then review the actual products, included tools, price, and availability in the catalog below.',
-    intents: [
-      { label: 'Complete automatic systems', description: 'Taping, loading, flat finishing, and corner finishing in one coordinated setup.' },
-      { label: 'Taping sets', description: 'Automatic taper plus the equipment required to load and run it.' },
-      { label: 'Flat finishing sets', description: 'Finishing boxes, compatible handles, and loading equipment.' },
-      { label: 'Corner finishing sets', description: 'Rollers, applicators, corner finishers, and compatible handles.' },
-      { label: 'Starter / upgrade sets', description: 'Focused systems for contractors moving beyond hand tools.' },
-      { label: 'Production crew sets', description: 'Broader systems for high-volume professional finishing.' },
-    ],
-    guide: {
-      title: 'Evaluate sets by what is actually included',
-      items: [
-        { label: 'System coverage', detail: 'Review the taper, pump, boxes, corner tools, handles, cases, and required adapters included with each product.' },
-        { label: 'Working range', detail: 'Check box sizes, corner-finisher sizes, and fixed or extendable handle ranges on the product details.' },
-        { label: 'Commerce facts', detail: 'Use the live product listing and product details for current price, availability, warranty, and any real set savings.' },
-      ],
-    },
-  },
-  'automatic-tool-sets-kits': {
-    aliasOf: 'automatic-tool-sets',
-  },
-  'semi-automatic-tool-sets-kits': {
-    aliasOf: 'semi-automatic-tools',
-  },
-  toolsets: {
-    aliasOf: 'automatic-tool-sets',
-  },
-  'tool-sets-kits': {
-    aliasOf: 'automatic-tool-sets',
-  },
-  'tool-sets-and-kits': {
-    aliasOf: 'automatic-tool-sets',
-  },
 };
 
 function normalizeSlug(value = '') {

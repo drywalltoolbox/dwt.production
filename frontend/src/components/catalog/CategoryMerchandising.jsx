@@ -2,8 +2,25 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { buildCategoryPageUrl } from '../../utils/catalogFacets.js';
 import { getCategoryMerchandising, resolveIntentTarget } from '../../data/categoryMerchandising.js';
+import ToolSetHelpLink from './ToolSetHelpLink.jsx';
 import '../../styles/category-merchandising.css';
 import '../../styles/contractor-shopping.css';
+
+const TOOL_SET_HELP_CATEGORY_SLUGS = new Set([
+  'automatic-tool-sets-kits',
+  'automatic-tool-sets',
+  'semi-automatic-tool-sets-kits',
+  'tool-sets-kits',
+  'tool-sets-and-kits',
+  'toolsets',
+]);
+
+function categorySlug(category = {}) {
+  return String(category?.slug || category?.key || category?.id || '')
+    .trim()
+    .toLowerCase()
+    .replace(/_/g, '-');
+}
 
 function IntentCard({ intent, target, brand }) {
   const hasRoutableTarget = Boolean(target?.slug);
@@ -36,6 +53,10 @@ function IntentCard({ intent, target, brand }) {
 }
 
 export default function CategoryMerchandising({ category, brand = '' }) {
+  if (TOOL_SET_HELP_CATEGORY_SLUGS.has(categorySlug(category))) {
+    return <ToolSetHelpLink />;
+  }
+
   const config = getCategoryMerchandising(category);
   if (!config) return null;
 

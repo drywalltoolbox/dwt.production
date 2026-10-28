@@ -1,0 +1,79 @@
+.dtb-tool-set-help {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0 0 1.25rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.dtb-tool-set-help__copy h2 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+}
+
+.dtb-tool-set-help__copy p {
+  margin: .25rem 0 0;
+  color: #64748b;
+  font-size: .85rem;
+  line-height: 1.45;
+}
+
+.dtb-tool-set-help__link {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: .45rem;
+  min-height: 40px;
+  padding: 0 .9rem;
+  border-radius: 8px;
+  color: #1557e8;
+  font-size: .82rem;
+  font-weight: 800;
+  text-decoration: none;
+  transition: background-color 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.dtb-tool-set-help__link:hover {
+  background: #f1f6ff;
+  color: #0d49d8;
+}
+
+.dtb-tool-set-help__link:hover svg {
+  transform: translateX(2px);
+}
+
+.dtb-tool-set-help__link svg {
+  transition: transform 160ms ease;
+}
+
+.dtb-tool-set-help__link:focus-visible {
+  outline: 2px solid #2255ee;
+  outline-offset: 3px;
+}
+
+@media (max-width: 640px) {
+  .dtb-tool-set-help {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: .6rem;
+    padding: .9rem 1rem;
+  }
+
+  .dtb-tool-set-help__link {
+    margin-left: -.9rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dtb-tool-set-help__link,
+  .dtb-tool-set-help__link svg {
+    transition: none;
+  }
+}

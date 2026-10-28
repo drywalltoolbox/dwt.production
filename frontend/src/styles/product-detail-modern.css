@@ -2194,9 +2194,10 @@
     padding: clamp(var(--dtb-space-4), 2.2vw, var(--dtb-space-6)) !important;
   }
 
-  .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__main > button {
-    width: 46px;
-    height: 46px;
+  .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__nav-btn,
+  .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__thumb-nav {
+    width: 40px;
+    height: 40px;
     border: 1px solid #dbe2ea;
     box-shadow: 0 3px 9px rgba(15, 23, 42, 0.08);
   }
@@ -2221,11 +2222,9 @@
     border-radius: 10px;
   }
 
-  /* The thumbnail strip no longer sits inside its own white card, so its
-     prev/next nav buttons need to keep their own light border + shadow
-     (matching the main-image nav buttons above) to stay visible as
-     clickable circles floating directly over the page background instead
-     of relying on a card surface behind them. */
+  /* Keep the thumbnail and image-viewer arrows visually matched above the
+     page background. */
+  .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__nav-btn,
   .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__thumb-nav {
     border: 1px solid #dbe2ea;
     box-shadow: 0 3px 9px rgba(15, 23, 42, 0.08);

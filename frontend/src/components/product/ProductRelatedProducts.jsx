@@ -21,7 +21,6 @@ export function getRelatedProductsCopy(context = 'related') {
     };
   }
   return {
-    eyebrow: 'Recommended for this product',
     title: 'Related products',
     railLabel: 'Related products',
   };
@@ -48,7 +47,7 @@ export default function ProductRelatedProducts({
     <section className="product-related" aria-labelledby={titleId}>
       <div className="product-related__heading">
         <div>
-          <span className="product-related__eyebrow">{copy.eyebrow}</span>
+          {copy.eyebrow ? <span className="product-related__eyebrow">{copy.eyebrow}</span> : null}
           <h2 id={titleId}>{copy.title}</h2>
         </div>
         <Link to="/products" className="product-related__browse">Browse all products</Link>

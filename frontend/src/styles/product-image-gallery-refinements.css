@@ -161,14 +161,22 @@
   background: #fff;
 }
 
+.dtb-product-page-shell .product-image-gallery__nav-btn,
 .dtb-product-page-shell .product-image-gallery__thumb-nav {
-  display: none;
-  border: 1px solid var(--dtb-gallery-line-strong);
+  width: 40px;
+  height: 40px;
+  border: 1px solid #dce4ee;
   border-radius: 999px;
   background: rgba(255, 255, 255, .96);
   color: var(--dtb-gallery-ink);
-  box-shadow: 0 4px 14px rgba(15, 23, 42, .11);
-  transition: opacity .16s ease, border-color .16s ease, box-shadow .16s ease;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, .08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: border-color .16s ease, color .16s ease, box-shadow .16s ease;
+}
+
+.dtb-product-page-shell .product-image-gallery__thumb-nav {
+  display: none;
 }
 
 @media (min-width: 768px) {
@@ -185,11 +193,14 @@
   }
 }
 
+.dtb-product-page-shell .product-image-gallery__nav-btn:hover,
 .dtb-product-page-shell .product-image-gallery__thumb-nav:hover:not(:disabled) {
-  border-color: #aebdce;
-  box-shadow: 0 6px 18px rgba(15, 23, 42, .15);
+  border-color: #b8c4d4;
+  color: #1557ff;
+  box-shadow: 0 5px 14px rgba(15, 23, 42, .1);
 }
 
+.dtb-product-page-shell .product-image-gallery__nav-btn:focus-visible,
 .dtb-product-page-shell .product-image-gallery__thumb-nav:focus-visible {
   outline: 3px solid rgba(31, 85, 238, .2);
   outline-offset: 2px;
@@ -198,31 +209,6 @@
 .dtb-product-page-shell .product-image-gallery__thumb-nav:disabled {
   cursor: default;
   opacity: .36;
-}
-
-/* Main previous/next controls ----------------------------------------- */
-.dtb-product-page-shell .product-image-gallery__nav-btn {
-  width: 40px;
-  height: 40px;
-  border: 1px solid rgba(203, 213, 225, .9);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, .92);
-  color: var(--dtb-gallery-ink);
-  box-shadow: 0 4px 14px rgba(15, 23, 42, .08);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  opacity: .9;
-  transition: opacity .16s ease, transform .16s ease, border-color .16s ease, box-shadow .16s ease;
-}
-
-.dtb-product-page-shell .product-image-gallery__nav-btn:hover {
-  opacity: 1;
-  border-color: #b8c4d4;
-}
-
-.dtb-product-page-shell .product-image-gallery__nav-btn:focus-visible {
-  outline: 3px solid rgba(31, 85, 238, .2);
-  outline-offset: 2px;
 }
 
 .dtb-product-page-shell .product-image-gallery__indicators {
