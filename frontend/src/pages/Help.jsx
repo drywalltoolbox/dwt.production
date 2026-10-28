@@ -1,11 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import { m as Motion } from 'framer-motion';
+import { m as Motion, useReducedMotion } from 'framer-motion';
+import { ArrowRight, Box, ChevronRight, Headphones, Mail, MessageCircle, Package, Phone, Search, Settings, ShieldCheck, Star, Truck, UserRound, Wrench } from 'lucide-react';
 import SEOHead from '../components/shared/SEOHead';
-import NavbarTabs from '../components/ui/NavbarTabs';
 import Accordion from '../components/ui/Accordion';
 import ToolSetBuyingGuide from '../components/catalog/ToolSetBuyingGuide.jsx';
-import { dtbTransition } from '../motion/dtbMotion.js';
+import { dtbTransition, reducedTransition } from '../motion/dtbMotion.js';
+import helpBlueprint from '../assets/media/help-center-blueprint.svg';
+import '../styles/help.css';
 
 const FAQ_CATEGORIES = [
   {
@@ -80,108 +82,62 @@ const FAQ_CATEGORIES = [
   },
 ];
 
+const ICONS = { 'tool-sets': Box, 'shipping-orders': Truck, 'warranty-returns': ShieldCheck, 'repair-services': Wrench, 'tool-care': Settings, account: UserRound };
+const DESCRIPTIONS = {
+  'shipping-orders': 'Track orders, shipping times, and delivery info',
+  'repair-services': 'Request a repair, status, and process details',
+  'warranty-returns': 'Returns, warranty coverage, and eligibility',
+  'tool-care': 'Keep your tools working their best.',
+  account: 'Manage your orders, addresses, and account settings.',
+  'tool-sets': 'Find the right setup for your crew.',
+};
+const SHORTCUTS = [
+  { title: 'Track a repair', text: 'Check your repair status', to: '/repairs/track', Icon: Truck },
+  { title: 'Shipping timelines', text: 'When will my order arrive?', to: '/shipping-policy', Icon: Package },
+  { title: 'Request a return', text: 'Start a return or exchange', to: '/returns', Icon: ArrowRight },
+  { title: 'Find replacement parts', text: 'Parts, diagrams and more', to: '/schematics', Icon: Settings },
+];
+
 export default function Help() {
+  const reduceMotion = useReducedMotion();
   const [searchParams, setSearchParams] = useSearchParams();
   const requestedCategory = searchParams.get('category');
-  const activeCategory = FAQ_CATEGORIES.some((category) => category.id === requestedCategory)
-    ? requestedCategory
-    : 'shipping-orders';
-  const [isMobile, setIsMobile] = useState(() => (typeof window !== 'undefined' ? window.innerWidth < 768 : false));
-
-  const setActiveCategory = (categoryId) => {
-    const nextParams = new URLSearchParams(searchParams);
-    nextParams.set('category', categoryId);
-    setSearchParams(nextParams, { replace: true });
+  const activeCategory = FAQ_CATEGORIES.some((category) => category.id === requestedCategory) ? requestedCategory : 'account';
+  const [query, setQuery] = useState('');
+  const [search, setSearch] = useState('');
+  const activeData = FAQ_CATEGORIES.find((category) => category.id === activeCategory);
+  const ActiveIcon = ICONS[activeCategory];
+  const results = search ? FAQ_CATEGORIES.flatMap((category) => category.questions.filter(({ q, a }) => `${q} ${a} ${category.label}`.toLowerCase().includes(search.toLowerCase())).map((item) => ({ ...item, category: category.label }))) : [];
+  const chooseCategory = (id) => {
+    const next = new URLSearchParams(searchParams);
+    next.set('category', id);
+    setSearchParams(next, { replace: true });
+    setSearch('');
+    setQuery('');
+    document.getElementById('help-topics')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
   };
-
-  useEffect(() => {
-    const mq = window.matchMedia('(max-width: 767px)');
-    const handler = (e) => setIsMobile(e.matches);
-    mq.addEventListener('change', handler);
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-
-  const activeData = FAQ_CATEGORIES.find((c) => c.id === activeCategory);
-  const accordionItems = (activeData?.questions || []).map((q, i) => ({ id: `${activeCategory}-${i}`, question: q.q, answer: q.a }));
-
+  const submitSearch = (event) => { event.preventDefault(); setSearch(query.trim()); document.getElementById('help-topics')?.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' }); };
   return (
-    <div style={{ minHeight: '100vh' }} className="page-wrapper">
-      <SEOHead
-        title="Help Center — Drywall Toolbox"
-        description="Answers about tool sets, shipping, orders, repair services, warranties, maintenance, parts, and accounts."
-        canonical="/help"
-      />
-
-      <section style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #2255ee 100%)', padding: 'clamp(3.5rem, 8vw, 6rem) clamp(1.5rem, 5vw, 3rem) clamp(3rem, 6vw, 5rem)', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize: '40px 40px', pointerEvents: 'none' }} />
-        <div style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center', position: 'relative' }}>
-          <div className="dtb-title-eyebrow" style={{ display: 'inline-block', background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', borderRadius: '99px', padding: '5px 16px', fontSize: '0.68rem', fontWeight: 700, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.85)', marginBottom: '18px' }}>
-            Help Center
-          </div>
-          <h1 style={{ fontSize: 'clamp(2rem, 5vw, 3.25rem)', fontWeight: 900, color: 'white', margin: '0 0 16px 0', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-            Frequently Asked<br /><span style={{ color: '#93c5fd' }}>Questions</span>
-          </h1>
-          <p style={{ color: 'rgba(255,255,255,0.65)', fontSize: 'clamp(0.95rem, 2vw, 1.1rem)', margin: '0 auto', lineHeight: 1.6, maxWidth: '520px' }}>
-            Answers about tool sets, repair services, warranties, tool maintenance, parts, accounts, orders, and shipping.
-          </p>
+    <main className="help-page">
+      <SEOHead title="Help Center — Drywall Toolbox" description="Answers about tool sets, shipping, orders, repair services, warranties, maintenance, parts, and accounts." canonical="/help" />
+      <section className="help-hero">
+        <div className="help-hero__blueprint" aria-hidden="true"><img src={helpBlueprint} alt="" /></div>
+        <div className="help-container help-hero__inner">
+          <div className="help-hero__intro"><span className="help-eyebrow">Help Center</span><h1>How can we <span>help?</span></h1><p>Find answers about repair services, shipping, warranties, account management, and product support.</p></div>
+          <form className="help-search" onSubmit={submitSearch} role="search"><Search size={21} aria-hidden="true" /><label className="help-sr-only" htmlFor="help-search">Search help articles</label><input id="help-search" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search help articles, orders, repairs, policies..." /><button type="submit">Search</button></form>
+          <div className="help-hero__topics">{['shipping-orders', 'repair-services', 'warranty-returns'].map((id) => { const category = FAQ_CATEGORIES.find((item) => item.id === id); const Icon = ICONS[id]; return <button className="help-hero-card" key={id} type="button" onClick={() => chooseCategory(id)}><span className="help-hero-card__icon"><Icon size={28} /></span><span><strong>{category.label}</strong><small>{DESCRIPTIONS[id]}</small></span><ChevronRight className="help-chevron" size={20} /></button>; })}</div>
         </div>
       </section>
-
-      <section style={{ padding: 'clamp(2rem, 5vw, 5rem) clamp(1rem, 4vw, 3rem)', background: 'white' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          {isMobile ? (
-            <>
-              <NavbarTabs
-                tabs={FAQ_CATEGORIES.map((cat) => ({ id: cat.id, label: cat.label }))}
-                activeIndex={FAQ_CATEGORIES.findIndex((c) => c.id === activeCategory)}
-                onChange={(idx) => setActiveCategory(FAQ_CATEGORIES[idx].id)}
-                style={{ marginBottom: '24px' }}
-              />
-              <div style={{ marginBottom: '16px' }}>
-                <h2 style={{ fontSize: 'clamp(1.15rem, 4vw, 1.4rem)', fontWeight: 900, color: '#0f172a', margin: '0 0 2px 0', letterSpacing: '-0.02em' }}>{activeData?.label}</h2>
-                <p style={{ fontSize: '0.75rem', color: 'rgba(15,23,42,0.45)', margin: 0 }}>{activeCategory === 'tool-sets' ? 'A practical guide to comparing tool sets' : `${activeData?.questions.length} questions`}</p>
-              </div>
-              <Motion.div key={activeCategory} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={dtbTransition.standard}>
-                {activeCategory === 'tool-sets'
-                  ? <ToolSetBuyingGuide questions={activeData?.questions || []} />
-                  : <Accordion items={accordionItems} isMobile />}
-              </Motion.div>
-            </>
-          ) : (
-            <div style={{ display: 'flex', gap: 'clamp(2rem, 5vw, 4rem)', alignItems: 'flex-start' }}>
-              <nav style={{ flexShrink: 0, width: '210px', position: 'sticky', top: '100px', display: 'flex', flexDirection: 'column', gap: '4px' }} aria-label="FAQ categories">
-                <p style={{ fontSize: '0.62rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(15,23,42,0.4)', margin: '0 0 10px 0' }}>Categories</p>
-                {FAQ_CATEGORIES.map((cat) => {
-                  const active = cat.id === activeCategory;
-                  return <button key={cat.id} type="button" onClick={() => setActiveCategory(cat.id)} style={{ background: active ? 'rgba(34,85,238,0.08)' : 'none', border: 'none', borderLeft: active ? '3px solid var(--primary-600)' : '3px solid transparent', borderRadius: '0 6px 6px 0', padding: '9px 12px', textAlign: 'left', cursor: 'pointer', fontSize: '0.875rem', fontWeight: active ? 700 : 500, color: active ? 'var(--primary-700)' : 'rgba(15,23,42,0.6)', transition: 'all 0.15s', lineHeight: 1.4 }}>{cat.label}</button>;
-                })}
-              </nav>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ marginBottom: '28px' }}>
-                  <h2 style={{ fontSize: 'clamp(1.25rem, 3vw, 1.6rem)', fontWeight: 900, color: '#0f172a', margin: '0 0 4px 0', letterSpacing: '-0.02em' }}>{activeData?.label}</h2>
-                  <p style={{ fontSize: '0.8rem', color: 'rgba(15,23,42,0.45)', margin: 0 }}>{activeCategory === 'tool-sets' ? 'A practical guide to comparing tool sets' : `${activeData?.questions.length} questions`}</p>
-                </div>
-                <Motion.div key={activeCategory} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={dtbTransition.standard}>
-                  {activeCategory === 'tool-sets'
-                    ? <ToolSetBuyingGuide questions={activeData?.questions || []} />
-                    : <Accordion items={accordionItems} />}
-                </Motion.div>
-              </div>
-            </div>
-          )}
+      <section className="help-popular" aria-label="Popular topics"><div className="help-container help-popular__inner"><div className="help-popular__title"><Star size={30} /><span><strong>Popular topics</strong><small>Quick answers to our most common questions.</small></span></div><div className="help-popular__links">{SHORTCUTS.map(({ title, text, to, Icon }) => <Link className="help-shortcut" to={to} key={title}><span className="help-shortcut__icon"><Icon size={23} /></span><span><strong>{title}</strong><small>{text}</small></span><ChevronRight className="help-chevron" size={18} /></Link>)}</div></div></section>
+      <section id="help-topics" className="help-content help-container">
+        <nav className="help-sidebar" aria-label="Help topics"><h2>Help Topics</h2><div className="help-sidebar__items">{FAQ_CATEGORIES.map((category) => { const Icon = ICONS[category.id]; return <button key={category.id} type="button" className={category.id === activeCategory && !search ? 'is-active' : ''} aria-current={category.id === activeCategory && !search ? 'page' : undefined} onClick={() => chooseCategory(category.id)}><Icon size={21} /><span>{category.label}</span><ChevronRight size={18} className="help-sidebar__arrow" /></button>; })}</div></nav>
+        <div className="help-answers"><header className="help-answers__header"><span className="help-answers__icon">{search ? <Search size={30} /> : <ActiveIcon size={30} />}</span><div><h2>{search ? 'Search results' : activeData.label}</h2><p>{search ? `${results.length} ${results.length === 1 ? 'result' : 'results'} for “${search}”` : `${activeData.questions.length} questions`}</p></div><p className="help-answers__description">{search ? 'Search across all help topics.' : DESCRIPTIONS[activeCategory]}</p></header>
+          <Motion.div key={search ? `search-${search}` : activeCategory} initial={{ opacity: reduceMotion ? 1 : 0, y: reduceMotion ? 0 : 8 }} animate={{ opacity: 1, y: 0 }} transition={reduceMotion ? reducedTransition : dtbTransition.standard}>
+            {search ? (results.length ? <Accordion className="help-faq" variant="cards" items={results.map((item, index) => ({ id: `search-${index}`, question: `${item.category}: ${item.q}`, answer: item.a }))} /> : <div className="help-empty"><p>No answers found. Try a different search or choose a topic.</p><button type="button" onClick={() => { setSearch(''); setQuery(''); }}>Browse help topics</button></div>) : activeCategory === 'tool-sets' ? <ToolSetBuyingGuide questions={activeData.questions} /> : <Accordion className="help-faq" variant="cards" items={activeData.questions.map((item, index) => ({ id: `${activeCategory}-${index}`, question: item.q, answer: item.a }))} />}
+          </Motion.div>
         </div>
+        <aside className="help-support"><span className="help-support__icon"><Headphones size={29} /></span><h2>Still need help?</h2><p>Our team is here to help with orders, repairs, parts, and more.</p><Link className="help-support__button" to="/contact"><MessageCircle size={20} /> Contact Support</Link><div className="help-support__contact"><Phone size={19} /><span><a href="tel:+16129781007">612-978-1007</a><small>Mon–Fri 8AM–5PM EST</small></span></div><div className="help-support__contact"><Mail size={19} /><span><a href="mailto:dtb@drywalltoolbox.com">dtb@drywalltoolbox.com</a><small>We typically respond within one business day.</small></span></div></aside>
       </section>
-
-      <section style={{ padding: 'clamp(3rem, 6vw, 4rem) clamp(1.5rem, 5vw, 3rem)', background: 'white', borderTop: '1px solid var(--machined-border)' }}>
-        <div style={{ maxWidth: '640px', margin: '0 auto', textAlign: 'center' }}>
-          <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 900, color: '#0f172a', margin: '0 0 12px 0', letterSpacing: '-0.02em' }}>Still have questions?</h2>
-          <p style={{ color: 'rgba(15,23,42,0.55)', fontSize: 'clamp(0.875rem, 2vw, 1rem)', margin: '0 0 32px 0', lineHeight: 1.6 }}>Our team is ready to help. Reach out directly or submit a repair request and we will be in touch within one business day.</p>
-          <div style={{ display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap' }}>
-            <Link to="/contact" style={{ display: 'inline-block', background: 'var(--primary-600)', color: 'white', fontWeight: 800, fontSize: '0.875rem', letterSpacing: '0.04em', textTransform: 'uppercase', padding: '12px 28px', borderRadius: '6px', textDecoration: 'none' }}>Contact Us</Link>
-            <Link to="/repairs" style={{ display: 'inline-block', background: 'white', color: 'var(--primary-700)', fontWeight: 800, fontSize: '0.875rem', letterSpacing: '0.04em', textTransform: 'uppercase', padding: '12px 28px', borderRadius: '6px', border: '1.5px solid rgba(34,85,238,0.3)', textDecoration: 'none' }}>Repair Services</Link>
-          </div>
-        </div>
-      </section>
-    </div>
+    </main>
   );
 }

@@ -25,17 +25,17 @@ const FOOTER_GROUPS = [
   {
     title: 'Customer Support',
     links: [
+      { label: 'Help', to: '/help' },
       { label: 'Contact Us', to: '/contact' },
       { label: 'Shipping & Returns', to: '/policies' },
-      { label: 'Help', to: '/help' },
     ],
   },
   {
     title: 'My Account',
     links: [
+      { label: 'Sign In', to: '/login' },
       { label: 'Account Dashboard', to: '/dashboard' },
       { label: 'Track My Order', to: '/dashboard?tab=orders' },
-      { label: 'Sign In', to: '/login' },
     ],
   },
 ];

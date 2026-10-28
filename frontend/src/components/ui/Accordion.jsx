@@ -6,15 +6,23 @@ import { useState } from 'react';
 import { AnimatePresence, m as Motion, useReducedMotion } from 'framer-motion';
 import { collapseTransition, reducedTransition } from '../../motion/dtbMotion.js';
 
-function AccordionItem({ item, isOpen, onToggle, isMobile = false }) {
+function AccordionItem({ item, isOpen, onToggle, isMobile = false, variant = 'default' }) {
   const [hovered, setHovered] = useState(false);
   const reduceMotion = useReducedMotion();
 
   return (
     <div
+      className={variant === 'cards' ? 'dtb-accordion__item dtb-accordion__item--card' : 'dtb-accordion__item'}
+      data-open={isOpen}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
-      style={{
+      style={variant === 'cards' ? {
+        border: '1px solid var(--machined-border)',
+        borderRadius: '8px',
+        paddingInline: '0',
+        background: hovered && !isOpen ? 'rgba(34,85,238,0.025)' : '#fff',
+        transition: 'border-color var(--dtb-motion-standard), background-color var(--dtb-motion-fast)',
+      } : {
         borderBottom: '1px solid var(--machined-border)',
         borderLeft: `2px solid ${isOpen ? 'var(--primary-600, #2255ee)' : 'transparent'}`,
         paddingLeft: isOpen ? '14px' : '0',
@@ -91,7 +99,7 @@ function AccordionItem({ item, isOpen, onToggle, isMobile = false }) {
 }
 
 export default function Accordion({
-  items = [], defaultOpen = null, multi = false, isMobile = false, className = '', style = {},
+  items = [], defaultOpen = null, multi = false, isMobile = false, className = '', style = {}, variant = 'default',
 }) {
   const [openMap, setOpenMap] = useState(() => (defaultOpen ? { [defaultOpen]: true } : {}));
 
@@ -103,7 +111,7 @@ export default function Accordion({
   };
 
   return (
-    <div className={className} style={{ borderTop: '1px solid var(--machined-border)', ...style }}>
+    <div className={`${className} ${variant === 'cards' ? 'dtb-accordion dtb-accordion--cards' : 'dtb-accordion'}`} style={{ borderTop: variant === 'cards' ? 0 : '1px solid var(--machined-border)', ...style }}>
       {items.map((item) => (
         <AccordionItem
           key={item.id}
@@ -111,6 +119,7 @@ export default function Accordion({
           isOpen={!!openMap[item.id]}
           onToggle={() => toggle(item.id)}
           isMobile={isMobile}
+          variant={variant}
         />
       ))}
     </div>
