@@ -40,14 +40,23 @@ function isNestedInteractiveTarget(target) {
 function getQuantityMenuPosition(trigger) {
   if (!trigger || typeof window === 'undefined') return null;
   const rect = trigger.getBoundingClientRect();
-  const width = Math.min(148, window.innerWidth - 24);
-  const height = Math.min(276, window.innerHeight - 24);
-  const left = Math.min(Math.max(12, rect.left + (rect.width - width) / 2), window.innerWidth - width - 12);
-  const below = rect.bottom + 8;
-  const top = below + height <= window.innerHeight - 12
-    ? below
-    : Math.max(12, rect.top - height - 8);
-  return { top, left, width, maxHeight: height };
+  const viewportWidth = document.documentElement.clientWidth || window.innerWidth;
+  const viewportHeight = window.innerHeight;
+  const gutter = Math.min(12, viewportWidth / 2);
+  const gap = 8;
+  const preferredHeight = 196;
+  const width = Math.max(0, Math.min(104, viewportWidth - gutter * 2));
+  const minLeft = gutter;
+  const maxLeft = Math.max(minLeft, viewportWidth - width - gutter);
+  const left = Math.min(Math.max(minLeft, rect.left + (rect.width - width) / 2), maxLeft);
+  const availableBelow = Math.max(0, viewportHeight - rect.bottom - gap - gutter);
+  const availableAbove = Math.max(0, rect.top - gap - gutter);
+  const openBelow = availableBelow >= preferredHeight || availableBelow >= availableAbove;
+  const availableHeight = openBelow ? availableBelow : availableAbove;
+  const maxHeight = Math.min(preferredHeight, availableHeight);
+  if (maxHeight < 40 || width === 0) return null;
+  const top = openBelow ? rect.bottom + gap : rect.top - gap - maxHeight;
+  return { top, left, width, maxHeight };
 }
 
 export default function StorefrontProductTile({ product, cardProduct, onOpenModal, onAddToCart, index = 0, variant = 'grid' }) {
