@@ -207,15 +207,20 @@
   }
 }
 
-/* Translucent navy glass with the brand geometry kept to the left edge. */
+/* Dark liquid-glass material adapted to the existing full-width header. */
 .site-header {
+  isolation: isolate;
+  border-bottom: 1px solid rgba(189, 215, 249, .22);
   background:
-    linear-gradient(180deg, rgba(13, 35, 69, .68) 0%, rgba(4, 19, 43, .77) 46%, rgba(2, 13, 32, .83) 100%),
-    radial-gradient(ellipse at 8% 0%, rgba(43, 116, 224, .19), transparent 42%),
-    radial-gradient(ellipse at 92% 8%, rgba(42, 89, 153, .12), transparent 38%);
-  box-shadow: inset 0 1px 0 rgba(218, 233, 255, .2), inset 0 -1px 0 rgba(104, 157, 232, .2), 0 10px 28px rgba(0, 8, 25, .2);
-  -webkit-backdrop-filter: blur(18px) saturate(145%);
-  backdrop-filter: blur(18px) saturate(145%);
+    linear-gradient(180deg, rgba(27, 57, 96, .29) 0%, rgba(6, 25, 52, .39) 48%, rgba(2, 15, 36, .48) 100%),
+    radial-gradient(ellipse at 10% 0%, rgba(54, 124, 229, .12), transparent 43%),
+    radial-gradient(ellipse at 88% 0%, rgba(140, 184, 239, .055), transparent 40%);
+  box-shadow:
+    inset 0 1px 0 rgba(235, 245, 255, .34),
+    inset 0 -1px 0 rgba(130, 173, 230, .22),
+    0 14px 36px rgba(0, 8, 25, .15);
+  -webkit-backdrop-filter: blur(24px) saturate(1.32);
+  backdrop-filter: blur(24px) saturate(1.32);
 }
 .site-header::before,
 .site-header::after {
@@ -227,30 +232,32 @@
 .site-header::before {
   z-index: 0;
   left: 0;
-  width: clamp(210px, 28vw, 440px);
+  right: 0;
   background:
-    radial-gradient(ellipse at 0% 0%, rgba(25, 99, 218, .42), transparent 62%),
-    linear-gradient(132deg, rgba(12, 57, 132, .45), rgba(6, 31, 74, .22) 58%, transparent 58.5%);
-  clip-path: polygon(0 0, 100% 0, 34% 100%, 0 100%);
+    linear-gradient(180deg, rgba(245, 250, 255, .075), transparent 18%, transparent 100%),
+    linear-gradient(90deg, rgba(176, 211, 255, .055), transparent 37%, transparent 78%, rgba(164, 199, 243, .025));
 }
 .site-header::after {
   z-index: 0;
   left: 0;
-  width: clamp(150px, 19vw, 300px);
-  background: linear-gradient(132deg, transparent 0 43%, rgba(1, 11, 29, .55) 43.3% 65%, transparent 65.3%);
-  clip-path: polygon(0 0, 100% 0, 30% 100%, 0 100%);
+  width: clamp(180px, 24vw, 360px);
+  background: radial-gradient(ellipse at 0% 0%, rgba(59, 132, 235, .19), rgba(37, 91, 164, .075) 38%, transparent 74%);
 }
 .site-header > .dtb-header-utility-bar {
   position: relative;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(20, 48, 87, .32), rgba(4, 18, 41, .28));
-  border-bottom-color: rgba(155, 190, 235, .2);
-  box-shadow: inset 0 1px 0 rgba(230, 241, 255, .1);
+  background: linear-gradient(180deg, rgba(37, 68, 109, .18), rgba(5, 22, 46, .2));
+  border-bottom-color: rgba(181, 208, 244, .15);
+  box-shadow: inset 0 1px 0 rgba(230, 241, 255, .16);
 }
 .site-header .site-header-inner {
   position: relative;
   z-index: 1;
-  background: linear-gradient(180deg, rgba(170, 204, 248, .055), transparent 48%, rgba(1, 10, 26, .08));
+  background: linear-gradient(180deg, rgba(198, 220, 250, .025), transparent 52%, rgba(1, 10, 26, .025));
+}
+.site-header .header-mobile-search-dock {
+  position: relative;
+  z-index: 1;
 }
 @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
   .site-header { background: linear-gradient(180deg, #0b1d39, #020d20); }
@@ -262,10 +269,10 @@
     backdrop-filter: none;
   }
   .site-header::before {
-    background: linear-gradient(132deg, #123d7d, #081e43 58%, transparent 58.5%);
+    background: linear-gradient(180deg, rgba(245, 250, 255, .07), transparent 18%);
   }
   .site-header::after {
-    background: linear-gradient(132deg, transparent 0 43%, #010b1d 43.3% 65%, transparent 65.3%);
+    background: radial-gradient(ellipse at 0% 0%, #123d7d, rgba(8, 30, 67, .2) 54%, transparent 74%);
   }
   .site-header > .dtb-header-utility-bar { background: #03132c; }
 }

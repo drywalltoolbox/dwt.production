@@ -6,7 +6,7 @@ import gracoLogo from '/brands/Graco/graco_logo.svg';
 import platinumLogo from '/brands/Platinum/platinum_logo.svg';
 import duraStiltsLogo from '/brands/Dura-Stilts/dura-stilts-logo.svg';
 import level5Logo from '/brands/Level5/Level5.svg';
-import usgSheetrockToolsLogo from '/brands/USG-Sheetrock-Tools/usg-sheetrock-tools.svg';
+const usgSheetrockToolsLogo = 'https://drywalltoolbox.com/staging/assets/images/usg-sheetrock-tools.2ee7ec43.svg';
 
 /*
  * Product brand discovery intentionally preserves the exact asset mapping that

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, ChevronDown, SlidersHorizontal, X } from 'lucide-react';
+import { Check, ChevronDown, Eye, SlidersHorizontal, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import ProductCardImage from '../product/ProductCardImage';
 import AddToCartButton from '../ui/AddToCartButton.jsx';
@@ -72,6 +72,9 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   // Never expose their internal/canonical parent SKU on customer product cards.
   // A real variation SKU belongs to the selected variation and is surfaced by the PDP/selector.
   const sku = isVariable ? '' : (displayProduct.sku || commerceProduct.sku || '');
+  const showDesktopOverlay = !isMobile && variant !== 'list';
+  const [overlayActive, setOverlayActive] = useState(false);
+  const [overlayHasFocus, setOverlayHasFocus] = useState(false);
 
   const variableMinPrice = isVariable ? parsePrice(displayProduct.min_price ?? displayProduct.price?.min) : null;
   const variableMaxPrice = isVariable ? parsePrice(displayProduct.max_price ?? displayProduct.price?.max) : null;
@@ -104,7 +107,15 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const quantitySheetRef = useRef(null);
   const quantityMenuRef = useRef(null);
   const firstQuantityOptionRef = useRef(null);
+  const imageButtonRef = useRef(null);
+  const overlayRef = useRef(null);
   const navigate = useNavigate();
+
+  const closeOverlay = useCallback(() => {
+    const activeElement = document.activeElement;
+    if (overlayRef.current?.contains(activeElement)) imageButtonRef.current?.focus();
+    setOverlayActive(false);
+  }, []);
 
   useEffect(() => {
     if (!quantityOpen || !isMobile) return undefined;
@@ -190,14 +201,16 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
 
   const openModalFromMobileCard = useCallback((event) => {
     if (!isMobile || event?.defaultPrevented || isNestedInteractiveTarget(event?.target)) return;
+    closeOverlay();
     onOpenModal?.();
-  }, [isMobile, onOpenModal]);
+  }, [closeOverlay, isMobile, onOpenModal]);
 
   const handleImageClick = useCallback((event) => {
     event?.stopPropagation();
+    closeOverlay();
     if (isMobile) { onOpenModal?.(); return; }
     if (productUrl) navigate(productUrl);
-  }, [isMobile, navigate, onOpenModal, productUrl]);
+  }, [closeOverlay, isMobile, navigate, onOpenModal, productUrl]);
 
   const warmProductRoute = useCallback(() => {
     if (productUrl) preloadRoute(productUrl);
@@ -206,6 +219,14 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
       preloadProductDetail(slug).catch(() => null);
     }
   }, [productUrl, slug]);
+  const handleMouseEnter = useCallback(() => {
+    if (!showDesktopOverlay) return;
+    warmProductRoute();
+    setOverlayActive(true);
+  }, [showDesktopOverlay, warmProductRoute]);
+  const handleMouseLeave = useCallback(() => {
+    if (showDesktopOverlay) closeOverlay();
+  }, [closeOverlay, showDesktopOverlay]);
   // Do not warm PDP/quick-view modules on touch pointerdown. A finger touching
   // the image is often the beginning of a rail swipe, not purchase intent.
   // Keyboard focus and precise mouse/pen hover retain intent-based preloading.
@@ -214,14 +235,20 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   }, [warmProductRoute]);
   const handleTitleClick = useCallback((event) => {
     event.stopPropagation();
+    closeOverlay();
     if (isMobile) { if (productUrl) navigate(productUrl); return; }
     onOpenModal?.();
-  }, [isMobile, navigate, onOpenModal, productUrl]);
+  }, [closeOverlay, isMobile, navigate, onOpenModal, productUrl]);
   const handleAddButtonClick = useCallback((event) => {
     event.stopPropagation();
+    closeOverlay();
     try { const result = onAddToCart?.(quantity); result?.catch?.(() => {}); } catch { /* owning surface renders cart error */ }
-  }, [onAddToCart, quantity]);
-  const handleQuickView = useCallback((e) => { e.stopPropagation(); onOpenModal?.(); }, [onOpenModal]);
+  }, [closeOverlay, onAddToCart, quantity]);
+  const handleQuickView = useCallback((event) => {
+    event.stopPropagation();
+    closeOverlay();
+    onOpenModal?.();
+  }, [closeOverlay, onOpenModal]);
 
   // Search uses shared product identities and existing cart/variation actions.\n  // Never present a variable parent's internal SKU as a sellable variation SKU.
   if (variant === 'search') {
@@ -257,11 +284,40 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   }
 
   return (
-    <article className={`dtb-product-card dtb-product-card--${variant} storefront-motion-card${isVariable ? ' dtb-product-card--variable' : ''}`} style={{ '--dtb-card-delay': `${Math.min(index, 8) * 30}ms` }} onClick={openModalFromMobileCard}>
+    <article className={`dtb-product-card dtb-product-card--${variant} storefront-motion-card${isVariable ? ' dtb-product-card--variable' : ''}`} style={{ '--dtb-card-delay': `${Math.min(index, 8) * 30}ms` }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={openModalFromMobileCard}>
       <div className="dtb-product-card__image">
-        <div role="button" tabIndex={0} className="dtb-product-card__image-hit" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} onClick={handleImageClick} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleImageClick(e); } }} aria-label={isMobile ? `Quick view ${name}` : `View ${name}`}>
+        <div ref={imageButtonRef} role="button" tabIndex={0} className="dtb-product-card__image-hit" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} onClick={handleImageClick} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleImageClick(e); } }} aria-label={isMobile ? `Quick view ${name}` : `View ${name}`}>
           <ProductCardImage product={displayProduct} src={image} srcSet={imageSrcset} sizes={variant === 'rail' ? '(max-width: 767px) 44vw, 188px' : variant === 'list' ? '(max-width: 767px) 32vw, 240px' : '(max-width: 767px) 50vw, (max-width: 1024px) 33vw, 240px'} alt={name} className="dtb-product-card__img" padding="0" fit="contain" preferThumbnail eager={false} />
         </div>
+        {showDesktopOverlay && (
+          <div
+            ref={overlayRef}
+            aria-hidden={!overlayActive && !overlayHasFocus}
+            className={`dtb-product-card__qv-overlay${overlayActive ? ' dtb-product-card__qv-overlay--active' : ''}`}
+            onFocusCapture={() => setOverlayHasFocus(true)}
+            onBlurCapture={(event) => {
+              if (!event.currentTarget.contains(event.relatedTarget)) setOverlayHasFocus(false);
+            }}
+            onClick={(event) => {
+              event.stopPropagation();
+              closeOverlay();
+              if (productUrl) navigate(productUrl);
+            }}
+          >
+            <div className={`dtb-product-card__qv-actions${overlayActive ? ' dtb-product-card__qv-actions--active' : ''}`}>
+              <button
+                type="button"
+                tabIndex={overlayActive ? 0 : -1}
+                className="dtb-product-card__qv-btn"
+                onClick={handleQuickView}
+                aria-label={`Quick view ${name}`}
+              >
+                <Eye size={14} strokeWidth={2.2} aria-hidden="true" />
+                <span>Quick View</span>
+              </button>
+            </div>
+          </div>
+        )}
       </div>
       <div className="dtb-product-card__meta">
         {displayProduct.brand ? <span className="dtb-product-card__brand">{displayProduct.brand}</span> : null}

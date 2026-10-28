@@ -129,7 +129,9 @@
  }
  body.woocommerce-checkout .wc-block-components-express-payment {
   margin:0;padding:14px 0 18px;background:transparent;
-  border:0;border-bottom:1px solid var(--dtb-checkout-border);
+  border:0;border-bottom:0;
+  background-image:linear-gradient(90deg,transparent,rgb(100 116 139 / 16%) 8%,rgb(100 116 139 / 38%) 50%,rgb(100 116 139 / 16%) 92%,transparent);
+  background-position:left bottom;background-size:100% 1px;background-repeat:no-repeat;
  }
  body.woocommerce-checkout .wc-block-components-express-payment__event-buttons {
   display:flex;flex-wrap:wrap;gap:10px;
@@ -179,20 +181,21 @@
    .wp-block-woocommerce-checkout-shipping-method-block,
    .wp-block-woocommerce-checkout-shipping-methods-block
  ) :is(.wc-block-components-radio-control__option,.wc-block-checkout__shipping-method-option) {
-  min-height:54px;margin:6px 0 !important;
+  min-height:54px;margin:0 !important;
   padding:11px 13px !important;
-  border:1px solid var(--dtb-checkout-border-strong) !important;
-  border-radius:var(--dtb-checkout-radius-md) !important;
-  background:var(--dtb-checkout-surface-subtle) !important;
-  box-shadow:var(--dtb-checkout-shadow-xs) !important;
+  border:0 !important;
+  border-radius:0 !important;
+  background-color:transparent !important;
+  background-image:linear-gradient(90deg,transparent,rgb(100 116 139 / 16%) 8%,rgb(100 116 139 / 38%) 50%,rgb(100 116 139 / 16%) 92%,transparent) !important;
+  background-position:left bottom !important;background-size:100% 1px !important;background-repeat:no-repeat !important;
+  box-shadow:none !important;
  }
  body.woocommerce-checkout :is(
    .wp-block-woocommerce-checkout-shipping-method-block,
    .wp-block-woocommerce-checkout-shipping-methods-block
  ) :is(.wc-block-components-radio-control__option,.wc-block-checkout__shipping-method-option):has(input:checked) {
-  border-color:var(--dtb-checkout-blue-600) !important;
-  background:var(--dtb-checkout-blue-50) !important;
-  box-shadow:0 0 0 2px rgb(49 91 233 / 8%) !important;
+  background-color:rgb(49 91 233 / 4%) !important;
+  box-shadow:none !important;
  }
  body.woocommerce-checkout .wc-block-checkout__shipping-method-option-title {
   font-size:13px;line-height:1.4;font-weight:650;overflow-wrap:anywhere;
