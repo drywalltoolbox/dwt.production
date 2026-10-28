@@ -97,11 +97,11 @@ export default function ShopByToolType({ categories = [], onOpenFilters, parentL
         </a>
       </div>
 
-      {isAllProductsRoute ? (
-        <StorefrontRail label="Shop by tool type" className="dtb-tool-type-rail">
-          {items.map((category) => (
-            <ToolTypeTile key={category.slug} category={category} showSelectorChevron showCount={false} brand={brand} />
-          ))}
+      <StorefrontRail label={parentLabel ? `Shop ${parentLabel} by category` : 'Shop by tool type'} className="dtb-tool-type-rail">
+        {items.map((category) => (
+          <ToolTypeTile key={category.slug} category={category} showSelectorChevron showCount={false} brand={brand} />
+        ))}
+        {isAllProductsRoute && (
           <a
             href="#dtb-category-filters"
             className="dtb-tool-type-view-all"
@@ -113,12 +113,8 @@ export default function ShopByToolType({ categories = [], onOpenFilters, parentL
             </span>
             <span>View All<br />Categories</span>
           </a>
-        </StorefrontRail>
-      ) : (
-        <div className="dtb-tool-type-grid" aria-label={`${parentLabel || 'Product'} categories`}>
-          {items.map((category) => <ToolTypeTile key={category.slug} category={category} brand={brand} />)}
-        </div>
-      )}
+        )}
+      </StorefrontRail>
     </div>
   );
 }

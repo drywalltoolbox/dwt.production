@@ -818,7 +818,7 @@
   line-height: 1.2;
 }
 
-/* Shared flat navigation treatment for the home and All Products rails. */
+/* Shared flat navigation treatment for homepage and catalog category rails. */
 .dtb-tool-type-rail { gap: clamp(.75rem, 2vw, 1.5rem); }
 .dtb-tool-type-rail .dtb-tool-type-tile {
   position: relative;
