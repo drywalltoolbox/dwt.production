@@ -1,15 +1,16 @@
-const BRAND_LOGO_ROOT = 'https://drywalltoolbox.com/logos';
-const brandLogo = (filename) => `${BRAND_LOGO_ROOT}/${filename}`;
+import { BRAND_LOGO_FILES } from './brandLogoFiles.js';
 
-const tapeTechLogo = brandLogo('tapetech_logo.svg');
-const columbiaLogo = brandLogo('columbia_taping_tools_logo.svg');
-const surproLogo = brandLogo('surpro_logo.svg');
-const asgardLogo = brandLogo('asgard_logo.svg');
-const gracoLogo = brandLogo('graco_logo.svg');
-const platinumLogo = brandLogo('platinum_logo.svg');
-const duraStiltsLogo = brandLogo('dura-stilts-logo.svg');
-const level5Logo = brandLogo('Level5.svg');
-const usgSheetrockToolsLogo = brandLogo('usg-sheetrock-tools.svg');
+const {
+  tapeTech: tapeTechLogo,
+  columbia: columbiaLogo,
+  surpro: surproLogo,
+  asgard: asgardLogo,
+  graco: gracoLogo,
+  platinum: platinumLogo,
+  duraStilts: duraStiltsLogo,
+  level5: level5Logo,
+  usgSheetrockTools: usgSheetrockToolsLogo,
+} = BRAND_LOGO_FILES;
 
 /*
  * Product brand discovery intentionally preserves the exact asset mapping that
