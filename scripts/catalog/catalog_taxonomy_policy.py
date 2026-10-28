@@ -145,6 +145,7 @@ COMPATIBILITY_BY_TAXON: dict[str, tuple[str, str]] = {
     "bead_rollers": ("corner", "bead_rollers"),
     "mud_pans": ("finishing", "mud_pans"),
     "mud_mixing_tools": ("finishing", "mud_mixing_tools"),
+    "hanging_tools": ("hanging", "hanging_tools"),
     "drywall_squares": ("hanging", "drywall_squares"),
     "drywall_saws": ("hanging", "drywall_saws"),
     "fastener_setting_tools": ("hanging", "fastener_setting_tools"),

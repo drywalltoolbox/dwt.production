@@ -269,21 +269,20 @@ function ProductsPanelRenderer({ item, onNavigate }) {
                 const categoryKey = String(group.slug || group.label || '').trim().toLowerCase().replace(/[_\s]+/g, '-');
                 const categoryImage = PARENT_CATEGORY_IMAGES[categoryKey];
                 return (
-                  <button
+                  <Link
                     key={key}
-                    type="button"
+                    to={group.to}
                     className={`dtb-shop-menu__parent-card${selected ? ' is-active' : ''}`}
-                    aria-pressed={selected}
                     onMouseEnter={() => setActiveGroupKey(key)}
                     onFocus={() => setActiveGroupKey(key)}
-                    onClick={() => setActiveGroupKey(key)}
+                    onClick={onNavigate}
                   >
                     {categoryImage ? (
                       <img className="dtb-shop-menu__parent-image" src={categoryImage} alt="" width="42" height="42" decoding="async" />
                     ) : <Icon size={24} strokeWidth={1.9} aria-hidden="true" />}
                     <span>{group.label}</span>
                     <ChevronRight size={17} strokeWidth={2.1} aria-hidden="true" />
-                  </button>
+                  </Link>
                 );
               })}
             </div>

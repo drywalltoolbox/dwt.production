@@ -11,7 +11,7 @@ import tempfile
 from collections import Counter
 from pathlib import Path
 
-from catalog_taxonomy_policy import CATEGORY_FIELD, DISPLAY_FIELD, canonical_values
+from catalog_taxonomy_policy import CATEGORY_FIELD, DISPLAY_FIELD, split_category_paths
 
 
 EXPECTED_COLUMNS = (
@@ -60,7 +60,24 @@ class CatalogValidationError(RuntimeError):
 
 
 def validate_taxonomy_rows(rows: list[dict[str, str]]) -> dict[str, int]:
-    """Require every row to match one canonical owner/inheritance tuple."""
+    """Validate assigned runtime paths and inheritance without reclassifying products."""
+    registry_path = Path(__file__).resolve().parents[2] / "drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Resources/catalog-taxonomy.json"
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    taxa = {item["key"]: item for item in registry["taxa"]}
+
+    def registry_path_for(key: str) -> tuple[str, ...]:
+        labels: list[str] = []
+        seen: set[str] = set()
+        while key is not None:
+            if key in seen or key not in taxa:
+                raise CatalogValidationError(f"invalid taxonomy registry ancestry: {key}")
+            seen.add(key)
+            taxon = taxa[key]
+            labels.append(taxon["label"])
+            key = taxon.get("parent_key")
+        return tuple(reversed(labels))
+
+    valid_paths = {registry_path_for(key) for key in taxa}
     errors: list[str] = []
     by_sku = {(row.get("SKU") or "").strip(): row for row in rows}
     for row in rows:
@@ -68,14 +85,23 @@ def validate_taxonomy_rows(rows: list[dict[str, str]]) -> dict[str, int]:
         is_variation = (row.get("Type") or "").strip().casefold() == "variation"
         parent_sku = (row.get("Parent") or row.get("Meta: _dtb_parent_product_sku") or "").strip()
         parent = by_sku.get(parent_sku) if is_variation else None
-        expected = canonical_values(row, parent)
-        if expected is None:
-            errors.append(f"{sku}: taxonomy does not resolve to a canonical navigation path")
-            continue
-        for field in ("Categories", CATEGORY_FIELD, DISPLAY_FIELD):
-            actual = (row.get(field) or "").strip()
-            if actual != expected[field]:
-                errors.append(f"{sku}: {field} expected {expected[field]!r}, found {actual!r}")
+        paths = [tuple(path) for path in split_category_paths(row.get("Categories"))]
+        if not paths:
+            errors.append(f"{sku}: Categories is empty")
+        for path in paths:
+            if path not in valid_paths:
+                errors.append(f"{sku}: unknown category path {' > '.join(path)!r}")
+        if len(paths) != len(set(paths)):
+            errors.append(f"{sku}: duplicate category path")
+        if is_variation:
+            if not parent:
+                errors.append(f"{sku}: missing parent {parent_sku!r}")
+            else:
+                for field in ("Categories", CATEGORY_FIELD, DISPLAY_FIELD):
+                    actual = (row.get(field) or "").strip()
+                    expected = (parent.get(field) or "").strip()
+                    if actual != expected:
+                        errors.append(f"{sku}: {field} expected {expected!r}, found {actual!r}")
     if errors:
         preview = "\n - ".join(errors[:50])
         remainder = f"\n - ... {len(errors) - 50} additional error(s)" if len(errors) > 50 else ""

@@ -16,10 +16,9 @@ Default mode is non-mutating. To apply reviewed deterministic safe fixes before 
 
 `-ApplySafeFixes` applies only bounded deterministic mutations before revalidation:
 
-1. stale explicit SEO canonical overrides are cleared so the active storefront route remains canonical authority;
-2. only reviewed, deterministic taxonomy mismatches are normalized through the universal cross-brand taxonomy policy.
+1. stale explicit SEO canonical overrides are cleared so the active storefront route remains canonical authority.
 
-The taxonomy stage is all-or-nothing: every owner must resolve to one canonical path and every variation must inherit its exact parent tuple before any write is allowed. Do not add additional PowerShell wrappers for individual core stages unless they represent a genuinely separate operational workflow.
+Category validation is read-only. It checks paths and variation inheritance without rewriting catalog assignments.
 
 ## Universal taxonomy contract
 
@@ -41,8 +40,7 @@ These files implement the unified run and are not separate product-data authorit
 
 - `official_catalog_schema.py` — canonical ordered schema and blocking validation rules.
 - `validate_official_catalog.py` — CLI entrypoint for structural validation.
-- `catalog_taxonomy_policy.py` — universal brand-independent taxonomy validation/mutation policy.
-- `normalize_official_taxonomy.py` — preview/apply deterministic taxonomy normalizer used by the unified runner.
+- `catalog_taxonomy_policy.py` — read-only taxonomy audit helpers.
 - `audit_official_catalog_enrichment.py` — actionable quality audit and taxonomy review classification.
 - `catalog_seo_pre_generation.py` — evidence-bounded SEO/content preparation and finding authority.
 - `clear_legacy_seo_canonicals.py` — narrow deterministic canonical safe-fix implementation used by the unified runner.

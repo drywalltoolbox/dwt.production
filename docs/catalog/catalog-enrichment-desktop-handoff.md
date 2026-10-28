@@ -78,14 +78,8 @@ Run these checks before modifying catalog data:
 ```powershell
 products\dev\catalog-enrichment\.venv\Scripts\python.exe scripts\catalog\catalog_preflight.py --profile all
 products\dev\catalog-enrichment\.venv\Scripts\python.exe scripts\catalog\validate_official_catalog.py
-products\dev\catalog-enrichment\.venv\Scripts\python.exe scripts\catalog\normalize_official_taxonomy.py
 products\dev\catalog-enrichment\.venv\Scripts\python.exe -m pytest scripts\catalog\tests -q
 ```
-
-Expected taxonomy preview:
-
-- `change_count: 0`;
-- `unresolved_count: 0`.
 
 Expected strict validation:
 
@@ -102,7 +96,6 @@ Current results are under `products/dev/catalog-enrichment/`:
 - `run-summary.json`;
 - `catalog-enrichment-audit.json`;
 - `catalog-remediation.csv`;
-- `taxonomy-normalization-preview.json`;
 - `seo-pre-generation/`;
 - `content-review/`;
 - `compatibility/`.
@@ -148,10 +141,6 @@ products\dev\catalog-enrichment\.venv\Scripts\python.exe `
 products\dev\catalog-enrichment\.venv\Scripts\python.exe `
   scripts\catalog\prepare_content_review_queue.py `
   --workflow accuracy_review
-
-products\dev\catalog-enrichment\.venv\Scripts\python.exe `
-  scripts\catalog\normalize_official_taxonomy.py `
-  --report products\dev\catalog-enrichment\taxonomy-normalization-preview.json
 ```
 
 The routine runner is non-mutating unless `-ApplySafeFixes` is explicitly supplied. Do not use that switch until its preview has been reviewed and a clean rollback boundary exists.
@@ -162,12 +151,10 @@ After changes:
 
 ```powershell
 products\dev\catalog-enrichment\.venv\Scripts\python.exe scripts\catalog\validate_official_catalog.py
-products\dev\catalog-enrichment\.venv\Scripts\python.exe scripts\catalog\normalize_official_taxonomy.py
 products\dev\catalog-enrichment\.venv\Scripts\python.exe -m pytest scripts\catalog\tests -q
 php -l drywalltoolbox\wp\wp-content\mu-plugins\dtb-catalog-platform\Rest\CatalogFacetsController.php
 php -l drywalltoolbox\wp\wp-content\mu-plugins\dtb-catalog-platform\Services\CategoryNormalizer.php
 npm --prefix frontend run lint
-npm --prefix frontend run build
 git diff --check
 git status --short
 ```

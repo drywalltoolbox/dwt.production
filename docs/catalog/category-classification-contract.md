@@ -6,17 +6,11 @@ The durable taxonomy/navigation contract is defined in `docs/catalog-navigation-
 
 This document defines only the **classification decision process** for assigning an exact sellable SKU to that hierarchy. It must not duplicate or redefine the taxonomy tree.
 
-WooCommerce `product_cat` is the runtime storefront navigation authority. Canonical catalog sources under `products/` own the approved product-to-category classification projected into WooCommerce.
+WooCommerce `product_cat` is the runtime storefront navigation authority. `products/launch/official/dtb_official_catalog.csv` owns product-to-category assignments for catalog updates.
 
 Historical category paths are migration inputs only. They are not evidence that a product was previously classified correctly.
 
-Reviewed exact-SKU exceptions are stored in:
-
-```text
-products/catalog/source/product_category_overrides.csv
-```
-
-The override registry is bounded and evidence-backed. It must not become a fuzzy classifier or a second general taxonomy.
+Reviewed decisions are applied explicitly to the official catalog, not stored in a separate override registry that can rewrite it.
 
 ## Functional classification rule
 
@@ -59,20 +53,11 @@ The reviewed exceptions currently include:
 - `TT-CORNER-FINISHER` — TapeTech Corner Finisher: `Corner Finishers`.
 - `TT-MUDRUNNER` — TapeTech MudRunner: `Powered Compound Applicators`.
 
-The exact evidence URLs and approval state live in `product_category_overrides.csv`; this prose list is descriptive, not a competing assignment registry.
+This list describes previous reviewed decisions; the official catalog contains current assignments. Historical evidence remains in version control.
 
 ## Pipeline contract
 
-`scripts/catalog/build_catalog_category_assignments.py` performs deterministic category assignment in this order:
-
-1. load and validate `products/catalog/source/taxonomy.json`;
-2. load reviewed exact-SKU overrides;
-3. apply an approved exact SKU override when present;
-4. otherwise migrate from an exact recognized canonical/historical path;
-5. reject unknown SKUs, duplicate overrides, unapproved overrides, missing evidence, and unknown taxa;
-6. write the explicit owner-SKU assignment projection and coverage report.
-
-`scripts/catalog/rebuild_official_catalog_taxonomy.py` then projects approved assignments into the official WooCommerce CSV fields, derives compatibility metadata, forces exact parent/variation inheritance, and creates a verified rollback backup before an applied write.
+Edit the official CSV with evidence and preserve protected identifiers. `validate_official_catalog.py` checks category paths against the runtime navigation registry and checks variation inheritance without changing assignments. Import explicitly into WooCommerce and reconcile any runtime edits back to the CSV before a later import.
 
 Runtime PHP and React code must consume the projected/backend-owned classification. They must not repair product category ownership from names.
 

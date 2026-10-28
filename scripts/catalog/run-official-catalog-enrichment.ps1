@@ -67,12 +67,10 @@ $inputCatalogSha = (Get-FileHash -LiteralPath $catalog -Algorithm SHA256).Hash.T
 
 $validator = Join-Path $PSScriptRoot 'validate_official_catalog.py'
 $seoCanonicalFixes = Join-Path $PSScriptRoot 'clear_legacy_seo_canonicals.py'
-$taxonomyFixes = Join-Path $PSScriptRoot 'normalize_official_taxonomy.py'
 $audit = Join-Path $PSScriptRoot 'audit_official_catalog_enrichment.py'
 $seo = Join-Path $PSScriptRoot 'catalog_seo_pre_generation.py'
 
 $seoCanonicalFixPath = Join-Path $output 'seo-canonical-safe-fixes.json'
-$taxonomyFixPath = Join-Path $output 'taxonomy-safe-fixes.json'
 $auditPath = Join-Path $output 'catalog-enrichment-audit.json'
 $remediationPath = Join-Path $output 'catalog-remediation.csv'
 $seoOutput = Join-Path $output 'seo-pre-generation'
@@ -82,7 +80,7 @@ $rollbackDir = Join-Path $output 'rollback'
 $rollbackPath = Join-Path $rollbackDir 'dtb_official_catalog.pre-safe-fixes.csv'
 
 # A run manifest must never consume stale stage output from an earlier run.
-@($seoCanonicalFixPath, $taxonomyFixPath, $auditPath, $remediationPath, $summaryPath) |
+@($seoCanonicalFixPath, $auditPath, $remediationPath, $summaryPath) |
     Where-Object { Test-Path -LiteralPath $_ } |
     ForEach-Object { Remove-Item -LiteralPath $_ -Force }
 if (Test-Path -LiteralPath $seoOutput) {
@@ -112,11 +110,6 @@ try {
             Write-Host 'Apply reviewed canonical URL safe fixes'
             Invoke-CatalogStage -Name 'seo_canonical_safe_fixes' -Script $seoCanonicalFixes -Arguments @(
                 '--catalog', $catalog, '--report', $seoCanonicalFixPath, '--apply', '--no-backup'
-            ) -DiscardOutput | Out-Null
-
-            Write-Host 'Apply deterministic taxonomy safe fixes'
-            Invoke-CatalogStage -Name 'taxonomy_safe_fixes' -Script $taxonomyFixes -Arguments @(
-                '--catalog', $catalog, '--report', $taxonomyFixPath, '--apply', '--no-backup'
             ) -DiscardOutput | Out-Null
 
             Write-Host 'Revalidate canonical catalog after safe fixes'
@@ -152,7 +145,6 @@ catch {
 }
 finally {
     $seoCanonicalFixSummary = if (Test-Path -LiteralPath $seoCanonicalFixPath) { Get-Content -LiteralPath $seoCanonicalFixPath -Raw | ConvertFrom-Json } else { $null }
-    $taxonomyFixSummary = if (Test-Path -LiteralPath $taxonomyFixPath) { Get-Content -LiteralPath $taxonomyFixPath -Raw | ConvertFrom-Json } else { $null }
     $auditSummary = if (Test-Path -LiteralPath $auditPath) { Get-Content -LiteralPath $auditPath -Raw | ConvertFrom-Json } else { $null }
     $seoSummary = if (Test-Path -LiteralPath $seoSummaryPath) { Get-Content -LiteralPath $seoSummaryPath -Raw | ConvertFrom-Json } else { $null }
     $gitCommit = (& git -C $root rev-parse HEAD 2>$null)
@@ -179,7 +171,6 @@ finally {
         stages = $stageResults
         outputs = [ordered]@{
             seo_canonical_safe_fixes = if ($ApplySafeFixes) { Get-RelativePath -Root $root -Path $seoCanonicalFixPath } else { $null }
-            taxonomy_safe_fixes = if ($ApplySafeFixes) { Get-RelativePath -Root $root -Path $taxonomyFixPath } else { $null }
             audit = if (Test-Path -LiteralPath $auditPath) { Get-RelativePath -Root $root -Path $auditPath } else { $null }
             remediation = if (Test-Path -LiteralPath $remediationPath) { Get-RelativePath -Root $root -Path $remediationPath } else { $null }
             seo_pre_generation = if (Test-Path -LiteralPath $seoOutput) { Get-RelativePath -Root $root -Path $seoOutput } else { $null }
@@ -191,16 +182,6 @@ finally {
                     eligible_overrides = $seoCanonicalFixSummary.eligible_overrides
                     conflicting = $seoCanonicalFixSummary.conflicting
                     redundant = $seoCanonicalFixSummary.redundant
-                }
-            } else { $null }
-            taxonomy = if ($taxonomyFixSummary) {
-                [ordered]@{
-                    applied = $taxonomyFixSummary.applied
-                    safe_fix_finding = $taxonomyFixSummary.safe_fix_finding
-                    change_count = $taxonomyFixSummary.change_count
-                    changed_skus = $taxonomyFixSummary.changed_skus
-                    by_field = $taxonomyFixSummary.by_field
-                    unresolved_count = $taxonomyFixSummary.unresolved_count
                 }
             } else { $null }
         }

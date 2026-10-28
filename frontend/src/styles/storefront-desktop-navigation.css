@@ -1530,6 +1530,7 @@
     font-weight: 690;
     line-height: 1.2;
     text-align: left;
+    text-decoration: none;
     cursor: pointer;
     transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease;
   }
@@ -1558,6 +1559,11 @@
     background: #edf3ff;
     color: #2255EE;
     outline: none;
+  }
+
+  .site-header .dtb-shop-menu__parent-card:focus-visible {
+    outline: 2px solid #2255ee;
+    outline-offset: -2px;
   }
 
   .site-header .dtb-shop-menu__parent-card.is-active::before {

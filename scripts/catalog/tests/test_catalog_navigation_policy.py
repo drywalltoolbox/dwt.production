@@ -100,3 +100,20 @@ def test_taxonomy_validator_rejects_variation_drift():
         assert "CHILD: Categories" in str(exc)
     else:
         raise AssertionError("variation taxonomy drift was not rejected")
+
+
+def test_validator_accepts_multiple_explicit_categories_without_reclassification():
+    categories = "Automatic Taping Tools > Corner Rollers, Corner Bead Tools > Corner Bead Rollers"
+    parent = row(sku="PARENT", type_="variable", categories=categories, category="custom", display="custom")
+    child = row(sku="CHILD", type_="variation", categories=categories, category="custom", display="custom", parent="PARENT")
+    assert validate_taxonomy_rows([parent, child])["rows"] == 2
+    assert parent["Categories"] == categories
+
+
+def test_validator_rejects_unknown_assigned_category():
+    try:
+        validate_taxonomy_rows([row(categories="Hanging Tools > Imaginary Tools")])
+    except CatalogValidationError as exc:
+        assert "unknown category path" in str(exc)
+    else:
+        raise AssertionError("unknown category was not rejected")

@@ -112,7 +112,7 @@ Fixed, extendable, box, corner-tool, and related compatible handles remain conso
 
 `Replacement Parts` remains a dedicated top-level catalog surface. Part discovery should primarily use compatibility relationships such as brand, compatible tool/model, schematic, assembly, and part type rather than creating hardware-type product-category branches.
 
-Outside bead rollers and inside tape rollers are distinct. Exact outside-only owner SKUs belong to `Corner Bead Tools > Corner Bead Rollers`; inside-only and mixed variable families remain under `Automatic Taping Tools > Corner Rollers` until a mixed family can be split with evidence. Variations inherit their parent's category tuple.
+Outside bead rollers and inside tape rollers are distinct. Reviewed outside bead rollers may be assigned to both `Corner Bead Tools > Corner Bead Rollers` and `Automatic Taping Tools > Corner Rollers`; inside-only rollers belong under `Automatic Taping Tools > Corner Rollers`. The official catalog now separates the reviewed TapeTech and Platinum inside/outside roller families while preserving manufacturer sellable SKUs. Variations inherit their parent's category tuple. Runtime WooCommerce and schematic-family reconciliation remains a separate migration step.
 
 `Accessories` contains optional add-ons and cases. `Materials & Consumables` contains installation products used up in the work, such as sealants. Neither is a replacement-parts synonym.
 
@@ -178,15 +178,9 @@ A variable parent owns navigation classification. Every variation inherits the p
 
 Variation-specific category drift is invalid. If choices require materially different functional product classes, they must not be modeled as variations of one product family.
 
-## Assignment and rebuild workflow
+## Category assignment authority
 
-`products/catalog/source/product_category_overrides.csv` stores reviewed exact-SKU exceptions/evidence.
-
-`products/catalog/source/product_categories.csv` is the generated/approved owner-SKU assignment projection. Historical taxon keys in that file are migration inputs only and are normalized by the supported rebuild path.
-
-`scripts/catalog/build_catalog_category_assignments.py` generates assignments from exact canonical/historical paths plus approved overrides.
-
-`scripts/catalog/rebuild_official_catalog_taxonomy.py` projects those assignments into the official CSV, derives compatibility keys, forces exact parent/variation inheritance, and creates a hash-verified sibling `.bak` before an applied mutation.
+`products/launch/official/dtb_official_catalog.csv` owns product category assignments for catalog updates. Review and edit its `Categories` and compatibility metadata explicitly; validation checks the assigned paths and variation inheritance without choosing or rewriting categories. The runtime taxonomy registry defines supported navigation paths, not SKU assignments. WooCommerce owns the imported runtime records; the import and any reconciliation of runtime edits into the CSV are separate explicit operations. No automatic bidirectional synchronization is implied.
 
 ## Facets API and frontend
 

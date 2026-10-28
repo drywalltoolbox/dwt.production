@@ -30,13 +30,12 @@ When reviewed deterministic safe fixes are required, use the same entrypoint exp
 ```text
 structural validation
   -> stale SEO canonical cleanup
-  -> deterministic taxonomy safe fixes only
   -> structural revalidation
   -> enrichment audit
   -> SEO/content preparation
 ```
 
-The two mutation stages write separate reports: `seo-canonical-safe-fixes.json` and `taxonomy-safe-fixes.json`.
+The SEO mutation stage writes `seo-canonical-safe-fixes.json`. Category assignments are never rewritten by this runner.
 
 ## Ownership
 
@@ -74,7 +73,7 @@ Deterministic examples:
 
 Cross-cutting display values such as `predator_family`, `toolsets` without `product_kind=toolset`, and `accessories` do **not** independently determine the broad functional category.
 
-`scripts/catalog/catalog_taxonomy_policy.py` owns the deterministic catalog-tooling policy. `scripts/catalog/normalize_official_taxonomy.py` previews/applies only mutation-safe results. The runtime `DTB_CategoryNormalizer` remains the application-side resolver and must stay semantically aligned. The React storefront consumes backend category/display-category DTOs; it does not own classification truth.
+`scripts/catalog/catalog_taxonomy_policy.py` supplies read-only audit helpers. The official CSV owns assignments for catalog updates; the runtime `DTB_CategoryNormalizer` remains the application-side resolver. The React storefront consumes backend category/display-category DTOs; it does not own classification truth.
 
 Runtime tool-family resolution is intentionally stricter than broad category classification. Broad categories such as `taping`, `finishing`, `corner`, `handles`, and `mudboxes` contain multiple functional tool families and therefore must not directly imply `_dtb_tool_family`. The runtime resolver may use explicit tool-family meta, builder-slot evidence, exact one-to-one display categories, narrow one-to-one broad categories, and finally bounded name heuristics.
 
