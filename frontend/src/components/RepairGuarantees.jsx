@@ -14,7 +14,7 @@ export default function RepairGuarantees() {
           <span className="repair-guarantees__icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M20.2 13.2 13.2 20.2a2 2 0 0 1-2.8 0l-6.6-6.6a2 2 0 0 1 0-2.8l7-7H18a2 2 0 0 1 2 2v7.4Z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/><circle cx="15.5" cy="8.5" r="1.25" fill="currentColor"/></svg></span>
           <div>
             <h2>Transparent Pricing</h2>
-            <p>Clear estimates, no hidden fees, and no surprise charges. Nothing extra moves forward without your approval.</p>
+            <p>Clear estimates. No hidden fees or surprise charges. Extra work needs approval.</p>
           </div>
         </li>
 

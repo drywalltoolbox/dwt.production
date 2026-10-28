@@ -1,0 +1,178 @@
+.repair-landing .repair-start-options {
+  padding-block: clamp(36px, 5vw, 64px);
+  background: #f7f9fc;
+}
+
+.repair-landing .repair-start-options__shell {
+  display: grid;
+  grid-template-columns: minmax(220px, .72fr) minmax(0, 1.28fr);
+  align-items: start;
+  gap: clamp(28px, 6vw, 88px);
+}
+
+.repair-landing .repair-start-options__heading {
+  max-width: 34rem;
+  margin: 0;
+  text-align: left;
+}
+
+.repair-landing .repair-start-options__heading .repair-eyebrow {
+  margin-bottom: 10px;
+}
+
+.repair-landing .repair-start-options__heading h2 {
+  max-width: 12ch;
+  font-size: clamp(1.7rem, 2.6vw, 2.5rem);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.repair-landing .repair-start-options__heading > p:last-child {
+  max-width: 38ch;
+  margin: 12px 0 0;
+  color: var(--repair-muted);
+  font-size: .92rem;
+  line-height: 1.55;
+}
+
+.repair-landing .repair-start-options__list {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--repair-line);
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 3px 12px rgba(15, 38, 75, .035);
+}
+
+.repair-landing .repair-start-option {
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(12px, 2vw, 22px);
+  min-height: 106px;
+  padding: 20px clamp(18px, 2.6vw, 30px);
+  color: var(--repair-ink);
+  text-decoration: none;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.repair-landing .repair-start-option + .repair-start-option {
+  border-top: 1px solid var(--repair-line);
+}
+
+.repair-landing .repair-start-option:hover {
+  background: #f8faff;
+}
+
+.repair-landing .repair-start-option:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 3px solid rgba(34, 85, 238, .45);
+  outline-offset: -3px;
+}
+
+.repair-landing .repair-start-option__number {
+  display: grid;
+  width: 38px;
+  aspect-ratio: 1;
+  place-items: center;
+  border: 1px solid #d7e2f1;
+  border-radius: 10px;
+  background: #f7f9fc;
+  color: #58708f;
+  font-size: .76rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.repair-landing .repair-start-option__copy {
+  display: grid;
+  min-width: 0;
+  gap: 5px;
+}
+
+.repair-landing .repair-start-option__title {
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.repair-landing .repair-start-option__description {
+  max-width: 54ch;
+  color: var(--repair-muted);
+  font-size: .84rem;
+  line-height: 1.5;
+}
+
+.repair-landing .repair-start-option__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--repair-blue);
+  font-size: .82rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.repair-landing .repair-start-option__action span {
+  font-size: 1.15rem;
+  transition: transform 160ms ease;
+}
+
+.repair-landing .repair-start-option:hover .repair-start-option__action span {
+  transform: translateX(3px);
+}
+
+@media (max-width: 760px) {
+  .repair-landing .repair-start-options {
+    padding-block: 30px;
+  }
+
+  .repair-landing .repair-start-options__shell {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 18px;
+  }
+
+  .repair-landing .repair-start-options__heading h2 {
+    max-width: 20ch;
+    font-size: clamp(1.55rem, 6vw, 2rem);
+  }
+
+  .repair-landing .repair-start-options__heading > p:last-child {
+    margin-top: 8px;
+    font-size: .86rem;
+  }
+
+  .repair-landing .repair-start-option {
+    grid-template-columns: 34px minmax(0, 1fr) 20px;
+    gap: 12px;
+    min-height: 92px;
+    padding: 16px;
+  }
+
+  .repair-landing .repair-start-option__number {
+    width: 32px;
+    border-radius: 9px;
+    font-size: .7rem;
+  }
+
+  .repair-landing .repair-start-option__title {
+    font-size: .94rem;
+  }
+
+  .repair-landing .repair-start-option__description {
+    font-size: .79rem;
+  }
+
+  .repair-landing .repair-start-option__action {
+    justify-self: end;
+    font-size: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .repair-landing .repair-start-option,
+  .repair-landing .repair-start-option__action span {
+    transition: none;
+  }
+}

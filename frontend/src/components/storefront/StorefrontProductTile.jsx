@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, ChevronDown, Eye, SlidersHorizontal, X } from 'lucide-react';
+import { Check, ChevronDown, SlidersHorizontal, X } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import ProductCardImage from '../product/ProductCardImage';
 import AddToCartButton from '../ui/AddToCartButton.jsx';
@@ -35,6 +35,19 @@ function parsePrice(value) {
 
 function isNestedInteractiveTarget(target) {
   return target instanceof Element && Boolean(target.closest('button, a, input, select, textarea, [data-dtb-card-action]'));
+}
+
+function getQuantityMenuPosition(trigger) {
+  if (!trigger || typeof window === 'undefined') return null;
+  const rect = trigger.getBoundingClientRect();
+  const width = Math.min(148, window.innerWidth - 24);
+  const height = Math.min(276, window.innerHeight - 24);
+  const left = Math.min(Math.max(12, rect.left + (rect.width - width) / 2), window.innerWidth - width - 12);
+  const below = rect.bottom + 8;
+  const top = below + height <= window.innerHeight - 12
+    ? below
+    : Math.max(12, rect.top - height - 8);
+  return { top, left, width, maxHeight: height };
 }
 
 export default function StorefrontProductTile({ product, cardProduct, onOpenModal, onAddToCart, index = 0, variant = 'grid' }) {
@@ -75,31 +88,14 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const slug = displayProduct.slug || commerceProduct.slug;
   const productUrl = slug ? `/products/${slug}${displayProduct.includedVariation ? `?variant=${encodeURIComponent(displayProduct.id)}` : ''}` : null;
   const isMobile = useIsMobile();
-  const showDesktopOverlay = !isMobile && variant !== 'list';
-  const [overlayActive, setOverlayActive] = useState(false);
-  const [overlayHasFocus, setOverlayHasFocus] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [quantityOpen, setQuantityOpen] = useState(false);
-  const cardRef = useRef(null);
-  const imageButtonRef = useRef(null);
-  const overlayRef = useRef(null);
+  const [quantityMenuPosition, setQuantityMenuPosition] = useState(null);
   const quantityTriggerRef = useRef(null);
   const quantitySheetRef = useRef(null);
+  const quantityMenuRef = useRef(null);
   const firstQuantityOptionRef = useRef(null);
   const navigate = useNavigate();
-
-  const closeOverlay = useCallback(() => {
-    const activeEl = document.activeElement;
-    if (overlayRef.current && activeEl instanceof HTMLElement && overlayRef.current.contains(activeEl)) imageButtonRef.current?.focus();
-    setOverlayActive(false);
-  }, []);
-
-  useEffect(() => {
-    if (!overlayActive || !isMobile) return undefined;
-    const handler = (e) => { if (cardRef.current && !cardRef.current.contains(e.target)) setOverlayActive(false); };
-    document.addEventListener('pointerdown', handler);
-    return () => document.removeEventListener('pointerdown', handler);
-  }, [overlayActive, isMobile]);
 
   useEffect(() => {
     if (!quantityOpen || !isMobile) return undefined;
@@ -131,6 +127,53 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
     };
   }, [isMobile, quantityOpen]);
 
+  useEffect(() => {
+    if (!quantityOpen || isMobile) return undefined;
+    const updatePosition = () => setQuantityMenuPosition(getQuantityMenuPosition(quantityTriggerRef.current));
+    const handlePointerDown = (event) => {
+      if (quantityTriggerRef.current?.contains(event.target) || quantityMenuRef.current?.contains(event.target)) return;
+      setQuantityOpen(false);
+    };
+    const handleFocusIn = (event) => {
+      if (quantityTriggerRef.current?.contains(event.target) || quantityMenuRef.current?.contains(event.target)) return;
+      setQuantityOpen(false);
+    };
+    const handleKeyDown = (event) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      setQuantityOpen(false);
+      window.requestAnimationFrame(() => quantityTriggerRef.current?.focus());
+    };
+    updatePosition();
+    window.requestAnimationFrame(() => quantityMenuRef.current?.querySelector('[aria-pressed="true"]')?.focus());
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('focusin', handleFocusIn);
+    document.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('resize', updatePosition);
+    window.addEventListener('scroll', updatePosition, true);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('focusin', handleFocusIn);
+      document.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('resize', updatePosition);
+      window.removeEventListener('scroll', updatePosition, true);
+    };
+  }, [isMobile, quantityOpen]);
+
+  const openQuantitySelector = useCallback((event) => {
+    event.stopPropagation();
+    if (quantityOpen) {
+      setQuantityOpen(false);
+      return;
+    }
+    if (isMobile) {
+      setQuantityOpen(true);
+      return;
+    }
+    setQuantityMenuPosition(getQuantityMenuPosition(quantityTriggerRef.current));
+    setQuantityOpen(true);
+  }, [isMobile, quantityOpen]);
+
   const closeQuantitySheet = useCallback(() => {
     setQuantityOpen(false);
     window.requestAnimationFrame(() => quantityTriggerRef.current?.focus());
@@ -138,14 +181,14 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
 
   const openModalFromMobileCard = useCallback((event) => {
     if (!isMobile || event?.defaultPrevented || isNestedInteractiveTarget(event?.target)) return;
-    closeOverlay(); onOpenModal?.();
-  }, [closeOverlay, isMobile, onOpenModal]);
+    onOpenModal?.();
+  }, [isMobile, onOpenModal]);
 
   const handleImageClick = useCallback((event) => {
     event?.stopPropagation();
-    if (isMobile) { closeOverlay(); onOpenModal?.(); return; }
+    if (isMobile) { onOpenModal?.(); return; }
     if (productUrl) navigate(productUrl);
-  }, [closeOverlay, isMobile, navigate, onOpenModal, productUrl]);
+  }, [isMobile, navigate, onOpenModal, productUrl]);
 
   const warmProductRoute = useCallback(() => {
     if (productUrl) preloadRoute(productUrl);
@@ -160,18 +203,16 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const handlePointerIntent = useCallback((event) => {
     if (event.pointerType === 'mouse' || event.pointerType === 'pen') warmProductRoute();
   }, [warmProductRoute]);
-  const handleMouseEnter = useCallback(() => { if (showDesktopOverlay) { warmProductRoute(); setOverlayActive(true); } }, [showDesktopOverlay, warmProductRoute]);
-  const handleMouseLeave = useCallback(() => { if (showDesktopOverlay) closeOverlay(); }, [closeOverlay, showDesktopOverlay]);
   const handleTitleClick = useCallback((event) => {
-    event.stopPropagation(); closeOverlay();
+    event.stopPropagation();
     if (isMobile) { if (productUrl) navigate(productUrl); return; }
     onOpenModal?.();
-  }, [closeOverlay, isMobile, navigate, onOpenModal, productUrl]);
+  }, [isMobile, navigate, onOpenModal, productUrl]);
   const handleAddButtonClick = useCallback((event) => {
-    event.stopPropagation(); closeOverlay();
+    event.stopPropagation();
     try { const result = onAddToCart?.(quantity); result?.catch?.(() => {}); } catch { /* owning surface renders cart error */ }
-  }, [closeOverlay, onAddToCart, quantity]);
-  const handleQuickView = useCallback((e) => { e.stopPropagation(); closeOverlay(); onOpenModal?.(); }, [closeOverlay, onOpenModal]);
+  }, [onAddToCart, quantity]);
+  const handleQuickView = useCallback((e) => { e.stopPropagation(); onOpenModal?.(); }, [onOpenModal]);
 
   // Search uses shared product identities and existing cart/variation actions.\n  // Never present a variable parent's internal SKU as a sellable variation SKU.
   if (variant === 'search') {
@@ -207,12 +248,11 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   }
 
   return (
-    <article ref={cardRef} className={`dtb-product-card dtb-product-card--${variant} storefront-motion-card${isVariable ? ' dtb-product-card--variable' : ''}`} style={{ '--dtb-card-delay': `${Math.min(index, 8) * 30}ms` }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={openModalFromMobileCard}>
+    <article className={`dtb-product-card dtb-product-card--${variant} storefront-motion-card${isVariable ? ' dtb-product-card--variable' : ''}`} style={{ '--dtb-card-delay': `${Math.min(index, 8) * 30}ms` }} onClick={openModalFromMobileCard}>
       <div className="dtb-product-card__image">
-        <div ref={imageButtonRef} role="button" tabIndex={0} className="dtb-product-card__image-hit" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} onClick={handleImageClick} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleImageClick(e); } }} aria-label={isMobile ? `Quick view ${name}` : `View ${name}`}>
+        <div role="button" tabIndex={0} className="dtb-product-card__image-hit" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} onClick={handleImageClick} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleImageClick(e); } }} aria-label={isMobile ? `Quick view ${name}` : `View ${name}`}>
           <ProductCardImage product={displayProduct} src={image} srcSet={imageSrcset} sizes={variant === 'rail' ? '(max-width: 767px) 44vw, 188px' : variant === 'list' ? '(max-width: 767px) 32vw, 240px' : '(max-width: 767px) 50vw, (max-width: 1024px) 33vw, 240px'} alt={name} className="dtb-product-card__img" padding="0" fit="contain" preferThumbnail eager={false} />
         </div>
-        {showDesktopOverlay && <div ref={overlayRef} aria-hidden={!overlayActive && !overlayHasFocus} className={`dtb-product-card__qv-overlay${overlayActive ? ' dtb-product-card__qv-overlay--active' : ''}`} onFocusCapture={() => setOverlayHasFocus(true)} onBlurCapture={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setOverlayHasFocus(false); }} onClick={(e) => { e.stopPropagation(); closeOverlay(); if (productUrl) navigate(productUrl); }}><div className={`dtb-product-card__qv-actions${overlayActive ? ' dtb-product-card__qv-actions--active' : ''}`}><button type="button" tabIndex={overlayActive ? 0 : -1} className="dtb-product-card__qv-btn" onClick={handleQuickView} aria-label={`Quick view ${name}`}><Eye size={14} strokeWidth={2.2} /><span>Quick View</span></button></div></div>}
       </div>
       <div className="dtb-product-card__meta">
         {displayProduct.brand ? <span className="dtb-product-card__brand">{displayProduct.brand}</span> : null}
@@ -234,7 +274,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
             ref={quantityTriggerRef}
             type="button"
             className="dtb-product-card__quantity"
-            onClick={(event) => { event.stopPropagation(); setQuantityOpen(true); }}
+            onClick={openQuantitySelector}
             onPointerDown={(event) => event.stopPropagation()}
             aria-label={`Quantity: ${quantity}`}
             aria-haspopup="dialog"
@@ -267,6 +307,30 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
         </div>
         </div>
       </div>
+      {!isMobile && quantityOpen && quantityMenuPosition && createPortal(
+        <div
+          ref={quantityMenuRef}
+          className="dtb-quantity-menu"
+          role="dialog"
+          aria-label={`Choose quantity for ${name}`}
+          style={quantityMenuPosition}
+          onClick={(event) => event.stopPropagation()}
+        >
+          {Array.from({ length: 10 }, (_, optionIndex) => optionIndex + 1).map((value) => (
+            <button
+              key={value}
+              type="button"
+              className={`dtb-quantity-menu__option${quantity === value ? ' dtb-quantity-menu__option--selected' : ''}`}
+              aria-pressed={quantity === value}
+              onClick={() => { setQuantity(value); closeQuantitySheet(); }}
+            >
+              <span>{value}</span>
+              {quantity === value ? <Check size={15} strokeWidth={2.5} aria-hidden="true" /> : null}
+            </button>
+          ))}
+        </div>,
+        document.body,
+      )}
       {isMobile && quantityOpen && createPortal(
         <div className="dtb-quantity-sheet-backdrop" onClick={(event) => { event.stopPropagation(); closeQuantitySheet(); }}>
           <section

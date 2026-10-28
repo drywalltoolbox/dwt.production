@@ -138,44 +138,65 @@
 
 .dtb-home-brand-section .storefront-section__title {
   display: flex;
-  min-height: 2.75rem;
+  min-height: 3.35rem;
   align-items: center;
+}
+
+.dtb-home-brand-section .storefront-section__head {
+  position: relative;
+  margin-bottom: 1rem;
+  padding-bottom: .8rem;
+}
+
+.dtb-home-brand-section .storefront-section__head::after {
+  position: absolute;
+  right: 2px;
+  bottom: 0;
+  left: 2px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(112,132,162,.12) 5%, rgba(112,132,162,.38) 17%, rgba(112,132,162,.48) 50%, rgba(112,132,162,.38) 83%, rgba(112,132,162,.12) 95%, transparent 100%);
+  content: '';
 }
 
 .dtb-home-brand-section__logo {
   display: block;
   width: auto;
-  max-width: min(100%, clamp(8rem, 15vw, 11.75rem));
+  max-width: min(100%, clamp(10rem, 18vw, 14rem));
   height: auto;
-  max-height: clamp(1.7rem, 3vw, 2.55rem);
+  max-height: clamp(2.1rem, 3.3vw, 3rem);
   object-fit: contain;
   object-position: left center;
 }
 
 @media (max-width: 600px) {
   .dtb-home-brand-section .storefront-section__title {
-    min-height: 2.25rem;
+    min-height: 2.9rem;
+  }
+
+  .dtb-home-brand-section .storefront-section__head {
+    padding-bottom: .7rem;
   }
 
   .dtb-home-brand-section__logo {
-    max-width: min(100%, clamp(7.6rem, 34vw, 9.5rem));
+    max-width: min(100%, clamp(9rem, 42vw, 11.5rem));
+    max-height: 2.65rem;
   }
 }
 
 .dtb-home-brand-section--columbia-taping-tools .dtb-home-brand-section__logo,
 .dtb-home-brand-section--platinum .dtb-home-brand-section__logo {
-  width: min(100%, clamp(8rem, 15vw, 11.75rem));
+  width: min(100%, clamp(10rem, 18vw, 14rem));
   max-width: 100%;
-  height: clamp(2.9rem, 4vw, 3.2rem);
-  max-height: clamp(2.9rem, 4vw, 3.2rem);
+  height: clamp(3.2rem, 4vw, 3.5rem);
+  max-height: clamp(3.2rem, 4vw, 3.5rem);
 }
 
 @media (max-width: 600px) {
   .dtb-home-brand-section--columbia-taping-tools .dtb-home-brand-section__logo,
   .dtb-home-brand-section--platinum .dtb-home-brand-section__logo {
-    width: min(100%, clamp(7.6rem, 34vw, 9.5rem));
-    height: 3rem;
-    max-height: 3rem;
+    width: min(100%, clamp(9rem, 42vw, 11.5rem));
+    height: 3.1rem;
+    max-height: 3.1rem;
   }
 }
 

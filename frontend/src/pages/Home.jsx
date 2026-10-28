@@ -128,7 +128,6 @@ export default function Home() {
                     decoding="async"
                   />
                 )}
-                subtitle={`Explore the ${brand.name} lineup.`}
                 className={`dtb-home-product-section dtb-home-brand-section dtb-home-brand-section--${brandToSlug(brand.brand)}`}
                 viewAllHref={brand.to}
                 viewAllLabel="View All"
