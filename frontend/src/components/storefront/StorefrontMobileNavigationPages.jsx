@@ -58,9 +58,12 @@ export default function StorefrontMobileNavigationPages({ isOpen, sections, link
     if (target) onNavigate(target);
   };
 
-  const rows = current?.items || sections;
+  const productSection = sections.find((section) => section.id === 'products');
+  const secondarySections = sections.filter((section) => section.id !== 'products');
+  const rows = current?.items || productSection?.items || sections;
+  const showSecondarySections = !current && secondarySections.length > 0;
   return (
-    <nav className="dtb-menu-pages" aria-label="Mobile navigation" data-direction={direction}>
+    <nav className={`dtb-menu-pages${current ? '' : ' dtb-menu-pages--root'}`} aria-label="Mobile navigation" data-direction={direction}>
       <div className="dtb-menu-pages__heading">
         {current ? (
           <button type="button" className="dtb-menu-pages__back" onClick={back} aria-label="Previous menu">
@@ -79,27 +82,42 @@ export default function StorefrontMobileNavigationPages({ isOpen, sections, link
           {rows.map((item, index) => {
             const hasChildren = Array.isArray(item.items) && item.items.length > 0;
             const label = item.label || item.name;
-            const isParentCategory = stack.length === 1 && current?.id === 'products';
+            const isParentCategory = !current;
             const showThumbnail = isParentCategory || Boolean(item.thumbnail);
             return (
               <button
                 type="button"
                 key={item.id || item.slug || item.to || `${label}-${index}`}
                 className={`dtb-menu-pages__row${showThumbnail ? ' dtb-menu-pages__row--with-image' : ''}`}
-                onClick={() => hasChildren ? openPage({ id: item.id || item.slug || label, title: label, items: item.items, to: item.to }) : goTo(item.to)}
+                onClick={() => isParentCategory ? goTo(item.to) : hasChildren ? openPage({ id: item.id || item.slug || label, title: label, items: item.items, to: item.to }) : goTo(item.to)}
               >
                 {showThumbnail ? (
                   <CategoryThumbnail key={item.thumbnail || item.slug || label} src={item.thumbnail} label={label} />
                 ) : null}
                 <span className="dtb-menu-pages__row-label">{label}</span>
-                {hasChildren && <ChevronRight size={19} strokeWidth={2} aria-hidden="true" />}
+                {(hasChildren || isParentCategory) && <ChevronRight size={19} strokeWidth={2} aria-hidden="true" />}
               </button>
             );
           })}
-          {stack.length === 0 && links.map((item) => (
-            <button type="button" className="dtb-menu-pages__row dtb-menu-pages__row--utility"
-              key={item.to} onClick={() => goTo(item.to)}>{item.label}</button>
-          ))}
+          {showSecondarySections && (
+            <div className="dtb-menu-pages__secondary">
+              <p className="dtb-menu-pages__section-label">MORE FROM DRYWALL TOOLBOX</p>
+              {secondarySections.map((item) => (
+                <button type="button" className="dtb-menu-pages__row dtb-menu-pages__row--utility"
+                  key={item.id} onClick={() => openPage({ id: item.id, title: item.label, items: item.items, to: item.to })}>
+                  <span className="dtb-menu-pages__row-label">{item.label}</span>
+                  <ChevronRight size={18} strokeWidth={2} aria-hidden="true" />
+                </button>
+              ))}
+              {links.map((item) => (
+                <button type="button" className="dtb-menu-pages__row dtb-menu-pages__row--utility"
+                  key={item.to} onClick={() => goTo(item.to)}>
+                  <span className="dtb-menu-pages__row-label">{item.label}</span>
+                  <ChevronRight size={18} strokeWidth={2} aria-hidden="true" />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </nav>
