@@ -1,0 +1,153 @@
+/* The Repairs landing hero uses the same mobile composition as the Repairs
+   homepage campaign. Keep this scoped: homepage carousel sizing stays owned
+   by repair-hero-shared.css. */
+@media (max-width: 47.99rem) {
+  .repair-landing.repair-landing--services .repair-hero:not(.repair-hero--home-slide) {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: clamp(356px, 103vw, 425px);
+    overflow: hidden;
+    background: #020b1b;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero .repair-hero__image {
+    object-position: 50% 30%;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero .repair-hero__scrim {
+    display: block;
+    background:
+      linear-gradient(90deg, rgba(2, 10, 25, .90), rgba(2, 10, 25, .62) 58%, rgba(2, 10, 25, .28)),
+      linear-gradient(0deg, rgba(2, 10, 25, .62), transparent 48%);
+  }
+
+  .repair-landing.repair-landing--services .repair-hero .repair-hero__inner {
+    display: flex;
+    flex: 1 0 auto;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: inherit;
+    padding: clamp(42px, 12vw, 62px) 24px 42px;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero .repair-hero__content {
+    width: 100%;
+    max-width: 34rem;
+    margin: 0 auto;
+    padding: 0;
+    text-align: left;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero .repair-eyebrow {
+    justify-content: flex-start;
+    gap: 9px;
+    margin-bottom: 8px;
+    color: #3166fa;
+    font-size: clamp(10px, 2.8vw, 12px);
+    letter-spacing: .15em;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero h1 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    max-width: 100%;
+    margin-bottom: 14px;
+    font-size: clamp(27px, 7.7vw, 36px);
+    line-height: .99;
+    letter-spacing: -.055em;
+    overflow-wrap: normal;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero h1 .repair-hero__title-line {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero__lead {
+    max-width: 35ch;
+    margin: 0 0 18px;
+    color: rgba(255, 255, 255, .94);
+    font-size: clamp(13px, 3.6vw, 15px);
+    line-height: 1.38;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: stretch;
+    width: 100%;
+    gap: 8px;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero__actions .repair-button {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 14px;
+    align-items: center;
+    justify-content: initial;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    min-height: 52px;
+    height: auto;
+    gap: 4px;
+    padding: 8px 10px;
+    border-radius: 11px;
+    font-size: clamp(11px, 2.8vw, 14px);
+    line-height: 1.15;
+    white-space: normal;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero__actions .repair-button--primary {
+    border-color: rgba(136, 194, 255, .8);
+    background: linear-gradient(135deg, #0878ff, #0639de);
+    box-shadow: 0 6px 18px rgba(20, 70, 180, .32), inset 0 1px 0 rgba(255, 255, 255, .22);
+  }
+
+  .repair-landing.repair-landing--services .repair-hero__actions .repair-button--secondary {
+    border-color: rgba(125, 168, 232, .75);
+    background: linear-gradient(135deg, rgba(19, 43, 78, .88), rgba(5, 17, 38, .9));
+  }
+
+  .repair-landing.repair-landing--services .repair-hero__actions .repair-button__icon,
+  .repair-landing.repair-landing--services .repair-hero__actions .repair-button__detail {
+    display: none;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero__actions .repair-button__copy {
+    min-width: 0;
+    text-align: left;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero__actions .repair-button__label {
+    display: block;
+    max-width: 100%;
+    font-size: inherit;
+    font-weight: 750;
+    letter-spacing: -.02em;
+    line-height: 1.15;
+    white-space: normal;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero__actions .repair-button__arrow {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    justify-self: end;
+  }
+
+  .repair-landing.repair-landing--services .repair-hero__actions .repair-button__arrow svg {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@media (max-width: 340px) {
+  .repair-landing.repair-landing--services .repair-hero .repair-hero__inner {
+    padding-inline: 18px;
+  }
+}
