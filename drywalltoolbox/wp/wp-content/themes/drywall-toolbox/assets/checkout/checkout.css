@@ -16,8 +16,8 @@
 	--dtb-checkout-red-700: #b42318;
 	--dtb-checkout-red-50: #fff1f0;
 	--dtb-checkout-surface: #fff;
-	--dtb-checkout-canvas: #f6f8fc;
-	--dtb-checkout-surface-subtle: #f8fafc;
+	--dtb-checkout-canvas: #fff;
+	--dtb-checkout-surface-subtle: #fff;
 	--dtb-checkout-border: #e2e8f0;
 	--dtb-checkout-border-strong: #cbd5e1;
 	--dtb-checkout-radius-sm: 10px;
@@ -62,10 +62,10 @@ body, #primary { overflow-x: hidden; }
 	padding-bottom: env(safe-area-inset-bottom, 0);
 }
 #primary .wp-block-woocommerce-checkout {
-	background: var(--dtb-checkout-surface);
-	border: 1px solid var(--dtb-checkout-border);
-	border-radius: var(--dtb-checkout-radius-lg);
-	box-shadow: var(--dtb-checkout-shadow-xs);
+	background: transparent;
+	border: 0;
+	border-radius: 0;
+	box-shadow: none;
 }
 button, input, select, textarea, fieldset, legend { font-family: inherit; }
 h1, h2, h3,
