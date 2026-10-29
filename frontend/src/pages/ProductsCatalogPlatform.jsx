@@ -495,7 +495,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
         .find((group) => group.slug === categoryPathSlug);
       const children = selectedBrand
         ? (navGroup?.children || [])
-        : (navGroup?.children?.length ? navGroup.children : (Array.isArray(categoryMeta?.children) ? categoryMeta.children : []));
+        : (navGroup ? navGroup.children : (Array.isArray(categoryMeta?.children) ? categoryMeta.children : []));
       return children
         .map((child) => ({
           ...child,

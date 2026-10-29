@@ -100,7 +100,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
   const [mobileSearchQuery, setMobileSearchQuery] = useState('');
   const [mobileSearchResults, setMobileSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
-  const { facets } = useCatalogFacets();
+  const { facets, loading: catalogFacetsLoading, refreshing: catalogFacetsRefreshing } = useCatalogFacets();
   const { facets: partsFacets } = useCatalogFacets({ isParts: 1 });
   const accountDropdownRef = useRef(null);
   const desktopSearchRef = useRef(null);
@@ -704,6 +704,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       <StorefrontMobileDrawer isOpen={mobileMenuOpen} onClose={closeMobileMenu}>
         <StorefrontMobileNavigationPages
           isOpen={mobileMenuOpen}
+          loadingCategories={catalogFacetsLoading || catalogFacetsRefreshing}
           onNavigate={closeDrawerAndNavigate}
           links={DRAWER_NAV_ROWS}
           sections={[
