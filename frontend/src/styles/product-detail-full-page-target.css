@@ -340,7 +340,7 @@
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
-.dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__panel a {
+.dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__panel a:not(.ts-includes-list__link):not(.dtb-pdp-parts-guide__link) {
   color: #1557e9; text-decoration: underline; text-underline-offset: 2px;
 }
 @media (min-width: 1025px) {

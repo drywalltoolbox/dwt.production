@@ -133,6 +133,76 @@ function splitDescriptionSections(text) {
   return groups.filter(Boolean);
 }
 
+function getRichParagraphGroups(text) {
+  const sentences = [...String(text || '').matchAll(/[^.!?]+[.!?]+(?:\s|$)|[^.!?]+$/g)]
+    .map((match) => ({ start: match.index, end: match.index + match[0].length }));
+  if (String(text || '').trim().length < 300 || sentences.length < 3) return [];
+
+  const groups = [];
+  for (let index = 0; index < sentences.length; index += 2) {
+    const start = sentences[index].start;
+    const end = sentences[Math.min(index + 1, sentences.length - 1)].end;
+    groups.push({ start, end });
+  }
+  return groups.length > 1 ? groups : [];
+}
+
+function findTextPoint(root, offset) {
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  let remaining = offset;
+  let node = walker.nextNode();
+  let lastNode = node;
+
+  while (node) {
+    lastNode = node;
+    if (remaining <= node.textContent.length) return { node, offset: remaining };
+    remaining -= node.textContent.length;
+    node = walker.nextNode();
+  }
+
+  return lastNode ? { node: lastNode, offset: lastNode.textContent.length } : null;
+}
+
+function formatRichDescriptionHtml(html) {
+  if (!hasHtmlMarkup(html) || typeof document === 'undefined') return { html, wasSplit: false };
+
+  const root = document.createElement('div');
+  root.innerHTML = DOMPurify.sanitize(html, { USE_PROFILES: { html: true } });
+  let wasSplit = false;
+
+  [...root.querySelectorAll('p')].forEach((paragraph) => {
+    if (paragraph.closest('li, td, th, blockquote, pre')) return;
+    const groups = getRichParagraphGroups(paragraph.textContent);
+    if (groups.length === 0 || !paragraph.parentNode) return;
+
+    const source = paragraph.cloneNode(true);
+    const formattedGroups = new Array(groups.length);
+    for (let index = groups.length - 1; index >= 0; index -= 1) {
+      const start = findTextPoint(source, groups[index].start);
+      const end = findTextPoint(source, groups[index].end);
+      if (!start || !end) return;
+
+      const range = document.createRange();
+      range.setStart(start.node, start.offset);
+      range.setEnd(end.node, end.offset);
+      const section = document.createElement('p');
+      section.className = 'dtb-pdp-description-paragraph';
+      section.appendChild(range.extractContents());
+      formattedGroups[index] = section;
+    }
+
+    const replacement = document.createDocumentFragment();
+    formattedGroups.forEach((section, index) => {
+      if (index > 0) section.classList.add('dtb-pdp-description-paragraph--continued');
+      replacement.appendChild(section);
+    });
+    paragraph.replaceWith(replacement);
+    wasSplit = true;
+  });
+
+  return { html: root.innerHTML, wasSplit };
+}
+
 function isIncludesLabel(label) {
   return /^(?:set\s+|kit\s+)?includes?$/i.test(String(label || '').trim());
 }
@@ -306,14 +376,19 @@ function ProductDescriptionContent({ html, text }) {
   );
   const content = shouldFormatPlainText ? (plainHtmlText || sourceText) : '';
   const sections = shouldFormatPlainText ? splitDescriptionSections(content) : [];
+  const richDescription = useMemo(
+    () => (hasHtmlMarkup(html) ? formatRichDescriptionHtml(html) : null),
+    [html],
+  );
 
   if (!shouldFormatPlainText && hasHtmlMarkup(html)) {
     return (
       <div className="dtb-pdp-description-content dtb-pdp-description-content--rich">
+        {richDescription?.wasSplit ? <p className="dtb-pdp-description-kicker">Product Overview</p> : null}
         <div
           className="dtb-pdp-description-card"
           dangerouslySetInnerHTML={{
-            __html: DOMPurify.sanitize(html, { USE_PROFILES: { html: true } }),
+            __html: DOMPurify.sanitize(richDescription?.html || html, { USE_PROFILES: { html: true } }),
           }}
         />
       </div>
@@ -880,8 +955,11 @@ export default function ProductDetail({
 
   const canonicalBrandForParts = BRAND_ALIASES[brandLabel] || brandLabel;
   const brandSlugForParts = BRAND_TO_SLUG[canonicalBrandForParts] || '';
+  const brandPartsUrl = brandSlugForParts
+    ? `/parts?brand=${encodeURIComponent(brandSlugForParts)}`
+    : partsUrl || '/parts';
   const browsePartsUrl = partsUrl ||
-    (brandSlugForParts ? `/parts?brand=${encodeURIComponent(brandSlugForParts)}` : '/parts');
+    brandPartsUrl;
   const effectiveSku = effectiveProduct.sku || product.sku || '';
   const effectiveStock = effectiveProduct.stock_status || product.stock_status || 'instock';
   const isOutOfStock = effectiveStock === 'outofstock';
@@ -1137,7 +1215,7 @@ export default function ProductDetail({
                     ) : null)
                     : featuresNode}
                   specs={!specTable.hidden ? <ProductSpecTable specs={productSpecifications} /> : null}
-                  partsUrl={browsePartsUrl}
+                  partsUrl={brandPartsUrl}
                   specificationsRequest={specificationsRequest}
                 />
               )}

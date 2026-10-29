@@ -1,5 +1,6 @@
 import { ChevronRight, Minus, Plus } from 'lucide-react';
 import AddToCartButton from '../ui/AddToCartButton.jsx';
+import ProductQuantityDropdown from './ProductQuantityDropdown.jsx';
 
 export default function ProductPurchasePanel({
   quantity,
@@ -62,6 +63,11 @@ export default function ProductPurchasePanel({
 
       <span className="dtb-pdp-purchase-panel__quantity-label">Quantity</span>
       <div className="dtb-pdp-purchase-row">
+        <ProductQuantityDropdown
+          quantity={quantity}
+          onQuantityChange={onQuantityChange}
+          disabled={purchaseBusy}
+        />
         <div className="dtb-pdp-qty-root" role="group" aria-label="Quantity">
           <button
             type="button"

@@ -16,7 +16,49 @@
 .dtb-home-storefront .dtb-ui-trusted-brands--home { border: 0; background: transparent; }
 /* Product-led homepage composition; the shared repair landing remains intact. */
 .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__content { text-align: left; align-items: flex-start; }
+
+/* Brand rails lead with their official logo, framed by a quiet blue glass wash
+   and a tapered light line that carries the same visual language as the main
+   product sections without making each rail look like a separate card. */
+.dtb-home-brand-section .storefront-section__head {
+  margin-bottom: 1.1rem;
+  padding: .35rem .3rem .9rem;
+  background: linear-gradient(100deg, rgba(34, 85, 238, .025), rgba(255, 255, 255, 0) 58%);
+}
+
+.dtb-home-brand-section .storefront-section__head::after {
+  right: .1rem;
+  left: .1rem;
+  height: 1px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent 0%, rgba(49, 95, 233, .17) 8%, rgba(49, 95, 233, .24) 24%, rgba(112, 132, 162, .2) 62%, rgba(112, 132, 162, .1) 88%, transparent 100%);
+  content: '';
+}
+
+.dtb-home-storefront .dtb-home-brand-section .storefront-section__view-all {
+  min-height: 36px;
+  padding: 0 .72rem;
+  border: 1px solid rgba(49, 95, 233, .16);
+  border-radius: 999px;
+  background: rgba(248, 250, 255, .78);
+  color: #2455e8;
+  font-size: .76rem;
+  font-weight: 780;
+  letter-spacing: .01em;
+  transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.dtb-home-storefront .dtb-home-brand-section .storefront-section__view-all:hover {
+  border-color: rgba(49, 95, 233, .3);
+  background: #f2f6ff;
+  color: #163fbd;
+}
+
 @media (max-width: 767px) {
+  .dtb-home-page {
+    background: #fff;
+  }
+
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide { min-height: clamp(370px, 102vw, 430px); }
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__inner {
     min-height: inherit;
@@ -38,7 +80,137 @@
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__scrim {
     background: linear-gradient(180deg, rgba(2, 10, 25, .05) 0%, rgba(2, 10, 25, .48) 35%, #020b1b 82%);
   }
+
+  /* A connected discovery flow with clear section rhythm and softly surfaced
+     category choices. Keep the white canvas continuous between sections. */
+  .home-commerce-categories {
+    padding: 1.15rem 0 1.3rem;
+  }
+
+  .home-commerce-categories .storefront-section__head {
+    position: relative;
+    margin: 0 0 .65rem;
+    padding: 0 0 .72rem;
+  }
+
+  .home-commerce-categories .storefront-section__head::after,
+  .dtb-home-product-section:not(.dtb-home-brand-section) .storefront-section__head::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(34, 85, 238, .48), rgba(112, 132, 162, .22) 32%, rgba(112, 132, 162, .1) 78%, transparent);
+    content: '';
+  }
+
+  .home-commerce-categories .storefront-section__title,
+  .dtb-home-product-section:not(.dtb-home-brand-section) .storefront-section__title {
+    color: #111c31;
+    font-size: clamp(1.08rem, 4.5vw, 1.25rem);
+    font-weight: 820;
+    letter-spacing: -.035em;
+    line-height: 1.2;
+  }
+
+  .home-commerce-categories .dtb-tool-type-rail {
+    grid-auto-columns: calc((100% - 12px) / 2);
+    gap: 12px;
+    padding: 3px 2px 8px;
+  }
+
+  .home-commerce-categories .dtb-tool-type-tile {
+    min-height: 0;
+    border: 1px solid rgba(205, 216, 235, .76);
+    border-radius: 15px;
+    background: linear-gradient(155deg, #fff 8%, #f8faff 100%);
+    box-shadow: 0 5px 16px rgba(16, 39, 82, .075), inset 0 1px 0 rgba(255, 255, 255, .96);
+    transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+  }
+
+  .home-commerce-categories .dtb-tool-type-tile:active {
+    border-color: rgba(34, 85, 238, .34);
+    box-shadow: 0 2px 8px rgba(16, 39, 82, .08);
+    transform: scale(.985);
+  }
+
+  .home-commerce-categories .dtb-tool-type-tile__media {
+    height: clamp(5.1rem, 23vw, 6.25rem);
+    flex-basis: clamp(5.1rem, 23vw, 6.25rem);
+    padding: .45rem .6rem .15rem;
+  }
+
+  .home-commerce-categories .dtb-tool-type-tile__label {
+    min-height: 2.45em;
+    padding: .42rem .5rem .72rem;
+    color: #15223b;
+    font-size: clamp(.76rem, 3.25vw, .875rem);
+    font-weight: 780;
+    line-height: 1.22;
+  }
+
+  .home-commerce-categories .dtb-tool-type-tile__chevron {
+    top: auto;
+    right: .55rem;
+    bottom: .72rem;
+    color: #315fe9;
+    filter: drop-shadow(0 1px 1px rgba(255, 255, 255, .9));
+  }
+
+  .dtb-home-product-section {
+    padding-block: 1.15rem 1.35rem;
+  }
+
+  .dtb-home-product-section:not(.dtb-home-brand-section) .storefront-section__head {
+    position: relative;
+    margin-bottom: .8rem;
+    padding-bottom: .68rem;
+  }
+
+  .dtb-home-product-section:not(.dtb-home-brand-section) .storefront-section__view-all {
+    min-height: 36px;
+    gap: .3rem;
+    padding: 0 .15rem 0 .55rem;
+    color: #2455e8;
+    font-size: .76rem;
+    font-weight: 780;
+    letter-spacing: 0;
+  }
+
+  .dtb-home-product-section:not(.dtb-home-brand-section) .storefront-section__view-all svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  .dtb-home-brand-section .storefront-section__head {
+    gap: .5rem;
+    margin-bottom: .9rem;
+    padding: .3rem .2rem .8rem;
+  }
+
+  .dtb-home-brand-section .storefront-section__head::after {
+    right: 0;
+    left: 0;
+  }
+
+  .dtb-home-storefront .dtb-home-brand-section .storefront-section__view-all {
+    min-height: 34px;
+    padding-inline: .62rem;
+    font-size: .72rem;
+  }
+
+  .dtb-home-storefront .dtb-container--fluid {
+    padding-inline: clamp(14px, 4.2vw, 20px);
+  }
+
   .home-hero-carousel__dot { height: 44px; }
   .home-hero-carousel__dot::before,
   .home-hero-carousel__dot.is-active::after { top: 21px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-commerce-categories .dtb-tool-type-tile,
+  .dtb-home-brand-section .storefront-section__view-all {
+    transition: none;
+  }
 }

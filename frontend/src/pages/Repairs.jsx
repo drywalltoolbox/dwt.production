@@ -1508,36 +1508,19 @@ export function RepairStartExperience() {
       />
 
       {/* ── Repair Request Form ──────────────────────────────────────────── */}
-      <section style={{
-        background: 'var(--alloy-base)',
-        borderTop: '1px solid var(--machined-border)',
-        borderBottom: '1px solid var(--machined-border)',
-        padding: 'clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 3rem)',
-      }}>
-        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+      <section className="repair-intake-section">
+        <div className="repair-intake-shell">
 
           {/* Section heading */}
           {!submitted && (
-            <div style={{ textAlign: 'center', marginBottom: 'clamp(2rem, 4vw, 3rem)' }}>
-              <div className="dtb-title-eyebrow" style={{
-                display: 'inline-block',
-                background: 'rgba(34,85,238,0.08)',
-                border: '1px solid rgba(34,85,238,0.2)',
-                borderRadius: '99px', padding: '5px 16px',
-                fontSize: '0.68rem', fontWeight: 700,
-                letterSpacing: '0.12em', textTransform: 'uppercase',
-                color: 'var(--primary-600)', marginBottom: '14px',
-              }}>
+            <div className="repair-intake-intro">
+              <div className="dtb-title-eyebrow repair-intake-eyebrow">
                 Repair Service Request
               </div>
-              <h2 style={{
-                fontSize: 'clamp(1.75rem, 4vw, 2.5rem)',
-                fontWeight: 900, color: '#0f172a',
-                margin: '0 0 12px 0', letterSpacing: '-0.025em',
-              }}>
+              <h2 className="repair-intake-title">
                 Submit a Repair Inquiry
               </h2>
-              <p style={{ fontSize: 'clamp(0.875rem, 2vw, 1rem)', color: 'rgba(15,23,42,0.55)', margin: 0, lineHeight: 1.6 }}>
+              <p className="repair-intake-description">
                 Fill out the form below. We will send your quote and estimated turnaround
                 within 24 hours after your tool is delivered and checked in at our shop.
               </p>
@@ -1547,13 +1530,7 @@ export function RepairStartExperience() {
           {/* Form card */}
           <div
             ref={formRef}
-            style={submitted ? undefined : {
-              background: 'white',
-              border: '1px solid var(--machined-border)',
-              borderRadius: '16px',
-              padding: 'clamp(1.5rem, 4vw, 2.5rem)',
-              boxShadow: '0 4px 24px rgba(15,23,42,0.06)',
-            }}
+            className={`repair-intake-form-card${submitted ? ' repair-intake-form-card--submitted' : ''}`}
           >
             {submitted ? (
               /* ── Success screen — shared confirmation UI also used by

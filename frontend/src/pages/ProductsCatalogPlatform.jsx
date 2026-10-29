@@ -449,6 +449,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
 
   const activeFilterCount = (selectedBrand ? 1 : 0) + selectedDisplayCategories.length;
   const categoryScopeLabel = selectedBrandFacet?.label || selectedBrand;
+  const selectedBrandLogo = selectedBrandFacet?.logo || getBrandLogo(categoryScopeLabel) || getBrandLogo(brandSlug);
   const searchQuery = query.search.trim();
   const pageHeading = searchQuery
     ? 'Search results'
@@ -741,6 +742,8 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                 breadcrumbs={categoryBreadcrumbs}
                 activeFilters={activeBreadcrumbFilters}
                 brand={selectedBrandFacet?.slug || selectedBrand}
+                brandLogo={selectedBrandLogo}
+                brandLabel={categoryScopeLabel}
                 onRemoveFilter={removeBreadcrumbFilter}
                 productCount={total}
                 products={mappedProducts}
@@ -786,7 +789,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
         {!searchQuery && !isCategoryPageRoute && !isAllProductsRoute && !showCategoryLanding && !showBrandLanding && (
           <div className="mb-5 sm:mb-8">
             <div className={`dtb-listing-heading${isCategoryProductRoute ? '' : ' dtb-listing-heading--standard'}`}>
-              {selectedBrand && getBrandLogo(categoryScopeLabel) ? (
+              {selectedBrand && selectedBrandLogo ? (
                 <div className="dtb-brand-listing-header">
                   <BackButton
                     className="dtb-brand-listing-header__back"
@@ -796,7 +799,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                   />
                   <img
                     className="dtb-brand-listing-header__logo"
-                    src={getBrandLogo(categoryScopeLabel)}
+                    src={selectedBrandLogo}
                     alt={`${categoryScopeLabel} logo`}
                   />
                   {isCategoryProductRoute && <h1 className="dtb-brand-listing-header__category">{unifiedHeadingTitle}</h1>}

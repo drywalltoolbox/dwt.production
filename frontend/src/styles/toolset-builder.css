@@ -2217,13 +2217,6 @@
     padding: 0.5rem var(--dtb-viewport-gutter) 0.15rem;
   }
 
-  .dtb-toolset-workspace__heading .dtb-breadcrumb a,
-  .dtb-toolset-workspace__heading .dtb-breadcrumb__current {
-    min-height: 1.35rem;
-    padding-block: 0.1rem;
-    font-size: 0.66rem;
-  }
-
   .dtb-toolset-workspace__hero {
     min-height: 0;
     border: 0;

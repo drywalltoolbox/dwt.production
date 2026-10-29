@@ -21,6 +21,8 @@ export default function CategoryHero({
   breadcrumbs = [],
   activeFilters = [],
   brand = '',
+  brandLogo = '',
+  brandLabel = '',
   onRemoveFilter = null,
   products = [],
   brands = [],
@@ -35,6 +37,8 @@ export default function CategoryHero({
       products={products}
       brands={brands}
       brand={brand}
+      brandLogo={brandLogo}
+      brandLabel={brandLabel}
       onAddToCart={onAddToCart}
       onOpenProduct={onOpenProduct}
     />;
@@ -49,6 +53,8 @@ export default function CategoryHero({
         breadcrumbs={breadcrumbs}
         activeFilters={activeFilters}
         onRemoveFilter={onRemoveFilter}
+        brandLogo={brandLogo}
+        brandLabel={brandLabel || brand}
       />
       <CategoryMerchandising category={category} brand={brand} />
     </>

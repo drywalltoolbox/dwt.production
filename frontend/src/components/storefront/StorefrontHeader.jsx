@@ -37,17 +37,16 @@ const MAX_SEARCH_PRODUCTS = 6;
 const SHOW_CALCULATORS_NAV = false;
 
 const DRAWER_NAV_ROWS = [
-  { to: '/products?sort=newest', label: 'New Arrivals' },
   ...(SHOW_CALCULATORS_NAV ? [{ to: '/calculators', label: 'Calculators' }] : []),
-  { to: '/help', label: 'Help' },
+  { to: '/help', label: 'Help Center' },
   { to: '/contact', label: 'Contact' },
 ];
 
-function MobileHamburgerToggle({ checked, onCheckedChange }) {
+function MobileHamburgerToggle({ checked, onCheckedChange, className = '' }) {
   const label = checked ? 'Close menu' : 'Open menu';
 
   return (
-    <label className="header-mobile-toggle header-icon hamburger" aria-label={label}>
+    <label className={`header-mobile-toggle header-icon hamburger${className ? ` ${className}` : ''}`} aria-label={label}>
       <input
         type="checkbox"
         checked={checked}
@@ -84,6 +83,8 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
   const { getCartCount } = useCart();
   const { user, isAuthenticated, isLoading, login, register, logout } = useAuthContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileNavigationDepth, setMobileNavigationDepth] = useState(0);
+  const mobileNavigationBackRef = useRef(null);
   const [desktopNavOpen, setDesktopNavOpen] = useState(null);
   const [, setAccountDropdownOpen] = useState(false);
   const [accountHubOpen, setAccountHubOpen] = useState(false);
@@ -232,13 +233,6 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       })),
     },
     {
-      id: 'new-arrivals',
-      label: 'New Arrivals',
-      landingTo: '/products?sort=newest',
-      activePrefixes: [],
-      items: [],
-    },
-    {
       id: 'repairs',
       label: 'Repair Services',
       landingTo: '/repairs',
@@ -290,10 +284,21 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     },
   ], [desktopProductNavigation, drawerBrands, partsBrands, partsCategories, repairPackageGroups]);
 
-  const closeMobileMenu = () => setMobileMenuOpen(false);
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+    setMobileNavigationDepth(0);
+    mobileNavigationBackRef.current = null;
+  };
+  const handleMobileNavigationStackChange = useCallback((depth, backAction) => {
+    setMobileNavigationDepth(depth);
+    mobileNavigationBackRef.current = backAction;
+  }, []);
+  const handleMobileNavigationBack = useCallback(() => {
+    mobileNavigationBackRef.current?.();
+  }, []);
   const closeMenus = () => {
     setDesktopNavOpen(null);
-    setMobileMenuOpen(false);
+    closeMobileMenu();
     setAccountDropdownOpen(false);
     setDesktopSearchOpen(false);
   };
@@ -331,12 +336,19 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       onMobileMenuOpen?.();
       setAccountDropdownOpen(false);
       closeSearchOverlay();
+      setMobileNavigationDepth(0);
+      mobileNavigationBackRef.current = null;
+    } else {
+      setMobileNavigationDepth(0);
+      mobileNavigationBackRef.current = null;
     }
     setMobileMenuOpen(checked);
   }, [closeSearchOverlay, onMobileMenuOpen]);
 
   const handleCartToggle = useCallback(() => {
     setMobileMenuOpen(false);
+    setMobileNavigationDepth(0);
+    mobileNavigationBackRef.current = null;
     closeSearchOverlay();
     onCartToggle?.();
   }, [closeSearchOverlay, onCartToggle]);
@@ -505,14 +517,17 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
   };
 
   const handleMobileAccountClick = () => {
-    setMobileMenuOpen(false);
+    closeMobileMenu();
     setAccountHubOpen(true);
   };
 
   const navigateShopDestination = useCallback((to, { closeMobile = false } = {}) => {
-   
     setDesktopNavOpen(null);
-    if (closeMobile) setMobileMenuOpen(false);
+    if (closeMobile) {
+      setMobileMenuOpen(false);
+      setMobileNavigationDepth(0);
+      mobileNavigationBackRef.current = null;
+    }
     navigate(to);
   }, [navigate]);
 
@@ -557,7 +572,27 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
         <div className="site-header-inner">
           <div className="header-mobile-layout" style={{ display: isTablet ? 'flex' : undefined }}>
             <div className="header-mobile-slot header-mobile-slot--left">
-              <MobileHamburgerToggle checked={mobileMenuOpen} onCheckedChange={handleMobileMenuCheckedChange} />
+              <div className={`header-mobile-menu-controls${mobileMenuOpen && mobileNavigationDepth > 0 ? ' is-subpage' : ''}`}>
+                <span
+                  className="header-mobile-menu-controls__toggle"
+                  aria-hidden={mobileMenuOpen && mobileNavigationDepth > 0}
+                  inert={mobileMenuOpen && mobileNavigationDepth > 0}
+                >
+                  <MobileHamburgerToggle checked={mobileMenuOpen} onCheckedChange={handleMobileMenuCheckedChange} />
+                </span>
+                <button
+                  type="button"
+                  className="header-mobile-menu-controls__back"
+                  onClick={handleMobileNavigationBack}
+                  aria-label="Back to previous menu"
+                  aria-hidden={!mobileMenuOpen || mobileNavigationDepth === 0}
+                  tabIndex={mobileMenuOpen && mobileNavigationDepth > 0 ? 0 : -1}
+                >
+                  <svg className="header-mobile-menu-controls__back-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
+                    <path d="M15 8 7 16l8 8M7 16h18" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              </div>
             </div>
 
             <Link to="/" className="header-mobile-logo" onClick={closeMobileMenu}>
@@ -565,30 +600,51 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
             </Link>
 
             <div className="header-mobile-slot header-mobile-slot--right">
-              <button
-                type="button"
-                onClick={() => { if (!isLoading) handleMobileAccountClick(); }}
-                className={`header-mobile-account-toggle header-icon${isLoading ? ' is-loading' : ''}`}
-                aria-label={isLoading ? 'Loading account' : isAuthenticated ? 'Open account hub' : 'Sign in'}
-                aria-busy={isLoading}
-                disabled={isLoading}
-              >
-                <span className="header-account-toggle__icon" aria-hidden="true"><User size={20} /></span>
-                {isAuthenticated && accountUnreadCount > 0 ? <span className="account-alert-badge">{accountUnreadCount > 99 ? '99+' : accountUnreadCount}</span> : null}
-              </button>
-              <button
-                type="button"
-                onClick={handleCartToggle}
-                className="header-mobile-cart-toggle cart-toggle header-icon"
-                aria-label="Open cart"
-              >
-                <ShoppingCart size={20} />
-                {getCartCount() > 0 ? (
-                  <span className="cart-badge" aria-label={`${getCartCount()} items in cart`}>
-                    {getCartCount()}
-                  </span>
-                ) : null}
-              </button>
+              <div className={`header-mobile-actions-switcher${mobileMenuOpen && mobileNavigationDepth > 0 ? ' is-subpage' : ''}`}>
+                <div
+                  className="header-mobile-actions-switcher__commerce"
+                  aria-hidden={mobileMenuOpen && mobileNavigationDepth > 0}
+                  inert={mobileMenuOpen && mobileNavigationDepth > 0}
+                >
+                  <button
+                    type="button"
+                    onClick={() => { if (!isLoading) handleMobileAccountClick(); }}
+                    className={`header-mobile-account-toggle header-icon${isLoading ? ' is-loading' : ''}`}
+                    aria-label={isLoading ? 'Loading account' : isAuthenticated ? 'Open account hub' : 'Sign in'}
+                    aria-busy={isLoading}
+                    disabled={isLoading}
+                  >
+                    <span className="header-account-toggle__icon" aria-hidden="true"><User size={20} /></span>
+                    {isAuthenticated && accountUnreadCount > 0 ? <span className="account-alert-badge">{accountUnreadCount > 99 ? '99+' : accountUnreadCount}</span> : null}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCartToggle}
+                    className="header-mobile-cart-toggle cart-toggle header-icon"
+                    aria-label="Open cart"
+                  >
+                    <span className="cart-icon-wrap">
+                      <ShoppingCart size={20} />
+                      {getCartCount() > 0 ? (
+                        <span className="cart-badge" aria-label={`${getCartCount()} items in cart`}>
+                          {getCartCount()}
+                        </span>
+                      ) : null}
+                    </span>
+                  </button>
+                </div>
+                <span
+                  className="header-mobile-actions-switcher__close header-icon"
+                  aria-hidden={!mobileMenuOpen || mobileNavigationDepth === 0}
+                  inert={!mobileMenuOpen || mobileNavigationDepth === 0}
+                >
+                  <MobileHamburgerToggle
+                    className="header-mobile-toggle--stack-close"
+                    checked={mobileMenuOpen && mobileNavigationDepth > 0}
+                    onCheckedChange={(checked) => { if (!checked) closeMobileMenu(); }}
+                  />
+                </span>
+              </div>
             </div>
           </div>
 
@@ -643,7 +699,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
                   {isAuthenticated && accountUnreadCount > 0 ? <span className="account-alert-badge">{accountUnreadCount > 99 ? '99+' : accountUnreadCount}</span> : null}
                 </button>
               </div>
-              <div className="cart-area"><button onClick={handleCartToggle} className="cart-toggle header-icon" aria-label="Toggle cart"><ShoppingCart size={24} strokeWidth={1.9} />{getCartCount() > 0 && <span className="cart-badge">{getCartCount()}</span>}</button></div>
+              <div className="cart-area"><button onClick={handleCartToggle} className="cart-toggle header-icon" aria-label="Toggle cart"><span className="cart-icon-wrap"><ShoppingCart size={24} strokeWidth={1.9} />{getCartCount() > 0 && <span className="cart-badge">{getCartCount()}</span>}</span></button></div>
             </div>
           </div>
         </div>
@@ -704,11 +760,12 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       <StorefrontMobileDrawer isOpen={mobileMenuOpen} onClose={closeMobileMenu}>
         <StorefrontMobileNavigationPages
           isOpen={mobileMenuOpen}
+          onStackDepthChange={handleMobileNavigationStackChange}
           loadingCategories={catalogFacetsLoading || catalogFacetsRefreshing}
           onNavigate={closeDrawerAndNavigate}
           links={DRAWER_NAV_ROWS}
           sections={[
-            { id: 'products', label: 'Shop by Tool Type', to: '/products', items: drawerProductNavigation.map((item) => ({
+            { id: 'products', label: 'Shop by Tool', to: '/products', items: drawerProductNavigation.map((item) => ({
               ...item, label: item.label || item.name, to: item.to || buildCategoryPageUrl(item.slug),
               thumbnail: resolveCategoryThumbnail(item),
               items: (item.children || []).map((child) => ({

@@ -1,7 +1,8 @@
 .dtb-toolsets-page { margin: 0 calc(-1 * var(--dtb-category-layout-gutter, 1rem)) 1.25rem; background: #fff; color: #061b42; }
+.dtb-toolsets-brand-context { display: flex; justify-content: center; padding: .8rem var(--dtb-viewport-gutter, 1rem); background: #fff; }
+.dtb-toolsets-brand-context img { display: block; width: auto; max-width: min(100%, 320px); max-height: 68px; object-fit: contain; }
 .dtb-toolsets-hero { position: relative; min-height: 260px; overflow: hidden; background: linear-gradient(115deg, #042458, #0b3d77); color: #fff; }
-.dtb-toolsets-hero__crumbs { position: relative; z-index: 2; display: flex; gap: .55rem; padding: .7rem clamp(2rem,5vw,5.25rem); font-size: .74rem; }
-.dtb-toolsets-hero__crumbs span { display: inline-flex; gap: .55rem; } .dtb-toolsets-hero__crumbs a { color: #dcecff; text-decoration: none; } .dtb-toolsets-hero__crumbs b { font-weight: 500; color:#9eb9dc; }
+.dtb-toolsets-hero__crumbs { position: relative; z-index: 2; padding: .7rem clamp(2rem,5vw,5.25rem); }
 .dtb-toolsets-hero__copy { position: relative; z-index: 2; width: min(56rem, 100%); padding: 1.35rem clamp(2rem,5vw,5.25rem) 2rem; }
 .dtb-toolsets-hero__copy > p, .dtb-toolsets-section-head > p { margin:0 0 .55rem; color:#70aeff; font-size:.7rem; font-weight:900; letter-spacing:.16em; text-transform:uppercase; }
 .dtb-toolsets-hero h1 { margin:0; font-size:clamp(2.45rem,4vw,4.1rem); font-weight:900; letter-spacing:-.055em; line-height:.93; }
@@ -78,6 +79,10 @@
 }
 
 .dtb-toolsets-system__destination { display: inline-block; margin-top: .7rem; color: #075cea; font-size: .75rem; font-weight: 800; }
+
+@media (max-width: 767px) {
+  .dtb-toolsets-brand-context img { max-width: min(100%, 245px); max-height: 58px; }
+}
 
 .dtb-toolsets-system__action {
   display: flex;

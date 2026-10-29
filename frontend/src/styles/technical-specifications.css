@@ -225,9 +225,12 @@
 
 .ts-includes-list__link:hover .ts-includes-list__name {
   color: var(--ts-blue);
-  text-decoration: underline;
-  text-decoration-thickness: 1.4px;
-  text-underline-offset: 0.12em;
+}
+
+.ts-includes-list__link:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid rgba(34, 85, 238, .48);
+  outline-offset: 2px;
 }
 
 .ts-skeleton {

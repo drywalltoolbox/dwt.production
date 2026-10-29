@@ -1,6 +1,0 @@
-583ec6727547cea3f3de79036bde3879edf1e5522fe1cada3c2030c258d9898f  /mnt/data/dtb_precise_edit/dtb-hero-clean-master.mp4
-653283b0fcdb445f959b8387e6ef7e0cedcd3e4fa2cb3abe3767cbcdf61e55ca  /mnt/data/dtb_precise_edit/dtb-hero-desktop.mp4
-13b6156b53b6a7feeea3f4d979c10a9263b51a46585e021815c7bdbf5bd145b9  /mnt/data/dtb_precise_edit/dtb-hero-desktop.webm
-44ad0a6dd6a16be38ecdc464eb5eef6518e89dee475e45cf7a7bbf97981c3566  /mnt/data/dtb_precise_edit/dtb-hero-mobile.mp4
-5d95446d28354faaabcbca188dc69d503c9d15264c5b3fb04ae5a97468718284  /mnt/data/dtb_precise_edit/dtb-hero-mobile.webm
-92efa2650d002d904ab8f183a4ee57d981f0d4a62222b3e671979ae21f35d55f  /mnt/data/dtb_precise_edit/dtb-hero-poster.webp

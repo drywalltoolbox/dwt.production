@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ProductsCatalogPlatform from './ProductsCatalogPlatform.jsx';
 import InteriorPageHero from '../components/shared/InteriorPageHero.jsx';
+import { getBrandLogo } from '../utils/brandAssets.js';
 import {
   buildCatalogUrl,
   canonicalBrandLabel,
@@ -15,15 +16,22 @@ function formatFilterLabel(value = '') {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
-function PartsHero({ activeFilters = [], onRemoveFilter = null }) {
+function PartsHero({ activeFilters = [], onRemoveFilter = null, brand = '' }) {
+  const brandLabel = brand ? canonicalBrandLabel(brand) : '';
+  const brandLogo = brandLabel ? getBrandLogo(brandLabel) || getBrandLogo(brand) : '';
   return (
     <InteriorPageHero
       id="dtb-parts-hero-title"
-      title="All Parts"
-      description="Find replacement parts by brand or use a model diagram to identify the part number. Confirm fit before ordering."
+      title={brandLabel ? `${brandLabel} Replacement Parts` : 'All Parts'}
+      description={brandLabel
+        ? `Browse replacement parts for ${brandLabel}. Use a model diagram to confirm the part number and fit before ordering.`
+        : 'Find replacement parts by brand or use a model diagram to identify the part number. Confirm fit before ordering.'}
       breadcrumbs={[{ label: 'Home', path: '/' }, { label: 'Parts' }]}
       activeFilters={activeFilters}
       onRemoveFilter={onRemoveFilter}
+      brandLogo={brandLogo}
+      brandLabel={brandLabel}
+      titleVisuallyHidden={Boolean(brandLabel)}
     />
   );
 }
@@ -78,7 +86,7 @@ export default function Parts() {
 
   return (
     <div className="dtb-parts-page">
-      <PartsHero activeFilters={activeFilters} onRemoveFilter={removeFilter} />
+      <PartsHero activeFilters={activeFilters} onRemoveFilter={removeFilter} brand={query.brands?.[0] || ''} />
       <ProductsCatalogPlatform forceProductGrid title="Parts" isPartsFilter={1} />
     </div>
   );

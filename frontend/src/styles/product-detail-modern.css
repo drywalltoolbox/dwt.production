@@ -2607,7 +2607,7 @@
   font-size: .88rem;
   line-height: 1.6;
 }
-.dtb-pdp--modal .dtb-pdp-info-accordion__panel a { color: #1557e9; text-decoration: underline; text-underline-offset: 2px; }
+.dtb-pdp--modal .dtb-pdp-info-accordion__panel a:not(.ts-includes-list__link):not(.dtb-pdp-parts-guide__link) { color: #1557e9; text-decoration: underline; text-underline-offset: 2px; }
 @media (max-width: 767px) {
   .dtb-pdp--modal .dtb-pdp-info-accordion__heading button { min-height: 48px; padding: 12px 14px; }
   .dtb-pdp--modal .dtb-pdp-info-accordion__panel { padding: 5px 14px 15px; }

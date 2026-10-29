@@ -396,6 +396,95 @@
   outline-offset: 3px;
 }
 
+/* Repair intake: keep its branded progress and card hierarchy while letting
+   the form shell and fields use the full available mobile width. */
+.repair-intake-section {
+  min-width: 0;
+  border-block: 1px solid var(--machined-border);
+  background: var(--alloy-base);
+  padding: clamp(3rem, 6vw, 5rem) clamp(1.5rem, 5vw, 3rem);
+}
+
+.repair-intake-shell {
+  width: min(900px, 100%);
+  min-width: 0;
+  margin-inline: auto;
+}
+
+.repair-intake-intro {
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+  text-align: center;
+}
+
+.repair-intake-eyebrow {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 5px 16px;
+  border: 1px solid rgba(34, 85, 238, .2);
+  border-radius: 99px;
+  background: rgba(34, 85, 238, .08);
+  color: var(--primary-600);
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.repair-intake-title {
+  margin: 0 0 12px;
+  color: #0f172a;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 900;
+  letter-spacing: -.025em;
+  line-height: 1.08;
+  text-wrap: balance;
+}
+
+.repair-intake-description {
+  max-width: 66ch;
+  margin: 0 auto;
+  color: rgba(15, 23, 42, .55);
+  font-size: clamp(.875rem, 2vw, 1rem);
+  line-height: 1.6;
+  text-wrap: pretty;
+}
+
+.repair-intake-form-card {
+  width: 100%;
+  min-width: 0;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
+  border: 1px solid var(--machined-border);
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 24px rgba(15, 23, 42, .06);
+  scroll-margin-top: calc(var(--header-height, 0px) + 1rem);
+}
+
+.repair-intake-form-card--submitted {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+@media (max-width: 640px) {
+  .repair-intake-section {
+    padding: clamp(2.25rem, 8vw, 3rem) clamp(1rem, 5vw, 1.5rem);
+  }
+
+  .repair-intake-intro { margin-bottom: 1.5rem; }
+
+  .repair-intake-title {
+    font-size: clamp(1.65rem, 7vw, 2rem);
+    line-height: 1.12;
+  }
+
+  .repair-intake-form-card {
+    padding: clamp(1rem, 5vw, 1.35rem);
+    border-radius: 14px;
+  }
+}
+
 /* Responsive behavior ------------------------------------------------------ */
 @media (max-width: 1024px) {
   .page-wrapper > section:first-of-type:has(~ .repairs-workflow-section) {

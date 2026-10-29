@@ -196,6 +196,70 @@
   margin-top: .62rem;
 }
 
+.dtb-pdp-description-content--rich .dtb-pdp-description-paragraph--continued {
+  margin-top: .82rem;
+  padding-top: .68rem;
+  background: linear-gradient(90deg, rgba(34, 85, 238, .2), rgba(220, 227, 237, .62) 8rem, transparent 100%) left top / min(100%, 18rem) 1px no-repeat;
+}
+
+.dtb-pdp-parts-guide {
+  display: grid;
+  width: 100%;
+  min-width: 0;
+  justify-items: start;
+  gap: .38rem;
+}
+
+.dtb-pdp-parts-guide__copy {
+  max-width: 62ch;
+  margin: 0;
+  color: #30415b;
+  font-size: inherit;
+  line-height: 1.55;
+}
+
+.dtb-pdp-parts-guide__copy strong {
+  font-weight: 650;
+}
+
+.dtb-pdp-parts-guide__link {
+  display: inline-flex;
+  min-width: 0;
+  min-height: 44px;
+  align-items: center;
+  justify-content: flex-start;
+  gap: .45rem;
+  padding: .15rem .1rem;
+  border-radius: 4px;
+  color: var(--dtb-primary, #2255ee);
+  font-size: .88rem;
+  font-weight: 750;
+  line-height: 1.3;
+  text-decoration: none;
+  overflow-wrap: anywhere;
+  transition: color 150ms ease;
+}
+
+.dtb-pdp-parts-guide__link svg {
+  flex: 0 0 auto;
+  transition: transform 150ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .dtb-pdp-parts-guide__link:hover {
+    color: var(--dtb-primary-strong, #174ce1);
+  }
+
+  .dtb-pdp-parts-guide__link:hover svg {
+    transform: translateX(2px);
+  }
+}
+
+.dtb-pdp-parts-guide__link:focus-visible {
+  outline: 2px solid rgba(34, 85, 238, .5);
+  outline-offset: 2px;
+}
+
 .dtb-pdp-description-lead,
 .dtb-pdp-description-content--rich .dtb-pdp-description-card > p:first-child {
   color: #25344d;

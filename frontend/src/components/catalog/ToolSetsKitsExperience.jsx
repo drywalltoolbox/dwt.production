@@ -1,5 +1,6 @@
 import { ArrowRight, ShoppingCart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Breadcrumb from '../shared/Breadcrumb.jsx';
 import { getBrandLogo } from '../../utils/brandAssets.js';
 import ProductRating from '../product/ProductRating.jsx';
 import ToolSetComparison from './ToolSetComparison.jsx';
@@ -23,7 +24,7 @@ function productPrice(product) {
   return Number.isFinite(amount) && amount > 0 ? amount : null;
 }
 
-export default function ToolSetsKitsExperience({ category, breadcrumbs = [], products = [], brands = [], brand = '', onAddToCart, onOpenProduct }) {
+export default function ToolSetsKitsExperience({ category, breadcrumbs = [], products = [], brands = [], brand = '', brandLogo = '', brandLabel = '', onAddToCart, onOpenProduct }) {
   const featured = products.slice(0, 4);
   const trustedBrands = brands
     .map((brand) => ({ name: brand.name || brand.label, src: getBrandLogo(brand.name || brand.label) || brand.logo, to: `/products/brands/${brand.slug}` }))
@@ -31,15 +32,11 @@ export default function ToolSetsKitsExperience({ category, breadcrumbs = [], pro
     .slice(0, 7);
   return (
     <section className="dtb-toolsets-page" aria-label="Tool Sets and Kits">
+      {brandLogo && <div className="dtb-toolsets-brand-context"><img src={brandLogo} alt={`${brandLabel || brand || 'Manufacturer'} logo`} /></div>}
       <div className="dtb-toolsets-hero">
-        <div className="dtb-toolsets-hero__crumbs">
-          {breadcrumbs.map((crumb, index) => (
-            <span key={crumb.path || crumb.label}>
-              {index ? <b aria-hidden="true">›</b> : null}
-              {crumb.path && index < breadcrumbs.length - 1 ? <Link to={crumb.path}>{crumb.label}</Link> : <strong>{crumb.label}</strong>}
-            </span>
-          ))}
-        </div>
+      <div className="dtb-toolsets-hero__crumbs">
+        <Breadcrumb items={breadcrumbs} tone="inverse" className="dtb-breadcrumb-bar--compact" />
+      </div>
         <div className="dtb-toolsets-hero__copy">
           <p>Taping &amp; Finishing Tools</p>
           <h1>{category.label}</h1>

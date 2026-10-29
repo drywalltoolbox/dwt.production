@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown } from 'lucide-react';
 
 /** Full-page PDP information only; product, variation and cart state stay upstream. */
 export default function ProductInformationAccordion({ description, features, specs, partsUrl, specificationsRequest = 0 }) {
@@ -83,7 +83,15 @@ export default function ProductInformationAccordion({ description, features, spe
     { key: 'features', title: 'Features', content: features || <p>Product features are not separately listed.</p> },
     { key: 'specs', title: 'Specifications', content: specs || <p>No additional specifications are listed.</p> },
     { key: 'parts', title: 'Parts & Schematics', content: (
-      <p>Use the model diagram and part number to identify a replacement, then confirm fit before ordering. <Link to={partsUrl}>Browse parts and schematics</Link>.</p>
+      <div className="dtb-pdp-parts-guide">
+        <p className="dtb-pdp-parts-guide__copy">
+          <strong>Choose your tool model in our interactive schematic, find the part number, then confirm fit before ordering.</strong>
+        </p>
+        <Link to={partsUrl} className="dtb-pdp-parts-guide__link">
+          Explore schematics &amp; parts
+          <ArrowRight size={16} strokeWidth={2.1} aria-hidden="true" />
+        </Link>
+      </div>
     ) },
     { key: 'shipping', title: 'Shipping & Returns', content: (
       <p>Shipping charges are calculated at checkout. <Link to="/shipping-policy">Shipping policy</Link> · <Link to="/return-policy">Returns policy</Link></p>
