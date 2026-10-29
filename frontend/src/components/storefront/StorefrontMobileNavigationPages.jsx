@@ -1,6 +1,27 @@
 import { useEffect, useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Package } from 'lucide-react';
 import '../../styles/storefront-mobile-navigation-pages.css';
+
+function CategoryThumbnail({ src, label }) {
+  const [failed, setFailed] = useState(false);
+  const showImage = Boolean(src) && !failed;
+
+  return (
+    <span className="dtb-menu-pages__thumbnail" aria-hidden="true">
+      {showImage ? (
+        <img
+          src={src}
+          alt=""
+          loading="lazy"
+          decoding="async"
+          onError={() => setFailed(true)}
+        />
+      ) : (
+        <Package className="dtb-menu-pages__thumbnail-fallback" size={23} strokeWidth={1.65} />
+      )}
+    </span>
+  );
+}
 
 /**
  * In-drawer navigation: category selections push a new menu page instead of
@@ -58,14 +79,19 @@ export default function StorefrontMobileNavigationPages({ isOpen, sections, link
           {rows.map((item, index) => {
             const hasChildren = Array.isArray(item.items) && item.items.length > 0;
             const label = item.label || item.name;
+            const isParentCategory = stack.length === 1 && current?.id === 'products';
+            const showThumbnail = isParentCategory || Boolean(item.thumbnail);
             return (
               <button
                 type="button"
                 key={item.id || item.slug || item.to || `${label}-${index}`}
-                className="dtb-menu-pages__row"
+                className={`dtb-menu-pages__row${showThumbnail ? ' dtb-menu-pages__row--with-image' : ''}`}
                 onClick={() => hasChildren ? openPage({ id: item.id || item.slug || label, title: label, items: item.items, to: item.to }) : goTo(item.to)}
               >
-                <span>{label}</span>
+                {showThumbnail ? (
+                  <CategoryThumbnail key={item.thumbnail || item.slug || label} src={item.thumbnail} label={label} />
+                ) : null}
+                <span className="dtb-menu-pages__row-label">{label}</span>
                 {hasChildren && <ChevronRight size={19} strokeWidth={2} aria-hidden="true" />}
               </button>
             );

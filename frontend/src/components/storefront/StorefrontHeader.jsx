@@ -709,8 +709,10 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
           sections={[
             { id: 'products', label: 'Shop by Tool Type', to: '/products', items: drawerProductNavigation.map((item) => ({
               ...item, label: item.label || item.name, to: item.to || buildCategoryPageUrl(item.slug),
+              thumbnail: resolveCategoryThumbnail(item),
               items: (item.children || []).map((child) => ({
                 ...child, label: child.label || child.name, to: child.to || buildCategoryPageUrl(child.slug),
+                thumbnail: resolveCategoryThumbnail(child),
               })),
             })) },
             { id: 'brands', label: 'Shop by Brand', to: '/products/brands',
