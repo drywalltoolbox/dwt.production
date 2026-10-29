@@ -62,10 +62,15 @@ export default function StorefrontMobileNavigationPages({ isOpen, sections, link
               <button
                 type="button"
                 key={item.id || item.slug || item.to || `${label}-${index}`}
-                className="dtb-menu-pages__row"
+                className={`dtb-menu-pages__row${item.thumbnail ? ' dtb-menu-pages__row--with-image' : ''}`}
                 onClick={() => hasChildren ? openPage({ id: item.id || item.slug || label, title: label, items: item.items, to: item.to }) : goTo(item.to)}
               >
-                <span>{label}</span>
+                {item.thumbnail ? (
+                  <span className="dtb-menu-pages__thumbnail" aria-hidden="true">
+                    <img src={item.thumbnail} alt="" loading="lazy" decoding="async" onError={(event) => { event.currentTarget.parentElement.style.display = 'none'; }} />
+                  </span>
+                ) : null}
+                <span className="dtb-menu-pages__row-label">{label}</span>
                 {hasChildren && <ChevronRight size={19} strokeWidth={2} aria-hidden="true" />}
               </button>
             );
