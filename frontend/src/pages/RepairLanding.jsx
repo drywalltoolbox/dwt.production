@@ -13,6 +13,7 @@ import '../styles/repair-hero-desktop-promises.css';
 import '../styles/repair-service-cards-mobile.css';
 import '../styles/repair-hero-shared.css';
 import '../styles/repair-service-paths.css';
+import '../styles/repair-landing-hero-parity.css';
 
 const PROCESS_STEPS = [
   { title: 'Identify the tool', description: 'Tell us the brand, tool family, model, symptoms, and service goal. Photos can be added during intake.' },
@@ -75,7 +76,7 @@ export default function RepairLanding() {
     .slice(0, 8);
 
   return (
-    <div className="repair-landing page-wrapper">
+    <div className="repair-landing repair-landing--services page-wrapper">
       <SEOHead title="Expert Repair Services | Drywall Toolbox" description={REPAIRS_CAMPAIGN.description} canonical="/repairs" />
       <RepairHero campaign={REPAIRS_CAMPAIGN} />
 
