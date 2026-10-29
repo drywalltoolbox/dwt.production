@@ -1,13 +1,12 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { startTransition, useState, useEffect, useRef, useMemo, useCallback } from 'react';
-import { m as Motion, useReducedMotion } from 'framer-motion';
-import { collapseTransition, reducedTransition } from '../../motion/dtbMotion.js';
 import { useCart } from '../../context/CartContext';
 import { useAuthContext } from '../../auth/AuthContext.js';
-import { ShoppingCart, X, ChevronRight, User, MessageSquareText, Truck, Phone } from 'lucide-react';
+import { ShoppingCart, X, User, MessageSquareText, Truck, Phone } from 'lucide-react';
 import { DTB_LOGO_WHITE_URL } from '../../utils/dtbLogoAssets.js';
 import StorefrontSearchOverlay from './StorefrontSearchOverlay';
 import StorefrontMobileDrawer from './StorefrontMobileDrawer';
+import StorefrontMobileNavigationPages from './StorefrontMobileNavigationPages.jsx';
 import AccountHubSheet from '../account/AccountHubSheet.jsx';
 import { searchProducts } from '../../services/catalog';
 import StorefrontSearchDock from './StorefrontSearchDock';
@@ -44,17 +43,6 @@ const DRAWER_NAV_ROWS = [
   { to: '/contact', label: 'Contact' },
 ];
 
-function MobileDrawerChevron({ expanded = false, className = '' }) {
-  return (
-    <ChevronRight
-      size={18}
-      strokeWidth={2.35}
-      className={`storefront-mobile-drawer__chevron${expanded ? ' is-expanded' : ''}${className ? ` ${className}` : ''}`}
-      aria-hidden="true"
-    />
-  );
-}
-
 function MobileHamburgerToggle({ checked, onCheckedChange }) {
   const label = checked ? 'Close menu' : 'Open menu';
 
@@ -78,55 +66,6 @@ function MobileHamburgerToggle({ checked, onCheckedChange }) {
   );
 }
 
-function MobileTaxonomyGroup({ item, itemKey, expanded, onToggle, onNavigate }) {
-  const children = Array.isArray(item.children) ? item.children : [];
-  const childrenId = `storefront-mobile-taxonomy-${String(itemKey).replace(/[^a-z0-9_-]+/gi, '-')}`;
-
-  return (
-    <div
-      className={`storefront-mobile-drawer__taxonomy-group${expanded ? ' is-expanded' : ''}`}
-      role="group"
-      aria-label={item.label}
-    >
-      <div className="storefront-mobile-drawer__taxonomy-heading-row">
-        <button
-          type="button"
-          className="storefront-mobile-drawer__taxonomy-heading"
-          onClick={() => onNavigate(item)}
-        >
-          {item.label}
-        </button>
-        <button
-          type="button"
-          className="storefront-mobile-drawer__taxonomy-toggle"
-          onClick={onToggle}
-          aria-label={`${expanded ? 'Collapse' : 'Expand'} ${String(item.label || 'category').toLowerCase()}`}
-          aria-expanded={expanded}
-          aria-controls={childrenId}
-        >
-          <MobileDrawerChevron expanded={expanded} />
-        </button>
-      </div>
-      <div
-        id={childrenId}
-        className={`storefront-mobile-drawer__taxonomy-children${expanded ? ' is-expanded' : ''}`}
-        inert={!expanded}
-      >
-        {children.map((child) => (
-          <button
-            key={`${itemKey}-${child.slug || child.to || child.label}`}
-            type="button"
-            className="storefront-mobile-drawer__taxonomy-child"
-            onClick={() => onNavigate(child)}
-          >
-            {child.label}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 const buildProductsBrandRoute = (slug) => `/products/brands/${slug}`;
 const buildPartsBrandRoute = (slug) => `/parts?brand=${encodeURIComponent(slug)}`;
 const buildSchematicsBrandRoute = (slug) => `/schematics?brand=${encodeURIComponent(slug)}`;
@@ -140,18 +79,11 @@ function toSearchProduct(product) {
 }
 
 export default function Header({ onCartToggle, onMobileMenuOpen }) {
-  const reduceMotion = useReducedMotion();
   const location = useLocation();
   const navigate = useNavigate();
   const { getCartCount } = useCart();
   const { user, isAuthenticated, isLoading, login, register, logout } = useAuthContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [productsExpanded, setProductsExpanded] = useState(false);
-  const [expandedProductGroupKey, setExpandedProductGroupKey] = useState(null);
-  const [brandsExpanded, setBrandsExpanded] = useState(false);
-  const [partsExpanded, setPartsExpanded] = useState(false);
-  const [repairsExpanded, setRepairsExpanded] = useState(false);
-  const [schematicsExpanded, setSchematicsExpanded] = useState(false);
   const [desktopNavOpen, setDesktopNavOpen] = useState(null);
   const [, setAccountDropdownOpen] = useState(false);
   const [accountHubOpen, setAccountHubOpen] = useState(false);
@@ -182,7 +114,6 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     catch { return false; }
   });
 
-  const isActive = (path) => location.pathname === path;
   const drawerBrands = useMemo(() => mapCatalogBrands(facets?.brands), [facets]);
   const partsBrands = useMemo(() => mapCatalogBrands(partsFacets?.brands), [partsFacets]);
   const partsCategories = useMemo(() => (Array.isArray(partsFacets?.categories) ? partsFacets.categories : [])
@@ -410,43 +341,25 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     onCartToggle?.();
   }, [closeSearchOverlay, onCartToggle]);
 
-  const resetDrawerExpansions = useCallback(() => {
-    setProductsExpanded(false);
-    setExpandedProductGroupKey(null);
-    setBrandsExpanded(false);
-    setPartsExpanded(false);
-    setRepairsExpanded(false);
-    setSchematicsExpanded(false);
-  }, []);
-
-  useEffect(() => {
-    if (mobileMenuOpen) return;
-    let cancelled = false;
-    window.queueMicrotask(() => {
-      if (!cancelled) resetDrawerExpansions();
-    });
-    return () => { cancelled = true; };
-  }, [mobileMenuOpen, resetDrawerExpansions]);
-
   useEffect(() => {
     if (prevPathnameRef.current === location.pathname) return;
     prevPathnameRef.current = location.pathname;
-    const t = setTimeout(() => { closeMenus(); closeSearchOverlay(); resetDrawerExpansions(); }, 0);
+    const t = setTimeout(() => { closeMenus(); closeSearchOverlay(); }, 0);
     return () => clearTimeout(t);
-  }, [location.pathname, closeSearchOverlay, resetDrawerExpansions]);
+  }, [location.pathname, closeSearchOverlay]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         closeMenus();
         closeSearchOverlay();
-        resetDrawerExpansions();
+       
         desktopSearchInputRef.current?.blur();
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [closeSearchOverlay, resetDrawerExpansions]);
+  }, [closeSearchOverlay]);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 641px) and (max-width: 1024px)');
@@ -597,24 +510,13 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
   };
 
   const navigateShopDestination = useCallback((to, { closeMobile = false } = {}) => {
-    resetDrawerExpansions();
+   
     setDesktopNavOpen(null);
     if (closeMobile) setMobileMenuOpen(false);
     navigate(to);
-  }, [navigate, resetDrawerExpansions]);
+  }, [navigate]);
 
   const closeDrawerAndNavigate = (to) => navigateShopDestination(to, { closeMobile: true });
-
-  const handleDrawerBrandNavigate = (slug) => closeDrawerAndNavigate(buildProductsBrandRoute(slug));
-  const handleDrawerPartsBrandNavigate = (slug) => closeDrawerAndNavigate(buildPartsBrandRoute(slug));
-  const handleDrawerSchematicsBrandNavigate = (slug) => closeDrawerAndNavigate(buildSchematicsBrandRoute(slug));
-  const handleDrawerBrandsLanding = () => closeDrawerAndNavigate('/products/brands');
-  const handleDrawerPartsLanding = () => closeDrawerAndNavigate('/parts');
-  const handleDrawerRepairsLanding = () => closeDrawerAndNavigate('/repairs');
-  const handleDrawerRepairPackageNavigate = (repairPackage) => closeDrawerAndNavigate(repairPackage.to);
-  const handleDrawerSchematicsLanding = () => closeDrawerAndNavigate('/schematics');
-  const handleDrawerProductsLanding = () => closeDrawerAndNavigate('/products');
-  const handleDrawerProductCategoryNavigate = (to) => closeDrawerAndNavigate(to);
 
   const handleMobileViewAll = useCallback(() => {
     const q = mobileSearchQuery.trim();
@@ -635,73 +537,6 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     }
     return item.activePrefixes?.some((prefix) => location.pathname.startsWith(prefix)) || false;
   }, [location.pathname, location.search]);
-
-  const renderDrawerListSection = ({ id, label, expanded, onToggle, onLanding, items, onItemNavigate }) => (
-    <div className="storefront-mobile-drawer__row-wrap" key={id}>
-      <div className="storefront-mobile-drawer__row">
-        <button type="button" className="storefront-mobile-drawer__row-label" onClick={onLanding}>
-          {label}
-        </button>
-        <button
-          type="button"
-          className="storefront-mobile-drawer__row-toggle"
-          onClick={onToggle}
-          aria-label={`${expanded ? 'Collapse' : 'Expand'} ${label.toLowerCase()}`}
-          aria-expanded={expanded}
-          aria-controls={`storefront-mobile-drawer-${id}`}
-        >
-          <MobileDrawerChevron expanded={expanded} />
-        </button>
-      </div>
-      <Motion.div
-        id={`storefront-mobile-drawer-${id}`}
-        className={`storefront-mobile-drawer__brands${expanded ? ' is-expanded' : ''}`}
-        inert={!expanded}
-        initial={false}
-        animate={{ height: expanded ? 'auto' : 0, opacity: expanded ? 1 : 0 }}
-        transition={reduceMotion ? reducedTransition : collapseTransition}
-      >
-        {items.map((item) => {
-          const children = Array.isArray(item.children) ? item.children : [];
-          const itemKey = `${id}-${item.slug || item.to || item.name || item.label}`;
-
-          if (children.length === 0) {
-            return (
-              <button
-                key={itemKey}
-                type="button"
-                className="storefront-mobile-drawer__brand-link"
-                onClick={() => onItemNavigate(item)}
-              >
-                {item.name || item.label}
-              </button>
-            );
-          }
-
-          return (
-            <MobileTaxonomyGroup
-              key={itemKey}
-              item={item}
-              itemKey={itemKey}
-              expanded={expandedProductGroupKey === itemKey}
-              onToggle={() => setExpandedProductGroupKey((current) => (current === itemKey ? null : itemKey))}
-              onNavigate={onItemNavigate}
-            />
-          );
-        })}
-      </Motion.div>
-    </div>
-  );
-
-  const renderDrawerBrandSection = ({ id, label, expanded, onToggle, onLanding, items = drawerBrands, onBrandNavigate }) => renderDrawerListSection({
-    id,
-    label,
-    expanded,
-    onToggle,
-    onLanding,
-    items,
-    onItemNavigate: (brand) => onBrandNavigate(brand.slug),
-  });
 
   return (
     <>
@@ -867,66 +702,27 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       />
 
       <StorefrontMobileDrawer isOpen={mobileMenuOpen} onClose={closeMobileMenu}>
-        <nav className="storefront-mobile-drawer__nav" aria-label="Mobile navigation">
-          {renderDrawerListSection({
-            id: 'products',
-            label: 'Shop',
-            expanded: productsExpanded,
-            onToggle: () => {
-              if (productsExpanded) setExpandedProductGroupKey(null);
-              setProductsExpanded((open) => !open);
-            },
-            onLanding: handleDrawerProductsLanding,
-            items: drawerProductNavigation,
-            onItemNavigate: (category) => handleDrawerProductCategoryNavigate(category.to),
-          })}
-          {renderDrawerBrandSection({
-            id: 'brands',
-            label: 'Brands',
-            expanded: brandsExpanded,
-            onToggle: () => setBrandsExpanded((open) => !open),
-            onLanding: handleDrawerBrandsLanding,
-            items: drawerBrands,
-            onBrandNavigate: handleDrawerBrandNavigate,
-          })}
-          {renderDrawerBrandSection({
-            id: 'parts',
-            label: 'Parts',
-            expanded: partsExpanded,
-            onToggle: () => setPartsExpanded((open) => !open),
-            onLanding: handleDrawerPartsLanding,
-            items: partsBrands,
-            onBrandNavigate: handleDrawerPartsBrandNavigate,
-          })}
-          {renderDrawerListSection({
-            id: 'repairs',
-            label: 'Repair Services',
-            expanded: repairsExpanded,
-            onToggle: () => setRepairsExpanded((open) => !open),
-            onLanding: handleDrawerRepairsLanding,
-            items: drawerRepairPackages,
-            onItemNavigate: handleDrawerRepairPackageNavigate,
-          })}
-          {renderDrawerBrandSection({
-            id: 'schematics',
-            label: 'Schematics',
-            expanded: schematicsExpanded,
-            onToggle: () => setSchematicsExpanded((open) => !open),
-            onLanding: handleDrawerSchematicsLanding,
-            items: SCHEMATIC_BRANDS,
-            onBrandNavigate: handleDrawerSchematicsBrandNavigate,
-          })}
-          {DRAWER_NAV_ROWS.map(({ to, label }) => (
-            <Link
-              key={to}
-              to={to}
-              className={`storefront-mobile-drawer__row-link${isActive(to) ? ' is-active' : ''}`}
-              onClick={closeMobileMenu}
-            >
-              {label}
-            </Link>
-          ))}
-        </nav>
+        <StorefrontMobileNavigationPages
+          isOpen={mobileMenuOpen}
+          onNavigate={closeDrawerAndNavigate}
+          links={DRAWER_NAV_ROWS}
+          sections={[
+            { id: 'products', label: 'Shop by Tool Type', to: '/products', items: drawerProductNavigation.map((item) => ({
+              ...item, label: item.label || item.name, to: item.to || buildCategoryPageUrl(item.slug),
+              items: (item.children || []).map((child) => ({
+                ...child, label: child.label || child.name, to: child.to || buildCategoryPageUrl(child.slug),
+              })),
+            })) },
+            { id: 'brands', label: 'Shop by Brand', to: '/products/brands',
+              items: drawerBrands.map(({ name, slug }) => ({ label: name, to: buildProductsBrandRoute(slug) })) },
+            { id: 'parts', label: 'Replacement Parts', to: '/parts',
+              items: partsBrands.map(({ name, slug }) => ({ label: name, to: buildPartsBrandRoute(slug) })) },
+            { id: 'repairs', label: 'Repair Services', to: '/repairs',
+              items: drawerRepairPackages.map(({ label, to }) => ({ label, to })) },
+            { id: 'schematics', label: 'Schematics', to: '/schematics',
+              items: SCHEMATIC_BRANDS.map(({ name, slug }) => ({ label: name, to: buildSchematicsBrandRoute(slug) })) },
+          ]}
+        />
       </StorefrontMobileDrawer>
 
       <StorefrontSearchOverlay

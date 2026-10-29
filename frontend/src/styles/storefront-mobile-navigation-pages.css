@@ -1,0 +1,18 @@
+/* Mobile drawer page stack: preserves DTB navy surface and blue focus accents. */
+.storefront-mobile-drawer__panel:has(.dtb-menu-pages) { overflow: hidden; }
+.dtb-menu-pages { display:flex;flex-direction:column;flex:1;min-height:0;color:#f8fafc; }
+.dtb-menu-pages__heading { flex:none;padding:22px clamp(20px,5vw,32px) 12px;border-bottom:1px solid rgba(255,255,255,.1); }
+.dtb-menu-pages__eyebrow { display:block;color:#7ba3ff;font-size:11px;font-weight:800;letter-spacing:.14em;margin-bottom:8px; }
+.dtb-menu-pages__title { margin:0;font-size:clamp(24px,6vw,30px);font-weight:760;line-height:1.14;letter-spacing:-.035em;color:#fff;outline:none; }
+.dtb-menu-pages__back { display:inline-flex;align-items:center;gap:5px;min-height:44px;margin:-11px 0 5px -8px;padding:0 8px;border:0;background:transparent;color:#adc6ff;font-size:14px;font-weight:700; }
+.dtb-menu-pages__all { display:inline-flex;align-items:center;gap:4px;min-height:44px;margin-top:7px;padding:0;border:0;background:none;color:#a4bdff;font-size:13px;font-weight:750; }
+.dtb-menu-pages__scroll { flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch; }
+.dtb-menu-pages__list { padding:4px clamp(20px,5vw,32px) max(22px,env(safe-area-inset-bottom));animation:dtb-menu-page-enter 260ms cubic-bezier(.22,1,.36,1) both; }
+.dtb-menu-pages[data-direction="back"] .dtb-menu-pages__list { animation-name:dtb-menu-page-back; }
+.dtb-menu-pages__row { display:flex;align-items:center;justify-content:space-between;gap:18px;width:100%;min-height:58px;padding:11px 0;text-align:left;border:0;border-bottom:1px solid rgba(255,255,255,.085);background:transparent;color:#f4f7ff;font-size:16px;font-weight:650;line-height:1.35;cursor:pointer; }
+.dtb-menu-pages__row svg { flex:none;color:#86abff; }
+.dtb-menu-pages__row--utility { color:#c2d1ec;font-size:14px; }
+.dtb-menu-pages__row:focus-visible,.dtb-menu-pages__back:focus-visible,.dtb-menu-pages__all:focus-visible { outline:2px solid #7da4ff;outline-offset:2px;border-radius:4px; }
+@keyframes dtb-menu-page-enter { from { opacity:.65;transform:translateX(18px); } to { opacity:1;transform:translateX(0); } }
+@keyframes dtb-menu-page-back { from { opacity:.65;transform:translateX(-18px); } to { opacity:1;transform:translateX(0); } }
+@media (prefers-reduced-motion: reduce) { .dtb-menu-pages__list {animation:none !important;} }
