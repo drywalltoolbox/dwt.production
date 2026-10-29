@@ -47,14 +47,6 @@ wp_enqueue_style(
 	$desktop_style_ver,
 	'(min-width: 1024px)'
 );
-$unified_style_path = get_template_directory() . '/assets/checkout/checkout-unified.css';
-$unified_style_ver  = file_exists( $unified_style_path ) ? (string) filemtime( $unified_style_path ) : DTB_VERSION;
-wp_enqueue_style(
-	'dtb-checkout-unified',
-	get_template_directory_uri() . '/assets/checkout/checkout-unified.css',
-	[ 'dtb-checkout-mobile-refined', 'dtb-checkout-desktop' ],
-	$unified_style_ver
-);
 ?><!doctype html>
 <html <?php language_attributes(); ?>>
 <head>
