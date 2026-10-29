@@ -14,6 +14,7 @@
 .dtb-menu-pages__row-label { flex:1;min-width:0;overflow-wrap:break-word; }
 .dtb-menu-pages__thumbnail { display:grid;place-items:center;flex:0 0 52px;width:52px;height:52px;overflow:hidden;border-radius:8px;background:#f4f6fa; }
 .dtb-menu-pages__thumbnail img { display:block;width:100%;height:100%;object-fit:contain; }
+.dtb-menu-pages__thumbnail-fallback { color:#2255ee; flex:none; }
 .dtb-menu-pages__row:active { background-color:rgba(82,130,238,.11); }
 @media (hover:hover) and (pointer:fine) { .dtb-menu-pages__row:hover { background-color:rgba(82,130,238,.07); } }
 .dtb-menu-pages__row svg { flex:none;color:#86abff; }
