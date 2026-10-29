@@ -55,12 +55,12 @@
  }
  body.woocommerce-checkout #primary {width:100%;max-width:100%;padding-bottom:20px;overflow-x:clip;}
  body.woocommerce-checkout #primary .wp-block-woocommerce-checkout {
-  display:block;width:auto;max-width:none;margin:0 12px 24px;
+  display:block;width:100%;max-width:none;margin:0;padding:0 20px 24px;
   background:transparent;border:0;border-radius:0;box-shadow:none;
  }
  body.woocommerce-checkout .wc-block-components-sidebar-layout,
  body.woocommerce-checkout .wc-block-checkout {
-  display:flex;flex-flow:column nowrap;gap:12px;
+  display:flex;flex-flow:column nowrap;gap:0;
   width:100%;max-width:100%;margin:0;background:transparent;
  }
  /* Sidebar remains Woo's own inline summary, ordered ahead of the form. */
@@ -76,7 +76,7 @@
  body.woocommerce-checkout .wc-block-components-sidebar-layout > .wc-block-checkout__main,
  body.woocommerce-checkout .wc-block-components-sidebar-layout > .wc-block-components-sidebar-layout__main {
   order:1;position:static;min-width:0;width:100% !important;
-  margin:0 !important;padding:7px 16px 20px !important;
+  margin:0 !important;padding:7px 0 20px !important;
   background:#fff;border:0;
   border-radius:0;box-shadow:none;
  }
@@ -93,7 +93,7 @@
   margin:0 !important;
  }
  body.woocommerce-checkout .wc-block-components-checkout-order-summary {
-  padding:0 15px 6px !important;
+  padding:0 0 6px !important;
   background:#fff !important;
   border:0 !important;
   border-radius:0 !important;
@@ -229,7 +229,7 @@
  body.woocommerce-checkout .dtb-checkout__topbar-inner {grid-template-columns:minmax(0,1fr) 130px minmax(0,1fr);}
  body.woocommerce-checkout .dtb-checkout__brand {max-width:130px;}
  body.woocommerce-checkout .dtb-checkout__back-link::after {content:'';}
- body.woocommerce-checkout #primary .wp-block-woocommerce-checkout {margin-inline:8px;}
+ body.woocommerce-checkout #primary .wp-block-woocommerce-checkout {margin-inline:0;padding-inline:16px;}
  body.woocommerce-checkout .wc-block-components-sidebar-layout > .wc-block-checkout__main {padding-inline:12px !important;}
 }
 @media (prefers-reduced-motion:reduce) {
