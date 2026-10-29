@@ -114,7 +114,6 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     catch { return false; }
   });
 
-  const isActive = (path) => location.pathname === path;
   const drawerBrands = useMemo(() => mapCatalogBrands(facets?.brands), [facets]);
   const partsBrands = useMemo(() => mapCatalogBrands(partsFacets?.brands), [partsFacets]);
   const partsCategories = useMemo(() => (Array.isArray(partsFacets?.categories) ? partsFacets.categories : [])
