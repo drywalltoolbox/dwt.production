@@ -15,6 +15,7 @@ This directory is organized by domain. Every doc here has been checked against t
 | `operations/` | Ops runbooks: cache tools, WooCommerce HTML email architecture. |
 | `seo/` | Sitemap behavior. See also the `dtb-seo` skill for the broader SEO pipeline. |
 | `plans/` | Forward-looking roadmaps (not "what shipped" — check the doc's own status before treating it as current). |
+| `marketing/` | DTB marketing intelligence knowledge base and dated industry reference. See `marketing/knowledge-base/README.md`; it is research context, not live system truth. |
 | `reference/` | Lookup data and reference material, split into `business-cards/`, `email-mockups/`, `data/` (CSVs), `market-research/` — see `reference/README.md`. Not verified against code (mostly non-code data). |
 | `company/` | Business/legal documents (e.g. operating agreement). Not an engineering doc; out of scope for code-verification audits. |
 | `pricing_engine/` | Pricing import templates and generated backfill/reconciliation reports. Operational data, not narrative docs. |
