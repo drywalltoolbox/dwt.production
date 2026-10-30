@@ -7,6 +7,8 @@
 **Source snapshot:** 52 original SKILL.md files; 837,417 bytes before packaging  
 **DTB disposition:** Include all 52 as pinned, attributed reference material in the new private marketing-specialist plugin. Keep upstream skills out of the plugin's top-level skill registry to prevent duplicate automatic triggers and policy collisions.
 
+**New private plugin:** [DTB Marketing Specialist](https://chatgpt.com/plugins/plugins_6ae446dcdbc481918c456fd0b513cb7c), version 0.1.3, USER scope, PRIVATE. The former `drywall-toolbox-marketing-director` plugin was not installed; its old skill surface was replaced with a retirement notice and link to the new plugin (version 2.0.0). The Creator does not expose a plugin-delete operation, so the old private record remains as a retired stub.
+
 ## Scope and evidence
 
 The source checkout was cloned from the canonical GitHub repository. Its current source at the pinned commit identifies Corey Haines as maintainer, documents MIT licensing, describes Agent Skills installation and versioning, and contains 52 skill directories. The source checkout also has CLIs, integrations, scripts, and other materials. The DTB plugin snapshot contains only the 52 skills/<slug>/SKILL.md files and the MIT license; it does not package or execute the upstream CLIs, MCP guides, or scripts.
