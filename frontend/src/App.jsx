@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, useLocation, useNavigationType, Navigate, useNavigate } from 'react-router-dom';
-import { useState, useEffect, useLayoutEffect, Suspense, useCallback, useRef } from 'react';
+import { useState, useEffect, useLayoutEffect, Suspense, lazy, useCallback, useRef } from 'react';
 import { LazyMotion } from 'framer-motion';
 import loadMotionFeatures from './motion/asyncFeatures.js';
 import PageTransition from './components/routing/PageTransition';
@@ -19,14 +19,15 @@ import Header from './components/shell/Header';
 import Footer from './components/shell/Footer';
 import CartSidebar from './components/shell/CartSidebar';
 import ProtectedRoute from './components/routing/ProtectedRoute';
-import HomepageSignupCTA from './components/cta/HomepageSignupCTA.jsx';
 import SmartBackButton from './components/navigation/SmartBackButton.jsx';
 import { isRewardsEnabled } from './utils/featureFlags.js';
+import { getSignupOffer } from './api/signupOffer.js';
 import { initializeWebpackPublicPath } from './setWebpackPublicPath.js';
 import Home from './pages/Home.jsx';
 
 const HOMEPAGE_SIGNUP_CTA_SEEN_KEY = 'dtb:homepage-signup-cta-seen:v1';
 const HOMEPAGE_SIGNUP_CTA_DELAY_MS = 900;
+const HomepageSignupCTA = lazy(() => import('./components/cta/HomepageSignupCTA.jsx'));
 
 initializeWebpackPublicPath();
 
@@ -408,17 +409,28 @@ function AppShell({ cartOpen, toggleCart, closeCart }) {
 function HomepageSignupCtaController() {
   const navigate = useNavigate();
   const [showSignupCta, setShowSignupCta] = useState(false);
+  const [signupOffer, setSignupOffer] = useState(null);
 
   useEffect(() => {
     if (getLocalStorageFlag(HOMEPAGE_SIGNUP_CTA_SEEN_KEY)) {
       return undefined;
     }
 
-    const timer = setTimeout(() => {
-      setShowSignupCta(true);
-    }, HOMEPAGE_SIGNUP_CTA_DELAY_MS);
+    let mounted = true;
+    let timer;
 
-    return () => clearTimeout(timer);
+    getSignupOffer().then((offer) => {
+      if (!mounted || offer?.active !== true || offer?.campaign_id !== 'welcome-10-first-order') return;
+      setSignupOffer(offer);
+      timer = setTimeout(() => setShowSignupCta(true), HOMEPAGE_SIGNUP_CTA_DELAY_MS);
+    }).catch(() => {
+      // An unavailable campaign endpoint must never produce an unconfigured offer claim.
+    });
+
+    return () => {
+      mounted = false;
+      clearTimeout(timer);
+    };
   }, []);
 
   const handleClose = useCallback(() => {
@@ -433,11 +445,11 @@ function HomepageSignupCtaController() {
   }, [navigate]);
 
   return (
-    <HomepageSignupCTA
-      isVisible={showSignupCta}
-      onClose={handleClose}
-      onRegister={handleRegister}
-    />
+    showSignupCta ? (
+      <Suspense fallback={null}>
+        <HomepageSignupCTA offer={signupOffer} onClose={handleClose} onSignup={handleRegister} />
+      </Suspense>
+    ) : null
   );
 }
 

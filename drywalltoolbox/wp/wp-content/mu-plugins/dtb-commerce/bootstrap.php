@@ -20,6 +20,7 @@ if ( file_exists( $order_line_provenance_file ) ) {
 require_once __DIR__ . '/Services/OrderTypeService.php';
 require_once __DIR__ . '/Services/OrderAdminQueryService.php';
 require_once __DIR__ . '/Validation/CheckoutValidator.php';
+require_once __DIR__ . '/Validation/SignupCouponPolicy.php';
 require_once __DIR__ . '/Validation/CheckoutFieldPolicy.php';
 require_once __DIR__ . '/Validation/CheckoutTaxReadiness.php';
 require_once __DIR__ . '/Validation/CheckoutTaxPresentation.php';

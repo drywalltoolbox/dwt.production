@@ -20,12 +20,18 @@
     "research": {
       "workflow": "research",
       "role": "explorer",
-      "domainRoleOverrides": { "market-research": "market-intelligence-analyst" }
+      "domainRoleOverrides": {
+        "market-research": "market-intelligence-analyst",
+        "marketing": "marketing-specialist"
+      }
     },
     "investigate": {
       "workflow": "research",
       "role": "explorer",
-      "domainRoleOverrides": { "market-research": "market-intelligence-analyst" }
+      "domainRoleOverrides": {
+        "market-research": "market-intelligence-analyst",
+        "marketing": "marketing-specialist"
+      }
     },
     "ui-design": {
       "workflow": "ui",
@@ -59,7 +65,7 @@
     "catalog": { "subjectRole": "catalog-data-engineer", "implementationRole": "catalog-data-engineer", "minimumRisk": "medium" },
     "schematics": { "subjectRole": "wordpress-backend-engineer", "implementationRole": "wordpress-backend-engineer", "minimumRisk": "medium" },
     "media": { "subjectRole": "wordpress-backend-engineer", "implementationRole": "wordpress-backend-engineer", "minimumRisk": "medium" },
-    "marketing": { "subjectRole": "wordpress-backend-engineer", "implementationRole": "wordpress-backend-engineer" },
+    "marketing": { "subjectRole": "marketing-specialist", "implementationRole": "wordpress-backend-engineer" },
     "repairs": { "subjectRole": "wordpress-backend-engineer", "implementationRole": "wordpress-backend-engineer", "minimumRisk": "medium" },
     "integrations": { "subjectRole": "integration-engineer", "implementationRole": "integration-engineer", "minimumRisk": "high", "reviewers": ["integration-reviewer"] },
     "support": { "subjectRole": "wordpress-backend-engineer", "implementationRole": "wordpress-backend-engineer", "minimumRisk": "medium" },
@@ -79,6 +85,7 @@
     "integration-engineer": { "path": ".agents/roles/integration-engineer.md", "mode": "write", "requiredSkills": ["dtb-php-wordpress-quality", "dtb-integration-engineering"], "minimumRisk": "high" },
     "ai-governance-engineer": { "path": ".agents/roles/ai-governance-engineer.md", "mode": "write", "requiredSkills": ["dtb-ai-context-engineering", "dtb-ai-workspace-governance"], "minimumRisk": "medium" },
     "market-intelligence-analyst": { "path": ".agents/roles/market-intelligence-analyst.md", "mode": "read", "requiredSkills": ["dtb-market-research"] },
+    "marketing-specialist": { "path": ".agents/roles/marketing-specialist.md", "mode": "read", "requiredSkills": ["dtb-marketing-live-intelligence"] },
     "pdp-conversion-specialist": { "path": ".agents/roles/pdp-conversion-specialist.md", "mode": "read", "requiredSkills": ["dtb-design-system", "dtb-ux-flow-engineering"] },
     "code-reviewer": { "path": ".agents/roles/code-reviewer.md", "mode": "read", "requiredSkills": ["dtb-engineering-review"] },
     "security-reviewer": { "path": ".agents/roles/security-reviewer.md", "mode": "read", "requiredSkills": ["dtb-engineering-review"] },
@@ -101,7 +108,8 @@
     "dtb-ai-workspace-governance": ".agents/skills/dtb-ai-workspace-governance/SKILL.md",
     "dtb-external-skill-security": ".agents/skills/dtb-external-skill-security/SKILL.md",
     "dtb-frontend-architecture-decisions": ".agents/skills/dtb-frontend-architecture-decisions/SKILL.md",
-    "dtb-market-research": ".agents/skills/dtb-market-research/SKILL.md"
+    "dtb-market-research": ".agents/skills/dtb-market-research/SKILL.md",
+    "dtb-marketing-live-intelligence": ".agents/skills/dtb-marketing-live-intelligence/SKILL.md"
   },
   "flags": {
     "ui": { "skills": ["dtb-design-system"] },

@@ -864,6 +864,11 @@ function dtb_auth_register( WP_REST_Request $request ): WP_REST_Response {
 		}
 	}
 
+	// Domain listeners can grant account-created benefits before the existing
+	// WooCommerce new-account notification is rendered. The user ID is derived
+	// from this server-created account; request-supplied IDs are never used.
+	do_action( 'dtb_customer_account_created', (int) $user_id );
+
 	// ── Auto-login: generate JWT and set the auth cookie ───────────────────
 	$user = get_user_by( 'id', $user_id );
 	$jwt  = dtb_generate_jwt( $user );
@@ -872,9 +877,12 @@ function dtb_auth_register( WP_REST_Request $request ): WP_REST_Response {
 	// One notification owner: the WooCommerce customer_new_account email.
 	// wp_insert_user() does not emit woocommerce_created_customer_notification.
 	// Password was supplied by the customer: do not send password-setup credentials.
+	$defer_account_email = (bool) apply_filters( 'dtb_signup_offer_defer_account_email', false, (int) $user_id );
 	if ( function_exists( 'WC' ) && WC() && class_exists( 'WC_Emails' ) ) {
-		\WC_Emails::instance(); // Registers WooCommerce email listeners.
-		do_action( 'woocommerce_created_customer_notification', $user_id, [], false );
+		if ( ! $defer_account_email ) {
+			\WC_Emails::instance(); // Registers WooCommerce email listeners.
+			do_action( 'woocommerce_created_customer_notification', $user_id, [], false );
+		}
 	} else {
 		// Avoid a second legacy welcome template. Registration still succeeds.
 		error_log( '[DTB] WooCommerce account email unavailable after registration for user ' . $user_id );
