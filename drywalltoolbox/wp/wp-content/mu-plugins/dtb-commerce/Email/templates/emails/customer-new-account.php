@@ -37,6 +37,8 @@ $signup_user      = get_user_by( 'login', (string) $user_login );
 $signup_coupon_id = $signup_user instanceof WP_User
 	? absint( get_user_meta( $signup_user->ID, '_dtb_signup_coupon_id', true ) )
 	: 0;
+$welcome_coupon_code  = '';
+$welcome_coupon_terms = [];
 if ( $signup_coupon_id && class_exists( 'WC_Coupon' ) ) {
 	$signup_coupon = new WC_Coupon( $signup_coupon_id );
 	$is_personal    = $signup_coupon->get_id()
@@ -61,13 +63,20 @@ if ( $signup_coupon_id && class_exists( 'WC_Coupon' ) ) {
 		if ( $expires instanceof WC_DateTime ) {
 			$coupon_terms[] = sprintf( __( 'Expires %s.', 'drywall-toolbox' ), wp_date( get_option( 'date_format' ), $expires->getTimestamp() ) );
 		}
-
-		echo \DTB\Commerce\Email\dtb_email_new_account_offer( (string) $signup_coupon->get_code(), $coupon_terms ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$welcome_coupon_code  = (string) $signup_coupon->get_code();
+		$welcome_coupon_terms = $coupon_terms;
 	}
 }
 
 if ( ! empty( $dtb_email_preview ) ) {
-	echo \DTB\Commerce\Email\dtb_email_new_account_offer( 'PREVIEW10', [ __( 'Preview only. Real welcome codes are generated for eligible new accounts.', 'drywall-toolbox' ) ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	$welcome_coupon_code  = 'PREVIEW10';
+	$welcome_coupon_terms = [ __( 'Preview only. Real welcome codes are generated for eligible new accounts.', 'drywall-toolbox' ) ];
+}
+
+if ( '' !== $welcome_coupon_code ) {
+	echo \DTB\Commerce\Email\dtb_email_new_account_offer( $welcome_coupon_code ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo \DTB\Commerce\Email\dtb_email_new_account_benefits(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	echo \DTB\Commerce\Email\dtb_email_new_account_terms( $welcome_coupon_terms ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 if ( ! empty( $additional_content ) ) {
