@@ -73,7 +73,7 @@ if ( ! function_exists( 'dtb_email_font_stack' ) ) {
 	 * predictable fallback for clients that block remote web fonts.
 	 */
 	function dtb_email_font_stack(): string {
-		return "'Geist',Arial,sans-serif";
+		return "'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 	}
 }
 
@@ -190,7 +190,7 @@ if ( ! function_exists( 'dtb_email_palette' ) ) {
 				'card_border'    => '#1d2a44',
 				'accent'         => '#2255ee',
 				'accent_soft_bg' => '#111f3d',
-				'accent_soft_tx' => '#bfdbfe',
+				'accent_soft_tx' => '#2255ee',
 				'title'          => '#f8fafc',
 				'greeting'       => '#e5edf7',
 				'intro'          => '#c9d4e5',
@@ -294,9 +294,9 @@ if ( ! function_exists( 'dtb_email_button' ) ) {
 			return '';
 		}
 
-		return '<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:24px 0 0;"><tr><td align="center">'
+		return '<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:26px 0 0;"><tr><td align="center">'
 			. '<!--[if mso]><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="' . $url . '" style="height:50px;v-text-anchor:middle;width:540px;" arcsize="14%" stroke="f" fillcolor="' . esc_attr( $bg ) . '"><w:anchorlock/><center style="color:' . esc_attr( $text ) . ';font-family:' . dtb_email_font_stack() . ';font-size:15px;font-weight:700;">' . $label . '</center></v:roundrect><![endif]-->'
-			. '<!--[if !mso]><!--><a href="' . $url . '" class="dtb-btn" style="display:block;background:' . esc_attr( $bg ) . ';color:' . esc_attr( $text ) . ';font-family:' . dtb_email_font_stack() . ';font-size:15px;font-weight:800;line-height:20px;text-decoration:none;text-align:center;padding:15px 24px;border-radius:8px;">' . $label . '</a><!--<![endif]-->'
+			. '<!--[if !mso]><!--><a href="' . $url . '" class="dtb-btn" style="display:block;background:' . esc_attr( $bg ) . ';color:' . esc_attr( $text ) . ';font-family:' . dtb_email_font_stack() . ';font-size:15px;font-weight:700;line-height:21px;text-decoration:none;text-align:center;padding:15px 24px;border-radius:8px;letter-spacing:.1px;">' . $label . '</a><!--<![endif]-->'
 			. '</td></tr></table>';
 	}
 }
@@ -605,7 +605,7 @@ if ( ! function_exists( 'dtb_email_card_chrome_style' ) ) {
 	 * @return string
 	 */
 	function dtb_email_card_chrome_style(): string {
-		return 'background:#ffffff;background-color:#ffffff;border:0;border-radius:0;box-shadow:none;';
+		return 'background:#ffffff;background-color:#ffffff;border:1px solid #e2e9f3;border-radius:14px;box-shadow:0 3px 14px rgba(16,33,58,0.05);';
 	}
 }
 
@@ -638,14 +638,14 @@ if ( ! function_exists( 'dtb_email_card_open' ) ) {
 			$meta_cell = '' !== $meta
 				? '<td valign="middle" align="' . ( is_rtl() ? 'left' : 'right' ) . '" style="color:#94a3b8;font-family:' . $font . ';font-size:12px;font-weight:600;white-space:nowrap;">' . esc_html( $meta ) . '</td>'
 				: '';
-			$header    = '<table class="dtb-email-section-heading" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:0 0 16px;border-bottom:1px solid #e4eaf2;"><tr>'
+			$header    = '<table class="dtb-email-section-heading" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin:0 0 17px;border-bottom:1px solid #e2e9f3;"><tr>'
 				. $icon_cell
-				. '<td valign="middle" style="padding:0 0 12px;color:#101828;font-family:' . $font . ';font-size:17px;font-weight:800;line-height:1.3;">' . esc_html( $title ) . '</td>'
+				. '<td valign="middle" style="padding:0 0 13px;color:#10213a;font-family:' . $font . ';font-size:19px;font-weight:750;line-height:26px;letter-spacing:-.25px;">' . esc_html( $title ) . '</td>'
 				. $meta_cell
 				. '</tr></table>';
 		}
 
-		return '<table class="dtb-email-card" role="presentation" cellspacing="0" cellpadding="0" border="0" width="636" align="center" style="width:calc(100% - 44px);max-width:636px;margin:0 auto 26px;border-collapse:separate;"><tr><td style="padding:20px 24px 8px;' . dtb_email_card_chrome_style() . '">' . $header;
+		return '<table class="dtb-email-card" role="presentation" cellspacing="0" cellpadding="0" border="0" width="636" align="center" style="width:calc(100% - 44px);max-width:636px;margin:0 auto 24px;border-collapse:separate;"><tr><td style="padding:22px 24px 20px;' . dtb_email_card_chrome_style() . '">' . $header;
 	}
 }
 
@@ -744,8 +744,8 @@ if ( ! function_exists( 'dtb_email_support_card' ) ) {
 		$button    = '';
 
 		if ( '' !== $cta_url && '' !== $cta_label ) {
-			$button = '<td class="dtb-support-action" valign="middle" align="' . ( is_rtl() ? 'left' : 'right' ) . '" width="154" style="padding:' . ( is_rtl() ? '0 12px 0 0' : '0 0 0 16px' ) . ';">'
-				. '<a href="' . esc_url( $cta_url ) . '" style="display:block;padding:12px 20px;border:2px solid #2255ee;border-radius:7px;color:#2255ee;font-family:' . $font . ';font-size:13px;font-weight:800;text-align:center;text-decoration:none;white-space:nowrap;">' . esc_html( $cta_label ) . '</a>'
+			$button = '<td class="dtb-support-action" valign="middle" align="' . ( is_rtl() ? 'left' : 'right' ) . '" width="164" style="padding:' . ( is_rtl() ? '0 12px 0 0' : '0 0 0 16px' ) . ';">'
+				. '<a href="' . esc_url( $cta_url ) . '" style="display:block;padding:13px 19px;border:1px solid #2255EE;border-radius:8px;color:#2255EE;font-family:' . $font . ';font-size:14px;font-weight:700;text-align:center;text-decoration:none;white-space:nowrap;">' . esc_html( $cta_label ) . '</a>'
 				. '</td>';
 		}
 
@@ -754,8 +754,8 @@ if ( ! function_exists( 'dtb_email_support_card' ) ) {
 			: '';
 
 		$text_html = '' !== $title
-			? '<span style="display:block;color:#101828;font-family:' . $font . ';font-size:15px;font-weight:800;margin:0 0 2px;">' . esc_html( $title ) . '</span><span style="display:block;color:#344054;font-family:' . $font . ';font-size:13px;font-weight:500;line-height:145%;">' . esc_html( $text ) . '</span>'
-			: '<span style="display:block;color:#334155;font-family:' . $font . ';font-size:14px;font-weight:600;line-height:145%;">' . esc_html( $text ) . '</span>';
+			? '<span style="display:block;color:#10213a;font-family:' . $font . ';font-size:16px;font-weight:750;line-height:23px;margin:0 0 3px;">' . esc_html( $title ) . '</span><span style="display:block;color:#34445e;font-family:' . $font . ';font-size:14px;font-weight:400;line-height:22px;">' . esc_html( $text ) . '</span>'
+			: '<span style="display:block;color:#34445e;font-family:' . $font . ';font-size:15px;font-weight:500;line-height:23px;">' . esc_html( $text ) . '</span>';
 
 		return '<table class="dtb-support-card" role="presentation" cellspacing="0" cellpadding="0" border="0" width="636" align="center" style="width:calc(100% - 44px);max-width:636px;margin:0 auto 18px;border-collapse:separate;"><tr><td style="padding:20px 22px;' . dtb_email_card_chrome_style() . '">'
 			. '<table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%"><tr>'
@@ -904,6 +904,8 @@ if ( ! function_exists( 'dtb_render_branded_email' ) ) {
 		$footer_note = dtb_email_clean_html( (string) ( $args['footer_note'] ?? 'You can reply directly to this email if you need help.' ) );
 		$logo_url    = esc_url( dtb_email_logo_url() );
 		$home_url    = esc_url( home_url( '/' ) );
+		$header_artwork = esc_url( home_url( '/assets/email/dtb-email-header-background.jpg' ) );
+		$footer_artwork = esc_url( home_url( '/assets/email/dtb-email-footer-background.jpg' ) );
 		$home_host   = esc_html( (string) wp_parse_url( home_url( '/' ), PHP_URL_HOST ) );
 		$support_url = esc_url( dtb_email_support_url() );
 		$palette     = dtb_email_palette( 'dark' );
@@ -953,6 +955,8 @@ if ( ! function_exists( 'dtb_render_branded_email' ) ) {
 				'{{preheader}}'         => esc_html( $preheader ),
 				'{{site_name}}'         => esc_attr( $site ),
 				'{{logo_url}}'          => $logo_url,
+				'{{header_artwork}}'    => $header_artwork,
+				'{{footer_artwork}}'    => $footer_artwork,
 				'{{home_url}}'          => $home_url,
 				'{{home_host}}'         => $home_host,
 				'{{support_url}}'       => $support_url,

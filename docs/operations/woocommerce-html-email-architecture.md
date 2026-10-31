@@ -1,6 +1,6 @@
 # WooCommerce classic HTML email architecture
 
-Last reconciled with tracked source: 2026-08-15.
+Last reconciled with tracked source: 2026-10-31.
 
 Scope: WooCommerce's classic HTML/PHP transactional email pipeline only.
 Plain-text templates, the block email editor, and POS templates are
@@ -50,6 +50,42 @@ mechanism that prevents horizontal overflow.
 Remote web fonts are not required for layout correctness. The email shell
 must remain readable with native sans-serif fallbacks when clients strip
 `<link>` tags or external font requests.
+
+The shared classic HTML header and footer use distinct, full-resolution artwork
+with solid navy fallbacks: `/assets/email/dtb-email-header-background.jpg` (2172×724,
+about 202KB) and `/assets/email/dtb-email-footer-background.jpg` (2032×774, about
+245KB). Their uncompressed source masters are
+`docs/reference/ui/dtb-email-header-enhanced-20261031.png` and
+`docs/reference/ui/dtb-email-footer-enhanced-20261031.png`. Hosted logo,
+social links, account, shop, contact, and copyright text remain live HTML. Keep
+both assets available at the site root when releasing the storefront and email
+templates together. The platform's shared `dtb_render_branded_email()` layout
+uses independent header and footer artwork tokens in
+`dtb-platform/Support/Templates/branded-email.html` so non-WooCommerce DTB
+transactional mail follows the same split treatment.
+Email typography uses the self-hosted Geist Variable font from the storefront's
+Fontsource package, with Apple system, Segoe UI, Roboto, Helvetica, and Arial
+fallbacks. The same-origin WOFF2 asset is
+`/assets/email/geist-latin-wght.woff2` (29.4KB); its SIL Open Font License is
+preserved at `docs/reference/ui/geist-font-license.txt`. The shared scale uses
+15px/24px body text, 32px/40px primary headings, 23px/30px section headings,
+and 18px/26px subheadings, with tighter display tracking and letter-spaced
+utility labels. Account, order-summary, and support surfaces use restrained
+cool-neutral borders, rounded corners, generous spacing, and the primary
+`#2255EE` token for actions and brand accents. Mobile hero copy remains legible
+at 13px or larger with fluid table layouts.
+
+The customer new-account template uses
+`/assets/email/account-welcome-hero.jpeg` behind live welcome text. Its account
+CTA continues to use WooCommerce's password-setting URL when one is supplied,
+and otherwise the WooCommerce My Account URL. The offer block appears only
+for a user-owned welcome campaign coupon verified as a 10% percentage
+discount; preview mode uses a clearly marked `PREVIEW10` code and does not
+create a coupon. The header, footer, and account hero artwork assets are source-controlled under
+`frontend/public/assets/email/` and must be released with the MU-plugin
+template changes. The classic header uses the compact, logo-height band with
+10px vertical padding; the footer uses its separate, taller artwork and
+remains tall enough for navigation and legal links.
 
 ### Decorative hero artwork
 
@@ -119,7 +155,10 @@ Before shipping email changes to production:
 - inspect the received message's original headers and confirm SPF, DKIM, and
   DMARC pass with an aligned `From: ...@drywalltoolbox.com` identity;
 - confirm Reply-To is a `@drywalltoolbox.com` mailbox;
-- confirm public HTTPS availability of `/logos/email-logo-white.png` and any
-  email icon assets used by the rendered template;
+- confirm public HTTPS availability of `/logos/email-logo-white.png`,
+  `/assets/email/dtb-email-header-background.jpg`, `/assets/email/dtb-email-footer-background.jpg`,
+  `/assets/email/geist-latin-wght.woff2`,
+  `/assets/email/account-welcome-hero.jpeg`, and any email icon assets used by
+  the rendered template;
 - verify SMTP transport/TLS and provider-level envelope sender settings in the
   production mailer configuration.

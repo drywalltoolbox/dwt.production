@@ -10,7 +10,7 @@ function dtb_email_v3_tokens(): array {
 		'hero_pad_top'=>24,'hero_pad_bottom'=>22,'progress_diameter'=>54,
 		'card_radius'=>8,'card_border'=>'#dce3ed','outer_bg'=>'#eef3f7','shell_bg'=>'#ffffff',
 		'header_bg'=>'#061524','panel_bg'=>'#ffffff','panel_bg_alt'=>'#f4f7fa','text'=>'#071b45',
-		'text_muted'=>'#65738f','text_dim'=>'#78859d','accent'=>'#1769ff','accent_soft'=>'#edf4ff','divider'=>'#d7dee8',
+		'text_muted'=>'#65738f','text_dim'=>'#78859d','accent'=>'#2255ee','accent_soft'=>'#edf4ff','divider'=>'#d7dee8',
 	];
 }
 
@@ -56,9 +56,9 @@ function dtb_email_v4_progress_bar( array $steps, ?int $active_index = null ): s
 		$detail = (string) ( $step['detail'] ?? '' );
 
 		if ( 'done' === $state ) {
-			$node_bg='#1769ff'; $node_border='#1769ff'; $node_fg='#ffffff'; $label_fg='#071b45'; $detail_fg='#64748b';
+			$node_bg='#2255ee'; $node_border='#2255ee'; $node_fg='#ffffff'; $label_fg='#071b45'; $detail_fg='#64748b';
 		} elseif ( 'active' === $state ) {
-			$node_bg='#071827'; $node_border='#7aa8ff'; $node_fg='#ffffff'; $label_fg='#071b45'; $detail_fg='#52627e';
+			$node_bg='#071827'; $node_border='#2255ee'; $node_fg='#ffffff'; $label_fg='#071b45'; $detail_fg='#52627e';
 		} elseif ( 'warning' === $state ) {
 			$node_bg='#2b1c08'; $node_border='#d58a20'; $node_fg='#ffd38a'; $label_fg='#8c5210'; $detail_fg='#775e3a';
 		} else {
@@ -66,7 +66,7 @@ function dtb_email_v4_progress_bar( array $steps, ?int $active_index = null ): s
 		}
 
 		if ( 'active' === $state ) {
-			$node = '<table class="dtb-progress-active-ring" role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" width="58" height="58" style="width:58px;height:58px;border:3px solid #1769ff;border-radius:50%;border-collapse:separate;background-color:#071827;"><tr><td align="center" valign="middle"><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center"><tr><td class="dtb-progress-marker dtb-progress-marker-active" width="44" height="44" align="center" valign="middle" bgcolor="'.esc_attr($node_bg).'" style="width:44px;height:44px;border:2px solid '.esc_attr($node_border).';border-radius:50%;background-color:'.esc_attr($node_bg).';color:'.esc_attr($node_fg).';font-family:'.esc_attr($font).';font-size:20px;font-weight:800;line-height:40px;box-sizing:border-box;">'.$glyph.'</td></tr></table></td></tr></table>';
+			$node = '<table class="dtb-progress-active-ring" role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" width="58" height="58" style="width:58px;height:58px;border:3px solid #2255ee;border-radius:50%;border-collapse:separate;background-color:#071827;"><tr><td align="center" valign="middle"><table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center"><tr><td class="dtb-progress-marker dtb-progress-marker-active" width="44" height="44" align="center" valign="middle" bgcolor="'.esc_attr($node_bg).'" style="width:44px;height:44px;border:2px solid '.esc_attr($node_border).';border-radius:50%;background-color:'.esc_attr($node_bg).';color:'.esc_attr($node_fg).';font-family:'.esc_attr($font).';font-size:20px;font-weight:800;line-height:40px;box-sizing:border-box;">'.$glyph.'</td></tr></table></td></tr></table>';
 		} else {
 			$node = '<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center"><tr><td class="dtb-progress-marker" width="54" height="54" align="center" valign="middle" bgcolor="'.esc_attr($node_bg).'" style="width:54px;height:54px;border:2px solid '.esc_attr($node_border).';border-radius:50%;background-color:'.esc_attr($node_bg).';color:'.esc_attr($node_fg).';font-family:'.esc_attr($font).';font-size:20px;font-weight:800;line-height:50px;box-sizing:border-box;">'.$glyph.'</td></tr></table>';
 		}
@@ -75,7 +75,7 @@ function dtb_email_v4_progress_bar( array $steps, ?int $active_index = null ): s
 		if ( $i < $count - 1 ) {
 			$next_state = (string) ( $steps[$i+1]['state'] ?? 'upcoming' );
 			$filled = in_array( $state, [ 'done', 'active' ], true ) && in_array( $next_state, [ 'done', 'active' ], true );
-			$rail_color = $filled ? '#1769ff' : '#7f8c99';
+			$rail_color = $filled ? '#2255ee' : '#7f8c99';
 			$milestone_cells .= '<td class="dtb-progress-connector" width="23%" valign="middle" style="width:23%;padding:0;"><table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;border-collapse:collapse;"><tr><td class="dtb-progress-rail-segment" height="8" bgcolor="'.esc_attr($rail_color).'" style="height:8px;font-size:1px;line-height:1px;background-color:'.esc_attr($rail_color).';">&nbsp;</td></tr></table></td>';
 		}
 
@@ -121,10 +121,10 @@ function dtb_email_v4_order_hero( $order, $email, array $options = [] ): string 
 		? '<tr><td class="dtb-v4-hero-progress" bgcolor="#f4f7fa" style="padding:26px 30px 27px;background-color:#f4f7fa;">'.$progress.'</td></tr>'
 		: '';
 	return '<table class="dtb-v4-order-intro" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff" style="width:100%;border-collapse:collapse;background-color:#ffffff;">'
-		.'<tr><td class="dtb-v4-hero-copy" align="left" style="padding:30px 38px 28px;text-align:left;">'
-		.'<p class="dtb-v4-order-number" style="margin:0 0 12px;color:#1769ff;font-family:'.esc_attr($font).';font-size:10px;font-weight:750;line-height:16px;letter-spacing:1.4px;text-transform:uppercase;">'.esc_html(sprintf(__('Order #%s','drywall-toolbox'),$order->get_order_number())).'</p>'
-		.'<h1 class="dtb-v4-hero-title" style="margin:0 0 12px;color:#071b45;font-family:'.esc_attr($font).';font-size:29px;font-weight:750;line-height:36px;letter-spacing:-.5px;">'.esc_html((string)$config['title']).'</h1>'
-		.'<p class="dtb-v4-hero-body" style="margin:0;color:#52627e;font-family:'.esc_attr($font).';font-size:15px;font-weight:400;line-height:23px;">'.esc_html((string)$config['body']).'</p>'
+		.'<tr><td class="dtb-v4-hero-copy" align="left" style="padding:34px 40px 30px;text-align:left;">'
+		.'<p class="dtb-v4-order-number" style="margin:0 0 13px;color:#2255EE;font-family:'.esc_attr($font).';font-size:11px;font-weight:700;line-height:17px;letter-spacing:1.5px;text-transform:uppercase;">'.esc_html(sprintf(__('Order #%s','drywall-toolbox'),$order->get_order_number())).'</p>'
+		.'<h1 class="dtb-v4-hero-title" style="margin:0 0 13px;color:#10213a;font-family:'.esc_attr($font).';font-size:32px;font-weight:750;line-height:40px;letter-spacing:-.85px;">'.esc_html((string)$config['title']).'</h1>'
+		.'<p class="dtb-v4-hero-body" style="margin:0;color:#34445e;font-family:'.esc_attr($font).';font-size:16px;font-weight:400;line-height:25px;">'.esc_html((string)$config['body']).'</p>'
 		.'</td></tr>'.$progress_row.'</table>';
 }
 
@@ -154,12 +154,12 @@ function dtb_email_order_confirmation_intro( \WC_Order $order, bool $operator = 
 	$status = wc_get_order_status_name( $order->get_status() );
 	$summary = '<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%;border-collapse:collapse;">'
 		. '<tr><td class="dtb-confirm-summary-cell" width="48%" valign="top" style="width:48%;padding:0 14px 0 0;vertical-align:top;">'
-		. '<p style="margin:0 0 10px;color:#1769ff;font:700 11px/17px '.esc_attr($font).';letter-spacing:1px;text-transform:uppercase;">'.esc_html__( 'Order summary', 'drywall-toolbox' ).'</p>'
+		. '<p style="margin:0 0 10px;color:#2255ee;font:700 11px/17px '.esc_attr($font).';letter-spacing:1px;text-transform:uppercase;">'.esc_html__( 'Order summary', 'drywall-toolbox' ).'</p>'
 		. '<p style="margin:0 0 6px;color:#071b45;font:700 15px/22px '.esc_attr($font).';">'.esc_html( $status ).'</p>'
 		. '<p style="margin:0 0 8px;color:#64748b;font:400 12px/18px '.esc_attr($font).';">'.esc_html( $reference ).( $date_text ? ' &middot; '.esc_html( $date_text ) : '' ).'</p>'
 		. '<p style="margin:0;color:#071b45;font:700 16px/22px '.esc_attr($font).';">'.wp_kses_post( $order->get_formatted_order_total() ).'</p></td>'
 		. '<td class="dtb-confirm-summary-cell" width="52%" valign="top" style="width:52%;padding:0 0 0 14px;vertical-align:top;">'
-		. '<p style="margin:0 0 10px;color:#1769ff;font:700 11px/17px '.esc_attr($font).';letter-spacing:1px;text-transform:uppercase;">'.esc_html__( 'Shipping address', 'drywall-toolbox' ).'</p>'
+		. '<p style="margin:0 0 10px;color:#2255ee;font:700 11px/17px '.esc_attr($font).';letter-spacing:1px;text-transform:uppercase;">'.esc_html__( 'Shipping address', 'drywall-toolbox' ).'</p>'
 		. '<p style="margin:0 0 6px;color:#071b45;font:700 14px/20px '.esc_attr($font).';">'.esc_html($recipient).'</p>'
 		. '<div style="color:#52627e;font:400 12px/19px '.esc_attr($font).';">'.$address.'</div>'
 		. '</td></tr></table>';
@@ -167,22 +167,22 @@ function dtb_email_order_confirmation_intro( \WC_Order $order, bool $operator = 
 	$action = '';
 	if ( '' !== $tracking ) {
 		$action = '<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:23px auto 0;border-collapse:separate;">'
-			. '<tr><td align="center" bgcolor="#1769ff" style="background:#1769ff;border-radius:7px;">'
+			. '<tr><td align="center" bgcolor="#2255ee" style="background:#2255ee;border-radius:7px;">'
 			. '<a href="'.esc_url($tracking).'" style="display:inline-block;padding:14px 27px;font:700 14px/20px '.esc_attr($font).';color:#ffffff!important;text-decoration:none;">'
 			.esc_html__( 'Track your order', 'drywall-toolbox' ).'</a></td></tr></table>'
 			. '<p style="margin:11px 0 0;color:#64748b;text-align:center;font:400 12px/19px '.esc_attr($font).';">'
 			.esc_html__( 'Shipping tracking will appear here when it becomes available.', 'drywall-toolbox' ).'</p>';
 	}
 	return '<table class="dtb-confirm-intro" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff" style="width:100%;border-collapse:collapse;background:#ffffff;">'
-		. '<tr><td align="center" style="padding:36px 38px 31px;">'
-		. '<p style="margin:0 0 11px;color:#1769ff;text-align:center;font:700 11px/17px '.esc_attr($font).';letter-spacing:1.2px;text-transform:uppercase;">'
+		. '<tr><td align="center" style="padding:38px 40px 33px;">'
+		. '<p style="margin:0 0 12px;color:#2255EE;text-align:center;font:700 11px/17px '.esc_attr($font).';letter-spacing:1.35px;text-transform:uppercase;">'
 		.esc_html( $operator ? __( 'Order notification', 'drywall-toolbox' ) : __( 'Order confirmation', 'drywall-toolbox' ) ).'</p>'
-		. '<h1 style="margin:0;color:#071b45;text-align:center;font:750 31px/39px '.esc_attr($font).';">'.esc_html($title).'</h1>'
-		. '<p style="margin:13px auto 0;max-width:475px;color:#52627e;text-align:center;font:400 15px/24px '.esc_attr($font).';">'.esc_html($copy).'</p>'
+		. '<h1 style="margin:0;color:#10213a;text-align:center;font:750 33px/41px '.esc_attr($font).';letter-spacing:-.9px;">'.esc_html($title).'</h1>'
+		. '<p style="margin:14px auto 0;max-width:475px;color:#34445e;text-align:center;font:400 16px/25px '.esc_attr($font).';">'.esc_html($copy).'</p>'
 		. $action.'</td></tr>'
 		. '<tr><td class="dtb-confirm-summary-outer" style="padding:0 38px 33px;">'
-		. '<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#f4f7fa" style="width:100%;border-collapse:separate;background:#f4f7fa;border:1px solid #e3e8f0;border-radius:9px;">'
-		. '<tr><td style="padding:23px 22px;">'.$summary.'</td></tr></table>'
+		. '<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="#f5f8ff" style="width:100%;border-collapse:separate;background:#f5f8ff;border:1px solid #dbe6f7;border-radius:12px;">'
+		. '<tr><td style="padding:24px 23px;">'.$summary.'</td></tr></table>'
 		. '</td></tr></table>';
 }
 
@@ -192,21 +192,21 @@ function dtb_email_v3_processing_progress(): string { return '<table role="prese
 
 function dtb_email_v3_card_open(string $title='',string $meta=''):string{
 	$font=dtb_email_v3_font();$title=sanitize_text_field($title);$meta=sanitize_text_field($meta);$header='';
-	if(''!==$title){$header='<table class="dtb-v3-card-heading" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td style="padding:0 0 12px;color:#071b45;font-family:'.esc_attr($font).';font-size:18px;font-weight:750;line-height:24px;">'.esc_html($title).'</td>'.(''!==$meta?'<td align="right" style="padding:0 0 12px;color:#78859d;font-family:'.esc_attr($font).';font-size:10px;line-height:16px;">'.esc_html($meta).'</td>':'').'</tr></table>';}
-	return '<table class="dtb-v3-card" role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" bgcolor="#fff" style="width:87%;max-width:592px;margin:0 auto 22px;border-collapse:collapse;background-color:#fff;"><tr><td class="dtb-v3-card-cell" style="padding:0;">'.$header;
+	if(''!==$title){$header='<table class="dtb-v3-card-heading" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td style="padding:0 0 14px;color:#10213a;font-family:'.esc_attr($font).';font-size:19px;font-weight:750;line-height:26px;letter-spacing:-.25px;">'.esc_html($title).'</td>'.(''!==$meta?'<td align="right" style="padding:0 0 14px;color:#78859d;font-family:'.esc_attr($font).';font-size:11px;line-height:17px;">'.esc_html($meta).'</td>':'').'</tr></table>';}
+	return '<table class="dtb-v3-card" role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" bgcolor="#fff" style="width:87%;max-width:592px;margin:0 auto 22px;border-collapse:separate;border:1px solid #e1e8f2;border-radius:12px;background-color:#fff;"><tr><td class="dtb-v3-card-cell" style="padding:22px 23px 24px;">'.$header;
 }
 function dtb_email_v3_card_close():string{return '</td></tr></table>';}
 function dtb_email_v3_primary_button(string $url,string $label):string{
 	if ( '' === trim( $url ) || '' === trim( $label ) ) { return ''; }
 	$font = dtb_email_v3_font();
-	return '<table class="dtb-v4-action" role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" style="width:87%;max-width:592px;margin:14px auto 22px;border-collapse:collapse;"><tr><td align="center" bgcolor="#1769ff" style="background-color:#1769ff;border-radius:6px;padding:0;">'
-		. '<a href="'.esc_url($url).'" style="display:block;padding:14px 20px;font-family:'.esc_attr($font).';font-size:14px;font-weight:700;line-height:20px;text-align:center;color:#ffffff!important;text-decoration:none;">'.esc_html($label).'</a>'
+	return '<table class="dtb-v4-action" role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" style="width:87%;max-width:592px;margin:17px auto 24px;border-collapse:collapse;"><tr><td align="center" bgcolor="#2255EE" style="background-color:#2255EE;border-radius:8px;padding:0;">'
+		. '<a href="'.esc_url($url).'" style="display:block;padding:15px 22px;font-family:'.esc_attr($font).';font-size:15px;font-weight:700;line-height:21px;text-align:center;color:#ffffff!important;text-decoration:none;">'.esc_html($label).'</a>'
 		. '</td></tr></table>';
 }
 function dtb_email_v3_support_panel(string $heading='',string $copy=''):string{
 	$font=dtb_email_v3_font();$url=function_exists('dtb_email_support_url')?\dtb_email_support_url():home_url('/contact/');
 	$heading=''!==$heading?$heading:__('Questions about your order?','drywall-toolbox');$copy=''!==$copy?$copy:__('Our support team is here to help.','drywall-toolbox');
-	return '<table class="dtb-v4-support" role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" style="width:87%;max-width:592px;margin:16px auto 20px;"><tr><td align="center" style="padding:0 20px;color:#071b45;font-family:'.esc_attr($font).';"><strong style="display:block;margin:0 0 5px;font-size:16px;font-weight:750;line-height:22px;">'.esc_html($heading).'</strong><span style="display:block;color:#65738f;font-size:13px;font-weight:400;line-height:20px;">'.esc_html($copy).' <a href="'.esc_url($url).'" style="color:#1769ff;font-weight:600;text-decoration:none;">'.esc_html__('Contact support','drywall-toolbox').'</a>.</span></td></tr></table>';
+	return '<table class="dtb-v4-support" role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" style="width:87%;max-width:592px;margin:18px auto 22px;"><tr><td align="center" style="padding:0 22px;color:#10213a;font-family:'.esc_attr($font).';"><strong style="display:block;margin:0 0 6px;font-size:17px;font-weight:750;line-height:24px;letter-spacing:-.2px;">'.esc_html($heading).'</strong><span style="display:block;color:#52627e;font-size:14px;font-weight:400;line-height:22px;">'.esc_html($copy).' <a href="'.esc_url($url).'" style="color:#2255EE;font-weight:650;text-decoration:none;">'.esc_html__('Contact support','drywall-toolbox').'</a>.</span></td></tr></table>';
 }
 
 
@@ -227,7 +227,7 @@ function dtb_email_lifecycle_panel( \WC_Order $order, string $kind, $fulfillment
 	$note = $shipment ? __( 'Carrier updates appear when your shipment starts moving.', 'drywall-toolbox' ) : __( 'Completed is an order status and does not confirm carrier delivery.', 'drywall-toolbox' );
 	return '<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" style="width:87%;max-width:592px;margin:0 auto 23px;border-collapse:separate;background:#f4f7fa;border:1px solid #e3e8f0;border-radius:9px;">'
 		.'<tr><td style="padding:21px 23px;font-family:'.esc_attr($font).';">'
-		.'<p style="margin:0 0 9px;color:#1769ff;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;">'.esc_html($eyebrow).'</p>'
+		.'<p style="margin:0 0 9px;color:#2255ee;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;">'.esc_html($eyebrow).'</p>'
 		.'<p style="margin:0;color:#071b45;font-size:15px;font-weight:700;line-height:22px;">'.esc_html($label).': '.esc_html($status).'</p>'.$info
 		.'<p style="margin:10px 0 0;color:#64748b;font-size:12px;line-height:19px;">'.esc_html($note).'</p>'
 		.'</td></tr></table>';

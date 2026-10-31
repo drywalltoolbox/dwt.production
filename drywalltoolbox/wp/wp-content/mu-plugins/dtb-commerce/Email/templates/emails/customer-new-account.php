@@ -17,15 +17,21 @@ $action_label = ! empty( $password_generated ) && ! empty( $set_password_url )
 	? __( 'Set your password', 'drywall-toolbox' )
 	: __( 'Go to your account', 'drywall-toolbox' );
 
-echo \DTB\Commerce\Email\dtb_email_account_notice(
-	__( 'YOUR DRYWALL TOOLBOX ACCOUNT', 'drywall-toolbox' ),
-	__( 'Welcome to Drywall Toolbox.', 'drywall-toolbox' ),
-	__( 'Your account is ready to help you keep orders, saved addresses and project essentials organized.', 'drywall-toolbox' ),
-	sprintf( __( 'Hi %s,', 'drywall-toolbox' ), (string) $user_display_name ),
-	(string) $user_login,
-	(string) $action_url,
-	$action_label
-); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo \DTB\Commerce\Email\dtb_email_new_account_hero(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+$account_font = function_exists( 'dtb_email_font_stack' ) ? dtb_email_font_stack() : "'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+echo '<table class="dtb-account-identity" role="presentation" border="0" cellpadding="0" cellspacing="0" width="92%" align="center" bgcolor="#f2f7ff" style="width:92%;max-width:600px;margin:16px auto 20px;border-collapse:separate;border:1px solid #d9e5f8;border-radius:14px;background-color:#f2f7ff;font-family:' . esc_attr( $account_font ) . ';">';
+echo '<tr><td class="dtb-account-identity-copy" width="60%" valign="middle" style="width:60%;padding:22px 16px 22px 24px;vertical-align:middle;">';
+echo '<p style="margin:0;color:#10213a;font:750 21px/28px ' . esc_attr( $account_font ) . ';letter-spacing:-.3px;">' . esc_html( sprintf( __( 'Welcome, %s.', 'drywall-toolbox' ), (string) $user_display_name ) ) . '</p>';
+echo '<p style="margin:4px 0 13px;color:#34445e;font:400 15px/22px ' . esc_attr( $account_font ) . ';">' . esc_html__( 'You’re all set. Your account is ready whenever you need it.', 'drywall-toolbox' ) . '</p>';
+echo '<p style="margin:0;color:#52627e;font:400 13px/19px ' . esc_attr( $account_font ) . ';">' . esc_html__( 'Account username:', 'drywall-toolbox' ) . '<br><strong style="color:#10213a;font-size:16px;font-weight:700;">' . esc_html( (string) $user_login ) . '</strong></p>';
+echo '</td><td class="dtb-account-identity-action" width="40%" align="center" valign="middle" style="width:40%;padding:20px 20px 20px 8px;vertical-align:middle;">';
+if ( '' !== esc_url( $action_url ) ) {
+	 echo '<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="border-collapse:separate;margin:0 auto;"><tr><td align="center" bgcolor="#2255EE" style="border-radius:8px;background-color:#2255EE;">';
+	 echo '<a href="' . esc_url( $action_url ) . '" style="display:inline-block;padding:15px 22px;color:#ffffff!important;font:700 15px/21px ' . esc_attr( $account_font ) . ';text-decoration:none;">' . esc_html( $action_label ) . ' &nbsp;&#8594;</a>';
+	echo '</td></tr></table>';
+}
+echo '</td></tr></table>';
 
 $signup_user      = get_user_by( 'login', (string) $user_login );
 $signup_coupon_id = $signup_user instanceof WP_User
@@ -36,7 +42,10 @@ if ( $signup_coupon_id && class_exists( 'WC_Coupon' ) ) {
 	$is_personal    = $signup_coupon->get_id()
 		&& absint( $signup_coupon->get_meta( '_dtb_signup_coupon_user_id', true ) ) === (int) $signup_user->ID
 		&& 'welcome-10-first-order' === (string) $signup_coupon->get_meta( '_dtb_signup_coupon_campaign_id', true );
-	if ( $is_personal ) {
+	$is_welcome_offer = $is_personal
+		&& 'percent' === $signup_coupon->get_discount_type()
+		&& 10.0 === (float) $signup_coupon->get_amount();
+	if ( $is_welcome_offer ) {
 		$coupon_terms = [ __( 'One use on your first eligible order. This personal code is restricted to your account email.', 'drywall-toolbox' ) ];
 		if ( $signup_coupon->get_exclude_sale_items() ) {
 			$coupon_terms[] = __( 'Sale items are excluded.', 'drywall-toolbox' );
@@ -53,12 +62,12 @@ if ( $signup_coupon_id && class_exists( 'WC_Coupon' ) ) {
 			$coupon_terms[] = sprintf( __( 'Expires %s.', 'drywall-toolbox' ), wp_date( get_option( 'date_format' ), $expires->getTimestamp() ) );
 		}
 
-		echo '<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td style="padding:20px 24px;background:#eef4ff;border:1px solid #d7e5ff;border-radius:10px;text-align:center">';
-		echo '<p style="margin:0 0 8px;color:#12213a;font-size:18px;font-weight:700">' . esc_html__( 'Your 10% first-order coupon', 'drywall-toolbox' ) . '</p>';
-		echo '<p style="margin:0 0 8px;color:#1769ff;font-size:23px;font-weight:800;letter-spacing:2px">' . esc_html( $signup_coupon->get_code() ) . '</p>';
-		echo '<p style="margin:0;color:#596274;font-size:13px;line-height:1.5">' . esc_html( implode( ' ', $coupon_terms ) ) . '</p>';
-		echo '</td></tr></table>';
+		echo \DTB\Commerce\Email\dtb_email_new_account_offer( (string) $signup_coupon->get_code(), $coupon_terms ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
+}
+
+if ( ! empty( $dtb_email_preview ) ) {
+	echo \DTB\Commerce\Email\dtb_email_new_account_offer( 'PREVIEW10', [ __( 'Preview only. Real welcome codes are generated for eligible new accounts.', 'drywall-toolbox' ) ] ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }
 
 if ( ! empty( $additional_content ) ) {

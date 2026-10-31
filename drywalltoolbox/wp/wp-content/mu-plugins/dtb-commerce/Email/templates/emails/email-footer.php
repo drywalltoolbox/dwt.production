@@ -19,19 +19,20 @@ $links = apply_filters( 'dtb_email_customer_footer_links', $links, $order, $emai
 $link_html = [];
 foreach ( (array) $links as $link ) {
     if ( ! is_array( $link ) || ! isset( $link[0], $link[1] ) || ! is_string( $link[0] ) || ! is_string( $link[1] ) || ! wp_http_validate_url( $link[1] ) ) { continue; }
-    $link_html[] = '<a href="' . esc_url( $link[1] ) . '" style="display:inline-block;margin:5px 10px;color:#d7e6fb;font-size:12px;font-weight:600;line-height:20px;text-decoration:underline;text-underline-offset:3px;">' . esc_html( $link[0] ) . '</a>';
+    $link_html[] = '<a href="' . esc_url( $link[1] ) . '" style="display:inline-block;margin:5px 12px 7px;padding:0 2px 4px;color:#d7e6fb;font-size:12px;font-weight:600;line-height:20px;text-decoration:none;border-bottom:1px solid rgba(34,85,238,0.22);background-image:linear-gradient(90deg,rgba(34,85,238,0) 0%,rgba(34,85,238,0.18) 14%,#2255EE 40%,#2255EE 60%,rgba(34,85,238,0.18) 86%,rgba(34,85,238,0) 100%);background-repeat:no-repeat;background-position:center bottom;background-size:100% 1px;">' . esc_html( $link[0] ) . '</a>';
 }
 $privacy_url = function_exists( 'get_privacy_policy_url' ) ? get_privacy_policy_url() : '';
-$font=function_exists('dtb_email_font_stack')?dtb_email_font_stack():"'Geist',Arial,sans-serif";
+$font=function_exists('dtb_email_font_stack')?dtb_email_font_stack():"'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+$footer_artwork=home_url('/assets/email/dtb-email-footer-background.jpg');
 ?>
 </div></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td></tr>
 <tr><td align="center" valign="top" bgcolor="#061524" style="background-color:#061524;">
-<table id="template_footer" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#061524" style="width:100%;border-collapse:collapse;background-color:#061524;">
-<tr><td id="credit" align="center" bgcolor="#061524" style="padding:31px 22px 30px;text-align:center;background-color:#061524;color:#c4cfdd;font-family:<?php echo esc_attr( $font ); ?>;">
+<table id="template_footer" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" background="<?php echo esc_url( $footer_artwork ); ?>" bgcolor="#061524" style="width:100%;border-collapse:collapse;background-color:#061524;background-image:url('<?php echo esc_url( $footer_artwork ); ?>');background-position:center center;background-repeat:no-repeat;background-size:cover;">
+<tr><td id="credit" align="center" bgcolor="#061524" style="padding:31px 22px 30px;text-align:center;background-color:#061524;background-image:url('<?php echo esc_url( $footer_artwork ); ?>');background-position:center center;background-repeat:no-repeat;background-size:cover;color:#c4cfdd;font-family:<?php echo esc_attr( $font ); ?>;">
 <?php if ( $logo_url ) : ?>
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;border-collapse:collapse;"><tr><td align="center" style="padding:0;">
 <a href="<?php echo esc_url( $home_url ); ?>" style="display:inline-block;text-decoration:none;">
-<img src="<?php echo esc_url( $logo_url ); ?>" width="152" alt="Drywall Toolbox" style="display:block;width:152px;max-width:100%;height:auto;border:0;">
+<img class="dtb-email-brand-logo" src="<?php echo esc_url( $logo_url ); ?>" width="184" alt="Drywall Toolbox" style="display:block;width:184px;max-width:100%;height:auto;border:0;">
 </a></td></tr></table>
 <?php endif; ?>
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:12px auto 0;border-collapse:collapse;"><tr><td align="center" style="padding:0;">

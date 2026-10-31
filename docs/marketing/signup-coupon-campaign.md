@@ -61,12 +61,26 @@ otherwise eligible under the current terms.
 
 ## Verification and launch limits
 
-The campaign must remain inactive until the selected offer terms and
-transactional email rendering are verified on staging. Verify account-created
-coupon ownership, a rejected different-account/email attempt, first-order and
-second-order behavior, sale-item and stacking settings, expiry, repeated
-issuance, Action Scheduler retry recovery, and the inactive/ended campaign
-states. Do not send test emails to live customers.
+The SiteGround staging deployment currently hosts only the React storefront.
+Its `.env.staging` and API client route WordPress, WooCommerce, registration,
+coupon issuance, and email delivery to the root production domain. Staging is
+therefore not an isolated transaction environment: creating an account there
+can create a real production customer and personal coupon and send the production
+new-account email.
+
+Until a separate staging WordPress/WooCommerce database is available, limit
+staging checks to the static build/routing, the public read-only campaign
+endpoint, and UI behavior that does not submit registration or checkout. Use
+the synthetic Email Studio preview for copy/layout checks. Do not test account
+creation, coupon redemption, or retry delivery from the current staging site.
+
+Full campaign verification requires an isolated WordPress/WooCommerce staging
+environment with a separate database, non-production mail sink, and payment
+sandbox. On that environment verify account-created coupon ownership, rejected
+different-account/email attempts, first-order and later-order behavior,
+sale-item and stacking settings, expiry, repeated issuance, Action Scheduler
+retry recovery, and inactive/ended campaign states. Do not send test emails to
+live customers.
 
 The current registration flow does not verify email ownership. Coupon
 restrictions bind redemption to the account and billing email, but this

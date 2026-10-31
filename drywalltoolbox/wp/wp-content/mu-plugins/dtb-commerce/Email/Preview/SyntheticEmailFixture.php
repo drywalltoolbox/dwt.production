@@ -109,6 +109,7 @@ final class SyntheticEmailFixture {
 			'password_generated' => false,
 			'set_password_url' => '',
 			'blogname' => get_bloginfo( 'name', 'display' ),
+			'dtb_email_preview' => 'customer_new_account' === $email_id,
 		];
 
 		// Fulfillment templates require a real WooCommerce Fulfillment entity for
