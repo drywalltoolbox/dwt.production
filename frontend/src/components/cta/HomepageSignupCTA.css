@@ -84,9 +84,8 @@
   width: clamp(170px, 36vw, 236px);
   height: auto;
   margin: 4px auto clamp(24px, 4vw, 36px);
-  padding: 9px 16px;
-  border-radius: 10px;
-  background: #0a1427;
+  padding: 0;
+  background: transparent;
 }
 
 .homepage-signup-cta__eyebrow {
