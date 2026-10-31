@@ -25,12 +25,9 @@ function dtb_email_new_account_hero(): string {
 /** Render the welcome offer using only a verified personal coupon code. */
 function dtb_email_new_account_offer( string $coupon_code ): string {
 	$font = function_exists( 'dtb_email_font_stack' ) ? \dtb_email_font_stack() : "'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
-	$offer_icon = function_exists( 'dtb_email_icon' ) ? dtb_email_icon( 'package', 30 ) : '';
 	return '<table class="dtb-account-offer" role="presentation" border="0" cellpadding="0" cellspacing="0" width="92%" align="center" bgcolor="#f2f7ff" style="width:92%;max-width:600px;margin:0 auto 18px;border-collapse:separate;border:1px solid #d9e5f8;border-radius:14px;background-color:#f2f7ff;font-family:' . esc_attr( $font ) . ';">'
 		. '<tr><td class="dtb-account-offer-copy" width="58%" valign="middle" style="width:58%;padding:22px 20px;vertical-align:middle;">'
-		. '<table class="dtb-account-offer-copy-inner" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%;border-collapse:collapse;"><tr>'
-		. '<td class="dtb-account-offer-icon-cell" width="56" valign="top" style="width:56px;padding:2px 14px 0 0;vertical-align:top;"><table role="presentation" border="0" cellpadding="0" cellspacing="0" width="48" height="48" bgcolor="#e4edff" style="width:48px;height:48px;border-collapse:separate;border-radius:12px;background-color:#e4edff;"><tr><td align="center" valign="middle" style="width:48px;height:48px;">' . $offer_icon . '</td></tr></table></td>'
-		. '<td valign="middle" style="padding:0;vertical-align:middle;">'
+		. '<table class="dtb-account-offer-copy-inner" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%;border-collapse:collapse;"><tr><td valign="middle" style="padding:0;vertical-align:middle;">'
 		. '<p style="margin:0 0 7px;color:#2255EE;font:700 11px/16px ' . esc_attr( $font ) . ';letter-spacing:1.35px;text-transform:uppercase;">' . esc_html__( 'Welcome offer', 'drywall-toolbox' ) . '</p>'
 		. '<p style="margin:0;color:#071827;font:800 40px/43px ' . esc_attr( $font ) . ';letter-spacing:-1.3px;">' . esc_html__( '10% Off', 'drywall-toolbox' ) . '</p>'
 		. '<p style="margin:0;color:#071827;font:750 20px/26px ' . esc_attr( $font ) . ';letter-spacing:-.25px;">' . esc_html__( 'Your First Order', 'drywall-toolbox' ) . '</p>'
@@ -43,22 +40,21 @@ function dtb_email_new_account_offer( string $coupon_code ): string {
 		. '</td></tr></table>';
 }
 
-/** Render truthful, compact account benefits using hosted email-safe icons. */
+/** Render compact account benefits with custom, email-safe numbered marks. */
 function dtb_email_new_account_benefits(): string {
 	$font = function_exists( 'dtb_email_font_stack' ) ? \dtb_email_font_stack() : "'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 	$items = [
-		[ 'package', __( 'Track orders', 'drywall-toolbox' ), __( 'Follow purchases through delivery.', 'drywall-toolbox' ) ],
-		[ 'location', __( 'Save addresses', 'drywall-toolbox' ), __( 'Keep shipping details ready for next time.', 'drywall-toolbox' ) ],
-		[ 'clipboard', __( 'Revisit purchases', 'drywall-toolbox' ), __( 'Find order history and details in your account.', 'drywall-toolbox' ) ],
+		[ __( '01', 'drywall-toolbox' ), __( 'Follow your orders', 'drywall-toolbox' ), __( 'See order details and delivery progress in one place.', 'drywall-toolbox' ) ],
+		[ __( '02', 'drywall-toolbox' ), __( 'Check out faster', 'drywall-toolbox' ), __( 'Keep your checkout details ready in your account.', 'drywall-toolbox' ) ],
+		[ __( '03', 'drywall-toolbox' ), __( 'Stay project-ready', 'drywall-toolbox' ), __( 'Keep your account and tool orders organized.', 'drywall-toolbox' ) ],
 	];
 	$cells = '';
-	foreach ( $items as $index => [ $icon, $title, $description ] ) {
-		$icon_html = function_exists( 'dtb_email_icon' ) ? dtb_email_icon( $icon, 28 ) : '';
+	foreach ( $items as $index => [ $number, $title, $description ] ) {
 		$border = 2 === $index ? '' : 'border-right:1px solid #d7e3f5;';
 		$cells .= '<td class="dtb-account-benefit" width="33.33%" align="center" valign="top" style="width:33.33%;padding:15px 12px 16px;' . $border . 'vertical-align:top;">'
-			. '<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;border-collapse:collapse;"><tr><td align="center" valign="middle" style="padding:0 0 8px;">' . $icon_html . '</td></tr></table>'
-			. '<p style="margin:0;color:#10213a;font:700 14px/19px ' . esc_attr( $font ) . ';letter-spacing:-.1px;">' . esc_html( $title ) . '</p>'
-			. '<p style="margin:5px 0 0;color:#52627e;font:400 12px/18px ' . esc_attr( $font ) . ';">' . esc_html( $description ) . '</p>'
+			. '<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 9px;border-collapse:collapse;"><tr><td align="center" valign="middle" width="36" height="36" style="width:36px;height:36px;border:1px solid #b9ccf2;border-radius:50%;background-color:#e8efff;color:#2255EE;font:700 11px/36px ' . esc_attr( $font ) . ';letter-spacing:.5px;">' . esc_html( $number ) . '</td></tr></table>'
+			. '<p style="margin:0;color:#10213a;font:750 15px/20px ' . esc_attr( $font ) . ';letter-spacing:-.2px;">' . esc_html( $title ) . '</p>'
+			. '<p style="margin:6px 0 0;color:#52627e;font:400 13px/19px ' . esc_attr( $font ) . ';">' . esc_html( $description ) . '</p>'
 			. '</td>';
 	}
 	return '<table class="dtb-account-benefits" role="presentation" border="0" cellpadding="0" cellspacing="0" width="92%" align="center" bgcolor="#f2f7ff" style="width:92%;max-width:600px;margin:0 auto 14px;border-collapse:separate;border:1px solid #e0e9f7;border-radius:14px;background-color:#f2f7ff;font-family:' . esc_attr( $font ) . ';">'
