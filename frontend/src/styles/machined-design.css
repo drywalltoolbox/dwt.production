@@ -521,9 +521,6 @@ aside input[type="range"],
     max-width: none;
     width: auto;
     height: clamp(56px, 5.5vw, 66px);
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    shape-rendering: geometricPrecision;
 }
 
 @media (max-width: 640px) {
