@@ -25,7 +25,7 @@ export function showCheckoutHandoff() {
     overlay.setAttribute('aria-label', 'Preparing secure checkout');
     // Adaptation of the supplied Framer logo-fill preloader: a subdued logo
     // under a bottom-to-top reveal of the same DTB brand asset.
-    overlay.innerHTML = '<div class="dtb-checkout-transition__panel"><div class="dtb-checkout-transition__logo" aria-hidden="true"><img class="dtb-checkout-transition__logo-base" src="https://drywalltoolbox.com/logos/dtb-logo-emblem.webp" alt="" width="260" height="76"/><div class="dtb-checkout-transition__logo-fill"><img src="https://drywalltoolbox.com/logos/dtb-logo-emblem.webp" alt="" width="260" height="76"/></div></div><strong>Preparing your secure checkout</strong><p>Connecting your cart securely…</p><span class="dtb-checkout-transition__trust">DRYWALL TOOLBOX · SECURE CHECKOUT</span></div>';
+    overlay.innerHTML = '<div class="dtb-checkout-transition__panel"><div class="dtb-checkout-transition__logo" aria-hidden="true"><img class="dtb-checkout-transition__logo-base" src="https://drywalltoolbox.com/logos/dtb-logo-white.webp" alt="" width="260" height="76"/><div class="dtb-checkout-transition__logo-fill"><img src="https://drywalltoolbox.com/logos/dtb-logo-white.webp" alt="" width="260" height="76"/></div></div><strong>Preparing your secure checkout</strong><p>Connecting your cart securely…</p><span class="dtb-checkout-transition__trust">DRYWALL TOOLBOX · SECURE CHECKOUT</span></div>';
     document.body.appendChild(overlay);
   }
   // Do not activate the legacy #dtb-checkout-route-loader: one overlay only.
