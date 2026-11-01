@@ -22,7 +22,7 @@ export const HOME_HERO_CAMPAIGNS = [
   {
     id: 'repairs',
     label: 'Repairs',
-    eyebrow: 'Expert Repair Services',
+    eyebrow: '',
     titleLines: ['We fix the tools.', 'You finish the job.'],
     accentLine: null,
     description: 'From routine maintenance to complete repairs, our experts keep your drywall tools performing at their best.',
