@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { ArrowRight, X } from 'lucide-react';
-import dtbLogo from '../../assets/brand/dtb-logo-white.svg';
+import { DTB_LOGO_WHITE_URL as dtbLogo } from '../../utils/dtbLogoAssets.js';
 import './HomepageSignupCTA.css';
 
 export default function HomepageSignupCTA({ offer, onClose, onSignup }) {
