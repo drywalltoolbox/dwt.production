@@ -2,7 +2,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { startTransition, useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useCart } from '../../context/CartContext';
 import { useAuthContext } from '../../auth/AuthContext.js';
-import { ShoppingCart, X, User, MessageSquareText, Truck, Phone } from 'lucide-react';
+import { ShoppingCart, X, User } from 'lucide-react';
 import { DTB_LOGO_WHITE_URL, handleDtbLogoFallback } from '../../utils/dtbLogoAssets.js';
 import StorefrontSearchOverlay from './StorefrontSearchOverlay';
 import StorefrontMobileDrawer from './StorefrontMobileDrawer';
@@ -64,6 +64,36 @@ function MobileHamburgerToggle({ checked, onCheckedChange, className = '' }) {
         <path className="line" d="M7 16 27 16" />
       </svg>
     </label>
+  );
+}
+
+function UtilityIcon({ kind }) {
+  const paths = {
+    shipping: (
+      <>
+        <path d="m4 7 8-3.5L20 7l-8 3.5L4 7Z" />
+        <path d="M4 7v10l8 3.5 8-3.5V7M12 10.5v10M8 5.25l8 3.5" />
+      </>
+    ),
+    support: (
+      <>
+        <path d="M4.5 13v-1.25a7.5 7.5 0 0 1 15 0V13" />
+        <path d="M4.5 12.5H7v5H6a1.5 1.5 0 0 1-1.5-1.5v-3.5ZM19.5 12.5H17v5h1a1.5 1.5 0 0 0 1.5-1.5v-3.5Z" />
+        <path d="M17 17.5a4.5 4.5 0 0 1-4.5 3h-1" />
+      </>
+    ),
+    phone: (
+      <>
+        <path d="m7.2 4.7 2.3-.5 2.1 4.2-1.8 1.8a14.2 14.2 0 0 0 4 4l1.8-1.8 4.2 2.1-.5 2.3a2 2 0 0 1-2.3 1.6A14.8 14.8 0 0 1 5.6 7a2 2 0 0 1 1.6-2.3Z" />
+        <path d="M15.5 5.5a4 4 0 0 1 3 3M15.5 2.5a7 7 0 0 1 6 6" />
+      </>
+    ),
+  };
+
+  return (
+    <svg className="dtb-header-utility-bar__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+      {paths[kind]}
+    </svg>
   );
 }
 
@@ -567,14 +597,14 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
         }}
       >
         <div className="dtb-header-utility-bar">
-          <span className="dtb-header-utility-bar__announcement"><Truck size={19} strokeWidth={2} aria-hidden="true" />Free shipping on orders $50+</span>
+          <span className="dtb-header-utility-bar__announcement"><UtilityIcon kind="shipping" />Free shipping on orders $50+</span>
           <div className="dtb-header-utility-bar__links">
           <Link to="/contact" className="dtb-header-utility-bar__item">
-            <MessageSquareText size={18} strokeWidth={1.9} aria-hidden="true" />
+            <UtilityIcon kind="support" />
             Expert Support
           </Link>
           <a href="tel:+16129781007" className="dtb-header-utility-bar__item dtb-header-utility-bar__phone">
-            <Phone size={17} strokeWidth={2} aria-hidden="true" />
+            <UtilityIcon kind="phone" />
             <span className="dtb-header-utility-bar__phone-copy"><strong>612-978-1007</strong><small>Mon–Fri 8AM–5PM EST</small></span>
           </a>
           </div>
