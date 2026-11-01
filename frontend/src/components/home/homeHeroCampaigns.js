@@ -3,9 +3,9 @@ export const HOME_HERO_CAMPAIGNS = [
     id: 'tools',
     label: 'Tools',
     eyebrow: '',
-    titleLines: ['The New', 'Standard In', 'Drywall Tools.'],
+    titleLines: ['The New.', 'Standard In', 'Drywall Tools.'],
     accentLine: 1,
-    description: 'Professional drywall tools, replacement parts, and repair services—all in one place.',
+    description: 'Professional drywall tools, replacement parts, and repair services-all in one place.',
     primaryAction: { label: 'Shop All Tools', to: '/all-products' },
     secondaryAction: { label: 'Shop by Brand', to: '/products/brands' },
   },
@@ -32,3 +32,4 @@ export const HOME_HERO_CAMPAIGNS = [
 ];
 
 export const HOME_HERO_CAMPAIGN_COUNT = HOME_HERO_CAMPAIGNS.length;
+
