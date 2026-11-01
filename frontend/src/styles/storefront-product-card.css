@@ -84,7 +84,7 @@
   .dtb-product-card__price-col,.dtb-product-card__price-group { width:100%;min-width:0;max-width:100%; }
   .dtb-product-card__price-group { display:grid;grid-template-columns:minmax(0,max-content) minmax(0,1fr);gap:3px 6px;align-items:baseline;overflow:visible; }
   /* Narrow cards must show both current and comparison prices without clipping.
-     Allow the comparison price to wrap onto its own row at natural width. */
+     Keep the current and comparison prices on one readable line. */
   .dtb-product-card--grid .dtb-product-card__price-group,
   .dtb-product-card--rail .dtb-product-card__price-group {
     display: flex;
@@ -134,7 +134,7 @@
   .dtb-product-card--list .dtb-product-card__divider { display:none; }
   .dtb-product-card--list .dtb-product-card__footer { display:flex;align-items:flex-end;justify-content:flex-start;min-height:0;margin-top:clamp(5px,1.6vw,8px);padding-top:0; }
   .dtb-product-card--list .dtb-product-card__price-col { gap:3px; }
-  .dtb-product-card--list .dtb-product-card__price-group { display:flex;flex-wrap:wrap;align-items:baseline;gap:5px 8px; }
+  .dtb-product-card--list .dtb-product-card__price-group { display:flex;flex-wrap:nowrap;align-items:baseline;gap:0 6px; }
   .dtb-product-card--list .dtb-product-card__price { color:#0f172a;flex-shrink:0;font-size:clamp(1rem,4.2vw,1.22rem);font-weight:900;line-height:1.05; }
   .dtb-product-card--list .dtb-product-card__compare-price { color:#64748b;font-size:clamp(.78rem,3vw,.9rem);font-weight:650; }
   .dtb-product-card__action--hidden-mobile { display:none; }
@@ -219,8 +219,8 @@
   .dtb-product-card--rail .dtb-product-card__price-group {
     display: flex;
     align-items: baseline;
-    flex-wrap: wrap;
-    gap: 4px 6px;
+    flex-wrap: nowrap;
+    gap: 0 6px;
     width: auto;
     min-width: 0;
     max-width: 100%;
@@ -376,8 +376,8 @@
     flex-direction: row;
     align-items: baseline;
     justify-content: flex-start;
-    flex-wrap: wrap;
-    gap: 2px 6px;
+    flex-wrap: nowrap;
+    gap: 0 6px;
     width: 100%;
     min-width: 0;
   }
@@ -386,16 +386,17 @@
     font-size: clamp(.875rem, 3.5vw, 1rem);
     line-height: 1.2;
     font-variant-numeric: tabular-nums;
-    max-width: 100%;
-    overflow-wrap: anywhere;
-    white-space: normal;
+    max-width: none;
+    overflow-wrap: normal;
+    white-space: nowrap;
   }
 
   .dtb-product-card--grid .dtb-product-card__compare-price,
   .dtb-product-card--rail .dtb-product-card__compare-price,
   .dtb-product-card--list .dtb-product-card__compare-price {
-    display: block;
-    max-width: 100%;
+    display: inline;
+    flex: 0 0 auto;
+    max-width: none;
     font-size: .72rem;
     line-height: 1.2;
     font-variant-numeric: tabular-nums;
