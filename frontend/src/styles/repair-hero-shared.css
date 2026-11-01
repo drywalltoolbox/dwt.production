@@ -1076,3 +1076,13 @@
     transition: none;
   }
 }
+
+/* Keep homepage campaign emphasis on the exact DTB brand blue. */
+.home-hero__repair-surface .repair-hero h1 .repair-hero__title-line--accent {
+  color: var(--dtb-primary, #2255EE);
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: var(--dtb-primary, #2255EE);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.48));
+}
