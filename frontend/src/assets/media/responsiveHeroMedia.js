@@ -43,7 +43,7 @@ import heroDropdownSchematicsW1280 from "./generated/heroes/dropdown-schematics-
 
 export const RESPONSIVE_HERO_MEDIA_QUERY = "(max-width: 47.99rem)";
 const imageSets = Object.freeze({
-  homeDesktop: Object.freeze({ src: heroHomeDesktopSource, srcSet: [heroHomeDesktopSource + ' 1672w'].join(', '), width: 1672, height: 941 }),
+  homeDesktop: Object.freeze({ src: heroHomeDesktopSource, srcSet: [heroHomeDesktopSource + ' 2800w'].join(', '), width: 2800, height: 1000 }),
   homeMobile: Object.freeze({ src: heroHomeMobileSource, srcSet: [heroHomeMobileSource + ' 1086w'].join(', '), width: 1086, height: 1448 }),
   repairsDesktop: Object.freeze({ src: heroRepairsDesktopSource, srcSet: [heroRepairsDesktopW480 + ' 480w', heroRepairsDesktopW640 + ' 640w', heroRepairsDesktopW828 + ' 828w', heroRepairsDesktopW960 + ' 960w', heroRepairsDesktopW1280 + ' 1280w', heroRepairsDesktopW1600 + ' 1600w', heroRepairsDesktopW1920 + ' 1920w', heroRepairsDesktopSource + ' 1983w'].join(', '), width: 1983, height: 793 }),
   repairsMobile: Object.freeze({ src: heroRepairsMobileSource, srcSet: [heroRepairsMobileW480 + ' 480w', heroRepairsMobileW640 + ' 640w', heroRepairsMobileW828 + ' 828w', heroRepairsMobileSource + ' 941w'].join(', '), width: 941, height: 1672 }),

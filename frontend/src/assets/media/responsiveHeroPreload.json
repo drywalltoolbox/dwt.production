@@ -27,7 +27,7 @@
   "sets": {
     "homeDesktop": {
       "sourceFilename": "home/home-hero-desktop.webp",
-      "sourceWidth": 1672,
+      "sourceWidth": 2800,
       "candidates": []
     },
     "homeMobile": {

@@ -46,7 +46,9 @@ each master directly to one lossless WebP beside it:
 homepage hero files delivered to browsers; `<picture>` selects the mobile file
 at the shared mobile breakpoint and the desktop file otherwise. The generator
 prunes obsolete homepage WebP derivatives from its generated hero folder when
-a set changes from width-responsive to single-asset delivery.
+a set changes from width-responsive to single-asset delivery. The desktop art
+is 2800 × 1000 px (2.8:1); its bounded viewport remains controlled by the
+homepage hero layout styles.
 
 Production and staging builds run generation before Webpack. The generator is
 fingerprinted by its policy, source bytes, and Sharp version, so unchanged

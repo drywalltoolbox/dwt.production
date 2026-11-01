@@ -2,12 +2,11 @@
 
 @media (min-width: 901px) {
   .home-hero__stage {
-    height: auto;
+    height: clamp(32rem, 62svh, 43rem);
     min-height: 0;
-    aspect-ratio: 1672 / 941;
   }
 
-  /* Keep the full 16:9 source composition visible at its native ratio. */
+  /* Keep the existing bounded desktop viewport while framing the 2.8:1 art. */
   .home-hero__media::before {
     content: none;
   }
@@ -15,8 +14,8 @@
   .home-hero__media-image {
     position: relative;
     z-index: 1;
-    object-fit: contain;
-    object-position: center;
+    object-fit: cover;
+    object-position: right center;
     transform: none;
   }
 
