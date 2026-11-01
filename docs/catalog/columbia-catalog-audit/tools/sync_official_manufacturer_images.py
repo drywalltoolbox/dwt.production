@@ -67,6 +67,91 @@ def write_csv_atomic(path: Path, fields: list[str], rows: list[dict[str, str]]) 
     os.replace(temporary, path)
 
 
+def csv_cell_spans(line: str, expected_fields: int) -> list[tuple[int, int]]:
+    """Return CSV cell spans for a single physical record without rewriting its other cells."""
+    spans: list[tuple[int, int]] = []
+    start = 0
+    quoted = False
+    index = 0
+    while index < len(line):
+        character = line[index]
+        if character == '"':
+            if quoted and index + 1 < len(line) and line[index + 1] == '"':
+                index += 2
+                continue
+            quoted = not quoted
+        elif character == "," and not quoted:
+            spans.append((start, index))
+            start = index + 1
+        index += 1
+    spans.append((start, len(line)))
+    if quoted or len(spans) != expected_fields:
+        raise ValueError("Official catalog contains an unsupported or malformed CSV record")
+    return spans
+
+
+def cell_value(line: str, span: tuple[int, int]) -> str:
+    value = line[span[0]:span[1]]
+    if value.startswith('"') and value.endswith('"'):
+        return value[1:-1].replace('""', '"')
+    return value
+
+
+def write_official_images_atomic(
+    path: Path,
+    fields: list[str],
+    rows: list[dict[str, str]],
+    image_updates: dict[int, str],
+) -> None:
+    """Update only selected Images cells, preserving all other catalog bytes and CSV formatting."""
+    raw = path.read_bytes()
+    has_bom = raw.startswith(b"\xef\xbb\xbf")
+    lines = raw.decode("utf-8-sig").splitlines(keepends=True)
+    if len(lines) != len(rows) + 1:
+        raise ValueError("Official catalog contains multiline CSV records; refusing a broad rewrite")
+
+    header_line = lines[0].rstrip("\r\n")
+    header_spans = csv_cell_spans(header_line, len(fields))
+    parsed_header = [cell_value(header_line, span) for span in header_spans]
+    if parsed_header != fields:
+        raise ValueError("Official catalog header changed during image synchronization")
+    image_index = fields.index("Images")
+    sku_index = fields.index("SKU")
+    type_index = fields.index("Type")
+
+    output = [lines[0]]
+    changed = 0
+    for row_index, (line, row) in enumerate(zip(lines[1:], rows)):
+        if row_index not in image_updates:
+            output.append(line)
+            continue
+        record = line.rstrip("\r\n")
+        spans = csv_cell_spans(record, len(fields))
+        if (cell_value(record, spans[sku_index]) != row.get("SKU", "")
+                or cell_value(record, spans[type_index]) != row.get("Type", "")):
+            raise ValueError(f"Official catalog row identity changed at row {row_index + 2}")
+        start, end = spans[image_index]
+        value = image_updates[row_index]
+        encoded = f'"{value.replace(chr(34), chr(34) * 2)}"' if any(char in value for char in ',"\r\n') else value
+        ending = line[len(record):]
+        output.append(record[:start] + encoded + record[end:] + ending)
+        changed += 1
+
+    if changed != len(image_updates):
+        raise ValueError("Not every requested official catalog image update was written")
+    content = ("\ufeff" if has_bom else "") + "".join(output)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(
+        mode="w", encoding="utf-8", newline="", dir=path.parent,
+        prefix=f".{path.stem}.", suffix=".tmp", delete=False,
+    ) as stream:
+        temporary = Path(stream.name)
+        stream.write(content)
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, path)
+
+
 def is_columbia(row: dict[str, str]) -> bool:
     identity = " ".join(row.get(field, "") for field in (
         "Brands", "Meta: _dtb_brand_label", "Meta: _dtb_brand_key"
@@ -78,7 +163,12 @@ def derivative_name(source_name: str) -> str:
     match = re.fullmatch(r"(.+)_([0-9]{2,})(\.webp)", source_name, flags=re.IGNORECASE)
     if not match:
         raise ValueError(f"Unexpected manufacturer image filename: {source_name}")
-    return f"{match.group(1)}_{match.group(2)}{match.group(3).lower()}"
+    stem = re.sub(r"_mfr$", "", match.group(1), flags=re.IGNORECASE)
+    stem = re.sub(r"(^mfr_|_mfr_)", "_", stem, flags=re.IGNORECASE)
+    stem = re.sub(r"_+", "_", stem).strip("_")
+    if not stem:
+        raise ValueError(f"Manufacturer marker leaves no product filename: {source_name}")
+    return f"{stem}_{match.group(2)}{match.group(3).lower()}"
 
 
 def optimize(source: Path, destination: Path) -> tuple[tuple[int, int], tuple[int, int]]:
@@ -112,6 +202,12 @@ def main() -> None:
 
     _, source_images = read_csv(SOURCE_MANIFEST)
     catalog_fields, catalog_rows = read_csv(OFFICIAL_CATALOG)
+    existing_manifest_path = OUTPUT_DIR / "image-sync-manifest.csv"
+    existing_manifest = read_csv(existing_manifest_path)[1] if existing_manifest_path.is_file() else []
+    existing_media_by_identity = {
+        (row.get("source_file", ""), row.get("source_sha256", ""), row.get("upload_file", "")): row
+        for row in existing_manifest
+    }
     if not {"Type", "SKU", "Images", "Name"}.issubset(catalog_fields):
         raise ValueError("The official catalog is missing a required identity or image field")
     if not EXPORT_IMAGES.is_dir() or not MEDIA_DIR.is_dir():
@@ -199,9 +295,26 @@ def main() -> None:
             if args.apply:
                 # These are the canonical production filenames. Replacing an
                 # existing local gallery asset is intentional for exact SKU matches.
-                source_dims, output_dims = optimize(source, destination)
-                output_bytes = destination.stat().st_size
-                output_digest = sha256(destination)
+                source_relative = str(source.relative_to(ROOT)).replace("\\", "/")
+                destination_relative = str(destination.relative_to(ROOT)).replace("\\", "/")
+                previous_asset = existing_media_by_identity.get((source_relative, source_digest, destination_relative))
+                reused = False
+                if previous_asset and destination.is_file():
+                    with Image.open(destination) as existing:
+                        existing.load()
+                        existing_dims = existing.size
+                        existing_is_valid = existing.format == "WEBP" and max(existing_dims) <= MAX_EDGE
+                    if (existing_is_valid
+                            and destination.stat().st_size == int(previous_asset.get("output_bytes", "-1"))
+                            and sha256(destination) == previous_asset.get("output_sha256")):
+                        output_dims = existing_dims
+                        output_bytes = destination.stat().st_size
+                        output_digest = previous_asset["output_sha256"]
+                        reused = True
+                if not reused:
+                    source_dims, output_dims = optimize(source, destination)
+                    output_bytes = destination.stat().st_size
+                    output_digest = sha256(destination)
             else:
                 output_dims = (min(source_dims[0], MAX_EDGE), min(source_dims[1], MAX_EDGE))
                 output_bytes = 0
@@ -242,13 +355,6 @@ def main() -> None:
         if [url.strip() for url in old_gallery.split(",") if url.strip()] != gallery_urls:
             replaced_gallery_count += 1
 
-    updated_rows: list[dict[str, str]] = []
-    for index, row in enumerate(catalog_rows):
-        if index in updated_by_row:
-            row = dict(row)
-            row["Images"] = ", ".join(updated_by_row[index])
-        updated_rows.append(row)
-
     matched_rows = set(updated_by_row)
     unmatched_catalog_rows = [
         {"Type": row.get("Type", ""), "SKU": row.get("SKU", ""), "Name": row.get("Name", "")}
@@ -278,7 +384,16 @@ def main() -> None:
     }
 
     if args.apply:
-        write_csv_atomic(OFFICIAL_CATALOG, catalog_fields, updated_rows)
+        write_official_images_atomic(
+            OFFICIAL_CATALOG,
+            catalog_fields,
+            catalog_rows,
+            {
+                index: ", ".join(urls)
+                for index, urls in updated_by_row.items()
+                if [url.strip() for url in catalog_rows[index].get("Images", "").split(",") if url.strip()] != urls
+            },
+        )
         write_csv_atomic(OUTPUT_DIR / "image-sync-manifest.csv", list(output_manifest[0]), output_manifest)
         update_fields = ["Type", "SKU", "Parent", "Images"]
         update_rows = []

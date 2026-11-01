@@ -93,7 +93,7 @@
     {
       "Type": "simple",
       "SKU": "CFB10",
-      "Name": "5/16-18 x 3/4\" Thumb Screw"
+      "Name": "5/16-18 X 3/4\" Thumb Screw"
     },
     {
       "Type": "simple",
@@ -153,27 +153,27 @@
     {
       "Type": "variation",
       "SKU": "FFB5-7",
-      "Name": "Axle - 7\""
+      "Name": "Axle 7\""
     },
     {
       "Type": "variation",
       "SKU": "FFB5-8",
-      "Name": "Axle - 8\""
+      "Name": "Axle 8\""
     },
     {
       "Type": "variation",
       "SKU": "FFB5-10",
-      "Name": "Axle - 10\""
+      "Name": "Axle 10\""
     },
     {
       "Type": "variation",
       "SKU": "FFB5-12",
-      "Name": "Axle - 12\""
+      "Name": "Axle 12\""
     },
     {
       "Type": "variation",
       "SKU": "FFB5-14",
-      "Name": "Axle - 14\""
+      "Name": "Axle 14\""
     },
     {
       "Type": "simple",
@@ -458,7 +458,7 @@
     {
       "Type": "simple",
       "SKU": "CFB28",
-      "Name": "Columbia 8\" Roll Face"
+      "Name": "Roll Face 8\""
     },
     {
       "Type": "simple",
@@ -503,7 +503,7 @@
     {
       "Type": "simple",
       "SKU": "CTA99",
-      "Name": "Columbia Removable Cover Plate Pin"
+      "Name": "Removable Cover Plate Pin"
     },
     {
       "Type": "simple",
@@ -843,7 +843,7 @@
     {
       "Type": "simple",
       "SKU": "HNSA-14",
-      "Name": "Handle Link Assembly"
+      "Name": "Sub Assembled Handle Link"
     },
     {
       "Type": "simple",
@@ -853,7 +853,7 @@
     {
       "Type": "simple",
       "SKU": "HPA-48",
-      "Name": "Handle Pin Assembly"
+      "Name": "Handle Pin"
     },
     {
       "Type": "simple",
