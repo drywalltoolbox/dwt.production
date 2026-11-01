@@ -28,12 +28,66 @@
     "homeDesktop": {
       "sourceFilename": "home/home-hero-desktop.webp",
       "sourceWidth": 2800,
-      "candidates": []
+      "candidates": [
+        {
+          "filename": "home-desktop-480.webp",
+          "width": 480
+        },
+        {
+          "filename": "home-desktop-640.webp",
+          "width": 640
+        },
+        {
+          "filename": "home-desktop-828.webp",
+          "width": 828
+        },
+        {
+          "filename": "home-desktop-960.webp",
+          "width": 960
+        },
+        {
+          "filename": "home-desktop-1080.webp",
+          "width": 1080
+        },
+        {
+          "filename": "home-desktop-1280.webp",
+          "width": 1280
+        },
+        {
+          "filename": "home-desktop-1600.webp",
+          "width": 1600
+        },
+        {
+          "filename": "home-desktop-1920.webp",
+          "width": 1920
+        }
+      ]
     },
     "homeMobile": {
       "sourceFilename": "home/home-hero-mobile.webp",
       "sourceWidth": 1086,
-      "candidates": []
+      "candidates": [
+        {
+          "filename": "home-mobile-480.webp",
+          "width": 480
+        },
+        {
+          "filename": "home-mobile-640.webp",
+          "width": 640
+        },
+        {
+          "filename": "home-mobile-828.webp",
+          "width": 828
+        },
+        {
+          "filename": "home-mobile-960.webp",
+          "width": 960
+        },
+        {
+          "filename": "home-mobile-1080.webp",
+          "width": 1080
+        }
+      ]
     },
     "repairsDesktop": {
       "sourceFilename": "home/home-repairs-hero-desktop.webp",
@@ -54,6 +108,10 @@
         {
           "filename": "repairs-desktop-960.webp",
           "width": 960
+        },
+        {
+          "filename": "repairs-desktop-1080.webp",
+          "width": 1080
         },
         {
           "filename": "repairs-desktop-1280.webp",
@@ -108,6 +166,10 @@
           "width": 960
         },
         {
+          "filename": "toolset-builder-1080.webp",
+          "width": 1080
+        },
+        {
           "filename": "toolset-builder-1280.webp",
           "width": 1280
         },
@@ -138,6 +200,10 @@
           "width": 960
         },
         {
+          "filename": "dropdown-parts-1080.webp",
+          "width": 1080
+        },
+        {
           "filename": "dropdown-parts-1280.webp",
           "width": 1280
         }
@@ -162,6 +228,10 @@
         {
           "filename": "dropdown-repairs-960.webp",
           "width": 960
+        },
+        {
+          "filename": "dropdown-repairs-1080.webp",
+          "width": 1080
         },
         {
           "filename": "dropdown-repairs-1280.webp",
@@ -196,6 +266,10 @@
         {
           "filename": "dropdown-schematics-960.webp",
           "width": 960
+        },
+        {
+          "filename": "dropdown-schematics-1080.webp",
+          "width": 1080
         },
         {
           "filename": "dropdown-schematics-1280.webp",

@@ -164,6 +164,7 @@ async function getOrientedDimensions(sourcePath) {
 async function generateSet(config, setId, relativeSource) {
   const sourcePath = resolveWithinFrontend(relativeSource, `sets.${setId}`);
   const { width: sourceWidth, height: sourceHeight, format } = await getOrientedDimensions(sourcePath);
+  const losslessSets = new Set(config.webp.losslessSets || []);
   const sourceWebpPath = format === 'webp'
     ? sourcePath
     : config.sourceWebpOutputs?.[setId]
@@ -171,15 +172,17 @@ async function generateSet(config, setId, relativeSource) {
       : path.join(OUTPUT_DIRECTORY, `${toKebabCase(setId)}-source.webp`);
 
   if (format !== 'webp') {
+    const sourceWebpOptions = losslessSets.has(setId)
+      ? { effort: config.webp.effort, lossless: true, alphaQuality: 100 }
+      : Object.fromEntries(Object.entries(config.webp).filter(([key]) => key !== 'losslessSets'));
     await writeAtomic(sourceWebpPath, (temporary) => sharp(sourcePath, { failOn: 'warning', limitInputPixels: 100_000_000 })
       .rotate()
-      .webp({ lossless: true, effort: config.webp.effort, alphaQuality: 100 })
+      .webp(sourceWebpOptions)
       .toFile(temporary));
   }
 
   const candidates = [];
   const singleAssetSets = new Set(config.singleAssetSets || []);
-  const losslessSets = new Set(config.webp.losslessSets || []);
   const derivativeWebpOptions = losslessSets.has(setId)
     ? { effort: config.webp.effort, lossless: true, alphaQuality: 100 }
     : Object.fromEntries(Object.entries(config.webp).filter(([key]) => key !== 'losslessSets'));

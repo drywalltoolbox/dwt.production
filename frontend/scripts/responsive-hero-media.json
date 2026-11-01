@@ -1,13 +1,11 @@
 {
   "version": 1,
-  "widths": [480, 640, 828, 960, 1280, 1600, 1920],
+  "widths": [480, 640, 828, 960, 1080, 1280, 1600, 1920],
   "webp": {
-    "quality": 92,
+    "quality": 88,
     "effort": 6,
-    "smartSubsample": true,
-    "losslessSets": ["homeDesktop", "homeMobile"]
+    "smartSubsample": true
   },
-  "singleAssetSets": ["homeDesktop", "homeMobile"],
   "mobileMediaQuery": "(max-width: 47.99rem)",
   "preload": {
     "group": "home",
