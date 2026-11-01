@@ -1042,6 +1042,7 @@
   }
 
   .home-hero__repair-surface .repair-hero__actions .repair-button {
+    grid-template-columns: minmax(0, 1fr) 18px;
     min-height: 56px;
     padding: 9px 10px 9px 12px;
     border-radius: 14px;
