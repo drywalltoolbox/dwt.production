@@ -40,7 +40,9 @@ async function generateSet(config, setId, relativeSource) {
   const { width: sourceWidth, height: sourceHeight, format } = await getOrientedDimensions(sourcePath);
   const sourceWebpPath = format === 'webp'
     ? sourcePath
-    : path.join(OUTPUT_DIRECTORY, `${toKebabCase(setId)}-source.webp`);
+    : config.sourceWebpOutputs?.[setId]
+      ? path.resolve(FRONTEND_ROOT, config.sourceWebpOutputs[setId])
+      : path.join(OUTPUT_DIRECTORY, `${toKebabCase(setId)}-source.webp`);
 
   if (format !== 'webp') {
     await sharp(sourcePath, { failOn: 'warning', limitInputPixels: 100_000_000 })
@@ -50,21 +52,27 @@ async function generateSet(config, setId, relativeSource) {
   }
 
   const candidates = [];
-  for (const width of config.widths) {
+  const singleAssetSets = new Set(config.singleAssetSets || []);
+  const losslessSets = new Set(config.webp.losslessSets || []);
+  const derivativeWebpOptions = losslessSets.has(setId)
+    ? { effort: config.webp.effort, lossless: true, alphaQuality: 100 }
+    : Object.fromEntries(Object.entries(config.webp).filter(([key]) => key !== 'losslessSets'));
+  const widths = singleAssetSets.has(setId) ? [] : config.widths;
+  for (const width of widths) {
     if (width >= sourceWidth) continue;
     const filename = `${toKebabCase(setId)}-${width}.webp`;
     const outputPath = path.join(OUTPUT_DIRECTORY, filename);
     await sharp(sourcePath, { failOn: 'warning', limitInputPixels: 100_000_000 })
       .rotate()
       .resize({ width, withoutEnlargement: true, fit: 'inside', kernel: 'lanczos3' })
-      .webp(config.webp)
+      .webp(derivativeWebpOptions)
       .toFile(outputPath);
     candidates.push({ filename, width });
   }
 
   return {
     id: setId,
-    sourceImport: format === 'webp' ? `./${relativeToManifest}` : `./generated/heroes/${path.basename(sourceWebpPath)}`,
+    sourceImport: `./${path.relative(path.dirname(MANIFEST_PATH), sourceWebpPath).replaceAll(path.sep, '/')}`,
     sourceFilename: path.relative(path.dirname(MANIFEST_PATH), sourceWebpPath).replaceAll(path.sep, '/'),
     sourceWidth,
     sourceHeight,
@@ -119,6 +127,7 @@ function buildManifest(generatedSets, groups, mobileMediaQuery) {
 
 async function main() {
   const config = JSON.parse(await fs.readFile(CONFIG_PATH, 'utf8'));
+  const singleAssetSets = new Set(config.singleAssetSets || []);
   await fs.mkdir(OUTPUT_DIRECTORY, { recursive: true });
 
   const fingerprintHash = crypto.createHash('sha256');
@@ -130,9 +139,12 @@ async function main() {
     fingerprintHash.update(await fs.readFile(sourcePath));
     const metadata = await getOrientedDimensions(sourcePath);
     if (metadata.format !== 'webp') {
-      expectedOutputs.push(path.join(OUTPUT_DIRECTORY, `${toKebabCase(setId)}-source.webp`));
+      expectedOutputs.push(config.sourceWebpOutputs?.[setId]
+        ? path.resolve(FRONTEND_ROOT, config.sourceWebpOutputs[setId])
+        : path.join(OUTPUT_DIRECTORY, `${toKebabCase(setId)}-source.webp`));
     }
-    for (const width of config.widths) {
+    const widths = singleAssetSets.has(setId) ? [] : config.widths;
+    for (const width of widths) {
       if (width < metadata.width) {
         expectedOutputs.push(path.join(OUTPUT_DIRECTORY, `${toKebabCase(setId)}-${width}.webp`));
       }
@@ -166,6 +178,15 @@ async function main() {
     sets,
   }, null, 2)}\n`, 'utf8');
   await fs.writeFile(FINGERPRINT_PATH, fingerprint, 'utf8');
+
+  const expectedWebpOutputs = new Set(expectedOutputs.map((file) => path.resolve(file)));
+  const generatedFiles = await fs.readdir(OUTPUT_DIRECTORY, { withFileTypes: true });
+  for (const entry of generatedFiles) {
+    if (!entry.isFile() || !entry.name.toLowerCase().endsWith('.webp')) continue;
+    const generatedPath = path.resolve(OUTPUT_DIRECTORY, entry.name);
+    if (!expectedWebpOutputs.has(generatedPath)) await fs.unlink(generatedPath);
+  }
+
   console.log(`Generated ${generatedSets.reduce((total, set) => total + set.candidates.length, 0)} responsive WebP variants across ${generatedSets.length} source images.`);
 }
 

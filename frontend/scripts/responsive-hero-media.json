@@ -4,22 +4,28 @@
   "webp": {
     "quality": 92,
     "effort": 6,
-    "smartSubsample": true
+    "smartSubsample": true,
+    "losslessSets": ["homeDesktop", "homeMobile"]
   },
+  "singleAssetSets": ["homeDesktop", "homeMobile"],
   "mobileMediaQuery": "(max-width: 47.99rem)",
   "preload": {
     "group": "home",
     "desktopMedia": "(min-width: 48rem)"
   },
   "sets": {
-    "homeDesktop": "src/assets/media/home/home-hero-desktop.webp",
-    "homeMobile": "src/assets/media/home/home-hero-mobile.webp",
+    "homeDesktop": "src/assets/media/home/home-hero-desktop.png",
+    "homeMobile": "src/assets/media/home/home-hero-mobile.png",
     "repairsDesktop": "src/assets/media/home/home-repairs-hero-desktop.webp",
     "repairsMobile": "src/assets/media/home/home-hero-repairs-mobile.webp",
     "toolsetBuilder": "src/assets/media/toolset/toolset-hero-automatic-tapers.webp",
     "dropdownParts": "src/assets/media/catalog/dropdown-heroes/parts.webp",
     "dropdownRepairs": "src/assets/media/catalog/dropdown-heroes/repairs.webp",
     "dropdownSchematics": "src/assets/media/catalog/dropdown-heroes/schematics.webp"
+  },
+  "sourceWebpOutputs": {
+    "homeDesktop": "src/assets/media/home/home-hero-desktop.webp",
+    "homeMobile": "src/assets/media/home/home-hero-mobile.webp"
   },
   "groups": {
     "home": {

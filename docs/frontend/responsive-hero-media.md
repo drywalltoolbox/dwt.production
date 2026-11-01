@@ -11,11 +11,14 @@ Webpack import manifest.
 - Retain each full-resolution source as the editing/master asset. Generate every
   derivative directly from that source; never derive a variant from another
   variant.
-- Generate widths at 480, 640, 828, 960, 1280, 1600, and 1920 pixels where the
-  source is wide enough. Never upscale. Keep each source aspect ratio.
-- Encode lossy derivatives as WebP at quality 92 and effort 6. Preserve
-  already-WebP masters as the largest candidate. Use a lossless WebP master
-  conversion only when a configured source is not WebP.
+- For width-responsive sets, generate widths at 480, 640, 828, 960, 1280,
+  1600, and 1920 pixels where the source is wide enough. Never upscale. Keep
+  each source aspect ratio.
+- Encode standard derivatives as WebP at quality 92 and effort 6. Homepage
+  desktop/mobile sets are single-asset sets and use lossless WebP for both the
+  full-size master conversion and browser-delivered image. This keeps each
+  art-directed viewport to one optimized hero asset without losing source
+  detail.
 - Use `<picture>` with width-descriptor `srcSet` values and `sizes="100vw"`.
   Art-directed mobile sources use the shared `(max-width: 47.99rem)` query;
   the desktop source starts at `48rem`.
@@ -34,6 +37,16 @@ share their repair image set with the repair landing page. The dropdown asset
 registry exposes responsive media descriptors for its renderers. Adding a
 bundled hero requires adding its master source and group to the JSON registry,
 then running `npm run media:generate` from `frontend/`.
+
+The homepage desktop and mobile PNG masters are maintained in
+`frontend/src/assets/media/home/home-hero-desktop.png` and
+`frontend/src/assets/media/home/home-hero-mobile.png`. The registry converts
+each master directly to one lossless WebP beside it:
+`home-hero-desktop.webp` and `home-hero-mobile.webp`. These are the only
+homepage hero files delivered to browsers; `<picture>` selects the mobile file
+at the shared mobile breakpoint and the desktop file otherwise. The generator
+prunes obsolete homepage WebP derivatives from its generated hero folder when
+a set changes from width-responsive to single-asset delivery.
 
 Production and staging builds run generation before Webpack. The generator is
 fingerprinted by its policy, source bytes, and Sharp version, so unchanged
