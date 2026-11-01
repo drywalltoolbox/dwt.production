@@ -121,6 +121,7 @@
 
 .site-header .dtb-desktop-search-input {
   min-height: 46px;
+  padding-left: 44px !important;
   border: 1px solid rgba(190, 207, 232, .42) !important;
   border-radius: 12px;
   background: rgba(7, 19, 39, .58) !important;
@@ -131,8 +132,20 @@
   transition: border-color 180ms ease, background-color 180ms ease, box-shadow 180ms ease;
 }
 
+.site-header .dtb-desktop-search-icon-wrap {
+  left: 14px;
+  color: #2255EE;
+}
+
+.site-header .dtb-desktop-search-icon {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.8;
+}
+
 .site-header .dtb-desktop-search-input::placeholder {
-  color: rgba(220, 231, 247, .84);
+  color: rgba(246, 249, 255, .94);
+  font-weight: 550;
   opacity: 1;
 }
 
