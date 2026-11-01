@@ -384,10 +384,6 @@
   animation: homeHeroTitleReveal 680ms cubic-bezier(.18, .78, .22, 1) 75ms both;
 }
 
-.home-hero__slide[aria-hidden="false"] .repair-hero h1 .repair-hero__title-line--accent::after {
-  animation: homeHeroRuleReveal 500ms cubic-bezier(.18, .78, .22, 1) 390ms both;
-}
-
 @keyframes homeHeroTitleReveal {
   from { opacity: 0; clip-path: inset(0 0 100% 0); transform: translate3d(0, 14px, 0); }
   to { opacity: 1; clip-path: inset(0 0 0 0); transform: translate3d(0, 0, 0); }
@@ -398,14 +394,8 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes homeHeroRuleReveal {
-  from { opacity: .35; transform: scaleX(.18); }
-  to { opacity: 1; transform: scaleX(1); }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .home-hero__slide[aria-hidden="false"] .repair-hero h1 .repair-hero__title-line,
-  .home-hero__slide[aria-hidden="false"] .repair-hero h1 .repair-hero__title-line--accent::after,
   .home-hero__slide[aria-hidden="false"] .repair-hero__lead,
   .home-hero__slide[aria-hidden="false"] .repair-hero__actions {
     animation: none;
