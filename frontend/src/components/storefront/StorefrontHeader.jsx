@@ -33,6 +33,9 @@ import {
 const SEARCH_OVERLAY_EXIT_MS = 360;
 const MOBILE_SEARCH_DELAY_MS = 220;
 const MAX_SEARCH_PRODUCTS = 6;
+const storefrontPublicBase = (process.env.PUBLIC_URL || '').replace(/\/$/, '');
+const HEADER_BACKGROUND_DESKTOP_URL = `${storefrontPublicBase}/assets/brand/dtb-header-background-desktop.jpg`;
+const HEADER_BACKGROUND_MOBILE_URL = `${storefrontPublicBase}/assets/brand/dtb-header-background-mobile.jpg`;
 // Restore calculator navigation after launch without removing the calculator routes.
 const SHOW_CALCULATORS_NAV = false;
 
@@ -555,7 +558,15 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
 
   return (
     <>
-      <header className="site-header site-header--no-ticker" data-search-open={searchOverlayOpen ? "true" : "false"} role="banner">
+      <header
+        className="site-header site-header--no-ticker"
+        data-search-open={searchOverlayOpen ? "true" : "false"}
+        role="banner"
+        style={{
+          '--dtb-header-background-desktop': `url("${HEADER_BACKGROUND_DESKTOP_URL}")`,
+          '--dtb-header-background-mobile': `url("${HEADER_BACKGROUND_MOBILE_URL}")`,
+        }}
+      >
         <div className="dtb-header-utility-bar">
           <span className="dtb-header-utility-bar__announcement"><Truck size={19} strokeWidth={2} aria-hidden="true" />Free shipping on orders $50+</span>
           <div className="dtb-header-utility-bar__links">

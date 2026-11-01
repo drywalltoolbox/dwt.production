@@ -54,6 +54,10 @@ const SOCIAL_LINKS = [
   { label: 'X', href: 'https://twitter.com', Icon: XLogo },
 ];
 
+const storefrontPublicBase = (process.env.PUBLIC_URL || '').replace(/\/$/, '');
+const FOOTER_BACKGROUND_DESKTOP_URL = `${storefrontPublicBase}/assets/brand/dtb-footer-background-desktop.jpg`;
+const FOOTER_BACKGROUND_MOBILE_URL = `${storefrontPublicBase}/assets/brand/dtb-footer-background-mobile.jpg`;
+
 function FooterLinkGroup({ title, links }) {
   return (
     <section aria-labelledby={`footer-${title.toLowerCase().replace(/[^a-z]+/g, '-')}`}>
@@ -75,7 +79,15 @@ export default function Footer() {
   const { rootProps, getColorVar } = useEditableComponent('global-footer', 'footer-root');
 
   return (
-    <footer {...rootProps} className="site-footer dtb-footer-template" style={{ background: getColorVar('background_color', undefined) }}>
+    <footer
+      {...rootProps}
+      className="site-footer dtb-footer-template"
+      style={{
+        backgroundColor: getColorVar('background_color', undefined),
+        '--dtb-footer-background-desktop': `url("${FOOTER_BACKGROUND_DESKTOP_URL}")`,
+        '--dtb-footer-background-mobile': `url("${FOOTER_BACKGROUND_MOBILE_URL}")`,
+      }}
+    >
       <div className="dtb-footer-template__inner">
         <div className="dtb-footer-template__grid">
           <section className="dtb-footer-template__brand" aria-label="Drywall Toolbox">
