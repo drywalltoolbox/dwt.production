@@ -15,11 +15,11 @@ function dtb_email_new_account_hero(): string {
 	$font = function_exists( 'dtb_email_font_stack' ) ? \dtb_email_font_stack() : "'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
 	$image = home_url( '/assets/email/account-welcome-hero.jpeg' );
 	return '<table class="dtb-account-welcome-hero" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" background="' . esc_url( $image ) . '" bgcolor="#071827" style="width:100%;border-collapse:collapse;background-color:#071827;background-image:linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 88%,rgba(255,255,255,.18) 94%,#ffffff 100%),url(\'' . esc_url( $image ) . '\');background-position:center center,center center;background-repeat:no-repeat;background-size:100% 100%,cover;">'
-		. '<tr><td class="dtb-account-welcome-copy" width="68%" align="left" valign="middle" style="width:68%;padding:38px 34px 40px 42px;background-color:transparent;font-family:' . esc_attr( $font ) . ';">'
-		. '<p style="margin:0 0 13px;color:#ffffff;font:700 10px/16px ' . esc_attr( $font ) . ';letter-spacing:1.65px;text-transform:uppercase;">' . esc_html__( 'Your Drywall Toolbox account', 'drywall-toolbox' ) . '</p>'
-		. '<h1 style="margin:0;color:#ffffff;font:800 38px/42px ' . esc_attr( $font ) . ';letter-spacing:-.75px;"><span style="display:block;">' . esc_html__( 'WELCOME TO', 'drywall-toolbox' ) . '</span><span style="display:block;color:#2255EE;white-space:nowrap;">' . esc_html__( 'DRYWALL TOOLBOX', 'drywall-toolbox' ) . '</span></h1>'
-		. '<p style="max-width:410px;margin:14px 0 0;color:#f2f6fc;font:400 16px/24px ' . esc_attr( $font ) . ';">' . esc_html__( 'Thanks for joining us. Your orders, saved addresses and project essentials are now in one place.', 'drywall-toolbox' ) . '</p>'
-		. '</td><td class="dtb-account-welcome-spacer" width="32%" style="width:32%;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>';
+		. '<tr><td class="dtb-account-welcome-copy" width="64%" align="left" valign="middle" style="width:64%;padding:34px 28px 36px 34px;background-color:transparent;font-family:' . esc_attr( $font ) . ';">'
+		. '<p style="margin:0 0 11px;color:#ffffff;font:700 10px/15px ' . esc_attr( $font ) . ';letter-spacing:1.55px;text-transform:uppercase;">' . esc_html__( 'Your Drywall Toolbox account', 'drywall-toolbox' ) . '</p>'
+		. '<h1 style="margin:0;color:#ffffff;font:800 32px/1.05 ' . esc_attr( $font ) . ';letter-spacing:-.6px;"><span style="display:block;white-space:nowrap;">' . esc_html__( 'WELCOME TO', 'drywall-toolbox' ) . '</span><span class="dtb-account-welcome-brand" style="display:block;color:#2255EE;white-space:nowrap;">' . esc_html__( 'DRYWALL TOOLBOX', 'drywall-toolbox' ) . '</span></h1>'
+		. '<p style="max-width:350px;margin:12px 0 0;color:#f2f6fc;font:400 15px/22px ' . esc_attr( $font ) . ';">' . esc_html__( 'Your orders and project essentials, all in one place.', 'drywall-toolbox' ) . '</p>'
+		. '</td><td class="dtb-account-welcome-spacer" width="36%" style="width:36%;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>';
 }
 
 /** Render the welcome offer using only a verified personal coupon code. */
