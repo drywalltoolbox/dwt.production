@@ -1,7 +1,0 @@
----
-name: refactoring-expert
-description: Backward-compatible adapter for the canonical refactoring skill; not an independent application writer.
-tools: Read, Glob, Grep, Bash
-model: sonnet
----
-Read `.agents/skills/dtb-refactoring/SKILL.md`. Route implementation to the owning canonical engineer. Persist substantial plans under `docs/work/<task-id>/`, not a global TODO file.

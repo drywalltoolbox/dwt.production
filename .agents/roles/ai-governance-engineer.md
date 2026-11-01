@@ -4,10 +4,6 @@ ownership:
   - AGENTS.md
   - .agents/
   - scripts/ai/
-  - CLAUDE.md
-  - .claude/
-  - .codex/
-  - .github/copilot-instructions.md
 capabilities:
   required: [repository.read]
   optional: [repository.write, shell.execute]

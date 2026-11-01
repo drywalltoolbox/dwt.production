@@ -55,7 +55,7 @@ When evidence conflicts, use this precedence:
 5. canonical `.agents/` routing, roles, skills, and workflows;
 6. current owning architecture/API/integration/module documentation under `docs/` or the owning module;
 7. concise derived context under `.agents/context/` and `memory-bank/`;
-8. assistant-specific adapters such as `.claude/`, `.codex/`, `.github/copilot-instructions.md`, and IDE configuration;
+8. any active assistant/client adapter, which may map capabilities but cannot override canonical DTB policy;
 9. historical plans, generated reports, comments, legacy wrappers, examples, and reference-only material.
 
 Active source outranks filenames, comments, summaries, assumptions, and stale documentation.
@@ -403,6 +403,8 @@ Owns DTB commerce policy and WooCommerce integration including:
 * non-secret payment readiness/order tagging;
 * WooCommerce email routing.
 
+DTB-owned WooCommerce transactional email templates and shared email presentation belong to the active `dtb-commerce` email implementation. Preserve WooCommerce email lifecycle, template variables, translation, escaping, and compatibility contracts. Campaign eligibility and coupon issuance remain owned by their active domain implementation; email templates may present verified coupon data but must not issue or calculate discounts.
+
 It does not replace WooCommerce order/payment/refund authority.
 
 ### `dtb-order-platform`
@@ -447,6 +449,8 @@ Owns:
 
 * coming-soon/referral behavior;
 * product SEO/marketing metadata owned by DTB.
+
+The signup coupon campaign and reward issuance are owned by the active `dtb-marketing` implementation. Campaign configuration, customer eligibility, coupon identity, issuance/retry behavior, and the public campaign-state endpoint remain server-owned. See `docs/marketing/signup-coupon-campaign.md` for the current contract; inspect active code if it differs.
 
 ### `dtb-repair-service`
 
@@ -522,6 +526,8 @@ Owns:
 * rollback;
 * preview;
 * related operator interfaces.
+
+Email Studio owns safe synthetic email preview and design/configuration authoring where implemented. It does not become a second owner of WooCommerce email delivery, customer identity, campaign eligibility, or coupon issuance. Never treat synthetic preview values as real customer or coupon data.
 
 It must not become order, payment, inventory, pricing, checkout, or fulfillment authority.
 
@@ -1324,18 +1330,19 @@ For material implementation work:
 1. establish the user-visible/product outcome;
 2. derive observable acceptance criteria;
 3. identify explicit constraints and non-goals;
-4. inspect active implementation;
-5. identify system of record and owning domain;
-6. trace the affected execution path;
-7. inspect callers, consumers, persistence, events, queues, providers, and tests relevant to the change;
-8. classify risk and architecture-contract impact;
-9. choose the smallest complete design;
-10. implement through the owning layer;
-11. use one writer per overlapping authority boundary;
-12. independently review according to actual risk dimensions;
-13. verify the final implementation against acceptance criteria;
-14. update durable documentation when contracts changed;
-15. inspect the final diff for unrelated changes, duplicate authority, secrets, stale references, generated artifacts, and accidental identity changes.
+4. for substantial or cross-domain work, resolve the task through `.agents/registry.json` and use its selected workflow, execution role, distinct subject role, skills, risk, and reviewers;
+5. inspect active implementation;
+6. identify system of record and owning domain;
+7. trace the affected execution path;
+8. inspect callers, consumers, persistence, events, queues, providers, and tests relevant to the change;
+9. classify risk and architecture-contract impact;
+10. choose the smallest complete design;
+11. implement through the owning layer;
+12. use one writer per overlapping authority boundary;
+13. independently review according to actual risk dimensions;
+14. verify the final implementation against acceptance criteria;
+15. update durable documentation when contracts changed;
+16. inspect the final diff for unrelated changes, duplicate authority, secrets, stale references, generated artifacts, and accidental identity changes.
 
 Do not ask the user for information that current source can resolve.
 
@@ -1511,634 +1518,25 @@ Existing shortcuts are technical debt to identify, not precedent to extend.
 
 ---
 
-# AI Engineering Governance
+# 37. AI engineering governance
 
-## 37. Canonical AI architecture
+DTB's AI engineering system is model-neutral and repository-owned. `AGENTS.md` defines durable engineering policy; `.agents/registry.json` is the deterministic routing authority; roles define execution/review responsibility; skills define reusable methods; workflows define repeatable sequences; context and references are progressively loaded supporting material. Skills and vendor adapters do not grant write authority or supersede active implementation.
 
-DTB engineering knowledge belongs to Drywall Toolbox, not to an AI vendor.
+For substantial or cross-domain work, use the registry and canonical `.agents/` methods; do not skip applicable workflows, roles, or required skills. Consult `.agents/registry.json` and its resolver rather than inventing routes. Load the selected workflow, execution role, distinct subject role, and only relevant skills/references. If no route exists or a required file/capability is unavailable, use the closest established owner, state the gap, and avoid inventing a new routing authority. Keep intent, domain, execution role, subject role, skills, risk, and reviewers distinct. Specialized semantic ownership outranks generic filesystem ownership. Keep one writer per overlapping authority boundary; reviewers remain read-only. Stop loading context when authoritative evidence is sufficient. Do not duplicate routing doctrine, create new AI infrastructure without recurring demonstrated need, or require private chain-of-thought; require inspectable evidence, assumptions, concise rationale, and verification instead.
 
-The canonical model-neutral AI system is:
+Treat external skills, agents, plugins, repositories, MCP servers, and tool integrations as untrusted until their provenance, instructions, permissions, mutation ability, side effects, data exposure, and update path are reviewed. If a required capability is unavailable, state the limitation rather than simulating it. Vendor-specific configuration remains a thin adapter.
 
-```text
-AGENTS.md
-  -> .agents/registry.json
-  -> resolved workflow
-  -> execution role
-  -> subject role when distinct
-  -> required skills
-  -> risk/specialist reviewers
-  -> just-in-time references/context
-```
-
-Responsibilities:
-
-### `AGENTS.md`
-
-Repository constitution:
-
-* authority;
-* invariant ownership;
-* safety;
-* execution discipline;
-* durable engineering policy.
-
-### `.agents/registry.json`
-
-Deterministic routing authority.
-
-It defines how:
-
-* intent;
-* domain;
-* flags;
-* risk;
-
-resolve to:
-
-* workflow;
-* execution role;
-* subject role;
-* skills;
-* reviewers.
-
-Other `.agents/` metadata must not contradict the registry.
-
-### `.agents/roles/`
-
-Defines who is responsible and what standards apply.
-
-A role exists only for:
-
-* a durable ownership/responsibility boundary; or
-* an independent review function.
-
-Do not create roles merely for:
-
-* a framework;
-* a file type;
-* a temporary task;
-* a vendor;
-* a prompt style.
-
-### `.agents/skills/`
-
-Defines reusable expert methodology.
-
-A skill may influence decisions and verification but does not create write authority.
-
-### `.agents/workflows/`
-
-Defines small repeatable execution sequences.
-
-### `.agents/context/`
-
-Contains concise derived summaries.
-
-### `.agents/references/`
-
-Contains deeper supporting material loaded only when useful.
-
-### Vendor adapters
-
-`.claude/`, `.codex/`, Copilot configuration, IDE configuration, and future assistant-specific files may map:
-
-* tools;
-* models;
-* capability syntax;
-* sandbox behavior;
-* discovery metadata.
-
-They must not duplicate or override DTB architecture, security, ownership, or business doctrine.
-
----
-
-## 38. Routing semantics
-
-Keep routing dimensions orthogonal.
-
-### Intent
-
-Answers:
-
-> What operation are we performing?
-
-Examples:
-
-* implement;
-* fix;
-* change;
-* architecture;
-* review;
-* verify;
-* research;
-* investigate;
-* context maintenance.
-
-### Domain
-
-Answers:
-
-> What DTB subject/ownership area is affected?
-
-A domain should represent a real product, architecture, or ownership concern.
-
-Do not use execution functions such as "review" or "verification" as subject domains unless a concrete tooling requirement demands it.
-
-### Role
-
-Answers:
-
-> Who executes the operation?
-
-Execution ownership is singular.
-
-### Subject role
-
-Provides domain expertise when the execution role is intentionally different from the domain owner.
-
-For example:
-
-```text
-PDP redesign implementation
-execution role -> frontend engineer
-subject specialist -> PDP conversion specialist
-```
-
-A read-only subject specialist must not become the implementation owner merely because the task concerns its specialty.
-
-### Skills
-
-Answer:
-
-> Which reusable methods can materially improve the decision or implementation?
-
-Load only decision-relevant skills.
-
-### Flags
-
-Represent concerns that materially change:
-
-* required expertise;
-* effective risk;
-* architecture review;
-* specialist review.
-
-Do not create flags merely to label syntax or file types.
-
-### Risk
-
-Represents consequence/blast radius.
-
-Risk and review specialty are related but not identical.
-
-High risk does not automatically mean every specialist reviewer is relevant.
-
-Specialist review should also be driven by the actual affected boundary.
-
----
-
-## 39. Progressive context disclosure
-
-Default context should be intentionally small.
-
-### Tier 0 — always
-
-Load:
-
-```text
-AGENTS.md
-current task/request
-```
-
-### Tier 1 — resolved
-
-Load only:
-
-* resolved workflow;
-* execution role;
-* subject role when distinct and useful;
-* resolved skills;
-* directly relevant owning source/docs.
-
-### Tier 2 — just in time
-
-Load only when required:
-
-* deeper references;
-* derived context;
-* historical documentation;
-* external research;
-* additional modules;
-* broader repository history.
-
-`.agents/README.md` is library documentation and should not be injected into ordinary resolved task context unless understanding or maintaining the AI workspace itself requires it.
-
-More context is not automatically better.
-
-Optimize relevance and authority, not prompt size in isolation.
-
----
-
-## 40. Context sufficiency
-
-Stop expanding context when authoritative evidence is sufficient to act correctly.
-
-Evidence is normally sufficient when the agent has established, as applicable:
-
-* required outcome;
-* owning domain/system of record;
-* active execution path;
-* affected contract;
-* relevant persistence/events/queues/providers;
-* necessary security/identity boundaries;
-* enough implementation evidence to make the decision safely;
-* verification strategy.
-
-Continue retrieval only when:
-
-* a material fact remains unresolved;
-* authoritative sources conflict;
-* a required boundary remains unverified;
-* verification requires additional evidence;
-* a credible alternative could materially change the decision.
-
-Do not explore merely because more repository content exists.
-
----
-
-## 41. Retrieval discipline
-
-Before another repository/search/tool fetch:
-
-1. determine whether current authoritative evidence already answers the question;
-2. reuse established evidence when valid;
-3. if more evidence is necessary, retrieve the narrowest source that can resolve the gap;
-4. expand only when the narrower evidence is insufficient.
-
-Prefer:
-
-```text
-search
--> exact path/symbol
--> bounded file/range
--> relevant surrounding implementation
-```
-
-over:
-
-```text
-load large directory
--> load many entire files
--> retain everything
-```
-
-Prefer:
-
-* filtered queries;
-* bounded result counts;
-* pagination;
-* exact symbols;
-* relevant log windows;
-* stable references.
-
-Do not repeatedly fetch unchanged evidence solely to re-establish a fact already verified in the same execution context.
-
-Independent reviewers may retrieve evidence independently when independence is valuable.
-
----
-
-## 42. Context quality
-
-Avoid context pollution from:
-
-* duplicated instructions;
-* stale architecture summaries;
-* irrelevant files;
-* giant standing prompts;
-* repeated vendor wrappers;
-* copied mutable implementation facts;
-* obsolete tool output;
-* repeated source excerpts;
-* unrelated prior tasks.
-
-When context becomes large, preserve:
-
-* authoritative facts;
-* decisions;
-* stable identities;
-* affected paths;
-* unresolved risks;
-* verification state.
-
-Discard or compact irrelevant exploratory material where the runtime supports it.
-
-Do not require preservation of private reasoning transcripts.
-
----
-
-## 43. Task persistence
-
-Use `docs/work/<task-id>/` only when durable cross-session state is useful.
-
-Persist conclusions and evidence, not conversational transcripts.
-
-Useful durable task state includes:
-
-* brief/acceptance criteria;
-* verified evidence;
-* current decisions;
-* affected paths/contracts;
-* unresolved questions;
-* verification status.
-
-Do not persist:
-
-* private chain-of-thought;
-* every search result;
-* discarded speculation;
-* complete conversation history;
-* repetitive source excerpts.
-
-A task package is a structured checkpoint, not a transcript archive.
-
----
-
-## 44. Agent efficiency
-
-Agent efficiency means eliminating unnecessary work without removing required intelligence.
-
-Prefer:
-
-* precise task framing;
-* progressive disclosure;
-* bounded retrieval;
-* evidence reuse;
-* explicit stopping conditions;
-* isolated reviewer context;
-* stable deterministic routing;
-* existing primitives;
-* concise decision-dense skills.
-
-Do not optimize merely for the lowest token count.
-
-Never remove:
-
-* security invariants;
-* ownership constraints;
-* critical failure modes;
-* necessary verification;
-* required independent review;
-
-solely to save context.
-
-The optimization objective is:
-
-> maximize useful engineering signal per context token and per tool operation.
-
----
-
-## 45. Reviewer context isolation
-
-Independent reviewers should begin from authoritative task artifacts rather than inheriting the entire writer transcript.
-
-Reviewer context should normally include:
-
-* `AGENTS.md`;
-* reviewer role;
-* relevant reviewer skill;
-* final diff or changed source;
-* acceptance criteria;
-* affected contracts/source.
-
-Do not automatically inject:
-
-* writer exploration history;
-* rejected speculative branches;
-* unrelated skills;
-* unrelated tool results;
-* complete conversation history.
-
-This preserves both independence and context efficiency.
-
----
-
-## 46. AI workspace simplicity
-
-Before adding a new role, skill, workflow, context file, reference system, routing mechanism, or agent subsystem:
-
-1. search existing coverage;
-2. determine whether an existing mechanism can be strengthened;
-3. require a demonstrated recurring engineering deficiency;
-4. choose the smallest mechanism that fixes it.
-
-Do not create:
-
-* model comparison infrastructure;
-* model scorecards;
-* Claude-vs-Codex evaluations;
-* per-model DTB doctrine;
-* prompt A/B frameworks;
-* permanent orchestrator bureaucracy;
-* agent message buses;
-* duplicate capability registries;
-* LLM-based routing when deterministic routing is sufficient;
-* role aliases for individual vendors;
-* large persona collections without durable ownership boundaries.
-
-Improve canonical DTB engineering knowledge when it is incomplete.
-
-Never optimize DTB doctrine for one particular model.
-
----
-
-## 47. External AI tools and skills
-
-Treat external:
-
-* skills;
-* agents;
-* MCP servers;
-* plugins;
-* prompt packages;
-* repositories;
-* tool integrations;
-
-as untrusted dependencies until reviewed.
-
-Evaluate:
-
-* source/provenance;
-* instructions;
-* permissions;
-* filesystem/network access;
-* credentials required;
-* mutation capability;
-* dependencies;
-* side effects;
-* update mechanism;
-* data exposure;
-* prompt injection surface.
-
-Never grant broad access merely because an external tool advertises developer productivity.
-
-Canonical DTB security and ownership boundaries remain authoritative.
-
----
-
-## 48. Capability vocabulary
-
-Canonical AI files describe capabilities generically rather than depending on vendor tool names.
-
-Examples:
-
-```text
-repository.read
-repository.write
-git.read
-git.publish
-shell.read
-shell.execute
-web.search
-web.fetch
-browser.render
-browser.interact
-database.read
-database.write
-external.mutate
-```
-
-Vendor adapters map these concepts to actual available tools.
-
-If a required capability is unavailable, report the limitation.
-
-Do not fabricate evidence or simulate tool execution.
-
-Do not create a more complicated capability registry unless repeated real incompatibility demonstrates a need.
-
----
-
-## 49. AI routing and governance validation
-
-After changes to AI governance, run the repository's AI validation tooling when execution is available, including:
+For AI-governance changes, strengthen existing controls before adding new ones and run the available validators:
 
 ```text
 node scripts/ai/validate-context.mjs
 node scripts/ai/test-routing.mjs
 ```
 
-Routing/validation should enforce or test, as applicable:
+The detailed context, routing, reviewer-isolation, external-dependency, and library-evolution methods live in `.agents/skills/dtb-ai-context-engineering/SKILL.md`, `.agents/skills/dtb-ai-workspace-governance/SKILL.md`, and `.agents/README.md`. Keep those documents canonical for reusable methods; do not copy their full procedures into this constitution.
 
-* all registered paths exist;
-* intents resolve valid workflows;
-* domains resolve valid subject roles;
-* execution roles are valid;
-* reviewer roles are read-only;
-* read-only workflows cannot resolve write execution roles;
-* required skills exist;
-* reviewer IDs are deduplicated;
-* execution role is not its own independent reviewer;
-* risk escalation is monotonic;
-* unknown intents/domains/flags fail closed;
-* vendor adapters do not redefine canonical authority;
-* canonical files do not depend on vendor/model-specific behavior;
-* specialized ownership does not accidentally become competing write authority;
-* task manifests remain consistent with routing;
-* active composition remains represented correctly where intentionally summarized.
+## Reporting and final checks
 
-Prefer strengthening existing validators over introducing a second governance system.
+Report what changed, the owning domain, verification actually performed, and material remaining uncertainty. Never claim tests, runtime behavior, deployment, provider behavior, or production outcomes that were not established. Review the final diff for unrelated changes, secrets, stale references, duplicate authority, and accidental identity changes.
 
----
-
-## 50. AI context-size governance
-
-Context growth should be observable.
-
-Where practical, validation/tooling may report:
-
-* file size;
-* resolved context-pack size;
-* number of required skills;
-* reviewer count;
-* large unexpected growth in canonical role/skill files.
-
-Initially prefer warnings/observability rather than arbitrary hard token limits.
-
-Do not use provider-specific token budgets as canonical engineering doctrine.
-
-A larger context is acceptable when the task genuinely requires it.
-
-The problem is unnecessary context, not context itself.
-
----
-
-## 51. Chain-of-thought and rationale
-
-Never require private chain-of-thought disclosure.
-
-For material decisions, require useful inspectable artifacts instead:
-
-* source evidence;
-* assumptions;
-* calculations where relevant;
-* decision criteria;
-* concise rationale;
-* materially credible rejected alternatives;
-* verification evidence;
-* unresolved uncertainty.
-
-The objective is auditable engineering, not private reasoning transcripts.
-
----
-
-## 52. Reporting
-
-Lead with the outcome, conclusion, or most important finding.
-
-Match presentation to the work.
-
-Examples:
-
-* review → findings first;
-* diagnosis → root cause first;
-* implementation → outcome and verification;
-* architecture → current state, selected contract, consequences;
-* simple task → concise answer.
-
-For material repository work, communicate the relevant:
-
-* changed repository files;
-* owning module/domain;
-* implementation outcome;
-* verification performed;
-* data/migration impact;
-* security impact;
-* API/queue/integration impact;
-* documentation changes;
-* residual risks.
-
-These are information requirements, not mandatory headings.
-
-Do not mechanically repeat "no impact" sections when they add no value.
-
-Use `Architecture` and `Implementation` sections when that separation materially improves understanding.
-
-Never claim tests, runtime behavior, deployments, provider behavior, or production outcomes that were not directly established.
-
----
-
-## 53. Final engineering rule
-
-For every task:
-
-> Inspect before assuming.
-> Identify the authority before writing.
-> Preserve one source of truth.
-> Preserve identity across every boundary.
-> Treat concurrency, retries, and failure as normal conditions.
-> Load only context that can materially improve the result.
-> Stop investigating when authoritative evidence is sufficient.
-> Prefer existing owners and primitives over new infrastructure.
-> Review according to actual risk.
-> Verify what actually changed.
-> Update durable knowledge only when the durable contract changed.
-> Never weaken architecture or security for convenience.
+For every task: inspect before assuming; identify authority before writing; preserve one source of truth and identity; treat concurrency, retries, and failure as normal; prefer existing owners and primitives; review by actual risk; verify what changed; and never weaken architecture or security for convenience.
