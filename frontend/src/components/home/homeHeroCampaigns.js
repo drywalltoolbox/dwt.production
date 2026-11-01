@@ -2,8 +2,8 @@ export const HOME_HERO_CAMPAIGNS = [
   {
     id: 'tools',
     label: 'Tools',
-    eyebrow: 'Built for the Trade',
-    titleLines: ['The tools behind', 'a better finish.'],
+    eyebrow: '',
+    titleLines: ['The New', 'Standard In', 'Drywall Tools.'],
     accentLine: null,
     description: 'Professional drywall tools, replacement parts, and repair services—all in one place.',
     primaryAction: { label: 'Shop All Tools', to: '/all-products' },
