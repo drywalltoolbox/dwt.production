@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import { DTB_LOGO_WHITE_URL, handleDtbLogoFallback } from '../../utils/dtbLogoAssets.js';
 import '../../styles/storefront-footer-template.css';
 import { useEditableComponent } from '../../designer/useEditableComponent.js';
+import FOOTER_BACKGROUND_DESKTOP_URL from '../../assets/brand/dtb-footer-background-desktop.jpg';
+import FOOTER_BACKGROUND_MOBILE_URL from '../../assets/brand/dtb-footer-background-mobile.jpg';
 
 const FOOTER_GROUPS = [
   {
@@ -53,10 +55,6 @@ const SOCIAL_LINKS = [
   { label: 'Facebook', href: 'https://www.facebook.com/Drywalltoolbox/', Icon: Facebook },
   { label: 'X', href: 'https://twitter.com', Icon: XLogo },
 ];
-
-const storefrontPublicBase = (process.env.PUBLIC_URL || '').replace(/\/$/, '');
-const FOOTER_BACKGROUND_DESKTOP_URL = `${storefrontPublicBase}/assets/brand/dtb-footer-background-desktop.jpg`;
-const FOOTER_BACKGROUND_MOBILE_URL = `${storefrontPublicBase}/assets/brand/dtb-footer-background-mobile.jpg`;
 
 function FooterLinkGroup({ title, links }) {
   return (

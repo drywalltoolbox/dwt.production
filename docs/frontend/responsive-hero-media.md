@@ -50,6 +50,13 @@ a set changes from width-responsive to single-asset delivery. The desktop art
 is 2800 × 1000 px (2.8:1); its bounded viewport remains controlled by the
 homepage hero layout styles.
 
+The generator rejects paths outside the frontend, serializes concurrent
+invocations, writes each WebP and generated manifest via an atomic rename, and
+updates its fingerprint only after all outputs are complete. This keeps a
+cancelled or overlapping run from leaving a manifest that points to partial
+files. See [Frontend asset ownership](assets.md) for the `public/` versus
+`src/assets/` boundary.
+
 Production and staging builds run generation before Webpack. The generator is
 fingerprinted by its policy, source bytes, and Sharp version, so unchanged
 assets do not need to be re-encoded on each build.

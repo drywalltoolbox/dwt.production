@@ -4,9 +4,10 @@
  * Visual storefront components use same-origin build assets first. Stable live
  * endpoints remain available as a fallback for static/document contexts.
  */
-const publicBase = (process.env.PUBLIC_URL || '').replace(/\/$/, '');
-export const DTB_LOGO_WHITE_URL = `${publicBase}/assets/brand/dtb-logo-white-v2.webp`;
-export const DTB_LOGO_BLACK_URL = `${publicBase}/assets/brand/dtb-logo-black.webp`;
+import DTB_LOGO_WHITE_URL from '../assets/brand/dtb-logo-white.webp';
+import DTB_LOGO_BLACK_URL from '../assets/brand/dtb-logo-black.webp';
+
+export { DTB_LOGO_WHITE_URL, DTB_LOGO_BLACK_URL };
 export const DTB_LOGO_WHITE_FALLBACK_URL = 'https://drywalltoolbox.com/logos/dtb-logo-white.webp';
 export const DTB_LOGO_BLACK_FALLBACK_URL = 'https://drywalltoolbox.com/logos/dtb-logo-black.webp';
 
