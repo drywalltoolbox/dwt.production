@@ -860,3 +860,215 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+
+/* Home carousel polish: keep the shared repair page untouched while giving
+   homepage campaigns a restrained, readable type and action system. */
+.home-hero__repair-surface .repair-hero .repair-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #b9d0ff;
+  font-size: 0.75rem;
+  font-weight: 750;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  text-shadow: 0 1px 3px rgba(0, 10, 35, 0.35);
+}
+
+.home-hero__repair-surface .repair-hero .repair-eyebrow::before {
+  width: 22px;
+  height: 2px;
+  flex: none;
+  border-radius: 2px;
+  background: #3970ff;
+  box-shadow: 0 1px 3px rgba(0, 10, 35, 0.28);
+  content: '';
+}
+
+.home-hero__repair-surface .repair-hero h1 {
+  max-width: 17ch;
+  font-size: clamp(2.7rem, 4.7vw, 4.5rem);
+  font-weight: 820;
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+  text-transform: none;
+}
+
+.home-hero__repair-surface .repair-hero h1 .repair-hero__title-line--primary,
+.home-hero__repair-surface .repair-hero h1 .repair-hero__title-line--accent {
+  color: #f7f9ff;
+  background: linear-gradient(175deg, #fff 0%, #f9fbff 36%, #eaf0fa 76%, #dce6f5 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: none;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.32), 0 4px 12px rgba(0, 6, 22, 0.3);
+}
+
+.home-hero__repair-surface .repair-hero__lead {
+  max-width: 36ch;
+  color: #e7edf7;
+  font-size: clamp(0.94rem, 1.05vw, 1.06rem);
+  font-weight: 450;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 2px rgba(0, 5, 20, 0.42), 0 3px 10px rgba(0, 5, 20, 0.14);
+}
+
+.home-hero__repair-surface .repair-hero__actions {
+  gap: 12px;
+}
+
+.home-hero__repair-surface .repair-hero__actions .repair-button {
+  min-height: 56px;
+  padding-inline: 20px;
+  border-radius: 14px;
+  font-size: 0.98rem;
+  font-weight: 720;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.home-hero__repair-surface .repair-hero__actions .repair-button--primary {
+  border-color: rgba(122, 157, 255, 0.72);
+  background: #2255ee;
+  box-shadow: 0 8px 22px rgba(16, 48, 150, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+
+.home-hero__repair-surface .repair-hero__actions .repair-button--primary:hover {
+  background: #2d62ff;
+  box-shadow: 0 10px 26px rgba(16, 48, 150, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.26);
+}
+
+.home-hero__repair-surface .repair-hero__actions .repair-button--secondary {
+  border-color: rgba(190, 207, 232, 0.42);
+  background: rgba(7, 19, 39, 0.58);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.home-hero__repair-surface .repair-hero__actions .repair-button__icon,
+.home-hero__repair-surface .repair-hero__actions .repair-button__detail {
+  display: none;
+}
+
+.home-hero__repair-surface .repair-hero__actions .repair-button__copy {
+  min-width: 0;
+  flex: 1 1 auto;
+  text-align: left;
+}
+
+.home-hero__repair-surface .repair-hero__actions .repair-button__label {
+  font-weight: 700;
+}
+
+.home-hero__repair-surface .repair-hero__actions .repair-button__arrow {
+  flex: 0 0 20px;
+  width: 20px;
+  height: 20px;
+  margin: 0 0 0 12px;
+}
+
+.home-hero__repair-surface .repair-hero__actions .repair-button__arrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.home-hero__stage .home-hero-carousel {
+  bottom: max(12px, env(safe-area-inset-bottom));
+}
+
+.home-hero__stage .home-hero-carousel__dot::before {
+  background: rgba(228, 239, 255, 0.48);
+}
+
+.home-hero__stage .home-hero-carousel__dot.is-active::after {
+  background: #7da6ff;
+  box-shadow: 0 0 8px rgba(34, 85, 238, 0.3);
+}
+
+@media (max-width: 47.99rem) {
+  .home-hero__stage {
+    min-height: clamp(440px, 112vw, 500px);
+  }
+
+  .home-hero__repair-surface .repair-hero .repair-hero__scrim {
+    background:
+      linear-gradient(180deg, rgba(2, 12, 32, 0.08) 0%, rgba(2, 12, 32, 0.22) 28%, rgba(2, 12, 32, 0.62) 54%, rgba(2, 12, 32, 0.92) 78%, rgba(2, 12, 32, 0.98) 100%),
+      linear-gradient(90deg, rgba(2, 12, 32, 0.26), rgba(2, 12, 32, 0) 82%);
+  }
+
+  .home-hero__repair-surface .repair-hero.repair-hero--home-slide {
+    min-height: inherit;
+  }
+
+  .home-hero__repair-surface .repair-hero .repair-hero__inner {
+    min-height: inherit;
+    justify-content: flex-end;
+    align-items: stretch;
+    padding: clamp(96px, 25vw, 124px) clamp(20px, 5.6vw, 24px) 68px;
+  }
+
+  .home-hero__repair-surface .repair-hero .repair-eyebrow {
+    margin-bottom: 12px;
+    font-size: clamp(11px, 2.9vw, 12px);
+    letter-spacing: 0.1em;
+  }
+
+  .home-hero__repair-surface .repair-hero h1 {
+    max-width: 16ch;
+    margin-bottom: 14px;
+    font-size: clamp(2rem, 8.3vw, 2.7rem);
+    line-height: 1.06;
+    letter-spacing: -0.045em;
+    overflow-wrap: normal;
+    text-wrap: balance;
+  }
+
+  .home-hero__repair-surface .repair-hero h1 .repair-hero__title-line {
+    white-space: normal;
+  }
+
+  .home-hero__repair-surface .repair-hero__lead {
+    max-width: 36ch;
+    margin-bottom: 24px;
+    font-size: clamp(0.9375rem, 3.8vw, 1.0625rem);
+    line-height: 1.5;
+  }
+
+  .home-hero__repair-surface .repair-hero__actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .home-hero__repair-surface .repair-hero__actions .repair-button {
+    min-height: 56px;
+    padding: 9px 10px 9px 12px;
+    border-radius: 14px;
+    font-size: clamp(0.75rem, 3.2vw, 0.875rem);
+    white-space: normal;
+  }
+
+  .home-hero__repair-surface .repair-hero__actions .repair-button__arrow {
+    flex-basis: 18px;
+    width: 18px;
+    height: 18px;
+    margin-left: 5px;
+  }
+
+  .home-hero__repair-surface .repair-hero__actions .repair-button__arrow svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  .home-hero__stage .home-hero-carousel {
+    bottom: max(12px, env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero__repair-surface .repair-hero__actions .repair-button,
+  .home-hero__repair-surface .repair-hero__actions .repair-button__arrow {
+    transition: none;
+  }
+}
