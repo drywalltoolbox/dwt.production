@@ -47,7 +47,6 @@
 }
 
 * {
-    -webkit-font-smoothing: antialiased;
     box-sizing: border-box;
 }
 
@@ -82,8 +81,6 @@ body {
     font-family: var(--font-main);
     font-optical-sizing: auto;
     font-feature-settings: 'cv11', 'ss01';
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     line-height: 1.5;
     margin: 0;

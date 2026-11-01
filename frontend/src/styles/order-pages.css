@@ -22,7 +22,6 @@
     radial-gradient(circle at 88% 12%, rgba(20, 184, 166, 0.06), transparent 24rem),
     linear-gradient(180deg, #f8fafc 0%, #eef3f8 100%);
   color: var(--dtb-order-text);
-  -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 

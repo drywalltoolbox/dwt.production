@@ -21,8 +21,6 @@
   font-optical-sizing: auto;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 .dtb-pdp__info-column .dtb-pdp-header__title {

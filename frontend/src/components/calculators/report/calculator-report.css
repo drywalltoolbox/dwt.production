@@ -21,7 +21,6 @@
   line-height: 1.45;
   letter-spacing: -0.006em;
   text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
 }
 
 .dtb-calculator-report *,

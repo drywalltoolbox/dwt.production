@@ -55,7 +55,7 @@
   }
 
   body {
-    @apply text-gray-900 antialiased;
+    @apply text-gray-900;
     margin: 0;
     padding: 0;
     background: var(--dtb-page-bg, #ffffff);

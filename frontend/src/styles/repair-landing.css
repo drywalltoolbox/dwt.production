@@ -23,7 +23,7 @@
   text-transform: uppercase;
 }
 
-.repair-hero {
+.repair-hero:not(.repair-hero--home-slide) {
   position: relative;
   min-height: clamp(430px, 32vw, 520px);
   overflow: hidden;

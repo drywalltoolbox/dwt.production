@@ -956,8 +956,6 @@
   border: none;
   outline: none;
   padding: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   appearance: textfield;
   -moz-appearance: textfield;
 }

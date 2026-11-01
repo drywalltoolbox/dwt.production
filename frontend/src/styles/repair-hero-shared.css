@@ -4,10 +4,15 @@
   position: relative;
   min-height: clamp(430px, 32vw, 520px);
   overflow: hidden;
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
   background: #020b1b;
   color: #fff;
   isolation: isolate;
+}
+
+/* The standalone repair landing keeps its separator; the embedded homepage
+   slide fades directly into the storefront canvas and has no frame line. */
+.repair-landing .repair-hero:not(.repair-hero--home-slide) {
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
 }
 
 .repair-hero__media {

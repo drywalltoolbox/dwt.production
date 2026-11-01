@@ -53,7 +53,7 @@ export default function StorefrontMobileNavigationPages({ isOpen, sections, link
     <nav className={`dtb-menu-pages${current ? '' : ' dtb-menu-pages--root'}`} aria-label="Mobile navigation" aria-busy={showCategorySkeleton} data-direction={direction}>
       <div className="dtb-menu-pages__heading">
         <h2 ref={headingRef} tabIndex={-1} className="dtb-menu-pages__title" key={pageTitle}>
-          {current?.isParentCategory && current.to ? (
+          {current?.to ? (
             <Link
               className="dtb-menu-pages__title-link"
               to={current.to}

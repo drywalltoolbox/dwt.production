@@ -28,7 +28,6 @@
   transition: transform var(--account-hub-motion-duration) var(--account-hub-motion-ease);
   will-change: transform;
   backface-visibility: hidden;
-  -webkit-font-smoothing: antialiased;
 }
 
 .account-hub--open .account-hub__sheet {

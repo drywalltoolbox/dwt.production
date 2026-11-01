@@ -182,9 +182,11 @@ ErrorDocument 511 /errors/511.html
   RewriteRule ^order-tracking/[0-9]+/?$ storefront.html [QSA,L]
 
   # Prevent SiteGround/nginx and browser caching on admin/auth and
-  # customer/session-owned surfaces.
+  # customer/session-owned surfaces. A WooCommerce/login cookie should not
+  # disable caching for public static assets; their contents are identical for
+  # every visitor and content-hashed bundles are immutable.
   <IfModule mod_headers.c>
-    <If "%{REQUEST_URI} =~ m#^/(?:wp-admin|wp-login\.php|wp-json|dtb|wp-cron\.php|xmlrpc\.php|cart|checkout|order-tracking|account|my-account|dashboard|orders|addresses|rewards|login|register|forgot-password|lost-password|reset-password|logout|wc-api)(?:/|$)#i || %{REQUEST_URI} =~ m#/checkout/order-pay/#i || %{QUERY_STRING} =~ m#(^|&)(?:rest_route=|pay_for_order=true|order-pay=[0-9]+|order-received=[0-9]+|wc-api=|order_id=[0-9]+|payment_intent=|key=wc_order_)#i || %{HTTP_COOKIE} =~ m#(?:^|;\s*)(?:wordpress_logged_in_|wordpress_sec_|wordpress_test_cookie|wp-settings-|woocommerce_cart_hash|woocommerce_items_in_cart|wp_woocommerce_session_|dtb_auth)#i">
+    <If "%{REQUEST_URI} =~ m#^/(?:wp-admin|wp-login\.php|wp-json|dtb|wp-cron\.php|xmlrpc\.php|cart|checkout|order-tracking|account|my-account|dashboard|orders|addresses|rewards|login|register|forgot-password|lost-password|reset-password|logout|wc-api)(?:/|$)#i || %{REQUEST_URI} =~ m#/checkout/order-pay/#i || %{QUERY_STRING} =~ m#(^|&)(?:rest_route=|pay_for_order=true|order-pay=[0-9]+|order-received=[0-9]+|wc-api=|order_id=[0-9]+|payment_intent=|key=wc_order_)#i || (%{HTTP_COOKIE} =~ m#(?:^|;\s*)(?:wordpress_logged_in_|wordpress_sec_|wordpress_test_cookie|wp-settings-|woocommerce_cart_hash|woocommerce_items_in_cart|wp_woocommerce_session_|dtb_auth)#i && %{REQUEST_URI} !~ m#\.(?:avif|webp|png|jpe?g|gif|svg|ico|woff2?|ttf|otf|eot|js|mjs|css)$#i)">
       Header always set Cache-Control "no-store, no-cache, must-revalidate, max-age=0, private"
       Header always set Pragma "no-cache"
       Header always set Expires "0"

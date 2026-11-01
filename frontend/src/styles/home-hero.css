@@ -441,6 +441,51 @@
 }
 
 @media (max-width: 640px) {
+  .home-hero__stage {
+    border: 0;
+    outline: 0;
+    box-shadow: none;
+  }
+
+  .home-hero__stage::after {
+    position: absolute;
+    z-index: 5;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 3px;
+    background: #fff;
+    content: '';
+    pointer-events: none;
+  }
+
+  .home-hero .home-hero__repair-surface .repair-hero.repair-hero--home-slide {
+    border: 0 !important;
+    outline: 0;
+    box-shadow: none;
+    background: #fff;
+  }
+
+  .home-hero .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__media,
+  .home-hero .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__scrim {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 calc(100% - clamp(58px, 17vw, 86px)),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      #000 0%,
+      #000 calc(100% - clamp(58px, 17vw, 86px)),
+      transparent 100%
+    );
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+  }
+
   .home-hero {
     overflow: visible;
   }

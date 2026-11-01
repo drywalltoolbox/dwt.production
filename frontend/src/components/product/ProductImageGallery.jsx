@@ -304,7 +304,10 @@ export default function ProductImageGallery({ product }) {
     [product, isVariationProduct]
   );
   const imageMeta = useMemo(
-    () => mergeImageSets(baseImageMeta, isVariationProduct ? [] : parentImageMeta),
+    () => mergeImageSets(
+      baseImageMeta,
+      (!isVariationProduct || baseImageMeta.length === 0) ? parentImageMeta : [],
+    ),
     [baseImageMeta, isVariationProduct, parentImageMeta]
   );
   const resetKey = `${product?.id ?? ''}|${product?.sku ?? ''}|${parentId ?? ''}`;
@@ -368,7 +371,10 @@ export default function ProductImageGallery({ product }) {
   }, []);
 
   useEffect(() => {
-    if (isVariationProduct || !parentId || baseImageMeta.length > 1) return undefined;
+    // Some imported variations have no child media even though their parent
+    // gallery is complete. Load that gallery only as an empty-variation
+    // fallback; never append parent assets to a variation's own gallery.
+    if (!parentId || baseImageMeta.length > 0) return undefined;
 
     let cancelled = false;
     fetchParentGallery(parentId).then((parentImages) => {
@@ -376,7 +382,7 @@ export default function ProductImageGallery({ product }) {
     });
 
     return () => { cancelled = true; };
-  }, [baseImageMeta.length, isVariationProduct, parentId]);
+  }, [baseImageMeta.length, parentId]);
 
   // Initialize every new gallery at the featured image. Previously the rail
   // only received a scroll operation after goTo(), which made thumbnails appear

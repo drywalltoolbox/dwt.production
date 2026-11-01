@@ -84,7 +84,7 @@
   /* A connected discovery flow with clear section rhythm and softly surfaced
      category choices. Keep the white canvas continuous between sections. */
   .home-commerce-categories {
-    padding: 1.15rem 0 1.3rem;
+    padding: 1.15rem 0 1.8rem;
   }
 
   .home-commerce-categories .storefront-section__head {
@@ -96,12 +96,24 @@
   .home-commerce-categories .storefront-section__head::after,
   .dtb-home-product-section:not(.dtb-home-brand-section) .storefront-section__head::after {
     position: absolute;
-    right: 0;
+    right: auto;
     bottom: 0;
     left: 0;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(34, 85, 238, .48), rgba(112, 132, 162, .22) 32%, rgba(112, 132, 162, .1) 78%, transparent);
+    width: min(72%, 220px);
+    height: 2px;
+    border-radius: 999px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(34, 85, 238, .24) 8%,
+      rgba(34, 85, 238, .66) 28%,
+      rgba(34, 85, 238, .78) 43%,
+      rgba(34, 85, 238, .46) 68%,
+      rgba(34, 85, 238, .18) 88%,
+      transparent 100%);
+    box-shadow: 0 1px 8px rgba(34, 85, 238, .16);
     content: '';
+    pointer-events: none;
+    animation: dtb-home-rail-divider-fade 7.5s ease-in-out infinite alternate;
   }
 
   .home-commerce-categories .storefront-section__title,
@@ -206,6 +218,18 @@
   .home-hero-carousel__dot { height: 44px; }
   .home-hero-carousel__dot::before,
   .home-hero-carousel__dot.is-active::after { top: 21px; }
+}
+
+@keyframes dtb-home-rail-divider-fade {
+  from { opacity: .72; box-shadow: 0 1px 5px rgba(34, 85, 238, .1); }
+  to { opacity: 1; box-shadow: 0 1px 9px rgba(34, 85, 238, .18); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-commerce-categories .storefront-section__head::after,
+  .dtb-home-product-section:not(.dtb-home-brand-section) .storefront-section__head::after {
+    animation: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
