@@ -1,0 +1,1774 @@
+{
+  "catalog_rows_without_exact_manufacturer_image_match": [
+    {
+      "Type": "variable",
+      "SKU": "COL-BOX-FILLER",
+      "Name": "Columbia Box Filler"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-GOOSENECK",
+      "Name": "Columbia Gooseneck"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CPFGN",
+      "Name": "Columbia Powerfill 5 Gallon Taper Gooseneck Fill Tube"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA268",
+      "Name": "#10 Flat Washer"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA3",
+      "Name": "1/2\" x 7/8\" Flat Washer"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT109",
+      "Name": "1/4 - 20 Castle Nut"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA296",
+      "Name": "1/4-20 X 1/2\" Hex Bolt"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA295",
+      "Name": "1/4-20 X 1/2\" Flathead Socket"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA299",
+      "Name": "1/4-20 X 1-1/2 Hex Bolt"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA313",
+      "Name": "1/4-20 X 1/4 Soc Head Setscrew"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA300",
+      "Name": "1/4-20 X 2\" Hex Bolt"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA297",
+      "Name": "1/4-20 X 5/8\" Socket Head"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA320",
+      "Name": "1/4-28 X 3/8 Socket Set Screw"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA225",
+      "Name": "1/8 X 3/8 Aluminum Backup Wash"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA273",
+      "Name": "10-24 X 1\" Hex Bolt"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA2",
+      "Name": "4-40 x 1/8\" Binder Slot"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA305",
+      "Name": "5/16-18 X 3/4\" Hex Bolt"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA306",
+      "Name": "5/16-18 X 1-1/4\" Hex Bolt"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CFB10",
+      "Name": "5/16-18 x 3/4\" Thumb Screw"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA317",
+      "Name": "5/32 X 7/8\" Roll Pin"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA245",
+      "Name": "6-32 X 1/2\" Fillister Slot"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA227",
+      "Name": "6-32 X 1/4\" Flat Slot"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA264",
+      "Name": "8-32 X 5/8\" Truss Slot"
+    },
+    {
+      "Type": "variable",
+      "SKU": "FFB11",
+      "Name": "Adjuster Spring"
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB11-8",
+      "Name": "Adjuster Spring - 8\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB11-10",
+      "Name": "Adjuster Spring - 10\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB11-12",
+      "Name": "Adjuster Spring 12\""
+    },
+    {
+      "Type": "simple",
+      "SKU": "AHA",
+      "Name": "Angle Head Adapter"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB5A",
+      "Name": "Axle Bushing"
+    },
+    {
+      "Type": "variable",
+      "SKU": "FFB5",
+      "Name": "Axle"
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB5-7",
+      "Name": "Axle - 7\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB5-8",
+      "Name": "Axle - 8\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB5-10",
+      "Name": "Axle - 10\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB5-12",
+      "Name": "Axle - 12\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB5-14",
+      "Name": "Axle - 14\""
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP32",
+      "Name": "Backing Washer Locator"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB8",
+      "Name": "Bar Retainer Clip"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT103",
+      "Name": "Taper Body"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT125A",
+      "Name": "Bearing"
+    },
+    {
+      "Type": "variable",
+      "SKU": "FFB9",
+      "Name": "Columbia Tools FFB9 Flat Finishing Box Blade"
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB9-5.5",
+      "Name": "Blade 5.5\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB9-7",
+      "Name": "Blade 7\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB9-8",
+      "Name": "Blade 8\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB9-10",
+      "Name": "Blade 10\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB9-12",
+      "Name": "Blade 12\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB9-14",
+      "Name": "Blade 14\""
+    },
+    {
+      "Type": "variable",
+      "SKU": "HNS7",
+      "Name": "Columbia Tools HNS7 Hinged Nailspotter Blade"
+    },
+    {
+      "Type": "variable",
+      "SKU": "HNS8",
+      "Name": "Blade Holder"
+    },
+    {
+      "Type": "variation",
+      "SKU": "HNS8-2",
+      "Name": "Blade Holder 2\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "HNS8-3",
+      "Name": "Blade Holder 3\""
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH16A",
+      "Name": "Bleeder Screw"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH10B",
+      "Name": "Bottom Cap"
+    },
+    {
+      "Type": "variable",
+      "SKU": "AH9-CLIP",
+      "Name": "Bottom Retainer Corner Clip"
+    },
+    {
+      "Type": "variation",
+      "SKU": "AH9",
+      "Name": "Bottom Retainer Corner Clip"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CFB8",
+      "Name": "Box Mount"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB36",
+      "Name": "Box Wheel Hub"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH7",
+      "Name": "Brake"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH9A",
+      "Name": "Brake Activation Rod"
+    },
+    {
+      "Type": "variable",
+      "SKU": "BH9",
+      "Name": "Brake Connecting Strap"
+    },
+    {
+      "Type": "variation",
+      "SKU": "BH9-3",
+      "Name": "Brake Connecting Strap 3'"
+    },
+    {
+      "Type": "variation",
+      "SKU": "BH9-42",
+      "Name": "Brake Connecting Strap 42\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "BH9-4",
+      "Name": "Brake Connecting Strap 4'"
+    },
+    {
+      "Type": "variation",
+      "SKU": "BH9-5",
+      "Name": "Brake Connecting Strap 5'"
+    },
+    {
+      "Type": "variation",
+      "SKU": "BH9-6",
+      "Name": "Brake Connecting Strap 6'"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH13",
+      "Name": "Brake Cam"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH14",
+      "Name": "Brake Piston"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH8",
+      "Name": "Matrix Brake Rod Bushing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH12",
+      "Name": "Head Spring"
+    },
+    {
+      "Type": "variable",
+      "SKU": "HH-BRASS-CONNECTOR",
+      "Name": "Brass Connector"
+    },
+    {
+      "Type": "variation",
+      "SKU": "HH17A",
+      "Name": "Brass Connector  1"
+    },
+    {
+      "Type": "variation",
+      "SKU": "HH17B",
+      "Name": "Brass Connector 2"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH19",
+      "Name": "Cap"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH9",
+      "Name": "Coiled Hydraulic Line"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HP44",
+      "Name": "Collar O-Ring (Large)"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA278",
+      "Name": "Columbia #8 Belleville Washer"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA281",
+      "Name": "10-32 Nyloc Jam Nut"
+    },
+    {
+      "Type": "simple",
+      "SKU": "AH32",
+      "Name": "Columbia 2\" Angle Head Carbide Blade"
+    },
+    {
+      "Type": "simple",
+      "SKU": "AH72",
+      "Name": "Columbia 2\" Angle Head Frame Tension Spring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "AH325",
+      "Name": "Columbia 2.5\" Angle Head Carbide Blade"
+    },
+    {
+      "Type": "simple",
+      "SKU": "AH725",
+      "Name": "Columbia 2.5\" Angle Head Frame Tension Spring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "AH33",
+      "Name": "Columbia 3\" Angle Head Carbide Blade"
+    },
+    {
+      "Type": "simple",
+      "SKU": "AH73",
+      "Name": "Columbia 3\" Angle Head Tension Spring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "AH335",
+      "Name": "Columbia 3.5\" Angle Head Carbide Blade"
+    },
+    {
+      "Type": "simple",
+      "SKU": "AH735",
+      "Name": "Columbia 3.5\" Angle Head Frame Tension Spring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA308",
+      "Name": "1/2 X 7/8\" Flat Washer"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA208",
+      "Name": "4/40 X 1/8 Binder Slot"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA222",
+      "Name": "5/40 X 7/16 Fillister Slot"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CFB77",
+      "Name": "Columbia 7\" Angle Box Door Gasket"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CFB47",
+      "Name": "Columbia 7\" Pressure Door"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CFB78",
+      "Name": "Columbia 8\" Door Gasket for Angle Box"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CFB48",
+      "Name": "Columbia 8\" Pressure Door"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CFB28",
+      "Name": "Columbia 8\" Roll Face"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA266",
+      "Name": "8-32 X 1\" Flat Slot"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB43",
+      "Name": "Bead Wheel Bushing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CTA84",
+      "Name": "Sub Assy Cable Guide Pulley"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CLTBF",
+      "Name": "Cam Lock Box Filler Attachment"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CTA87CL",
+      "Name": "Columbia Cover Plate Assembly"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT87CS",
+      "Name": "Columbia Cover Plate Cork Seal"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CF1B",
+      "Name": "Direct Plate"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CFB8A",
+      "Name": "Columbia ONE Angle Box Door Adaptor"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CTA99",
+      "Name": "Columbia Removable Cover Plate Pin"
+    },
+    {
+      "Type": "simple",
+      "SKU": "SB212",
+      "Name": "Columbia Replacement 12\" Blade for Tomahawk"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT118A",
+      "Name": "Retaining Spring Clip New"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT123",
+      "Name": "Columbia Retaining Quick Release Spring Shaft"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FA289",
+      "Name": "Old Style 1/4\" X 2\" Split Pin"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT95",
+      "Name": "Control Valve"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT10",
+      "Name": "Crimping Arm Bushing Right"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT115A",
+      "Name": "Guard Ring O-Ring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT93",
+      "Name": "Mud Shut Off Lever Arm"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT94",
+      "Name": "Mud Shut-Off Upper Plate"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT17",
+      "Name": "Separation Plate"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT128A",
+      "Name": "Shaft Guide Strap"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT122A",
+      "Name": "Band Adaptor"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT132",
+      "Name": "Connecting Link"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH7",
+      "Name": "Matrix Connecting Link (Fork)"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH5",
+      "Name": "Matrix Connecting Link Pin"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH16",
+      "Name": "Matrix Connecting Rod Housing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT112",
+      "Name": "Slotted Bolt"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT104",
+      "Name": "Connection Strap"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT105",
+      "Name": "Crimper Lever"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT10A",
+      "Name": "Crimping Arm Bushing Left"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH9",
+      "Name": "Matrix Pinch Brake Rod"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CR4",
+      "Name": "Cut Washer"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT13",
+      "Name": "Dog Base Bracket"
+    },
+    {
+      "Type": "variable",
+      "SKU": "CFB4",
+      "Name": "Columbia Tools Corner Flusher Box Door"
+    },
+    {
+      "Type": "variable",
+      "SKU": "HNS4",
+      "Name": "Columbia Tools Hinged Nailspotter Door"
+    },
+    {
+      "Type": "variation",
+      "SKU": "HNS4-2",
+      "Name": "Door 2\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "HNS4-3",
+      "Name": "Door 3\""
+    },
+    {
+      "Type": "variable",
+      "SKU": "CFB7",
+      "Name": "Columbia Tools Door Gasket"
+    },
+    {
+      "Type": "variable",
+      "SKU": "HNS15",
+      "Name": "Columbia Tools Door Gasket for Hinged Nailspotters"
+    },
+    {
+      "Type": "variation",
+      "SKU": "HNS15-2",
+      "Name": "Hinged Nail Spotter Door Gasket 2\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "HNS15-3",
+      "Name": "Hinged Nail Spotter Door Gasket 3\""
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB17",
+      "Name": "Door Spring"
+    },
+    {
+      "Type": "variable",
+      "SKU": "HNS-DOOR-SPRING",
+      "Name": "Columbia Tools Door Spring"
+    },
+    {
+      "Type": "variation",
+      "SKU": "HNS10A",
+      "Name": "Door Spring Short"
+    },
+    {
+      "Type": "variation",
+      "SKU": "HNS10",
+      "Name": "Door Spring Long"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB16",
+      "Name": "Door Spring Nut"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CFB11A",
+      "Name": "Columbia Tools Door Stop (CFB11A)"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB32",
+      "Name": "New Thumb Release Door Stop"
+    },
+    {
+      "Type": "variable",
+      "SKU": "CT-SPROCKET",
+      "Name": "Drive Sprocket"
+    },
+    {
+      "Type": "variation",
+      "SKU": "CT71",
+      "Name": "Drive Sprocket Small"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT87",
+      "Name": "Engraved Cover Plate Cap"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH5",
+      "Name": "Extension Housing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH30",
+      "Name": "Extension Release Trigger"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT130",
+      "Name": "Extension Shaft"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT127",
+      "Name": "Extension Shaft Bracket"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP33",
+      "Name": "Filler Gasket"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP28",
+      "Name": "Filler Nut"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP25",
+      "Name": "Filler Studs"
+    },
+    {
+      "Type": "variable",
+      "SKU": "HFFB14",
+      "Name": "Flat Box Hinged Door Gasket"
+    },
+    {
+      "Type": "variation",
+      "SKU": "HFFB14-8",
+      "Name": "Hinge Box Door Gasket 8\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "HFFB14-10",
+      "Name": "Hinge Box Door Gasket 10\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "HFFB14-12",
+      "Name": "Hinge Box Door Gasket 12\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "HFFB14-14",
+      "Name": "Hinge Box Door Gasket 14\""
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP2",
+      "Name": "Foot Valve"
+    },
+    {
+      "Type": "variable",
+      "SKU": "AH7",
+      "Name": "Frame Tension Spring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH21",
+      "Name": "Matrix Grip Adjuster Housing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH23",
+      "Name": "Matrix Grip Adjusting Fastener"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH22",
+      "Name": "Matrix Grip Adjustment Pin"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH15",
+      "Name": "Hand Protector"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT115",
+      "Name": "Guard Ring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT126",
+      "Name": "Hand Grip Body"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT124",
+      "Name": "Hand Grip Guard Ring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HNS12",
+      "Name": "Handle Clamp"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH35",
+      "Name": "Grip (No Ends)"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH4",
+      "Name": "Mh4 Matrix Handle Grip Anodized Black"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH11",
+      "Name": "Matrix Handle Grip Bushing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP6",
+      "Name": "Handle Link"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HNSA-14",
+      "Name": "Handle Link Assembly"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH1",
+      "Name": "Matrix Handle Mounting Plate Anodized Black"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HPA-48",
+      "Name": "Handle Pin Assembly"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH8",
+      "Name": "Handle Tube"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP5",
+      "Name": "Head Bushing"
+    },
+    {
+      "Type": "variable",
+      "SKU": "AH1",
+      "Name": "Columbia Tools Head Casting for AH1 Angle Heads"
+    },
+    {
+      "Type": "variation",
+      "SKU": "AH1-2",
+      "Name": "Columbia Tools Head Casting for AH1 Angle Heads - 2\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "AH1-2.5",
+      "Name": "Columbia Tools Head Casting for AH1 Angle Heads - 2.5\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "AH1-3",
+      "Name": "Columbia Tools Head Casting for AH1 Angle Heads - 3\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "AH1-3.5",
+      "Name": "Columbia Tools Head Casting for AH1 Angle Heads - 3.5\""
+    },
+    {
+      "Type": "simple",
+      "SKU": "CR1",
+      "Name": "Head Casting"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB39",
+      "Name": "Axle Wheel Screw"
+    },
+    {
+      "Type": "variable",
+      "SKU": "HFFB3-PLATE",
+      "Name": "Hinge Box End Plate"
+    },
+    {
+      "Type": "variation",
+      "SKU": "HFFB3",
+      "Name": "Regular Side Plate-Both Sides"
+    },
+    {
+      "Type": "variation",
+      "SKU": "HFFB3A",
+      "Name": "Hinge Box End Plate - Left"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH6",
+      "Name": "Matrix Hinge Pin"
+    },
+    {
+      "Type": "variable",
+      "SKU": "CT-INSERT-BUSHING",
+      "Name": "Insert Bushing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH13",
+      "Name": "Matrix Large Nyliner Bushing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HP47",
+      "Name": "Latch Clamp Assembly"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HP46",
+      "Name": "Pump Latch Keeper"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP8",
+      "Name": "Leg"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH17C",
+      "Name": "Line Pincher"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH3",
+      "Name": "Matrix Lower Mounting Bracket"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH2",
+      "Name": "Matrix Handle Head"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH3A",
+      "Name": "Matrix Mounting Bracket Stem"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP24",
+      "Name": "Mud Pump Screen"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP23",
+      "Name": "Mud Pump Seal (U-Cup)"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HFFB1A-10",
+      "Name": "Mud Seal Strip - 10\""
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT96",
+      "Name": "Mud Shut Off Gasket"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT98",
+      "Name": "Mud Supply Seal"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT97",
+      "Name": "Mud Supply Valve Body"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HNS17A",
+      "Name": "Nail Spotter Handle Tightness Screw"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HFFB4D",
+      "Name": "Columbia Tools Nylatron Bushing HFFB4D"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP36",
+      "Name": "Steel Bushing"
+    },
+    {
+      "Type": "variable",
+      "SKU": "CT-NYLATRON-CHAIN-ROLLER",
+      "Name": "Nylatron Chain Roller"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB38",
+      "Name": "Bushing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HP45",
+      "Name": "O Ring Enclosure"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT121A",
+      "Name": "Columbia Tools O-Ring (CT121A)"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP23A",
+      "Name": "O-Ring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH10",
+      "Name": "Octagon"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH17",
+      "Name": "Matrix Pinch Brake"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH15",
+      "Name": "Matrix Pinch Brake Activator"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH24",
+      "Name": "Matrix Pinch Brake Stem"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH18",
+      "Name": "Matrix Pinch Brake Housing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH19",
+      "Name": "Pinch Brake Sleeve Housing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH25",
+      "Name": "Matrix Pinch Brake Bushing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH12",
+      "Name": "Matrix Pinch Brake Spring"
+    },
+    {
+      "Type": "variable",
+      "SKU": "MP-PISTON-BACKING-WASHER",
+      "Name": "Piston Backing Washer"
+    },
+    {
+      "Type": "variation",
+      "SKU": "MP13A",
+      "Name": "Piston Backing Washer (Small)"
+    },
+    {
+      "Type": "variation",
+      "SKU": "MP13",
+      "Name": "Piston Backing Washer (Large)"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT107",
+      "Name": "Piston Body"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT111",
+      "Name": "Taper Piston Cup (Also Cmt7)"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP14",
+      "Name": "Piston Cup"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH16",
+      "Name": "Piston Housing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH23",
+      "Name": "Piston O-Ring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP11",
+      "Name": "Piston Shaft"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HNS18",
+      "Name": "Pivot"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HP1",
+      "Name": "Pump Cylinder"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP3",
+      "Name": "Pump Flapper Valve"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP7",
+      "Name": "Pump Handle"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT92",
+      "Name": "Release Clip"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH31",
+      "Name": "Release Clip Pin"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH32",
+      "Name": "Pin Bushing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "AH1B",
+      "Name": "Columbia Tools Return Spring (AH1B)"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT101",
+      "Name": "Return Spring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH33",
+      "Name": "Release Trigger Spring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HNS12A",
+      "Name": "Handle Roll Pin"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HNS13",
+      "Name": "Roll Pin Bushing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CR2",
+      "Name": "Roller"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT125",
+      "Name": "Rollers"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB37",
+      "Name": "Flat Box Wheel O-ring"
+    },
+    {
+      "Type": "variable",
+      "SKU": "FFB25",
+      "Name": "Rubber Gasket Retainer"
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB25-10",
+      "Name": "Rubber Gasket Retainer-10\""
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB25-12",
+      "Name": "Rubber Gasket Retainer 12\""
+    },
+    {
+      "Type": "variable",
+      "SKU": "FFB7-SHOE",
+      "Name": "Shoe"
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB7",
+      "Name": "Shoe - Right"
+    },
+    {
+      "Type": "variation",
+      "SKU": "FFB7A",
+      "Name": "Shoe - Left"
+    },
+    {
+      "Type": "variable",
+      "SKU": "CFB3",
+      "Name": "Columbia Tools CFB3 Side Plate"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MP39",
+      "Name": "Sleeve"
+    },
+    {
+      "Type": "simple",
+      "SKU": "MH20",
+      "Name": "Matrix Small Nyliner Bushing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT119",
+      "Name": "Spool Retaining Spring"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB4B",
+      "Name": "Aluminum Backing Washer"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB4A",
+      "Name": "Door Washer"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT116A",
+      "Name": "Band Adaptor"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT120",
+      "Name": "Tape Spool"
+    },
+    {
+      "Type": "simple",
+      "SKU": "FFB32A",
+      "Name": "Thumb Release Clip Screw"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CT92A",
+      "Name": "Toe Kicker Cable Retainer Clip"
+    },
+    {
+      "Type": "variable",
+      "SKU": "AH3",
+      "Name": "Top Blade"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH10A",
+      "Name": "Top Cap"
+    },
+    {
+      "Type": "variable",
+      "SKU": "AH8-CLIP",
+      "Name": "Top Retainer Corner Clip"
+    },
+    {
+      "Type": "variation",
+      "SKU": "AH8",
+      "Name": "Top Retainer Corner Clip"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HH2",
+      "Name": "Upper Mounting Bracket"
+    },
+    {
+      "Type": "variable",
+      "SKU": "CT-WAFER-BUSHING",
+      "Name": "Wafer Bushing"
+    },
+    {
+      "Type": "simple",
+      "SKU": "HNS20",
+      "Name": "Wedge"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-BILLET-MUD-APPLICATOR",
+      "Name": "Columbia Billet Mud Applicator"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-UHMW-MUD-APPLICATOR",
+      "Name": "Columbia UHMW Mud Applicator"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-AUTOMATIC-TAPER",
+      "Name": "Columbia Automatic Taper"
+    },
+    {
+      "Type": "variation",
+      "SKU": "STAPER",
+      "Name": "Columbia Automatic Taper - Sawed Off 39\""
+    },
+    {
+      "Type": "simple",
+      "SKU": "PTAPER",
+      "Name": "Columbia One Predator Taper"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-CAM-LOCK-TUBE",
+      "Name": "Columbia Cam Lock Tube"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-COMPOUND-TUBE",
+      "Name": "Columbia Compound Tube"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-THROTTLE-CORNER-FLUSHER-BOX",
+      "Name": "Columbia Throttle Corner Flusher Box"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-ANGLE-HEAD",
+      "Name": "Columbia Angle Head"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-COMBO-FLUSHER",
+      "Name": "Columbia Combo Flusher"
+    },
+    {
+      "Type": "variation",
+      "SKU": "3WTCSF",
+      "Name": "Columbia Combo Flusher - 3\" Widetrack"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-DIRECT-FLUSHER",
+      "Name": "Columbia Direct Flusher"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-STANDARD-FLUSHER",
+      "Name": "Columbia Standard Flusher"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-OUTSIDE-CORNER-ROLLER",
+      "Name": "Columbia Outside Corner Roller"
+    },
+    {
+      "Type": "variation",
+      "SKU": "COBCRE",
+      "Name": "Columbia Outside Corner Roller - European"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-AUTOMATIC-FAT-BOY-BOX",
+      "Name": "Columbia Automatic Fat Boy Box"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-AUTOMATIC-FLAT-BOX",
+      "Name": "Columbia Automatic Flat Box"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-FAT-BOY-FLAT-BOX",
+      "Name": "Columbia Fat Boy Flat Box"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-FLAT-FINISHER-BOX",
+      "Name": "Columbia Flat Finisher Box"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-180-GRIP-FLAT-BOX-HANDLE",
+      "Name": "Columbia 180\u00b0 Grip Flat Box Handle"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-MATRIX-FLAT-BOX-HANDLE",
+      "Name": "Columbia Matrix Flat Box Handle"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-ONE-HANDLE",
+      "Name": "Columbia One Handle"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-PREDATOR-MATRIX-HANDLE",
+      "Name": "Columbia Predator Matrix Handle"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-PREDATOR-ONE-HANDLE",
+      "Name": "Columbia Predator One Handle"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-HOT-MUD-PUMP",
+      "Name": "Columbia Hot Mud Pump"
+    },
+    {
+      "Type": "variation",
+      "SKU": "HMP-C",
+      "Name": "Columbia Hot Mud Pump - CDN"
+    },
+    {
+      "Type": "simple",
+      "SKU": "CPFP",
+      "Name": "Columbia PowerFill 3.5 Pro Series Cordless Loading Pump"
+    },
+    {
+      "Type": "variable",
+      "SKU": "COL-NAIL-SPOTTER",
+      "Name": "Columbia Nail Spotter"
+    },
+    {
+      "Type": "simple",
+      "SKU": "TCS",
+      "Name": "Semi Automatic Tool Case"
+    }
+  ],
+  "manufacturer_skus_without_exact_catalog_match": [
+    "10ITFB",
+    "12-4.3-0.3-G-C",
+    "12-4.7-0.4-S-C-C",
+    "12-4.7-0.7-G-C",
+    "12-4.7-0.7-G-C-C",
+    "12-4.7-0.7-G-W",
+    "12ITFB",
+    "13-H-S",
+    "14-4.3-0.3-G-C",
+    "14-4.7-0.4-S-C-C",
+    "14-4.7-0.7-G-C",
+    "14-4.7-0.7-G-C-C",
+    "14-4.7-0.7-G-W",
+    "16-4.7-0.7-G-C",
+    "16-4.7-0.7-G-C-C",
+    "18-4.7-0.7-G-C",
+    "2KCMR",
+    "2KMR12",
+    "2KMR4",
+    "2KMR9",
+    "2NS-WHEEL",
+    "3BBH",
+    "3CGPK4",
+    "3CGPK5",
+    "3CGPK6",
+    "3NPK4",
+    "3NPK5",
+    "3NPK6",
+    "3NS-WHEEL",
+    "42BBH",
+    "4BBH",
+    "5BBH",
+    "6BBH",
+    "8ITFB",
+    "9-1MT",
+    "91CGMT",
+    "AB3",
+    "AB3A",
+    "AB40",
+    "AB41",
+    "AB42",
+    "AB43",
+    "AB44",
+    "AB45",
+    "AB46",
+    "AB47",
+    "AB48",
+    "AB49",
+    "AB50",
+    "AB51-10",
+    "AB51-12",
+    "AB51-14",
+    "AB51-8",
+    "AB52",
+    "ABF3",
+    "ABF3A",
+    "AH11",
+    "AH15",
+    "AH16",
+    "AH19",
+    "AH20",
+    "AH21",
+    "AH22",
+    "AH6",
+    "BB",
+    "BBH10",
+    "BBH9",
+    "BSNC",
+    "C12MP",
+    "C14MP",
+    "C16MP",
+    "C1PBODY",
+    "C1PHEAD",
+    "C1PTAPER",
+    "C1SPBODY",
+    "C1SPTAPER",
+    "C1TBPBODY",
+    "C1TBPTAPER",
+    "CBS2K",
+    "CC13",
+    "CC14",
+    "CC16",
+    "CC19",
+    "CC3",
+    "CC6",
+    "CC8",
+    "CC9",
+    "CEXT2",
+    "CEXT3",
+    "CF3",
+    "CF3A",
+    "CF3B",
+    "CF4S",
+    "CF8",
+    "CFB19",
+    "CFB2-7",
+    "CFB5A",
+    "CFB5C",
+    "CFB9",
+    "CFBA6",
+    "CGCK3.5",
+    "CGCK6",
+    "CGPK1.5",
+    "CGPK10",
+    "CGPK2",
+    "CGPK3",
+    "CGPK4",
+    "CGPK5",
+    "CGPK6",
+    "CGPK8",
+    "CJK6",
+    "CLBP",
+    "CLBR",
+    "CLT-BF",
+    "CLT12",
+    "CLT13",
+    "CLT14",
+    "CLT15",
+    "CLTA17",
+    "CLTHA",
+    "CMRR",
+    "CMT2",
+    "CMT5",
+    "CMT6",
+    "CMT8",
+    "CR2A",
+    "CR2B",
+    "CS",
+    "CSH",
+    "CT11",
+    "CT13A",
+    "CT14",
+    "CT1R",
+    "CT25",
+    "CT26",
+    "CT27",
+    "CT32",
+    "CT34",
+    "CT34-CL",
+    "CT36 - BLACK",
+    "CT37",
+    "CT38",
+    "CT39",
+    "CT41A",
+    "CT45-BLACK",
+    "CT48",
+    "CT51",
+    "CT66",
+    "CT66A",
+    "CT6R",
+    "CT82B",
+    "CT87-CL",
+    "CTA99-CL",
+    "CTK10",
+    "CTK10-B",
+    "CTK12",
+    "CTK12-B",
+    "CTK14",
+    "CTK14-B",
+    "CTK8",
+    "CTK8-B",
+    "FA205",
+    "FA209",
+    "FA221",
+    "FA223",
+    "FA251",
+    "FA269",
+    "FA277",
+    "FA283",
+    "FA284",
+    "FA293",
+    "FA309",
+    "FA318",
+    "FA323",
+    "FA324",
+    "FA326",
+    "FA327",
+    "FA328",
+    "FA331",
+    "FA332",
+    "FA333",
+    "FA334",
+    "FA337",
+    "FA338",
+    "FA340",
+    "FA341",
+    "FA345",
+    "FA347",
+    "FA357",
+    "FA360",
+    "FA362",
+    "FA368",
+    "FA371",
+    "FA374",
+    "FA375",
+    "FA377",
+    "FA390",
+    "FA391",
+    "FA392",
+    "FSB10",
+    "FSB12",
+    "FSB14",
+    "FSB16",
+    "FSB18",
+    "FSB24",
+    "FSB32",
+    "FSB7",
+    "FSBC",
+    "FTH4-6",
+    "FTH5-8",
+    "MRR12",
+    "MRR4",
+    "MRR9",
+    "MRW",
+    "NPK1.5",
+    "NPK10",
+    "NPK2",
+    "NPK3",
+    "NPK4",
+    "NPK5",
+    "NPK6",
+    "NPK8",
+    "OPBS",
+    "OPKSET",
+    "OPPK1.5",
+    "OPPK10-1",
+    "OPPK2",
+    "OPPK3",
+    "OPPK4",
+    "OPPK5",
+    "OPPK6",
+    "OPPK8",
+    "PJK3.5",
+    "PTS",
+    "SBSET",
+    "SF5",
+    "TAPER BAG",
+    "TL3-8",
+    "TOOL BAG 24\"",
+    "TS",
+    "TSB-10",
+    "TSB-12",
+    "TSB-14",
+    "TSB-18",
+    "TSB-24",
+    "TSB-32",
+    "TSB-40",
+    "TSB-48",
+    "TSB-7",
+    "TT",
+    "TWS"
+  ],
+  "ambiguous_manufacturer_skus_held_back": {
+    "FA308": [
+      {
+        "Type": "simple",
+        "SKU": "FA3",
+        "Name": "1/2\" x 7/8\" Flat Washer"
+      },
+      {
+        "Type": "simple",
+        "SKU": "FA308",
+        "Name": "1/2 X 7/8\" Flat Washer"
+      }
+    ],
+    "FA208": [
+      {
+        "Type": "simple",
+        "SKU": "FA2",
+        "Name": "4-40 x 1/8\" Binder Slot"
+      },
+      {
+        "Type": "simple",
+        "SKU": "FA208",
+        "Name": "4/40 X 1/8 Binder Slot"
+      }
+    ],
+    "AH9": [
+      {
+        "Type": "variable",
+        "SKU": "AH9-CLIP",
+        "Name": "Bottom Retainer Corner Clip"
+      },
+      {
+        "Type": "variation",
+        "SKU": "AH9",
+        "Name": "Bottom Retainer Corner Clip"
+      }
+    ],
+    "CT71": [
+      {
+        "Type": "variable",
+        "SKU": "CT-SPROCKET",
+        "Name": "Drive Sprocket"
+      },
+      {
+        "Type": "variation",
+        "SKU": "CT71",
+        "Name": "Drive Sprocket Small"
+      }
+    ],
+    "AH8": [
+      {
+        "Type": "variable",
+        "SKU": "AH8-CLIP",
+        "Name": "Top Retainer Corner Clip"
+      },
+      {
+        "Type": "variation",
+        "SKU": "AH8",
+        "Name": "Top Retainer Corner Clip"
+      }
+    ]
+  }
+}

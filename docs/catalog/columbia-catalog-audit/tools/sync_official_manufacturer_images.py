@@ -78,7 +78,7 @@ def derivative_name(source_name: str) -> str:
     match = re.fullmatch(r"(.+)_([0-9]{2,})(\.webp)", source_name, flags=re.IGNORECASE)
     if not match:
         raise ValueError(f"Unexpected manufacturer image filename: {source_name}")
-    return f"{match.group(1)}_mfr_{match.group(2)}{match.group(3).lower()}"
+    return f"{match.group(1)}_{match.group(2)}{match.group(3).lower()}"
 
 
 def optimize(source: Path, destination: Path) -> tuple[tuple[int, int], tuple[int, int]]:
@@ -197,8 +197,8 @@ def main() -> None:
             with Image.open(source) as image_file:
                 source_dims = image_file.size
             if args.apply:
-                # `_mfr_` filenames are reserved for this migration. Overwrite
-                # partial outputs from interrupted conversion runs safely.
+                # These are the canonical production filenames. Replacing an
+                # existing local gallery asset is intentional for exact SKU matches.
                 source_dims, output_dims = optimize(source, destination)
                 output_bytes = destination.stat().st_size
                 output_digest = sha256(destination)
@@ -280,12 +280,13 @@ def main() -> None:
     if args.apply:
         write_csv_atomic(OFFICIAL_CATALOG, catalog_fields, updated_rows)
         write_csv_atomic(OUTPUT_DIR / "image-sync-manifest.csv", list(output_manifest[0]), output_manifest)
-        update_fields = ["Type", "SKU", "Images"]
+        update_fields = ["Type", "SKU", "Parent", "Images"]
         update_rows = []
         for index, urls in updated_by_row.items():
             update_rows.append({
                 "Type": catalog_rows[index].get("Type", ""),
                 "SKU": catalog_rows[index].get("SKU", ""),
+                "Parent": catalog_rows[index].get("Parent", ""),
                 "Images": ", ".join(urls),
             })
         write_csv_atomic(OUTPUT_DIR / "columbia-images-update-existing.csv", update_fields, update_rows)
@@ -310,8 +311,8 @@ def main() -> None:
             f"- Source bytes: {source_bytes_total:,}; optimized bytes: {output_bytes_total:,}; "
             f"reduction: {100 * (1 - output_bytes_total / source_bytes_total):.1f}%\n\n"
             f"New WebP assets preserve their aspect ratios, are capped at {MAX_EDGE}px on the longest edge, "
-            "and use lossless WebP encoding after high-quality Lanczos resizing. They use separate `_mfr_` "
-            "filenames, preserving existing media files for rollback. The image manifest "
+            "and use lossless WebP encoding after high-quality Lanczos resizing. They use the standard "
+            "normalized production filenames, replacing the matching existing gallery assets. The image manifest "
             "records source and destination hashes, dimensions, source IDs, match field, old gallery, and URL.\n\n"
             "## Validation limits\n\n"
             "Source identity and image order are evidenced by the existing manufacturer product export and image manifest. "
