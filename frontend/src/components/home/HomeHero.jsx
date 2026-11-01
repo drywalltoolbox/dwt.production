@@ -307,6 +307,36 @@ export default function HomeHero() {
           </div>
         </nav>
       </div>
+      <nav
+        className="home-hero-carousel"
+        aria-label="Homepage slides"
+        onFocusCapture={() => setInteractionPaused(true)}
+        onBlurCapture={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) setInteractionPaused(false);
+        }}
+      >
+        <div
+          className="home-hero-carousel__controls"
+          role="group"
+          aria-label="Choose homepage slide"
+          data-running={!interactionPaused && !pointerActive && !reduceMotion && pageVisible}
+          onMouseEnter={() => setInteractionPaused(true)}
+          onMouseLeave={() => setInteractionPaused(false)}
+        >
+          {HOME_HERO_CAMPAIGNS.map((campaign, index) => (
+            <button
+              type="button"
+              key={campaign.id}
+              ref={(node) => { tabRefs.current[index] = node; }}
+              className={`home-hero-carousel__dot${index === activeIndex ? ' is-active' : ''}`}
+              aria-label={`Show ${campaign.label} slide (${index + 1} of ${HOME_HERO_CAMPAIGN_COUNT})`}
+              aria-current={index === activeIndex ? 'true' : undefined}
+              onClick={() => selectCampaign(index)}
+              onKeyDown={handleTabKeyDown}
+            />
+          ))}
+        </div>
+      </nav>
 
     </section>
   );
