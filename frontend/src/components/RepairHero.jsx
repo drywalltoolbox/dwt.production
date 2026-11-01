@@ -58,7 +58,7 @@ export default function RepairHero({
       <div className="repair-hero__scrim" aria-hidden="true" />
       <div className="repair-hero__inner">
         <div className="repair-hero__content">
-          <p className="repair-eyebrow">{campaign.eyebrow}</p>
+          {campaign.eyebrow && <p className="repair-eyebrow">{campaign.eyebrow}</p>}
           <h1 id={titleId}>
             {campaign.titleLines.map((line, index) => (
               <span
