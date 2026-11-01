@@ -2037,3 +2037,20 @@
     transform: none;
   }
 }
+
+/* Match the desktop header mark to the 230px footer logo on wide screens. */
+@media (min-width: 1440px) {
+  .site-header .header-desktop-layout .header-left .header-logo-link {
+    width: 230px;
+    max-width: 100%;
+  }
+
+  .site-header .header-desktop-layout .header-left .logo-image {
+    width: 230px;
+    max-width: 230px;
+    height: auto;
+    max-height: none;
+    object-fit: contain;
+    image-rendering: auto;
+  }
+}
