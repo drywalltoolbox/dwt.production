@@ -77,3 +77,14 @@
  .dtb-route-brand-preloader__base {opacity:0}
  .dtb-route-brand-preloader__fill {animation:none;clip-path:inset(0)}
 }
+
+/* The global commerce header remains above the route loader. Center the loader
+   within the usable mobile viewport below that measured fixed header. */
+@media (max-width:767px) {
+ .dtb-route-brand-preloader {
+  top:var(--header-height,72px);
+ }
+ .dtb-route-brand-preloader__logo {
+  width:min(64vw,220px);
+ }
+}
