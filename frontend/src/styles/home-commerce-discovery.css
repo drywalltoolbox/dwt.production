@@ -214,3 +214,170 @@
     transition: none;
   }
 }
+
+/* Art direct the primary tools slide against the open image area. Keep the
+   photograph visible and use only light type shadow for separation. */
+.home-hero__slide[data-campaign="tools"] .repair-hero__scrim {
+  display: none;
+}
+
+.home-hero__slide[data-campaign="tools"] .repair-hero__content {
+  width: min(760px, 60%);
+}
+
+.home-hero__slide[data-campaign="tools"] .repair-hero h1 {
+  max-width: 15ch;
+  margin-bottom: clamp(12px, 1.5vw, 20px);
+  font-size: clamp(2.75rem, 5.2vw, 5rem);
+  line-height: .98;
+  letter-spacing: -.052em;
+}
+
+.home-hero__slide[data-campaign="tools"] .repair-hero__title-line--primary {
+  color: #fff;
+  -webkit-text-fill-color: #fff;
+  text-shadow: 0 2px 7px rgba(5, 12, 27, .3);
+}
+
+.home-hero__slide[data-campaign="tools"] .repair-hero__title-line--accent {
+  color: #2255EE;
+  -webkit-text-fill-color: #2255EE;
+  text-shadow: 0 0 12px rgba(70, 119, 255, .2);
+}
+
+.home-hero__slide[data-campaign="tools"] .repair-hero__lead {
+  max-width: 42ch;
+  color: #fffaf0;
+  text-shadow: 0 1px 5px rgba(5, 12, 27, .24);
+}
+
+@media (max-width: 47.99rem) {
+  .home-hero__slide[data-campaign="tools"] .repair-hero__content {
+    width: min(100%, 32rem);
+  }
+
+  .home-hero__slide[data-campaign="tools"] .repair-hero h1 {
+    max-width: 100%;
+    font-size: clamp(1.55rem, 7.6vw, 2.75rem);
+    line-height: .99;
+    letter-spacing: -.05em;
+  }
+
+  .home-hero__slide[data-campaign="tools"] .repair-hero__lead {
+    max-width: 34ch;
+    color: #fffaf0;
+  }
+}
+
+/* Keep every desktop campaign at the same editorial scale as the repair hero:
+   large, tightly set copy with compact supporting context and matching CTAs. */
+@media (min-width: 64rem) {
+  .home-hero__slide[data-campaign] .repair-hero__content {
+    width: min(980px, 62%);
+  }
+
+  .home-hero__slide[data-campaign] .repair-hero h1 {
+    max-width: 100%;
+    margin-bottom: clamp(14px, 1.25vw, 22px);
+    font-size: clamp(3.5rem, 4.6vw, 5.5rem);
+    line-height: .92;
+    letter-spacing: -.06em;
+  }
+
+  .home-hero__slide[data-campaign] .repair-hero h1 .repair-hero__title-line {
+    white-space: nowrap;
+  }
+
+  .home-hero__slide[data-campaign] .repair-hero__lead {
+    max-width: 42ch;
+    margin-bottom: clamp(20px, 1.7vw, 28px);
+    font-size: clamp(1rem, .95vw, 1.08rem);
+    line-height: 1.52;
+  }
+
+  .home-hero__slide[data-campaign] .repair-hero__actions {
+    gap: 18px;
+  }
+
+  .home-hero__slide[data-campaign] .repair-hero__actions .repair-button {
+    flex: 0 1 245px;
+    min-width: 245px;
+    min-height: 58px;
+    padding-inline: 24px 17px;
+    border-radius: 11px;
+    font-size: 1rem;
+  }
+}
+
+/* Shared hero type palette: enforce clean white primary lines and the exact
+   DTB brand blue accent above the older shared gradient text treatments. */
+.home-hero__slide[data-campaign] .repair-hero h1 .repair-hero__title-line--primary {
+  color: #fff;
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: #fff;
+  filter: none;
+  text-shadow: 0 2px 7px rgba(5, 12, 27, .3);
+}
+
+.home-hero__slide[data-campaign] .repair-hero h1 .repair-hero__title-line--accent {
+  color: #2255EE;
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  -webkit-text-fill-color: #2255EE;
+  filter: none;
+  text-shadow: 0 0 12px rgba(70, 119, 255, .2);
+}
+
+/* A short, staggered rise gives each incoming campaign a composed reveal
+   without adding motion to the settled headline or softening its letterforms. */
+.home-hero__slide[aria-hidden="false"] .repair-hero h1 .repair-hero__title-line {
+  animation: homeHeroTitleReveal 520ms cubic-bezier(.2, .72, .24, 1) both;
+}
+
+.home-hero__slide[aria-hidden="false"] .repair-hero h1 .repair-hero__title-line:nth-child(2) {
+  animation-delay: 75ms;
+}
+
+.home-hero__slide[aria-hidden="false"] .repair-hero h1 .repair-hero__title-line:nth-child(3) {
+  animation-delay: 150ms;
+}
+
+.home-hero__slide[aria-hidden="false"] .repair-hero__lead {
+  animation: homeHeroContextReveal 460ms cubic-bezier(.2, .72, .24, 1) 190ms both;
+}
+
+.home-hero__slide[aria-hidden="false"] .repair-hero__actions {
+  animation: homeHeroContextReveal 460ms cubic-bezier(.2, .72, .24, 1) 250ms both;
+}
+
+.home-hero__slide[aria-hidden="false"] .repair-hero h1 .repair-hero__title-line--accent {
+  animation:
+    homeHeroTitleReveal 520ms cubic-bezier(.2, .72, .24, 1) 75ms both,
+    homeHeroAccentGlow 4.8s ease-in-out 800ms infinite;
+}
+
+@keyframes homeHeroTitleReveal {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes homeHeroContextReveal {
+  from { opacity: 0; transform: translateY(9px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes homeHeroAccentGlow {
+  0%, 100% { text-shadow: 0 0 2px rgba(70, 119, 255, .08); }
+  50% { text-shadow: 0 0 15px rgba(70, 119, 255, .3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-hero__slide[aria-hidden="false"] .repair-hero h1 .repair-hero__title-line,
+  .home-hero__slide[aria-hidden="false"] .repair-hero__lead,
+  .home-hero__slide[aria-hidden="false"] .repair-hero__actions {
+    animation: none;
+  }
+}
