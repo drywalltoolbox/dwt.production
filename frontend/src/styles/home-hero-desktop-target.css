@@ -2,11 +2,14 @@
 
 @media (min-width: 901px) {
   .home-hero__stage {
-    height: clamp(32rem, 62svh, 43rem);
+    height: auto;
     min-height: 0;
+    aspect-ratio: 2.8 / 1;
   }
+}
 
-  /* Keep the existing bounded desktop viewport while framing the 2.8:1 art. */
+@media (min-width: 901px) {
+  /* Keep desktop copy aligned over the matching 2.8:1 artwork frame. */
   .home-hero__media::before {
     content: none;
   }

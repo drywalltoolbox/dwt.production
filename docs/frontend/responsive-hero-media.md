@@ -47,8 +47,8 @@ homepage hero files delivered to browsers; `<picture>` selects the mobile file
 at the shared mobile breakpoint and the desktop file otherwise. The generator
 prunes obsolete homepage WebP derivatives from its generated hero folder when
 a set changes from width-responsive to single-asset delivery. The desktop art
-is 2800 × 1000 px (2.8:1); its bounded viewport remains controlled by the
-homepage hero layout styles.
+is 2800 × 1000 px (2.8:1); the desktop hero stage uses that same ratio so
+the artwork fills its frame without side cropping or a tall 16:9 viewport.
 
 The generator rejects paths outside the frontend, serializes concurrent
 invocations, writes each WebP and generated manifest via an atomic rename, and
