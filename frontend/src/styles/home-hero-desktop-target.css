@@ -2,13 +2,12 @@
 
 @media (min-width: 901px) {
   .home-hero__stage {
-    height: clamp(32rem, 62svh, 43rem);
+    height: auto;
     min-height: 0;
+    aspect-ratio: 1672 / 941;
   }
 
-  /* Cover the complete hero frame. The source images are near 16:9, so this
-     only trims a small amount at wide desktop sizes and avoids the inset,
-     blurred letterbox effect from object-fit: contain. */
+  /* Keep the full 16:9 source composition visible at its native ratio. */
   .home-hero__media::before {
     content: none;
   }
@@ -16,8 +15,8 @@
   .home-hero__media-image {
     position: relative;
     z-index: 1;
-    object-fit: cover;
-    object-position: right center;
+    object-fit: contain;
+    object-position: center;
     transform: none;
   }
 

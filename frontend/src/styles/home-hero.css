@@ -445,9 +445,14 @@
     overflow: visible;
   }
 
+  .home-hero__stage {
+    aspect-ratio: 1086 / 1448;
+  }
+
   .home-hero__media-image {
-    object-position: 64% 50%;
-    transform: scale(1.01);
+    object-fit: contain;
+    object-position: center;
+    transform: none;
   }
 
   .home-hero__ambient {
