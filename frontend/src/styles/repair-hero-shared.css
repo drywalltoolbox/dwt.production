@@ -989,7 +989,7 @@
 
 @media (max-width: 47.99rem) {
   .home-hero__stage {
-    min-height: clamp(440px, 112vw, 500px);
+    min-height: clamp(380px, 98vw, 430px);
   }
 
   .home-hero__repair-surface .repair-hero .repair-hero__scrim {
@@ -1006,7 +1006,7 @@
     min-height: inherit;
     justify-content: flex-end;
     align-items: stretch;
-    padding: clamp(96px, 25vw, 124px) clamp(20px, 5.6vw, 24px) 68px;
+    padding: clamp(48px, 13vw, 58px) clamp(20px, 5.6vw, 24px) 58px;
   }
 
   .home-hero__repair-surface .repair-hero .repair-eyebrow {
