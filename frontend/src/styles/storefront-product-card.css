@@ -165,7 +165,7 @@
   .dtb-product-card__footer { display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:.75rem;min-height:40px; }
   .dtb-product-card--grid .dtb-product-card__footer,
   .dtb-product-card--rail .dtb-product-card__footer { display:flex;grid-row:5;flex-direction:column;align-items:stretch;align-self:stretch;gap:.5rem;min-height:44px;margin-top:0;padding:.45rem 2px 2px; }
-  .dtb-product-card__price-group { display:flex;flex-wrap:wrap;min-width:0;max-width:100%;align-items:baseline;gap:.42rem;overflow:visible; }
+  .dtb-product-card__price-group { display:flex;flex-wrap:nowrap;min-width:0;max-width:100%;align-items:baseline;gap:0 .42rem;overflow:visible; }
   .dtb-product-card__price,.dtb-product-card__compare-price { line-height:1.12;white-space:nowrap; }
   .dtb-product-card__price { font-size:clamp(.94rem,.78vw,1.05rem);letter-spacing:0; }
   .dtb-product-card__compare-price { min-width:0;max-width:100%;font-size:clamp(.7rem,.62vw,.78rem);overflow:hidden;text-overflow:ellipsis; }
