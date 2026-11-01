@@ -3,7 +3,7 @@ import { startTransition, useState, useEffect, useRef, useMemo, useCallback } fr
 import { useCart } from '../../context/CartContext';
 import { useAuthContext } from '../../auth/AuthContext.js';
 import { ShoppingCart, X, User, MessageSquareText, Truck, Phone } from 'lucide-react';
-import { DTB_LOGO_WHITE_URL } from '../../utils/dtbLogoAssets.js';
+import { DTB_LOGO_WHITE_URL, handleDtbLogoFallback } from '../../utils/dtbLogoAssets.js';
 import StorefrontSearchOverlay from './StorefrontSearchOverlay';
 import StorefrontMobileDrawer from './StorefrontMobileDrawer';
 import StorefrontMobileNavigationPages from './StorefrontMobileNavigationPages.jsx';
@@ -596,7 +596,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
             </div>
 
             <Link to="/" className="header-mobile-logo" onClick={closeMobileMenu}>
-              <img src={DTB_LOGO_WHITE_URL} alt="Drywall Toolbox Logo" className="logo-image-mobile" width="162" height="50" decoding="async" />
+              <img src={DTB_LOGO_WHITE_URL} onError={handleDtbLogoFallback} alt="Drywall Toolbox Logo" className="logo-image-mobile" width="162" height="50" decoding="async" />
             </Link>
 
             <div className="header-mobile-slot header-mobile-slot--right">
@@ -649,7 +649,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
           </div>
 
           <div className={`header-desktop-layout${desktopSearchOpen ? ' is-desktop-search-open' : ''}`} style={{ display: isTablet ? 'none' : undefined }}>
-            <div className="header-left"><Link to="/" className="header-logo-link" aria-label="Drywall Toolbox home"><img src={DTB_LOGO_WHITE_URL} alt="Drywall Toolbox Logo" className="logo-image" width="230" height="70" decoding="async" /></Link></div>
+            <div className="header-left"><Link to="/" className="header-logo-link" aria-label="Drywall Toolbox home"><img src={DTB_LOGO_WHITE_URL} onError={handleDtbLogoFallback} alt="Drywall Toolbox Logo" className="logo-image" width="230" height="70" decoding="async" /></Link></div>
             <div className="header-desktop-nav-row">
               <StorefrontDesktopNavigation
                 items={desktopNavItems}

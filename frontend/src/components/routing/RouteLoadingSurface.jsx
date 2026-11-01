@@ -1,4 +1,4 @@
-import { DTB_LOGO_WHITE_URL } from '../../utils/dtbLogoAssets.js';
+import { DTB_LOGO_WHITE_URL, handleDtbLogoFallback } from '../../utils/dtbLogoAssets.js';
 
 function getRouteLoadingLabel(pathname = '') {
   if (pathname === '/products' || pathname.startsWith('/products/')) return 'Loading products';
@@ -24,8 +24,8 @@ export default function RouteLoadingSurface({ pathname, label }) {
     >
       <div className="dtb-route-brand-preloader__content">
         <div className="dtb-route-brand-preloader__logo" aria-hidden="true">
-          <img className="dtb-route-brand-preloader__base" src={DTB_LOGO_WHITE_URL} alt="" />
-          <div className="dtb-route-brand-preloader__fill"><img src={DTB_LOGO_WHITE_URL} alt="" /></div>
+          <img className="dtb-route-brand-preloader__base" src={DTB_LOGO_WHITE_URL} onError={handleDtbLogoFallback} alt="" />
+          <div className="dtb-route-brand-preloader__fill"><img src={DTB_LOGO_WHITE_URL} onError={handleDtbLogoFallback} alt="" /></div>
         </div>
         <p>{statusText}</p>
       </div>

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { ArrowRight, X } from 'lucide-react';
-import { DTB_LOGO_WHITE_URL as dtbLogo } from '../../utils/dtbLogoAssets.js';
+import { DTB_LOGO_WHITE_URL as dtbLogo, handleDtbLogoFallback } from '../../utils/dtbLogoAssets.js';
 import './HomepageSignupCTA.css';
 
 export default function HomepageSignupCTA({ offer, onClose, onSignup }) {
@@ -86,6 +86,7 @@ export default function HomepageSignupCTA({ offer, onClose, onSignup }) {
           <img
             className="homepage-signup-cta__logo"
             src={dtbLogo}
+            onError={handleDtbLogoFallback}
             alt="Drywall Toolbox"
             width="230"
             height="55"

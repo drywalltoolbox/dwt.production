@@ -1,7 +1,7 @@
 import { Facebook, Instagram } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-import { DTB_LOGO_WHITE_URL } from '../../utils/dtbLogoAssets.js';
+import { DTB_LOGO_WHITE_URL, handleDtbLogoFallback } from '../../utils/dtbLogoAssets.js';
 import '../../styles/storefront-footer-template.css';
 import { useEditableComponent } from '../../designer/useEditableComponent.js';
 
@@ -81,7 +81,7 @@ export default function Footer() {
           <section className="dtb-footer-template__brand" aria-label="Drywall Toolbox">
             <div className="dtb-footer-template__identity">
               <Link to="/" aria-label="Drywall Toolbox home">
-                <img className="dtb-footer-template__logo" src={DTB_LOGO_WHITE_URL} alt="Drywall Toolbox" width="230" height="70" loading="lazy" decoding="async" />
+                <img className="dtb-footer-template__logo" src={DTB_LOGO_WHITE_URL} onError={handleDtbLogoFallback} alt="Drywall Toolbox" width="230" height="70" loading="lazy" decoding="async" />
               </Link>
               <nav className="dtb-footer-template__socials" aria-label="Social media">
                 {SOCIAL_LINKS.map(({ label, href, Icon }) => (
