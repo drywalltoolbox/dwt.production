@@ -133,14 +133,28 @@
 }
 
 .site-header .dtb-desktop-search-icon-wrap {
+  position: absolute;
+  z-index: 2;
   left: 14px;
+  top: 50%;
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
   color: #2255EE;
+  pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .site-header .dtb-desktop-search-icon {
+  display: block;
   width: 18px;
   height: 18px;
-  stroke-width: 1.8;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px rgba(34, 85, 238, .42));
 }
 
 .site-header .dtb-desktop-search-input::placeholder {
