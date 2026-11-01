@@ -2203,9 +2203,6 @@ button.header-mega-category-link {
     display: block;
     transition: transform 0.2s ease;
     line-height: 1;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    shape-rendering: geometricPrecision;
 }
 
 .logo-image:hover {
@@ -2223,9 +2220,6 @@ button.header-mega-category-link {
     display: block;
     transition: transform 0.2s ease;
     line-height: 1;
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-    shape-rendering: geometricPrecision;
 }
 
 .logo-image-mobile:hover {
