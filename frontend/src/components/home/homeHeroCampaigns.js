@@ -12,10 +12,10 @@ export const HOME_HERO_CAMPAIGNS = [
   {
     id: 'parts',
     label: 'Parts',
-    eyebrow: 'Parts & Schematics',
-    titleLines: ['Find the right part.', 'Get back to work.'],
+    eyebrow: '',
+    titleLines: ['Genuine OEM Parts', 'Direct from the Manufacturer'],
     accentLine: null,
-    description: 'Browse replacement parts by brand or use interactive schematics to identify what you need.',
+    description: 'Browse by brand or use our interactive schematics to find the exact replacement part you need.',
     primaryAction: { label: 'Shop Parts', to: '/parts' },
     secondaryAction: { label: 'View Schematics', to: '/schematics' },
   },
