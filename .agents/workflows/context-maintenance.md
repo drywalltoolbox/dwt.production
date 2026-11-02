@@ -11,8 +11,11 @@ Use for canonical AI-governance changes. `AGENTS.md` is constitutional policy; `
 6. Update roles/skills/workflows only when reusable behavior changes.
 7. Update derived context only after authoritative sources are correct; keep it concise and provenance-tagged.
 8. Update vendor adapters only for discovery/tool/model/capability mapping.
-9. Check context bloat, duplicate doctrine, semantic write overlap, stale paths, vendor coupling, unreachable assets, and contradictions.
-10. Run AI validation/routing tests when execution is available.
+9. Update `.agents/context/connected-systems.md` when durable system ownership,
+   connected-interface routing, or live/deployment boundaries change. Keep
+   mutable health and permissions dated and revalidated; never store credentials.
+10. Check context bloat, duplicate doctrine, semantic write overlap, stale paths, vendor coupling, unreachable assets, and contradictions.
+11. Run AI validation/routing tests when execution is available.
 
 ## Efficiency
 Ordinary resolved task context is `AGENTS.md` plus resolved workflow/role/subject/skills; `.agents/README.md` is not default inference context. Require evidence sufficiency, reuse-before-retrieval, bounded fetching, and isolated reviewer context.

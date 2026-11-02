@@ -7,6 +7,9 @@ description: DTB external-integration engineering for Action Scheduler boundarie
 ## Authority first
 Identify the authoritative system for every state crossing the boundary. WooCommerce owns commerce; Veeqo fulfillment/inventory; QuickBooks accounting projection; payment providers sensitive payment lifecycle. A DTB projection must never silently become competing truth.
 
+## Connected operations interfaces
+Use the current session's connected-system map (`.agents/context/connected-systems.md`) to locate an interface, then confirm that the required tool is present and the target account/environment is correct. A direct provider connector is an operator interface, not a second integration pipeline and not permission to bypass DTB ownership. For source-of-truth state, query the owning system; use DTB diagnostics for DTB projections and readiness only. Keep live status observations dated and recheck them before consequential action. Never persist credentials or copy secret-bearing configuration into context.
+
 ## Boundary contract
 For each integration define producer/event/command identity, persisted correlation, queue ownership, adapter input/output, provider/external identity, local acknowledgement/projection, and consumers. Provider authentication, transport, payload mapping, pagination/rate limits, mutable API semantics, and webhook details stay inside adapters.
 
