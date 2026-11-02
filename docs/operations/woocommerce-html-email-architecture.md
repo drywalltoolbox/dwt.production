@@ -81,8 +81,9 @@ CTA continues to use WooCommerce's password-setting URL when one is supplied,
 and otherwise the WooCommerce My Account URL. The offer block appears only
 for a user-owned welcome campaign coupon verified as a 10% percentage
 discount; preview mode uses a clearly marked `PREVIEW10` code and does not
-create a coupon. The header, footer, logo, and account hero artwork assets are source-controlled under
-`frontend/public/assets/email/` and must be released with the MU-plugin
+create a coupon. The header, footer, and account hero artwork assets are
+source-controlled under `frontend/public/assets/email/`; the shared email logo
+is `frontend/public/logos/email-logo-white.png`. These assets must be released with the MU-plugin
 template changes. The classic header uses the compact, logo-height band with
 10px vertical padding; the footer uses its separate, taller artwork and
 remains tall enough for navigation and legal links.
@@ -155,7 +156,7 @@ Before shipping email changes to production:
 - inspect the received message's original headers and confirm SPF, DKIM, and
   DMARC pass with an aligned `From: ...@drywalltoolbox.com` identity;
 - confirm Reply-To is a `@drywalltoolbox.com` mailbox;
-- confirm public HTTPS availability of `/assets/email/email-logo-white.png`,
+- confirm public HTTPS availability of `/logos/email-logo-white.png`,
   `/assets/email/dtb-email-header-background.jpg`, `/assets/email/dtb-email-footer-background.jpg`,
   `/assets/email/geist-latin-wght.woff2`,
   `/assets/email/account-welcome-hero.jpeg`, and any email icon assets used by

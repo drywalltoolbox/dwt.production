@@ -49,7 +49,7 @@ if ( ! function_exists( 'dtb_email_logo_url' ) ) {
 	 * @return string
 	 */
 	function dtb_email_logo_url(): string {
-		$url = esc_url_raw( (string) apply_filters( 'dtb_email_logo_url', home_url( '/assets/email/email-logo-white.png' ) ) );
+		$url = esc_url_raw( (string) apply_filters( 'dtb_email_logo_url', home_url( '/logos/email-logo-white.png' ) ) );
 		return '' !== $url ? $url : home_url( '/' );
 	}
 }
