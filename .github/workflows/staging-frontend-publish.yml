@@ -3,6 +3,8 @@ name: Deploy Frontend to Staging
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'docs/operations/scheduled-workflows/**'
   workflow_dispatch:
 
 permissions:

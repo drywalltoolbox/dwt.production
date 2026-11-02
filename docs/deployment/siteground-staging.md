@@ -4,7 +4,7 @@ GitHub Actions deploys the React storefront to `/staging/` only. Production depl
 
 ## Operator workflows
 
-- `.github/workflows/staging-frontend-publish.yml` runs on pushes to `main` and can be manually dispatched from `main`. Its build job builds and validates the triggering commit once, packages a short-lived artifact, then the publish job downloads that exact artifact and deploys it.
+- `.github/workflows/staging-frontend-publish.yml` runs on pushes to `main` that change files outside `docs/operations/scheduled-workflows/**`, and can be manually dispatched from `main`. Scheduled reports must be committed under that dedicated directory so report-only commits do not publish staging. If a commit also changes any other file, the push still triggers. Its build job builds and validates the triggering commit once, packages a short-lived artifact, then the publish job downloads that exact artifact and deploys it.
 - `.github/workflows/staging-frontend-rollback.yml` restores the snapshot from the current release under the same server-side lock.
 - `.github/workflows/staging-frontend-build.yml` validates pull requests that change frontend files. Its artifact is not used for deployment because the release must be built from the exact commit being published.
 

@@ -22,6 +22,14 @@ Each successful run publishes one immutable Markdown artifact to its channel usi
 6. **Next actions** — rank up to five by operational value, prerequisites, and achievable scope.
 7. **Verification ledger** — source-specific checks, observed time, result and gaps.
 
+### Decision focus by report
+
+- **Daily Engineering Briefing:** surface urgent changes, failures, blockers, and the few actions needing attention today.
+- **Development Progress Review:** show meaningful changes since the prior review, evidence-backed completions, and work that remains blocked or unverified.
+- **Weekly Project Planning:** propose a short, achievable roadmap with dependencies, verified owners only, and measurable acceptance criteria.
+
+Lead with the three to five highest-value findings. Use consistent severity labels (`Critical`, `High`, `Medium`, `Low`, `Info`), link evidence, keep unchanged signals brief, and limit prioritized actions to five. For each observation, record its source, observation timestamp, environment, result, and limitation. Keep GitHub source/check state, staging deployment state, and production runtime state distinct. MCP responses are point-in-time observations, not continuous monitoring. If a source is unavailable, mark it unavailable with the attempted time; do not present an older value as current.
+
 ## Publication contract
 
 - Read `AGENTS.md`, applicable `.agents/` governance, and the latest prior report if accessible.
@@ -29,6 +37,7 @@ Each successful run publishes one immutable Markdown artifact to its channel usi
 - Only publish **sanitized, public-repository-safe** material: no customer identifiers, private order information, credentials, security tokens, internal URLs, precise infrastructure secrets, confidential financials, or sensitive diagnostic payloads.
 - Report publishing is the **only** permitted mutation. Never change production code, catalog data, WordPress configuration, commerce records, secrets, or deployment state.
 - Publish under this directory on `main` using GitHub's authenticated write tools. Re-read the target/ref before write; use a unique run path and fail safely on conflicts. Ensure a successful commit SHA, then read back the file from `main` before claiming publication. Do not attempt a local `git push` after a successful GitHub API commit: that commit is already on the remote branch.
+- After readback, record the resulting commit SHA, whether GitHub Actions ran for that commit, and what each run actually verified. Explicitly record `Not triggered` when no run exists; never infer a deployment from a missing run.
 - If the scheduled runtime cannot access GitHub, cannot authenticate, or cannot write, **do not claim success**; return the complete report in ChatGPT and a clear `Publication failed / unavailable` notice with the intended path.
 - No fabricated links, evidence, test executions, screenshots, CI results, or production deployments.
 - Do not write empty / hallucinated reports merely to satisfy a schedule. If meaningful sources are unavailable, report the coverage failure and leave `main` untouched.
@@ -40,3 +49,17 @@ Each successful run publishes one immutable Markdown artifact to its channel usi
 `weekly-planning/2026-11-08-1800-CT.md`
 
 Reports are snapshots, not the authoritative task tracker. A scheduled-task prompt is **not** proof of unattended tool or GitHub write capability: verify with a real scheduled run and its resulting remote commit.
+
+## Run evaluation checklist
+
+Evaluate every scheduled run, including source failures. Record `Pass`, `Fail`, or `Unavailable` and brief evidence for each item:
+
+1. **Fresh evidence:** fresh GitHub and MCP reads were attempted; an unavailable source is explicit and no stale value was reused as current.
+2. **Environment accuracy:** GitHub/source, staging, and production states are labeled separately.
+3. **Change detection:** meaningful changes are compared with the previous report; unchanged signals remain concise.
+4. **Publication integrity:** filename is unique, published content was read back, and commit SHA is recorded.
+5. **Action evidence:** triggered Actions runs and their verification scope are reported, including `Not triggered` where applicable.
+6. **Safety:** no sensitive data was published and no production mutation was performed.
+7. **Decision usefulness:** report matches its decision focus, leads with the most valuable findings, and has no more than five prioritized actions.
+
+A failed or unavailable read is an explicit evaluation outcome, not a reason to skip the run or imply that other evidence is fresh by association.
