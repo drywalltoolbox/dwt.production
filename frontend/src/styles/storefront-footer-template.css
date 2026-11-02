@@ -101,23 +101,27 @@
 
 .dtb-footer-template__social {
   display: inline-flex;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   align-items: center;
   justify-content: center;
   padding: 0 !important;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background: rgba(255, 255, 255, 0.1);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   color: #fff;
-  transition: background-color 180ms var(--dtb-ease, ease), transform 180ms var(--dtb-ease, ease);
+  transition: color 180ms var(--dtb-ease, ease), transform 180ms var(--dtb-ease, ease);
 }
 
-.dtb-footer-template__social:hover,
+.dtb-footer-template__social:hover {
+  color: #8bb4ff;
+  transform: translateY(-1px);
+}
+
 .dtb-footer-template__social:focus-visible {
-  outline: 0;
-  background: #2255ee;
-  transform: translateY(-2px);
+  outline: 2px solid rgba(184, 207, 255, 0.9);
+  outline-offset: 2px;
+  border-radius: 3px;
 }
 
 @media (max-width: 1050px) {
