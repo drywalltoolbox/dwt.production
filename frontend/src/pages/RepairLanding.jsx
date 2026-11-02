@@ -60,7 +60,7 @@ const FAQ_GROUPS = [
 const REPAIRS_CAMPAIGN = HOME_HERO_CAMPAIGNS.find(({ id }) => id === 'repairs');
 
 const PROMOTED_REPAIR_BRAND_EXCLUSIONS = new Set(['SurPro', 'Dura-Stilts']);
-const PROMOTED_REPAIR_BRAND_ADDITIONS = ['Level 5'];
+const PROMOTED_REPAIR_BRAND_ADDITIONS = ['LEVEL5'];
 
 function faqGroupId(title) {
   return `repair-faq-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;

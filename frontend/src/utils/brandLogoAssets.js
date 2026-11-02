@@ -28,6 +28,7 @@ const PRODUCT_BRAND_LOGOS = {
   'Platinum Drywall Tools': platinumLogo,
   Platinum: platinumLogo,
   'Dura-Stilts': duraStiltsLogo,
+  LEVEL5: level5Logo,
   Level5: level5Logo,
   'Level 5': level5Logo,
   'USG Sheetrock® Tools': usgSheetrockToolsLogo,

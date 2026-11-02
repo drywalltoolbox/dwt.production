@@ -26,8 +26,8 @@ final class DTB_BrandNormalizer {
 		'Graco'                  => 'graco',
 		'Platinum Drywall Tools' => 'platinum',
 		'Dura-Stilts'            => 'dura-stilts',
-		'Level 5'                => 'level5',
-		'USG Sheetrock® Tools'   => 'usg-sheetrock-tools',
+		'LEVEL5'                 => 'level5',
+		'USG Sheetrock Tools'    => 'usg-sheetrock-tools',
 	];
 
 	/**
@@ -47,9 +47,10 @@ final class DTB_BrandNormalizer {
 		'columbia-tools'          => 'Columbia Tools',
 		'TAPETECH'                => 'TapeTech',
 		'Tape Tech'               => 'TapeTech',
-		'LEVEL 5'                 => 'Level 5',
-		'level 5'                 => 'Level 5',
-		'Level5'                  => 'Level 5',
+		'LEVEL 5'                 => 'LEVEL5',
+		'level 5'                 => 'LEVEL5',
+		'Level 5'                 => 'LEVEL5',
+		'Level5'                  => 'LEVEL5',
 		'GRACO'                   => 'Graco',
 		'SURPRO'                  => 'SurPro',
 		'Sur-Pro'                 => 'SurPro',
@@ -59,11 +60,11 @@ final class DTB_BrandNormalizer {
 		'ASGARD'                  => 'Asgard',
 		'Platinum'                => 'Platinum Drywall Tools',
 		'PLATINUM'                => 'Platinum Drywall Tools',
-		'USG'                     => 'USG Sheetrock® Tools',
-		'usg'                     => 'USG Sheetrock® Tools',
-		'USG Sheetrock Tools'     => 'USG Sheetrock® Tools',
-		'usg sheetrock tools'     => 'USG Sheetrock® Tools',
-		'usg-sheetrock-tools'     => 'USG Sheetrock® Tools',
+		'USG'                     => 'USG Sheetrock Tools',
+		'usg'                     => 'USG Sheetrock Tools',
+		'USG Sheetrock® Tools'    => 'USG Sheetrock Tools',
+		'usg sheetrock tools'     => 'USG Sheetrock Tools',
+		'usg-sheetrock-tools'     => 'USG Sheetrock Tools',
 	];
 
 	/**

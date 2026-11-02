@@ -18,7 +18,7 @@ const HOME_CATEGORIES = [
   ['Nail Spotters', 'nail-spotters'], ['Handles', 'flat-box-handles'],
 ];
 
-const HOME_BRAND_ORDER = ['TapeTech', 'Columbia Tools', 'Platinum Drywall Tools', 'Level 5', 'SurPro', 'Dura-Stilts', 'USG Sheetrock Tools'];
+const HOME_BRAND_ORDER = ['TapeTech', 'Columbia Tools', 'Platinum Drywall Tools', 'LEVEL5', 'SurPro', 'Dura-Stilts', 'USG Sheetrock Tools'];
 
 function normalizeHomeBrandName(value = '') {
   return String(value).toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -29,9 +29,9 @@ function getHomeBrandDisplayName(value = '') {
   if (normalized.includes('tapetech')) return 'TapeTech';
   if (normalized.includes('columbia')) return 'Columbia Tools';
   if (normalized.includes('platinum')) return 'Platinum Drywall Tools';
-  if (normalized.includes('level5')) return 'Level5';
+  if (normalized.includes('level5')) return 'LEVEL5';
   if (normalized.includes('surpro')) return 'SurPro';
-  if (normalized.includes('durastilts')) return 'DuraStilts';
+  if (normalized.includes('durastilts')) return 'Dura-Stilts';
   return value;
 }
 
@@ -50,7 +50,7 @@ const HOME_BRAND_LOGO_DIMENSIONS = {
   TapeTech: [2048, 500],
   'Columbia Tools': [2048, 760],
   'Platinum Drywall Tools': [2048, 613],
-  'Level 5': [2048, 470],
+  LEVEL5: [2048, 470],
   SurPro: [1640, 430],
   'Dura-Stilts': [2048, 414],
   'USG Sheetrock Tools': [2171, 400],

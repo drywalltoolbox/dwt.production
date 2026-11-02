@@ -22,16 +22,17 @@ function hasStructuredIncludesMeta(metaItems = []) {
 }
 
 
-// ─── Known brand names (kept in sync with ALLOWED_BRANDS in Products.jsx) ────
+// ─── Active and legacy storefront brand labels ───────────────────────────────
 const KNOWN_BRANDS = [
   'TapeTech',
   'Columbia Tools',
   'Asgard',
-  'Level 5',
+  'LEVEL5',
   'SurPro',
   'Graco',
   'Platinum Drywall Tools',
   'Dura-Stilts',
+  'USG Sheetrock Tools',
 ];
 
 // Maps common brand name variations to the canonical brand name used throughout the UI.
@@ -46,14 +47,19 @@ const BRAND_ALIASES = {
   'columbia taping':           'Columbia Tools',
   'columbia taping tools':     'Columbia Tools',
   'columbia-tools':            'Columbia Tools',
-  'level 5':                   'Level 5',
-  'level5':                    'Level 5',
+  'level 5':                   'LEVEL5',
+  'level5':                    'LEVEL5',
+  'level5 tools':              'LEVEL5',
   'tapetech':                  'TapeTech',
   'tape tech':                 'TapeTech',
   'surpro':                    'SurPro',
   'sur pro':                   'SurPro',
   'asgard':                    'Asgard',
   'graco':                     'Graco',
+  'usg sheetrock tools':       'USG Sheetrock Tools',
+  'usg-sheetrock-tools':       'USG Sheetrock Tools',
+  'usg sheetrock tools®':      'USG Sheetrock Tools',
+  'usg':                       'USG Sheetrock Tools',
 };
 
 // ─── Normalizer ──────────────────────────────────────────────────────────────
