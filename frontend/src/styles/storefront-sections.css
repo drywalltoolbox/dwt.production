@@ -253,6 +253,11 @@
   .storefront-rail-shell { width:100%;min-width:0; }
   .storefront-rail { width:100%;min-width:0;box-sizing:border-box;gap:12px; }
   .storefront-rail--fixed-tiles { grid-auto-columns:min(84%, 290px); }
+  .storefront-rail--two-up-mobile {
+    --dtb-two-up-mobile-gap: 12px;
+    gap: var(--dtb-two-up-mobile-gap);
+    grid-auto-columns: calc((100% - var(--dtb-two-up-mobile-gap)) / 2);
+  }
   .dtb-home-product-section > div,
   .dtb-home-product-section .dtb-card-loading-transition,
   .dtb-home-product-section .dtb-card-loading-transition__content,

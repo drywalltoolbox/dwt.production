@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import StorefrontRail from '../storefront/StorefrontRail';
-import StorefrontProductTile from '../storefront/StorefrontProductTile';
+import ProductShoppingCard from '../ui/ProductShoppingCard.jsx';
 
 const MAX_RELATED_PRODUCTS = 10;
 
@@ -51,11 +51,11 @@ export default function ProductRelatedProducts({
         </div>
         <Link to="/products" className="product-related__browse">Browse all products</Link>
       </div>
-      {visibleProducts.length > 0 ? <StorefrontRail label={copy.railLabel} className="storefront-rail--fixed-tiles">
+      {visibleProducts.length > 0 ? <StorefrontRail label={copy.railLabel} className="storefront-rail--fixed-tiles storefront-rail--equal-height storefront-rail--two-up-mobile">
         {visibleProducts.map((relatedProduct, index) => {
           const cardProduct = relatedProduct.cardProduct || relatedProduct;
           return (
-            <StorefrontProductTile
+            <ProductShoppingCard
               key={relatedProduct.id || relatedProduct.sku || relatedProduct.slug}
               product={relatedProduct}
               cardProduct={cardProduct}
