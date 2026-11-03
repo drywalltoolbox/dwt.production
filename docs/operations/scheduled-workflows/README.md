@@ -1,65 +1,56 @@
 # Drywall Toolbox · Scheduled Engineering Reports
 
-This directory contains **derived, informational** engineering reports. It does not supersede `AGENTS.md`, `.agents/`, active code, automated tests, or observed production behavior.
+This directory stores immutable, evidence-backed operational reports. Reports inform decisions; they do not replace active source, runtime evidence, enforced contracts, `AGENTS.md`, `.agents/`, or the systems of record.
 
-## Report channels
+## Workflows and cadence
 
-| Workflow | Directory | Cadence (America/Chicago) |
-| --- | --- | --- |
-| Daily Engineering Briefing | [daily-engineering/](daily-engineering/) | Weekdays, 08:00 |
-| Development Progress Review | [development-progress/](development-progress/) | Weekdays, 17:00 |
-| Weekly Project Planning | [weekly-planning/](weekly-planning/) | Sundays, 18:00 |
+| Workflow | Directory | America/Chicago cadence | Decision purpose |
+| --- | --- | --- | --- |
+| Daily Engineering Briefing | [daily-engineering/](daily-engineering/) | Weekdays, 08:00 | Triage new or materially changed urgent engineering and operational signals. |
+| Development Progress Review | [development-progress/](development-progress/) | Weekdays, 17:00 | Establish verified delivery, deployment, runtime, and blocker status since the prior review. |
+| Weekly Project Planning | [weekly-planning/](weekly-planning/) | Sundays, 18:00 | Select a realistic, dependency-aware five-day plan from current evidence and capacity constraints. |
 
-Each successful run publishes one immutable Markdown artifact to its channel using `YYYY-MM-DD-HHMM-CT.md` (local scheduled time, with a unique suffix if needed). Reports must never overwrite historical entries. GitHub commit timestamps and report timestamps distinguish the observed snapshot from publication time.
+The scheduled-task definitions own execution time and recurrence. This table is a human-readable contract and must be kept aligned when those settings change.
 
-## Report contract
+## Evidence and decision contract
 
-1. **Executive summary** — 3–6 sentences, actionable and readable on mobile.
-2. **Metadata** — workflow name, reporting window, collection/publication timestamps (ISO 8601 including offset), timezone, branch, observed commit SHA, observed server identity, data-source freshness, and coverage limitations.
-3. **Operational scorecard** — state/priority and concise evidence for repository, issues/PRs, CI, production, catalog, integrations, and deployment as applicable. Use `Not checked` and `Unknown`, never guessed green statuses.
-4. **Verified changes since last report** — evidence-backed commit/PR links and deployment status *separately*.
-5. **Risks, blockers, and recommendations** — severity, impact, evidence, recommended action, proposed owner (label unassigned if not verified), and acceptance criteria.
-6. **Next actions** — rank up to five by operational value, prerequisites, and achievable scope.
-7. **Verification ledger** — source-specific checks, observed time, result and gaps.
+At each run:
 
-### Decision focus by report
+- Re-read this contract, the current `AGENTS.md`, the applicable routing/governance guidance, and the latest report for the same workflow when accessible. Use `.agents/registry.json` to resolve relevant guidance; load only what the task needs.
+- Confirm repository identity, current `main` head, and the intended live environment before querying it. Gather bounded, fresh evidence from relevant GitHub source, commits, issues/PRs, Actions runs, and read-only MCP DTB diagnostics where available.
+- Compare with the previous report and distinguish genuinely new, changed, resolved, and unchanged findings. Expand investigation only when another check can change a material conclusion.
+- For material claims, preserve traceable source links or identifiers, observation time with timezone, environment, result, and limits. Explicitly label unavailable, stale, not checked, or inconclusive evidence. Do not reuse a prior observation as current.
+- Keep source changes, CI, staging deployment, staging runtime, production deployment, and production runtime separate. A commit, merge, successful workflow, or point-in-time diagnostic proves only what it directly observed.
+- Separate verified fact, user-supplied context, inference, hypothesis, and recommendation. Identify owners only when the evidence verifies them.
+- Use connected capabilities autonomously within this read-and-report scope. Do not invent access, evidence, checks, ownership, capacity, or completed work. Do not require private chain-of-thought; make conclusions inspectable through evidence and concise rationale.
 
-- **Daily Engineering Briefing:** surface urgent changes, failures, blockers, and the few actions needing attention today.
-- **Development Progress Review:** show meaningful changes since the prior review, evidence-backed completions, and work that remains blocked or unverified.
-- **Weekly Project Planning:** propose a short, achievable roadmap with dependencies, verified owners only, and measurable acceptance criteria.
+## Adaptive report composition
 
-Lead with the three to five highest-value findings. Use consistent severity labels (`Critical`, `High`, `Medium`, `Low`, `Info`), link evidence, keep unchanged signals brief, and limit prioritized actions to five. For each observation, record its source, observation timestamp, environment, result, and limitation. Keep GitHub source/check state, staging deployment state, and production runtime state distinct. MCP responses are point-in-time observations, not continuous monitoring. If a source is unavailable, mark it unavailable with the attempted time; do not present an older value as current.
+Reports are decision tools, not form submissions. There is no fixed page, word, sentence, or section limit, and no mandatory copy-and-paste layout. Choose the organization and depth that make this run's evidence easiest to understand: lead with the consequential findings, explain why they matter, and include only the context, comparison, risks, decisions, actions, and verification detail needed to support the conclusion. A short no-change report is appropriate when evidence supports it; a longer report is appropriate when material findings need explanation. Do not pad reports to meet a template or omit necessary evidence to meet a length target.
 
-## Publication contract
+Preserve a readable metadata header and a compact evidence trail. Use tables only when they improve comparison or scanning. Prioritize a small achievable set of actions, state concrete completion checks, and label estimates and uncertainty. Match the report's scope to its purpose: daily triage, verified progress, or weekly planning. Avoid duplicating another report's purpose.
 
-- Read `AGENTS.md`, applicable `.agents/` governance, and the latest prior report if accessible.
-- Collect fresh repository evidence at execution time; attempt live WordPress/WooCommerce diagnostics where relevant and accessible. Clearly distinguish observed live data from cached, prior-chat, or historical observations.
-- Only publish **sanitized, public-repository-safe** material: no customer identifiers, private order information, credentials, security tokens, internal URLs, precise infrastructure secrets, confidential financials, or sensitive diagnostic payloads.
-- Report publishing is the **only** permitted mutation. Never change production code, catalog data, WordPress configuration, commerce records, secrets, or deployment state.
-- Publish under this directory on `main` using GitHub's authenticated write tools. Re-read the target/ref before write; use a unique run path and fail safely on conflicts. Ensure a successful commit SHA, then read back the file from `main` before claiming publication. Do not attempt a local `git push` after a successful GitHub API commit: that commit is already on the remote branch.
-- After readback, record the resulting commit SHA, whether GitHub Actions ran for that commit, and what each run actually verified. Explicitly record `Not triggered` when no run exists; never infer a deployment from a missing run.
-- If the scheduled runtime cannot access GitHub, cannot authenticate, or cannot write, **do not claim success**; return the complete report in ChatGPT and a clear `Publication failed / unavailable` notice with the intended path.
-- No fabricated links, evidence, test executions, screenshots, CI results, or production deployments.
-- Do not write empty / hallucinated reports merely to satisfy a schedule. If meaningful sources are unavailable, report the coverage failure and leave `main` untouched.
+## Public-data and mutation boundaries
 
-## Suggested filename examples
+- Reports are public artifacts. Exclude customer/order/payment information, credentials, tokens, private operational identifiers, internal URLs, confidential financials, and sensitive diagnostic payloads. Include only the minimum safe evidence needed to support a claim.
+- Publishing one unique, timestamped Markdown report in the workflow's directory on `main` is the only permitted mutation. Do not modify application source, configuration, catalog, commerce records, production, deployments, or issues.
+- Before writing, verify the target branch and ensure the path does not already exist. Never overwrite history. Use the authenticated GitHub write capability. A successful contents API write is already a remote commit; do not make a redundant push.
+- Read the exact published path back from `main` and capture its resulting commit SHA. Then inspect available Actions evidence for that commit and report what ran, what it verified, or `Not triggered`. Do not infer deployment from report publication or absent workflow runs.
+- If access, authentication, write, or readback fails, clearly mark publication `FAILED` or `UNVERIFIED`, provide the intended path and the complete report in chat, and never imply success.
+- Do not publish an empty report to satisfy cadence. If evidence coverage is too weak for a useful report, state that limitation and leave `main` untouched.
 
-`daily-engineering/2026-11-03-0800-CT.md`  
-`development-progress/2026-11-02-1700-CT.md`  
-`weekly-planning/2026-11-08-1800-CT.md`
+Use a timestamp based on the run's scheduled local time, `YYYY-MM-DD-HHMM-CT.md`, adding a unique suffix only if needed to avoid a collision.
 
-Reports are snapshots, not the authoritative task tracker. A scheduled-task prompt is **not** proof of unattended tool or GitHub write capability: verify with a real scheduled run and its resulting remote commit.
+## Run quality review
 
-## Run evaluation checklist
+Evaluate each execution against the evidence available, including failed or unavailable source reads. Record concise evidence for any material failure:
 
-Evaluate every scheduled run, including source failures. Record `Pass`, `Fail`, or `Unavailable` and brief evidence for each item:
+1. Freshness and coverage: current reads were attempted; gaps are explicit.
+2. Environment and claim accuracy: each state is labeled only to the level actually verified.
+3. Change detection: prior evidence is used for comparison, never as current proof.
+4. Publication integrity: unique path, exact readback, and commit SHA are verified before claiming publication.
+5. Action evidence: post-publication workflow runs and their scope are reported accurately.
+6. Safety: public content is sanitized and no out-of-scope mutation occurred.
+7. Decision value: the report serves its specific purpose, and recommendations have clear next checks or acceptance criteria.
 
-1. **Fresh evidence:** fresh GitHub and MCP reads were attempted; an unavailable source is explicit and no stale value was reused as current.
-2. **Environment accuracy:** GitHub/source, staging, and production states are labeled separately.
-3. **Change detection:** meaningful changes are compared with the previous report; unchanged signals remain concise.
-4. **Publication integrity:** filename is unique, published content was read back, and commit SHA is recorded.
-5. **Action evidence:** triggered Actions runs and their verification scope are reported, including `Not triggered` where applicable.
-6. **Safety:** no sensitive data was published and no production mutation was performed.
-7. **Decision usefulness:** report matches its decision focus, leads with the most valuable findings, and has no more than five prioritized actions.
-
-A failed or unavailable read is an explicit evaluation outcome, not a reason to skip the run or imply that other evidence is fresh by association.
+A missing capability is a finding about coverage, not a reason to simulate a successful check.
