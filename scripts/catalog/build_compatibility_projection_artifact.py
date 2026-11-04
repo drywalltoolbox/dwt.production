@@ -194,6 +194,11 @@ def partition_rows(rows: list[dict[str, object]], max_parts: int = 25, max_targe
     return batches
 
 
+def canonical_sha256(value: object) -> str:
+    payload = json.dumps(value, ensure_ascii=False, separators=(",", ":"), sort_keys=True).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
@@ -208,19 +213,24 @@ def main() -> int:
     output = args.output.resolve()
     output.parent.mkdir(parents=True, exist_ok=True)
     batches = partition_rows(artifact["rows"])
-    release_id_payload = "|".join((str(artifact["catalog_sha256"]), str(artifact["manifest_sha256"]), str(artifact["catalog_apply_report_sha256"])))
+    batch_inventory = [
+        {"batch_index": index, "part_skus": [str(row["sku"]) for row in batch], "rows_sha256": canonical_sha256(batch)}
+        for index, batch in enumerate(batches, start=1)
+    ]
+    batch_inventory_sha256 = canonical_sha256(batch_inventory)
+    release_id_payload = "|".join((str(artifact["catalog_sha256"]), str(artifact["manifest_sha256"]), str(artifact["catalog_apply_report_sha256"]), batch_inventory_sha256))
     release_id = hashlib.sha256(release_id_payload.encode("utf-8")).hexdigest()[:24]
 
     written = []
     for index, batch in enumerate(batches, start=1):
-        batch_artifact = {**artifact, "release_id": release_id, "batch_index": index, "batch_count": len(batches), "rows": batch}
+        batch_artifact = {**artifact, "release_id": release_id, "batch_index": index, "batch_count": len(batches), "batch_inventory": batch_inventory, "batch_inventory_sha256": batch_inventory_sha256, "rows": batch}
         batch_output = output.with_name(f"{output.stem}-batch-{index:03d}{output.suffix}")
         payload = json.dumps(batch_artifact, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
         temporary = batch_output.with_name(f".{batch_output.name}.tmp")
         temporary.write_text(payload, encoding="utf-8")
         temporary.replace(batch_output)
         written.append({"artifact": str(batch_output), "sha256": file_sha256(batch_output), "rows": len(batch)})
-    release_summary = {"schema_version": 1, "release_id": release_id, "catalog_sha256": artifact["catalog_sha256"], "manifest_sha256": artifact["manifest_sha256"], "catalog_apply_report_sha256": artifact["catalog_apply_report_sha256"], "batch_count": len(written), "artifacts": written, "status": "prepared", "catalog_mutated": False}
+    release_summary = {"schema_version": 1, "release_id": release_id, "catalog_sha256": artifact["catalog_sha256"], "manifest_sha256": artifact["manifest_sha256"], "catalog_apply_report_sha256": artifact["catalog_apply_report_sha256"], "batch_inventory": batch_inventory, "batch_inventory_sha256": batch_inventory_sha256, "batch_count": len(written), "artifacts": written, "status": "prepared", "catalog_mutated": False}
     release_path = output.with_name(f"{output.stem}-release-{release_id}.json")
     release_path.write_text(json.dumps(release_summary, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
     print(json.dumps({**release_summary, "release_manifest": str(release_path)}, indent=2))

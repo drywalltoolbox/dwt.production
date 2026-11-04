@@ -30,6 +30,12 @@ final class DTB_ProductRelationshipProjectionService {
 		if ( ! is_array( $artifact ) || 1 !== ( $artifact['schema_version'] ?? null ) || 'dtb_compatibility_projection' !== ( $artifact['artifact_type'] ?? '' ) || ! is_array( $artifact['rows'] ?? null ) || ! preg_match( '/^[a-f0-9]{24}$/i', (string) ( $artifact['release_id'] ?? '' ) ) || absint( $artifact['batch_index'] ?? 0 ) < 1 || absint( $artifact['batch_count'] ?? 0 ) < 1 || absint( $artifact['batch_index'] ?? 0 ) > absint( $artifact['batch_count'] ?? 0 ) ) {
 			throw new RuntimeException( 'Projection artifact schema is invalid.' );
 		}
+		$inventory = $artifact['batch_inventory'] ?? null;
+		$batch_index = absint( $artifact['batch_index'] );
+		$inventory_digest = (string) ( $artifact['batch_inventory_sha256'] ?? '' );
+		if ( ! is_array( $inventory ) || count( $inventory ) !== absint( $artifact['batch_count'] ) || ! hash_equals( $inventory_digest, self::canonical_sha256( $inventory ) ) || ! is_array( $inventory[ $batch_index - 1 ] ?? null ) || (int) ( $inventory[ $batch_index - 1 ]['batch_index'] ?? 0 ) !== $batch_index || ! hash_equals( (string) ( $inventory[ $batch_index - 1 ]['rows_sha256'] ?? '' ), self::canonical_sha256( $artifact['rows'] ) ) ) {
+			throw new RuntimeException( 'Projection batch does not match its immutable release inventory.' );
+		}
 		$excluded = $artifact['excluded_fields'] ?? [];
 		if ( ! is_array( $excluded ) || ! in_array( 'Upsells', $excluded, true ) || ! in_array( 'Cross-sells', $excluded, true ) ) {
 			throw new RuntimeException( 'Artifact does not explicitly exclude WooCommerce merchandising fields.' );
@@ -45,6 +51,19 @@ final class DTB_ProductRelationshipProjectionService {
 		$validated = self::validate_artifact_rows( $rows );
 		$identity_map = self::resolve_skus( $validated['all_skus'] );
 		$runtime_records = self::validate_runtime_records( $validated['rows'], $identity_map );
+		if ( $apply ) {
+			try {
+				$existing_release = self::read_release_status( strtolower( (string) $artifact['release_id'] ) );
+				$prior_batch = $existing_release['batches'][ (string) absint( $artifact['batch_index'] ) ] ?? [];
+				if ( in_array( $prior_batch['status'] ?? '', [ 'applying', 'failed', 'rollback_failed' ], true ) ) {
+					throw new RuntimeException( 'This release batch has an applying, failed, or partial attempt. Reconcile its private rollback report before retrying.' );
+				}
+			} catch ( RuntimeException $error ) {
+				if ( 'No private reconciliation report exists for that release ID.' !== $error->getMessage() ) {
+					throw $error;
+				}
+			}
+		}
 		$products = $runtime_records['parts'];
 		$plan = self::build_plan( $validated['rows'], $products );
 		$conflicts = array_values( array_filter( $plan, static fn( array $row ): bool => 'conflict' === $row['status'] ) );
@@ -68,6 +87,8 @@ final class DTB_ProductRelationshipProjectionService {
 			'release_id' => (string) $artifact['release_id'],
 			'batch_index' => absint( $artifact['batch_index'] ),
 			'batch_count' => absint( $artifact['batch_count'] ),
+			'batch_inventory' => $artifact['batch_inventory'],
+			'batch_inventory_sha256' => $artifact['batch_inventory_sha256'],
 			'catalog_sha256' => (string) ( $artifact['catalog_sha256'] ?? '' ),
 			'manifest_sha256' => (string) ( $artifact['manifest_sha256'] ?? '' ),
 			'catalog_apply_report_sha256' => (string) ( $artifact['catalog_apply_report_sha256'] ?? '' ),
@@ -98,6 +119,8 @@ final class DTB_ProductRelationshipProjectionService {
 					throw new RuntimeException( 'Runtime fitment changed during projection preparation; no writes were made.' );
 				}
 			}
+			$prepared_report_sha256 = hash_file( 'sha256', $report_path );
+			self::record_release_batch( $artifact, $actual_sha256, 'applying', array_column( $report['rows'], 'sku' ), $report_path, $prepared_report_sha256 );
 			foreach ( $apply_rows as $index => $row ) {
 				$report['rows'][ $index ]['status'] = 'applying';
 				self::write_private_report( $report, $report_path );
@@ -129,10 +152,22 @@ final class DTB_ProductRelationshipProjectionService {
 				dtb_product_mapping_release_lock( $lock );
 			}
 		}
-		$report['partial_apply'] = false;
-		self::write_private_report( $report, $report_path );
-		$report_sha256 = hash_file( 'sha256', $report_path );
-		$release = self::record_release_batch( $artifact, $actual_sha256, 'applied', array_column( $report['rows'], 'sku' ), $report_path, $report_sha256, $report['public_api_readback'] ?? [] );
+		try {
+			$report['partial_apply'] = false;
+			self::write_private_report( $report, $report_path );
+			$report_sha256 = hash_file( 'sha256', $report_path );
+			$release = self::record_release_batch( $artifact, $actual_sha256, 'applied', array_column( $report['rows'], 'sku' ), $report_path, $report_sha256, $report['public_api_readback'] ?? [] );
+		} catch ( Throwable $error ) {
+			$report['finalization_failure'] = sanitize_text_field( $error->getMessage() );
+			$report['finalization_failure_at'] = gmdate( 'c' );
+			try {
+				self::write_private_report( $report, $report_path );
+			} catch ( Throwable $report_error ) {
+				// The pre-registered applying report remains the recovery record.
+			}
+			$report_sha256 = hash_file( 'sha256', $report_path );
+			throw new RuntimeException( 'Projection writes may have completed; inspect release-status and use this rollback report if needed: ' . $report_path . ' SHA-256: ' . $report_sha256, 0, $error );
+		}
 		return [ 'mode' => 'apply', 'artifact_sha256' => $actual_sha256, 'applied' => true, 'report_path' => $report_path, 'report_sha256' => $report_sha256, 'release' => $release, 'rows' => $report['rows'] ];
 	}
 
@@ -163,7 +198,7 @@ final class DTB_ProductRelationshipProjectionService {
 			$current = self::read_product_relationships( $product );
 			$before = $row['before'] ?? [];
 			$after = $row['after'] ?? [];
-			$already_rolled_back = self::same_relationships( $current, $before );
+			$already_rolled_back = self::same_relationship_subset( $current, $before );
 			if ( ! $already_rolled_back && ! self::same_relationship_subset( $current, $after ) ) {
 				throw new RuntimeException( "Rollback conflict on {$sku}; current values do not match the recorded after-state." );
 			}
@@ -226,10 +261,25 @@ final class DTB_ProductRelationshipProjectionService {
 			$rollback_rows[] = [ 'sku' => $row['sku'], 'before' => $row['after'], 'after' => $row['before'] ];
 			$rollback_products[ $row['sku'] ] = [ 'id' => $row['product_id'] ];
 		}
-		$report['rollback'] = [ 'at' => gmdate( 'c' ), 'rows' => $plan, 'public_api_readback' => self::verify_public_routes( $rollback_rows, $rollback_products ) ];
-		$written = self::write_private_report( $report, $path );
-		$report_sha256 = hash_file( 'sha256', $written );
-		$release = self::record_release_batch( $report, (string) $report['artifact_sha256'], 'rolled_back', array_column( $plan, 'sku' ), $written, $report_sha256, $report['rollback']['public_api_readback'] ?? [] );
+		try {
+			$report['rollback'] = [ 'at' => gmdate( 'c' ), 'rows' => $plan, 'public_api_readback' => self::verify_public_routes( $rollback_rows, $rollback_products ) ];
+			$written = self::write_private_report( $report, $path );
+			$report_sha256 = hash_file( 'sha256', $written );
+			$release = self::record_release_batch( $report, (string) $report['artifact_sha256'], 'rolled_back', array_column( $plan, 'sku' ), $written, $report_sha256, $report['rollback']['public_api_readback'] ?? [] );
+		} catch ( Throwable $error ) {
+			$report['rollback_verification_failure'] = sanitize_text_field( $error->getMessage() );
+			$report['rollback_verification_failure_at'] = gmdate( 'c' );
+			self::write_private_report( $report, $path );
+			$report_sha256 = hash_file( 'sha256', $path );
+			try {
+				self::record_release_batch( $report, (string) $report['artifact_sha256'], 'rollback_failed', array_column( $plan, 'sku' ), $path, $report_sha256, $report['rollback']['public_api_readback'] ?? [] );
+			} catch ( Throwable $release_error ) {
+				$report['rollback_release_recording_error'] = sanitize_text_field( $release_error->getMessage() );
+				self::write_private_report( $report, $path );
+				$report_sha256 = hash_file( 'sha256', $path );
+			}
+			throw new RuntimeException( $error->getMessage() . ' Updated rollback report: ' . $path . ' SHA-256: ' . $report_sha256, 0, $error );
+		}
 		return [ 'rolled_back' => true, 'report_path' => $written, 'report_sha256' => $report_sha256, 'release' => $release, 'rows' => $plan ];
 	}
 
@@ -246,6 +296,19 @@ final class DTB_ProductRelationshipProjectionService {
 			throw new RuntimeException( 'Release reconciliation report is invalid.' );
 		}
 		$report['report_sha256'] = hash_file( 'sha256', $path );
+		$private_dir = realpath( self::private_report_dir() );
+		foreach ( $report['batches'] ?? [] as &$batch ) {
+			$batch_report_path = (string) ( $batch['report_path'] ?? '' );
+			if ( '' === $batch_report_path ) {
+				continue;
+			}
+			$real_batch_report = realpath( $batch_report_path );
+			if ( ! $private_dir || ! $real_batch_report || dirname( $real_batch_report ) !== $private_dir || ! is_readable( $real_batch_report ) ) {
+				throw new RuntimeException( 'A batch rollback report path is missing, unreadable, or outside the private report directory.' );
+			}
+			$batch['current_report_sha256'] = hash_file( 'sha256', $real_batch_report );
+		}
+		unset( $batch );
 		return $report;
 	}
 
@@ -605,7 +668,7 @@ final class DTB_ProductRelationshipProjectionService {
 		$release_id = strtolower( (string) ( $artifact['release_id'] ?? '' ) );
 		$batch_index = absint( $artifact['batch_index'] ?? 0 );
 		$batch_count = absint( $artifact['batch_count'] ?? 0 );
-		if ( ! preg_match( '/^[a-f0-9]{24}$/', $release_id ) || $batch_index < 1 || $batch_count < $batch_index || ! in_array( $batch_status, [ 'applied', 'already_applied', 'failed', 'rolled_back', 'rollback_failed' ], true ) ) {
+		if ( ! preg_match( '/^[a-f0-9]{24}$/', $release_id ) || $batch_index < 1 || $batch_count < $batch_index || ! in_array( $batch_status, [ 'applying', 'applied', 'already_applied', 'failed', 'rolled_back', 'rollback_failed' ], true ) ) {
 			throw new RuntimeException( 'Cannot record invalid compatibility release batch state.' );
 		}
 		global $wpdb;
@@ -618,7 +681,7 @@ final class DTB_ProductRelationshipProjectionService {
 			$path = $dir . '/release-' . $release_id . '.json';
 			if ( is_file( $path ) ) {
 				$report = json_decode( (string) file_get_contents( $path ), true );
-				if ( ! is_array( $report ) || ( $report['release_id'] ?? '' ) !== $release_id || (int) ( $report['batch_count'] ?? 0 ) !== $batch_count || ( $report['catalog_sha256'] ?? '' ) !== ( $artifact['catalog_sha256'] ?? '' ) || ( $report['manifest_sha256'] ?? '' ) !== ( $artifact['manifest_sha256'] ?? '' ) || ( $report['catalog_apply_report_sha256'] ?? '' ) !== ( $artifact['catalog_apply_report_sha256'] ?? '' ) ) {
+				if ( ! is_array( $report ) || ( $report['release_id'] ?? '' ) !== $release_id || (int) ( $report['batch_count'] ?? 0 ) !== $batch_count || ( $report['catalog_sha256'] ?? '' ) !== ( $artifact['catalog_sha256'] ?? '' ) || ( $report['manifest_sha256'] ?? '' ) !== ( $artifact['manifest_sha256'] ?? '' ) || ( $report['catalog_apply_report_sha256'] ?? '' ) !== ( $artifact['catalog_apply_report_sha256'] ?? '' ) || ( $report['batch_inventory_sha256'] ?? '' ) !== ( $artifact['batch_inventory_sha256'] ?? '' ) ) {
 					throw new RuntimeException( 'Release batch does not match the immutable release digests.' );
 				}
 			} else {
@@ -629,35 +692,68 @@ final class DTB_ProductRelationshipProjectionService {
 					'catalog_sha256' => (string) ( $artifact['catalog_sha256'] ?? '' ),
 					'manifest_sha256' => (string) ( $artifact['manifest_sha256'] ?? '' ),
 					'catalog_apply_report_sha256' => (string) ( $artifact['catalog_apply_report_sha256'] ?? '' ),
+					'batch_inventory' => $artifact['batch_inventory'],
+					'batch_inventory_sha256' => $artifact['batch_inventory_sha256'],
 					'batch_count' => $batch_count,
 					'created_at' => gmdate( 'c' ),
 					'batches' => [],
 				];
 			}
+			$recorded_batch = $report['batches'][ (string) $batch_index ] ?? null;
+			if ( is_array( $recorded_batch ) && ! hash_equals( (string) ( $recorded_batch['artifact_sha256'] ?? '' ), $artifact_sha256 ) ) {
+				throw new RuntimeException( 'Release batch digest changed after it was first recorded.' );
+			}
+			$previous_batch = $report['batches'][ (string) $batch_index ] ?? [];
+			$attempts = is_array( $previous_batch['attempts'] ?? null ) ? $previous_batch['attempts'] : [];
+			if ( $previous_batch && empty( $previous_batch['attempts'] ) ) {
+				$attempts[] = array_intersect_key( $previous_batch, array_flip( [ 'artifact_sha256', 'status', 'part_skus', 'report_path', 'report_sha256', 'updated_at' ] ) );
+			}
+			$attempts[] = [ 'artifact_sha256' => $artifact_sha256, 'status' => $batch_status, 'part_skus' => array_values( $part_skus ), 'report_path' => $report_path, 'report_sha256' => $report_sha256, 'updated_at' => gmdate( 'c' ) ];
+			$effective_status = $batch_status;
+			$effective_report_path = $report_path;
+			$effective_report_sha256 = $report_sha256;
+			if ( 'already_applied' === $batch_status && 'applied' === ( $previous_batch['status'] ?? '' ) ) {
+				$effective_status = 'applied';
+				$effective_report_path = $previous_batch['report_path'] ?? null;
+				$effective_report_sha256 = $previous_batch['report_sha256'] ?? null;
+			}
+			$effective_part_skus = 'already_applied' === $batch_status && 'applied' === ( $previous_batch['status'] ?? '' ) ? ( $previous_batch['part_skus'] ?? $part_skus ) : $part_skus;
 			$report['batches'][ (string) $batch_index ] = [
 				'artifact_sha256' => $artifact_sha256,
-				'status' => $batch_status,
-				'part_skus' => array_values( $part_skus ),
-				'report_path' => $report_path,
-				'report_sha256' => $report_sha256,
+				'status' => $effective_status,
+				'part_skus' => array_values( $effective_part_skus ),
+				'report_path' => $effective_report_path,
+				'report_sha256' => $effective_report_sha256,
 				'public_api_readback' => $public_api_readback,
 				'updated_at' => gmdate( 'c' ),
+				'attempts' => $attempts,
 			];
 		$all_recorded = true;
 		$all_success = true;
 		$all_rolled_back = true;
 		$has_terminal_failure = false;
+		$has_rolled_back = false;
+		$has_success = false;
 		for ( $index = 1; $index <= $batch_count; $index++ ) {
 			$state = $report['batches'][ (string) $index ]['status'] ?? '';
 			$all_recorded = $all_recorded && in_array( $state, [ 'applied', 'already_applied', 'failed', 'rolled_back', 'rollback_failed' ], true );
 			$all_success = $all_success && in_array( $state, [ 'applied', 'already_applied' ], true );
 			$all_rolled_back = $all_rolled_back && 'rolled_back' === $state;
 			$has_terminal_failure = $has_terminal_failure || in_array( $state, [ 'failed', 'rollback_failed' ], true );
+			$has_rolled_back = $has_rolled_back || 'rolled_back' === $state;
+			$has_success = $has_success || in_array( $state, [ 'applied', 'already_applied' ], true );
 		}
-		$report['status'] = $all_success ? 'complete' : ( $all_rolled_back ? 'rolled_back' : ( $all_recorded && $has_terminal_failure ? 'failed' : 'in_progress' ) );
+		$report['status'] = $all_success ? 'complete' : ( $all_rolled_back ? 'rolled_back' : ( $all_recorded && $has_terminal_failure ? ( $has_success || $has_rolled_back ? 'partial_failure' : 'failed' ) : ( $all_recorded && $has_rolled_back ? 'partially_rolled_back' : ( $has_rolled_back && $has_success ? 'partial' : 'in_progress' ) ) ) );
 		$report['updated_at'] = gmdate( 'c' );
 		$path = self::write_private_report( $report, $path );
 		$report['report_sha256'] = hash_file( 'sha256', $path );
+		foreach ( $report['batches'] as &$batch ) {
+			$report_path = (string) ( $batch['report_path'] ?? '' );
+			if ( '' !== $report_path && is_file( $report_path ) ) {
+				$batch['current_report_sha256'] = hash_file( 'sha256', $report_path );
+			}
+		}
+		unset( $batch );
 		return $report;
 		} finally {
 			$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock_name ) );
@@ -668,6 +764,28 @@ final class DTB_ProductRelationshipProjectionService {
 		$path = rtrim( wp_normalize_path( $path ), '/' ) . '/';
 		$root = rtrim( wp_normalize_path( $root ), '/' ) . '/';
 		return 0 === strpos( $path, $root );
+	}
+
+	private static function canonical_sha256( $value ): string {
+		$value = self::canonicalize( $value );
+		$payload = wp_json_encode( $value, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+		if ( ! is_string( $payload ) ) {
+			throw new RuntimeException( 'Unable to encode compatibility release inventory.' );
+		}
+		return hash( 'sha256', $payload );
+	}
+
+	private static function canonicalize( $value ) {
+		if ( ! is_array( $value ) ) {
+			return $value;
+		}
+		foreach ( $value as $key => $item ) {
+			$value[ $key ] = self::canonicalize( $item );
+		}
+		if ( ! array_is_list( $value ) ) {
+			ksort( $value, SORT_STRING );
+		}
+		return $value;
 	}
 
 	private static function cleanup_expired_reports( string $dir ): void {
