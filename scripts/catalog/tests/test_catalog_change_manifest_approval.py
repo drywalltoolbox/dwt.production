@@ -52,14 +52,17 @@ def test_approval_hash_binds_proposal_and_evidence_payload() -> None:
         raise AssertionError("An edited approved proposal must be rejected.")
 
 
-def test_compatibility_apply_rejects_variation_and_unpublished_targets() -> None:
+def test_compatibility_apply_accepts_exact_variation_with_published_tool_parent() -> None:
     owner = {"SKU": "PART-1", "Type": "simple", "Published": "1", "Meta: _dtb_product_kind": "part"}
-    for target in (
-        {"SKU": "TOOL-VAR", "Type": "variation", "Published": "1"},
-        {"SKU": "TOOL-DRAFT", "Type": "simple", "Published": "0"},
+    variation = {"SKU": "TOOL-VAR", "Type": "variation", "Published": "1", "Parent": "TOOL-PARENT"}
+    parent = {"SKU": "TOOL-PARENT", "Type": "variable", "Published": "1", "Meta: _dtb_product_kind": "tool"}
+    applier.validate_compatibility_value(owner, json.dumps([variation["SKU"]]), {"TOOL-VAR": variation, "TOOL-PARENT": parent})
+    for target, catalog in (
+        ({"SKU": "TOOL-VAR", "Type": "variation", "Published": "1"}, {"TOOL-VAR": {"SKU": "TOOL-VAR", "Type": "variation", "Published": "1"}}),
+        ({"SKU": "TOOL-DRAFT", "Type": "simple", "Published": "0"}, {"TOOL-DRAFT": {"SKU": "TOOL-DRAFT", "Type": "simple", "Published": "0"}}),
     ):
         try:
-            applier.validate_compatibility_value(owner, json.dumps([target["SKU"]]), {target["SKU"]: target})
+            applier.validate_compatibility_value(owner, json.dumps([target["SKU"]]), catalog)
         except applier.CatalogValidationError:
             continue
         raise AssertionError("Variation and unpublished fitment targets must be rejected.")

@@ -120,7 +120,7 @@ wp dtb relationships project-fitment /private/release/compatibility-projection-a
 wp dtb relationships project-fitment /private/release/compatibility-projection-artifact.json --sha256=<reviewed-sha256> --apply
 ```
 
-The live operation is update-existing only, limited to 25 parts and 50 unique tool targets per artifact. It checks that each source is a published part and every target resolves to a unique, published parent product; refuses runtime drift; locks source and target products; writes rollback evidence before the first mutation; reads values back through WooCommerce CRUD; and verifies both public compatibility routes. Before enabling writes, production must define `DTB_RELATIONSHIP_PRIVATE_DIR` as a writable path outside both the WordPress and web document roots. The projector fails closed if that private location is missing or unsafe. Rollback reports are private and include a SHA-256. Roll back only with that report and its current digest:
+The live operation is update-existing only, limited to 25 parts and 50 unique tool targets per artifact. It checks that each source is a published part and every target resolves to a unique, published parent product; refuses runtime drift; locks source and target products; writes rollback evidence before the first mutation; reads values back through WooCommerce CRUD; and verifies both public compatibility routes. Reports default to `dirname(ABSPATH)/.dtb-private/product-relationships`; production may override this with `DTB_RELATIONSHIP_PRIVATE_DIR`. The projector creates and permission-restricts the directory, then fails closed unless it resolves outside both the WordPress and web document roots. Rollback reports are private and include a SHA-256. Roll back only with that report and its current digest:
 
 ```sh
 wp dtb relationships rollback-fitment /path/printed/by/the/command.json --sha256=<current-report-sha256>
@@ -132,7 +132,15 @@ Read release reconciliation after processing all generated shards:
 wp dtb relationships release-status <release-id>
 ```
 
+Before the first production projection, verify the private report path with `wp dtb relationships check-storage`.
+
 The private report marks a release `complete` only after every expected shard is applied or already applied; it records failed and rolled-back shard outcomes as well.
+
+Run the focused release-ledger transition check locally with:
+
+```powershell
+php .\scripts\catalog\tests\product_relationship_projection_state.php
+```
 
 No `Upsells` or `Cross-sells` field is writable through the catalog manifest workflow or fitment projection. WooCommerce CRUD remains the merchandising authority.
 

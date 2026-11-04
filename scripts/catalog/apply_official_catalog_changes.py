@@ -99,7 +99,10 @@ def validate_compatibility_value(
         if is_part(target_row):
             raise CatalogValidationError(f"{owner.get('SKU')}: compatibility target {target!r} is a part")
         if (target_row.get("Type") or "").strip().casefold() == "variation":
-            raise CatalogValidationError(f"{owner.get('SKU')}: target {target!r} is a variation; resolve its parent product first")
+            parent_sku = (target_row.get("Parent") or "").strip().upper()
+            parent = catalog.get(parent_sku)
+            if not parent_sku or parent is None or is_part(parent) or (parent.get("Published") or "").strip().casefold() not in TRUTHY:
+                raise CatalogValidationError(f"{owner.get('SKU')}: variation target {target!r} has no valid published tool parent")
         if (target_row.get("Published") or "").strip().casefold() not in TRUTHY:
             raise CatalogValidationError(f"{owner.get('SKU')}: target {target!r} is not published")
 

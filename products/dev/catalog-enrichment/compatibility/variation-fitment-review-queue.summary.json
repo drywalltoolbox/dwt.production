@@ -1,0 +1,12 @@
+{
+  "catalog_mutated": false,
+  "catalog_sha256": "6de14672687c0beab0919e4f9d21b64ad570682b9e0e344f657c757dd66eca8c",
+  "published_part_variation_edges": 403,
+  "read_only": true,
+  "review_status": "needs_review_for_all_rows",
+  "rows_with_catalog_parent": 403,
+  "rows_with_parent": 403,
+  "schema_version": 1,
+  "unique_parts": 140,
+  "unique_variation_skus": 35
+}

@@ -138,16 +138,25 @@ final class DTB_CompatiblePartsController {
 		foreach ( $tool_skus as $tool_sku ) {
 			$tool_id = self::get_product_id_by_sku( $tool_sku );
 			if ( $tool_id ) {
-				$dto = self::normalize_single( $tool_id );
+				$tool = wc_get_product( $tool_id );
+				$is_variation = $tool instanceof WC_Product_Variation;
+				$dto = self::normalize_single( $is_variation ? $tool->get_parent_id() : $tool_id );
 				if ( $dto ) {
-					$dtos[] = $dto;
+					$key = (string) ( $dto['sku'] ?? $tool_id );
+					if ( ! isset( $dtos[ $key ] ) ) {
+						$dtos[ $key ] = $dto;
+					}
+					if ( $is_variation ) {
+						$dtos[ $key ]['compatible_variations'] = $dtos[ $key ]['compatible_variations'] ?? [];
+						$dtos[ $key ]['compatible_variations'][] = [ 'sku' => (string) $tool->get_sku(), 'attributes' => $tool->get_variation_attributes() ];
+					}
 				}
 			}
 		}
 
 		return new WP_REST_Response( [
 			'partSku'  => $part_sku,
-			'products' => $dtos,
+			'products' => array_values( $dtos ),
 			'count'    => count( $dtos ),
 		], 200 );
 	}

@@ -18,6 +18,7 @@ function dtb_register_relationship_projection_cli(): void {
 	WP_CLI::add_command( 'dtb relationships project-fitment', [ DTB_CompatibilityProjectionCli::class, 'project' ] );
 	WP_CLI::add_command( 'dtb relationships rollback-fitment', [ DTB_CompatibilityProjectionCli::class, 'rollback' ] );
 	WP_CLI::add_command( 'dtb relationships release-status', [ DTB_CompatibilityProjectionCli::class, 'release_status' ] );
+	WP_CLI::add_command( 'dtb relationships check-storage', [ DTB_CompatibilityProjectionCli::class, 'check_storage' ] );
 }
 
 final class DTB_CompatibilityProjectionCli {
@@ -96,6 +97,16 @@ final class DTB_CompatibilityProjectionCli {
 		}
 		try {
 			$result = DTB_ProductRelationshipProjectionService::read_release_status( (string) $args[0] );
+		} catch ( Throwable $error ) {
+			WP_CLI::error( $error->getMessage() );
+		}
+		WP_CLI::log( wp_json_encode( $result, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) );
+	}
+
+	/** Verify that private recovery storage resolves outside the web root. */
+	public static function check_storage(): void {
+		try {
+			$result = DTB_ProductRelationshipProjectionService::verify_private_storage();
 		} catch ( Throwable $error ) {
 			WP_CLI::error( $error->getMessage() );
 		}

@@ -151,7 +151,9 @@ def build_artifact(catalog_path: Path, manifest_path: Path, apply_report_path: P
             if target is None or is_part(target):
                 raise CatalogValidationError(f"{sku}: target {target_sku!r} is absent or classified as a part")
             if (target.get("Type") or "").strip().casefold() == "variation":
-                raise CatalogValidationError(f"{sku}: target {target_sku!r} is a variation; resolve its parent family")
+                parent = catalog.get((target.get("Parent") or "").strip().upper())
+                if parent is None or is_part(parent) or (parent.get("Published") or "").strip().casefold() not in TRUTHY:
+                    raise CatalogValidationError(f"{sku}: variation target {target_sku!r} has no valid published tool parent")
             if (target.get("Published") or "").strip().casefold() not in TRUTHY:
                 raise CatalogValidationError(f"{sku}: target {target_sku!r} is not published")
         group = grouped.setdefault(sku, {"sku": sku, "before": {}, "after": {}, "approvals": []})

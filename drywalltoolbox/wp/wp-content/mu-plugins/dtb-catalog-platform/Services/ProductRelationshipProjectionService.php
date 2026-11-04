@@ -33,7 +33,16 @@ final class DTB_ProductRelationshipProjectionService {
 		$inventory = $artifact['batch_inventory'] ?? null;
 		$batch_index = absint( $artifact['batch_index'] );
 		$inventory_digest = (string) ( $artifact['batch_inventory_sha256'] ?? '' );
-		if ( ! is_array( $inventory ) || count( $inventory ) !== absint( $artifact['batch_count'] ) || ! hash_equals( $inventory_digest, self::canonical_sha256( $inventory ) ) || ! is_array( $inventory[ $batch_index - 1 ] ?? null ) || (int) ( $inventory[ $batch_index - 1 ]['batch_index'] ?? 0 ) !== $batch_index || ! hash_equals( (string) ( $inventory[ $batch_index - 1 ]['rows_sha256'] ?? '' ), self::canonical_sha256( $artifact['rows'] ) ) ) {
+		foreach ( [ 'catalog_sha256', 'manifest_sha256', 'catalog_apply_report_sha256' ] as $digest_field ) {
+			if ( ! preg_match( '/^[a-f0-9]{64}$/i', (string) ( $artifact[ $digest_field ] ?? '' ) ) ) {
+				throw new RuntimeException( 'Projection artifact source digest is missing or invalid.' );
+			}
+		}
+		$batch_entry = is_array( $inventory ) ? ( $inventory[ $batch_index - 1 ] ?? null ) : null;
+		$batch_skus = array_map( static fn( array $row ): string => (string) ( $row['sku'] ?? '' ), $artifact['rows'] );
+		$release_payload = implode( '|', [ strtolower( (string) ( $artifact['catalog_sha256'] ?? '' ) ), strtolower( (string) ( $artifact['manifest_sha256'] ?? '' ) ), strtolower( (string) ( $artifact['catalog_apply_report_sha256'] ?? '' ) ), strtolower( $inventory_digest ) ] );
+		$expected_release_id = substr( hash( 'sha256', $release_payload ), 0, 24 );
+		if ( ! is_array( $inventory ) || count( $inventory ) !== absint( $artifact['batch_count'] ) || ! hash_equals( $inventory_digest, self::canonical_sha256( $inventory ) ) || ! is_array( $batch_entry ) || (int) ( $batch_entry['batch_index'] ?? 0 ) !== $batch_index || ( $batch_entry['part_skus'] ?? null ) !== $batch_skus || ! hash_equals( (string) ( $batch_entry['rows_sha256'] ?? '' ), self::canonical_sha256( $artifact['rows'] ) ) || ! hash_equals( strtolower( (string) $artifact['release_id'] ), $expected_release_id ) ) {
 			throw new RuntimeException( 'Projection batch does not match its immutable release inventory.' );
 		}
 		$excluded = $artifact['excluded_fields'] ?? [];
@@ -297,19 +306,29 @@ final class DTB_ProductRelationshipProjectionService {
 		}
 		$report['report_sha256'] = hash_file( 'sha256', $path );
 		$private_dir = realpath( self::private_report_dir() );
-		foreach ( $report['batches'] ?? [] as &$batch ) {
-			$batch_report_path = (string) ( $batch['report_path'] ?? '' );
-			if ( '' === $batch_report_path ) {
-				continue;
+		if ( isset( $report['batches'] ) && is_array( $report['batches'] ) ) {
+			foreach ( $report['batches'] as &$batch ) {
+				$batch_report_path = (string) ( $batch['report_path'] ?? '' );
+				if ( '' === $batch_report_path ) {
+					continue;
+				}
+				$real_batch_report = realpath( $batch_report_path );
+				if ( ! $private_dir || ! $real_batch_report || dirname( $real_batch_report ) !== $private_dir || ! is_readable( $real_batch_report ) ) {
+					throw new RuntimeException( 'A batch rollback report path is missing, unreadable, or outside the private report directory.' );
+				}
+				$batch['current_report_sha256'] = hash_file( 'sha256', $real_batch_report );
 			}
-			$real_batch_report = realpath( $batch_report_path );
-			if ( ! $private_dir || ! $real_batch_report || dirname( $real_batch_report ) !== $private_dir || ! is_readable( $real_batch_report ) ) {
-				throw new RuntimeException( 'A batch rollback report path is missing, unreadable, or outside the private report directory.' );
-			}
-			$batch['current_report_sha256'] = hash_file( 'sha256', $real_batch_report );
+			unset( $batch );
 		}
-		unset( $batch );
 		return $report;
+	}
+
+	public static function verify_private_storage(): array {
+		$path = self::private_report_dir();
+		if ( ! is_writable( $path ) ) {
+			throw new RuntimeException( 'Private compatibility projection directory is not writable by PHP.' );
+		}
+		return [ 'path' => $path, 'writable' => true, 'web_accessible' => false ];
 	}
 
 	private static function validate_artifact_rows( array $rows ): array {
@@ -417,18 +436,26 @@ final class DTB_ProductRelationshipProjectionService {
 			return [];
 		}
 		$placeholders = implode( ',', array_fill( 0, count( $skus ), '%s' ) );
-		$sql = "SELECT pm.meta_value AS sku,p.ID AS id,p.post_type,p.post_status FROM {$wpdb->posts} p INNER JOIN {$wpdb->postmeta} pm ON pm.post_id=p.ID AND pm.meta_key='_sku' WHERE p.post_type IN ('product','product_variation') AND p.post_status NOT IN ('auto-draft','inherit') AND pm.meta_value IN ({$placeholders})";
+		$sql = "SELECT pm.meta_value AS sku,p.ID AS id,p.post_type,p.post_status,p.post_parent FROM {$wpdb->posts} p INNER JOIN {$wpdb->postmeta} pm ON pm.post_id=p.ID AND pm.meta_key='_sku' WHERE p.post_type IN ('product','product_variation') AND p.post_status NOT IN ('auto-draft','inherit') AND pm.meta_value IN ({$placeholders})";
 		$prepared = $wpdb->prepare( $sql, $skus );
 		$rows = $wpdb->get_results( $prepared, ARRAY_A );
 		$map = [];
 		$ids = [];
 		foreach ( (array) $rows as $row ) {
 			$key = strtoupper( (string) $row['sku'] );
-			$map[ $key ][] = [ 'id' => (int) $row['id'], 'sku' => (string) $row['sku'], 'post_type' => (string) $row['post_type'], 'post_status' => (string) $row['post_status'] ];
+			$map[ $key ][] = [ 'id' => (int) $row['id'], 'sku' => (string) $row['sku'], 'post_type' => (string) $row['post_type'], 'post_status' => (string) $row['post_status'], 'post_parent' => (int) $row['post_parent'] ];
 			$ids[ (int) $row['id'] ] = true;
+			if ( 'product_variation' === $row['post_type'] && (int) $row['post_parent'] > 0 ) {
+				$ids[ (int) $row['post_parent'] ] = true;
+			}
 		}
 		if ( $ids ) {
 			$id_placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+			$post_rows = $wpdb->get_results( $wpdb->prepare( "SELECT ID,post_type,post_status FROM {$wpdb->posts} WHERE ID IN ({$id_placeholders})", array_keys( $ids ) ), ARRAY_A );
+			$post_map = [];
+			foreach ( (array) $post_rows as $post_row ) {
+				$post_map[ (int) $post_row['ID'] ] = $post_row;
+			}
 			$meta_sql = "SELECT post_id,meta_key,meta_value FROM {$wpdb->postmeta} WHERE post_id IN ({$id_placeholders}) AND meta_key IN (%s,%s)";
 			$meta_args = array_merge( array_keys( $ids ), [ DTB_ProductMeta::PRODUCT_KIND, DTB_ProductMeta::IS_PARTS ] );
 			$meta_rows = $wpdb->get_results( $wpdb->prepare( $meta_sql, $meta_args ), ARRAY_A );
@@ -442,6 +469,14 @@ final class DTB_ProductRelationshipProjectionService {
 					$kinds = $record_meta[ DTB_ProductMeta::PRODUCT_KIND ] ?? [];
 					$parts = $record_meta[ DTB_ProductMeta::IS_PARTS ] ?? [];
 					$match['is_part'] = in_array( 'part', $kinds, true ) || in_array( '1', $parts, true );
+					$match['parent_id'] = (int) ( $match['post_parent'] ?? 0 );
+					$match['parent_is_tool'] = false;
+					if ( 'product_variation' === $match['post_type'] && $match['parent_id'] > 0 ) {
+						$parent_kinds = $meta_map[ $match['parent_id'] ][ DTB_ProductMeta::PRODUCT_KIND ] ?? [];
+						$parent_parts = $meta_map[ $match['parent_id'] ][ DTB_ProductMeta::IS_PARTS ] ?? [];
+						$parent = $post_map[ $match['parent_id'] ] ?? [];
+						$match['parent_is_tool'] = 'product' === ( $parent['post_type'] ?? '' ) && 'publish' === ( $parent['post_status'] ?? '' ) && ! in_array( 'part', $parent_kinds, true ) && ! in_array( '1', $parent_parts, true );
+					}
 				}
 				unset( $match );
 			}
@@ -468,14 +503,17 @@ final class DTB_ProductRelationshipProjectionService {
 				foreach ( $targets as $target_sku ) {
 					$key = strtoupper( $target_sku );
 					$target_matches = $identity_map[ $key ] ?? [];
-					if ( 1 !== count( $target_matches ) || 'product' !== $target_matches[0]['post_type'] || 'publish' !== $target_matches[0]['post_status'] ) {
-						throw new RuntimeException( "{$sku}: target {$target_sku} does not resolve uniquely to a published parent product." );
+					if ( 1 !== count( $target_matches ) || 'publish' !== $target_matches[0]['post_status'] || ( 'product' !== $target_matches[0]['post_type'] && ( 'product_variation' !== $target_matches[0]['post_type'] || empty( $target_matches[0]['parent_is_tool'] ) ) ) ) {
+						throw new RuntimeException( "{$sku}: target {$target_sku} does not resolve uniquely to a published tool or a variation of a published tool." );
 					}
 					$target_id = (int) $target_matches[0]['id'];
 					if ( ! empty( $target_matches[0]['is_part'] ) ) {
 						throw new RuntimeException( "{$sku}: target {$target_sku} is classified as a part, not a compatible tool." );
 					}
 					$target_ids[ $key ] = $target_id;
+					if ( 'product_variation' === $target_matches[0]['post_type'] ) {
+						$target_ids[ 'parent:' . $key ] = (int) $target_matches[0]['parent_id'];
+					}
 				}
 			}
 		}
@@ -645,10 +683,11 @@ final class DTB_ProductRelationshipProjectionService {
 	}
 
 	private static function private_report_dir(): string {
-		if ( ! defined( 'DTB_RELATIONSHIP_PRIVATE_DIR' ) || ! is_string( DTB_RELATIONSHIP_PRIVATE_DIR ) || '' === DTB_RELATIONSHIP_PRIVATE_DIR ) {
-			throw new RuntimeException( 'Configure DTB_RELATIONSHIP_PRIVATE_DIR outside the web document root before fitment projection.' );
+		$configured_dir = defined( 'DTB_RELATIONSHIP_PRIVATE_DIR' ) ? DTB_RELATIONSHIP_PRIVATE_DIR : dirname( untrailingslashit( ABSPATH ) ) . '/.dtb-private/product-relationships';
+		if ( ! is_string( $configured_dir ) || '' === $configured_dir ) {
+			throw new RuntimeException( 'The private compatibility projection directory is not configured.' );
 		}
-		$dir = untrailingslashit( DTB_RELATIONSHIP_PRIVATE_DIR );
+		$dir = untrailingslashit( $configured_dir );
 		if ( ! is_dir( $dir ) && ! wp_mkdir_p( $dir ) ) {
 			throw new RuntimeException( 'Unable to create the configured private compatibility rollback directory.' );
 		}
@@ -782,7 +821,15 @@ final class DTB_ProductRelationshipProjectionService {
 		foreach ( $value as $key => $item ) {
 			$value[ $key ] = self::canonicalize( $item );
 		}
-		if ( ! array_is_list( $value ) ) {
+		$is_list = true;
+		$expected_key = 0;
+		foreach ( array_keys( $value ) as $key ) {
+			if ( $key !== $expected_key++ ) {
+				$is_list = false;
+				break;
+			}
+		}
+		if ( ! $is_list ) {
 			ksort( $value, SORT_STRING );
 		}
 		return $value;
