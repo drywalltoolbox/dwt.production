@@ -30,13 +30,17 @@ function dtb_parts_validate_ajax_request(): void {
 	}
 }
 
+function dtb_parts_is_catalog_part( int $product_id ): bool {
+	return 'part' === (string) get_post_meta( $product_id, DTB_ProductMeta::PRODUCT_KIND, true ) || '1' === (string) get_post_meta( $product_id, DTB_ProductMeta::IS_PARTS, true );
+}
+
 function dtb_parts_list_query_args( string $search, string $brand, string $status, string $universal_status, int $paged ): array {
 	$meta_query = [
 		'relation' => 'AND',
 		[
-			'key'     => DTB_ProductMeta::IS_PARTS,
-			'value'   => '1',
-			'compare' => '=',
+			'relation' => 'OR',
+			[ 'key' => DTB_ProductMeta::IS_PARTS, 'value' => '1', 'compare' => '=' ],
+			[ 'key' => DTB_ProductMeta::PRODUCT_KIND, 'value' => 'part', 'compare' => '=' ],
 		],
 	];
 
@@ -195,29 +199,37 @@ function dtb_ajax_parts_save(): void {
 	if ( ! in_array( $status, [ 'draft', 'publish', 'private', 'pending' ], true ) ) {
 		$status = 'draft';
 	}
-
-	$data = [
-		'post_type'    => 'product',
-		'post_title'   => $title,
-		'post_content' => $description,
-		'post_status'  => $status,
-	];
-
-	if ( $id > 0 ) {
-		$data['ID'] = $id;
-		$result     = wp_update_post( $data, true );
-	} else {
-		$result = wp_insert_post( $data, true );
-		$id     = is_wp_error( $result ) ? 0 : (int) $result;
+	$product = $id > 0 ? wc_get_product( $id ) : false;
+	if ( $id > 0 && ( ! $product || $product instanceof WC_Product_Variation || strtoupper( trim( (string) $product->get_sku() ) ) !== strtoupper( trim( $sku ) ) ) ) {
+		wp_send_json_error( [ 'message' => 'SKU is a protected product identity. Existing parts must be edited under their current SKU.' ], 409 );
+	}
+	if ( $id > 0 && ! dtb_parts_is_catalog_part( $id ) ) {
+		wp_send_json_error( [ 'message' => 'This product is not classified as a part and cannot be edited in Parts Manager.' ], 409 );
+	}
+	$sku_owner = wc_get_product_id_by_sku( $sku );
+	if ( $sku_owner > 0 && $sku_owner !== $id ) {
+		wp_send_json_error( [ 'message' => 'This SKU is already assigned to another WooCommerce product or variation.' ], 409 );
+	}
+	if ( $id > 0 && (string) get_post_meta( $id, DTB_ProductMeta::MANUFACTURER_SKU, true ) !== $manufacturer_sku ) {
+		wp_send_json_error( [ 'message' => 'Manufacturer part number is protected. Existing parts must be edited under their current manufacturer part number.' ], 409 );
 	}
 
-	if ( is_wp_error( $result ) || ! $id ) {
-		wp_send_json_error( [ 'message' => 'Unable to save product record.' ], 500 );
+	try {
+		if ( ! $product ) {
+			$product = new WC_Product_Simple();
+			$product->set_sku( $sku );
+		}
+		$product->set_name( $title );
+		$product->set_description( $description );
+		$product->set_status( $status );
+		$product->set_regular_price( '' === $price ? '' : $price );
+		$id = (int) $product->save();
+	} catch ( Throwable $error ) {
+		wp_send_json_error( [ 'message' => 'WooCommerce rejected the product update. Verify SKU uniqueness and required product fields.' ], 400 );
 	}
-
-	update_post_meta( $id, '_sku', $sku );
-	update_post_meta( $id, '_regular_price', '' === $price ? '' : $price );
-	update_post_meta( $id, '_price', '' === $price ? '' : $price );
+	if ( ! $id ) {
+		wp_send_json_error( [ 'message' => 'Unable to save product record through WooCommerce.' ], 500 );
+	}
 	update_post_meta( $id, DTB_ProductMeta::IS_PARTS, '1' );
 	update_post_meta( $id, DTB_ProductMeta::PRODUCT_KIND, 'part' );
 	update_post_meta( $id, DTB_ProductMeta::BRAND_LABEL, $brand_label );
@@ -231,7 +243,7 @@ function dtb_ajax_parts_delete(): void {
 	dtb_parts_validate_ajax_request();
 
 	$id = absint( $_POST['id'] ?? 0 );
-	if ( ! $id || 'product' !== get_post_type( $id ) ) {
+	if ( ! $id || 'product' !== get_post_type( $id ) || ! dtb_parts_is_catalog_part( $id ) ) {
 		wp_send_json_error( [ 'message' => 'Invalid product ID.' ], 400 );
 	}
 
@@ -251,7 +263,7 @@ function dtb_find_part_id_by_sku( string $sku ): int {
 		[
 			'post_type'      => 'product',
 			'post_status'    => 'any',
-			'posts_per_page' => 1,
+			'posts_per_page' => 20,
 			'fields'         => 'ids',
 			'meta_query'     => [
 				[
@@ -261,7 +273,12 @@ function dtb_find_part_id_by_sku( string $sku ): int {
 			],
 		]
 	);
-	return ! empty( $ids ) ? (int) $ids[0] : 0;
+	foreach ( $ids as $id ) {
+		if ( dtb_parts_is_catalog_part( (int) $id ) ) {
+			return (int) $id;
+		}
+	}
+	return 0;
 }
 
 function dtb_find_part_id_by_manufacturer_sku( string $manufacturer_sku ): int {
@@ -272,7 +289,7 @@ function dtb_find_part_id_by_manufacturer_sku( string $manufacturer_sku ): int {
 		[
 			'post_type'      => 'product',
 			'post_status'    => 'any',
-			'posts_per_page' => 1,
+			'posts_per_page' => 20,
 			'fields'         => 'ids',
 			'meta_query'     => [
 				[
@@ -282,7 +299,12 @@ function dtb_find_part_id_by_manufacturer_sku( string $manufacturer_sku ): int {
 			],
 		]
 	);
-	return ! empty( $ids ) ? (int) $ids[0] : 0;
+	foreach ( $ids as $id ) {
+		if ( dtb_parts_is_catalog_part( (int) $id ) ) {
+			return (int) $id;
+		}
+	}
+	return 0;
 }
 
 function dtb_parts_detect_brand_taxonomy(): string {
@@ -476,29 +498,44 @@ function dtb_ajax_parts_import_csv(): void {
 		if ( $id <= 0 ) {
 			$id = dtb_find_part_id_by_sku( $sku );
 		}
-
-		$data = [
-			'post_type'    => 'product',
-			'post_title'   => $title,
-			'post_content' => $description,
-			'post_status'  => $status,
-		];
-		if ( $id > 0 ) {
-			$data['ID'] = $id;
-			$result     = wp_update_post( $data, true );
-		} else {
-			$result = wp_insert_post( $data, true );
-			$id     = is_wp_error( $result ) ? 0 : (int) $result;
+		$existing_product = $id > 0 ? wc_get_product( $id ) : false;
+		if ( $id > 0 && ( ! $existing_product || $existing_product instanceof WC_Product_Variation || strtoupper( trim( (string) $existing_product->get_sku() ) ) !== strtoupper( trim( $sku ) ) ) ) {
+			$errors[] = "Row {$row_num}: existing product SKU does not exactly match; protected identity was not changed.";
+			continue;
+		}
+		if ( $id > 0 && ! dtb_parts_is_catalog_part( $id ) ) {
+			$errors[] = "Row {$row_num}: existing product is not classified as a part; no changes were made.";
+			continue;
+		}
+		$sku_owner = wc_get_product_id_by_sku( $sku );
+		if ( $sku_owner > 0 && ( $sku_owner !== $id || ( ! $existing_product && $sku_owner > 0 ) ) ) {
+			$errors[] = "Row {$row_num}: SKU is already assigned to another product or variation.";
+			continue;
+		}
+		if ( $id > 0 && (string) get_post_meta( $id, DTB_ProductMeta::MANUFACTURER_SKU, true ) !== $manufacturer_sku ) {
+			$errors[] = "Row {$row_num}: existing manufacturer part number does not exactly match; protected identity was not changed.";
+			continue;
 		}
 
-		if ( is_wp_error( $result ) || $id <= 0 ) {
+		try {
+			$product = $existing_product ?: new WC_Product_Simple();
+			if ( ! $existing_product ) {
+				$product->set_sku( $sku );
+			}
+			$product->set_name( $title );
+			$product->set_description( $description );
+			$product->set_status( $status );
+			$product->set_regular_price( '' === $price ? '' : $price );
+			$id = (int) $product->save();
+		} catch ( Throwable $error ) {
+			$errors[] = "Row {$row_num}: WooCommerce rejected the part update; verify SKU uniqueness and required fields.";
+			continue;
+		}
+		if ( $id <= 0 ) {
 			$errors[] = "Row {$row_num}: failed to save part record.";
 			continue;
 		}
 
-		update_post_meta( $id, '_sku', $sku );
-		update_post_meta( $id, '_regular_price', '' === $price ? '' : $price );
-		update_post_meta( $id, '_price', '' === $price ? '' : $price );
 		update_post_meta( $id, DTB_ProductMeta::IS_PARTS, '1' );
 		update_post_meta( $id, DTB_ProductMeta::PRODUCT_KIND, 'part' );
 		update_post_meta( $id, DTB_ProductMeta::BRAND_LABEL, $brand_label );

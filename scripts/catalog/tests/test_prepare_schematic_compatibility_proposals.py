@@ -154,7 +154,27 @@ def test_multi_tool_schematic_is_review_only(tmp_path: Path) -> None:
         brand_filter="Columbia",
     )
     assert proposals[0]["status"] == "review_multi_tool"
-    assert json.loads(proposals[0]["target_tool_skus"]) == ["TOOL-A", "TOOL-B"]
+
+
+def test_existing_relationship_does_not_hide_missing_exact_schematic_target(tmp_path: Path) -> None:
+    master = tmp_path / "master.csv"
+    write_master(master, [{
+        "brand": "Columbia",
+        "schematic_id": "schematic-b",
+        "product_sku": "",
+        "sku": "PART-1",
+        "part_number": "",
+        "source_file_from_brands": "Columbia/Parts/Part-1.pdf",
+    }])
+    proposals = prepare_proposals(
+        catalog={"PART-1": row("PART-1", product_kind="part", compatible='["TOOL-A"]')},
+        master_path=master,
+        tool_index={"schematic-b": ["TOOL-B"]},
+        brand_filter="Columbia",
+    )
+    assert len(proposals) == 1
+    assert proposals[0]["status"] == "proposal_exact"
+    assert json.loads(proposals[0]["target_tool_skus"]) == ["TOOL-B"]
 
 
 def test_existing_relationship_is_not_reproposed(tmp_path: Path) -> None:

@@ -1,0 +1,772 @@
+<?php
+/**
+ * Exact, bounded projector for reviewed canonical compatibility changes.
+ *
+ * @package drywall-toolbox
+ */
+
+defined( 'ABSPATH' ) || exit;
+
+final class DTB_ProductRelationshipProjectionService {
+	private const FIELDS = [
+		'Meta: _dtb_compatible_tool_skus' => DTB_ProductMeta::COMPATIBLE_TOOL_SKUS,
+		'Meta: _dtb_replacement_part_for' => DTB_ProductMeta::REPLACEMENT_PART_FOR,
+	];
+	private const WRITABLE_FIELDS = [
+		'Meta: _dtb_compatible_tool_skus' => DTB_ProductMeta::COMPATIBLE_TOOL_SKUS,
+	];
+	private const MAX_PARTS = 25;
+	private const MAX_TARGETS_PER_FIELD = 50;
+
+	public static function run_artifact( string $path, string $expected_sha256, bool $apply ): array {
+		if ( ! is_file( $path ) || ! is_readable( $path ) ) {
+			throw new RuntimeException( 'Projection artifact is not a readable file.' );
+		}
+		$actual_sha256 = hash_file( 'sha256', $path );
+		if ( ! is_string( $actual_sha256 ) || ! preg_match( '/^[a-f0-9]{64}$/i', $expected_sha256 ) || ! hash_equals( strtolower( $expected_sha256 ), strtolower( $actual_sha256 ) ) ) {
+			throw new RuntimeException( 'Projection artifact SHA-256 does not match the explicitly supplied digest.' );
+		}
+		$artifact = json_decode( (string) file_get_contents( $path ), true );
+		if ( ! is_array( $artifact ) || 1 !== ( $artifact['schema_version'] ?? null ) || 'dtb_compatibility_projection' !== ( $artifact['artifact_type'] ?? '' ) || ! is_array( $artifact['rows'] ?? null ) || ! preg_match( '/^[a-f0-9]{24}$/i', (string) ( $artifact['release_id'] ?? '' ) ) || absint( $artifact['batch_index'] ?? 0 ) < 1 || absint( $artifact['batch_count'] ?? 0 ) < 1 || absint( $artifact['batch_index'] ?? 0 ) > absint( $artifact['batch_count'] ?? 0 ) ) {
+			throw new RuntimeException( 'Projection artifact schema is invalid.' );
+		}
+		$excluded = $artifact['excluded_fields'] ?? [];
+		if ( ! is_array( $excluded ) || ! in_array( 'Upsells', $excluded, true ) || ! in_array( 'Cross-sells', $excluded, true ) ) {
+			throw new RuntimeException( 'Artifact does not explicitly exclude WooCommerce merchandising fields.' );
+		}
+		$rows = $artifact['rows'];
+		if ( count( $rows ) > self::MAX_PARTS ) {
+			throw new RuntimeException( 'Projection batch exceeds the 25-part bound.' );
+		}
+		if ( empty( $rows ) ) {
+			return [ 'mode' => $apply ? 'apply' : 'dry-run', 'artifact_sha256' => $actual_sha256, 'rows' => [], 'applied' => false ];
+		}
+
+		$validated = self::validate_artifact_rows( $rows );
+		$identity_map = self::resolve_skus( $validated['all_skus'] );
+		$runtime_records = self::validate_runtime_records( $validated['rows'], $identity_map );
+		$products = $runtime_records['parts'];
+		$plan = self::build_plan( $validated['rows'], $products );
+		$conflicts = array_values( array_filter( $plan, static fn( array $row ): bool => 'conflict' === $row['status'] ) );
+		if ( $conflicts ) {
+			return [ 'mode' => $apply ? 'apply' : 'dry-run', 'artifact_sha256' => $actual_sha256, 'applied' => false, 'rows' => $plan, 'error' => 'Runtime state conflicts with the artifact; no writes were made.' ];
+		}
+		if ( ! $apply ) {
+			return [ 'mode' => 'dry-run', 'artifact_sha256' => $actual_sha256, 'applied' => false, 'rows' => $plan ];
+		}
+		$apply_rows = array_values( array_filter( $plan, static fn( array $row ): bool => 'ready' === $row['status'] ) );
+		if ( empty( $apply_rows ) ) {
+			$readback = self::verify_public_routes( $validated['rows'], $products );
+			$release = self::record_release_batch( $artifact, $actual_sha256, 'already_applied', [], null, null, $readback );
+			return [ 'mode' => 'apply', 'artifact_sha256' => $actual_sha256, 'applied' => false, 'already_applied' => true, 'rows' => $plan, 'public_api_readback' => $readback, 'release' => $release ];
+		}
+
+		$report = [
+			'schema_version' => 1,
+			'report_type' => 'dtb_compatibility_projection_rollback',
+			'artifact_sha256' => $actual_sha256,
+			'release_id' => (string) $artifact['release_id'],
+			'batch_index' => absint( $artifact['batch_index'] ),
+			'batch_count' => absint( $artifact['batch_count'] ),
+			'catalog_sha256' => (string) ( $artifact['catalog_sha256'] ?? '' ),
+			'manifest_sha256' => (string) ( $artifact['manifest_sha256'] ?? '' ),
+			'catalog_apply_report_sha256' => (string) ( $artifact['catalog_apply_report_sha256'] ?? '' ),
+			'created_at' => gmdate( 'c' ),
+			'rows' => $apply_rows,
+		];
+		$report_path = self::write_private_report( $report );
+		$locks = [];
+		try {
+			$lock_ids = array_values( array_unique( array_merge( array_column( $runtime_records['parts'], 'id' ), array_values( $runtime_records['targets'] ) ) ) );
+			sort( $lock_ids, SORT_NUMERIC );
+			foreach ( $lock_ids as $lock_id ) {
+				$lock = dtb_product_mapping_acquire_lock( (int) $lock_id );
+				if ( is_wp_error( $lock ) ) {
+					throw new RuntimeException( $lock->get_error_message() );
+				}
+				$locks[] = $lock;
+			}
+			// Re-resolve every identity and re-check every source after all locks are held.
+			$fresh_map = self::resolve_skus( $validated['all_skus'] );
+			$fresh_records = self::validate_runtime_records( $validated['rows'], $fresh_map );
+			if ( $fresh_records !== $runtime_records ) {
+				throw new RuntimeException( 'Runtime SKU identity changed during projection preparation; no writes were made.' );
+			}
+			foreach ( $validated['rows'] as $index => $row ) {
+				$product = wc_get_product( (int) $products[ $row['sku'] ]['id'] );
+				if ( ! $product || ! self::row_state_is_expected( $product, $row ) ) {
+					throw new RuntimeException( 'Runtime fitment changed during projection preparation; no writes were made.' );
+				}
+			}
+			foreach ( $apply_rows as $index => $row ) {
+				$report['rows'][ $index ]['status'] = 'applying';
+				self::write_private_report( $report, $report_path );
+				$product = wc_get_product( (int) $products[ $row['sku'] ]['id'] );
+				self::write_relationships( $product, $row['after'] );
+				$report['rows'][ $index ]['status'] = 'applied';
+				$report['rows'][ $index ]['product_id'] = $product->get_id();
+			$report['rows'][ $index ]['result'] = self::read_product_relationships( $product );
+				self::write_private_report( $report, $report_path );
+			}
+			$report['public_api_readback'] = self::verify_public_routes( $validated['rows'], $products );
+			self::write_private_report( $report, $report_path );
+		} catch ( Throwable $error ) {
+			$report['failure'] = sanitize_text_field( $error->getMessage() );
+			$report['failure_at'] = gmdate( 'c' );
+			$report['partial_apply'] = (bool) array_filter( $report['rows'], static fn( array $row ): bool => in_array( $row['status'] ?? '', [ 'applying', 'applied' ], true ) );
+			self::write_private_report( $report, $report_path );
+			$report_sha256 = hash_file( 'sha256', $report_path );
+			try {
+				self::record_release_batch( $artifact, $actual_sha256, 'failed', array_column( $report['rows'], 'sku' ), $report_path, $report_sha256, $report['public_api_readback'] ?? [] );
+			} catch ( Throwable $release_error ) {
+				$report['release_recording_error'] = sanitize_text_field( $release_error->getMessage() );
+				self::write_private_report( $report, $report_path );
+				$report_sha256 = hash_file( 'sha256', $report_path );
+			}
+			throw new RuntimeException( $error->getMessage() . ' Rollback report: ' . $report_path . ' SHA-256: ' . $report_sha256, 0, $error );
+		} finally {
+			foreach ( array_reverse( $locks ) as $lock ) {
+				dtb_product_mapping_release_lock( $lock );
+			}
+		}
+		$report['partial_apply'] = false;
+		self::write_private_report( $report, $report_path );
+		$report_sha256 = hash_file( 'sha256', $report_path );
+		$release = self::record_release_batch( $artifact, $actual_sha256, 'applied', array_column( $report['rows'], 'sku' ), $report_path, $report_sha256, $report['public_api_readback'] ?? [] );
+		return [ 'mode' => 'apply', 'artifact_sha256' => $actual_sha256, 'applied' => true, 'report_path' => $report_path, 'report_sha256' => $report_sha256, 'release' => $release, 'rows' => $report['rows'] ];
+	}
+
+	public static function rollback_report( string $path, string $expected_sha256 ): array {
+		if ( ! is_file( $path ) || ! is_readable( $path ) || ! hash_equals( strtolower( $expected_sha256 ), strtolower( (string) hash_file( 'sha256', $path ) ) ) ) {
+			throw new RuntimeException( 'Rollback report is unavailable or its SHA-256 does not match.' );
+		}
+		$report = json_decode( (string) file_get_contents( $path ), true );
+		if ( ! is_array( $report ) || 'dtb_compatibility_projection_rollback' !== ( $report['report_type'] ?? '' ) || ! is_array( $report['rows'] ?? null ) || count( $report['rows'] ) > self::MAX_PARTS ) {
+			throw new RuntimeException( 'Rollback report schema is invalid.' );
+		}
+		$sku_list = array_map( static fn( array $row ): string => (string) ( $row['sku'] ?? '' ), $report['rows'] );
+		$identity_map = self::resolve_skus( $sku_list );
+		$plan = [];
+		foreach ( $report['rows'] as $row ) {
+			$sku = strtoupper( trim( (string) ( $row['sku'] ?? '' ) ) );
+			$product_row = $identity_map[ $sku ] ?? null;
+			if ( ! is_array( $product_row ) || 1 !== count( $product_row ) || 'product' !== $product_row[0]['post_type'] ) {
+				throw new RuntimeException( "Rollback source SKU {$sku} no longer resolves uniquely to a parent product." );
+			}
+			if ( empty( $product_row[0]['is_part'] ) ) {
+				throw new RuntimeException( "Rollback source SKU {$sku} is no longer classified as a part." );
+			}
+			$product = wc_get_product( (int) $product_row[0]['id'] );
+			if ( ! $product ) {
+				throw new RuntimeException( "Rollback source SKU {$sku} is unavailable." );
+			}
+			$current = self::read_product_relationships( $product );
+			$before = $row['before'] ?? [];
+			$after = $row['after'] ?? [];
+			$already_rolled_back = self::same_relationships( $current, $before );
+			if ( ! $already_rolled_back && ! self::same_relationship_subset( $current, $after ) ) {
+				throw new RuntimeException( "Rollback conflict on {$sku}; current values do not match the recorded after-state." );
+			}
+			$plan[] = [ 'sku' => $sku, 'product_id' => $product->get_id(), 'before' => $before, 'before_raw' => $row['before_raw'] ?? [], 'after' => $after, 'status' => $already_rolled_back ? 'already_rolled_back' : 'ready' ];
+		}
+		$locks = [];
+		try {
+			$lock_ids = array_values( array_unique( array_column( $plan, 'product_id' ) ) );
+			sort( $lock_ids, SORT_NUMERIC );
+			foreach ( $lock_ids as $lock_id ) {
+				$lock = dtb_product_mapping_acquire_lock( (int) $lock_id );
+				if ( is_wp_error( $lock ) ) {
+					throw new RuntimeException( $lock->get_error_message() );
+				}
+				$locks[] = $lock;
+			}
+			foreach ( $plan as $row ) {
+				$product = wc_get_product( (int) $row['product_id'] );
+				if ( ! $product || ( 'ready' === $row['status'] && ! self::same_relationship_subset( self::read_product_relationships( $product ), $row['after'] ) ) ) {
+					throw new RuntimeException( 'Rollback state changed during preparation; no rollback writes were made.' );
+				}
+			}
+			foreach ( $plan as $index => $row ) {
+				if ( 'already_rolled_back' === $row['status'] ) {
+					continue;
+				}
+				$product = wc_get_product( (int) $row['product_id'] );
+				$plan[ $index ]['status'] = 'rolling_back';
+				$report['rollback'] = [ 'at' => gmdate( 'c' ), 'rows' => $plan ];
+				self::write_private_report( $report, $path );
+				self::write_relationships( $product, $row['before'], $row['before_raw'] ?? [] );
+				$plan[ $index ]['status'] = 'rolled_back';
+				$plan[ $index ]['result'] = self::read_product_relationships( $product );
+				if ( ! self::same_relationship_subset( $plan[ $index ]['result'], $row['before'] ) ) {
+					throw new RuntimeException( "Rollback read-back failed on {$row['sku']}." );
+				}
+			}
+		} catch ( Throwable $error ) {
+			$report['rollback_failure'] = sanitize_text_field( $error->getMessage() );
+			$report['rollback_failure_at'] = gmdate( 'c' );
+			$report['rollback'] = [ 'at' => gmdate( 'c' ), 'rows' => $plan, 'status' => 'partial_or_failed' ];
+			self::write_private_report( $report, $path );
+			$report_sha256 = hash_file( 'sha256', $path );
+			try {
+				self::record_release_batch( $report, (string) $report['artifact_sha256'], 'rollback_failed', array_column( $plan, 'sku' ), $path, $report_sha256, $report['rollback']['public_api_readback'] ?? [] );
+			} catch ( Throwable $release_error ) {
+				$report['rollback_release_recording_error'] = sanitize_text_field( $release_error->getMessage() );
+				self::write_private_report( $report, $path );
+				$report_sha256 = hash_file( 'sha256', $path );
+			}
+			throw new RuntimeException( $error->getMessage() . ' Updated rollback report: ' . $path . ' SHA-256: ' . $report_sha256, 0, $error );
+		} finally {
+			foreach ( array_reverse( $locks ) as $lock ) {
+				dtb_product_mapping_release_lock( $lock );
+			}
+		}
+		$rollback_rows = [];
+		$rollback_products = [];
+		foreach ( $plan as $row ) {
+			$rollback_rows[] = [ 'sku' => $row['sku'], 'before' => $row['after'], 'after' => $row['before'] ];
+			$rollback_products[ $row['sku'] ] = [ 'id' => $row['product_id'] ];
+		}
+		$report['rollback'] = [ 'at' => gmdate( 'c' ), 'rows' => $plan, 'public_api_readback' => self::verify_public_routes( $rollback_rows, $rollback_products ) ];
+		$written = self::write_private_report( $report, $path );
+		$report_sha256 = hash_file( 'sha256', $written );
+		$release = self::record_release_batch( $report, (string) $report['artifact_sha256'], 'rolled_back', array_column( $plan, 'sku' ), $written, $report_sha256, $report['rollback']['public_api_readback'] ?? [] );
+		return [ 'rolled_back' => true, 'report_path' => $written, 'report_sha256' => $report_sha256, 'release' => $release, 'rows' => $plan ];
+	}
+
+	public static function read_release_status( string $release_id ): array {
+		if ( ! preg_match( '/^[a-f0-9]{24}$/i', $release_id ) ) {
+			throw new RuntimeException( 'Release ID must be 24 hexadecimal characters.' );
+		}
+		$path = self::private_report_dir() . '/release-' . strtolower( $release_id ) . '.json';
+		if ( ! is_file( $path ) || ! is_readable( $path ) ) {
+			throw new RuntimeException( 'No private reconciliation report exists for that release ID.' );
+		}
+		$report = json_decode( (string) file_get_contents( $path ), true );
+		if ( ! is_array( $report ) || ( $report['release_id'] ?? '' ) !== strtolower( $release_id ) ) {
+			throw new RuntimeException( 'Release reconciliation report is invalid.' );
+		}
+		$report['report_sha256'] = hash_file( 'sha256', $path );
+		return $report;
+	}
+
+	private static function validate_artifact_rows( array $rows ): array {
+		$seen = [];
+		$validated = [];
+		$all_skus = [];
+		foreach ( $rows as $row ) {
+			if ( ! is_array( $row ) ) {
+				throw new RuntimeException( 'Projection artifact contains an invalid row.' );
+			}
+			$sku = strtoupper( trim( (string) ( $row['sku'] ?? '' ) ) );
+			if ( ! preg_match( '/^[A-Z0-9._-]+$/', $sku ) || isset( $seen[ $sku ] ) ) {
+				throw new RuntimeException( 'Projection artifact contains a blank or duplicate part SKU.' );
+			}
+			$seen[ $sku ] = true;
+			$before = self::validate_relationship_map( $row['before'] ?? null, 'before' );
+			$after = self::validate_relationship_map( $row['after'] ?? null, 'after' );
+			if ( empty( $after ) || array_diff( array_keys( $after ), array_keys( $before ) ) ) {
+				throw new RuntimeException( "{$sku}: before/after compatibility fields do not match or after-state is empty." );
+			}
+			$approved_fields = [];
+			if ( ! is_array( $row['approvals'] ?? null ) ) {
+				throw new RuntimeException( "{$sku}: approval bindings must be an array." );
+			}
+			foreach ( $row['approvals'] as $approval ) {
+				if ( ! is_array( $approval ) || ! isset( self::WRITABLE_FIELDS[ $approval['field'] ?? '' ] ) || ! preg_match( '/^[a-f0-9]{64}$/i', (string) ( $approval['approval_sha256'] ?? '' ) ) ) {
+					throw new RuntimeException( "{$sku}: approval binding is invalid." );
+				}
+				if ( isset( $approved_fields[ $approval['field'] ] ) ) {
+					throw new RuntimeException( "{$sku}: approval binding contains a duplicate field." );
+				}
+				$workflow = (string) ( $approval['workflow'] ?? '' );
+				if ( ! in_array( $workflow, [ 'compatibility', 'compatibility_remove' ], true ) ) {
+					throw new RuntimeException( "{$sku}: unsupported compatibility approval workflow." );
+				}
+				$approved_fields[ $approval['field'] ] = $workflow;
+			}
+			$approved_field_names = array_keys( $approved_fields );
+			$after_field_names = array_keys( $after );
+			sort( $approved_field_names );
+			sort( $after_field_names );
+			if ( $approved_field_names !== $after_field_names ) {
+				throw new RuntimeException( "{$sku}: each projected field must be tied to exactly one approval." );
+			}
+			foreach ( $after as $field => $targets ) {
+				$workflow = $approved_fields[ $field ] ?? '';
+				$before_set = array_map( 'strtoupper', $before[ $field ] ?? [] );
+				$after_set = array_map( 'strtoupper', $targets );
+				if ( 'compatibility' === $workflow && ( empty( $targets ) || array_diff( $before_set, $after_set ) ) ) {
+					throw new RuntimeException( "{$sku}: additive fitment projection cannot clear or remove existing targets." );
+				}
+				if ( 'compatibility_remove' === $workflow && ( ! array_diff( $before_set, $after_set ) || array_diff( $after_set, $before_set ) ) ) {
+					throw new RuntimeException( "{$sku}: removal projection must remove existing targets without adding any." );
+				}
+				if ( count( $targets ) > self::MAX_TARGETS_PER_FIELD ) {
+					throw new RuntimeException( "{$sku}: target list exceeds the 50-SKU bound." );
+				}
+				foreach ( $targets as $target ) {
+					$all_skus[ strtoupper( $target ) ] = $target;
+				}
+			}
+			$all_skus[ $sku ] = $sku;
+			$validated[] = [ 'sku' => $sku, 'before' => $before, 'after' => $after ];
+		}
+		$all_targets = [];
+		foreach ( $validated as $row ) {
+			foreach ( $row['after'] as $targets ) {
+				foreach ( $targets as $target ) {
+					$all_targets[ strtoupper( $target ) ] = $target;
+				}
+			}
+		}
+		if ( count( $all_targets ) > 50 ) {
+			throw new RuntimeException( 'Projection batch exceeds the 50-unique-tool public-route verification bound.' );
+		}
+		return [ 'rows' => $validated, 'all_skus' => array_values( $all_skus ) ];
+	}
+
+	private static function validate_relationship_map( $map, string $label ): array {
+		if ( ! is_array( $map ) ) {
+			throw new RuntimeException( "Projection {$label} state must be an object." );
+		}
+		$out = [];
+		foreach ( $map as $field => $skus ) {
+			if ( ! isset( self::WRITABLE_FIELDS[ $field ] ) || ! is_array( $skus ) || count( $skus ) !== count( array_unique( array_map( 'strval', $skus ) ) ) ) {
+				throw new RuntimeException( "Projection {$label} contains an unknown field or invalid SKU list." );
+			}
+			$seen = [];
+			foreach ( $skus as $sku ) {
+				$normalized_sku = strtoupper( trim( (string) $sku ) );
+				if ( ! is_string( $sku ) || ! preg_match( '/^[A-Z0-9._-]+$/', $normalized_sku ) || isset( $seen[ $normalized_sku ] ) ) {
+					throw new RuntimeException( "Projection {$label} contains a blank or duplicate SKU." );
+				}
+				$seen[ $normalized_sku ] = true;
+			}
+			$out[ $field ] = array_values( $skus );
+		}
+		return $out;
+	}
+
+	private static function resolve_skus( array $skus ): array {
+		global $wpdb;
+		$skus = array_values( array_unique( array_filter( array_map( 'strval', $skus ) ) ) );
+		if ( ! $skus ) {
+			return [];
+		}
+		$placeholders = implode( ',', array_fill( 0, count( $skus ), '%s' ) );
+		$sql = "SELECT pm.meta_value AS sku,p.ID AS id,p.post_type,p.post_status FROM {$wpdb->posts} p INNER JOIN {$wpdb->postmeta} pm ON pm.post_id=p.ID AND pm.meta_key='_sku' WHERE p.post_type IN ('product','product_variation') AND p.post_status NOT IN ('auto-draft','inherit') AND pm.meta_value IN ({$placeholders})";
+		$prepared = $wpdb->prepare( $sql, $skus );
+		$rows = $wpdb->get_results( $prepared, ARRAY_A );
+		$map = [];
+		$ids = [];
+		foreach ( (array) $rows as $row ) {
+			$key = strtoupper( (string) $row['sku'] );
+			$map[ $key ][] = [ 'id' => (int) $row['id'], 'sku' => (string) $row['sku'], 'post_type' => (string) $row['post_type'], 'post_status' => (string) $row['post_status'] ];
+			$ids[ (int) $row['id'] ] = true;
+		}
+		if ( $ids ) {
+			$id_placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+			$meta_sql = "SELECT post_id,meta_key,meta_value FROM {$wpdb->postmeta} WHERE post_id IN ({$id_placeholders}) AND meta_key IN (%s,%s)";
+			$meta_args = array_merge( array_keys( $ids ), [ DTB_ProductMeta::PRODUCT_KIND, DTB_ProductMeta::IS_PARTS ] );
+			$meta_rows = $wpdb->get_results( $wpdb->prepare( $meta_sql, $meta_args ), ARRAY_A );
+			$meta_map = [];
+			foreach ( (array) $meta_rows as $meta_row ) {
+				$meta_map[ (int) $meta_row['post_id'] ][ (string) $meta_row['meta_key'] ][] = (string) $meta_row['meta_value'];
+			}
+			foreach ( $map as &$matches ) {
+				foreach ( $matches as &$match ) {
+					$record_meta = $meta_map[ $match['id'] ] ?? [];
+					$kinds = $record_meta[ DTB_ProductMeta::PRODUCT_KIND ] ?? [];
+					$parts = $record_meta[ DTB_ProductMeta::IS_PARTS ] ?? [];
+					$match['is_part'] = in_array( 'part', $kinds, true ) || in_array( '1', $parts, true );
+				}
+				unset( $match );
+			}
+			unset( $matches );
+		}
+		return $map;
+	}
+
+	private static function validate_runtime_records( array $rows, array $identity_map ): array {
+		$parts = [];
+		$target_ids = [];
+		foreach ( $rows as $row ) {
+			$sku = $row['sku'];
+			$matches = $identity_map[ $sku ] ?? [];
+			if ( 1 !== count( $matches ) || 'product' !== $matches[0]['post_type'] || 'publish' !== $matches[0]['post_status'] ) {
+				throw new RuntimeException( "{$sku}: part SKU does not resolve uniquely to a published parent product." );
+			}
+			$id = (int) $matches[0]['id'];
+			if ( empty( $matches[0]['is_part'] ) ) {
+				throw new RuntimeException( "{$sku}: runtime owner is not classified as a part." );
+			}
+			$parts[ $sku ] = [ 'id' => $id ];
+			foreach ( $row['after'] as $targets ) {
+				foreach ( $targets as $target_sku ) {
+					$key = strtoupper( $target_sku );
+					$target_matches = $identity_map[ $key ] ?? [];
+					if ( 1 !== count( $target_matches ) || 'product' !== $target_matches[0]['post_type'] || 'publish' !== $target_matches[0]['post_status'] ) {
+						throw new RuntimeException( "{$sku}: target {$target_sku} does not resolve uniquely to a published parent product." );
+					}
+					$target_id = (int) $target_matches[0]['id'];
+					if ( ! empty( $target_matches[0]['is_part'] ) ) {
+						throw new RuntimeException( "{$sku}: target {$target_sku} is classified as a part, not a compatible tool." );
+					}
+					$target_ids[ $key ] = $target_id;
+				}
+			}
+		}
+		foreach ( $rows as $row ) {
+			foreach ( $row['after'] as $targets ) {
+				foreach ( $targets as $target_sku ) {
+					if ( isset( $parts[ strtoupper( $target_sku ) ] ) ) {
+						throw new RuntimeException( "{$row['sku']}: fitment target {$target_sku} resolves to another part in the same projection." );
+					}
+				}
+			}
+		}
+		return [ 'parts' => $parts, 'targets' => $target_ids ];
+	}
+
+	private static function read_product_relationships( WC_Product $product ): array {
+		$out = [];
+		foreach ( self::FIELDS as $field => $meta_key ) {
+			$values = [];
+			foreach ( (array) get_post_meta( $product->get_id(), $meta_key, false ) as $raw ) {
+				$values = array_merge( $values, DTB_CatalogProductNormalizer::decode_csv_or_array( $raw ) );
+			}
+			$seen = [];
+			foreach ( $values as $value ) {
+				$key = strtoupper( trim( (string) $value ) );
+				if ( '' !== $key && ! isset( $seen[ $key ] ) ) {
+					$seen[ $key ] = (string) $value;
+				}
+			}
+			$out[ $field ] = array_values( $seen );
+		}
+		return $out;
+	}
+
+	private static function same_relationships( array $left, array $right ): bool {
+		foreach ( self::FIELDS as $field => $_meta_key ) {
+			$a = array_map( 'strtoupper', $left[ $field ] ?? [] );
+			$b = array_map( 'strtoupper', $right[ $field ] ?? [] );
+			sort( $a );
+			sort( $b );
+			if ( $a !== $b ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static function same_relationship_subset( array $actual, array $expected_subset ): bool {
+		foreach ( $expected_subset as $field => $expected ) {
+			if ( ! isset( self::FIELDS[ $field ] ) ) {
+				return false;
+			}
+			$a = array_map( 'strtoupper', $actual[ $field ] ?? [] );
+			$b = array_map( 'strtoupper', $expected );
+			sort( $a );
+			sort( $b );
+			if ( $a !== $b ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static function read_raw_relationships( WC_Product $product ): array {
+		$out = [];
+		foreach ( self::FIELDS as $field => $meta_key ) {
+			$out[ $field ] = array_values( (array) get_post_meta( $product->get_id(), $meta_key, false ) );
+		}
+		return $out;
+	}
+
+	private static function row_state_is_expected( WC_Product $product, array $row ): bool {
+		$current = self::read_product_relationships( $product );
+		foreach ( self::FIELDS as $field => $_meta_key ) {
+			if ( ! isset( $row['after'][ $field ] ) ) {
+				continue;
+			}
+			$expected_before = $row['before'][ $field ] ?? [];
+			$expected_after = $row['after'][ $field ];
+			$only_field_before = $current;
+			$only_field_after = $current;
+			$only_field_before[ $field ] = $expected_before;
+			$only_field_after[ $field ] = $expected_after;
+			if ( ! self::same_relationships( $current, $only_field_before ) && ! self::same_relationships( $current, $only_field_after ) ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static function build_plan( array $rows, array $products ): array {
+		$plan = [];
+		foreach ( $rows as $row ) {
+			$product = wc_get_product( (int) $products[ $row['sku'] ]['id'] );
+			$current = $product ? self::read_product_relationships( $product ) : [];
+			$status = 'ready';
+			$changed_fields = [];
+			foreach ( $row['after'] as $field => $target_values ) {
+				$now = array_map( 'strtoupper', $current[ $field ] ?? [] );
+				$before = array_map( 'strtoupper', $row['before'][ $field ] ?? [] );
+				$after = array_map( 'strtoupper', $target_values );
+				sort( $now );
+				sort( $before );
+				sort( $after );
+				if ( $now === $after ) {
+					continue;
+				}
+				$changed_fields[ $field ] = true;
+				if ( $now !== $before ) {
+					$status = 'conflict';
+				}
+			}
+			if ( 'ready' === $status && empty( $changed_fields ) ) {
+				$status = 'already_applied';
+			}
+			$raw = self::read_raw_relationships( $product );
+			$plan[] = [ 'sku' => $row['sku'], 'product_id' => $products[ $row['sku'] ]['id'], 'before' => array_intersect_key( $current, $changed_fields ), 'before_raw' => array_intersect_key( $raw, array_fill_keys( array_keys( $changed_fields ), true ) ), 'after' => array_intersect_key( $row['after'], $changed_fields ), 'status' => $status ];
+		}
+		return $plan;
+	}
+
+	private static function write_relationships( WC_Product $product, array $relationships, array $raw_restore = [] ): void {
+		foreach ( $relationships as $field => $values ) {
+			$meta_key = self::WRITABLE_FIELDS[ $field ] ?? '';
+			if ( '' === $meta_key ) {
+				throw new RuntimeException( 'Unknown relationship field reached the persistence boundary.' );
+			}
+			$product->delete_meta_data( $meta_key );
+			if ( array_key_exists( $field, $raw_restore ) ) {
+				foreach ( (array) $raw_restore[ $field ] as $raw_value ) {
+					$product->add_meta_data( $meta_key, $raw_value, false );
+				}
+			} else {
+				$product->add_meta_data( $meta_key, wp_json_encode( array_values( $values ) ), true );
+			}
+		}
+		$product->save();
+		$verified = wc_get_product( $product->get_id() );
+		if ( ! $verified || ! self::same_relationships( self::read_product_relationships( $verified ), array_replace( self::read_product_relationships( $verified ), $relationships ) ) ) {
+			throw new RuntimeException( 'Compatibility projection read-back did not match the approved artifact.' );
+		}
+	}
+
+	private static function write_private_report( array $report, string $existing_path = '' ): string {
+		$dir = self::private_report_dir();
+		$path = '' !== $existing_path ? $existing_path : $dir . '/projection-' . gmdate( 'Ymd-His' ) . '-' . wp_generate_password( 8, false, false ) . '.json';
+		$real_dir = realpath( $dir );
+		$parent = realpath( dirname( $path ) );
+		if ( ! $real_dir || $parent !== $real_dir ) {
+			throw new RuntimeException( 'Report path must stay inside the configured private directory.' );
+		}
+		self::cleanup_expired_reports( $real_dir );
+		$temp = $path . '.tmp';
+		$payload = wp_json_encode( $report, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES );
+		$previous_umask = umask( 0077 );
+		$written = is_string( $payload ) ? file_put_contents( $temp, $payload . "\n", LOCK_EX ) : false;
+		umask( $previous_umask );
+		if ( false === $written || ! @chmod( $temp, 0600 ) || ! rename( $temp, $path ) ) {
+			@unlink( $temp );
+			throw new RuntimeException( 'Unable to write the compatibility rollback report atomically.' );
+		}
+		if ( ! @chmod( $path, 0600 ) ) {
+			@unlink( $path );
+			throw new RuntimeException( 'Unable to restrict permissions on the rollback report.' );
+		}
+		return $path;
+	}
+
+	private static function private_report_dir(): string {
+		if ( ! defined( 'DTB_RELATIONSHIP_PRIVATE_DIR' ) || ! is_string( DTB_RELATIONSHIP_PRIVATE_DIR ) || '' === DTB_RELATIONSHIP_PRIVATE_DIR ) {
+			throw new RuntimeException( 'Configure DTB_RELATIONSHIP_PRIVATE_DIR outside the web document root before fitment projection.' );
+		}
+		$dir = untrailingslashit( DTB_RELATIONSHIP_PRIVATE_DIR );
+		if ( ! is_dir( $dir ) && ! wp_mkdir_p( $dir ) ) {
+			throw new RuntimeException( 'Unable to create the configured private compatibility rollback directory.' );
+		}
+		if ( ! @chmod( $dir, 0700 ) ) {
+			throw new RuntimeException( 'Unable to restrict permissions on the private rollback directory.' );
+		}
+		$real_dir = realpath( $dir );
+		$web_root = realpath( ABSPATH );
+		$document_root = isset( $_SERVER['DOCUMENT_ROOT'] ) ? realpath( (string) $_SERVER['DOCUMENT_ROOT'] ) : false;
+		if ( ! $real_dir || ! $web_root || self::is_path_within( $real_dir, $web_root ) || ( $document_root && self::is_path_within( $real_dir, $document_root ) ) ) {
+			throw new RuntimeException( 'Configured rollback directory must resolve outside the WordPress and web document roots.' );
+		}
+		return $real_dir;
+	}
+
+	private static function record_release_batch( array $artifact, string $artifact_sha256, string $batch_status, array $part_skus, ?string $report_path, ?string $report_sha256, array $public_api_readback = [] ): array {
+		$release_id = strtolower( (string) ( $artifact['release_id'] ?? '' ) );
+		$batch_index = absint( $artifact['batch_index'] ?? 0 );
+		$batch_count = absint( $artifact['batch_count'] ?? 0 );
+		if ( ! preg_match( '/^[a-f0-9]{24}$/', $release_id ) || $batch_index < 1 || $batch_count < $batch_index || ! in_array( $batch_status, [ 'applied', 'already_applied', 'failed', 'rolled_back', 'rollback_failed' ], true ) ) {
+			throw new RuntimeException( 'Cannot record invalid compatibility release batch state.' );
+		}
+		global $wpdb;
+		$lock_name = 'dtb_rel_release_' . $release_id;
+		if ( '1' !== (string) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 0)', $lock_name ) ) ) {
+			throw new RuntimeException( 'Another process is updating this release reconciliation report.' );
+		}
+		try {
+			$dir = self::private_report_dir();
+			$path = $dir . '/release-' . $release_id . '.json';
+			if ( is_file( $path ) ) {
+				$report = json_decode( (string) file_get_contents( $path ), true );
+				if ( ! is_array( $report ) || ( $report['release_id'] ?? '' ) !== $release_id || (int) ( $report['batch_count'] ?? 0 ) !== $batch_count || ( $report['catalog_sha256'] ?? '' ) !== ( $artifact['catalog_sha256'] ?? '' ) || ( $report['manifest_sha256'] ?? '' ) !== ( $artifact['manifest_sha256'] ?? '' ) || ( $report['catalog_apply_report_sha256'] ?? '' ) !== ( $artifact['catalog_apply_report_sha256'] ?? '' ) ) {
+					throw new RuntimeException( 'Release batch does not match the immutable release digests.' );
+				}
+			} else {
+				$report = [
+					'schema_version' => 1,
+					'report_type' => 'dtb_compatibility_release_reconciliation',
+					'release_id' => $release_id,
+					'catalog_sha256' => (string) ( $artifact['catalog_sha256'] ?? '' ),
+					'manifest_sha256' => (string) ( $artifact['manifest_sha256'] ?? '' ),
+					'catalog_apply_report_sha256' => (string) ( $artifact['catalog_apply_report_sha256'] ?? '' ),
+					'batch_count' => $batch_count,
+					'created_at' => gmdate( 'c' ),
+					'batches' => [],
+				];
+			}
+			$report['batches'][ (string) $batch_index ] = [
+				'artifact_sha256' => $artifact_sha256,
+				'status' => $batch_status,
+				'part_skus' => array_values( $part_skus ),
+				'report_path' => $report_path,
+				'report_sha256' => $report_sha256,
+				'public_api_readback' => $public_api_readback,
+				'updated_at' => gmdate( 'c' ),
+			];
+		$all_recorded = true;
+		$all_success = true;
+		$all_rolled_back = true;
+		$has_terminal_failure = false;
+		for ( $index = 1; $index <= $batch_count; $index++ ) {
+			$state = $report['batches'][ (string) $index ]['status'] ?? '';
+			$all_recorded = $all_recorded && in_array( $state, [ 'applied', 'already_applied', 'failed', 'rolled_back', 'rollback_failed' ], true );
+			$all_success = $all_success && in_array( $state, [ 'applied', 'already_applied' ], true );
+			$all_rolled_back = $all_rolled_back && 'rolled_back' === $state;
+			$has_terminal_failure = $has_terminal_failure || in_array( $state, [ 'failed', 'rollback_failed' ], true );
+		}
+		$report['status'] = $all_success ? 'complete' : ( $all_rolled_back ? 'rolled_back' : ( $all_recorded && $has_terminal_failure ? 'failed' : 'in_progress' ) );
+		$report['updated_at'] = gmdate( 'c' );
+		$path = self::write_private_report( $report, $path );
+		$report['report_sha256'] = hash_file( 'sha256', $path );
+		return $report;
+		} finally {
+			$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock_name ) );
+		}
+	}
+
+	private static function is_path_within( string $path, string $root ): bool {
+		$path = rtrim( wp_normalize_path( $path ), '/' ) . '/';
+		$root = rtrim( wp_normalize_path( $root ), '/' ) . '/';
+		return 0 === strpos( $path, $root );
+	}
+
+	private static function cleanup_expired_reports( string $dir ): void {
+		$cutoff = time() - YEAR_IN_SECONDS;
+		foreach ( array_merge( glob( $dir . '/projection-*.json' ) ?: [], glob( $dir . '/release-*.json' ) ?: [] ) as $file ) {
+			$real_file = realpath( $file );
+			if ( $real_file && dirname( $real_file ) === $dir && filemtime( $real_file ) < $cutoff ) {
+				@unlink( $real_file );
+			}
+		}
+	}
+
+	private static function verify_public_routes( array $rows, array $products ): array {
+		$verified_parts = [];
+		$verified_tools = [];
+		$targets = [];
+		foreach ( $rows as $row ) {
+			$expected_tools = [];
+			foreach ( array_merge( $row['before'], $row['after'] ) as $values ) {
+				foreach ( $values as $sku ) {
+					$targets[ strtoupper( $sku ) ] = $sku;
+				}
+			}
+			foreach ( $row['after'] as $values ) {
+				foreach ( $values as $sku ) {
+					$expected_tools[ strtoupper( $sku ) ] = $sku;
+				}
+			}
+			$path = '/dtb/v1/parts/' . rawurlencode( $row['sku'] ) . '/compatible-tools';
+			$response = rest_do_request( new WP_REST_Request( 'GET', $path ) );
+			if ( is_wp_error( $response ) || ! $response instanceof WP_REST_Response || 200 !== $response->get_status() ) {
+				throw new RuntimeException( "Public compatible-tools route read-back failed for {$row['sku']}." );
+			}
+			$data = $response->get_data();
+			$actual_tools = [];
+			foreach ( (array) ( $data['products'] ?? [] ) as $product ) {
+				if ( ! empty( $product['sku'] ) ) {
+					$actual_tools[ strtoupper( (string) $product['sku'] ) ] = true;
+				}
+			}
+			foreach ( $expected_tools as $tool_sku => $_display_sku ) {
+				if ( empty( $actual_tools[ $tool_sku ] ) ) {
+					throw new RuntimeException( "Public compatible-tools route omitted {$row['sku']} -> {$tool_sku}." );
+				}
+			}
+			$removed_tools = [];
+			foreach ( $row['before'] as $values ) {
+				foreach ( $values as $sku ) {
+					$removed_tools[ strtoupper( $sku ) ] = true;
+				}
+			}
+			foreach ( $row['after'] as $values ) {
+				foreach ( $values as $sku ) {
+					unset( $removed_tools[ strtoupper( $sku ) ] );
+				}
+			}
+			foreach ( array_keys( $removed_tools ) as $removed_sku ) {
+				if ( isset( $actual_tools[ $removed_sku ] ) ) {
+					throw new RuntimeException( "Public compatible-tools route still returns removed target {$row['sku']} -> {$removed_sku}." );
+				}
+			}
+			$verified_parts[] = $row['sku'];
+		}
+		foreach ( $targets as $target_sku ) {
+			$path = '/dtb/v1/products/' . rawurlencode( $target_sku ) . '/compatible-parts';
+			$response = rest_do_request( new WP_REST_Request( 'GET', $path ) );
+			if ( is_wp_error( $response ) || ! $response instanceof WP_REST_Response || 200 !== $response->get_status() ) {
+				throw new RuntimeException( "Public compatible-parts route read-back failed for tool SKU {$target_sku}." );
+			}
+			$data = $response->get_data();
+			$actual_parts = [];
+			foreach ( (array) ( $data['products'] ?? [] ) as $product ) {
+				if ( ! empty( $product['sku'] ) ) {
+					$actual_parts[ strtoupper( (string) $product['sku'] ) ] = true;
+				}
+			}
+			foreach ( $rows as $row ) {
+				$part_targets = [];
+				foreach ( array_merge( $row['before'], $row['after'] ) as $values ) {
+					foreach ( $values as $sku ) {
+						$part_targets[ strtoupper( $sku ) ] = true;
+					}
+				}
+				$after_targets = [];
+				foreach ( $row['after'] as $values ) {
+					foreach ( $values as $sku ) {
+						$after_targets[ strtoupper( $sku ) ] = true;
+					}
+				}
+				if ( isset( $after_targets[ strtoupper( $target_sku ) ] ) && empty( $actual_parts[ $row['sku'] ] ) ) {
+					throw new RuntimeException( "Public compatible-parts route omitted {$row['sku']} for tool SKU {$target_sku}." );
+				}
+				if ( isset( $part_targets[ strtoupper( $target_sku ) ] ) && ! isset( $after_targets[ strtoupper( $target_sku ) ] ) && isset( $actual_parts[ $row['sku'] ] ) ) {
+					throw new RuntimeException( "Public compatible-parts route still returns removed part {$row['sku']} for tool SKU {$target_sku}." );
+				}
+			}
+			$verified_tools[] = $target_sku;
+		}
+		return [ 'verified_part_skus' => $verified_parts, 'verified_tool_skus' => $verified_tools ];
+	}
+}
+

@@ -1,705 +1,92 @@
 <?php
 /**
- * Product Mapping admin renderer.
+ * Consolidated product relationship workbench.
  *
  * @package drywall-toolbox
  */
 
 defined( 'ABSPATH' ) || exit;
 
-function dtb_product_mapping_render_page() {
+function dtb_product_mapping_render_page(): void {
 	if ( ! current_user_can( 'dtb_manage_product_mapping' ) ) {
 		dtb_admin_shell_access_denied();
 		return;
 	}
-
-	$nonce  = wp_create_nonce( 'dtb_mapping_nonce' );
-	$brands = [ 'Asgard', 'Columbia Taping Tools', 'Platinum Drywall Tools', 'SurPro', 'TapeTech' ];
-
+	$nonce = wp_create_nonce( 'dtb_mapping_nonce' );
+	$parts_url = admin_url( 'admin.php?page=dtb-parts-manager' );
 	dtb_admin_shell_open( [
-		'title'    => __( 'Product Mapping', 'drywall-toolbox' ),
-		'subtitle' => __( 'Map external catalog IDs and variations to WooCommerce products.', 'drywall-toolbox' ),
-		'section'  => 'tools',
-		'page'     => 'dtb-product-mapping',
+		'title' => __( 'Product Relationships', 'drywall-toolbox' ),
+		'subtitle' => __( 'Review structured runtime fitment projections and manage product merchandising relationships.', 'drywall-toolbox' ),
+		'section' => 'tools',
+		'page' => 'dtb-product-mapping',
 		'template' => 'tool',
-		'icon'     => 'dashicons-randomize',
+		'icon' => 'dashicons-networking',
 	] );
 	?>
-	<div class="dtb-mapping-inner">
-		<h1 class="wp-heading-inline dtb-inline-hidden">Product Mapping</h1>
-		<hr class="wp-header-end dtb-inline-hidden">
-
-		<!-- Tabs -->
-		<div class="dtb-tabs">
-			<button class="dtb-tab active" data-tab="variables">Variable Products</button>
-			<button class="dtb-tab" data-tab="parts">Parts Compatibility</button>
-			<button class="dtb-tab" data-tab="relationships">Upsells &amp; Cross-sells</button>
-		</div>
-
-		<!-- ── TAB 1: Variable Products ──────────────────────────────────── -->
-		<div id="dtb-tab-variables" class="dtb-tab-panel active">
-			<div class="dtb-card">
-				<p class="dtb-section-note">
-					Manage variable products and their variation children. Each row expands to show existing variations (SKU, price, attributes) and lets you add or edit individual variations.
-				</p>
-				<div class="dtb-toolbar">
-					<select id="dtb-var-brand" class="dtb-select">
-						<option value="">All Brands</option>
-						<?php foreach ( $brands as $b ) : ?>
-							<option value="<?php echo esc_attr( $b ); ?>"><?php echo esc_html( $b ); ?></option>
-						<?php endforeach; ?>
-					</select>
-					<input type="text" id="dtb-var-search" class="dtb-input dtb-input--wide" placeholder="Search by name or SKU…">
-					<button id="dtb-btn-var-load" class="dtb-btn dtb-btn-secondary">
-						<span class="dashicons dashicons-search dtb-icon-sm"></span> Load
-					</button>
-					<span id="dtb-var-count" class="dtb-toolbar-inline-end"></span>
-				</div>
-				<div id="dtb-var-loading" class="dtb-empty dtb-inline-hidden">Loading…</div>
-				<div id="dtb-var-container" class="dtb-inline-hidden">
-					<table class="dtb-tbl">
-						<thead><tr>
-							<th class="dtb-col-narrow"></th>
-							<th>SKU</th>
-							<th>Product Name</th>
-							<th>Attributes</th>
-							<th>Variations</th>
-							<th>Actions</th>
-						</tr></thead>
-						<tbody id="dtb-var-body"></tbody>
-					</table>
-				</div>
-				<div id="dtb-var-empty" class="dtb-empty dtb-inline-hidden">No variable products found.</div>
-			</div>
-		</div>
-
-		<!-- ── TAB 2: Parts Compatibility ─────────────────────────────────── -->
-		<div id="dtb-tab-parts" class="dtb-tab-panel">
-			<div class="dtb-card">
-				<p class="dtb-section-note">
-					Map part products to the tool products they service. Relationships are bidirectional — linking a part to a tool also links the tool back to the part.
-					The React SPA uses these mappings for the parts lookup and repairs page.
-				</p>
-				<div class="dtb-toolbar">
-					<select id="dtb-parts-brand" class="dtb-select">
-						<option value="">All Brands</option>
-						<?php foreach ( $brands as $b ) : ?>
-							<option value="<?php echo esc_attr( $b ); ?>"><?php echo esc_html( $b ); ?></option>
-						<?php endforeach; ?>
-					</select>
-					<input type="text" id="dtb-parts-search" class="dtb-input dtb-input--wide" placeholder="Search parts…">
-					<button id="dtb-btn-parts-load" class="dtb-btn dtb-btn-secondary">
-						<span class="dashicons dashicons-search dtb-icon-sm"></span> Load Parts
-					</button>
-				</div>
-				<div id="dtb-parts-loading" class="dtb-empty dtb-inline-hidden">Loading…</div>
-				<div id="dtb-parts-container" class="dtb-inline-hidden">
-					<table class="dtb-tbl">
-						<thead><tr>
-							<th>Part SKU</th>
-							<th>Part Name</th>
-							<th>Compatible With</th>
-							<th>Add Tool</th>
-						</tr></thead>
-						<tbody id="dtb-parts-body"></tbody>
-					</table>
-					<div id="dtb-parts-pagination" class="dtb-toolbar dtb-toolbar--mt"></div>
-				</div>
-				<div id="dtb-parts-empty" class="dtb-empty dtb-inline-hidden">No parts found.</div>
-			</div>
-		</div>
-
-		<!-- ── TAB 3: Upsells & Cross-sells ──────────────────────────────── -->
-		<div id="dtb-tab-relationships" class="dtb-tab-panel">
-			<div class="dtb-card">
-				<p class="dtb-section-note">
-					Manage upsells (shown on product pages as premium alternatives) and cross-sells (shown in cart).
-					Search for a product to view and edit its relationships.
-				</p>
-				<div class="dtb-toolbar">
-					<div class="dtb-product-search-wrap dtb-product-search-wrap--main">
-						<input type="text" id="dtb-rel-product-search" class="dtb-input dtb-w-full" placeholder="Search for a product to manage…">
-						<div class="dtb-product-dropdown" id="dtb-rel-product-dropdown"><ul></ul></div>
-					</div>
-					<span id="dtb-rel-selected-name" class="dtb-muted-inline"></span>
-					<input type="hidden" id="dtb-rel-product-id">
-				</div>
-				<div id="dtb-rel-editor" class="dtb-inline-hidden">
-					<div class="dtb-pair-layout">
-						<div class="dtb-pair-col">
-							<h4>Upsells</h4>
-							<p class="dtb-form-note">Shown on the product page as recommended upgrades.</p>
-							<div class="dtb-product-search-wrap">
-								<input type="text" id="dtb-upsell-search" class="dtb-input dtb-w-full" placeholder="Add upsell product…">
-								<div class="dtb-product-dropdown" id="dtb-upsell-dropdown"><ul></ul></div>
-							</div>
-							<div class="dtb-chips-wrap dtb-mt-8" id="dtb-upsell-chips"></div>
-							<input type="hidden" id="dtb-upsell-ids">
-						</div>
-						<div class="dtb-pair-col">
-							<h4>Cross-sells</h4>
-							<p class="dtb-form-note">Shown in the cart as complementary items.</p>
-							<div class="dtb-product-search-wrap">
-								<input type="text" id="dtb-cross-search" class="dtb-input dtb-w-full" placeholder="Add cross-sell product…">
-								<div class="dtb-product-dropdown" id="dtb-cross-dropdown"><ul></ul></div>
-							</div>
-							<div class="dtb-chips-wrap dtb-mt-8" id="dtb-cross-chips"></div>
-							<input type="hidden" id="dtb-crosssell-ids">
-						</div>
-					</div>
-					<div class="dtb-modal-actions dtb-mt-16">
-						<button id="dtb-btn-save-rel" class="dtb-btn dtb-btn-primary">Save Relationships</button>
-						<span id="dtb-rel-spinner" class="dtb-inline-hidden"><span class="spinner is-active"></span></span>
-						<span id="dtb-rel-msg" class="dtb-saved-msg"></span>
-					</div>
-				</div>
-				<div id="dtb-rel-empty" class="dtb-empty">Search for a product above to get started.</div>
-			</div>
-		</div>
-
+	<style>
+	.dtb-rel-workspace{--rel-ink:#17252d;--rel-muted:#66777f;--rel-line:#dce4e7;--rel-accent:#116b68;max-width:1440px;color:var(--rel-ink)}
+	.dtb-rel-workspace *{box-sizing:border-box}.dtb-rel-hero{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding:24px 0 20px;border-bottom:1px solid var(--rel-line)}
+	.dtb-rel-hero h1{font-size:26px;line-height:1.2;margin:0 0 8px}.dtb-rel-hero p{margin:0;color:var(--rel-muted);font-size:14px;max-width:760px}
+	.dtb-rel-links{display:flex;gap:8px;flex-wrap:wrap}.dtb-rel-links a,.dtb-rel-tab{border:1px solid var(--rel-line);background:#fff;color:var(--rel-ink);border-radius:7px;padding:9px 13px;text-decoration:none;font-weight:600}
+	.dtb-rel-links a:hover,.dtb-rel-tab:hover{border-color:var(--rel-accent);color:var(--rel-accent)}.dtb-rel-tabs{display:flex;gap:8px;margin:20px 0 16px;border-bottom:1px solid var(--rel-line)}
+	.dtb-rel-tab{border-radius:7px 7px 0 0;border-bottom:0;cursor:pointer}.dtb-rel-tab[aria-selected=true]{background:var(--rel-accent);border-color:var(--rel-accent);color:white}
+	.dtb-rel-grid{display:grid;grid-template-columns:minmax(280px,370px) minmax(0,1fr);gap:16px}.dtb-rel-panel{background:white;border:1px solid var(--rel-line);border-radius:10px;padding:18px;min-width:0}
+	.dtb-rel-panel h2{font-size:16px;margin:0 0 8px}.dtb-rel-note{color:var(--rel-muted);font-size:13px;margin:0 0 14px}.dtb-rel-toolbar{display:flex;gap:8px;margin-bottom:12px}.dtb-rel-input{width:100%;min-height:38px;border:1px solid #bbc9ce;border-radius:6px;padding:7px 10px}
+	.dtb-rel-list{max-height:560px;overflow:auto;border-top:1px solid var(--rel-line)}.dtb-rel-row{width:100%;text-align:left;display:block;border:0;border-bottom:1px solid var(--rel-line);background:white;padding:11px 8px;cursor:pointer;color:inherit}
+	.dtb-rel-row:hover,.dtb-rel-row[aria-current=true]{background:#f0f7f6}.dtb-rel-row strong,.dtb-rel-row small{display:block}.dtb-rel-row small{color:var(--rel-muted);margin-top:3px}.dtb-rel-empty{color:var(--rel-muted);padding:18px 8px}
+	.dtb-rel-chip{display:inline-flex;gap:8px;align-items:center;border:1px solid var(--rel-line);background:#f8fafb;border-radius:20px;padding:6px 9px;margin:4px;font-size:13px}.dtb-rel-chip button{border:0;background:none;color:#7a3434;cursor:pointer;font-weight:700}
+	.dtb-rel-selected{font-size:13px;color:var(--rel-muted);margin-bottom:12px}.dtb-rel-action{background:var(--rel-accent)!important;border-color:var(--rel-accent)!important;color:white!important;border-radius:6px!important;padding:8px 13px!important;font-weight:600!important;cursor:pointer}
+	.dtb-rel-message{min-height:22px;margin:10px 0 0;font-size:13px}.dtb-rel-message[data-state=error]{color:#a12828}.dtb-rel-message[data-state=success]{color:#17684b}.dtb-rel-summary{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.dtb-rel-badge{border:1px solid var(--rel-line);padding:5px 9px;border-radius:20px;color:#43565e;font-size:12px}
+	.dtb-rel-secondary[hidden]{display:none!important}@media(max-width:850px){.dtb-rel-hero{align-items:flex-start;flex-direction:column}.dtb-rel-grid{grid-template-columns:1fr}.dtb-rel-list{max-height:320px}}
+	.dtb-rel-audit{border:1px solid var(--rel-line);background:#f8fafb;border-radius:9px;padding:14px 16px;margin:14px 0}.dtb-rel-audit-head{display:flex;align-items:center;justify-content:space-between;gap:12px}.dtb-rel-audit-head h2{font-size:15px;margin:0}.dtb-rel-audit-results{margin:10px 0 0;padding-left:20px;columns:2;color:#40535b}.dtb-rel-audit-results li{break-inside:avoid;margin:0 0 6px}.dtb-rel-audit-progress{font-size:13px;color:var(--rel-muted);margin:8px 0 0}@media(max-width:700px){.dtb-rel-audit-results{columns:1}.dtb-rel-audit-head{align-items:flex-start;flex-direction:column}}
+	</style>
+	<div class="dtb-rel-workspace" data-dtb-rel-workspace data-nonce="<?php echo esc_attr( $nonce ); ?>">
+		<header class="dtb-rel-hero"><div><h1><?php esc_html_e( 'Product Relationships', 'drywall-toolbox' ); ?></h1><p><?php esc_html_e( 'Review structured part-to-tool fitment projections and curate separate upsell and cross-sell placements. Fitment remains distinct from merchandising and requires exact evidence review before publication.', 'drywall-toolbox' ); ?></p></div><nav class="dtb-rel-links" aria-label="Catalog relationship tools"><a href="<?php echo esc_url( $parts_url ); ?>"><?php esc_html_e( 'Parts, schematics & universal catalog', 'drywall-toolbox' ); ?> <span aria-hidden="true">↗</span></a></nav></header>
+		<div class="dtb-rel-summary"><span class="dtb-rel-badge"><?php esc_html_e( 'Fitment: structured runtime projection', 'drywall-toolbox' ); ?></span><span class="dtb-rel-badge"><?php esc_html_e( 'Upsell: product page', 'drywall-toolbox' ); ?></span><span class="dtb-rel-badge"><?php esc_html_e( 'Cross-sell: cart', 'drywall-toolbox' ); ?></span><span class="dtb-rel-badge"><?php esc_html_e( 'Schematic and universal identities remain in their owner tools', 'drywall-toolbox' ); ?></span></div>
+		<section class="dtb-rel-audit" aria-labelledby="dtb-rel-audit-title"><div class="dtb-rel-audit-head"><div><h2 id="dtb-rel-audit-title"><?php esc_html_e( 'Live relationship integrity', 'drywall-toolbox' ); ?></h2><p class="dtb-rel-note" style="margin:4px 0 0"><?php esc_html_e( 'Read-only scan across published, private, draft, and variation records. Runs in bounded pages and does not change products.', 'drywall-toolbox' ); ?></p></div><div><button type="button" class="button" data-run-audit><?php esc_html_e( 'Scan live catalog', 'drywall-toolbox' ); ?></button> <button type="button" class="button" data-download-audit disabled><?php esc_html_e( 'Download report', 'drywall-toolbox' ); ?></button></div></div><p class="dtb-rel-audit-progress" data-audit-progress role="status" aria-live="polite"></p><ul class="dtb-rel-audit-results" data-audit-results></ul></section>
+		<div class="dtb-rel-tabs" role="tablist"><button class="dtb-rel-tab" role="tab" aria-selected="true" aria-controls="dtb-rel-fitment" data-rel-tab="fitment"><?php esc_html_e( 'Part fitment', 'drywall-toolbox' ); ?></button><button class="dtb-rel-tab" role="tab" aria-selected="false" aria-controls="dtb-rel-merch" data-rel-tab="merchandising"><?php esc_html_e( 'Upsell & cross-sell', 'drywall-toolbox' ); ?></button></div>
+		<section id="dtb-rel-fitment" role="tabpanel" data-rel-panel="fitment"><div class="dtb-rel-grid"><div class="dtb-rel-panel"><h2><?php esc_html_e( 'Find a part', 'drywall-toolbox' ); ?></h2><p class="dtb-rel-note"><?php esc_html_e( 'Choose a published catalog part to inspect its current runtime fitment projection.', 'drywall-toolbox' ); ?></p><input class="dtb-rel-input" type="search" data-part-search placeholder="Search part name or SKU" autocomplete="off"><div class="dtb-rel-list" data-part-list><div class="dtb-rel-empty"><?php esc_html_e( 'Enter a part name or SKU to search.', 'drywall-toolbox' ); ?></div></div></div>
+			<div class="dtb-rel-panel"><h2 data-fitment-title><?php esc_html_e( 'Compatible tools', 'drywall-toolbox' ); ?></h2><p class="dtb-rel-note"><?php esc_html_e( 'This view reads the current WooCommerce projection. Fitment changes require exact evidence review in the canonical catalog workflow before they are projected live.', 'drywall-toolbox' ); ?></p><div class="dtb-rel-selected" data-fitment-selected><?php esc_html_e( 'Select a part to review its current links.', 'drywall-toolbox' ); ?></div><p class="dtb-rel-message" data-legacy-note role="status" aria-live="polite"></p><div data-legacy-list></div><div data-unresolved-list></div><div data-fitment-links></div></div></div></section>
+		<section id="dtb-rel-merch" role="tabpanel" data-rel-panel="merchandising" hidden><div class="dtb-rel-grid"><div class="dtb-rel-panel"><h2><?php esc_html_e( 'Choose a source product', 'drywall-toolbox' ); ?></h2><p class="dtb-rel-note"><?php esc_html_e( 'These are directional WooCommerce merchandising placements, not compatibility claims.', 'drywall-toolbox' ); ?></p><input class="dtb-rel-input" type="search" data-source-search placeholder="Search published product name or SKU" autocomplete="off"><div class="dtb-rel-list" data-source-list><div class="dtb-rel-empty"><?php esc_html_e( 'Enter a product name or SKU to search.', 'drywall-toolbox' ); ?></div></div></div><div class="dtb-rel-panel"><h2 data-merch-title><?php esc_html_e( 'Merchandising relationships', 'drywall-toolbox' ); ?></h2><p class="dtb-rel-note"><?php esc_html_e( 'Select recommended products for product pages and cart. Changes save through WooCommerce product CRUD.', 'drywall-toolbox' ); ?></p><div class="dtb-rel-selected" data-merch-selected><?php esc_html_e( 'Select a source product to review its placements.', 'drywall-toolbox' ); ?></div><div class="dtb-rel-grid" style="grid-template-columns:1fr 1fr"><div><label for="dtb-rel-upsell-search"><strong><?php esc_html_e( 'Upsells', 'drywall-toolbox' ); ?></strong></label><input id="dtb-rel-upsell-search" class="dtb-rel-input" type="search" data-target-search="upsell" placeholder="Search upsells" disabled><div data-target-selected="upsell"></div><div class="dtb-rel-list" data-target-list="upsell"></div></div><div><label for="dtb-rel-cross-search"><strong><?php esc_html_e( 'Cross-sells', 'drywall-toolbox' ); ?></strong></label><input id="dtb-rel-cross-search" class="dtb-rel-input" type="search" data-target-search="crosssell" placeholder="Search cross-sells" disabled><div data-target-selected="crosssell"></div><div class="dtb-rel-list" data-target-list="crosssell"></div></div></div><div style="margin-top:16px"><button type="button" class="button dtb-rel-action" data-save-merch disabled><?php esc_html_e( 'Save relationships', 'drywall-toolbox' ); ?></button><p class="dtb-rel-message" data-merch-message role="status" aria-live="polite"></p></div></div></div></section>
 	</div>
-
-	<!-- Variation Edit Modal -->
-	<div class="dtb-modal-overlay" id="dtb-var-modal">
-		<div class="dtb-modal">
-			<button class="dtb-modal-close" id="dtb-var-modal-close">✕</button>
-			<h3 id="dtb-var-modal-title">Add Variation</h3>
-			<input type="hidden" id="dtb-var-modal-parent-id">
-			<input type="hidden" id="dtb-var-modal-variation-id">
-			<div class="dtb-form-row">
-				<label>SKU</label>
-				<input type="text" id="dtb-vmod-sku" placeholder="e.g. EZ07-AD">
-			</div>
-			<div class="dtb-pair-layout dtb-pair-layout--tight">
-				<div class="dtb-form-row">
-					<label>Regular Price ($)</label>
-					<input type="number" id="dtb-vmod-price" placeholder="0.00" min="0" step="0.01">
-				</div>
-				<div class="dtb-form-row">
-					<label>Sale Price ($)</label>
-					<input type="number" id="dtb-vmod-sale" placeholder="0.00" min="0" step="0.01">
-				</div>
-			</div>
-			<div class="dtb-form-row">
-				<label>Stock Quantity</label>
-				<input type="number" id="dtb-vmod-stock" placeholder="Leave blank to not manage" min="0">
-			</div>
-			<div id="dtb-vmod-attrs-wrap">
-				<p class="dtb-form-note dtb-form-note--mb8">Attribute values for this variation:</p>
-				<div id="dtb-vmod-attrs"></div>
-			</div>
-			<div class="dtb-modal-actions dtb-mt-16">
-				<button id="dtb-vmod-save" class="dtb-btn dtb-btn-primary">Save Variation</button>
-				<span id="dtb-vmod-spinner" class="dtb-inline-hidden"><span class="spinner is-active"></span></span>
-				<button id="dtb-vmod-delete" class="dtb-btn dtb-btn-danger dtb-inline-end dtb-inline-hidden">Delete Variation</button>
-			</div>
-			<div id="dtb-vmod-msg" class="dtb-form-msg"></div>
-		</div>
-	</div>
-	<?php
-	echo dtb_admin_ui_drawer(
-		'dtb-product-mapping-conflict-drawer',
-		__( 'Action Requires Review', 'drywall-toolbox' ),
-		'<div class="dtb-alert dtb-alert--warning" role="alert"><span class="dashicons dashicons-warning" aria-hidden="true"></span><div class="dtb-alert__body"><p class="dtb-alert__title">'
-			. esc_html__( 'Product mapping action could not be completed.', 'drywall-toolbox' )
-			. '</p><p class="dtb-alert__text" data-dtb-target="summary"></p></div></div>'
-			. '<pre class="dtb-mt-12 dtb-conflict-details" data-dtb-target="details"></pre>'
-			. '<p class="dtb-mt-12">' . esc_html__( 'Use System Manager for technical diagnostics if this persists.', 'drywall-toolbox' ) . '</p>',
-		dtb_admin_ui_button( __( 'Close', 'drywall-toolbox' ), [ 'type' => 'secondary', 'data' => [ 'dtb-close-drawer' => '1' ] ] )
-	); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	?>
-
 	<script>
-	(function($){
-		var nonce      = <?php echo wp_json_encode( $nonce ); ?>;
-		var partsPaged = 1;
-		var partsTotal = 1;
-		var currentVariables = [];
-		var expandedRows = {};
-
-		// ── Tabs ──────────────────────────────────────────────────────────────
-
-		$('.dtb-tab').on('click', function(){
-			$('.dtb-tab').removeClass('active');
-			$('.dtb-tab-panel').removeClass('active');
-			$(this).addClass('active');
-			$('#dtb-tab-' + $(this).data('tab')).addClass('active');
-		});
-
-		// ── Generic product search factory ────────────────────────────────────
-		function openConflictDrawer(message, payload) {
-			var drawer = document.getElementById('dtb-product-mapping-conflict-drawer');
-			if (!drawer) return;
-
-			var summary = drawer.querySelector('[data-dtb-target="summary"]');
-			var details = drawer.querySelector('[data-dtb-target="details"]');
-			if (summary) {
-				summary.textContent = message || 'Request failed.';
-			}
-			if (details) {
-				details.textContent = payload ? JSON.stringify(payload, null, 2) : '';
-			}
-
-			if (window.DtbAdmin && typeof window.DtbAdmin.openDrawer === 'function') {
-				window.DtbAdmin.openDrawer(drawer);
-			}
-		}
-
-		function makeProductSearch(inputId, dropdownId, typeFilter, onSelect) {
-			var timer;
-			$('#' + inputId).on('input', function(){
-				clearTimeout(timer);
-				var q = $(this).val().trim();
-				if (!q) { $('#' + dropdownId).hide(); return; }
-				timer = setTimeout(function(){
-					$.post(ajaxurl, {
-						action: 'dtb_pm_search_products',
-						nonce: nonce,
-						q: q,
-						product_type: typeFilter || ''
-					}, function(res){
-						if (!res.success || !res.data.length) { $('#' + dropdownId).hide(); return; }
-						var html = '';
-						$.each(res.data, function(i, p){
-							html += '<li data-id="' + p.id + '" data-name="' + $('<div>').text(p.name).html() + '" data-sku="' + $('<div>').text(p.sku).html() + '">'
-								+ $('<div>').text(p.name).html()
-								+ ' <small class="dtb-sku-subtle">(' + $('<div>').text(p.sku).html() + ')</small></li>';
-						});
-						$('#' + dropdownId + ' ul').html(html);
-						$('#' + dropdownId).show();
-					});
-				}, 250);
-			});
-			$(document).on('click', '#' + dropdownId + ' li', function(){
-				var data = { id: $(this).data('id'), name: $(this).data('name'), sku: $(this).data('sku') };
-				$('#' + dropdownId).hide();
-				$('#' + inputId).val('');
-				onSelect(data);
-			});
-		}
-
-		$(document).on('click', function(e){
-			if (!$(e.target).closest('.dtb-product-search-wrap').length) {
-				$('.dtb-product-dropdown').hide();
-			}
-		});
-
-		// ════════════════════════════════════════════════════════════════════
-		// TAB 1: VARIABLE PRODUCTS
-		// ════════════════════════════════════════════════════════════════════
-
-		function renderAttrTags(attrs) {
-			var html = '';
-			$.each(attrs, function(i, a){
-				html += '<span>' + $('<div>').text(a.name).html() + ': ';
-				$.each(a.values, function(j, v){
-					html += '<span class="dtb-var-attr-tag">' + $('<div>').text(v).html() + '</span>';
+	(function($){'use strict';var root=document.querySelector('[data-dtb-rel-workspace]');if(!root)return;var nonce=root.dataset.nonce,selectedPart=null,sourceProduct=null,merchVersion='',upsells=[],crosssells=[];
+	function request(data){data.nonce=nonce;return $.post(ajaxurl,data)}function esc(v){return $('<div>').text(v||'').html()}function setMessage(el,msg,state){el.textContent=msg||'';el.dataset.state=state||''}
+	function searchProducts(q,type){return request({action:'dtb_pm_search_products',q:q,product_type:type||'simple,variable'})}
+	function paintProducts(list,items,onPick){list.replaceChildren();if(!items||!items.length){list.innerHTML='<div class="dtb-rel-empty">No matching published products.</div>';return}items.forEach(function(item){var b=document.createElement('button');b.type='button';b.className='dtb-rel-row';b.innerHTML='<strong>'+esc(item.name)+'</strong><small>SKU '+esc(item.sku)+' · '+esc(item.type)+'</small>';b.addEventListener('click',function(){onPick(item)});list.appendChild(b)})}
+	function debounce(fn){var timer;return function(){clearTimeout(timer);var self=this,args=arguments;timer=setTimeout(function(){fn.apply(self,args)},250)}}
+	var fitRequest=0,merchRequest=0,targetRequests={upsell:0,crosssell:0};
+	function loadFitment(part){selectedPart=part;var requestId=++fitRequest;root.querySelector('[data-fitment-title]').textContent='Compatible tools';root.querySelector('[data-fitment-selected]').textContent=part.name+' · SKU '+part.sku;request({action:'dtb_pm_get_compatibility',product_id:part.id,mode:'part'}).done(function(res){if(requestId!==fitRequest||!selectedPart||selectedPart.id!==part.id)return;if(!res.success){setMessage(root.querySelector('[data-legacy-note]'),res.data&&res.data.message||'Unable to load fitment.','error');return}var holder=root.querySelector('[data-fitment-links]'),unresolved=root.querySelector('[data-unresolved-list]');holder.replaceChildren();unresolved.replaceChildren();(res.data.related||[]).forEach(function(tool){var chip=document.createElement('span');chip.className='dtb-rel-chip';chip.textContent=tool.name+' · '+tool.sku+(tool.source==='replacement_part_for'?' · replacement mapping':'');holder.appendChild(chip)});(res.data.unresolved||[]).forEach(function(item){var row=document.createElement('div');row.className='dtb-rel-badge';row.textContent=item.sku+' · '+item.source+' · product not resolved';unresolved.appendChild(row)});var note=root.querySelector('[data-legacy-note]'),legacy=root.querySelector('[data-legacy-list]');note.textContent=res.data.legacy_unverified_count?res.data.legacy_unverified_count+' legacy product-ID link(s) need manual identity and evidence review.':'';legacy.replaceChildren();(res.data.legacy_unverified||[]).forEach(function(item){var row=document.createElement('div');row.className='dtb-rel-badge';row.textContent=item.name+' · '+(item.sku||'SKU unavailable')+' · ID '+item.id+' · '+item.source+' · unverified';legacy.appendChild(row)})})}
+	root.querySelector('[data-part-search]').addEventListener('input',debounce(function(e){var q=e.target.value.trim(),list=root.querySelector('[data-part-list]');if(q.length<2){list.innerHTML='<div class="dtb-rel-empty">Enter at least two characters.</div>';return}request({action:'dtb_pm_get_parts',search:q,brand:'',paged:1}).done(function(res){paintProducts(list,res.success?(res.data.items||[]).map(function(p){return{id:p.id,name:p.name,sku:p.sku,type:'part'}}):[],loadFitment)})}));
+	function loadMerch(product){sourceProduct=product;var requestId=++merchRequest;targetRequests.upsell++;targetRequests.crosssell++;upsells=[];crosssells=[];paintChips('upsell',[]);paintChips('crosssell',[]);root.querySelectorAll('[data-target-list]').forEach(function(x){x.replaceChildren()});root.querySelectorAll('[data-target-search]').forEach(function(x){x.disabled=true});root.querySelector('[data-save-merch]').disabled=true;root.querySelector('[data-merch-selected]').textContent=product.name+' · SKU '+product.sku;request({action:'dtb_pm_get_relationships',product_id:product.id}).done(function(res){if(requestId!==merchRequest||!sourceProduct||sourceProduct.id!==product.id)return;if(!res.success)return;merchVersion=res.data.version||'';upsells=(res.data.upsells||[]).map(function(x){return x.id});crosssells=(res.data.crosssells||[]).map(function(x){return x.id});paintChips('upsell',res.data.upsells||[]);paintChips('crosssell',res.data.crosssells||[]);var overlap=upsells.filter(function(id){return crosssells.indexOf(id)>=0});setMessage(root.querySelector('[data-merch-message]'),overlap.length?'Conflict: '+overlap.length+' product(s) appear as both upsell and cross-sell. Remove each duplicate from one list before saving.':'',''+(overlap.length?'error':''));root.querySelectorAll('[data-target-search]').forEach(function(x){x.disabled=false});root.querySelector('[data-save-merch]').disabled=false})}
+	function paintChips(type,items,append){var host=root.querySelector('[data-target-selected="'+type+'"]');if(!append)host.replaceChildren();items.forEach(function(item){var chip=document.createElement('span');chip.className='dtb-rel-chip';chip.textContent=item.name+' · '+item.sku+(item.status&&item.status!=='publish'?' · '+item.status+' conflict':'');var x=document.createElement('button');x.type='button';x.textContent='×';x.setAttribute('aria-label','Remove '+item.sku);x.onclick=function(){var arr=type==='upsell'?upsells:crosssells;var idx=arr.indexOf(item.id);if(idx>=0)arr.splice(idx,1);chip.remove()};chip.appendChild(x);host.appendChild(chip)})}
+	root.querySelector('[data-source-search]').addEventListener('input',debounce(function(e){var q=e.target.value.trim(),list=root.querySelector('[data-source-list]');if(q.length<2){list.innerHTML='<div class="dtb-rel-empty">Enter at least two characters.</div>';return}searchProducts(q,'simple,variable').done(function(res){paintProducts(list,res.success?res.data:[],loadMerch)})}));
+	root.querySelectorAll('[data-target-search]').forEach(function(input){
+		input.addEventListener('input',debounce(function(e){
+			var q=e.target.value.trim(),type=e.target.dataset.targetSearch,list=root.querySelector('[data-target-list="'+type+'"]');
+			if(q.length<2){return}
+			var sourceId=sourceProduct?sourceProduct.id:0,searchId=++targetRequests[type];
+			searchProducts(q,'simple,variable').done(function(res){
+				if(!sourceProduct||sourceProduct.id!==sourceId||searchId!==targetRequests[type])return;
+				var chosen=type==='upsell'?upsells:crosssells,other=type==='upsell'?crosssells:upsells;
+				var items=res.success?res.data.filter(function(p){return p.id!==sourceProduct.id&&chosen.indexOf(p.id)<0&&other.indexOf(p.id)<0}):[];
+				paintProducts(list,items,function(item){
+					(type==='upsell'?upsells:crosssells).push(item.id);
+					paintChips(type,[{id:item.id,name:item.name,sku:item.sku}],true);
+					list.replaceChildren();
 				});
-				html += '</span> ';
 			});
-			return html || '—';
-		}
-
-		function renderVariationsTable(vars, parentId, attributes) {
-			if (!vars || !vars.length) {
-				return '<div class="dtb-empty dtb-empty--tight">No variations yet. <button class="dtb-btn dtb-btn-secondary dtb-btn-sm dtb-add-var-btn" data-parent="' + parentId + '" data-attrs=\'' + JSON.stringify(attributes) + '\'>+ Add First Variation</button></div>';
-			}
-			var html = '<table class="dtb-var-table"><thead><tr><th>SKU</th><th>Attributes</th><th>Price</th><th>Stock</th><th>Status</th><th></th></tr></thead><tbody>';
-			$.each(vars, function(i, v){
-				var attrStr = '';
-				$.each(v.attributes, function(k, val){ attrStr += k + ': ' + val + ' '; });
-				var stockStr = v.in_stock ? (v.stock !== null && v.stock !== undefined ? v.stock : '✓') : '✗';
-				html += '<tr class="dtb-var-row">';
-				html += '<td class="dtb-var-sku"><code class="dtb-code-xs">' + $('<div>').text(v.sku).html() + '</code></td>';
-				html += '<td class="dtb-var-attrs">' + $('<div>').text(attrStr.trim()).html() + '</td>';
-				html += '<td class="dtb-var-price">$' + (v.price || '—') + (v.sale_price ? ' <strike class="dtb-var-sale">$' + v.sale_price + '</strike>' : '') + '</td>';
-				html += '<td class="dtb-var-stock">' + stockStr + '</td>';
-				html += '<td class="dtb-var-status">' + v.status + '</td>';
-				html += '<td><button class="dtb-btn dtb-btn-secondary dtb-btn-sm dtb-edit-var-btn" data-parent="' + parentId + '" data-varid="' + v.id + '" data-sku="' + $('<div>').text(v.sku).html() + '" data-price="' + v.price + '" data-sale="' + v.sale_price + '" data-stock="' + (v.stock !== null ? v.stock : '') + '" data-attrs=\'' + JSON.stringify(v.attributes) + '\' data-parent-attrs=\'' + JSON.stringify(attributes) + '\'>Edit</button></td>';
-				html += '</tr>';
-			});
-			html += '</tbody></table>';
-			html += '<button class="dtb-btn dtb-btn-secondary dtb-btn-sm dtb-add-var-btn" data-parent="' + parentId + '" data-attrs=\'' + JSON.stringify(attributes) + '\'>+ Add Variation</button>';
-			return html;
-		}
-
-		function loadVariables() {
-			$('#dtb-var-loading').show();
-			$('#dtb-var-container').hide();
-			$('#dtb-var-empty').hide();
-			$.post(ajaxurl, {
-				action: 'dtb_pm_get_variables',
-				nonce:  nonce,
-				brand:  $('#dtb-var-brand').val(),
-				search: $('#dtb-var-search').val()
-			}, function(res){
-				$('#dtb-var-loading').hide();
-				if (!res.success || !res.data.length) { $('#dtb-var-empty').show(); return; }
-				currentVariables = res.data;
-				$('#dtb-var-count').text(res.data.length + ' variable product' + (res.data.length !== 1 ? 's' : ''));
-				var rows = '';
-				$.each(res.data, function(i, p){
-					rows += '<tr id="dtb-var-row-' + p.id + '">';
-					rows += '<td><button class="dtb-expand-btn" data-id="' + p.id + '">▶</button></td>';
-					rows += '<td><code>' + $('<div>').text(p.sku).html() + '</code></td>';
-					rows += '<td><a href="' + p.permalink + '" target="_blank">' + $('<div>').text(p.name).html() + '</a></td>';
-					rows += '<td>' + renderAttrTags(p.attributes) + '</td>';
-					rows += '<td><span class="dtb-badge dtb-badge-count">' + p.variations.length + ' variation' + (p.variations.length !== 1 ? 's' : '') + '</span></td>';
-					rows += '<td></td>';
-					rows += '</tr>';
-					rows += '<tr id="dtb-var-detail-' + p.id + '" class="dtb-var-detail"><td colspan="6" class="dtb-var-detail-cell">' + renderVariationsTable(p.variations, p.id, p.attributes) + '</td></tr>';
-				});
-				$('#dtb-var-body').html(rows);
-				$('#dtb-var-container').show();
-			});
-		}
-
-		$('#dtb-btn-var-load').on('click', loadVariables);
-		$('#dtb-var-search').on('keydown', function(e){ if(e.key==='Enter') loadVariables(); });
-
-		// Expand row
-		$(document).on('click', '.dtb-expand-btn', function(){
-			var id = $(this).data('id');
-			var $detail = $('#dtb-var-detail-' + id);
-			var visible = $detail.is(':visible');
-			$detail.toggle();
-			$(this).text(visible ? '▶' : '▼');
-		});
-
-		// ── Variation modal ───────────────────────────────────────────────────
-
-		function openVarModal(parentId, parentAttrs, varId, varData) {
-			$('#dtb-var-modal-parent-id').val(parentId);
-			$('#dtb-var-modal-variation-id').val(varId || '');
-			$('#dtb-vmod-sku').val(varData ? varData.sku : '');
-			$('#dtb-vmod-price').val(varData ? varData.price : '');
-			$('#dtb-vmod-sale').val(varData ? varData.sale : '');
-			$('#dtb-vmod-stock').val(varData ? varData.stock : '');
-			$('#dtb-vmod-msg').text('');
-			$('#dtb-vmod-delete').toggle(!!varId);
-			$('#dtb-var-modal-title').text(varId ? 'Edit Variation' : 'Add Variation');
-
-			// Build attribute fields
-			var attrsHtml = '';
-			if (Array.isArray(parentAttrs)) {
-				$.each(parentAttrs, function(i, attr){
-					var curVal = (varData && varData.attrs) ? (varData.attrs[attr.name] || '') : '';
-					attrsHtml += '<div class="dtb-vmod-field">';
-					attrsHtml += '<label class="dtb-vmod-label">' + $('<div>').text(attr.name).html() + '</label>';
-					if (Array.isArray(attr.values) && attr.values.length) {
-						attrsHtml += '<select class="dtb-select dtb-vmod-attr-select dtb-vmod-input" data-attr="' + $('<div>').text(attr.name).html() + '">';
-						attrsHtml += '<option value="">— Select —</option>';
-						$.each(attr.values, function(j, v){
-							attrsHtml += '<option value="' + $('<div>').text(v).html() + '"' + (curVal === v ? ' selected' : '') + '>' + $('<div>').text(v).html() + '</option>';
-						});
-						attrsHtml += '</select>';
-					} else {
-						attrsHtml += '<input type="text" class="dtb-input dtb-vmod-attr-input dtb-vmod-input" data-attr="' + $('<div>').text(attr.name).html() + '" value="' + $('<div>').text(curVal).html() + '">';
-					}
-					attrsHtml += '</div>';
-				});
-			} else if (varData && varData.attrs) {
-				$.each(varData.attrs, function(k, v){
-					attrsHtml += '<div class="dtb-vmod-field">';
-					attrsHtml += '<label class="dtb-vmod-label">' + $('<div>').text(k).html() + '</label>';
-					attrsHtml += '<input type="text" class="dtb-input dtb-vmod-attr-input dtb-vmod-input" data-attr="' + $('<div>').text(k).html() + '" value="' + $('<div>').text(v).html() + '">';
-					attrsHtml += '</div>';
-				});
-			}
-			$('#dtb-vmod-attrs').html(attrsHtml || '<p class="dtb-text-muted-xs">No attributes defined on parent product.</p>');
-			$('#dtb-var-modal').addClass('open');
-		}
-
-		$(document).on('click', '.dtb-add-var-btn', function(){
-			var parentId = $(this).data('parent');
-			var attrs    = $(this).data('attrs');
-			openVarModal(parentId, attrs, null, null);
-		});
-
-		$(document).on('click', '.dtb-edit-var-btn', function(){
-			var $btn = $(this);
-			openVarModal(
-				$btn.data('parent'),
-				$btn.data('parent-attrs'),
-				$btn.data('varid'),
-				{
-					sku:   $btn.data('sku'),
-					price: $btn.data('price'),
-					sale:  $btn.data('sale'),
-					stock: $btn.data('stock'),
-					attrs: $btn.data('attrs')
-				}
-			);
-		});
-
-		$('#dtb-var-modal-close').on('click', function(){ $('#dtb-var-modal').removeClass('open'); });
-
-		$('#dtb-vmod-save').on('click', function(){
-			var $btn = $(this);
-			var attrs = {};
-			$('.dtb-vmod-attr-select, .dtb-vmod-attr-input').each(function(){
-				attrs[$(this).data('attr')] = $(this).val();
-			});
-			$btn.prop('disabled', true);
-			$('#dtb-vmod-spinner').show();
-			$.post(ajaxurl, {
-				action:       'dtb_pm_save_variation',
-				nonce:        nonce,
-				parent_id:    $('#dtb-var-modal-parent-id').val(),
-				variation_id: $('#dtb-var-modal-variation-id').val(),
-				sku:          $('#dtb-vmod-sku').val(),
-				price:        $('#dtb-vmod-price').val(),
-				sale_price:   $('#dtb-vmod-sale').val(),
-				stock:        $('#dtb-vmod-stock').val(),
-				attributes:   attrs
-			}, function(res){
-				$btn.prop('disabled', false);
-				$('#dtb-vmod-spinner').hide();
-				if (res.success) {
-					$('#dtb-vmod-msg').text('✓ ' + res.data.message).css('color','#1a7f37');
-					setTimeout(function(){ $('#dtb-var-modal').removeClass('open'); loadVariables(); }, 700);
-				} else {
-					$('#dtb-vmod-msg').text('✗ ' + (res.data && res.data.message ? res.data.message : 'Save failed.')).css('color','#d63638');
-					openConflictDrawer(res.data && res.data.message ? res.data.message : 'Variation save failed.', res && res.data ? res.data : res);
-				}
-			});
-		});
-
-		$('#dtb-vmod-delete').on('click', function(){
-			if (!confirm('Delete this variation? This cannot be undone.')) return;
-			$.post(ajaxurl, {
-				action:       'dtb_pm_delete_variation',
-				nonce:        nonce,
-				variation_id: $('#dtb-var-modal-variation-id').val()
-			}, function(res){
-				if (res.success) {
-					$('#dtb-var-modal').removeClass('open');
-					loadVariables();
-				} else {
-					openConflictDrawer(res.data && res.data.message ? res.data.message : 'Variation delete failed.', res && res.data ? res.data : res);
-				}
-			});
-		});
-
-		// ════════════════════════════════════════════════════════════════════
-		// TAB 2: PARTS COMPATIBILITY
-		// ════════════════════════════════════════════════════════════════════
-
-		function loadParts(p) {
-			partsPaged = p || 1;
-			$('#dtb-parts-loading').show();
-			$('#dtb-parts-container,#dtb-parts-empty').hide();
-			$.post(ajaxurl, {
-				action: 'dtb_pm_get_parts',
-				nonce:  nonce,
-				brand:  $('#dtb-parts-brand').val(),
-				search: $('#dtb-parts-search').val(),
-				paged:  partsPaged
-			}, function(res){
-				$('#dtb-parts-loading').hide();
-				if (!res.success || !res.data.items.length) { $('#dtb-parts-empty').show(); return; }
-				partsTotal = res.data.pages;
-				var rows = '';
-				$.each(res.data.items, function(i, part){
-					var chips = '';
-					$.each(part.linked, function(j, t){
-						chips += '<span class="dtb-chip">' + $('<div>').text(t.sku || t.name).html() + '<button class="dtb-chip-remove dtb-parts-unlink" type="button" data-part="' + part.id + '" data-tool="' + t.id + '">×</button></span>';
-					});
-					rows += '<tr>';
-					rows += '<td class="dtb-cell-xs"><code class="dtb-code-xs">' + $('<div>').text(part.sku).html() + '</code></td>';
-					rows += '<td class="dtb-cell-sm">' + $('<div>').text(part.name).html() + '</td>';
-					rows += '<td><div class="dtb-chips-wrap" id="dtb-parts-chips-' + part.id + '">' + (chips || '<span class="dtb-empty-note">none</span>') + '</div></td>';
-					rows += '<td><div class="dtb-product-search-wrap dtb-product-search-wrap--min">';
-					rows += '<input type="text" class="dtb-input dtb-input--compact dtb-parts-tool-search" placeholder="Add tool…" data-part="' + part.id + '">';
-					rows += '<div class="dtb-product-dropdown dtb-parts-tool-dropdown" id="dtb-tool-dd-' + part.id + '"><ul></ul></div>';
-					rows += '</div></td>';
-					rows += '</tr>';
-				});
-				$('#dtb-parts-body').html(rows);
-
-				var pg = '';
-				if (partsTotal > 1) {
-					pg += '<button class="dtb-btn dtb-btn-secondary dtb-btn-sm" id="dtb-parts-prev"' + (partsPaged<=1?' disabled':'') + '>‹</button>';
-					pg += '<span class="dtb-page-indicator">Page ' + partsPaged + ' / ' + partsTotal + '</span>';
-					pg += '<button class="dtb-btn dtb-btn-secondary dtb-btn-sm" id="dtb-parts-next"' + (partsPaged>=partsTotal?' disabled':'') + '>›</button>';
-				}
-				$('#dtb-parts-pagination').html(pg);
-				$('#dtb-parts-container').show();
-
-				initPartsToolSearches();
-			});
-		}
-
-		$('#dtb-btn-parts-load').on('click', function(){ loadParts(1); });
-		$('#dtb-parts-search').on('keydown', function(e){ if(e.key==='Enter') loadParts(1); });
-		$(document).on('click','#dtb-parts-prev',function(){ if(partsPaged>1) loadParts(partsPaged-1); });
-		$(document).on('click','#dtb-parts-next',function(){ if(partsPaged<partsTotal) loadParts(partsPaged+1); });
-
-		function initPartsToolSearches() {
-			var timer;
-			$(document).off('input','.dtb-parts-tool-search').on('input', '.dtb-parts-tool-search', function(){
-				clearTimeout(timer);
-				var $input  = $(this);
-				var partId  = $input.data('part');
-				var q       = $input.val().trim();
-				var $dd     = $('#dtb-tool-dd-' + partId);
-				if (!q) { $dd.hide(); return; }
-				timer = setTimeout(function(){
-					$.post(ajaxurl, {
-						action: 'dtb_pm_search_products',
-						nonce:  nonce,
-						q:      q,
-						product_type: 'simple,variable'
-					}, function(res){
-						if (!res.success || !res.data.length) { $dd.hide(); return; }
-						var items = '';
-						$.each(res.data, function(i, p){
-							items += '<li data-id="' + p.id + '" data-sku="' + $('<div>').text(p.sku).html() + '" data-name="' + $('<div>').text(p.name).html() + '">'
-								+ $('<div>').text(p.name).html()
-								+ ' <small class="dtb-sku-subtle">(' + $('<div>').text(p.sku).html() + ')</small></li>';
-						});
-						$dd.find('ul').html(items);
-						$dd.show();
-					});
-				}, 250);
-			});
-		}
-
-		$(document).on('click', '.dtb-parts-tool-dropdown li', function(){
-			var $li     = $(this);
-			var $dd     = $li.closest('.dtb-product-dropdown');
-			var $row    = $li.closest('td').closest('tr');
-			var partId  = $row.find('.dtb-parts-tool-search').data('part');
-			var toolId  = $li.data('id');
-			var toolSku = $li.data('sku');
-			$dd.hide();
-			$dd.prev('input').val('');
-
-			$.post(ajaxurl, {
-				action:         'dtb_pm_save_compatibility',
-				nonce:          nonce,
-				part_id:        partId,
-				tool_id:        toolId,
-				mapping_action: 'add'
-			}, function(res){
-				if (res.success) {
-					var chip = '<span class="dtb-chip">' + $('<div>').text(toolSku).html() + '<button class="dtb-chip-remove dtb-parts-unlink" type="button" data-part="' + partId + '" data-tool="' + toolId + '">×</button></span>';
-					var $chips = $('#dtb-parts-chips-' + partId);
-					$chips.find('span[style*="color"]').remove();
-					$chips.append(chip);
-				} else {
-					openConflictDrawer(res.data && res.data.message ? res.data.message : 'Compatibility update failed.', res && res.data ? res.data : res);
-				}
-			});
-		});
-
-		$(document).on('click', '.dtb-parts-unlink', function(){
-			var $btn   = $(this);
-			var partId = $btn.data('part');
-			var toolId = $btn.data('tool');
-			$.post(ajaxurl, {
-				action:         'dtb_pm_save_compatibility',
-				nonce:          nonce,
-				part_id:        partId,
-				tool_id:        toolId,
-				mapping_action: 'remove'
-			}, function(res){
-				if (res.success) {
-					$btn.closest('.dtb-chip').remove();
-				} else {
-					openConflictDrawer(res.data && res.data.message ? res.data.message : 'Compatibility removal failed.', res && res.data ? res.data : res);
-				}
-			});
-		});
-
-		// ════════════════════════════════════════════════════════════════════
-		// TAB 3: UPSELLS & CROSS-SELLS
-		// ════════════════════════════════════════════════════════════════════
-
-		function chipHtml(id, name, sku, type) {
-			return '<span class="dtb-chip">' + $('<div>').text(sku || name).html() + '<button class="dtb-chip-remove dtb-rel-chip-remove" type="button" data-id="' + id + '" data-type="' + type + '">×</button></span>';
-		}
-
-		function addRelChip(type, p) {
-			var idsInput = type === 'upsell' ? '#dtb-upsell-ids' : '#dtb-crosssell-ids';
-			var chipsWrap = type === 'upsell' ? '#dtb-upsell-chips' : '#dtb-cross-chips';
-			var cur  = $(idsInput).val();
-			var ids  = cur ? cur.split(',').map(Number) : [];
-			if (ids.indexOf(p.id) !== -1) return;
-			ids.push(p.id);
-			$(idsInput).val(ids.join(','));
-			$(chipsWrap).append(chipHtml(p.id, p.name, p.sku, type));
-		}
-
-		makeProductSearch('dtb-rel-product-search', 'dtb-rel-product-dropdown', 'simple,variable', function(p){
-			$('#dtb-rel-product-id').val(p.id);
-			$('#dtb-rel-selected-name').text('Editing: ' + p.name + ' (' + p.sku + ')');
-			$('#dtb-rel-msg').text('');
-			$('#dtb-upsell-ids,#dtb-crosssell-ids').val('');
-			$('#dtb-upsell-chips,#dtb-cross-chips').empty();
-			$('#dtb-rel-empty').hide();
-			$('#dtb-rel-editor').hide();
-
-			$.post(ajaxurl, {
-				action:     'dtb_pm_get_relationships',
-				nonce:      nonce,
-				product_id: p.id
-			}, function(res){
-				if (!res.success) return;
-				var d = res.data;
-				var uIds = [], cIds = [];
-				$.each(d.upsells, function(i, u){ uIds.push(u.id); $('#dtb-upsell-chips').append(chipHtml(u.id, u.name, u.sku, 'upsell')); });
-				$.each(d.crosssells, function(i, c){ cIds.push(c.id); $('#dtb-cross-chips').append(chipHtml(c.id, c.name, c.sku, 'cross')); });
-				$('#dtb-upsell-ids').val(uIds.join(','));
-				$('#dtb-crosssell-ids').val(cIds.join(','));
-				$('#dtb-rel-editor').show();
-			});
-		});
-
-		makeProductSearch('dtb-upsell-search', 'dtb-upsell-dropdown', '', function(p){ addRelChip('upsell', p); });
-		makeProductSearch('dtb-cross-search', 'dtb-cross-dropdown', '', function(p){ addRelChip('cross', p); });
-
-		$(document).on('click', '.dtb-rel-chip-remove', function(){
-			var id   = $(this).data('id');
-			var type = $(this).data('type');
-			var idsInput = type === 'upsell' ? '#dtb-upsell-ids' : '#dtb-crosssell-ids';
-			var cur  = $(idsInput).val();
-			var ids  = cur ? cur.split(',').map(Number).filter(function(x){ return x !== id; }) : [];
-			$(idsInput).val(ids.join(','));
-			$(this).closest('.dtb-chip').remove();
-		});
-
-		$('#dtb-btn-save-rel').on('click', function(){
-			var $btn = $(this);
-			var pid  = $('#dtb-rel-product-id').val();
-			if (!pid) return;
-			$btn.prop('disabled', true);
-			$('#dtb-rel-spinner').show();
-			$.post(ajaxurl, {
-				action:        'dtb_pm_save_relationships',
-				nonce:         nonce,
-				product_id:    pid,
-				upsell_ids:    $('#dtb-upsell-ids').val(),
-				crosssell_ids: $('#dtb-crosssell-ids').val()
-			}, function(res){
-				$btn.prop('disabled', false);
-				$('#dtb-rel-spinner').hide();
-				$('#dtb-rel-msg')
-					.text(res.success ? '✓ Saved.' : '✗ Save failed.')
-					.removeClass('dtb-saved-ok dtb-saved-err')
-					.addClass(res.success ? 'dtb-saved-ok' : 'dtb-saved-err');
-				if (!res.success) {
-					openConflictDrawer(res.data && res.data.message ? res.data.message : 'Relationship save failed.', res && res.data ? res.data : res);
-				}
-			});
-		});
-
+		}));
+	});
+	root.querySelector('[data-save-merch]').addEventListener('click',function(){if(!sourceProduct)return;var msg=root.querySelector('[data-merch-message]');request({action:'dtb_pm_save_relationships',product_id:sourceProduct.id,upsell_ids:upsells,crosssell_ids:crosssells,version:merchVersion}).done(function(res){if(res.success){merchVersion=res.data.version||merchVersion;setMessage(msg,'Relationships saved and verified.','success')}else{setMessage(msg,res.data&&res.data.message||'Save failed.','error')}}).fail(function(xhr){var data=xhr.responseJSON&&xhr.responseJSON.data;setMessage(msg,data&&data.message||'Save failed. Reload the product and review current relationships.','error')})});
+	var lastAudit=null,auditRun=0;
+	function summarizeAudit(rows){var byId={},bySku={},stats={records:rows.length,published_parts:0,parts_with_fitment:0,parts_missing_fitment:0,fitment_field_overlap:0,unresolved_fitment_targets:0,ambiguous_fitment_targets:0,unpublished_fitment_targets:0,variation_fitment_targets:0,part_fitment_targets:0,legacy_id_links:0,unresolved_legacy_ids:0,upsell_crosssell_overlap:0,merch_self_links:0,unresolved_merch_targets:0,unpublished_merch_targets:0,variation_merch_targets:0,duplicate_skus:0,truncated_records:0};rows.forEach(function(row){byId[row.id]=row;if(row.fields.sku){var key=String(row.fields.sku).trim().toUpperCase();bySku[key]=bySku[key]||[];bySku[key].push(row)}if(row.truncated)stats.truncated_records++});Object.keys(bySku).forEach(function(key){if(bySku[key].length>1)stats.duplicate_skus+=bySku[key].length-1});rows.forEach(function(row){var f=row.fields||{},compatible=f.compatible_tool_skus||[],replacement=f.replacement_part_for||[],isPart=row.post_type==='product'&&row.status==='publish'&&row.is_part;if(isPart){stats.published_parts++;if(compatible.length||replacement.length)stats.parts_with_fitment++;else stats.parts_missing_fitment++;if(compatible.some(function(s){return replacement.some(function(t){return String(s).toUpperCase()===String(t).toUpperCase()})}))stats.fitment_field_overlap++;compatible.concat(replacement).forEach(function(sku){var matches=bySku[String(sku).trim().toUpperCase()]||[];if(!matches.length)stats.unresolved_fitment_targets++;else if(matches.length>1)stats.ambiguous_fitment_targets++;else if(matches[0].post_type==='product_variation')stats.variation_fitment_targets++;else if(matches[0].status!=='publish')stats.unpublished_fitment_targets++;else if(matches[0].is_part)stats.part_fitment_targets++})}var old=(f.legacy_compatible_tools||[]).concat(f.legacy_compatible_parts||[]);stats.legacy_id_links+=old.length;old.forEach(function(id){if(!byId[id])stats.unresolved_legacy_ids++});var ups=f.upsell_ids||[],cross=f.crosssell_ids||[];if(ups.some(function(id){return cross.indexOf(id)>=0}))stats.upsell_crosssell_overlap++;ups.concat(cross).forEach(function(id){if(id===row.id)stats.merch_self_links++;var target=byId[id];if(!target)stats.unresolved_merch_targets++;else if(target.post_type==='product_variation')stats.variation_merch_targets++;else if(target.status!=='publish')stats.unpublished_merch_targets++})});return stats}
+	function runAudit(){var run=++auditRun,button=root.querySelector('[data-run-audit]'),progress=root.querySelector('[data-audit-progress]'),result=root.querySelector('[data-audit-results]'),download=root.querySelector('[data-download-audit]'),rows=[],page=1;button.disabled=true;download.disabled=true;lastAudit=null;result.replaceChildren();progress.textContent='Starting bounded read-only scan…';function next(){request({action:'dtb_pm_relationship_audit_page',page:page}).done(function(res){if(run!==auditRun)return;if(!res.success){progress.textContent='Scan stopped: '+(res.data&&res.data.message||'request failed');button.disabled=false;return}rows=rows.concat(res.data.items||[]);progress.textContent='Read '+Math.min(page*res.data.per_page,res.data.total)+' of '+res.data.total+' records…';if(page<res.data.pages){page++;next();return}var summary=summarizeAudit(rows);lastAudit={generated_at:new Date().toISOString(),read_only:true,source_runtime_parity:'not_audited',complete:summary.truncated_records===0,summary:summary,items:rows};Object.keys(summary).forEach(function(key){var li=document.createElement('li');li.textContent=key.replace(/_/g,' ')+': '+summary[key];result.appendChild(li)});progress.textContent=summary.truncated_records?'Scan finished with truncated relationship lists; totals are incomplete.':'Scan complete. Runtime relationships were read; canonical source parity is a separate release check.';download.disabled=false;button.disabled=false}).fail(function(){if(run!==auditRun)return;progress.textContent='Scan stopped after page '+page+'. Retry to restart.';button.disabled=false})}next()}
+	root.querySelector('[data-run-audit]').addEventListener('click',runAudit);root.querySelector('[data-download-audit]').addEventListener('click',function(){if(!lastAudit)return;var blob=new Blob([JSON.stringify(lastAudit,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='dtb-product-relationship-audit-'+new Date().toISOString().replace(/[:.]/g,'-')+'.json';link.click();URL.revokeObjectURL(url)});
+	root.querySelectorAll('[data-rel-tab]').forEach(function(tab){tab.addEventListener('click',function(){root.querySelectorAll('[data-rel-tab]').forEach(function(x){x.setAttribute('aria-selected',x===tab?'true':'false')});root.querySelectorAll('[data-rel-panel]').forEach(function(panel){panel.hidden=panel.dataset.relPanel!==tab.dataset.relTab})})});
 	})(jQuery);
 	</script>
-	</div><?php // .dtb-mapping-inner ?>
 	<?php
 	dtb_admin_shell_close();
 }
-
-
 

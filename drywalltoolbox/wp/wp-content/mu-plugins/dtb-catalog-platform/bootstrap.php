@@ -60,6 +60,7 @@ require_once $_dtb_cp . '/Services/ToolsetValidationService.php';
 require_once $_dtb_cp . '/Services/ProductMappingService.php';
 require_once $_dtb_cp . '/Services/CompatiblePartsService.php';
 require_once $_dtb_cp . '/Services/ProductRelationshipService.php';
+require_once $_dtb_cp . '/Services/ProductRelationshipProjectionService.php';
 require_once $_dtb_cp . '/Services/UniversalPartsProjectionService.php';
 require_once $_dtb_cp . '/Services/VeeqoStockSyncService.php';
 require_once $_dtb_cp . '/Services/InventoryRollupService.php';
@@ -113,6 +114,7 @@ if ( is_admin() || ( defined( 'WP_CLI' ) && WP_CLI ) ) {
 	require_once $_dtb_cp . '/Admin/ProductListTable.php';
 	require_once $_dtb_cp . '/Admin/CatalogToolsPage.php';
 	require_once $_dtb_cp . '/Admin/MetaBackfillTool.php';
+	require_once $_dtb_cp . '/Admin/CompatibilityProjectionCli.php';
 	require_once $_dtb_cp . '/Admin/CatalogHealthRenderer.php';
 	require_once $_dtb_cp . '/Admin/CatalogHealthActions.php';
 	// Page-shell file is only needed for normal wp-admin page loads.

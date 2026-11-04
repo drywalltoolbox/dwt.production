@@ -52,7 +52,7 @@
 
 .repair-landing .repair-hero__content,
 .home-hero__repair-surface .repair-hero__content {
-  width: min(610px, 48%);
+  width: min(680px, 50%);
   padding: 56px 0 48px;
 }
 
@@ -76,18 +76,19 @@
   max-width: 100%;
   margin: 0 0 20px;
   color: #fff;
-  font-size: clamp(2.8rem, 4.6vw, 4.85rem);
-  font-weight: 820;
-  line-height: .94;
-  letter-spacing: -.055em;
+  font-family: var(--dtb-font-hero) !important;
+  font-size: clamp(3.4rem, 5.2vw, 5.35rem);
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -.015em;
   text-wrap: balance;
 }
 
 @media (min-width: 48rem) {
-  /* Home campaign titles are intentionally uppercase. Keep their wider glyphs
-     inside the copy column and give the line boxes enough vertical clearance. */
+  /* Keep each display line deliberate while allowing it to fit the copy column. */
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide h1 {
-    font-size: clamp(2.8rem, 4vw, 4.25rem);
+    font-size: clamp(3.4rem, 5.2vw, 5.35rem);
     line-height: 1;
   }
 }
@@ -95,41 +96,15 @@
 .repair-landing .repair-hero h1 .repair-hero__title-line,
 .home-hero__repair-surface .repair-hero h1 .repair-hero__title-line {
   display: block;
-  position: relative;
   flex: none;
-  width: min(100%, var(--repair-hero-vector-width));
+  width: fit-content;
   max-width: 100%;
-  aspect-ratio: var(--repair-hero-vector-ratio);
   overflow: visible;
-  line-height: normal;
-}
-
-.repair-hero__title-accessible-text {
-  position: absolute;
-  z-index: 2;
-  inset: 0;
-  display: block;
-  overflow: hidden;
-  color: transparent !important;
-  font: inherit;
-  letter-spacing: normal;
-  line-height: 1;
+  padding-inline-end: .16em;
+  font-family: var(--dtb-font-hero) !important;
+  font-style: italic;
+  line-height: 1.08;
   white-space: nowrap;
-  -webkit-text-fill-color: transparent !important;
-  -webkit-user-select: text;
-  user-select: text;
-}
-
-.repair-hero__title-vector {
-  position: absolute;
-  z-index: 1;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-  pointer-events: none;
-  shape-rendering: geometricPrecision;
 }
 
 .repair-landing .repair-hero h1 .repair-hero__title-line--primary,
@@ -137,6 +112,7 @@
   color: #fff;
   background: none;
   -webkit-text-fill-color: #fff;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, .28);
 }
 
 .repair-landing .repair-hero h1 .repair-hero__title-line--accent,
@@ -144,6 +120,7 @@
   color: #2255ee;
   background: none;
   -webkit-text-fill-color: #2255ee;
+  text-shadow: 0 0 18px rgba(34, 85, 238, .28), 0 2px 10px rgba(0, 0, 0, .26);
 }
 
 .repair-landing .repair-hero__lead,
@@ -181,7 +158,7 @@
   font-weight: 750;
   line-height: 1;
   text-decoration: none;
-  transition: border-color 180ms ease, background 180ms ease, box-shadow 180ms ease, color 180ms ease, transform 180ms ease;
+  transition: border-color 240ms ease, background 300ms ease, box-shadow 300ms cubic-bezier(.22, 1, .36, 1), color 220ms ease, transform 220ms cubic-bezier(.22, 1, .36, 1);
 }
 
 .repair-landing .repair-hero__actions .repair-button__arrow,
@@ -194,7 +171,7 @@
   align-items: center;
   justify-content: center;
   color: currentColor;
-  transition: transform 180ms ease;
+  transition: transform 240ms cubic-bezier(.2, .7, .2, 1);
 }
 
 .repair-landing .repair-hero__actions .repair-button__arrow svg,
@@ -922,11 +899,35 @@
 .home-hero__repair-surface .repair-hero h1 {
   max-width: 100%;
   width: 100%;
-  font-size: clamp(2.7rem, 4.7vw, 4.5rem);
-  font-weight: 820;
-  line-height: 1.04;
-  letter-spacing: -0.045em;
-  text-transform: none;
+  margin-bottom: 18px;
+  position: relative;
+  isolation: isolate;
+  font-size: clamp(3.4rem, 5.2vw, 5.35rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.005em;
+  text-transform: uppercase;
+}
+
+.home-hero__repair-surface .repair-hero h1 .repair-hero__title-line {
+  line-height: 1;
+}
+
+.home-hero__repair-surface .repair-hero h1::before {
+  position: absolute;
+  z-index: -1;
+  inset: -24% -18% -22% -16%;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 38% 48%,
+    rgba(3, 12, 29, .42) 0%,
+    rgba(3, 12, 29, .27) 42%,
+    rgba(3, 12, 29, .11) 67%,
+    transparent 84%
+  );
+  filter: blur(30px);
+  pointer-events: none;
+  content: '';
 }
 
 .home-hero__repair-surface .repair-hero h1 .repair-hero__title-line--primary,
@@ -951,28 +952,80 @@
 .home-hero__repair-surface .repair-hero__actions .repair-button {
   min-height: 56px;
   padding-inline: 20px;
-  border-radius: 14px;
+  border-radius: 12px;
   font-size: 0.98rem;
   font-weight: 720;
   letter-spacing: -0.01em;
   white-space: nowrap;
+  isolation: isolate;
+}
+
+.home-hero__repair-surface .repair-hero__actions .repair-button::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(108deg, transparent 23%, rgba(255, 255, 255, .08) 38%, rgba(255, 255, 255, .58) 50%, rgba(255, 255, 255, .08) 62%, transparent 77%);
+  background-size: 240% 100%;
+  background-position: 140% 0;
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+}
+
+.home-hero__repair-surface .repair-hero__actions .repair-button > * {
+  position: relative;
+  z-index: 1;
 }
 
 .home-hero__repair-surface .repair-hero__actions .repair-button--primary {
-  border-color: rgba(122, 157, 255, 0.72);
-  background: #2255ee;
-  box-shadow: 0 8px 22px rgba(16, 48, 150, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  border-color: rgba(190, 211, 255, .8);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .13), rgba(255, 255, 255, 0) 58%), rgba(34, 85, 238, .97);
+  box-shadow: 0 8px 18px rgba(8, 31, 74, .24), 0 2px 5px rgba(34, 85, 238, .22), inset 0 1px 0 rgba(255, 255, 255, .36), inset 0 -1px 0 rgba(7, 38, 144, .26);
+  backdrop-filter: blur(14px) saturate(145%);
+  -webkit-backdrop-filter: blur(14px) saturate(145%);
 }
 
 .home-hero__repair-surface .repair-hero__actions .repair-button--primary:hover {
-  background: #2d62ff;
-  box-shadow: 0 10px 26px rgba(16, 48, 150, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.26);
+  border-color: rgba(213, 226, 255, .9);
+  background: linear-gradient(180deg, rgba(255, 255, 255, .17), rgba(255, 255, 255, .02) 58%), rgba(39, 91, 244, .98);
+  box-shadow: 0 12px 26px rgba(8, 31, 74, .28), 0 4px 9px rgba(34, 85, 238, .25), inset 0 1px 0 rgba(255, 255, 255, .44), inset 0 -1px 0 rgba(7, 38, 144, .22);
 }
 
 .home-hero__repair-surface .repair-hero__actions .repair-button--secondary {
-  border-color: rgba(190, 207, 232, 0.42);
-  background: rgba(7, 19, 39, 0.58);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, .92);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .94), rgba(235, 240, 247, .84) 54%, rgba(255, 255, 255, .7));
+  color: #17253a;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .98), inset 0 -1px 0 rgba(113, 128, 150, .2), 0 0 0 1px rgba(255, 255, 255, .18), 0 10px 28px rgba(8, 20, 38, .24);
+  backdrop-filter: blur(18px) saturate(145%);
+  -webkit-backdrop-filter: blur(18px) saturate(145%);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .home-hero__repair-surface .repair-hero__actions .repair-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .home-hero__repair-surface .repair-hero__actions .repair-button:hover::after {
+    animation: home-hero-cta-shimmer 1.2s cubic-bezier(.4, 0, .2, 1) 100ms both;
+  }
+
+  .home-hero__repair-surface .repair-hero__actions .repair-button:hover .repair-button__arrow {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes home-hero-cta-shimmer {
+  0% { background-position: 140% 0; opacity: 0; }
+  18% { opacity: .62; }
+  72% { opacity: .48; }
+  100% { background-position: -140% 0; opacity: 0; }
+}
+
+.home-hero__repair-surface .repair-hero__actions .repair-button--secondary:hover {
+  border-color: rgba(255, 255, 255, .88);
+  background: linear-gradient(135deg, rgba(255, 255, 255, .94), rgba(237, 241, 247, .82) 54%, rgba(255, 255, 255, .68));
+  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 rgba(113, 128, 150, .18), 0 10px 28px rgba(8, 20, 38, .2);
 }
 
 .home-hero__repair-surface .repair-hero__actions .repair-button__icon,
@@ -1047,14 +1100,20 @@
     max-width: 100%;
     width: 100%;
     margin-bottom: 14px;
-    font-size: clamp(2rem, 8.3vw, 2.7rem);
-    line-height: 1.06;
-    letter-spacing: -0.045em;
+    font-size: clamp(2.15rem, 8.3vw, 2.95rem);
+    line-height: 1;
+    letter-spacing: 0.005em;
     overflow-wrap: normal;
     text-wrap: balance;
   }
 
+  .home-hero__repair-surface .repair-hero h1::before {
+    inset: -18% -10% -18% -10%;
+    filter: blur(22px);
+  }
+
   .home-hero__repair-surface .repair-hero h1 .repair-hero__title-line {
+    line-height: 1;
     white-space: normal;
   }
 
@@ -1101,6 +1160,18 @@
   .home-hero__repair-surface .repair-hero__actions .repair-button__arrow {
     transition: none;
   }
+
+  .home-hero__repair-surface .repair-hero__actions .repair-button:hover {
+    transform: none;
+  }
+
+  .home-hero__repair-surface .repair-hero__actions .repair-button::after {
+    animation: none !important;
+  }
+
+  .home-hero__repair-surface .repair-hero__actions .repair-button:hover .repair-button__arrow {
+    transform: none;
+  }
 }
 
 /* Keep homepage campaign emphasis on the exact DTB brand blue. */
@@ -1110,5 +1181,5 @@
   -webkit-background-clip: border-box;
   background-clip: border-box;
   -webkit-text-fill-color: var(--dtb-primary, #2255EE);
-  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.48));
+  filter: none;
 }

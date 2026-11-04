@@ -181,6 +181,8 @@ Variation-specific category drift is invalid. If choices require materially diff
 
 `products/launch/official/dtb_official_catalog.csv` owns product category assignments for catalog updates. Review and edit its `Categories` and compatibility metadata explicitly; validation checks the assigned paths and variation inheritance without choosing or rewriting categories. The runtime taxonomy registry defines supported navigation paths, not SKU assignments. WooCommerce owns the imported runtime records; the import and any reconciliation of runtime edits into the CSV are separate explicit operations. No automatic bidirectional synchronization is implied.
 
+Product relationship field ownership is documented in [catalog merchandising architecture](architecture/catalog-merchandising.md): approved fitment source is owned by `products/` and requires the narrow SKU/compatibility-only projection; WooCommerce CRUD owns operational upsell/cross-sell values. The CSV `Upsells` and `Cross-sells` columns are not an import writer. Any full-catalog update artifact must omit those fields or hydrate them from a fresh authorized WooCommerce export and verify they were preserved; blank CSV relationship cells must never clear live merchandising. The repository has no verified automatic source/runtime synchronization, so release owners must prove the selected import artifact's field set before applying it.
+
 ## Facets API and frontend
 
 `GET /wp-json/dtb/v1/catalog/facets` derives `navigationGroups` from active WooCommerce `product_cat` ancestry.

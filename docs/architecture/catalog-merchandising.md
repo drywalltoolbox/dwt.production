@@ -57,6 +57,18 @@ Actual set contents, current price, availability, savings, and compatibility mus
 
 ## Compatibility-aware PDP merchandising
 
+### Operator relationship workbench
+
+The Product Relationships wp-admin workbench is an operator interface over the existing domain owners. It must not make an exact SKU selection equivalent to evidence of fitment. `_dtb_compatible_tool_skus` and `_dtb_replacement_part_for` on WooCommerce products are runtime projections of approved canonical compatibility from `products/`; legacy numeric `_dtb_compatible_tools` / `_dtb_compatible_parts` metadata is unverified and must remain visibly separate until exact identities and evidence are reviewed. Schematic occurrences can generate exact candidates, but only the digest-bound catalog manifest workflow may approve source changes. Ambiguous candidates remain review work; no fuzzy matching or operator convenience action may publish them as fitment.
+
+New fitment authoring uses `Meta: _dtb_compatible_tool_skus`. `Meta: _dtb_replacement_part_for` remains a legacy source field consumed by the public compatibility API; both currently project the same public compatibility claim, and a SKU present in both is deduplicated at read time and reported as a source-field overlap. Do not add new values to `replacement_part_for` until its legacy semantics and migration are reviewed. The runtime workbench labels which projection field supplied each link and does not write either field.
+
+Approved fitment source changes are not live until a narrow, update-existing projection is executed and reconciled. The required release path is: approved digest-bound manifest; atomic official catalog apply and before/after hashes; release artifact containing only exact SKU plus compatibility fields; exact, unique WooCommerce SKU resolution; bounded update-existing projection; metadata read-back; verification through both public compatibility routes; and a source/runtime drift report with per-SKU result and rollback artifact. A full catalog import is not a substitute and must not be used for fitment-only changes.
+
+The Product Relationships screen may edit WooCommerce upsell and cross-sell relationships through CRUD, which remain directional merchandising records and WooCommerce's operational authority. It must keep their selected targets visible, reject self-links, unpublished products, duplicates, overlapping types, and stale edits, and expose any pre-existing overlap for repair. The official catalog CSV's `Upsells` and `Cross-sells` columns are legacy/export placeholders, not an import writer. Any full-catalog update artifact must omit them or hydrate them from a fresh authorized WooCommerce export and verify they remain unchanged; blank cells must never clear live merchandising. SKU, MPN, GTIN, part number, schematic identity, and universal-part identity are never writable there. Parts Manager may maintain part content, but existing SKU and manufacturer SKU values are immutable in that workflow.
+
+Coverage reports must define the eligible published part/tool denominator and distinguish canonical verified fitment, unresolved legacy links, missing relationship data, invalid targets, and source-to-runtime projection drift. Missing data is not incompatibility. Schematic lifecycle and universal equivalence continue to link to their owning tools rather than being rewritten through Product Relationships.
+
 ### Public compatibility lookup contract
 
 `GET /dtb/v1/products/{sku}/compatible-parts` and `GET /dtb/v1/parts/{sku}/compatible-tools` accept one URL path segment containing letters, digits, periods, underscores, and hyphens. This includes catalog SKUs such as `CP-26`. The route validates that syntax; WooCommerce remains the source of product identity.

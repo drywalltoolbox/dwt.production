@@ -1,20 +1,21 @@
 {
   "brand_filter": null,
   "by_status": {
-    "proposal_exact": 422
+    "already_populated": 2,
+    "proposal_exact": 646
   },
   "mutates_catalog": false,
   "outputs": {
     "proposals": "products/dev/catalog-enrichment/compatibility/schematic-compatibility-proposals.csv",
     "unresolved": "products/dev/catalog-enrichment/compatibility/schematic-compatibility-unresolved.csv"
   },
-  "proposal_rows": 422,
+  "proposal_rows": 648,
   "schema_version": 2,
-  "unique_parts": 236,
-  "unique_schematics": 27,
+  "unique_parts": 396,
+  "unique_schematics": 41,
   "unresolved_by_status": {
-    "part_identifier_not_in_catalog": 1611,
-    "unresolved_schematic_identity": 1153
+    "part_identifier_not_in_catalog": 1397,
+    "unresolved_schematic_identity": 1101
   },
-  "unresolved_rows": 2764
+  "unresolved_rows": 2498
 }

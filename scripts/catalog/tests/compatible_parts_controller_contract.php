@@ -53,8 +53,8 @@ $meta_values = [
 	2 => [ $key => [ 'CP-26', 'CT-10' ] ],
 	3 => [ $key => '["CP-260","CT-11"]' ],
 ];
-$method = new ReflectionMethod( DTB_CompatiblePartsController::class, 'find_products_with_sku_in_meta' );
-assert_contract( [ 2 ] === $method->invoke( null, 'CP-26', [ $key ] ), 'Exact token membership failed.' );
-assert_contract( [ 1 ] === $method->invoke( null, 'CP-2', [ $key ] ), 'Short SKU membership failed.' );
+$method = new ReflectionMethod( DTB_CompatiblePartsController::class, 'find_products_with_skus_in_meta' );
+assert_contract( [ 2 ] === $method->invoke( null, [ 'CP-26' ], [ $key ] ), 'Exact token membership failed.' );
+assert_contract( [ 1 ] === $method->invoke( null, [ 'CP-2' ], [ $key ] ), 'Short SKU membership failed.' );
 
 echo "Compatible parts route and exact SKU contract passed.\n";

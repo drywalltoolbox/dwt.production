@@ -1,0 +1,41 @@
+{
+  "canonical_fitment": {
+    "malformed_relationship_parts": 0,
+    "parts_with_structured_relationships": 162,
+    "parts_without_structured_relationships": 383,
+    "target_field_overlap_parts": 0,
+    "unresolved_targets": {
+      "target_is_variation": 403
+    }
+  },
+  "catalog_rows": 1133,
+  "catalog_sha256": "6de14672687c0beab0919e4f9d21b64ad570682b9e0e344f657c757dd66eca8c",
+  "denominators": {
+    "published_non_part_products_excluding_variations": 140,
+    "published_parts_excluding_variations": 545
+  },
+  "interpretation": "Missing relationship metadata means no structured relationship is recorded; it does not mean incompatible.",
+  "merchandising": {
+    "published_products_with_cross_sells": 0,
+    "published_products_with_upsells": 0,
+    "same_target_in_both_fields": 0,
+    "self_link_sources": 0
+  },
+  "runtime_projection": {
+    "audited": false,
+    "reason": "This report reads the canonical repository catalog only; runtime projection needs a separate authorized export and reconciliation."
+  },
+  "schema_version": 1,
+  "schematic_proposals": {
+    "by_status": {
+      "already_populated": 2,
+      "proposal_exact": 646
+    },
+    "proposal_rows": 648,
+    "unresolved_by_status": {
+      "part_identifier_not_in_catalog": 1397,
+      "unresolved_schematic_identity": 1101
+    },
+    "unresolved_rows": 2498
+  }
+}

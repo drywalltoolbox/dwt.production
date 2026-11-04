@@ -14,20 +14,8 @@ defined( 'ABSPATH' ) || exit;
  * @param string $mode part|tool.
  * @return array
  */
-function dtb_product_mapping_get_compatibility( int $product_id, string $mode ): array {
+function dtb_product_mapping_get_compatibility( int $product_id, string $mode ) {
 	return dtb_product_mapping_repo_get_compatibility( $product_id, $mode );
-}
-
-/**
- * Persist compatibility mapping.
- *
- * @param int    $part_id Part ID.
- * @param int    $tool_id Tool ID.
- * @param string $mapping_action add|remove.
- * @return array
- */
-function dtb_product_mapping_save_compatibility( int $part_id, int $tool_id, string $mapping_action ): array {
-	return dtb_product_mapping_repo_save_compatibility( $part_id, $tool_id, $mapping_action );
 }
 
 /**

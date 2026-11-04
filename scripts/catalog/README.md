@@ -69,7 +69,7 @@ It never fuzzy-matches part names. Tool variations collapse to a valid non-part 
 - `proposal_exact` — exact canonical part SKU plus one canonical tool family share a schematic identity;
 - `review_multi_tool` — the schematic maps to multiple canonical tool families;
 - `review_no_tool` — the part occurrence is known but no canonical non-part tool SKU resolves for that schematic;
-- `already_populated` — the canonical part already contains compatibility/replacement metadata.
+- `already_populated` — this exact schematic tool SKU already exists on the canonical part; partially populated parts still receive proposals for missing exact tool SKUs.
 
 Generated artifacts live under:
 
@@ -80,6 +80,61 @@ products/dev/catalog-enrichment/compatibility/
 ```
 
 These are proposals only. A separate reviewed apply step must validate the target tool SKUs and allowlist only `Meta: _dtb_compatible_tool_skus` / `Meta: _dtb_replacement_part_for` before catalog mutation.
+
+Generate a canonical-source coverage and conflict summary after refreshing proposals:
+
+```powershell
+python .\scripts\catalog\audit_product_relationship_coverage.py
+```
+
+The report defines published part and non-part product denominators from the canonical catalog and separately reports structured-fitment presence, unresolved exact targets, overlapping fitment fields, native upsell/cross-sell source coverage, schematic proposal states, and unresolved schematic inputs. It explicitly marks live WooCommerce projection state as unaudited; runtime reconciliation requires a separate bounded live export. Missing relationships are reported as missing structured data, never as incompatibility.
+
+To convert only the `proposal_exact` rows into a digest-bound review manifest, run:
+
+```powershell
+python .\scripts\catalog\build_schematic_compatibility_review_manifest.py
+```
+
+This groups exact schematic occurrences by canonical part SKU, unions exact tool SKU targets without dropping existing values, carries the schematic/source-file evidence into each row, and sets every row to `needs_review`. It refuses missing identities, part-to-part targets, and malformed existing compatibility arrays. It never edits the catalog. Review the referenced source evidence, then record one approval with:
+
+```powershell
+python .\scripts\catalog\approve_catalog_change_manifest_row.py --manifest <path> --sku <part-sku> --reviewer <name> --reviewed-at 2026-11-04T12:00:00Z
+```
+
+The approval tool binds catalog/row digests, field, current/proposed values, evidence, reviewer, timestamp, and approval status into `approval_sha256`. Editing any of that payload afterward invalidates approval. Preview the resulting change set with `apply_official_catalog_changes.py --manifest <path>` before any explicit apply. Ambiguous/no-tool/unresolved proposal rows remain in the proposal and diagnostics artifacts and cannot enter this manifest automatically.
+
+### Narrow WooCommerce fitment projection
+
+Fitment publication uses a narrow projection artifact. First apply only explicitly approved manifest rows and preserve the JSON report:
+
+```powershell
+python .\scripts\catalog\apply_official_catalog_changes.py --manifest products/dev/catalog-enrichment/compatibility/schematic-compatibility-review-manifest.csv --apply --report products/dev/catalog-enrichment/compatibility/compatibility-catalog-apply-report.json
+python .\scripts\catalog\build_compatibility_projection_artifact.py --manifest products/dev/catalog-enrichment/compatibility/schematic-compatibility-review-manifest.csv --catalog-apply-report products/dev/catalog-enrichment/compatibility/compatibility-catalog-apply-report.json
+Get-FileHash products/dev/catalog-enrichment/compatibility/compatibility-projection-artifact.json -Algorithm SHA256
+```
+
+Review the artifact rows and digest before moving it to a private path readable by the production WordPress CLI. Preview first; apply only with the exact reviewed file digest:
+
+```sh
+wp dtb relationships project-fitment /private/release/compatibility-projection-artifact.json --sha256=<reviewed-sha256>
+wp dtb relationships project-fitment /private/release/compatibility-projection-artifact.json --sha256=<reviewed-sha256> --apply
+```
+
+The live operation is update-existing only, limited to 25 parts and 50 unique tool targets per artifact. It checks that each source is a published part and every target resolves to a unique, published parent product; refuses runtime drift; locks source and target products; writes rollback evidence before the first mutation; reads values back through WooCommerce CRUD; and verifies both public compatibility routes. Before enabling writes, production must define `DTB_RELATIONSHIP_PRIVATE_DIR` as a writable path outside both the WordPress and web document roots. The projector fails closed if that private location is missing or unsafe. Rollback reports are private and include a SHA-256. Roll back only with that report and its current digest:
+
+```sh
+wp dtb relationships rollback-fitment /path/printed/by/the/command.json --sha256=<current-report-sha256>
+```
+
+Read release reconciliation after processing all generated shards:
+
+```sh
+wp dtb relationships release-status <release-id>
+```
+
+The private report marks a release `complete` only after every expected shard is applied or already applied; it records failed and rolled-back shard outcomes as well.
+
+No `Upsells` or `Cross-sells` field is writable through the catalog manifest workflow or fitment projection. WooCommerce CRUD remains the merchandising authority.
 
 ## Content review queues
 

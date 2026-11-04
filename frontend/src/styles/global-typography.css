@@ -1,15 +1,16 @@
 /*
  * Global customer-facing typography authority.
  *
- * Single-family system: Geist owns display, body, UI, commerce, and technical
- * copy. Weight, size, spacing, and line-height provide hierarchy without
- * mixing font families across customer-facing surfaces.
+ * Geist owns body, UI, commerce, and technical copy. Barlow Semi Condensed is
+ * reserved for the homepage and repair hero display headlines; weight, size,
+ * spacing, and line-height provide hierarchy across all other surfaces.
  * This file is intentionally imported last so route-level and legacy
  * component styles cannot silently reintroduce older font stacks.
  */
 
 :root {
   --dtb-font-display: "Geist Variable", "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", ui-sans-serif, system-ui, sans-serif;
+  --dtb-font-hero: "Barlow Semi Condensed", var(--dtb-font-display);
   --dtb-font-body: var(--dtb-font-display);
   --dtb-font-ui: var(--dtb-font-body);
   --dtb-font-sans: var(--dtb-font-body);

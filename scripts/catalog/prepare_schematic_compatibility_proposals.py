@@ -169,8 +169,19 @@ def resolve_part_sku(
     return None, "part_identifier_not_in_catalog"
 
 
-def existing_relationships(row: dict[str, str]) -> bool:
-    return bool(value(row, COMPATIBLE_FIELD) or value(row, REPLACEMENT_FIELD))
+def existing_target_skus(row: dict[str, str]) -> set[str]:
+    values: set[str] = set()
+    for field in (COMPATIBLE_FIELD, REPLACEMENT_FIELD):
+        raw = value(row, field)
+        if not raw:
+            continue
+        try:
+            decoded = json.loads(raw)
+        except json.JSONDecodeError:
+            decoded = [item.strip() for item in raw.split(",")]
+        if isinstance(decoded, list):
+            values.update(str(item).strip().upper() for item in decoded if str(item).strip())
+    return values
 
 
 def prepare_proposals(
@@ -236,16 +247,17 @@ def prepare_proposals(
             part = catalog[part_sku]
 
             targets = tool_index.get(schematic_id, [])
-            existing = existing_relationships(part)
-            if existing:
+            existing = existing_target_skus(part)
+            missing_targets = [target for target in targets if target.upper() not in existing]
+            if targets and not missing_targets:
                 status = "already_populated"
-                reason = "canonical part already has compatibility/replacement metadata"
-            elif len(targets) == 1:
+                reason = "all exact schematic tool SKU targets already exist on the canonical part"
+            elif len(missing_targets) == 1:
                 status = "proposal_exact"
-                reason = "exact part SKU and one canonical tool family share schematic identity"
-            elif len(targets) > 1:
+                reason = "exact part SKU and one canonical tool family share schematic identity; target is missing from current compatibility metadata"
+            elif len(missing_targets) > 1:
                 status = "review_multi_tool"
-                reason = "exact part SKU shares schematic identity with multiple canonical tool families"
+                reason = "exact part SKU shares schematic identity with multiple canonical tool families not already present"
             else:
                 status = "review_no_tool"
                 reason = "part occurrence is known but no canonical non-part tool SKU resolves to this schematic"

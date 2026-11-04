@@ -110,7 +110,10 @@
 
     <!-- Early connection to the production API / WP backend -->
     <link rel="preconnect" href="<%= htmlWebpackPlugin.options.siteUrl %>" crossorigin>
-    <!-- Geist is self-hosted via @fontsource-variable/geist (see main.jsx) — no external font requests. -->
+    <!-- Barlow Semi Condensed is reserved for hero display headlines; all other type remains locally hosted Geist. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:ital,wght@1,700&amp;display=swap" rel="stylesheet">
 
     <!-- Static Organization JSON-LD (supplements per-page dynamic schemas) -->
     <script type="application/ld+json">
