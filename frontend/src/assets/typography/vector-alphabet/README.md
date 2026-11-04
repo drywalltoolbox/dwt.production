@@ -10,7 +10,7 @@ Reusable SVG outline libraries generated from the supplied Anton and Saira Conde
 - `SairaCondensed-Black`: Saira Condensed Black.
 - `SairaCondensed-ExtraBold`: Saira Condensed ExtraBold.
 
-Each set contains `alphabet.svg` (reusable symbol sprite), `glyphs/` (one standalone SVG per glyph), `glyphs.json` (code point, outline bounds, side bearing, and advance metrics), and `specimen.svg` (silver/cobalt visual comparison sheet). The glyphs cover space, A–Z, a–z, 0–9, and common ASCII punctuation present in the source font.
+Each set contains `alphabet.svg` (reusable symbol sprite), `glyphs/` (one standalone SVG per glyph), `glyphs.json` (code point, outline bounds, side bearing, and advance metrics), and `specimen.svg` (visual comparison sheet). The glyphs cover space, A-Z, a-z, 0-9, and common ASCII punctuation present in the source font.
 
 ## Using the paths
 
@@ -43,6 +43,10 @@ The refined paths retain the original OFL source notices under `licenses/` at th
 - Saira Condensed ExtraBold: `SairaCondensed-ExtraBold/racing-refined/specimen.svg`
 
 ## Echelon tight-cropped glyphs
+
+`Echelon-Argent-Oblique-Regular/specimen.svg` is the primary comparison preview: it places the official logo beside desktop and mobile headline samples using the silver and cobalt material system. The rendered PNG preview is `specimen-preview.png`; the previous glyph-only sheet is retained as `outline-specimen.svg`.
+
+Homepage campaign and repair-page headings use `frontend/src/components/repairs/VectorHeroTitleLine.jsx`. It positions the original outlines from `glyphs.json`, applies the campaign kerning pairs from `kerning.json`, and references the shared SVG sprite. The path layer is decorative inside the real `h1` text and keeps the campaign wording available as selectable semantic text. Silver is used on the first and third lines; the accent line uses the DTB cobalt face anchored to `#2255EE`.
 
 The Echelon standalone SVGs and sprite symbols use the visible outline bounds plus a symmetric 2-unit safety margin. Original outlines are preserved; no stroke expansion or rasterization is applied. SVGs request geometric-precision rendering. Space is intentionally nonvisible and retains its advance width.
 

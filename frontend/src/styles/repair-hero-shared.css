@@ -72,6 +72,8 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  width: 100%;
+  max-width: 100%;
   margin: 0 0 20px;
   color: #fff;
   font-size: clamp(2.8rem, 4.6vw, 4.85rem);
@@ -93,29 +95,55 @@
 .repair-landing .repair-hero h1 .repair-hero__title-line,
 .home-hero__repair-surface .repair-hero h1 .repair-hero__title-line {
   display: block;
+  position: relative;
+  flex: none;
+  width: min(100%, var(--repair-hero-vector-width));
+  max-width: 100%;
+  aspect-ratio: var(--repair-hero-vector-ratio);
+  overflow: visible;
+  line-height: normal;
+}
+
+.repair-hero__title-accessible-text {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  color: transparent !important;
+  font: inherit;
+  letter-spacing: normal;
+  line-height: 1;
+  white-space: nowrap;
+  -webkit-text-fill-color: transparent !important;
+  -webkit-user-select: text;
+  user-select: text;
+}
+
+.repair-hero__title-vector {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  shape-rendering: geometricPrecision;
 }
 
 .repair-landing .repair-hero h1 .repair-hero__title-line--primary,
 .home-hero__repair-surface .repair-hero h1 .repair-hero__title-line--primary {
   color: #fff;
-  background: linear-gradient(180deg, #fff 0%, #f4f8ff 55%, #dce8fa 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 5px rgba(0, 8, 27, .28));
+  background: none;
+  -webkit-text-fill-color: #fff;
 }
 
 .repair-landing .repair-hero h1 .repair-hero__title-line--accent,
 .home-hero__repair-surface .repair-hero h1 .repair-hero__title-line--accent {
-  color: var(--dtb-primary, #1769ff);
-  background: linear-gradient(100deg,
-    color-mix(in srgb, var(--dtb-primary, #1769ff) 84%, white) 0%,
-    var(--dtb-primary, #1769ff) 52%,
-    color-mix(in srgb, var(--dtb-primary, #1769ff) 84%, #06183f) 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 3px 7px rgba(0, 57, 164, .26));
+  color: #2255ee;
+  background: none;
+  -webkit-text-fill-color: #2255ee;
 }
 
 .repair-landing .repair-hero__lead,
@@ -892,7 +920,8 @@
 }
 
 .home-hero__repair-surface .repair-hero h1 {
-  max-width: 17ch;
+  max-width: 100%;
+  width: 100%;
   font-size: clamp(2.7rem, 4.7vw, 4.5rem);
   font-weight: 820;
   line-height: 1.04;
@@ -902,16 +931,7 @@
 
 .home-hero__repair-surface .repair-hero h1 .repair-hero__title-line--primary,
 .home-hero__repair-surface .repair-hero h1 .repair-hero__title-line--accent {
-  color: #fff;
-  background: none;
-  -webkit-background-clip: border-box;
-  background-clip: border-box;
-  -webkit-text-fill-color: #fff;
   filter: none;
-  text-shadow:
-    0 1px 1px rgba(0, 0, 0, 0.62),
-    0 3px 8px rgba(0, 4, 16, 0.62),
-    0 8px 22px rgba(0, 5, 20, 0.42);
 }
 
 .home-hero__repair-surface .repair-hero__lead {
@@ -1024,7 +1044,8 @@
   }
 
   .home-hero__repair-surface .repair-hero h1 {
-    max-width: 16ch;
+    max-width: 100%;
+    width: 100%;
     margin-bottom: 14px;
     font-size: clamp(2rem, 8.3vw, 2.7rem);
     line-height: 1.06;

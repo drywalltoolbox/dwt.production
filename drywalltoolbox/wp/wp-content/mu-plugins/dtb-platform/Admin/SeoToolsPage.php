@@ -43,16 +43,25 @@ function dtb_seo_tools_render_page(): void {
 }
 
 function dtb_seo_tools_render_audit_tab(): void {
-	// Products missing SEO title or description (Yoast/RankMath agnostic — query _yoast_wpseo_title as representative).
+	// DTB ProductSeoController emits these fields on product pages, so the audit
+	// must query the same source of truth instead of requiring plugin-specific
+	// Yoast or Rank Math metadata that the storefront does not depend on.
 	$args = [
 		'post_type'   => 'product',
 		'post_status' => 'publish',
 		'numberposts' => 50,
 		'meta_query'  => [ // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
 			'relation' => 'OR',
-			[ 'key' => '_yoast_wpseo_title',     'compare' => 'NOT EXISTS' ],
-			[ 'key' => '_yoast_wpseo_metadesc',  'compare' => 'NOT EXISTS' ],
-			[ 'key' => '_rank_math_title',        'compare' => 'NOT EXISTS' ],
+			[
+				'relation' => 'OR',
+				[ 'key' => '_dtb_seo_title', 'compare' => 'NOT EXISTS' ],
+				[ 'key' => '_dtb_seo_title', 'value' => '', 'compare' => '=' ],
+			],
+			[
+				'relation' => 'OR',
+				[ 'key' => '_dtb_seo_description', 'compare' => 'NOT EXISTS' ],
+				[ 'key' => '_dtb_seo_description', 'value' => '', 'compare' => '=' ],
+			],
 		],
 	];
 	$products = get_posts( $args );
@@ -77,10 +86,10 @@ function dtb_seo_tools_render_audit_tab(): void {
 
 	foreach ( $products as $product ) {
 		$missing = [];
-		if ( ! get_post_meta( $product->ID, '_yoast_wpseo_title', true ) && ! get_post_meta( $product->ID, '_rank_math_title', true ) ) {
+		if ( '' === trim( (string) get_post_meta( $product->ID, '_dtb_seo_title', true ) ) ) {
 			$missing[] = 'Title';
 		}
-		if ( ! get_post_meta( $product->ID, '_yoast_wpseo_metadesc', true ) && ! get_post_meta( $product->ID, '_rank_math_description', true ) ) {
+		if ( '' === trim( (string) get_post_meta( $product->ID, '_dtb_seo_description', true ) ) ) {
 			$missing[] = 'Description';
 		}
 

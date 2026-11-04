@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingBag, Tags, Search, BookOpen, Wrench, ClipboardList } from 'lucide-react';
 import RepairGuarantees from './RepairGuarantees';
 import ResponsivePicture from './media/ResponsivePicture.jsx';
+import VectorHeroTitleLine from './repairs/VectorHeroTitleLine.jsx';
 import { RESPONSIVE_HERO_MEDIA } from '../assets/media/responsiveHeroMedia.js';
 
 const ACTION_PRESENTATION = {
@@ -61,12 +62,14 @@ export default function RepairHero({
           {campaign.eyebrow && <p className="repair-eyebrow">{campaign.eyebrow}</p>}
           <h1 id={titleId}>
             {campaign.titleLines.map((line, index) => (
-              <span
-                className={`repair-hero__title-line${index === campaign.accentLine ? ' repair-hero__title-line--accent' : ' repair-hero__title-line--primary'}`}
+              <VectorHeroTitleLine
                 key={line}
-              >
-                {line}
-              </span>
+                text={line}
+                material={index === campaign.accentLine ? 'cobalt' : 'silver'}
+                className={index === campaign.accentLine
+                  ? 'repair-hero__title-line--accent'
+                  : 'repair-hero__title-line--primary'}
+              />
             ))}
           </h1>
           <p className="repair-hero__lead">{campaign.description}</p>

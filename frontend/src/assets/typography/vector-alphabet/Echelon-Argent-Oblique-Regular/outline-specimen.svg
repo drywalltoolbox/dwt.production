@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 850" role="img" aria-labelledby="title desc" shape-rendering="geometricPrecision">
+<title id="title">Echelon Argent Oblique tight-cropped vector specimen</title><desc id="desc">Original letter paths shown with tightly cropped glyph boxes and preserved font spacing.</desc>
+<defs><linearGradient id="silver" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".27" stop-color="#b7bcc2"/><stop offset=".45" stop-color="#555b63"/><stop offset=".61" stop-color="#f8fafc"/><stop offset=".78" stop-color="#808891"/><stop offset="1" stop-color="#e8ebee"/></linearGradient><linearGradient id="blue" x2="0" y2="1"><stop stop-color="#68a0ff"/><stop offset=".3" stop-color="#2255ee"/><stop offset=".56" stop-color="#102d8d"/><stop offset=".72" stop-color="#4b7eff"/><stop offset="1" stop-color="#1743bd"/></linearGradient></defs><rect width="1800" height="850" fill="#17191d"/>
+<use href="alphabet.svg#echelon-argent-oblique-upper-E" x="77.600" y="124.120" width="169.860" height="137.750" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-c" x="258.290" y="161.360" width="132.430" height="100.700" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-h" x="405.540" y="116.330" width="147.630" height="145.540" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-e" x="568.180" y="160.980" width="125.400" height="100.320" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-l" x="704.980" y="115.380" width="96.710" height="146.490" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-o" x="813.470" y="161.740" width="132.430" height="100.130" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-n" x="960.150" y="161.930" width="148.960" height="100.130" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-upper-A" x="1177.510" y="125.260" width="155.990" height="136.420" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-r" x="1348.320" y="162.120" width="136.230" height="99.940" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-g" x="1499.750" y="163.070" width="160.170" height="133.950" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-e" x="1674.360" y="160.980" width="125.400" height="100.320" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-n" x="1813.820" y="161.930" width="148.960" height="100.130" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-t" x="1977.790" y="131.720" width="106.970" height="130.340" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-upper-O" x="2152.590" y="124.880" width="168.150" height="136.610" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-b" x="2335.940" y="117.280" width="145.920" height="144.400" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-l" x="2494.590" y="115.380" width="96.710" height="146.490" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-i" x="2600.420" y="121.080" width="103.170" height="141.550" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-q" x="2715.940" y="162.310" width="144.780" height="134.330" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-u" x="2875.350" y="161.930" width="148.960" height="99.940" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-e" x="3039.510" y="160.980" width="125.400" height="100.320" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-upper-Y" x="82.800" y="306.840" width="256.320" height="234.240" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-o" x="364.720" y="373.720" width="223.040" height="168.640" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-u" x="610.800" y="374.040" width="250.880" height="168.320" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-r" x="887.280" y="374.360" width="229.440" height="168.320" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-upper-T" x="1231.600" y="311.640" width="241.920" height="231.040" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-o" x="1498.480" y="373.720" width="223.040" height="168.640" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-o" x="1745.520" y="373.720" width="223.040" height="168.640" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-l" x="1988.080" y="295.640" width="162.880" height="246.720" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-s" x="2170.800" y="374.040" width="226.560" height="168.320" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-upper-D" x="82.800" y="491.640" width="301.760" height="230.720" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-e" x="410.480" y="552.440" width="211.200" height="168.960" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-s" x="645.360" y="554.040" width="226.560" height="168.320" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-e" x="897.520" y="552.440" width="211.200" height="168.960" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-r" x="1132.400" y="554.360" width="229.440" height="168.320" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-v" x="1387.440" y="554.040" width="220.480" height="168.640" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-e" x="1633.200" y="552.440" width="211.200" height="168.960" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-upper-O" x="1957.680" y="491.640" width="283.200" height="230.080" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-u" x="2265.520" y="554.040" width="250.880" height="168.320" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-r" x="2542.000" y="554.360" width="229.440" height="168.320" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-upper-E" x="82.800" y="670.360" width="286.080" height="232.000" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-x" x="394.480" y="734.360" width="258.880" height="168.000" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-p" x="677.680" y="735.000" width="275.200" height="226.560" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-e" x="978.480" y="732.440" width="211.200" height="168.960" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-r" x="1213.360" y="734.360" width="229.440" height="168.320" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-t" x="1468.080" y="683.160" width="180.160" height="219.520" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-upper-S" x="1762.480" y="671.000" width="288.320" height="231.040" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-e" x="2075.440" y="732.440" width="211.200" height="168.960" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-r" x="2310.320" y="734.360" width="229.440" height="168.320" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-v" x="2565.360" y="734.040" width="220.480" height="168.640" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-i" x="2806.640" y="665.240" width="173.760" height="238.400" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-c" x="2993.520" y="733.080" width="223.040" height="169.600" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-lower-e" x="3241.520" y="732.440" width="211.200" height="168.960" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#echelon-argent-oblique-period" x="3467.440" y="842.200" width="90.560" height="60.480" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+</svg>
