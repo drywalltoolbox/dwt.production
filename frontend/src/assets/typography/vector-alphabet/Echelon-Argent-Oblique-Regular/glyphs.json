@@ -1,0 +1,2341 @@
+{
+  "family": "Echelon Argent Oblique",
+  "style": "Regular",
+  "font_name": "Echelon Argent Oblique Regular",
+  "source_file": "echelon-argent-oblique-regular.ttf (user supplied; not copied)",
+  "units_per_em": 1000,
+  "font_ascent": 772,
+  "font_descent": -221,
+  "glyph_line_height": 993,
+  "crop_padding_font_units": 2,
+  "glyph_count": 73,
+  "scope": "Available Basic Latin glyphs; source font cmap is authoritative. Visible outlines use tight crop boxes. Space has no visible outline.",
+  "glyphs": [
+    {
+      "char": " ",
+      "name": "space",
+      "unicode": "U+0020",
+      "glyph_name": "space",
+      "symbol_id": "echelon-argent-oblique-space",
+      "advance": 280,
+      "left_side_bearing": 0,
+      "bounds_font_units": null,
+      "tight_ink_bounds_svg_units": null,
+      "crop_viewbox_svg_units": [
+        0,
+        0,
+        280,
+        993
+      ],
+      "layout_offset_from_pen_svg_units": [
+        0,
+        0
+      ],
+      "file": "glyphs/space.svg"
+    },
+    {
+      "char": "A",
+      "name": "upper-A",
+      "unicode": "U+0041",
+      "glyph_name": "uni0041",
+      "symbol_id": "echelon-argent-oblique-upper-A",
+      "advance": 899,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        2,
+        859,
+        716
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        56,
+        817,
+        714
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        54,
+        821,
+        718
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        54
+      ],
+      "file": "glyphs/upper-A.svg"
+    },
+    {
+      "char": "B",
+      "name": "upper-B",
+      "unicode": "U+0042",
+      "glyph_name": "uni0042",
+      "symbol_id": "echelon-argent-oblique-upper-B",
+      "advance": 1004,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        965,
+        718
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        54,
+        923,
+        717
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        52,
+        927,
+        721
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        52
+      ],
+      "file": "glyphs/upper-B.svg"
+    },
+    {
+      "char": "C",
+      "name": "upper-C",
+      "unicode": "U+0043",
+      "glyph_name": "uni0043",
+      "symbol_id": "echelon-argent-oblique-upper-C",
+      "advance": 951,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        2,
+        916,
+        721
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        51,
+        874,
+        719
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        49,
+        878,
+        723
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        49
+      ],
+      "file": "glyphs/upper-C.svg"
+    },
+    {
+      "char": "D",
+      "name": "upper-D",
+      "unicode": "U+0044",
+      "glyph_name": "uni0044",
+      "symbol_id": "echelon-argent-oblique-upper-D",
+      "advance": 1024,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        981,
+        718
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        54,
+        939,
+        717
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        52,
+        943,
+        721
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        52
+      ],
+      "file": "glyphs/upper-D.svg"
+    },
+    {
+      "char": "E",
+      "name": "upper-E",
+      "unicode": "U+0045",
+      "glyph_name": "uni0045",
+      "symbol_id": "echelon-argent-oblique-upper-E",
+      "advance": 974,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        932,
+        722
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        50,
+        890,
+        721
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        48,
+        894,
+        725
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        48
+      ],
+      "file": "glyphs/upper-E.svg"
+    },
+    {
+      "char": "F",
+      "name": "upper-F",
+      "unicode": "U+0046",
+      "glyph_name": "uni0046",
+      "symbol_id": "echelon-argent-oblique-upper-F",
+      "advance": 995,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        953,
+        721
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        51,
+        911,
+        721
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        49,
+        915,
+        725
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        49
+      ],
+      "file": "glyphs/upper-F.svg"
+    },
+    {
+      "char": "G",
+      "name": "upper-G",
+      "unicode": "U+0047",
+      "glyph_name": "uni0047",
+      "symbol_id": "echelon-argent-oblique-upper-G",
+      "advance": 955,
+      "left_side_bearing": 40,
+      "bounds_font_units": [
+        40,
+        3,
+        916,
+        720
+      ],
+      "tight_ink_bounds_svg_units": [
+        40,
+        52,
+        876,
+        717
+      ],
+      "crop_viewbox_svg_units": [
+        38,
+        50,
+        880,
+        721
+      ],
+      "layout_offset_from_pen_svg_units": [
+        38,
+        50
+      ],
+      "file": "glyphs/upper-G.svg"
+    },
+    {
+      "char": "H",
+      "name": "upper-H",
+      "unicode": "U+0048",
+      "glyph_name": "uni0048",
+      "symbol_id": "echelon-argent-oblique-upper-H",
+      "advance": 1121,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        -1,
+        1080,
+        722
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        50,
+        1038,
+        723
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        48,
+        1042,
+        727
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        48
+      ],
+      "file": "glyphs/upper-H.svg"
+    },
+    {
+      "char": "I",
+      "name": "upper-I",
+      "unicode": "U+0049",
+      "glyph_name": "uni0049",
+      "symbol_id": "echelon-argent-oblique-upper-I",
+      "advance": 607,
+      "left_side_bearing": 28,
+      "bounds_font_units": [
+        28,
+        0,
+        580,
+        720
+      ],
+      "tight_ink_bounds_svg_units": [
+        28,
+        52,
+        552,
+        720
+      ],
+      "crop_viewbox_svg_units": [
+        26,
+        50,
+        556,
+        724
+      ],
+      "layout_offset_from_pen_svg_units": [
+        26,
+        50
+      ],
+      "file": "glyphs/upper-I.svg"
+    },
+    {
+      "char": "J",
+      "name": "upper-J",
+      "unicode": "U+004A",
+      "glyph_name": "uni004A",
+      "symbol_id": "echelon-argent-oblique-upper-J",
+      "advance": 934,
+      "left_side_bearing": 40,
+      "bounds_font_units": [
+        40,
+        2,
+        893,
+        721
+      ],
+      "tight_ink_bounds_svg_units": [
+        40,
+        51,
+        853,
+        719
+      ],
+      "crop_viewbox_svg_units": [
+        38,
+        49,
+        857,
+        723
+      ],
+      "layout_offset_from_pen_svg_units": [
+        38,
+        49
+      ],
+      "file": "glyphs/upper-J.svg"
+    },
+    {
+      "char": "K",
+      "name": "upper-K",
+      "unicode": "U+004B",
+      "glyph_name": "uni004B",
+      "symbol_id": "echelon-argent-oblique-upper-K",
+      "advance": 1088,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        1051,
+        721
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        51,
+        1009,
+        721
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        49,
+        1013,
+        725
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        49
+      ],
+      "file": "glyphs/upper-K.svg"
+    },
+    {
+      "char": "L",
+      "name": "upper-L",
+      "unicode": "U+004C",
+      "glyph_name": "uni004C",
+      "symbol_id": "echelon-argent-oblique-upper-L",
+      "advance": 825,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        782,
+        718
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        54,
+        740,
+        717
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        52,
+        744,
+        721
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        52
+      ],
+      "file": "glyphs/upper-L.svg"
+    },
+    {
+      "char": "M",
+      "name": "upper-M",
+      "unicode": "U+004D",
+      "glyph_name": "uni004D",
+      "symbol_id": "echelon-argent-oblique-upper-M",
+      "advance": 1325,
+      "left_side_bearing": 64,
+      "bounds_font_units": [
+        64,
+        0,
+        1261,
+        724
+      ],
+      "tight_ink_bounds_svg_units": [
+        64,
+        48,
+        1197,
+        724
+      ],
+      "crop_viewbox_svg_units": [
+        62,
+        46,
+        1201,
+        728
+      ],
+      "layout_offset_from_pen_svg_units": [
+        62,
+        46
+      ],
+      "file": "glyphs/upper-M.svg"
+    },
+    {
+      "char": "N",
+      "name": "upper-N",
+      "unicode": "U+004E",
+      "glyph_name": "uni004E",
+      "symbol_id": "echelon-argent-oblique-upper-N",
+      "advance": 1150,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        1108,
+        723
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        49,
+        1066,
+        723
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        47,
+        1070,
+        727
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        47
+      ],
+      "file": "glyphs/upper-N.svg"
+    },
+    {
+      "char": "O",
+      "name": "upper-O",
+      "unicode": "U+004F",
+      "glyph_name": "uni004F",
+      "symbol_id": "echelon-argent-oblique-upper-O",
+      "advance": 965,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        3,
+        923,
+        718
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        54,
+        881,
+        715
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        52,
+        885,
+        719
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        52
+      ],
+      "file": "glyphs/upper-O.svg"
+    },
+    {
+      "char": "P",
+      "name": "upper-P",
+      "unicode": "U+0050",
+      "glyph_name": "uni0050",
+      "symbol_id": "echelon-argent-oblique-upper-P",
+      "advance": 1017,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        2,
+        980,
+        718
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        54,
+        938,
+        716
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        52,
+        942,
+        720
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        52
+      ],
+      "file": "glyphs/upper-P.svg"
+    },
+    {
+      "char": "Q",
+      "name": "upper-Q",
+      "unicode": "U+0051",
+      "glyph_name": "uni0051",
+      "symbol_id": "echelon-argent-oblique-upper-Q",
+      "advance": 951,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        30,
+        -91,
+        910,
+        717
+      ],
+      "tight_ink_bounds_svg_units": [
+        30,
+        55,
+        880,
+        808
+      ],
+      "crop_viewbox_svg_units": [
+        28,
+        53,
+        884,
+        812
+      ],
+      "layout_offset_from_pen_svg_units": [
+        28,
+        53
+      ],
+      "file": "glyphs/upper-Q.svg"
+    },
+    {
+      "char": "R",
+      "name": "upper-R",
+      "unicode": "U+0052",
+      "glyph_name": "uni0052",
+      "symbol_id": "echelon-argent-oblique-upper-R",
+      "advance": 1011,
+      "left_side_bearing": 43,
+      "bounds_font_units": [
+        43,
+        0,
+        979,
+        718
+      ],
+      "tight_ink_bounds_svg_units": [
+        43,
+        54,
+        936,
+        718
+      ],
+      "crop_viewbox_svg_units": [
+        41,
+        52,
+        940,
+        722
+      ],
+      "layout_offset_from_pen_svg_units": [
+        41,
+        52
+      ],
+      "file": "glyphs/upper-R.svg"
+    },
+    {
+      "char": "S",
+      "name": "upper-S",
+      "unicode": "U+0053",
+      "glyph_name": "uni0053",
+      "symbol_id": "echelon-argent-oblique-upper-S",
+      "advance": 978,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        2,
+        939,
+        720
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        52,
+        897,
+        718
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        50,
+        901,
+        722
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        50
+      ],
+      "file": "glyphs/upper-S.svg"
+    },
+    {
+      "char": "T",
+      "name": "upper-T",
+      "unicode": "U+0054",
+      "glyph_name": "uni0054",
+      "symbol_id": "echelon-argent-oblique-upper-T",
+      "advance": 833,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        0,
+        793,
+        718
+      ],
+      "tight_ink_bounds_svg_units": [
+        41,
+        54,
+        752,
+        718
+      ],
+      "crop_viewbox_svg_units": [
+        39,
+        52,
+        756,
+        722
+      ],
+      "layout_offset_from_pen_svg_units": [
+        39,
+        52
+      ],
+      "file": "glyphs/upper-T.svg"
+    },
+    {
+      "char": "U",
+      "name": "upper-U",
+      "unicode": "U+0055",
+      "glyph_name": "uni0055",
+      "symbol_id": "echelon-argent-oblique-upper-U",
+      "advance": 1061,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        -4,
+        1020,
+        728
+      ],
+      "tight_ink_bounds_svg_units": [
+        41,
+        44,
+        979,
+        732
+      ],
+      "crop_viewbox_svg_units": [
+        39,
+        42,
+        983,
+        736
+      ],
+      "layout_offset_from_pen_svg_units": [
+        39,
+        42
+      ],
+      "file": "glyphs/upper-U.svg"
+    },
+    {
+      "char": "V",
+      "name": "upper-V",
+      "unicode": "U+0056",
+      "glyph_name": "uni0056",
+      "symbol_id": "echelon-argent-oblique-upper-V",
+      "advance": 897,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        2,
+        854,
+        728
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        44,
+        812,
+        726
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        42,
+        816,
+        730
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        42
+      ],
+      "file": "glyphs/upper-V.svg"
+    },
+    {
+      "char": "W",
+      "name": "upper-W",
+      "unicode": "U+0057",
+      "glyph_name": "uni0057",
+      "symbol_id": "echelon-argent-oblique-upper-W",
+      "advance": 1309,
+      "left_side_bearing": 65,
+      "bounds_font_units": [
+        65,
+        1,
+        1246,
+        728
+      ],
+      "tight_ink_bounds_svg_units": [
+        65,
+        44,
+        1181,
+        727
+      ],
+      "crop_viewbox_svg_units": [
+        63,
+        42,
+        1185,
+        731
+      ],
+      "layout_offset_from_pen_svg_units": [
+        63,
+        42
+      ],
+      "file": "glyphs/upper-W.svg"
+    },
+    {
+      "char": "X",
+      "name": "upper-X",
+      "unicode": "U+0058",
+      "glyph_name": "uni0058",
+      "symbol_id": "echelon-argent-oblique-upper-X",
+      "advance": 1145,
+      "left_side_bearing": 38,
+      "bounds_font_units": [
+        38,
+        4,
+        1109,
+        729
+      ],
+      "tight_ink_bounds_svg_units": [
+        38,
+        43,
+        1071,
+        725
+      ],
+      "crop_viewbox_svg_units": [
+        36,
+        41,
+        1075,
+        729
+      ],
+      "layout_offset_from_pen_svg_units": [
+        36,
+        41
+      ],
+      "file": "glyphs/upper-X.svg"
+    },
+    {
+      "char": "Y",
+      "name": "upper-Y",
+      "unicode": "U+0059",
+      "glyph_name": "uni0059",
+      "symbol_id": "echelon-argent-oblique-upper-Y",
+      "advance": 881,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        5,
+        839,
+        733
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        39,
+        797,
+        728
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        37,
+        801,
+        732
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        37
+      ],
+      "file": "glyphs/upper-Y.svg"
+    },
+    {
+      "char": "Z",
+      "name": "upper-Z",
+      "unicode": "U+005A",
+      "glyph_name": "uni005A",
+      "symbol_id": "echelon-argent-oblique-upper-Z",
+      "advance": 1030,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        7,
+        990,
+        726
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        46,
+        948,
+        719
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        44,
+        952,
+        723
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        44
+      ],
+      "file": "glyphs/upper-Z.svg"
+    },
+    {
+      "char": "a",
+      "name": "lower-a",
+      "unicode": "U+0061",
+      "glyph_name": "uni0061",
+      "symbol_id": "echelon-argent-oblique-lower-a",
+      "advance": 776,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        3,
+        737,
+        506
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        266,
+        695,
+        503
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        264,
+        699,
+        507
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        264
+      ],
+      "file": "glyphs/lower-a.svg"
+    },
+    {
+      "char": "b",
+      "name": "lower-b",
+      "unicode": "U+0062",
+      "glyph_name": "uni0062",
+      "symbol_id": "echelon-argent-oblique-lower-b",
+      "advance": 849,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        2,
+        806,
+        758
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        14,
+        764,
+        756
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        12,
+        768,
+        760
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        12
+      ],
+      "file": "glyphs/lower-b.svg"
+    },
+    {
+      "char": "c",
+      "name": "lower-c",
+      "unicode": "U+0063",
+      "glyph_name": "uni0063",
+      "symbol_id": "echelon-argent-oblique-lower-c",
+      "advance": 752,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        19,
+        0,
+        712,
+        526
+      ],
+      "tight_ink_bounds_svg_units": [
+        19,
+        246,
+        693,
+        526
+      ],
+      "crop_viewbox_svg_units": [
+        17,
+        244,
+        697,
+        530
+      ],
+      "layout_offset_from_pen_svg_units": [
+        17,
+        244
+      ],
+      "file": "glyphs/lower-c.svg"
+    },
+    {
+      "char": "d",
+      "name": "lower-d",
+      "unicode": "U+0064",
+      "glyph_name": "uni0064",
+      "symbol_id": "echelon-argent-oblique-lower-d",
+      "advance": 959,
+      "left_side_bearing": 40,
+      "bounds_font_units": [
+        40,
+        4,
+        927,
+        762
+      ],
+      "tight_ink_bounds_svg_units": [
+        40,
+        10,
+        887,
+        758
+      ],
+      "crop_viewbox_svg_units": [
+        38,
+        8,
+        891,
+        762
+      ],
+      "layout_offset_from_pen_svg_units": [
+        38,
+        8
+      ],
+      "file": "glyphs/lower-d.svg"
+    },
+    {
+      "char": "e",
+      "name": "lower-e",
+      "unicode": "U+0065",
+      "glyph_name": "uni0065",
+      "symbol_id": "echelon-argent-oblique-lower-e",
+      "advance": 734,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        4,
+        698,
+        528
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        244,
+        656,
+        524
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        242,
+        660,
+        528
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        242
+      ],
+      "file": "glyphs/lower-e.svg"
+    },
+    {
+      "char": "f",
+      "name": "lower-f",
+      "unicode": "U+0066",
+      "glyph_name": "uni0066",
+      "symbol_id": "echelon-argent-oblique-lower-f",
+      "advance": 801,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        0,
+        760,
+        762
+      ],
+      "tight_ink_bounds_svg_units": [
+        41,
+        10,
+        719,
+        762
+      ],
+      "crop_viewbox_svg_units": [
+        39,
+        8,
+        723,
+        766
+      ],
+      "layout_offset_from_pen_svg_units": [
+        39,
+        8
+      ],
+      "file": "glyphs/lower-f.svg"
+    },
+    {
+      "char": "g",
+      "name": "lower-g",
+      "unicode": "U+0067",
+      "glyph_name": "uni0067",
+      "symbol_id": "echelon-argent-oblique-lower-g",
+      "advance": 919,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        -184,
+        881,
+        517
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        255,
+        839,
+        701
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        253,
+        843,
+        705
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        253
+      ],
+      "file": "glyphs/lower-g.svg"
+    },
+    {
+      "char": "h",
+      "name": "lower-h",
+      "unicode": "U+0068",
+      "glyph_name": "uni0068",
+      "symbol_id": "echelon-argent-oblique-lower-h",
+      "advance": 856,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        815,
+        763
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        9,
+        773,
+        762
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        7,
+        777,
+        766
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        7
+      ],
+      "file": "glyphs/lower-h.svg"
+    },
+    {
+      "char": "i",
+      "name": "lower-i",
+      "unicode": "U+0069",
+      "glyph_name": "uni0069",
+      "symbol_id": "echelon-argent-oblique-lower-i",
+      "advance": 593,
+      "left_side_bearing": 28,
+      "bounds_font_units": [
+        28,
+        -3,
+        567,
+        738
+      ],
+      "tight_ink_bounds_svg_units": [
+        28,
+        34,
+        539,
+        741
+      ],
+      "crop_viewbox_svg_units": [
+        26,
+        32,
+        543,
+        745
+      ],
+      "layout_offset_from_pen_svg_units": [
+        26,
+        32
+      ],
+      "file": "glyphs/lower-i.svg"
+    },
+    {
+      "char": "j",
+      "name": "lower-j",
+      "unicode": "U+006A",
+      "glyph_name": "uni006A",
+      "symbol_id": "echelon-argent-oblique-lower-j",
+      "advance": 884,
+      "left_side_bearing": 22,
+      "bounds_font_units": [
+        22,
+        -174,
+        857,
+        735
+      ],
+      "tight_ink_bounds_svg_units": [
+        22,
+        37,
+        835,
+        909
+      ],
+      "crop_viewbox_svg_units": [
+        20,
+        35,
+        839,
+        913
+      ],
+      "layout_offset_from_pen_svg_units": [
+        20,
+        35
+      ],
+      "file": "glyphs/lower-j.svg"
+    },
+    {
+      "char": "k",
+      "name": "lower-k",
+      "unicode": "U+006B",
+      "glyph_name": "uni006B",
+      "symbol_id": "echelon-argent-oblique-lower-k",
+      "advance": 904,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        864,
+        771
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        1,
+        822,
+        770
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        -1,
+        826,
+        774
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        -1
+      ],
+      "file": "glyphs/lower-k.svg"
+    },
+    {
+      "char": "l",
+      "name": "lower-l",
+      "unicode": "U+006C",
+      "glyph_name": "uni006C",
+      "symbol_id": "echelon-argent-oblique-lower-l",
+      "advance": 557,
+      "left_side_bearing": 28,
+      "bounds_font_units": [
+        28,
+        1,
+        533,
+        768
+      ],
+      "tight_ink_bounds_svg_units": [
+        28,
+        4,
+        505,
+        767
+      ],
+      "crop_viewbox_svg_units": [
+        26,
+        2,
+        509,
+        771
+      ],
+      "layout_offset_from_pen_svg_units": [
+        26,
+        2
+      ],
+      "file": "glyphs/lower-l.svg"
+    },
+    {
+      "char": "m",
+      "name": "lower-m",
+      "unicode": "U+006D",
+      "glyph_name": "uni006D",
+      "symbol_id": "echelon-argent-oblique-lower-m",
+      "advance": 1215,
+      "left_side_bearing": 64,
+      "bounds_font_units": [
+        64,
+        -1,
+        1164,
+        523
+      ],
+      "tight_ink_bounds_svg_units": [
+        64,
+        249,
+        1100,
+        524
+      ],
+      "crop_viewbox_svg_units": [
+        62,
+        247,
+        1104,
+        528
+      ],
+      "layout_offset_from_pen_svg_units": [
+        62,
+        247
+      ],
+      "file": "glyphs/lower-m.svg"
+    },
+    {
+      "char": "n",
+      "name": "lower-n",
+      "unicode": "U+006E",
+      "glyph_name": "uni006E",
+      "symbol_id": "echelon-argent-oblique-lower-n",
+      "advance": 864,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        822,
+        523
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        249,
+        780,
+        523
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        247,
+        784,
+        527
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        247
+      ],
+      "file": "glyphs/lower-n.svg"
+    },
+    {
+      "char": "o",
+      "name": "lower-o",
+      "unicode": "U+006F",
+      "glyph_name": "uni006F",
+      "symbol_id": "echelon-argent-oblique-lower-o",
+      "advance": 772,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        735,
+        524
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        248,
+        693,
+        523
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        246,
+        697,
+        527
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        246
+      ],
+      "file": "glyphs/lower-o.svg"
+    },
+    {
+      "char": "p",
+      "name": "lower-p",
+      "unicode": "U+0070",
+      "glyph_name": "uni0070",
+      "symbol_id": "echelon-argent-oblique-lower-p",
+      "advance": 940,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        -184,
+        898,
+        520
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        252,
+        856,
+        704
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        250,
+        860,
+        708
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        250
+      ],
+      "file": "glyphs/lower-p.svg"
+    },
+    {
+      "char": "q",
+      "name": "lower-q",
+      "unicode": "U+0071",
+      "glyph_name": "uni0071",
+      "symbol_id": "echelon-argent-oblique-lower-q",
+      "advance": 843,
+      "left_side_bearing": 43,
+      "bounds_font_units": [
+        43,
+        -182,
+        801,
+        521
+      ],
+      "tight_ink_bounds_svg_units": [
+        43,
+        251,
+        758,
+        703
+      ],
+      "crop_viewbox_svg_units": [
+        41,
+        249,
+        762,
+        707
+      ],
+      "layout_offset_from_pen_svg_units": [
+        41,
+        249
+      ],
+      "file": "glyphs/lower-q.svg"
+    },
+    {
+      "char": "r",
+      "name": "lower-r",
+      "unicode": "U+0072",
+      "glyph_name": "uni0072",
+      "symbol_id": "echelon-argent-oblique-lower-r",
+      "advance": 797,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        755,
+        522
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        250,
+        713,
+        522
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        248,
+        717,
+        526
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        248
+      ],
+      "file": "glyphs/lower-r.svg"
+    },
+    {
+      "char": "s",
+      "name": "lower-s",
+      "unicode": "U+0073",
+      "glyph_name": "uni0073",
+      "symbol_id": "echelon-argent-oblique-lower-s",
+      "advance": 788,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        746,
+        523
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        249,
+        704,
+        522
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        247,
+        708,
+        526
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        247
+      ],
+      "file": "glyphs/lower-s.svg"
+    },
+    {
+      "char": "t",
+      "name": "lower-t",
+      "unicode": "U+0074",
+      "glyph_name": "uni0074",
+      "symbol_id": "echelon-argent-oblique-lower-t",
+      "advance": 639,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        0,
+        600,
+        682
+      ],
+      "tight_ink_bounds_svg_units": [
+        41,
+        90,
+        559,
+        682
+      ],
+      "crop_viewbox_svg_units": [
+        39,
+        88,
+        563,
+        686
+      ],
+      "layout_offset_from_pen_svg_units": [
+        39,
+        88
+      ],
+      "file": "glyphs/lower-t.svg"
+    },
+    {
+      "char": "u",
+      "name": "lower-u",
+      "unicode": "U+0075",
+      "glyph_name": "uni0075",
+      "symbol_id": "echelon-argent-oblique-lower-u",
+      "advance": 861,
+      "left_side_bearing": 39,
+      "bounds_font_units": [
+        39,
+        1,
+        819,
+        523
+      ],
+      "tight_ink_bounds_svg_units": [
+        39,
+        249,
+        780,
+        522
+      ],
+      "crop_viewbox_svg_units": [
+        37,
+        247,
+        784,
+        526
+      ],
+      "layout_offset_from_pen_svg_units": [
+        37,
+        247
+      ],
+      "file": "glyphs/lower-u.svg"
+    },
+    {
+      "char": "v",
+      "name": "lower-v",
+      "unicode": "U+0076",
+      "glyph_name": "uni0076",
+      "symbol_id": "echelon-argent-oblique-lower-v",
+      "advance": 768,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        727,
+        523
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        249,
+        685,
+        523
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        247,
+        689,
+        527
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        247
+      ],
+      "file": "glyphs/lower-v.svg"
+    },
+    {
+      "char": "w",
+      "name": "lower-w",
+      "unicode": "U+0077",
+      "glyph_name": "uni0077",
+      "symbol_id": "echelon-argent-oblique-lower-w",
+      "advance": 1099,
+      "left_side_bearing": 65,
+      "bounds_font_units": [
+        65,
+        0,
+        1036,
+        522
+      ],
+      "tight_ink_bounds_svg_units": [
+        65,
+        250,
+        971,
+        522
+      ],
+      "crop_viewbox_svg_units": [
+        63,
+        248,
+        975,
+        526
+      ],
+      "layout_offset_from_pen_svg_units": [
+        63,
+        248
+      ],
+      "file": "glyphs/lower-w.svg"
+    },
+    {
+      "char": "x",
+      "name": "lower-x",
+      "unicode": "U+0078",
+      "glyph_name": "uni0078",
+      "symbol_id": "echelon-argent-oblique-lower-x",
+      "advance": 885,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        847,
+        522
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        250,
+        805,
+        521
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        248,
+        809,
+        525
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        248
+      ],
+      "file": "glyphs/lower-x.svg"
+    },
+    {
+      "char": "y",
+      "name": "lower-y",
+      "unicode": "U+0079",
+      "glyph_name": "uni0079",
+      "symbol_id": "echelon-argent-oblique-lower-y",
+      "advance": 962,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        -187,
+        919,
+        525
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        247,
+        877,
+        712
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        245,
+        881,
+        716
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        245
+      ],
+      "file": "glyphs/lower-y.svg"
+    },
+    {
+      "char": "z",
+      "name": "lower-z",
+      "unicode": "U+007A",
+      "glyph_name": "uni007A",
+      "symbol_id": "echelon-argent-oblique-lower-z",
+      "advance": 826,
+      "left_side_bearing": 40,
+      "bounds_font_units": [
+        40,
+        -1,
+        784,
+        518
+      ],
+      "tight_ink_bounds_svg_units": [
+        40,
+        254,
+        744,
+        519
+      ],
+      "crop_viewbox_svg_units": [
+        38,
+        252,
+        748,
+        523
+      ],
+      "layout_offset_from_pen_svg_units": [
+        38,
+        252
+      ],
+      "file": "glyphs/lower-z.svg"
+    },
+    {
+      "char": "0",
+      "name": "digit-0",
+      "unicode": "U+0030",
+      "glyph_name": "uni0030",
+      "symbol_id": "echelon-argent-oblique-digit-0",
+      "advance": 893,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        32,
+        5,
+        853,
+        678
+      ],
+      "tight_ink_bounds_svg_units": [
+        32,
+        94,
+        821,
+        673
+      ],
+      "crop_viewbox_svg_units": [
+        30,
+        92,
+        825,
+        677
+      ],
+      "layout_offset_from_pen_svg_units": [
+        30,
+        92
+      ],
+      "file": "glyphs/digit-0.svg"
+    },
+    {
+      "char": "1",
+      "name": "digit-1",
+      "unicode": "U+0031",
+      "glyph_name": "uni0031",
+      "symbol_id": "echelon-argent-oblique-digit-1",
+      "advance": 571,
+      "left_side_bearing": 28,
+      "bounds_font_units": [
+        28,
+        -1,
+        543,
+        672
+      ],
+      "tight_ink_bounds_svg_units": [
+        28,
+        100,
+        515,
+        673
+      ],
+      "crop_viewbox_svg_units": [
+        26,
+        98,
+        519,
+        677
+      ],
+      "layout_offset_from_pen_svg_units": [
+        26,
+        98
+      ],
+      "file": "glyphs/digit-1.svg"
+    },
+    {
+      "char": "2",
+      "name": "digit-2",
+      "unicode": "U+0032",
+      "glyph_name": "uni0032",
+      "symbol_id": "echelon-argent-oblique-digit-2",
+      "advance": 923,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        2,
+        886,
+        678
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        94,
+        844,
+        676
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        92,
+        848,
+        680
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        92
+      ],
+      "file": "glyphs/digit-2.svg"
+    },
+    {
+      "char": "3",
+      "name": "digit-3",
+      "unicode": "U+0033",
+      "glyph_name": "uni0033",
+      "symbol_id": "echelon-argent-oblique-digit-3",
+      "advance": 892,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        858,
+        677
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        95,
+        816,
+        676
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        93,
+        820,
+        680
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        93
+      ],
+      "file": "glyphs/digit-3.svg"
+    },
+    {
+      "char": "4",
+      "name": "digit-4",
+      "unicode": "U+0034",
+      "glyph_name": "uni0034",
+      "symbol_id": "echelon-argent-oblique-digit-4",
+      "advance": 864,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        824,
+        658
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        114,
+        782,
+        658
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        112,
+        786,
+        662
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        112
+      ],
+      "file": "glyphs/digit-4.svg"
+    },
+    {
+      "char": "5",
+      "name": "digit-5",
+      "unicode": "U+0035",
+      "glyph_name": "uni0035",
+      "symbol_id": "echelon-argent-oblique-digit-5",
+      "advance": 903,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        -2,
+        864,
+        677
+      ],
+      "tight_ink_bounds_svg_units": [
+        41,
+        95,
+        823,
+        679
+      ],
+      "crop_viewbox_svg_units": [
+        39,
+        93,
+        827,
+        683
+      ],
+      "layout_offset_from_pen_svg_units": [
+        39,
+        93
+      ],
+      "file": "glyphs/digit-5.svg"
+    },
+    {
+      "char": "6",
+      "name": "digit-6",
+      "unicode": "U+0036",
+      "glyph_name": "uni0036",
+      "symbol_id": "echelon-argent-oblique-digit-6",
+      "advance": 902,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        864,
+        677
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        95,
+        822,
+        676
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        93,
+        826,
+        680
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        93
+      ],
+      "file": "glyphs/digit-6.svg"
+    },
+    {
+      "char": "7",
+      "name": "digit-7",
+      "unicode": "U+0037",
+      "glyph_name": "uni0037",
+      "symbol_id": "echelon-argent-oblique-digit-7",
+      "advance": 803,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        760,
+        678
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        94,
+        718,
+        677
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        92,
+        722,
+        681
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        92
+      ],
+      "file": "glyphs/digit-7.svg"
+    },
+    {
+      "char": "8",
+      "name": "digit-8",
+      "unicode": "U+0038",
+      "glyph_name": "uni0038",
+      "symbol_id": "echelon-argent-oblique-digit-8",
+      "advance": 887,
+      "left_side_bearing": 40,
+      "bounds_font_units": [
+        40,
+        0,
+        857,
+        678
+      ],
+      "tight_ink_bounds_svg_units": [
+        40,
+        94,
+        817,
+        678
+      ],
+      "crop_viewbox_svg_units": [
+        38,
+        92,
+        821,
+        682
+      ],
+      "layout_offset_from_pen_svg_units": [
+        38,
+        92
+      ],
+      "file": "glyphs/digit-8.svg"
+    },
+    {
+      "char": "9",
+      "name": "digit-9",
+      "unicode": "U+0039",
+      "glyph_name": "uni0039",
+      "symbol_id": "echelon-argent-oblique-digit-9",
+      "advance": 920,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        880,
+        676
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        96,
+        838,
+        675
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        94,
+        842,
+        679
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        94
+      ],
+      "file": "glyphs/digit-9.svg"
+    },
+    {
+      "char": "!",
+      "name": "exclamation",
+      "unicode": "U+0021",
+      "glyph_name": "uni0021",
+      "symbol_id": "echelon-argent-oblique-exclamation",
+      "advance": 556,
+      "left_side_bearing": 22,
+      "bounds_font_units": [
+        22,
+        -3,
+        535,
+        726
+      ],
+      "tight_ink_bounds_svg_units": [
+        22,
+        46,
+        513,
+        729
+      ],
+      "crop_viewbox_svg_units": [
+        20,
+        44,
+        517,
+        733
+      ],
+      "layout_offset_from_pen_svg_units": [
+        20,
+        44
+      ],
+      "file": "glyphs/exclamation.svg"
+    },
+    {
+      "char": "\"",
+      "name": "quotedbl",
+      "unicode": "U+0022",
+      "glyph_name": "uni0022",
+      "symbol_id": "echelon-argent-oblique-quotedbl",
+      "advance": 797,
+      "left_side_bearing": 21,
+      "bounds_font_units": [
+        21,
+        486,
+        776,
+        763
+      ],
+      "tight_ink_bounds_svg_units": [
+        21,
+        9,
+        755,
+        277
+      ],
+      "crop_viewbox_svg_units": [
+        19,
+        7,
+        759,
+        281
+      ],
+      "layout_offset_from_pen_svg_units": [
+        19,
+        7
+      ],
+      "file": "glyphs/quotedbl.svg"
+    },
+    {
+      "char": "'",
+      "name": "quotesingle",
+      "unicode": "U+0027",
+      "glyph_name": "uni0027",
+      "symbol_id": "echelon-argent-oblique-quotesingle",
+      "advance": 346,
+      "left_side_bearing": 15,
+      "bounds_font_units": [
+        15,
+        447,
+        332,
+        723
+      ],
+      "tight_ink_bounds_svg_units": [
+        15,
+        49,
+        317,
+        276
+      ],
+      "crop_viewbox_svg_units": [
+        13,
+        47,
+        321,
+        280
+      ],
+      "layout_offset_from_pen_svg_units": [
+        13,
+        47
+      ],
+      "file": "glyphs/quotesingle.svg"
+    },
+    {
+      "char": ",",
+      "name": "comma",
+      "unicode": "U+002C",
+      "glyph_name": "uni002C",
+      "symbol_id": "echelon-argent-oblique-comma",
+      "advance": 340,
+      "left_side_bearing": 15,
+      "bounds_font_units": [
+        15,
+        -126,
+        324,
+        179
+      ],
+      "tight_ink_bounds_svg_units": [
+        15,
+        593,
+        309,
+        305
+      ],
+      "crop_viewbox_svg_units": [
+        13,
+        591,
+        313,
+        309
+      ],
+      "layout_offset_from_pen_svg_units": [
+        13,
+        591
+      ],
+      "file": "glyphs/comma.svg"
+    },
+    {
+      "char": "-",
+      "name": "hyphen",
+      "unicode": "U+002D",
+      "glyph_name": "uni002D",
+      "symbol_id": "echelon-argent-oblique-hyphen",
+      "advance": 426,
+      "left_side_bearing": 24,
+      "bounds_font_units": [
+        24,
+        240,
+        404,
+        407
+      ],
+      "tight_ink_bounds_svg_units": [
+        24,
+        365,
+        380,
+        167
+      ],
+      "crop_viewbox_svg_units": [
+        22,
+        363,
+        384,
+        171
+      ],
+      "layout_offset_from_pen_svg_units": [
+        22,
+        363
+      ],
+      "file": "glyphs/hyphen.svg"
+    },
+    {
+      "char": ".",
+      "name": "period",
+      "unicode": "U+002E",
+      "glyph_name": "uni002E",
+      "symbol_id": "echelon-argent-oblique-period",
+      "advance": 307,
+      "left_side_bearing": 14,
+      "bounds_font_units": [
+        14,
+        0,
+        293,
+        185
+      ],
+      "tight_ink_bounds_svg_units": [
+        14,
+        587,
+        279,
+        185
+      ],
+      "crop_viewbox_svg_units": [
+        12,
+        585,
+        283,
+        189
+      ],
+      "layout_offset_from_pen_svg_units": [
+        12,
+        585
+      ],
+      "file": "glyphs/period.svg"
+    },
+    {
+      "char": ":",
+      "name": "colon",
+      "unicode": "U+003A",
+      "glyph_name": "uni003A",
+      "symbol_id": "echelon-argent-oblique-colon",
+      "advance": 465,
+      "left_side_bearing": 22,
+      "bounds_font_units": [
+        22,
+        0,
+        444,
+        509
+      ],
+      "tight_ink_bounds_svg_units": [
+        22,
+        263,
+        422,
+        509
+      ],
+      "crop_viewbox_svg_units": [
+        20,
+        261,
+        426,
+        513
+      ],
+      "layout_offset_from_pen_svg_units": [
+        20,
+        261
+      ],
+      "file": "glyphs/colon.svg"
+    },
+    {
+      "char": ";",
+      "name": "semicolon",
+      "unicode": "U+003B",
+      "glyph_name": "uni003B",
+      "symbol_id": "echelon-argent-oblique-semicolon",
+      "advance": 490,
+      "left_side_bearing": 21,
+      "bounds_font_units": [
+        21,
+        -124,
+        472,
+        509
+      ],
+      "tight_ink_bounds_svg_units": [
+        21,
+        263,
+        451,
+        633
+      ],
+      "crop_viewbox_svg_units": [
+        19,
+        261,
+        455,
+        637
+      ],
+      "layout_offset_from_pen_svg_units": [
+        19,
+        261
+      ],
+      "file": "glyphs/semicolon.svg"
+    },
+    {
+      "char": "?",
+      "name": "question",
+      "unicode": "U+003F",
+      "glyph_name": "uni003F",
+      "symbol_id": "echelon-argent-oblique-question",
+      "advance": 745,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        -5,
+        704,
+        727
+      ],
+      "tight_ink_bounds_svg_units": [
+        42,
+        45,
+        662,
+        732
+      ],
+      "crop_viewbox_svg_units": [
+        40,
+        43,
+        666,
+        736
+      ],
+      "layout_offset_from_pen_svg_units": [
+        40,
+        43
+      ],
+      "file": "glyphs/question.svg"
+    },
+    {
+      "char": "_",
+      "name": "underscore",
+      "unicode": "U+005F",
+      "glyph_name": "uni005F",
+      "symbol_id": "echelon-argent-oblique-underscore",
+      "advance": 650,
+      "left_side_bearing": 33,
+      "bounds_font_units": [
+        33,
+        -221,
+        619,
+        -48
+      ],
+      "tight_ink_bounds_svg_units": [
+        33,
+        820,
+        586,
+        173
+      ],
+      "crop_viewbox_svg_units": [
+        31,
+        818,
+        590,
+        177
+      ],
+      "layout_offset_from_pen_svg_units": [
+        31,
+        818
+      ],
+      "file": "glyphs/underscore.svg"
+    }
+  ]
+}

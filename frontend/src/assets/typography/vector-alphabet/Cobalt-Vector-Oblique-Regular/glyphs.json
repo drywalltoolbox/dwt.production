@@ -1,0 +1,1177 @@
+{
+  "family": "Cobalt Vector Oblique",
+  "style": "Regular",
+  "font_name": "Cobalt Vector Oblique Regular",
+  "source_file": "cobalt-vector-oblique-regular.ttf (user supplied; not copied)",
+  "units_per_em": 1000,
+  "font_ascent": 742,
+  "font_descent": -204,
+  "glyph_line_height": 946,
+  "glyph_count": 73,
+  "scope": "Available Basic Latin glyphs; source font cmap is authoritative.",
+  "glyphs": [
+    {
+      "char": " ",
+      "name": "space",
+      "unicode": "U+0020",
+      "glyph_name": "space",
+      "symbol_id": "cobalt-vector-oblique-space",
+      "advance": 280,
+      "left_side_bearing": 0,
+      "bounds_font_units": null,
+      "file": "glyphs/space.svg"
+    },
+    {
+      "char": "A",
+      "name": "upper-A",
+      "unicode": "U+0041",
+      "glyph_name": "uni0041",
+      "symbol_id": "cobalt-vector-oblique-upper-A",
+      "advance": 822,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        780,
+        700
+      ],
+      "file": "glyphs/upper-A.svg"
+    },
+    {
+      "char": "B",
+      "name": "upper-B",
+      "unicode": "U+0042",
+      "glyph_name": "uni0042",
+      "symbol_id": "cobalt-vector-oblique-upper-B",
+      "advance": 936,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        4,
+        894,
+        703
+      ],
+      "file": "glyphs/upper-B.svg"
+    },
+    {
+      "char": "C",
+      "name": "upper-C",
+      "unicode": "U+0043",
+      "glyph_name": "uni0043",
+      "symbol_id": "cobalt-vector-oblique-upper-C",
+      "advance": 926,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        5,
+        883,
+        699
+      ],
+      "file": "glyphs/upper-C.svg"
+    },
+    {
+      "char": "D",
+      "name": "upper-D",
+      "unicode": "U+0044",
+      "glyph_name": "uni0044",
+      "symbol_id": "cobalt-vector-oblique-upper-D",
+      "advance": 963,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        40,
+        0,
+        922,
+        700
+      ],
+      "file": "glyphs/upper-D.svg"
+    },
+    {
+      "char": "E",
+      "name": "upper-E",
+      "unicode": "U+0045",
+      "glyph_name": "uni0045",
+      "symbol_id": "cobalt-vector-oblique-upper-E",
+      "advance": 949,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        908,
+        704
+      ],
+      "file": "glyphs/upper-E.svg"
+    },
+    {
+      "char": "F",
+      "name": "upper-F",
+      "unicode": "U+0046",
+      "glyph_name": "uni0046",
+      "symbol_id": "cobalt-vector-oblique-upper-F",
+      "advance": 933,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        894,
+        703
+      ],
+      "file": "glyphs/upper-F.svg"
+    },
+    {
+      "char": "G",
+      "name": "upper-G",
+      "unicode": "U+0047",
+      "glyph_name": "uni0047",
+      "symbol_id": "cobalt-vector-oblique-upper-G",
+      "advance": 992,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        -1,
+        952,
+        699
+      ],
+      "file": "glyphs/upper-G.svg"
+    },
+    {
+      "char": "H",
+      "name": "upper-H",
+      "unicode": "U+0048",
+      "glyph_name": "uni0048",
+      "symbol_id": "cobalt-vector-oblique-upper-H",
+      "advance": 1044,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        1002,
+        702
+      ],
+      "file": "glyphs/upper-H.svg"
+    },
+    {
+      "char": "I",
+      "name": "upper-I",
+      "unicode": "U+0049",
+      "glyph_name": "uni0049",
+      "symbol_id": "cobalt-vector-oblique-upper-I",
+      "advance": 561,
+      "left_side_bearing": 28,
+      "bounds_font_units": [
+        28,
+        0,
+        533,
+        702
+      ],
+      "file": "glyphs/upper-I.svg"
+    },
+    {
+      "char": "J",
+      "name": "upper-J",
+      "unicode": "U+004A",
+      "glyph_name": "uni004A",
+      "symbol_id": "cobalt-vector-oblique-upper-J",
+      "advance": 936,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        -1,
+        895,
+        700
+      ],
+      "file": "glyphs/upper-J.svg"
+    },
+    {
+      "char": "K",
+      "name": "upper-K",
+      "unicode": "U+004B",
+      "glyph_name": "uni004B",
+      "symbol_id": "cobalt-vector-oblique-upper-K",
+      "advance": 1072,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        2,
+        1032,
+        708
+      ],
+      "file": "glyphs/upper-K.svg"
+    },
+    {
+      "char": "L",
+      "name": "upper-L",
+      "unicode": "U+004C",
+      "glyph_name": "uni004C",
+      "symbol_id": "cobalt-vector-oblique-upper-L",
+      "advance": 805,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        4,
+        765,
+        710
+      ],
+      "file": "glyphs/upper-L.svg"
+    },
+    {
+      "char": "M",
+      "name": "upper-M",
+      "unicode": "U+004D",
+      "glyph_name": "uni004D",
+      "symbol_id": "cobalt-vector-oblique-upper-M",
+      "advance": 1170,
+      "left_side_bearing": 64,
+      "bounds_font_units": [
+        64,
+        4,
+        1106,
+        707
+      ],
+      "file": "glyphs/upper-M.svg"
+    },
+    {
+      "char": "N",
+      "name": "upper-N",
+      "unicode": "U+004E",
+      "glyph_name": "uni004E",
+      "symbol_id": "cobalt-vector-oblique-upper-N",
+      "advance": 1024,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        5,
+        982,
+        706
+      ],
+      "file": "glyphs/upper-N.svg"
+    },
+    {
+      "char": "O",
+      "name": "upper-O",
+      "unicode": "U+004F",
+      "glyph_name": "uni004F",
+      "symbol_id": "cobalt-vector-oblique-upper-O",
+      "advance": 919,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        4,
+        883,
+        706
+      ],
+      "file": "glyphs/upper-O.svg"
+    },
+    {
+      "char": "P",
+      "name": "upper-P",
+      "unicode": "U+0050",
+      "glyph_name": "uni0050",
+      "symbol_id": "cobalt-vector-oblique-upper-P",
+      "advance": 943,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        5,
+        908,
+        705
+      ],
+      "file": "glyphs/upper-P.svg"
+    },
+    {
+      "char": "Q",
+      "name": "upper-Q",
+      "unicode": "U+0051",
+      "glyph_name": "uni0051",
+      "symbol_id": "cobalt-vector-oblique-upper-Q",
+      "advance": 911,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        -123,
+        871,
+        704
+      ],
+      "file": "glyphs/upper-Q.svg"
+    },
+    {
+      "char": "R",
+      "name": "upper-R",
+      "unicode": "U+0052",
+      "glyph_name": "uni0052",
+      "symbol_id": "cobalt-vector-oblique-upper-R",
+      "advance": 944,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        4,
+        908,
+        706
+      ],
+      "file": "glyphs/upper-R.svg"
+    },
+    {
+      "char": "S",
+      "name": "upper-S",
+      "unicode": "U+0053",
+      "glyph_name": "uni0053",
+      "symbol_id": "cobalt-vector-oblique-upper-S",
+      "advance": 1015,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        3,
+        974,
+        704
+      ],
+      "file": "glyphs/upper-S.svg"
+    },
+    {
+      "char": "T",
+      "name": "upper-T",
+      "unicode": "U+0054",
+      "glyph_name": "uni0054",
+      "symbol_id": "cobalt-vector-oblique-upper-T",
+      "advance": 845,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        5,
+        802,
+        706
+      ],
+      "file": "glyphs/upper-T.svg"
+    },
+    {
+      "char": "U",
+      "name": "upper-U",
+      "unicode": "U+0055",
+      "glyph_name": "uni0055",
+      "symbol_id": "cobalt-vector-oblique-upper-U",
+      "advance": 984,
+      "left_side_bearing": 40,
+      "bounds_font_units": [
+        40,
+        3,
+        941,
+        705
+      ],
+      "file": "glyphs/upper-U.svg"
+    },
+    {
+      "char": "V",
+      "name": "upper-V",
+      "unicode": "U+0056",
+      "glyph_name": "uni0056",
+      "symbol_id": "cobalt-vector-oblique-upper-V",
+      "advance": 855,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        813,
+        710
+      ],
+      "file": "glyphs/upper-V.svg"
+    },
+    {
+      "char": "W",
+      "name": "upper-W",
+      "unicode": "U+0057",
+      "glyph_name": "uni0057",
+      "symbol_id": "cobalt-vector-oblique-upper-W",
+      "advance": 1182,
+      "left_side_bearing": 64,
+      "bounds_font_units": [
+        64,
+        0,
+        1118,
+        707
+      ],
+      "file": "glyphs/upper-W.svg"
+    },
+    {
+      "char": "X",
+      "name": "upper-X",
+      "unicode": "U+0058",
+      "glyph_name": "uni0058",
+      "symbol_id": "cobalt-vector-oblique-upper-X",
+      "advance": 1035,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        1,
+        994,
+        707
+      ],
+      "file": "glyphs/upper-X.svg"
+    },
+    {
+      "char": "Y",
+      "name": "upper-Y",
+      "unicode": "U+0059",
+      "glyph_name": "uni0059",
+      "symbol_id": "cobalt-vector-oblique-upper-Y",
+      "advance": 835,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        793,
+        710
+      ],
+      "file": "glyphs/upper-Y.svg"
+    },
+    {
+      "char": "Z",
+      "name": "upper-Z",
+      "unicode": "U+005A",
+      "glyph_name": "uni005A",
+      "symbol_id": "cobalt-vector-oblique-upper-Z",
+      "advance": 976,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        936,
+        704
+      ],
+      "file": "glyphs/upper-Z.svg"
+    },
+    {
+      "char": "a",
+      "name": "lower-a",
+      "unicode": "U+0061",
+      "glyph_name": "uni0061",
+      "symbol_id": "cobalt-vector-oblique-lower-a",
+      "advance": 729,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        31,
+        2,
+        689,
+        538
+      ],
+      "file": "glyphs/lower-a.svg"
+    },
+    {
+      "char": "b",
+      "name": "lower-b",
+      "unicode": "U+0062",
+      "glyph_name": "uni0062",
+      "symbol_id": "cobalt-vector-oblique-lower-b",
+      "advance": 730,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        2,
+        690,
+        709
+      ],
+      "file": "glyphs/lower-b.svg"
+    },
+    {
+      "char": "c",
+      "name": "lower-c",
+      "unicode": "U+0063",
+      "glyph_name": "uni0063",
+      "symbol_id": "cobalt-vector-oblique-lower-c",
+      "advance": 702,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        5,
+        670,
+        538
+      ],
+      "file": "glyphs/lower-c.svg"
+    },
+    {
+      "char": "d",
+      "name": "lower-d",
+      "unicode": "U+0064",
+      "glyph_name": "uni0064",
+      "symbol_id": "cobalt-vector-oblique-lower-d",
+      "advance": 794,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        756,
+        712
+      ],
+      "file": "glyphs/lower-d.svg"
+    },
+    {
+      "char": "e",
+      "name": "lower-e",
+      "unicode": "U+0065",
+      "glyph_name": "uni0065",
+      "symbol_id": "cobalt-vector-oblique-lower-e",
+      "advance": 678,
+      "left_side_bearing": 45,
+      "bounds_font_units": [
+        45,
+        2,
+        647,
+        537
+      ],
+      "file": "glyphs/lower-e.svg"
+    },
+    {
+      "char": "f",
+      "name": "lower-f",
+      "unicode": "U+0066",
+      "glyph_name": "uni0066",
+      "symbol_id": "cobalt-vector-oblique-lower-f",
+      "advance": 701,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        0,
+        663,
+        718
+      ],
+      "file": "glyphs/lower-f.svg"
+    },
+    {
+      "char": "g",
+      "name": "lower-g",
+      "unicode": "U+0067",
+      "glyph_name": "uni0067",
+      "symbol_id": "cobalt-vector-oblique-lower-g",
+      "advance": 805,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        -174,
+        765,
+        537
+      ],
+      "file": "glyphs/lower-g.svg"
+    },
+    {
+      "char": "h",
+      "name": "lower-h",
+      "unicode": "U+0068",
+      "glyph_name": "uni0068",
+      "symbol_id": "cobalt-vector-oblique-lower-h",
+      "advance": 726,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        684,
+        709
+      ],
+      "file": "glyphs/lower-h.svg"
+    },
+    {
+      "char": "i",
+      "name": "lower-i",
+      "unicode": "U+0069",
+      "glyph_name": "uni0069",
+      "symbol_id": "cobalt-vector-oblique-lower-i",
+      "advance": 493,
+      "left_side_bearing": 28,
+      "bounds_font_units": [
+        28,
+        5,
+        466,
+        729
+      ],
+      "file": "glyphs/lower-i.svg"
+    },
+    {
+      "char": "j",
+      "name": "lower-j",
+      "unicode": "U+006A",
+      "glyph_name": "uni006A",
+      "symbol_id": "cobalt-vector-oblique-lower-j",
+      "advance": 672,
+      "left_side_bearing": 21,
+      "bounds_font_units": [
+        21,
+        -171,
+        644,
+        734
+      ],
+      "file": "glyphs/lower-j.svg"
+    },
+    {
+      "char": "k",
+      "name": "lower-k",
+      "unicode": "U+006B",
+      "glyph_name": "uni006B",
+      "symbol_id": "cobalt-vector-oblique-lower-k",
+      "advance": 870,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        0,
+        828,
+        708
+      ],
+      "file": "glyphs/lower-k.svg"
+    },
+    {
+      "char": "l",
+      "name": "lower-l",
+      "unicode": "U+006C",
+      "glyph_name": "uni006C",
+      "symbol_id": "cobalt-vector-oblique-lower-l",
+      "advance": 499,
+      "left_side_bearing": 28,
+      "bounds_font_units": [
+        28,
+        2,
+        472,
+        705
+      ],
+      "file": "glyphs/lower-l.svg"
+    },
+    {
+      "char": "m",
+      "name": "lower-m",
+      "unicode": "U+006D",
+      "glyph_name": "uni006D",
+      "symbol_id": "cobalt-vector-oblique-lower-m",
+      "advance": 1034,
+      "left_side_bearing": 64,
+      "bounds_font_units": [
+        64,
+        3,
+        970,
+        539
+      ],
+      "file": "glyphs/lower-m.svg"
+    },
+    {
+      "char": "n",
+      "name": "lower-n",
+      "unicode": "U+006E",
+      "glyph_name": "uni006E",
+      "symbol_id": "cobalt-vector-oblique-lower-n",
+      "advance": 718,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        2,
+        677,
+        538
+      ],
+      "file": "glyphs/lower-n.svg"
+    },
+    {
+      "char": "o",
+      "name": "lower-o",
+      "unicode": "U+006F",
+      "glyph_name": "uni006F",
+      "symbol_id": "cobalt-vector-oblique-lower-o",
+      "advance": 694,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        7,
+        652,
+        539
+      ],
+      "file": "glyphs/lower-o.svg"
+    },
+    {
+      "char": "p",
+      "name": "lower-p",
+      "unicode": "U+0070",
+      "glyph_name": "uni0070",
+      "symbol_id": "cobalt-vector-oblique-lower-p",
+      "advance": 791,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        -174,
+        748,
+        538
+      ],
+      "file": "glyphs/lower-p.svg"
+    },
+    {
+      "char": "q",
+      "name": "lower-q",
+      "unicode": "U+0071",
+      "glyph_name": "uni0071",
+      "symbol_id": "cobalt-vector-oblique-lower-q",
+      "advance": 736,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        24,
+        -179,
+        694,
+        540
+      ],
+      "file": "glyphs/lower-q.svg"
+    },
+    {
+      "char": "r",
+      "name": "lower-r",
+      "unicode": "U+0072",
+      "glyph_name": "uni0072",
+      "symbol_id": "cobalt-vector-oblique-lower-r",
+      "advance": 662,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        5,
+        621,
+        539
+      ],
+      "file": "glyphs/lower-r.svg"
+    },
+    {
+      "char": "s",
+      "name": "lower-s",
+      "unicode": "U+0073",
+      "glyph_name": "uni0073",
+      "symbol_id": "cobalt-vector-oblique-lower-s",
+      "advance": 719,
+      "left_side_bearing": 44,
+      "bounds_font_units": [
+        44,
+        7,
+        681,
+        538
+      ],
+      "file": "glyphs/lower-s.svg"
+    },
+    {
+      "char": "t",
+      "name": "lower-t",
+      "unicode": "U+0074",
+      "glyph_name": "uni0074",
+      "symbol_id": "cobalt-vector-oblique-lower-t",
+      "advance": 579,
+      "left_side_bearing": 43,
+      "bounds_font_units": [
+        43,
+        3,
+        543,
+        659
+      ],
+      "file": "glyphs/lower-t.svg"
+    },
+    {
+      "char": "u",
+      "name": "lower-u",
+      "unicode": "U+0075",
+      "glyph_name": "uni0075",
+      "symbol_id": "cobalt-vector-oblique-lower-u",
+      "advance": 723,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        682,
+        543
+      ],
+      "file": "glyphs/lower-u.svg"
+    },
+    {
+      "char": "v",
+      "name": "lower-v",
+      "unicode": "U+0076",
+      "glyph_name": "uni0076",
+      "symbol_id": "cobalt-vector-oblique-lower-v",
+      "advance": 679,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        637,
+        543
+      ],
+      "file": "glyphs/lower-v.svg"
+    },
+    {
+      "char": "w",
+      "name": "lower-w",
+      "unicode": "U+0077",
+      "glyph_name": "uni0077",
+      "symbol_id": "cobalt-vector-oblique-lower-w",
+      "advance": 1002,
+      "left_side_bearing": 64,
+      "bounds_font_units": [
+        64,
+        0,
+        937,
+        543
+      ],
+      "file": "glyphs/lower-w.svg"
+    },
+    {
+      "char": "x",
+      "name": "lower-x",
+      "unicode": "U+0078",
+      "glyph_name": "uni0078",
+      "symbol_id": "cobalt-vector-oblique-lower-x",
+      "advance": 867,
+      "left_side_bearing": 39,
+      "bounds_font_units": [
+        39,
+        0,
+        827,
+        543
+      ],
+      "file": "glyphs/lower-x.svg"
+    },
+    {
+      "char": "y",
+      "name": "lower-y",
+      "unicode": "U+0079",
+      "glyph_name": "uni0079",
+      "symbol_id": "cobalt-vector-oblique-lower-y",
+      "advance": 834,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        -168,
+        794,
+        543
+      ],
+      "file": "glyphs/lower-y.svg"
+    },
+    {
+      "char": "z",
+      "name": "lower-z",
+      "unicode": "U+007A",
+      "glyph_name": "uni007A",
+      "symbol_id": "cobalt-vector-oblique-lower-z",
+      "advance": 718,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        677,
+        541
+      ],
+      "file": "glyphs/lower-z.svg"
+    },
+    {
+      "char": "0",
+      "name": "digit-0",
+      "unicode": "U+0030",
+      "glyph_name": "uni0030",
+      "symbol_id": "cobalt-vector-oblique-digit-0",
+      "advance": 884,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        0,
+        852,
+        705
+      ],
+      "file": "glyphs/digit-0.svg"
+    },
+    {
+      "char": "1",
+      "name": "digit-1",
+      "unicode": "U+0031",
+      "glyph_name": "uni0031",
+      "symbol_id": "cobalt-vector-oblique-digit-1",
+      "advance": 522,
+      "left_side_bearing": 28,
+      "bounds_font_units": [
+        28,
+        2,
+        498,
+        705
+      ],
+      "file": "glyphs/digit-1.svg"
+    },
+    {
+      "char": "2",
+      "name": "digit-2",
+      "unicode": "U+0032",
+      "glyph_name": "uni0032",
+      "symbol_id": "cobalt-vector-oblique-digit-2",
+      "advance": 890,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        848,
+        708
+      ],
+      "file": "glyphs/digit-2.svg"
+    },
+    {
+      "char": "3",
+      "name": "digit-3",
+      "unicode": "U+0033",
+      "glyph_name": "uni0033",
+      "symbol_id": "cobalt-vector-oblique-digit-3",
+      "advance": 879,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        837,
+        706
+      ],
+      "file": "glyphs/digit-3.svg"
+    },
+    {
+      "char": "4",
+      "name": "digit-4",
+      "unicode": "U+0034",
+      "glyph_name": "uni0034",
+      "symbol_id": "cobalt-vector-oblique-digit-4",
+      "advance": 835,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        793,
+        707
+      ],
+      "file": "glyphs/digit-4.svg"
+    },
+    {
+      "char": "5",
+      "name": "digit-5",
+      "unicode": "U+0035",
+      "glyph_name": "uni0035",
+      "symbol_id": "cobalt-vector-oblique-digit-5",
+      "advance": 937,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        894,
+        707
+      ],
+      "file": "glyphs/digit-5.svg"
+    },
+    {
+      "char": "6",
+      "name": "digit-6",
+      "unicode": "U+0036",
+      "glyph_name": "uni0036",
+      "symbol_id": "cobalt-vector-oblique-digit-6",
+      "advance": 918,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        2,
+        876,
+        706
+      ],
+      "file": "glyphs/digit-6.svg"
+    },
+    {
+      "char": "7",
+      "name": "digit-7",
+      "unicode": "U+0037",
+      "glyph_name": "uni0037",
+      "symbol_id": "cobalt-vector-oblique-digit-7",
+      "advance": 854,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        0,
+        812,
+        705
+      ],
+      "file": "glyphs/digit-7.svg"
+    },
+    {
+      "char": "8",
+      "name": "digit-8",
+      "unicode": "U+0038",
+      "glyph_name": "uni0038",
+      "symbol_id": "cobalt-vector-oblique-digit-8",
+      "advance": 894,
+      "left_side_bearing": 40,
+      "bounds_font_units": [
+        40,
+        0,
+        857,
+        707
+      ],
+      "file": "glyphs/digit-8.svg"
+    },
+    {
+      "char": "9",
+      "name": "digit-9",
+      "unicode": "U+0039",
+      "glyph_name": "uni0039",
+      "symbol_id": "cobalt-vector-oblique-digit-9",
+      "advance": 898,
+      "left_side_bearing": 41,
+      "bounds_font_units": [
+        41,
+        1,
+        861,
+        707
+      ],
+      "file": "glyphs/digit-9.svg"
+    },
+    {
+      "char": "!",
+      "name": "exclamation",
+      "unicode": "U+0021",
+      "glyph_name": "uni0021",
+      "symbol_id": "cobalt-vector-oblique-exclamation",
+      "advance": 505,
+      "left_side_bearing": 22,
+      "bounds_font_units": [
+        22,
+        1,
+        485,
+        709
+      ],
+      "file": "glyphs/exclamation.svg"
+    },
+    {
+      "char": "\"",
+      "name": "quotedbl",
+      "unicode": "U+0022",
+      "glyph_name": "uni0022",
+      "symbol_id": "cobalt-vector-oblique-quotedbl",
+      "advance": 680,
+      "left_side_bearing": 22,
+      "bounds_font_units": [
+        22,
+        455,
+        657,
+        742
+      ],
+      "file": "glyphs/quotedbl.svg"
+    },
+    {
+      "char": "'",
+      "name": "quotesingle",
+      "unicode": "U+0027",
+      "glyph_name": "uni0027",
+      "symbol_id": "cobalt-vector-oblique-quotesingle",
+      "advance": 291,
+      "left_side_bearing": 13,
+      "bounds_font_units": [
+        13,
+        418,
+        277,
+        705
+      ],
+      "file": "glyphs/quotesingle.svg"
+    },
+    {
+      "char": ",",
+      "name": "comma",
+      "unicode": "U+002C",
+      "glyph_name": "uni002C",
+      "symbol_id": "cobalt-vector-oblique-comma",
+      "advance": 309,
+      "left_side_bearing": 13,
+      "bounds_font_units": [
+        13,
+        -134,
+        295,
+        190
+      ],
+      "file": "glyphs/comma.svg"
+    },
+    {
+      "char": "-",
+      "name": "hyphen",
+      "unicode": "U+002D",
+      "glyph_name": "uni002D",
+      "symbol_id": "cobalt-vector-oblique-hyphen",
+      "advance": 533,
+      "left_side_bearing": 30,
+      "bounds_font_units": [
+        30,
+        224,
+        502,
+        376
+      ],
+      "file": "glyphs/hyphen.svg"
+    },
+    {
+      "char": ".",
+      "name": "period",
+      "unicode": "U+002E",
+      "glyph_name": "uni002E",
+      "symbol_id": "cobalt-vector-oblique-period",
+      "advance": 275,
+      "left_side_bearing": 12,
+      "bounds_font_units": [
+        12,
+        -1,
+        264,
+        189
+      ],
+      "file": "glyphs/period.svg"
+    },
+    {
+      "char": ":",
+      "name": "colon",
+      "unicode": "U+003A",
+      "glyph_name": "uni003A",
+      "symbol_id": "cobalt-vector-oblique-colon",
+      "advance": 416,
+      "left_side_bearing": 19,
+      "bounds_font_units": [
+        19,
+        1,
+        398,
+        539
+      ],
+      "file": "glyphs/colon.svg"
+    },
+    {
+      "char": ";",
+      "name": "semicolon",
+      "unicode": "U+003B",
+      "glyph_name": "uni003B",
+      "symbol_id": "cobalt-vector-oblique-semicolon",
+      "advance": 447,
+      "left_side_bearing": 17,
+      "bounds_font_units": [
+        17,
+        -133,
+        429,
+        537
+      ],
+      "file": "glyphs/semicolon.svg"
+    },
+    {
+      "char": "?",
+      "name": "question",
+      "unicode": "U+003F",
+      "glyph_name": "uni003F",
+      "symbol_id": "cobalt-vector-oblique-question",
+      "advance": 723,
+      "left_side_bearing": 42,
+      "bounds_font_units": [
+        42,
+        1,
+        684,
+        717
+      ],
+      "file": "glyphs/question.svg"
+    },
+    {
+      "char": "_",
+      "name": "underscore",
+      "unicode": "U+005F",
+      "glyph_name": "uni005F",
+      "symbol_id": "cobalt-vector-oblique-underscore",
+      "advance": 791,
+      "left_side_bearing": 34,
+      "bounds_font_units": [
+        34,
+        -203,
+        758,
+        -49
+      ],
+      "file": "glyphs/underscore.svg"
+    }
+  ]
+}

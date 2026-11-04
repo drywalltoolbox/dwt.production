@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1800 850" role="img" aria-labelledby="title desc">
+<title id="title">Cobalt Vector Oblique specimen</title><desc id="desc">User-supplied Mixfont font converted to SVG outlines.</desc>
+<defs><linearGradient id="silver" x2="0" y2="1"><stop stop-color="#fff"/><stop offset=".27" stop-color="#b7bcc2"/><stop offset=".45" stop-color="#555b63"/><stop offset=".61" stop-color="#f8fafc"/><stop offset=".78" stop-color="#808891"/><stop offset="1" stop-color="#e8ebee"/></linearGradient><linearGradient id="blue" x2="0" y2="1"><stop stop-color="#68a0ff"/><stop offset=".3" stop-color="#2255ee"/><stop offset=".56" stop-color="#102d8d"/><stop offset=".72" stop-color="#4b7eff"/><stop offset="1" stop-color="#1743bd"/></linearGradient></defs><rect width="1800" height="850" fill="#17191d"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-C" x="70" y="115" width="250.02" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-O" x="320.02" y="115" width="248.13000000000002" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-B" x="568.15" y="115" width="252.72000000000003" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-A" x="820.87" y="115" width="221.94000000000003" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-L" x="1042.81" y="115" width="217.35000000000002" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-T" x="1260.1599999999999" y="115" width="228.15" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-space" x="1488.31" y="115" width="75.60000000000001" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-V" x="1563.9099999999999" y="115" width="230.85000000000002" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-E" x="1794.7599999999998" y="115" width="256.23" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-C" x="2050.99" y="115" width="250.02" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-T" x="2301.0099999999998" y="115" width="228.15" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-O" x="2529.16" y="115" width="248.13000000000002" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-R" x="2777.29" y="115" width="254.88000000000002" height="255.42000000000002" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-Y" x="70" y="295" width="267.2" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-o" x="337.2" y="295" width="222.08" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-u" x="559.28" y="295" width="231.36" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-r" x="790.64" y="295" width="211.84" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-space" x="1002.48" y="295" width="89.60000000000001" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-T" x="1092.08" y="295" width="270.4" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-o" x="1362.48" y="295" width="222.08" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-o" x="1584.56" y="295" width="222.08" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-l" x="1806.6399999999999" y="295" width="159.68" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-s" x="1966.32" y="295" width="230.08" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-D" x="70" y="475" width="308.16" height="302.72" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-e" x="378.16" y="475" width="216.96" height="302.72" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-s" x="595.12" y="475" width="230.08" height="302.72" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-e" x="825.2" y="475" width="216.96" height="302.72" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-r" x="1042.16" y="475" width="211.84" height="302.72" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-v" x="1254.0" y="475" width="217.28" height="302.72" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-e" x="1471.28" y="475" width="216.96" height="302.72" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-space" x="1688.24" y="475" width="89.60000000000001" height="302.72" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-O" x="1777.84" y="475" width="294.08" height="302.72" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-u" x="2071.92" y="475" width="231.36" height="302.72" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-r" x="2303.28" y="475" width="211.84" height="302.72" fill="url(#blue)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-E" x="70" y="655" width="303.68" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-x" x="373.68" y="655" width="277.44" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-p" x="651.12" y="655" width="253.12" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-e" x="904.24" y="655" width="216.96" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-r" x="1121.2" y="655" width="211.84" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-t" x="1333.04" y="655" width="185.28" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-space" x="1518.32" y="655" width="89.60000000000001" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-upper-S" x="1607.9199999999998" y="655" width="324.8" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-e" x="1932.7199999999998" y="655" width="216.96" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-r" x="2149.68" y="655" width="211.84" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-v" x="2361.52" y="655" width="217.28" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-i" x="2578.8" y="655" width="157.76" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-c" x="2736.5600000000004" y="655" width="224.64000000000001" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-lower-e" x="2961.2000000000003" y="655" width="216.96" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+<use href="alphabet.svg#cobalt-vector-oblique-period" x="3178.1600000000003" y="655" width="88.0" height="302.72" fill="url(#silver)" stroke="#101216" stroke-width="2" paint-order="stroke fill"/>
+</svg>
