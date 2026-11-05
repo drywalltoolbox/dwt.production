@@ -15,20 +15,34 @@ function wp_normalize_path( string $value ): string { return str_replace( '\\', 
 function wp_mkdir_p( string $path ): bool { return mkdir( $path, 0700, true ); }
 function wp_json_encode( $value, int $flags = 0 ) { return json_encode( $value, $flags ); }
 function absint( $value ): int { return abs( (int) $value ); }
+function is_wp_error( $value ): bool { return false; }
 function wc_get_product_id_by_sku( string $sku ): int { return (int) ( $GLOBALS['projection_sku_ids'][ strtoupper( $sku ) ] ?? 0 ); }
 function wc_get_product( int $id ) { return $GLOBALS['projection_products'][ $id ] ?? false; }
 function get_post_status( int $id ): string { return (string) ( $GLOBALS['projection_statuses'][ $id ] ?? '' ); }
 function get_post_meta( int $id, string $key, bool $single = false ) { return $GLOBALS['projection_meta'][ $id ][ $key ] ?? ''; }
+function rest_do_request( WP_REST_Request $request ): WP_REST_Response { return $GLOBALS['projection_api_responses'][ $request->get_route() ] ?? new WP_REST_Response( [], 500 ); }
 
 class WC_Product {
-	public function __construct( private string $sku, private bool $visible = true ) {}
+	public function __construct( private string $sku, private bool $visible = true, private int $id = 0 ) {}
 	public function get_sku(): string { return $this->sku; }
 	public function is_visible(): bool { return $this->visible; }
+	public function get_id(): int { return $this->id; }
 }
 
 class WC_Product_Variation extends WC_Product {
-	public function __construct( string $sku, private int $parent_id ) { parent::__construct( $sku ); }
+	public function __construct( string $sku, private int $parent_id ) { parent::__construct( $sku, true ); }
 	public function get_parent_id(): int { return $this->parent_id; }
+}
+
+class WP_REST_Request {
+	public function __construct( private string $method, private string $route ) {}
+	public function get_route(): string { return $this->route; }
+}
+
+class WP_REST_Response {
+	public function __construct( private mixed $data, private int $status = 200 ) {}
+	public function get_data(): mixed { return $this->data; }
+	public function get_status(): int { return $this->status; }
 }
 
 final class DTB_ProductMeta {
@@ -53,6 +67,8 @@ $expected_release_id = new ReflectionMethod( 'DTB_ProductRelationshipProjectionS
 $expected_release_id->setAccessible( true );
 $compatible_sku_set = new ReflectionMethod( 'DTB_ProductRelationshipProjectionService', 'compatible_tool_sku_set' );
 $compatible_sku_set->setAccessible( true );
+$verify_public_routes = new ReflectionMethod( 'DTB_ProductRelationshipProjectionService', 'verify_public_routes' );
+$verify_public_routes->setAccessible( true );
 $validate_runtime_records = new ReflectionMethod( 'DTB_ProductRelationshipProjectionService', 'validate_runtime_records' );
 $validate_runtime_records->setAccessible( true );
 $get_tool_skus = new ReflectionMethod( 'DTB_CompatiblePartsController', 'get_tool_skus_for_product' );
@@ -117,6 +133,27 @@ $route_skus = $compatible_sku_set->invoke( null, [
 	[ 'sku' => 'OTHER-TOOL', 'compatible_variations' => [ [ 'sku' => '' ], null ] ],
 ] );
 $check( [ 'TOOL-PARENT' => true, '03TT' => true, '07TT' => true, 'OTHER-TOOL' => true ] === $route_skus, 'Public compatibility read-back must preserve exact variation SKUs grouped under parent DTOs.' );
+$GLOBALS['projection_products'] = [ 30 => new WC_Product( 'PART-VISIBLE', true, 30 ), 31 => new WC_Product( 'PART-HIDDEN', false, 31 ) ];
+$GLOBALS['projection_api_responses'] = [
+	'/dtb/v1/parts/PART-VISIBLE/compatible-tools' => new WP_REST_Response( [ 'products' => [ [ 'sku' => 'TOOL-1' ] ] ] ),
+	'/dtb/v1/parts/PART-HIDDEN/compatible-tools' => new WP_REST_Response( [ 'products' => [ [ 'sku' => 'TOOL-1' ] ] ] ),
+	'/dtb/v1/products/TOOL-1/compatible-parts' => new WP_REST_Response( [ 'products' => [ [ 'sku' => 'PART-VISIBLE' ] ] ] ),
+];
+$visibility_readback = $verify_public_routes->invoke( null, [
+	[ 'sku' => 'PART-VISIBLE', 'before' => [], 'after' => [ 'Meta: _dtb_compatible_tool_skus' => [ 'TOOL-1' ] ] ],
+	[ 'sku' => 'PART-HIDDEN', 'before' => [], 'after' => [ 'Meta: _dtb_compatible_tool_skus' => [ 'TOOL-1' ] ] ],
+], [ 'PART-VISIBLE' => [ 'id' => 30 ], 'PART-HIDDEN' => [ 'id' => 31 ] ] );
+$check( [ 'PART-VISIBLE', 'PART-HIDDEN' ] === $visibility_readback['verified_part_skus'] && [ 'TOOL-1' ] === $visibility_readback['verified_tool_skus'], 'Public-route read-back must verify reverse routes for every owner while checking forward routes only for visible parts.' );
+$GLOBALS['projection_api_responses']['/dtb/v1/products/TOOL-1/compatible-parts'] = new WP_REST_Response( [ 'products' => [ [ 'sku' => 'PART-VISIBLE' ], [ 'sku' => 'PART-HIDDEN' ] ] ] );
+$hidden_part_leak_rejected = false;
+try {
+	$verify_public_routes->invoke( null, [
+		[ 'sku' => 'PART-HIDDEN', 'before' => [], 'after' => [ 'Meta: _dtb_compatible_tool_skus' => [ 'TOOL-1' ] ] ],
+	], [ 'PART-HIDDEN' => [ 'id' => 31 ] ] );
+} catch ( RuntimeException $error ) {
+	$hidden_part_leak_rejected = str_contains( $error->getMessage(), 'exposed hidden part' );
+}
+$check( $hidden_part_leak_rejected, 'Public-route read-back must reject exposure of a hidden compatibility owner.' );
 $variation_request_skus = $append_parent_sku->invoke( null, [ '8034TT' ], 'tt-flat-box-handle', true );
 $check( [ '8034TT', 'tt-flat-box-handle' ] === $variation_request_skus, 'Variation family expansion must preserve the stored family SKU spelling.' );
 $check( [ '8034TT' ] === $append_parent_sku->invoke( null, [ '8034TT' ], 'TT-FLAT-BOX-HANDLE', false ), 'Unpublished, invisible, or part parents must not provide inherited family fitment.' );

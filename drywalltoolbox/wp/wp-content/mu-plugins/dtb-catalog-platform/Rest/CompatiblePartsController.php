@@ -227,33 +227,29 @@ final class DTB_CompatiblePartsController {
 				404
 			);
 		}
+		$part_product = wc_get_product( $part_post );
+		$part_owner_id = $part_product instanceof WC_Product_Variation ? $part_product->get_parent_id() : $part_post;
+		if ( ! $part_product || (string) $part_product->get_sku() !== $part_sku || 'publish' !== get_post_status( $part_post ) || $part_owner_id <= 0 || ! self::is_part_product( $part_owner_id ) || 'publish' !== get_post_status( $part_owner_id ) ) {
+			return new WP_REST_Response(
+				dtb_error_envelope( 'not_found', "Part '{$part_sku}' not found.", 404 ),
+				404
+			);
+		}
 
 		$tool_skus = array_filter( array_unique( array_merge(
 			self::get_meta_sku_values( $part_post, DTB_ProductMeta::COMPATIBLE_TOOL_SKUS ),
 			self::get_meta_sku_values( $part_post, DTB_ProductMeta::REPLACEMENT_PART_FOR )
 		) ) );
+		if ( count( $tool_skus ) > 100 ) {
+			return new WP_REST_Response(
+				dtb_error_envelope( 'relationship_set_too_large', 'This part has too many related SKUs to return safely.', 422 ),
+				422
+			);
+		}
 
-		$dtos = [];
-		foreach ( $tool_skus as $tool_sku ) {
-			$tool_id = self::get_product_id_by_sku( $tool_sku );
-			if ( $tool_id ) {
-				$tool = wc_get_product( $tool_id );
-				if ( ! $tool || (string) $tool->get_sku() !== $tool_sku ) {
-					continue;
-				}
-				$is_variation = $tool instanceof WC_Product_Variation;
-				$dto = self::normalize_single( $is_variation ? $tool->get_parent_id() : $tool_id );
-				if ( $dto ) {
-					$key = (string) ( $dto['sku'] ?? $tool_id );
-					if ( ! isset( $dtos[ $key ] ) ) {
-						$dtos[ $key ] = $dto;
-					}
-					if ( $is_variation ) {
-						$dtos[ $key ]['compatible_variations'] = $dtos[ $key ]['compatible_variations'] ?? [];
-						$dtos[ $key ]['compatible_variations'][] = [ 'sku' => (string) $tool->get_sku(), 'attributes' => $tool->get_variation_attributes() ];
-					}
-				}
-			}
+		$dtos = self::normalize_compatible_tool_skus( $tool_skus );
+		if ( $dtos instanceof WP_REST_Response ) {
+			return $dtos;
 		}
 
 		return new WP_REST_Response( [
@@ -512,30 +508,94 @@ final class DTB_CompatiblePartsController {
 	}
 
 	/**
-	 * Normalize a single product ID into a DTB product DTO using the WC REST proxy.
+	 * Resolve exact published tool SKUs and normalize their parent product DTOs.
+	 * Variation targets stay exact in compatible_variations while multiple exact
+	 * children share one visible parent product DTO.
 	 *
-	 * @param  int  $product_id
-	 * @return array|null
+	 * @param  string[] $tool_skus
+	 * @return array[]|WP_REST_Response
 	 */
-	private static function normalize_single( int $product_id ): ?array {
-		if ( $product_id <= 0 ) {
-			return null;
+	private static function normalize_compatible_tool_skus( array $tool_skus ): array|WP_REST_Response {
+		$parent_ids                = [];
+		$variations_by_parent_id   = [];
+
+		foreach ( $tool_skus as $tool_sku ) {
+			$tool_id = self::get_product_id_by_sku( $tool_sku );
+			$tool    = $tool_id ? wc_get_product( $tool_id ) : false;
+			if ( ! $tool || (string) $tool->get_sku() !== $tool_sku || 'publish' !== get_post_status( $tool_id ) ) {
+				continue;
+			}
+
+			if ( $tool instanceof WC_Product_Variation ) {
+				$parent_id = absint( $tool->get_parent_id() );
+				$parent    = $parent_id > 0 ? wc_get_product( $parent_id ) : false;
+				if ( ! $parent || 'publish' !== get_post_status( $parent_id ) || ! $parent->is_visible() || self::is_part_product( $parent_id ) ) {
+					continue;
+				}
+
+				$parent_ids[ $parent_id ] = true;
+				$variations_by_parent_id[ $parent_id ][] = [
+					'sku'        => (string) $tool->get_sku(),
+					'attributes' => $tool->get_variation_attributes(),
+				];
+				continue;
+			}
+
+			if ( ! $tool->is_visible() || self::is_part_product( $tool_id ) ) {
+				continue;
+			}
+			$parent_ids[ $tool_id ] = true;
 		}
 
-		$response = dtb_cached_wc_get( 'wc/v3/products/' . $product_id, [
-			'_fields' => DTB_PRODUCT_DETAIL_FIELDS,
-		] );
-
-		if ( $response->get_status() !== 200 ) {
-			return null;
+		if ( empty( $parent_ids ) ) {
+			return [];
 		}
 
-		$wc = $response->get_data();
-		if ( ! is_array( $wc ) || empty( $wc ) ) {
-			return null;
+		$response = dtb_catalog_wc_get_products_by_ids_response( array_map( 'absint', array_keys( $parent_ids ) ) );
+		if ( ! $response instanceof WP_REST_Response || 200 !== $response->get_status() ) {
+			return new WP_REST_Response(
+				dtb_error_envelope( 'catalog_read_failed', 'Compatible tools could not be resolved from the product catalog.', 503 ),
+				503
+			);
+		}
+		$products = $response->get_data();
+		if ( ! is_array( $products ) ) {
+			return new WP_REST_Response(
+				dtb_error_envelope( 'catalog_read_invalid', 'The product catalog returned an invalid compatible-tool response.', 502 ),
+				502
+			);
 		}
 
-		return dtb_catalog_normalize_product( $wc );
+		$products_by_id = [];
+		foreach ( $products as $wc_product ) {
+			if ( ! is_array( $wc_product ) || 'publish' !== ( $wc_product['status'] ?? '' ) ) {
+				continue;
+			}
+			$product_id = absint( $wc_product['id'] ?? 0 );
+			if ( isset( $parent_ids[ $product_id ] ) ) {
+				$products_by_id[ $product_id ] = $wc_product;
+			}
+		}
+		if ( count( $products_by_id ) !== count( $parent_ids ) ) {
+			return new WP_REST_Response(
+				dtb_error_envelope( 'catalog_read_incomplete', 'The product catalog returned an incomplete compatible-tool response.', 503 ),
+				503
+			);
+		}
+
+		$dtos = [];
+		foreach ( array_keys( $parent_ids ) as $parent_id ) {
+			if ( empty( $products_by_id[ $parent_id ] ) ) {
+				continue;
+			}
+			$dto = dtb_catalog_normalize_product( $products_by_id[ $parent_id ] );
+			if ( ! empty( $variations_by_parent_id[ $parent_id ] ) ) {
+				$dto['compatible_variations'] = $variations_by_parent_id[ $parent_id ];
+			}
+			$dtos[] = $dto;
+		}
+
+		return $dtos;
 	}
 
 	/**

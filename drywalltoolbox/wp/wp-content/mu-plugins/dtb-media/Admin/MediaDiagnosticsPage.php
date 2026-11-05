@@ -99,7 +99,10 @@ function dtb_image_sync_route_schematic_pathway( WP_REST_Request $request ) {
 		return new WP_Error( 'dtb_schematic_sync_unavailable', 'The Schematics synchronization service is unavailable.' );
 	}
 	$uploads       = wp_upload_dir();
-	$schematic_dir = ! empty( $uploads['basedir'] ) ? trailingslashit( (string) $uploads['basedir'] ) . '2026/schematics' : '';
+	if ( is_wp_error( $uploads ) ) {
+		return new WP_Error( 'dtb_schematic_sync_uploads_unavailable', 'The WordPress uploads directory is unavailable: ' . $uploads->get_error_message() );
+	}
+	$schematic_dir = is_array( $uploads ) && ! empty( $uploads['basedir'] ) ? trailingslashit( (string) $uploads['basedir'] ) . '2026/schematics' : '';
 	if ( '' === $schematic_dir || ! is_dir( $schematic_dir ) || ! dtb_schematics_directory_has_image_files( $schematic_dir ) ) {
 		return new WP_Error( 'dtb_schematic_sync_source_missing', 'No schematic images were found in uploads/2026/schematics.' );
 	}

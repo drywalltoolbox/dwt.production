@@ -227,6 +227,18 @@ python .\scripts\catalog\remove_category_thumbnail_backgrounds.py --in-place
 
 ## Specialized operational tools
 
+### Catalog-wide part-to-tool mapping
+
+Generate the current relationship matrix with:
+
+```powershell
+python .\scripts\catalog\export_catalog_where_used_matrix.py
+```
+
+The read-only exporter writes `products/dev/catalog-enrichment/compatibility/catalog-where-parts-are-used.csv`. It includes every canonical catalog part SKU as a row, exact tool/product SKUs as columns, and the current `_dtb_compatible_tool_skus` edges as `1`. A blank cell means that relationship is not recorded in the canonical catalog; it does not mean the products are incompatible. The status and evidence-source columns keep unpopulated owners visible and identify source coverage.
+
+TapeTech rows join the supplied manufacturer matrix by exact part SKU. The exporter fails if an exact TapeTech part row's catalog relationships disagree with the matrix for target SKUs present in the catalog. The workbook and CSV reference copies were checked for identical cell data. In the current catalog snapshot, 173 TapeTech part SKUs join exactly and 432 source edges resolve to exact catalog tool SKUs. TapeTech-marked tool SKUs absent from the catalog are not added as products or relationships. This export is a derived review map, not an alternate canonical source and not a production projection artifact.
+
 Keep specialized tools separate when they have distinct authorities or failure modes, including:
 
 - schematic compatibility proposal/reconciliation;

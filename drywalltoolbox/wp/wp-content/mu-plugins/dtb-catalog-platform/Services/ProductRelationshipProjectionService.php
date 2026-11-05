@@ -151,12 +151,20 @@ final class DTB_ProductRelationshipProjectionService {
 		$validated = self::validate_artifact_rows( $rows );
 		$identity_map = self::resolve_skus( $validated['all_skus'] );
 		$runtime_records = self::validate_runtime_records( $validated['rows'], $identity_map );
+		$prior_batch = [];
+		$prior_batch_status = '';
 		if ( $apply ) {
 			try {
 				$existing_release = self::read_release_status( strtolower( (string) $artifact['release_id'] ) );
 				$prior_batch = $existing_release['batches'][ (string) absint( $artifact['batch_index'] ) ] ?? [];
 				if ( in_array( $prior_batch['status'] ?? '', [ 'applying', 'failed', 'rollback_failed' ], true ) ) {
-					throw new RuntimeException( 'This release batch has an applying, failed, or partial attempt. Reconcile its private rollback report before retrying.' );
+					if ( 'rollback_failed' === $prior_batch['status'] ) {
+						throw new RuntimeException( 'This release batch has an incomplete rollback. Reconcile its private rollback report before retrying.' );
+					}
+					if ( ! hash_equals( $actual_sha256, (string) ( $prior_batch['artifact_sha256'] ?? '' ) ) || ( $prior_batch['part_skus'] ?? null ) !== array_column( $rows, 'sku' ) ) {
+						throw new RuntimeException( 'The prior attempt does not match this exact release batch.' );
+					}
+					$prior_batch_status = (string) $prior_batch['status'];
 				}
 			} catch ( RuntimeException $error ) {
 				if ( 'No private reconciliation report exists for that release ID.' !== $error->getMessage() ) {
@@ -167,6 +175,9 @@ final class DTB_ProductRelationshipProjectionService {
 		$products = $runtime_records['parts'];
 		$plan = self::build_plan( $validated['rows'], $products );
 		$conflicts = array_values( array_filter( $plan, static fn( array $row ): bool => 'conflict' === $row['status'] ) );
+		if ( '' !== $prior_batch_status ) {
+			return self::reconcile_applied_attempt( $artifact, $actual_sha256, $validated, $runtime_records, $products, $prior_batch, $plan, $conflicts );
+		}
 		if ( $conflicts ) {
 			return [ 'mode' => $apply ? 'apply' : 'dry-run', 'artifact_sha256' => $actual_sha256, 'applied' => false, 'rows' => $plan, 'error' => 'Runtime state conflicts with the artifact; no writes were made.' ];
 		}
@@ -271,20 +282,84 @@ final class DTB_ProductRelationshipProjectionService {
 		return [ 'mode' => 'apply', 'artifact_sha256' => $actual_sha256, 'applied' => true, 'report_path' => $report_path, 'report_sha256' => $report_sha256, 'release' => $release, 'rows' => $report['rows'] ];
 	}
 
+	/**
+	 * Reconcile an interrupted apply only when the exact approved after-state is
+	 * already present for every owner and the private rollback report is intact.
+	 * This path verifies state and records recovery; it never writes product data.
+	 *
+	 * @return array
+	 */
+	private static function reconcile_applied_attempt( array $artifact, string $artifact_sha256, array $validated, array $runtime_records, array $products, array $prior_batch, array $plan, array $conflicts ): array {
+		if ( $conflicts || count( $plan ) !== count( $validated['rows'] ) || array_filter( $plan, static fn( array $row ): bool => 'already_applied' !== $row['status'] ) ) {
+			throw new RuntimeException( 'The interrupted batch is not wholly at its approved after-state; no reconciliation or product writes were made.' );
+		}
+
+		$report_path = (string) ( $prior_batch['report_path'] ?? '' );
+		$report_sha256 = strtolower( (string) ( $prior_batch['current_report_sha256'] ?? '' ) );
+		$report = self::read_private_report( $report_path, $report_sha256, 'dtb_compatibility_projection_rollback' );
+		$release_id = strtolower( (string) ( $artifact['release_id'] ?? '' ) );
+		$batch_index = absint( $artifact['batch_index'] ?? 0 );
+		$report_rows = $report['rows'] ?? null;
+		$expected_skus = array_column( $validated['rows'], 'sku' );
+		$report_skus = is_array( $report_rows ) ? array_map( static fn( $row ): string => is_array( $row ) ? (string) ( $row['sku'] ?? '' ) : '', $report_rows ) : [];
+		if ( ! is_array( $report_rows ) || ( $report['release_id'] ?? '' ) !== $release_id || (int) ( $report['batch_index'] ?? 0 ) !== $batch_index || (int) ( $report['batch_count'] ?? 0 ) !== (int) $artifact['batch_count'] || ! hash_equals( $artifact_sha256, (string) ( $report['artifact_sha256'] ?? '' ) ) || ! hash_equals( (string) $artifact['batch_inventory_sha256'], (string) ( $report['batch_inventory_sha256'] ?? '' ) ) || ! hash_equals( self::canonical_sha256( $artifact['batch_inventory'] ), self::canonical_sha256( $report['batch_inventory'] ?? null ) ) || $expected_skus !== $report_skus || count( $report_rows ) !== count( $validated['rows'] ) ) {
+			throw new RuntimeException( 'The private rollback report does not match the exact interrupted release batch.' );
+		}
+		foreach ( $validated['rows'] as $index => $row ) {
+			$report_row = $report_rows[ $index ];
+			if ( ! is_array( $report_row ) || ! in_array( $report_row['status'] ?? '', [ 'applying', 'applied' ], true ) || (int) ( $report_row['product_id'] ?? 0 ) !== (int) $products[ $row['sku'] ]['id'] || ! self::same_relationship_map( (array) ( $report_row['before'] ?? [] ), $row['before'] ) || ! self::same_relationship_map( (array) ( $report_row['after'] ?? [] ), $row['after'] ) ) {
+				throw new RuntimeException( "The private rollback report does not match approved owner {$row['sku']}." );
+			}
+		}
+
+		$lock_ids = array_values( array_unique( array_merge( array_column( $runtime_records['parts'], 'id' ), array_values( $runtime_records['targets'] ) ) ) );
+		sort( $lock_ids, SORT_NUMERIC );
+		$locks = [];
+		try {
+			foreach ( $lock_ids as $lock_id ) {
+				$lock = dtb_product_mapping_acquire_lock( (int) $lock_id );
+				if ( is_wp_error( $lock ) ) {
+					throw new RuntimeException( $lock->get_error_message() );
+				}
+				$locks[] = $lock;
+			}
+
+			$release = self::read_release_status( $release_id );
+			$current_batch = $release['batches'][ (string) $batch_index ] ?? [];
+			if ( ! in_array( $current_batch['status'] ?? '', [ 'applying', 'failed' ], true ) || ! hash_equals( $artifact_sha256, (string) ( $current_batch['artifact_sha256'] ?? '' ) ) || ! hash_equals( $report_sha256, (string) ( $current_batch['current_report_sha256'] ?? '' ) ) ) {
+				throw new RuntimeException( 'The interrupted batch changed during reconciliation; no product data was written.' );
+			}
+
+			$fresh_map = self::resolve_skus( $validated['all_skus'] );
+			$fresh_records = self::validate_runtime_records( $validated['rows'], $fresh_map );
+			if ( $fresh_records !== $runtime_records ) {
+				throw new RuntimeException( 'Runtime SKU identity changed during reconciliation; no product data was written.' );
+			}
+			foreach ( $validated['rows'] as $row ) {
+				$product = wc_get_product( (int) $products[ $row['sku'] ]['id'] );
+				if ( ! $product || ! self::same_relationship_subset( self::read_product_relationships( $product ), $row['after'] ) ) {
+					throw new RuntimeException( "Approved after-state changed during reconciliation for {$row['sku']}; no product data was written." );
+				}
+			}
+
+			$readback = self::verify_public_routes( $validated['rows'], $products );
+			$report['partial_apply'] = false;
+			$report['public_api_readback'] = $readback;
+			$report['reconciliation'] = [ 'status' => 'applied_without_product_writes', 'at' => gmdate( 'c' ) ];
+			$report_path = self::write_private_report( $report, $report_path );
+			$report_sha256 = hash_file( 'sha256', $report_path );
+			$release_status = self::record_release_batch( $artifact, $artifact_sha256, 'applied', $expected_skus, $report_path, $report_sha256, $readback );
+			return [ 'mode' => 'apply', 'artifact_sha256' => $artifact_sha256, 'applied' => false, 'already_applied' => true, 'reconciled' => true, 'rows' => $plan, 'public_api_readback' => $readback, 'release' => $release_status ];
+		} finally {
+			foreach ( array_reverse( $locks ) as $lock ) {
+				dtb_product_mapping_release_lock( $lock );
+			}
+		}
+	}
+
 	public static function rollback_report( string $path, string $expected_sha256 ): array {
-		$private_dir = realpath( self::private_report_dir() );
-		$real_path = realpath( $path );
-		if ( ! $private_dir || ! $real_path || dirname( $real_path ) !== $private_dir ) {
-			throw new RuntimeException( 'Rollback report must resolve to a file in the private compatibility report directory.' );
-		}
-		$path = $real_path;
-		if ( ! is_file( $path ) || ! is_readable( $path ) || ! hash_equals( strtolower( $expected_sha256 ), strtolower( (string) hash_file( 'sha256', $path ) ) ) ) {
-			throw new RuntimeException( 'Rollback report is unavailable or its SHA-256 does not match.' );
-		}
-		$report = json_decode( (string) file_get_contents( $path ), true );
-		if ( ! is_array( $report ) || 'dtb_compatibility_projection_rollback' !== ( $report['report_type'] ?? '' ) || ! is_array( $report['rows'] ?? null ) || count( $report['rows'] ) > self::MAX_PARTS ) {
-			throw new RuntimeException( 'Rollback report schema is invalid.' );
-		}
+		$report = self::read_private_report( $path, $expected_sha256, 'dtb_compatibility_projection_rollback' );
+		$path = realpath( $path );
 		$sku_list = array_map( static fn( array $row ): string => (string) ( $row['sku'] ?? '' ), $report['rows'] );
 		$identity_map = self::resolve_skus( $sku_list );
 		$plan = [];
@@ -678,6 +753,14 @@ final class DTB_ProductRelationshipProjectionService {
 		return true;
 	}
 
+	private static function same_relationship_map( array $actual, array $expected ): bool {
+		$actual_fields = array_keys( $actual );
+		$expected_fields = array_keys( $expected );
+		sort( $actual_fields, SORT_STRING );
+		sort( $expected_fields, SORT_STRING );
+		return $actual_fields === $expected_fields && self::same_relationship_subset( $actual, $expected ) && self::same_relationship_subset( $expected, $actual );
+	}
+
 	private static function read_raw_relationships( WC_Product $product ): array {
 		$out = [];
 		foreach ( self::FIELDS as $field => $meta_key ) {
@@ -781,6 +864,22 @@ final class DTB_ProductRelationshipProjectionService {
 			throw new RuntimeException( 'Unable to restrict permissions on the rollback report.' );
 		}
 		return $path;
+	}
+
+	private static function read_private_report( string $path, string $expected_sha256, string $expected_type ): array {
+		$private_dir = realpath( self::private_report_dir() );
+		$real_path = realpath( $path );
+		if ( ! $private_dir || ! $real_path || dirname( $real_path ) !== $private_dir ) {
+			throw new RuntimeException( 'Reconciliation report must resolve to a file in the private compatibility report directory.' );
+		}
+		if ( ! preg_match( '/^[a-f0-9]{64}$/i', $expected_sha256 ) || ! is_file( $real_path ) || ! is_readable( $real_path ) || ! hash_equals( strtolower( $expected_sha256 ), strtolower( (string) hash_file( 'sha256', $real_path ) ) ) ) {
+			throw new RuntimeException( 'Reconciliation report is unavailable or its SHA-256 does not match.' );
+		}
+		$report = json_decode( (string) file_get_contents( $real_path ), true );
+		if ( ! is_array( $report ) || $expected_type !== ( $report['report_type'] ?? '' ) || ! is_array( $report['rows'] ?? null ) || count( $report['rows'] ) > self::MAX_PARTS ) {
+			throw new RuntimeException( 'Reconciliation report schema is invalid.' );
+		}
+		return $report;
 	}
 
 	private static function private_report_dir(): string {
@@ -966,6 +1065,18 @@ final class DTB_ProductRelationshipProjectionService {
 		$verified_parts = [];
 		$verified_tools = [];
 		$targets = [];
+		$public_parts = [];
+		foreach ( $rows as $row ) {
+			$part_id = absint( $products[ $row['sku'] ]['id'] ?? 0 );
+			$part = $part_id > 0 ? wc_get_product( $part_id ) : false;
+			if ( $part instanceof WC_Product_Variation ) {
+				$part = wc_get_product( absint( $part->get_parent_id() ) );
+			}
+			if ( ! $part ) {
+				throw new RuntimeException( "Could not determine public visibility for part {$row['sku']}." );
+			}
+			$public_parts[ $row['sku'] ] = (bool) $part->is_visible();
+		}
 		foreach ( $rows as $row ) {
 			$expected_tools = [];
 			foreach ( array_merge( $row['before'], $row['after'] ) as $values ) {
@@ -1034,7 +1145,10 @@ final class DTB_ProductRelationshipProjectionService {
 						$after_targets[ strtoupper( $sku ) ] = true;
 					}
 				}
-				if ( isset( $after_targets[ strtoupper( $target_sku ) ] ) && empty( $actual_parts[ $row['sku'] ] ) ) {
+				if ( empty( $public_parts[ $row['sku'] ] ) && isset( $actual_parts[ $row['sku'] ] ) ) {
+					throw new RuntimeException( "Public compatible-parts route exposed hidden part {$row['sku']} for tool SKU {$target_sku}." );
+				}
+				if ( ! empty( $public_parts[ $row['sku'] ] ) && isset( $after_targets[ strtoupper( $target_sku ) ] ) && empty( $actual_parts[ $row['sku'] ] ) ) {
 					throw new RuntimeException( "Public compatible-parts route omitted {$row['sku']} for tool SKU {$target_sku}." );
 				}
 				if ( isset( $part_targets[ strtoupper( $target_sku ) ] ) && ! isset( $after_targets[ strtoupper( $target_sku ) ] ) && isset( $actual_parts[ $row['sku'] ] ) ) {

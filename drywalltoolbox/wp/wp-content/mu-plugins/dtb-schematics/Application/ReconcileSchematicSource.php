@@ -1023,6 +1023,10 @@ function dtb_schematic_reconcile_refresh_linked_products( DTB_Schematic_Record_E
  */
 function dtb_schematic_reconcile_create_attachment_from_uploads( string $relative_file, string $canonical_id, int $page ) {
 	$uploads  = wp_upload_dir();
+	if ( is_wp_error( $uploads ) || ! is_array( $uploads ) || empty( $uploads['basedir'] ) ) {
+		$message = is_wp_error( $uploads ) ? $uploads->get_error_message() : 'The WordPress uploads directory is unavailable.';
+		return new WP_Error( 'dtb_schematic_uploads_unavailable', $message );
+	}
 	$relative_file = trim( str_replace( '\\', '/', $relative_file ), '/' );
 	if ( '' === $relative_file || false !== strpos( $relative_file, '..' ) || ! preg_match( '#^[A-Za-z0-9._/-]+$#', $relative_file ) ) {
 		return new WP_Error( 'dtb_schematic_uploads_path_invalid', 'The attachment source must be a normalized relative uploads path.' );

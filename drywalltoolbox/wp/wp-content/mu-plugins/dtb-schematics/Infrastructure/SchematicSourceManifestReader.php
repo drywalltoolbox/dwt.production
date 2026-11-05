@@ -102,7 +102,7 @@ function dtb_schematics_default_source_package_dir(): string {
 
 	if ( function_exists( 'wp_upload_dir' ) ) {
 		$uploads = wp_upload_dir();
-		if ( ! empty( $uploads['basedir'] ) ) {
+		if ( ! is_wp_error( $uploads ) && is_array( $uploads ) && ! empty( $uploads['basedir'] ) ) {
 			return untrailingslashit( (string) $uploads['basedir'] ) . '/' . DTB_SCHEMATIC_PRIMARY_UPLOADS_YEAR . '/schematics';
 		}
 	}
@@ -122,7 +122,9 @@ function dtb_schematics_discover_uploads_year_directories(): array {
 		return [];
 	}
 	$uploads = wp_upload_dir();
-	$basedir = isset( $uploads['basedir'] ) ? untrailingslashit( (string) $uploads['basedir'] ) : '';
+	$basedir = ! is_wp_error( $uploads ) && is_array( $uploads ) && isset( $uploads['basedir'] )
+		? untrailingslashit( (string) $uploads['basedir'] )
+		: '';
 	if ( '' === $basedir || ! is_dir( $basedir ) ) {
 		return [];
 	}
@@ -541,7 +543,9 @@ function dtb_schematics_relative_uploads_file_for_filename( string $filename ): 
 		return null;
 	}
 	$uploads = wp_upload_dir();
-	$basedir = isset( $uploads['basedir'] ) ? untrailingslashit( str_replace( '\\', '/', (string) $uploads['basedir'] ) ) : '';
+	$basedir = ! is_wp_error( $uploads ) && is_array( $uploads ) && isset( $uploads['basedir'] )
+		? untrailingslashit( str_replace( '\\', '/', (string) $uploads['basedir'] ) )
+		: '';
 	if ( '' === $basedir ) {
 		return null;
 	}
