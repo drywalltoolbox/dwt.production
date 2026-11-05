@@ -614,6 +614,7 @@
     display: inline-flex;
     width: 100%;
     min-width: 0;
+    box-sizing: border-box;
     min-height: 46px;
     align-items: center;
     justify-content: center;
@@ -630,6 +631,14 @@
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     transition: border-color 150ms ease, background-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
+  }
+
+  .dtb-product-page-shell .dtb-pdp-mobile-quantity__trigger > span {
+    position: absolute;
+    left: 50%;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+    transform: translateX(-50%);
   }
 
   .dtb-product-page-shell .dtb-pdp-mobile-quantity__trigger svg {

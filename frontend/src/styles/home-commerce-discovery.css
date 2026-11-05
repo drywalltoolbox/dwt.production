@@ -59,11 +59,14 @@
     background: #fff;
   }
 
-  .home-hero__repair-surface .repair-hero.repair-hero--home-slide { min-height: clamp(370px, 102vw, 430px); }
+  .home-hero__repair-surface .repair-hero.repair-hero--home-slide {
+    min-height: clamp(23rem, 100vw, 27rem);
+  }
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__inner {
     min-height: inherit;
     justify-content: center;
-    padding: clamp(54px, 16vw, 72px) clamp(1rem, 5vw, 2rem) 52px;
+    padding: clamp(2.5rem, 14vw, 3.75rem) clamp(1rem, 5vw, 2rem)
+      max(3.25rem, calc(2.25rem + env(safe-area-inset-bottom, 0px)));
     box-sizing: border-box;
   }
   .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__content { width: 100%; max-width: 34rem; margin: 0; padding: 0; align-items: flex-start; text-align: left; }
