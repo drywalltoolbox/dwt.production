@@ -8,6 +8,7 @@
 defined( 'ABSPATH' ) || exit;
 
 final class DTB_ProductRelationshipProjectionService {
+	public const MAX_ARTIFACT_BYTES = 2097152;
 	private const FIELDS = [
 		'Meta: _dtb_compatible_tool_skus' => DTB_ProductMeta::COMPATIBLE_TOOL_SKUS,
 		'Meta: _dtb_replacement_part_for' => DTB_ProductMeta::REPLACEMENT_PART_FOR,
@@ -17,6 +18,97 @@ final class DTB_ProductRelationshipProjectionService {
 	];
 	private const MAX_PARTS = 25;
 	private const MAX_TARGETS_PER_FIELD = 50;
+	private const STAGED_ARTIFACT_TTL = 86400;
+
+	/** Store exact artifact bytes outside the web root for bounded MCP operations. */
+	public static function stage_artifact_payload( string $payload, string $expected_sha256 ): array {
+		$actual_sha256 = hash( 'sha256', $payload );
+		if ( strlen( $payload ) < 2 || strlen( $payload ) > self::MAX_ARTIFACT_BYTES || ! preg_match( '/^[a-f0-9]{64}$/D', $expected_sha256 ) || ! hash_equals( strtolower( $expected_sha256 ), $actual_sha256 ) ) {
+			throw new RuntimeException( 'Artifact size or SHA-256 validation failed.' );
+		}
+		$artifact = json_decode( $payload, true );
+		$release_id = is_array( $artifact ) ? strtolower( (string) ( $artifact['release_id'] ?? '' ) ) : '';
+		$batch_index = is_array( $artifact ) ? absint( $artifact['batch_index'] ?? 0 ) : 0;
+		$batch_count = is_array( $artifact ) ? absint( $artifact['batch_count'] ?? 0 ) : 0;
+		if ( ! is_array( $artifact ) || 1 !== ( $artifact['schema_version'] ?? null ) || 'dtb_compatibility_projection' !== ( $artifact['artifact_type'] ?? '' ) || ! preg_match( '/^[a-f0-9]{24}$/D', $release_id ) || $batch_index < 1 || $batch_count < $batch_index ) {
+			throw new RuntimeException( 'Projection artifact release identity is invalid.' );
+		}
+
+		$dir = self::private_report_dir();
+		self::cleanup_expired_staged_artifacts( $dir );
+		$path = $dir . '/staged-projection-' . $actual_sha256 . '.json';
+		if ( is_file( $path ) ) {
+			$existing = self::get_staged_artifact_path( $release_id, $batch_index, $actual_sha256 );
+			return [ 'release_id' => $release_id, 'batch_index' => $batch_index, 'artifact_sha256' => $actual_sha256, 'staged' => true, 'already_staged' => true, 'expires_at' => gmdate( 'c', filemtime( $existing ) + self::STAGED_ARTIFACT_TTL ) ];
+		}
+
+		$temp_path = tempnam( $dir, '.staged-projection-' );
+		if ( ! is_string( $temp_path ) || '' === $temp_path ) {
+			throw new RuntimeException( 'Unable to create private compatibility artifact staging storage.' );
+		}
+		try {
+			if ( ! @chmod( $temp_path, 0600 ) ) {
+				throw new RuntimeException( 'Unable to restrict staged compatibility artifact permissions.' );
+			}
+			$written = file_put_contents( $temp_path, $payload, LOCK_EX );
+			if ( false === $written || $written !== strlen( $payload ) || ! hash_equals( $actual_sha256, (string) hash_file( 'sha256', $temp_path ) ) ) {
+				throw new RuntimeException( 'Staged compatibility artifact failed its exact-byte read-back check.' );
+			}
+			if ( ! rename( $temp_path, $path ) ) {
+				if ( is_file( $path ) && hash_equals( $actual_sha256, (string) hash_file( 'sha256', $path ) ) ) {
+					return [ 'release_id' => $release_id, 'batch_index' => $batch_index, 'artifact_sha256' => $actual_sha256, 'staged' => true, 'already_staged' => true, 'expires_at' => gmdate( 'c', filemtime( $path ) + self::STAGED_ARTIFACT_TTL ) ];
+				}
+				throw new RuntimeException( 'Unable to finalize the staged compatibility artifact.' );
+			}
+			if ( ! hash_equals( $actual_sha256, (string) hash_file( 'sha256', $path ) ) ) {
+				@unlink( $path );
+				throw new RuntimeException( 'Staged compatibility artifact final read-back failed.' );
+			}
+			return [ 'release_id' => $release_id, 'batch_index' => $batch_index, 'artifact_sha256' => $actual_sha256, 'staged' => true, 'already_staged' => false, 'expires_at' => gmdate( 'c', filemtime( $path ) + self::STAGED_ARTIFACT_TTL ) ];
+		} finally {
+			if ( is_file( $temp_path ) ) {
+				@unlink( $temp_path );
+			}
+		}
+	}
+
+	/** Resolve a digest-addressed staged artifact without exposing its path to the caller. */
+	public static function get_staged_artifact_path( string $release_id, int $batch_index, string $artifact_sha256 ): string {
+		$release_id = strtolower( $release_id );
+		$artifact_sha256 = strtolower( $artifact_sha256 );
+		if ( ! preg_match( '/^[a-f0-9]{24}$/D', $release_id ) || $batch_index < 1 || ! preg_match( '/^[a-f0-9]{64}$/D', $artifact_sha256 ) ) {
+			throw new RuntimeException( 'Staged artifact identity is invalid.' );
+		}
+		$dir = realpath( self::private_report_dir() );
+		$candidate = $dir ? $dir . '/staged-projection-' . $artifact_sha256 . '.json' : '';
+		$path = '' !== $candidate ? realpath( $candidate ) : false;
+		if ( ! $dir || ! $path || dirname( $path ) !== $dir || ! is_file( $path ) || ! is_readable( $path ) ) {
+			throw new RuntimeException( 'Staged artifact is missing from private compatibility storage.' );
+		}
+		if ( filemtime( $path ) < time() - self::STAGED_ARTIFACT_TTL ) {
+			@unlink( $path );
+			throw new RuntimeException( 'Staged artifact expired; stage the exact release batch again.' );
+		}
+		if ( filesize( $path ) > self::MAX_ARTIFACT_BYTES || ! hash_equals( $artifact_sha256, (string) hash_file( 'sha256', $path ) ) ) {
+			throw new RuntimeException( 'Staged artifact is oversized or its SHA-256 no longer matches.' );
+		}
+		$artifact = json_decode( (string) file_get_contents( $path ), true );
+		if ( ! is_array( $artifact ) || strtolower( (string) ( $artifact['release_id'] ?? '' ) ) !== $release_id || absint( $artifact['batch_index'] ?? 0 ) !== $batch_index ) {
+			throw new RuntimeException( 'Staged artifact release or batch identity does not match.' );
+		}
+		return $path;
+	}
+
+	private static function cleanup_expired_staged_artifacts( string $dir ): void {
+		$cutoff = time() - self::STAGED_ARTIFACT_TTL;
+		$candidates = array_merge( glob( $dir . '/staged-projection-*.json' ) ?: [], glob( $dir . '/.staged-projection-*' ) ?: [] );
+		foreach ( $candidates as $candidate ) {
+			$real_path = realpath( $candidate );
+			if ( $real_path && dirname( $real_path ) === $dir && is_file( $real_path ) && filemtime( $real_path ) < $cutoff ) {
+				@unlink( $real_path );
+			}
+		}
+	}
 
 	public static function run_artifact( string $path, string $expected_sha256, bool $apply ): array {
 		if ( ! is_file( $path ) || ! is_readable( $path ) ) {
@@ -40,8 +132,7 @@ final class DTB_ProductRelationshipProjectionService {
 		}
 		$batch_entry = is_array( $inventory ) ? ( $inventory[ $batch_index - 1 ] ?? null ) : null;
 		$batch_skus = array_map( static fn( array $row ): string => (string) ( $row['sku'] ?? '' ), $artifact['rows'] );
-		$release_payload = implode( '|', [ strtolower( (string) ( $artifact['catalog_sha256'] ?? '' ) ), strtolower( (string) ( $artifact['manifest_sha256'] ?? '' ) ), strtolower( (string) ( $artifact['catalog_apply_report_sha256'] ?? '' ) ), strtolower( $inventory_digest ) ] );
-		$expected_release_id = substr( hash( 'sha256', $release_payload ), 0, 24 );
+		$expected_release_id = self::expected_release_id( $artifact, $inventory_digest );
 		if ( ! is_array( $inventory ) || count( $inventory ) !== absint( $artifact['batch_count'] ) || ! hash_equals( $inventory_digest, self::canonical_sha256( $inventory ) ) || ! is_array( $batch_entry ) || (int) ( $batch_entry['batch_index'] ?? 0 ) !== $batch_index || ( $batch_entry['part_skus'] ?? null ) !== $batch_skus || ! hash_equals( (string) ( $batch_entry['rows_sha256'] ?? '' ), self::canonical_sha256( $artifact['rows'] ) ) || ! hash_equals( strtolower( (string) $artifact['release_id'] ), $expected_release_id ) ) {
 			throw new RuntimeException( 'Projection batch does not match its immutable release inventory.' );
 		}
@@ -181,6 +272,12 @@ final class DTB_ProductRelationshipProjectionService {
 	}
 
 	public static function rollback_report( string $path, string $expected_sha256 ): array {
+		$private_dir = realpath( self::private_report_dir() );
+		$real_path = realpath( $path );
+		if ( ! $private_dir || ! $real_path || dirname( $real_path ) !== $private_dir ) {
+			throw new RuntimeException( 'Rollback report must resolve to a file in the private compatibility report directory.' );
+		}
+		$path = $real_path;
 		if ( ! is_file( $path ) || ! is_readable( $path ) || ! hash_equals( strtolower( $expected_sha256 ), strtolower( (string) hash_file( 'sha256', $path ) ) ) ) {
 			throw new RuntimeException( 'Rollback report is unavailable or its SHA-256 does not match.' );
 		}
@@ -194,7 +291,7 @@ final class DTB_ProductRelationshipProjectionService {
 		foreach ( $report['rows'] as $row ) {
 			$sku = strtoupper( trim( (string) ( $row['sku'] ?? '' ) ) );
 			$product_row = $identity_map[ $sku ] ?? null;
-			if ( ! is_array( $product_row ) || 1 !== count( $product_row ) || 'product' !== $product_row[0]['post_type'] ) {
+			if ( ! is_array( $product_row ) || 1 !== count( $product_row ) || 'product' !== $product_row[0]['post_type'] || $product_row[0]['sku'] !== $sku ) {
 				throw new RuntimeException( "Rollback source SKU {$sku} no longer resolves uniquely to a parent product." );
 			}
 			if ( empty( $product_row[0]['is_part'] ) ) {
@@ -471,11 +568,13 @@ final class DTB_ProductRelationshipProjectionService {
 					$match['is_part'] = in_array( 'part', $kinds, true ) || in_array( '1', $parts, true );
 					$match['parent_id'] = (int) ( $match['post_parent'] ?? 0 );
 					$match['parent_is_tool'] = false;
+					$match['parent_is_part'] = false;
 					if ( 'product_variation' === $match['post_type'] && $match['parent_id'] > 0 ) {
 						$parent_kinds = $meta_map[ $match['parent_id'] ][ DTB_ProductMeta::PRODUCT_KIND ] ?? [];
 						$parent_parts = $meta_map[ $match['parent_id'] ][ DTB_ProductMeta::IS_PARTS ] ?? [];
 						$parent = $post_map[ $match['parent_id'] ] ?? [];
 						$match['parent_is_tool'] = 'product' === ( $parent['post_type'] ?? '' ) && 'publish' === ( $parent['post_status'] ?? '' ) && ! in_array( 'part', $parent_kinds, true ) && ! in_array( '1', $parent_parts, true );
+						$match['parent_is_part'] = 'product' === ( $parent['post_type'] ?? '' ) && 'publish' === ( $parent['post_status'] ?? '' ) && ( in_array( 'part', $parent_kinds, true ) || in_array( '1', $parent_parts, true ) );
 					}
 				}
 				unset( $match );
@@ -491,20 +590,22 @@ final class DTB_ProductRelationshipProjectionService {
 		foreach ( $rows as $row ) {
 			$sku = $row['sku'];
 			$matches = $identity_map[ $sku ] ?? [];
-			if ( 1 !== count( $matches ) || 'product' !== $matches[0]['post_type'] || 'publish' !== $matches[0]['post_status'] ) {
-				throw new RuntimeException( "{$sku}: part SKU does not resolve uniquely to a published parent product." );
+			if ( 1 !== count( $matches ) || $matches[0]['sku'] !== $sku || 'publish' !== $matches[0]['post_status'] ) {
+				throw new RuntimeException( "{$sku}: part SKU does not resolve exactly to one published relationship owner." );
 			}
 			$id = (int) $matches[0]['id'];
-			if ( empty( $matches[0]['is_part'] ) ) {
-				throw new RuntimeException( "{$sku}: runtime owner is not classified as a part." );
+			$is_variation_owner = 'product_variation' === $matches[0]['post_type'] && ! empty( $matches[0]['parent_is_part'] );
+			$is_parent_owner = 'product' === $matches[0]['post_type'] && ! empty( $matches[0]['is_part'] );
+			if ( ! $is_variation_owner && ! $is_parent_owner ) {
+				throw new RuntimeException( "{$sku}: runtime relationship owner is not a part or a variation of a published part parent." );
 			}
 			$parts[ $sku ] = [ 'id' => $id ];
 			foreach ( $row['after'] as $targets ) {
 				foreach ( $targets as $target_sku ) {
 					$key = strtoupper( $target_sku );
 					$target_matches = $identity_map[ $key ] ?? [];
-					if ( 1 !== count( $target_matches ) || 'publish' !== $target_matches[0]['post_status'] || ( 'product' !== $target_matches[0]['post_type'] && ( 'product_variation' !== $target_matches[0]['post_type'] || empty( $target_matches[0]['parent_is_tool'] ) ) ) ) {
-						throw new RuntimeException( "{$sku}: target {$target_sku} does not resolve uniquely to a published tool or a variation of a published tool." );
+					if ( 1 !== count( $target_matches ) || $target_matches[0]['sku'] !== $target_sku || 'publish' !== $target_matches[0]['post_status'] || ( 'product' !== $target_matches[0]['post_type'] && ( 'product_variation' !== $target_matches[0]['post_type'] || empty( $target_matches[0]['parent_is_tool'] ) ) ) ) {
+						throw new RuntimeException( "{$sku}: target {$target_sku} does not resolve exactly to a unique published tool or a variation of a published tool." );
 					}
 					$target_id = (int) $target_matches[0]['id'];
 					if ( ! empty( $target_matches[0]['is_part'] ) ) {
@@ -683,7 +784,9 @@ final class DTB_ProductRelationshipProjectionService {
 	}
 
 	private static function private_report_dir(): string {
-		$configured_dir = defined( 'DTB_RELATIONSHIP_PRIVATE_DIR' ) ? DTB_RELATIONSHIP_PRIVATE_DIR : dirname( untrailingslashit( ABSPATH ) ) . '/.dtb-private/product-relationships';
+		$document_root = isset( $_SERVER['DOCUMENT_ROOT'] ) ? realpath( (string) $_SERVER['DOCUMENT_ROOT'] ) : false;
+		$private_base = $document_root ? dirname( $document_root ) : dirname( untrailingslashit( ABSPATH ), 2 );
+		$configured_dir = defined( 'DTB_RELATIONSHIP_PRIVATE_DIR' ) ? DTB_RELATIONSHIP_PRIVATE_DIR : $private_base . '/.dtb-private/product-relationships';
 		if ( ! is_string( $configured_dir ) || '' === $configured_dir ) {
 			throw new RuntimeException( 'The private compatibility projection directory is not configured.' );
 		}
@@ -814,6 +917,20 @@ final class DTB_ProductRelationshipProjectionService {
 		return hash( 'sha256', $payload );
 	}
 
+	private static function expected_release_id( array $artifact, string $inventory_digest ): string {
+		$release_payload = implode(
+			'|',
+			[
+				'dtb-compatibility-release-v2',
+				strtolower( (string) ( $artifact['catalog_sha256'] ?? '' ) ),
+				strtolower( (string) ( $artifact['manifest_sha256'] ?? '' ) ),
+				strtolower( (string) ( $artifact['catalog_apply_report_sha256'] ?? '' ) ),
+				strtolower( $inventory_digest ),
+			]
+		);
+		return substr( hash( 'sha256', $release_payload ), 0, 24 );
+	}
+
 	private static function canonicalize( $value ) {
 		if ( ! is_array( $value ) ) {
 			return $value;
@@ -867,12 +984,7 @@ final class DTB_ProductRelationshipProjectionService {
 				throw new RuntimeException( "Public compatible-tools route read-back failed for {$row['sku']}." );
 			}
 			$data = $response->get_data();
-			$actual_tools = [];
-			foreach ( (array) ( $data['products'] ?? [] ) as $product ) {
-				if ( ! empty( $product['sku'] ) ) {
-					$actual_tools[ strtoupper( (string) $product['sku'] ) ] = true;
-				}
-			}
+			$actual_tools = self::compatible_tool_sku_set( (array) ( $data['products'] ?? [] ) );
 			foreach ( $expected_tools as $tool_sku => $_display_sku ) {
 				if ( empty( $actual_tools[ $tool_sku ] ) ) {
 					throw new RuntimeException( "Public compatible-tools route omitted {$row['sku']} -> {$tool_sku}." );
@@ -932,6 +1044,30 @@ final class DTB_ProductRelationshipProjectionService {
 			$verified_tools[] = $target_sku;
 		}
 		return [ 'verified_part_skus' => $verified_parts, 'verified_tool_skus' => $verified_tools ];
+	}
+
+	/** Include exact variation SKUs returned under their parent product DTO. */
+	private static function compatible_tool_sku_set( array $products ): array {
+		$skus = [];
+		foreach ( $products as $product ) {
+			if ( ! is_array( $product ) ) {
+				continue;
+			}
+			$sku = strtoupper( trim( (string) ( $product['sku'] ?? '' ) ) );
+			if ( '' !== $sku ) {
+				$skus[ $sku ] = true;
+			}
+			foreach ( (array) ( $product['compatible_variations'] ?? [] ) as $variation ) {
+				if ( ! is_array( $variation ) ) {
+					continue;
+				}
+				$variation_sku = strtoupper( trim( (string) ( $variation['sku'] ?? '' ) ) );
+				if ( '' !== $variation_sku ) {
+					$skus[ $variation_sku ] = true;
+				}
+			}
+		}
+		return $skus;
 	}
 }
 

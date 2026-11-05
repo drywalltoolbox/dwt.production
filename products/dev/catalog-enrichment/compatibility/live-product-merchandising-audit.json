@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "report_type": "dtb_live_product_merchandising_runtime_audit",
+  "captured_at_utc": "2026-11-04 14:15:31 UTC",
+  "environment": {
+    "site": "drywalltoolbox.com/wp",
+    "classification": "production"
+  },
+  "method": {
+    "source": "Authenticated connected WordPress REST proxy",
+    "route": "/wc/v3/products",
+    "pagination": "Nine sequential pages at 100 records per page, except the final page of 21 records.",
+    "fields": [
+      "id",
+      "sku",
+      "status",
+      "type",
+      "upsell_ids",
+      "cross_sell_ids"
+    ],
+    "consistency": "Sequential paginated reads, not a transactional database snapshot."
+  },
+  "inventory": {
+    "products": 821,
+    "unique_product_ids": 821,
+    "missing_sku_records": 0,
+    "status_counts": {
+      "publish": 685,
+      "draft": 135,
+      "private": 1
+    },
+    "type_counts": {
+      "simple": 715,
+      "variable": 106
+    },
+    "page_counts": [
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      100,
+      21
+    ]
+  },
+  "merchandising": {
+    "products_with_upsells": 0,
+    "products_with_cross_sells": 0,
+    "upsell_edges": 0,
+    "cross_sell_edges": 0,
+    "invalid_target_edges": 0,
+    "self_link_edges": 0,
+    "duplicate_edges_within_field": 0,
+    "targets_in_both_fields": 0
+  },
+  "mutation": {
+    "product_data_changed": false,
+    "protected_identifiers_changed": false
+  },
+  "limits": [
+    "This report refreshes WooCommerce upsell and cross-sell fields only.",
+    "Protected DTB fitment metadata was not included because the paginated product REST response would exceed the connector response limit when metadata is requested for a full page.",
+    "Runtime state may change after capture; refresh before any write."
+  ]
+}

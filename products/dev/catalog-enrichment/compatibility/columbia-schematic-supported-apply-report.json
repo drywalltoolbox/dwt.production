@@ -1,0 +1,642 @@
+{
+  "applied": true,
+  "approved_change_count": 78,
+  "approved_changes": [
+    {
+      "approval_sha256": "0128efa405db7e7276603610a0e0f6e1a869e23b6de3dc3e78e75a13a341bed2",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"COBCR\",\"CR\"]",
+      "sku": "CR11",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "77347369b4e637d921eada5ce2760fe0ca7c4f7b610e714e5ddf7c12c8c91304",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"CR\"]",
+      "sku": "CR12",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "2193dd7eafbd5f2846a4c02804a9cbde5c20605aef74e506eba3ab661210ca84",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"CR\"]",
+      "sku": "CR4",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "cd33acb006d0c465be66e8c1ca49f078f5b8da990f579fd116ba559ee9ce839e",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"COBCR\",\"CR\"]",
+      "sku": "CR6",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "ff795a7d641e6ca91a50ee981ce0d147eeca77a6a91bff0e916da713bb3c8376",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT104",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "c1f8d663f2617945bb54dd82b4d9fa4ed6b5b5a2555b3e2bed9cfd35827f0234",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT105",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "a966e168892908daaf2b3c77c9abb123e40312f147f5806dd966dec11a940902",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT107",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "8a093530d56badd8de9b2df4b1a864a482f447b2b3ed3a16a56f8eb55b96c437",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT109",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "ef33fd1c891ace6e5c0dfb310a85fa73c58f0ad9c8f99eef94934ee12a471105",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT10A",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "778cc3310cce2b6e4327dc376c9bc71b15d3bdc44f6daffa6b8a6ea6cfce8362",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT112",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "29c7b88f7d5b6788dc5130c02c008db4325cf5907b2982da2bcd67a729a06c46",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT116A",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "4c096f8208f07654fd228d6726b6b9c33088a3e27bf4509fba9f18736cfeba28",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT119",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "6d6bb3a2dab695ab3d66c1642af509aa493c334352dcf7883f040c350cf8326d",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT127",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "1de96dc4a140a1a726f0d910da1ddaf850adf1884330e1858119f5c9ea292877",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT19",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "2d369e00971e8a3f04e3f65e7492aff47e6b99211dbc8c7b4d4f6fed83ba10a9",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT2",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "b819506c0e4cc5ebbd143a74ca61addcf5d9ea462a21745b888f003bad2e87c9",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT20",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "7fcdc0cab6f15207f884ff92d4dd867deff134ea2fcaf5920447a0c2d24aa493",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT31",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "4b76c053d70cc57a71c55785b5bc3d879f14cbf5c73190953d20048b3bac2ccd",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT36",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "19709224c725861bffea35d07b31b662bce24e5227eab61ab71e44dc5047ba43",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"PTAPER\",\"TBMP\"]",
+      "sku": "CT40",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "02102b748ab192e30727549ef79a83bc4a47712e3fd061b2e5b95d0610f3a0af",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT43",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "bd5ae0f9b8d94f2161c45e1c998595e64a98320842ccf07362e4cf9d9e22c9e2",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT45",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "fe13fe02ca182b874f42cb85869bd021c9b505e109df9927f24e1d0600f79cbc",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT47",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "f70ba74eb27a7919177485e1306108707f6901d56c36966c51a1773d0930e6d2",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT53",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "bdf697041974f2ad65dba2072c25b8e1adcdb3d8ae148302fd4afcfb3bad3ef8",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT54",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "3648f0ea1fe19a8cd863b245fc41f18340e1e38efe17dbdda1b014c569f41259",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT55",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "a7c4456e57034b040fae1c8845ad96da36c6f4e88e97c34d900795f8c6c30f3b",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT56",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "2f532ba00306f001f29e9438743fcf101e59db6ada635dada3b8ddc113dfafc3",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT58",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "e2cdb382e3efd884f33a6f77b04d6231b324687b3d42e02509c06b98241ff6a9",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT64",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "d5139cb86711b31408598a82a4f2c90d57b36d2f7728ad760bb300cc3909e8b5",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT65",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "4d8e0b67a4dfcbc7bf52e874ecc767caf7c30fae0c6f4cc626ced40bfed1455e",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT67",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "fbb495280d7d8335e7943dd200669fd49b9f4ec65f8d2a0919bda1c1eb6e7459",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT72",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "b8a4264763cfa2b10697dd014e3ab4904657f0303c308fd3b2016842c1fe4b29",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT76",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "45ce2b5380f01f568e513b68c7fca05f2da9f60b033041cb1f39cd16650e8718",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT78",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "51de5e9a92a4c93797819178cfd058e1d5942c4e045b232b74ce83c27f496e7d",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT79",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "b85311d6c031134789e240b90bebf202c4f955680457a7dad762c420517701bd",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT83",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "b0e1397f968c7a753d5b0d30af5256f3903d53bf710b5a2b97cd2fa1a452cfe6",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT87-CS",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "1a3a6923a95a75a55cd4a9a73022332496d09f731436d433df09db1ca346a096",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "FA199",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "a3ee236787f35002f91f824bbfdead66318b1ed1f247e49ac7b8c030b38a3507",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "FA200",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "57ccfc06fc0c448ebf4fd1d41e17456332da12d5be202c2acd103b78b44af7a8",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"3NS\",\"PTAPER\"]",
+      "sku": "FA214",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "e754b45ce4664d1fcee95958aac0f8387d5f37a8c9e1bd6fd43b131e9cb79a38",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"3NS\",\"PTAPER\"]",
+      "sku": "FA218",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "5314e0a0bf0f039b842c910966d1cc8c3aca85fb2ae9d1934553de1590c5765a",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "FA220",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "ae696e05c8bd707a3462b0cb1d3b33910f15cbfab2d9489ccce365eb8c66ccc0",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "FA227",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "ea962792dd30c122d817f79865585c68b1177cfee13af65f9adf63d71af9ad47",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"3NS\"]",
+      "sku": "FA252",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "9a826e6db87d32a906bada6a526c71669343caef5f6a3874e51581479a892bed",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"3NS\",\"PTAPER\"]",
+      "sku": "FA254",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "1cbe3d650e52ce0af60ad79d2c2b2dbacfd775e2094202ec77c640e3518f0931",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"COBCR\",\"CR\"]",
+      "sku": "FA288",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "9d08fe69b00cac2c588d212f46297d3b12600cc59eef7266d9c7bcd3b3bbd967",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "FA291",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "8b3ef831bc014e960e5830767c1c0d2561d2d76077593a787f1e0d14c7139963",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"CC\",\"HMP\",\"PTAPER\",\"TBMP\"]",
+      "sku": "FA292",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "bd0d380bda511a22ec3680f0938901ee5c6b395dbb3c19deb0de3424c7cbb636",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "FA294",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "a63488ee5a36acb71c5e7ea27e8592fb7b4dd2f4d25a0a133b6c67b2161ba2f9",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "FA295",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "e8e5c95600271a0c7fd2b52710ee5e51db9de1ecc692ed93a24eed9a6a19b1d6",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "FA298",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "275de5861fc9e65f21a5d31c1ac6a8572aabcfa31c6ee95e2a1546e9eb175b6a",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"COBCR\",\"CR\"]",
+      "sku": "FA299",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "a4099cd57f06f016ae6bbf1bc05f218df86c8819b694c0e5f5c8bb1378687e1c",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "FA300",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "0043c78f6717d57575870478dbd0cccbd74749742b24bce745e4975986333764",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"COBCR\",\"HMP\",\"TBMP\"]",
+      "sku": "FA301",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "1ad927a34fe319e0947964af09530c9d99197a53c34565f3b6be59831d7cc226",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "FA303",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "0fb47bd3dca65f44afc67c4afd4f4c99779188d47f79eb7f0208c1a400362888",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\"]",
+      "sku": "FA305",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "d4fba5f2eee5e185d5ee0e47c5a4554c61813d0cd745a24ff30d2826075a07c7",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "FA306",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "c05929f4e3fcdf78a495cb23499fec72fe5c84f2fcda91a1a6638ce824de7233",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "FA307",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "8e3c1f8b9e9b130661ef358751a0ac24900b116ac6f5a87f91e18234d73dd7f8",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "FA313",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "c6ca20a4c78e0187eb7995788ed6afee49bcb5a57cc6fade9147f7dcc7705b0d",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"CHXL\"]",
+      "sku": "HH10A",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "6a054afd605d76cf39a72f42412d2cca38fd3a7460d8c79a7303d90f6c1a8662",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"3NS\"]",
+      "sku": "HNS12",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "aa8db0f96fb65237577d39b772324104616ae85c222d5f6a5a359b24c6e4aa5b",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"3NS\"]",
+      "sku": "HNS12A",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "90512d42d7280e26da33007c721af0ec8b88b4b6a39a31ff831abfd83788bd9e",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"3NS\"]",
+      "sku": "HNS13",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "5370926c325bb5489489d7fa669f01a7d03c34b1ae1201ffbb719948644fae6a",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"3NS\"]",
+      "sku": "HNS18",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "fc8fa424a03d29accd3ff51031b9ae3911a861373fc9ce10c8b83fc28b4376c4",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"3NS\"]",
+      "sku": "HNS20",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "2a3588d06eb4475c0d8c35ef7641066373caff6333c75ce3468460eb9d02b934",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "HP44",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "dcb6d692a3ef1b442b5da2da00f8d0dd417a21ac6376e07603a149829fc256f0",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "HP47",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "69aae711c52e3fb0482ba7bb7e9b305b9c08995357fe3a82c3328335375e7401",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\"]",
+      "sku": "MP11",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "1abf18e512eddb563728278759d752f77627270f550143b097c5006adc772e87",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"TBMP\"]",
+      "sku": "MP14",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "2a9f6c943345e06cdfe8431dff29aa97857184ecbd5b5d2adc73cbdaa99f7013",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\"]",
+      "sku": "MP2",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "a8bfae26bcd2a2a3fe2591bea1c6be432225dec5a758f59ba0b2fae0c8d88fb8",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\"]",
+      "sku": "MP24",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "1ab664cf70c12352022f6b050a4e2c2947182f212be9e0c7328eb5d99c8d7f47",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "MP25",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "b070cbf27ca28b093748fbae87ef0456a57a36f03a0e5d0b3196868a897bfe55",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\"]",
+      "sku": "MP28",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "e4538ec4b342b537d0c136575d523f604a50a4817464a4ab9256418be6f2b62a",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "MP3",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "0b7ead10e28eacc1d9017b9fc6db3c65a40a5a5517315b1666ca940972bcfb68",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\"]",
+      "sku": "MP32",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "852ce7f32da8093d8d86c6b40d9d109f9c22399dcb94444bbf1c2a72ae5d65cd",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "MP36",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "83702c7b0985d13a019e2d9926fa1135971d5542ba3d2b96a5ec0ea8111f43a5",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "MP39",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "536339194cfc665fc9fdde0f1bf7a11661e79517c2f258892eeb3d028c10b572",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "MP5",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "72e991b488d5ea931d3cf3bbd06d4015809702562ca2a711127c29abdddc7fbb",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "MP6",
+      "workflow": "compatibility"
+    }
+  ],
+  "backup": "D:\\AMD\\projects\\dwt.production\\products\\launch\\official\\dtb_official_catalog.csv.bak",
+  "catalog_sha256_after": "b2562f2bb67cfa3aa419e081a1ddf514ebcd5fc1d5c42c05690cc87690017025",
+  "catalog_sha256_before": "0a116333aff933d8d6b9c9aa7e072b71f74906320953dcc681a5d8ba96a2ca1a",
+  "manifest": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\schematic-compatibility-review-manifest-next.csv",
+  "manifest_rows": 251,
+  "manifest_sha256": "af7b1c3365c5a69cf46422193b976e11527672b1b09e2c6ee74069ff0bb8bcb4",
+  "mode": "apply",
+  "review_statuses": {
+    "approved": 78,
+    "needs_review": 173
+  },
+  "schema_version": 1
+}

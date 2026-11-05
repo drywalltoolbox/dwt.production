@@ -1,21 +1,26 @@
 {
   "brand_filter": null,
   "by_status": {
-    "already_populated": 2,
-    "proposal_exact": 646
+    "already_populated": 296,
+    "proposal_exact": 50,
+    "review_multi_tool": 223,
+    "review_part_unpublished": 40,
+    "review_part_variation_owner": 39
   },
+  "cross_brand_identity_candidates": 177,
   "mutates_catalog": false,
   "outputs": {
+    "cross_brand_identity_candidates": "products/dev/catalog-enrichment/compatibility/schematic-cross-brand-identity-candidates.csv",
     "proposals": "products/dev/catalog-enrichment/compatibility/schematic-compatibility-proposals.csv",
     "unresolved": "products/dev/catalog-enrichment/compatibility/schematic-compatibility-unresolved.csv"
   },
   "proposal_rows": 648,
-  "schema_version": 2,
+  "schema_version": 4,
   "unique_parts": 396,
   "unique_schematics": 41,
   "unresolved_by_status": {
-    "part_identifier_not_in_catalog": 1397,
+    "part_identifier_not_in_catalog": 1632,
     "unresolved_schematic_identity": 1101
   },
-  "unresolved_rows": 2498
+  "unresolved_rows": 2733
 }

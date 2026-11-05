@@ -62,9 +62,9 @@ def test_escaped_comma_remains_inside_one_woocommerce_category_term():
     assert values and values["Categories"] == r"Automatic Taping Tools > Goosenecks\, Box Fillers & Adapters"
 
 
-def test_legacy_semi_automatic_toolset_path_migrates_to_unified_toolsets():
+def test_legacy_semi_automatic_toolset_path_keeps_its_taxonomy():
     values = canonical_values(row(kind="toolset", categories="Taping & Finishing Tools > Semi-Automatic Taping Tools > Tool Sets"))
-    assert values and values["Categories"] == "Taping & Finishing Tools > Tool Sets & Kits"
+    assert values and values["Categories"] == "Taping & Finishing Tools > Semi-Automatic Tool Sets & Kits"
     assert values["Meta: _dtb_category_key"] == "taping"
     assert values["Meta: _dtb_display_category_key"] == "toolsets"
 

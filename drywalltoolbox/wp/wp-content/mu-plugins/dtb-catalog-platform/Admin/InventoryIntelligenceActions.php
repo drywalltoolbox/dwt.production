@@ -66,7 +66,12 @@ function dtb_ajax_inventory_project_universal_parts(): void {
 	}
 
 	$projection_service = new DTB_UniversalPartsProjectionService();
-	wp_send_json_success( $projection_service->sync_members( $mode ) );
+	$projection_result = $projection_service->sync_members( $mode );
+	if ( ! empty( $projection_result['error'] ) ) {
+		wp_send_json_error( [ 'code' => $projection_result['error'], 'message' => $projection_result['message'] ], 503 );
+		return;
+	}
+	wp_send_json_success( $projection_result );
 }
 
 /**
@@ -110,6 +115,10 @@ function dtb_ajax_inventory_full_rebuild(): void {
 	$rollup_service     = new DTB_InventoryRollupService();
 
 	$projection_result = $projection_service->sync_members( 'apply' );
+	if ( ! empty( $projection_result['error'] ) ) {
+		wp_send_json_error( [ 'code' => $projection_result['error'], 'message' => $projection_result['message'] ], 503 );
+		return;
+	}
 	$stock_result      = $stock_service->sync_from_woocommerce( true );
 	$rollup_result     = $rollup_service->recompute_all();
 

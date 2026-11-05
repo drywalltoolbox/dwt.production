@@ -1,0 +1,28 @@
+{
+  "artifacts": [
+    {
+      "artifact": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\verified-current-tapetech-07tt-projection-release-641a4227f15fbc445fae01ec-batch-001.json",
+      "rows": 1,
+      "sha256": "392a635c51c6f06a55240f37a51f01bd9cee919cca791345e5bd78ac0bbc680b"
+    }
+  ],
+  "batch_count": 1,
+  "batch_inventory": [
+    {
+      "batch_index": 1,
+      "part_skus": [
+        "052125"
+      ],
+      "rows_sha256": "d49ec18222e8deca436a9e8c3999a7ea0fc4e4e72322ba2c2bcd7f54996229bf"
+    }
+  ],
+  "batch_inventory_sha256": "042846112647e9eadbbefa87f5be994925d3885706ee53fd9fba4dbabfdab2e7",
+  "catalog_apply_report_sha256": "dc540b8eaf55e5263b3e0c01c8d88921434823504d1189ed58b486793d362aef",
+  "catalog_mutated": false,
+  "catalog_sha256": "921e773b8294efedb7f5a6f901769dbca3c228bf1640d70a24ebf83ebd26ee1c",
+  "manifest_sha256": "30048912c1b52ab230be6e94748ef20d12fe541a337eab2b0bab6f54157229f8",
+  "release_id": "641a4227f15fbc445fae01ec",
+  "schema_version": 1,
+  "source_refresh": "approved_historical_row",
+  "status": "prepared"
+}

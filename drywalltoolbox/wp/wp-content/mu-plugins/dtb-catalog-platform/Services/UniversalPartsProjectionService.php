@@ -15,10 +15,25 @@ defined( 'ABSPATH' ) || exit;
 final class DTB_UniversalPartsProjectionService {
 	/** @var array<string,array<string,string>>|null */
 	private ?array $parts_by_id = null;
+	private ?string $data_dir_override;
+
+	public function __construct( ?string $data_dir = null ) {
+		$this->data_dir_override = null === $data_dir ? null : rtrim( $data_dir, '/\\' );
+	}
 
 	public function data_dir(): string {
+		if ( null !== $this->data_dir_override ) {
+			return $this->data_dir_override;
+		}
+
 		$repo_root = dirname( __DIR__, 6 );
-		return $repo_root . '/products/Production/launch/universal_parts';
+		$production_dir = $repo_root . '/products/Production/launch/universal_parts';
+		if ( is_dir( $production_dir ) ) {
+			return $production_dir;
+		}
+
+		$canonical_dir = $repo_root . '/products/launch/universal_parts';
+		return is_dir( $canonical_dir ) ? $canonical_dir : $production_dir;
 	}
 
 	public function file_path( string $type ): string {
@@ -181,8 +196,40 @@ final class DTB_UniversalPartsProjectionService {
 			$mode = 'dry_run';
 		}
 
+		$unavailable_files = [];
+		foreach ( [ 'parts', 'members' ] as $type ) {
+			$path = $this->file_path( $type );
+			if ( ! is_file( $path ) || ! is_readable( $path ) ) {
+				$unavailable_files[] = basename( $path );
+			}
+		}
+		if ( ! empty( $unavailable_files ) ) {
+			return [
+				'mode'       => $mode,
+				'error'      => 'seed_files_unavailable',
+				'resolved'   => 0,
+				'unresolved' => 0,
+				'updated'    => 0,
+				'conflicts'  => [],
+				'preview'    => [],
+				'message'    => 'Universal seed sync stopped: required input file(s) are missing or unreadable: ' . implode( ', ', $unavailable_files ) . '.',
+			];
+		}
+
 		$parts_by_id = $this->parts_by_id();
 		$members     = $this->read_csv_assoc( $this->file_path( 'members' ) );
+		if ( empty( $parts_by_id ) || empty( $members ) ) {
+			return [
+				'mode'       => $mode,
+				'error'      => 'seed_data_empty',
+				'resolved'   => 0,
+				'unresolved' => 0,
+				'updated'    => 0,
+				'conflicts'  => [],
+				'preview'    => [],
+				'message'    => 'Universal seed sync stopped: parts.csv and members.csv must each contain valid data rows.',
+			];
+		}
 		$resolved    = 0;
 		$unresolved  = 0;
 		$updated     = 0;
@@ -199,9 +246,18 @@ final class DTB_UniversalPartsProjectionService {
 				continue;
 			}
 
-			$post_id = $this->resolve_member_product_id( $row );
+			$resolution = $this->resolve_member_product_id( $row );
+			$post_id    = (int) ( $resolution['product_id'] ?? 0 );
 			if ( $post_id <= 0 ) {
 				$unresolved++;
+				$conflicts[] = [
+					'universal_part_id' => $universal_id,
+					'brand'             => (string) ( $row['brand'] ?? '' ),
+					'brand_sku'         => (string) ( $row['brand_sku'] ?? '' ),
+					'manufacturer_sku'  => (string) ( $row['manufacturer_sku'] ?? '' ),
+					'reason'            => (string) ( $resolution['reason'] ?? 'identity_unresolved' ),
+					'candidate_ids'     => (array) ( $resolution['candidate_ids'] ?? [] ),
+				];
 				if ( count( $preview ) < 25 ) {
 					$preview[] = [
 						'universal_part_id' => $universal_id,
@@ -209,6 +265,7 @@ final class DTB_UniversalPartsProjectionService {
 						'brand_sku'         => (string) ( $row['brand_sku'] ?? '' ),
 						'manufacturer_sku'  => (string) ( $row['manufacturer_sku'] ?? '' ),
 						'result'            => 'unresolved',
+						'reason'            => (string) ( $resolution['reason'] ?? 'identity_unresolved' ),
 					];
 				}
 				continue;
@@ -264,7 +321,7 @@ final class DTB_UniversalPartsProjectionService {
 					'duration_ms'     => (int) round( ( microtime( true ) - $start_ms ) * 1000 ),
 					'records_seen'    => count( $members ),
 					'records_updated' => $updated,
-					'records_failed'  => $unresolved + count( $conflicts ),
+				'records_failed'  => max( 0, count( $members ) - $resolved ),
 					'error_message'   => empty( $conflicts ) ? '' : 'Projection sync completed with conflicts.',
 				]
 			);
@@ -282,6 +339,11 @@ final class DTB_UniversalPartsProjectionService {
 	}
 
 	public function apply_universal_meta( int $post_id, array $payload ): void {
+		$product = wc_get_product( $post_id );
+		if ( ! $product || ! is_a( $product, 'WC_Product' ) ) {
+			return;
+		}
+
 		$universal_id = sanitize_text_field( (string) ( $payload['universal_part_id'] ?? '' ) );
 		$status       = sanitize_key( (string) ( $payload['universal_part_status'] ?? '' ) );
 		$confidence   = sanitize_key( (string) ( $payload['universal_part_confidence'] ?? '' ) );
@@ -289,12 +351,10 @@ final class DTB_UniversalPartsProjectionService {
 		$signature    = sanitize_text_field( (string) ( $payload['universal_part_signature'] ?? '' ) );
 
 		if ( '' === $universal_id ) {
-			delete_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_ID );
-			delete_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_STATUS );
-			delete_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_CONFIDENCE );
-			delete_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_FAMILY );
-			delete_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_SIGNATURE );
-			delete_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_SYNCED_AT );
+			foreach ( [ DTB_ProductMeta::UNIVERSAL_PART_ID, DTB_ProductMeta::UNIVERSAL_PART_STATUS, DTB_ProductMeta::UNIVERSAL_PART_CONFIDENCE, DTB_ProductMeta::UNIVERSAL_PART_FAMILY, DTB_ProductMeta::UNIVERSAL_PART_SIGNATURE, DTB_ProductMeta::UNIVERSAL_PART_SYNCED_AT ] as $key ) {
+				$product->delete_meta_data( $key );
+			}
+			$product->save();
 			return;
 		}
 
@@ -305,62 +365,94 @@ final class DTB_UniversalPartsProjectionService {
 			$confidence = 'review';
 		}
 
-		update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_ID, $universal_id );
-		update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_STATUS, $status );
-		update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_CONFIDENCE, $confidence );
-		update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_FAMILY, $family );
-		update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_SIGNATURE, $signature );
-		update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_SYNCED_AT, gmdate( 'c' ) );
+		$product->update_meta_data( DTB_ProductMeta::UNIVERSAL_PART_ID, $universal_id );
+		$product->update_meta_data( DTB_ProductMeta::UNIVERSAL_PART_STATUS, $status );
+		$product->update_meta_data( DTB_ProductMeta::UNIVERSAL_PART_CONFIDENCE, $confidence );
+		$product->update_meta_data( DTB_ProductMeta::UNIVERSAL_PART_FAMILY, $family );
+		$product->update_meta_data( DTB_ProductMeta::UNIVERSAL_PART_SIGNATURE, $signature );
+		$product->update_meta_data( DTB_ProductMeta::UNIVERSAL_PART_SYNCED_AT, gmdate( 'c' ) );
+		$product->save();
 	}
 
-	private function resolve_member_product_id( array $row ): int {
+	private function resolve_member_product_id( array $row ): array {
 		$brand_sku        = sanitize_text_field( (string) ( $row['brand_sku'] ?? '' ) );
 		$manufacturer_sku = sanitize_text_field( (string) ( $row['manufacturer_sku'] ?? '' ) );
 
-		$id = $this->find_part_id_by_sku( $brand_sku );
-		if ( $id <= 0 ) {
-			$id = $this->find_part_id_by_manufacturer_sku( $manufacturer_sku );
+		$sku_resolution = $this->find_part_id_by_sku( $brand_sku );
+		if ( (int) $sku_resolution['product_id'] > 0 || ( '' !== $brand_sku && 'sku_not_found' !== $sku_resolution['reason'] ) ) {
+			return $sku_resolution;
 		}
-		return $id;
+
+		if ( '' === trim( $manufacturer_sku ) ) {
+			return $sku_resolution;
+		}
+
+		return $this->find_part_id_by_manufacturer_sku( $manufacturer_sku );
 	}
 
-	private function find_part_id_by_sku( string $sku ): int {
+	private function find_part_id_by_sku( string $sku ): array {
 		if ( '' === trim( $sku ) ) {
-			return 0;
+			return [ 'product_id' => 0, 'reason' => 'sku_not_provided', 'candidate_ids' => [] ];
 		}
 		$product_id = wc_get_product_id_by_sku( $sku );
-		if ( $product_id <= 0 || 'product' !== get_post_type( $product_id ) ) {
-			return 0;
+		if ( $product_id <= 0 ) {
+			return [ 'product_id' => 0, 'reason' => 'sku_not_found', 'candidate_ids' => [] ];
 		}
-		return '1' === (string) get_post_meta( $product_id, DTB_ProductMeta::IS_PARTS, true ) ? (int) $product_id : 0;
+		if ( 'product' !== get_post_type( $product_id ) ) {
+			return [ 'product_id' => 0, 'reason' => 'sku_resolves_to_non_product', 'candidate_ids' => [ (int) $product_id ] ];
+		}
+		if ( ! $this->is_catalog_part( (int) $product_id ) ) {
+			return [ 'product_id' => 0, 'reason' => 'sku_resolves_to_non_part', 'candidate_ids' => [ (int) $product_id ] ];
+		}
+		return [ 'product_id' => (int) $product_id, 'reason' => 'resolved_by_sku', 'candidate_ids' => [ (int) $product_id ] ];
 	}
 
-	private function find_part_id_by_manufacturer_sku( string $manufacturer_sku ): int {
+	private function find_part_id_by_manufacturer_sku( string $manufacturer_sku ): array {
 		if ( '' === trim( $manufacturer_sku ) ) {
-			return 0;
+			return [ 'product_id' => 0, 'reason' => 'manufacturer_sku_not_provided', 'candidate_ids' => [] ];
 		}
 
 		$ids = get_posts(
 			[
 				'post_type'      => 'product',
 				'post_status'    => 'any',
-				'posts_per_page' => 1,
+				'posts_per_page' => 2,
 				'fields'         => 'ids',
-			'meta_query'     => [
-				[
-					'key'     => DTB_ProductMeta::MANUFACTURER_SKU,
-					'value'   => $manufacturer_sku,
-					'compare' => '=',
+				'meta_query'     => [
+					'relation' => 'AND',
+					[
+						'relation' => 'OR',
+						[
+							'key'     => DTB_ProductMeta::IS_PARTS,
+							'value'   => '1',
+							'compare' => '=',
+						],
+						[
+							'key'     => DTB_ProductMeta::PRODUCT_KIND,
+							'value'   => 'part',
+							'compare' => '=',
+						],
+					],
+					[
+						'key'     => DTB_ProductMeta::MANUFACTURER_SKU,
+						'value'   => $manufacturer_sku,
+						'compare' => '=',
+					],
 				],
-				[
-					'key'     => DTB_ProductMeta::IS_PARTS,
-					'value'   => '1',
-					'compare' => '=',
-				],
-			],
 			]
 		);
 
-		return ! empty( $ids ) ? (int) $ids[0] : 0;
+		if ( 1 === count( $ids ) ) {
+			return [ 'product_id' => (int) $ids[0], 'reason' => 'resolved_by_manufacturer_sku', 'candidate_ids' => [ (int) $ids[0] ] ];
+		}
+		if ( count( $ids ) > 1 ) {
+			return [ 'product_id' => 0, 'reason' => 'manufacturer_sku_ambiguous', 'candidate_ids' => array_map( 'intval', $ids ) ];
+		}
+		return [ 'product_id' => 0, 'reason' => 'manufacturer_sku_not_found', 'candidate_ids' => [] ];
+	}
+
+	private function is_catalog_part( int $product_id ): bool {
+		return '1' === (string) get_post_meta( $product_id, DTB_ProductMeta::IS_PARTS, true )
+			|| 'part' === (string) get_post_meta( $product_id, DTB_ProductMeta::PRODUCT_KIND, true );
 	}
 }

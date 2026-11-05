@@ -5,15 +5,24 @@ define( 'ABSPATH', __DIR__ );
 
 $registered_routes = [];
 $meta_values = [];
+$products = [];
+
+final class WC_Product {
+	public function __construct( private int $id, private string $sku ) {}
+	public function get_id(): int { return $this->id; }
+	public function get_sku(): string { return $this->sku; }
+}
 
 function register_rest_route( string $namespace, string $route, array $args ): void {
 	global $registered_routes;
 	$registered_routes[ $namespace . $route ] = $args;
 }
 
+function absint( mixed $value ): int { return abs( (int) $value ); }
+
 function get_posts( array $args ): array {
 	unset( $args );
-	return [ 1, 2, 3 ];
+	return array_map( static fn( int $id ): object => (object) [ 'ID' => $id, 'post_type' => 'product', 'post_parent' => 0 ], [ 1, 2, 3, 4, 5 ] );
 }
 
 function get_post_meta( int $post_id, string $key, bool $single ): mixed {
@@ -21,6 +30,13 @@ function get_post_meta( int $post_id, string $key, bool $single ): mixed {
 	unset( $single );
 	return $meta_values[ $post_id ][ $key ] ?? '';
 }
+
+function wc_get_product( int $product_id ): WC_Product|false {
+	global $products;
+	return $products[ $product_id ] ?? false;
+}
+
+function get_post_status( int $product_id ): string { return 'publish'; }
 
 $platform = dirname( __DIR__, 3 ) . '/drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform';
 require_once $platform . '/Domain/ProductMeta.php';
@@ -34,6 +50,11 @@ function assert_contract( bool $condition, string $message ): void {
 }
 
 DTB_CompatiblePartsController::register_routes();
+$batch_route = $registered_routes['dtb/v1/products/compatible-parts'] ?? null;
+assert_contract( is_array( $batch_route ), 'Bounded cart-compatible-parts route was not registered.' );
+assert_contract( ( $batch_route['args']['skus']['validate_callback'] )( 'TOOL-1,07TT' ), 'Valid cart SKU list was rejected.' );
+assert_contract( ! ( $batch_route['args']['skus']['validate_callback'] )( 'TOOL-1,07TT/PRO' ), 'Malformed cart SKU list passed validation.' );
+assert_contract( ! ( $batch_route['args']['skus']['validate_callback'] )( implode( ',', array_fill( 0, 21, 'TOOL-1' ) ) ), 'Over-limit cart SKU list passed validation.' );
 foreach ( [ 'products', 'parts' ] as $resource ) {
 	$route = 'dtb/v1/' . $resource . '/CP-26/' . ( 'products' === $resource ? 'compatible-parts' : 'compatible-tools' );
 	$matched = false;
@@ -48,13 +69,23 @@ foreach ( [ 'products', 'parts' ] as $resource ) {
 }
 
 $key = DTB_ProductMeta::COMPATIBLE_TOOL_SKUS;
+$products = [
+	1 => new WC_Product( 1, 'PART-1' ),
+	2 => new WC_Product( 2, 'PART-2' ),
+	3 => new WC_Product( 3, 'PART-3' ),
+	4 => new WC_Product( 4, 'PART-4' ),
+	5 => new WC_Product( 5, 'TOOL-5' ),
+];
 $meta_values = [
-	1 => [ $key => 'CP-2,CT-9' ],
-	2 => [ $key => [ 'CP-26', 'CT-10' ] ],
-	3 => [ $key => '["CP-260","CT-11"]' ],
+	1 => [ $key => 'CP-2,CT-9', DTB_ProductMeta::PRODUCT_KIND => 'part' ],
+	2 => [ $key => [ 'CP-26', 'CT-10' ], DTB_ProductMeta::PRODUCT_KIND => 'part' ],
+	3 => [ $key => '["CP-260","CT-11"]', DTB_ProductMeta::PRODUCT_KIND => 'part' ],
+	4 => [ $key => 'cp-27', DTB_ProductMeta::PRODUCT_KIND => 'part' ],
+	5 => [ $key => 'CP-26', DTB_ProductMeta::PRODUCT_KIND => 'tool' ],
 ];
 $method = new ReflectionMethod( DTB_CompatiblePartsController::class, 'find_products_with_skus_in_meta' );
-assert_contract( [ 2 ] === $method->invoke( null, [ 'CP-26' ], [ $key ] ), 'Exact token membership failed.' );
+assert_contract( [ 2 ] === $method->invoke( null, [ 'CP-26' ], [ $key ] ), 'Exact token membership or part-owner filtering failed.' );
 assert_contract( [ 1 ] === $method->invoke( null, [ 'CP-2' ], [ $key ] ), 'Short SKU membership failed.' );
+assert_contract( [] === $method->invoke( null, [ 'CP-27' ], [ $key ] ), 'Case-only target identity drift must not be returned as compatible.' );
 
 echo "Compatible parts route and exact SKU contract passed.\n";

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ShoppingCart, X, Package, Minus, Plus, ArrowRight, Trash2, Tag, ChevronRight, Loader2 } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import CartCrossSellRecommendations from '../cart/CartCrossSellRecommendations.jsx';
 
 const CART_QTY_SYNC_DELAY_MS = 260;
 const MAX_CART_QUANTITY = 99;
@@ -499,6 +500,7 @@ export default function StorefrontCartSheet({
               })}
             </ul>
           )}
+          {cartItems.length > 0 ? <CartCrossSellRecommendations cart={cart} cartItems={cartItems} compact /> : null}
         </div>
 
         {cartItems.length > 0 && (

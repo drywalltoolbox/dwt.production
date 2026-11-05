@@ -6,6 +6,7 @@
   "homepage": "https://drywalltoolbox.com/",
   "scripts": {
     "dev": "webpack serve --config webpack.config.cjs --mode development",
+    "test:cart-cross-sells": "node --test tests/cartCrossSells.test.js",
     "media:generate": "node scripts/generate-responsive-hero-media.cjs",
     "validate:frontend-contracts": "node scripts/assert-font-authority.cjs && node scripts/assert-pwa-hardening.cjs",
     "build": "npm run build:siteground-root",

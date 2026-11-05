@@ -10,6 +10,7 @@ import {
 import SEOHead from '../components/shared/SEOHead';
 import BackButton from '../components/shared/BackButton';
 import { Container } from '../components/layout';
+import CartCrossSellRecommendations from '../components/cart/CartCrossSellRecommendations.jsx';
 import { useCart } from '../context/CartContext';
 import { useAuthContext } from '../auth/AuthContext.js';
 import { getWooCheckoutUrl } from '../utils/checkoutUrl.js';
@@ -301,6 +302,7 @@ export default function Cart() {
                 );
               })}
             </AnimatePresence>
+            <CartCrossSellRecommendations cart={cart} cartItems={cartItems} />
             <div className="dtb-cart-sheet__continue">
               <BackButton to="/products" label="Continue shopping" />
             </div>

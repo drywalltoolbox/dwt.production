@@ -5,7 +5,11 @@ from __future__ import annotations
 
 import argparse
 import csv
+import hashlib
+import io
 import json
+import os
+import tempfile
 from collections import Counter
 from pathlib import Path
 
@@ -52,6 +56,14 @@ def is_part(row: dict[str, str]) -> bool:
     )
 
 
+def is_part_owner(row: dict[str, str], catalog: dict[str, dict[str, str]]) -> bool:
+    if (row.get("Type") or "").strip().casefold() != "variation":
+        return is_part(row)
+    parent_sku = row.get("Parent") or row.get("Meta: _dtb_parent_product_sku") or ""
+    parent = catalog.get(parent_sku.strip().upper())
+    return bool(parent and parent.get("SKU", "") == parent_sku and is_part(parent) and (parent.get("Type") or "").strip().casefold() == "variable" and (parent.get("Published") or "").strip().casefold() in TRUTHY)
+
+
 def load_catalog(path: Path) -> tuple[list[str], list[dict[str, str]], dict[str, dict[str, str]]]:
     with path.open("r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
@@ -61,14 +73,54 @@ def load_catalog(path: Path) -> tuple[list[str], list[dict[str, str]], dict[str,
 
 
 def load_manifest(path: Path) -> list[dict[str, str]]:
-    with path.open("r", encoding="utf-8-sig", newline="") as handle:
-        reader = csv.DictReader(handle)
-        fields = tuple(reader.fieldnames or ())
-        if fields != MANIFEST_FIELDS:
+    return load_manifest_bytes(path.read_bytes())
+
+
+def load_manifest_bytes(payload: bytes) -> list[dict[str, str]]:
+    text = payload.decode("utf-8-sig")
+    reader = csv.DictReader(io.StringIO(text, newline=""))
+    fields = tuple(reader.fieldnames or ())
+    if fields != MANIFEST_FIELDS:
+        raise CatalogValidationError(
+            f"manifest header mismatch: expected {MANIFEST_FIELDS!r}, found {fields!r}"
+        )
+    return list(reader)
+
+
+def archive_manifest_snapshot(manifest_path: Path, payload: bytes, digest: str) -> Path:
+    """Persist the exact approved manifest bytes beside their apply report."""
+    archive_path = manifest_path.with_name(
+        f"{manifest_path.stem}.approved-{digest[:16]}{manifest_path.suffix}"
+    )
+    if archive_path == manifest_path:
+        return archive_path
+    if archive_path.exists():
+        if hashlib.sha256(archive_path.read_bytes()).hexdigest() != digest:
             raise CatalogValidationError(
-                f"manifest header mismatch: expected {MANIFEST_FIELDS!r}, found {fields!r}"
+                f"approved manifest archive already exists with different bytes: {archive_path.name}"
             )
-        return list(reader)
+        return archive_path
+    fd, temporary_name = tempfile.mkstemp(
+        prefix=f".{archive_path.name}.", suffix=".tmp", dir=archive_path.parent
+    )
+    try:
+        with os.fdopen(fd, "wb") as handle:
+            handle.write(payload)
+            handle.flush()
+            os.fsync(handle.fileno())
+        if archive_path.exists():
+            if hashlib.sha256(archive_path.read_bytes()).hexdigest() != digest:
+                raise CatalogValidationError(
+                    f"approved manifest archive was concurrently created with different bytes: {archive_path.name}"
+                )
+            return archive_path
+        os.replace(temporary_name, archive_path)
+        if hashlib.sha256(archive_path.read_bytes()).hexdigest() != digest:
+            raise CatalogValidationError("approved manifest archive failed SHA-256 verification")
+    finally:
+        if os.path.exists(temporary_name):
+            os.unlink(temporary_name)
+    return archive_path
 
 
 def validate_compatibility_value(
@@ -77,10 +129,10 @@ def validate_compatibility_value(
     catalog: dict[str, dict[str, str]],
     allow_empty: bool = False,
 ) -> None:
-    if not is_part(owner):
+    if not is_part_owner(owner, catalog):
         raise CatalogValidationError(f"{owner.get('SKU')}: compatibility owner is not a part")
-    if (owner.get("Type") or "").strip().casefold() == "variation" or (owner.get("Published") or "").strip().casefold() not in TRUTHY:
-        raise CatalogValidationError(f"{owner.get('SKU')}: compatibility owner must be a published parent product")
+    if (owner.get("Published") or "").strip().casefold() not in TRUTHY:
+        raise CatalogValidationError(f"{owner.get('SKU')}: compatibility owner must be published")
     try:
         targets = json.loads(proposed)
     except json.JSONDecodeError as exc:
@@ -92,16 +144,21 @@ def validate_compatibility_value(
         raise CatalogValidationError(f"{owner.get('SKU')}: compatibility relationships may contain at most 50 tool SKUs")
     if normalized != sorted(set(normalized)):
         raise CatalogValidationError(f"{owner.get('SKU')}: compatibility targets must be unique and sorted")
-    for target in normalized:
+    for target_value, target in zip(targets, normalized, strict=True):
         target_row = catalog.get(target)
         if target_row is None:
             raise CatalogValidationError(f"{owner.get('SKU')}: compatibility target {target!r} is absent")
+        if target_row.get("SKU", "") != target_value:
+            raise CatalogValidationError(
+                f"{owner.get('SKU')}: compatibility target {target_value!r} must match its exact canonical SKU"
+            )
         if is_part(target_row):
             raise CatalogValidationError(f"{owner.get('SKU')}: compatibility target {target!r} is a part")
         if (target_row.get("Type") or "").strip().casefold() == "variation":
-            parent_sku = (target_row.get("Parent") or "").strip().upper()
+            parent_value = target_row.get("Parent") or ""
+            parent_sku = parent_value.strip().upper()
             parent = catalog.get(parent_sku)
-            if not parent_sku or parent is None or is_part(parent) or (parent.get("Published") or "").strip().casefold() not in TRUTHY:
+            if not parent_sku or parent is None or parent.get("SKU", "") != parent_value or parent_value != parent_value.strip() or is_part(parent) or (parent.get("Published") or "").strip().casefold() not in TRUTHY:
                 raise CatalogValidationError(f"{owner.get('SKU')}: variation target {target!r} has no valid published tool parent")
         if (target_row.get("Published") or "").strip().casefold() not in TRUTHY:
             raise CatalogValidationError(f"{owner.get('SKU')}: target {target!r} is not published")
@@ -151,11 +208,16 @@ def prepare_changes(
                 current_targets = json.loads(item.get("current_value") or "[]")
             except json.JSONDecodeError as exc:
                 raise CatalogValidationError(f"{sku}: current compatibility value is not valid JSON") from exc
-            normalized_current = {str(value).strip().upper() for value in current_targets if isinstance(value, str) and value.strip()} if isinstance(current_targets, list) else set()
-            normalized_proposed = {str(value).strip().upper() for value in json.loads(proposed)}
-            if workflow == "compatibility" and not normalized_current.issubset(normalized_proposed):
-                raise CatalogValidationError(f"{sku}: additive compatibility workflow cannot remove existing targets")
-            if workflow == "compatibility_remove" and (not normalized_proposed.issubset(normalized_current) or normalized_proposed == normalized_current):
+            if not isinstance(current_targets, list) or any(not isinstance(value, str) or not value or value != value.strip() for value in current_targets):
+                raise CatalogValidationError(f"{sku}: current compatibility value must be an exact string array")
+            if len({value.upper() for value in current_targets}) != len(current_targets):
+                raise CatalogValidationError(f"{sku}: current compatibility value contains duplicate or case-conflicting SKUs")
+            proposed_targets = json.loads(proposed)
+            current_exact = set(current_targets)
+            proposed_exact = set(proposed_targets)
+            if workflow == "compatibility" and not current_exact.issubset(proposed_exact):
+                raise CatalogValidationError(f"{sku}: additive compatibility workflow cannot remove or rewrite existing target identifiers")
+            if workflow == "compatibility_remove" and (not proposed_exact.issubset(current_exact) or proposed_exact == current_exact):
                 raise CatalogValidationError(f"{sku}: removal workflow must remove at least one existing target and cannot add targets")
         approved.append({**item, "sku": sku, "field": field, "proposed_value": proposed})
     return approved, statuses
@@ -174,14 +236,19 @@ def main() -> int:
     validate_catalog(catalog_path, args.include_gap_audit.resolve())
     fields, rows, catalog = load_catalog(catalog_path)
     digest = file_sha256(catalog_path)
-    manifest = load_manifest(args.manifest.resolve())
+    manifest_path = args.manifest.resolve()
+    manifest_bytes = manifest_path.read_bytes()
+    manifest_digest = hashlib.sha256(manifest_bytes).hexdigest()
+    manifest = load_manifest_bytes(manifest_bytes)
     changes, statuses = prepare_changes(manifest, digest, catalog)
     report = {
         "schema_version": 1,
         "mode": "apply" if args.apply else "preview",
         "catalog_sha256_before": digest,
         "manifest": str(args.manifest.resolve()),
-        "manifest_sha256": file_sha256(args.manifest.resolve()),
+        "manifest_sha256": manifest_digest,
+        "manifest_archive": None,
+        "manifest_archive_sha256": None,
         "manifest_rows": len(manifest),
         "review_statuses": dict(sorted(statuses.items())),
         "approved_change_count": len(changes),
@@ -200,6 +267,9 @@ def main() -> int:
         "backup": None,
     }
     if args.apply and changes:
+        manifest_archive = archive_manifest_snapshot(manifest_path, manifest_bytes, manifest_digest)
+        report["manifest_archive"] = str(manifest_archive)
+        report["manifest_archive_sha256"] = file_sha256(manifest_archive)
         backup = create_catalog_backup(catalog_path)
         for change in changes:
             catalog[change["sku"]][change["field"]] = change["proposed_value"]

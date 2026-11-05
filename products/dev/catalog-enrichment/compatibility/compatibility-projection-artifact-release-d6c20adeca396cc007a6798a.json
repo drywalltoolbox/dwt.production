@@ -1,0 +1,27 @@
+{
+  "artifacts": [
+    {
+      "artifact": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\compatibility-projection-artifact-batch-001.json",
+      "rows": 1,
+      "sha256": "8678fe2280f9fe5e2ddea76141366ec770d72f833ce3dd7f231e171edb7af3db"
+    }
+  ],
+  "batch_count": 1,
+  "batch_inventory": [
+    {
+      "batch_index": 1,
+      "part_skus": [
+        "FB-26-12"
+      ],
+      "rows_sha256": "b22f1ccfea71272032ad6aba5a8e82b28386702e5747d84730974e77edd7fbaa"
+    }
+  ],
+  "batch_inventory_sha256": "0e68334bc35d5c14a547ff7338db09cb5d457e2aa905d729fa101c525161a3c7",
+  "catalog_apply_report_sha256": "47571a1db04cb4c10e6e7453c443a3e8e10d24ea011ac2483722dfc94e9ec94a",
+  "catalog_mutated": false,
+  "catalog_sha256": "cdd9065780c30a30704a6dec331aa044cb255caba2be03e07b5d34e6e4c1148f",
+  "manifest_sha256": "f85a442d2f7c64ef47512629d54bbd540255400f14ca8c5b194bd457a8a6ea54",
+  "release_id": "d6c20adeca396cc007a6798a",
+  "schema_version": 1,
+  "status": "prepared"
+}

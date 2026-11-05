@@ -172,9 +172,9 @@
   function resetForm() {
     $('#dtb-pm-id').val('0');
     $('#dtb-pm-title,#dtb-pm-sku,#dtb-pm-brand-label,#dtb-pm-msku,#dtb-pm-price,#dtb-pm-description').val('');
-    $('#dtb-pm-universal-id,#dtb-pm-universal-family,#dtb-pm-universal-signature').val('');
     $('#dtb-pm-post-status').val('draft');
-    $('#dtb-pm-universal-modal-status,#dtb-pm-universal-confidence').val('');
+    $('#dtb-pm-sku,#dtb-pm-msku').prop('readOnly', false);
+    $('[data-protected-hint]').prop('hidden', true);
     $('#dtb-pm-modal-title').text('Add Part');
     $('#dtb-pm-trash').hide();
     setMessage('#dtb-pm-msg', '');
@@ -268,16 +268,14 @@
         $('#dtb-pm-id').val(p.id || 0);
         $('#dtb-pm-title').val(p.title || '');
         $('#dtb-pm-sku').val(p.sku || '');
+        $('#dtb-pm-sku').prop('readOnly', true);
         $('#dtb-pm-brand-label').val(p.brand_label || '');
         $('#dtb-pm-msku').val(p.manufacturer_sku || '');
+        $('#dtb-pm-msku').prop('readOnly', true);
+        $('[data-protected-hint]').prop('hidden', false);
         $('#dtb-pm-price').val(p.price || '');
         $('#dtb-pm-description').val(p.description || '');
         $('#dtb-pm-post-status').val(p.status || 'draft');
-        $('#dtb-pm-universal-id').val(p.universal_part_id || '');
-        $('#dtb-pm-universal-modal-status').val(p.universal_part_status || '');
-        $('#dtb-pm-universal-confidence').val(p.universal_part_confidence || '');
-        $('#dtb-pm-universal-family').val(p.universal_part_family || '');
-        $('#dtb-pm-universal-signature').val(p.universal_part_signature || '');
         $('#dtb-pm-modal-title').text('Edit Part #' + p.id);
         $('#dtb-pm-trash').show();
         setMessage('#dtb-pm-msg', '');
@@ -302,12 +300,7 @@
         manufacturer_sku: $('#dtb-pm-msku').val(),
         price: $('#dtb-pm-price').val(),
         description: $('#dtb-pm-description').val(),
-        status: $('#dtb-pm-post-status').val(),
-        universal_part_id: $('#dtb-pm-universal-id').val(),
-        universal_part_status: $('#dtb-pm-universal-modal-status').val(),
-        universal_part_confidence: $('#dtb-pm-universal-confidence').val(),
-        universal_part_family: $('#dtb-pm-universal-family').val(),
-        universal_part_signature: $('#dtb-pm-universal-signature').val()
+        status: $('#dtb-pm-post-status').val()
       }).done(function (res) {
         $('#dtb-pm-spinner').hide();
         $('#dtb-pm-save').prop('disabled', false);

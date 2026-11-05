@@ -139,46 +139,9 @@ function dtb_ajax_parts_get(): void {
 	wp_send_json_success(
 		array_merge(
 			dtb_parts_item_payload( $id ),
-			[
-				'description'              => (string) get_post_field( 'post_content', $id ),
-				'universal_part_signature' => (string) get_post_meta( $id, DTB_ProductMeta::UNIVERSAL_PART_SIGNATURE, true ),
-			]
+			[ 'description' => (string) get_post_field( 'post_content', $id ) ]
 		)
 	);
-}
-
-function dtb_parts_apply_universal_meta( int $post_id, array $payload, bool $is_sync = false ): void {
-	$universal_id = sanitize_text_field( (string) ( $payload['universal_part_id'] ?? '' ) );
-	$status       = sanitize_key( (string) ( $payload['universal_part_status'] ?? '' ) );
-	$confidence   = sanitize_key( (string) ( $payload['universal_part_confidence'] ?? '' ) );
-	$family       = sanitize_text_field( (string) ( $payload['universal_part_family'] ?? '' ) );
-	$signature    = sanitize_text_field( (string) ( $payload['universal_part_signature'] ?? '' ) );
-
-	if ( '' === $universal_id ) {
-		delete_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_ID );
-		delete_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_STATUS );
-		delete_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_CONFIDENCE );
-		delete_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_FAMILY );
-		delete_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_SIGNATURE );
-		delete_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_SYNCED_AT );
-		return;
-	}
-
-	if ( ! in_array( $status, [ 'active', 'review', 'quarantine' ], true ) ) {
-		$status = 'review';
-	}
-	if ( ! in_array( $confidence, [ 'verified', 'high', 'medium', 'low', 'review' ], true ) ) {
-		$confidence = 'review';
-	}
-
-	update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_ID, $universal_id );
-	update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_STATUS, $status );
-	update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_CONFIDENCE, $confidence );
-	update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_FAMILY, $family );
-	update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_SIGNATURE, $signature );
-	if ( $is_sync ) {
-		update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_SYNCED_AT, gmdate( 'c' ) );
-	}
 }
 
 function dtb_ajax_parts_save(): void {
@@ -234,7 +197,6 @@ function dtb_ajax_parts_save(): void {
 	update_post_meta( $id, DTB_ProductMeta::PRODUCT_KIND, 'part' );
 	update_post_meta( $id, DTB_ProductMeta::BRAND_LABEL, $brand_label );
 	update_post_meta( $id, DTB_ProductMeta::MANUFACTURER_SKU, $manufacturer_sku );
-	dtb_parts_apply_universal_meta( $id, $_POST );
 
 	wp_send_json_success( [ 'id' => $id ] );
 }
@@ -485,6 +447,18 @@ function dtb_ajax_parts_import_csv(): void {
 		}
 		$status      = isset( $map['status'] ) ? sanitize_key( (string) ( $row[ $map['status'] ] ?? 'draft' ) ) : 'draft';
 		$description = isset( $map['description'] ) ? wp_kses_post( (string) ( $row[ $map['description'] ] ?? '' ) ) : '';
+		$universal_fields = [ 'universal_part_id', 'universal_part_status', 'universal_part_confidence', 'universal_part_family', 'universal_part_signature' ];
+		$has_universal_projection = false;
+		foreach ( $universal_fields as $field ) {
+			if ( isset( $map[ $field ] ) && '' !== trim( (string) ( $row[ $map[ $field ] ] ?? '' ) ) ) {
+				$has_universal_projection = true;
+				break;
+			}
+		}
+		if ( $has_universal_projection ) {
+			$errors[] = "Row {$row_num}: universal-part values are read-only projections. Update the universal seed records, then run the reviewed sync.";
+			continue;
+		}
 
 		if ( '' === $sku || '' === $title ) {
 			$errors[] = "Row {$row_num}: sku and title are required.";
@@ -540,16 +514,6 @@ function dtb_ajax_parts_import_csv(): void {
 		update_post_meta( $id, DTB_ProductMeta::PRODUCT_KIND, 'part' );
 		update_post_meta( $id, DTB_ProductMeta::BRAND_LABEL, $brand_label );
 		update_post_meta( $id, DTB_ProductMeta::MANUFACTURER_SKU, $manufacturer_sku );
-
-		$universal_payload = [];
-		foreach ( [ 'universal_part_id', 'universal_part_status', 'universal_part_confidence', 'universal_part_family', 'universal_part_signature' ] as $universal_key ) {
-			if ( isset( $map[ $universal_key ] ) ) {
-				$universal_payload[ $universal_key ] = (string) ( $row[ $map[ $universal_key ] ] ?? '' );
-			}
-		}
-		if ( ! empty( $universal_payload['universal_part_id'] ) ) {
-			dtb_parts_apply_universal_meta( $id, $universal_payload );
-		}
 
 		dtb_parts_apply_brand_terms( $id, $brands_csv, $brand_label );
 		dtb_parts_apply_category_terms( $id, $categories_csv );
@@ -706,7 +670,7 @@ function dtb_ajax_parts_export(): void {
 		);
 	}
 
-	$headers = [ 'id', 'sku', 'title', 'brand_label', 'manufacturer_sku', 'price', 'status', 'universal_part_id', 'universal_part_status', 'universal_part_confidence', 'universal_part_family', 'universal_part_signature', 'universal_part_synced_at', 'description' ];
+	$headers = [ 'id', 'sku', 'title', 'brand_label', 'manufacturer_sku', 'price', 'status', 'description' ];
 	$csv     = implode( ',', $headers ) . "\n";
 	foreach ( $rows as $row ) {
 		$line = [];
@@ -727,8 +691,7 @@ function dtb_ajax_parts_export(): void {
 }
 
 function dtb_parts_universal_data_dir(): string {
-	$repo_root = dirname( __DIR__, 7 );
-	return $repo_root . '/products/Production/launch/universal_parts';
+	return ( new DTB_UniversalPartsProjectionService() )->data_dir();
 }
 
 function dtb_parts_universal_file_path( string $type ): string {
@@ -764,18 +727,6 @@ function dtb_parts_read_csv_assoc( string $path ): array {
 	}
 	fclose( $fp );
 	return $rows;
-}
-
-function dtb_parts_universal_parts_by_id(): array {
-	$rows = dtb_parts_read_csv_assoc( dtb_parts_universal_file_path( 'parts' ) );
-	$out  = [];
-	foreach ( $rows as $row ) {
-		$id = (string) ( $row['universal_part_id'] ?? '' );
-		if ( '' !== $id ) {
-			$out[ $id ] = $row;
-		}
-	}
-	return $out;
 }
 
 function dtb_parts_universal_stats(): array {
@@ -861,106 +812,19 @@ function dtb_ajax_parts_universal_list(): void {
 	);
 }
 
-function dtb_parts_universal_resolve_member_product_id( array $row ): int {
-	$brand_sku        = sanitize_text_field( (string) ( $row['brand_sku'] ?? '' ) );
-	$manufacturer_sku = sanitize_text_field( (string) ( $row['manufacturer_sku'] ?? '' ) );
-
-	$id = dtb_find_part_id_by_sku( $brand_sku );
-	if ( $id <= 0 ) {
-		$id = dtb_find_part_id_by_manufacturer_sku( $manufacturer_sku );
-	}
-	return $id;
-}
-
 function dtb_ajax_parts_universal_sync(): void {
 	dtb_parts_validate_ajax_request();
 	$mode = sanitize_key( $_POST['mode'] ?? 'dry_run' );
 	if ( ! in_array( $mode, [ 'dry_run', 'apply' ], true ) ) {
 		$mode = 'dry_run';
 	}
-
-	$parts_by_id = dtb_parts_universal_parts_by_id();
-	$members     = dtb_parts_read_csv_assoc( dtb_parts_universal_file_path( 'members' ) );
-	$resolved    = 0;
-	$unresolved  = 0;
-	$updated     = 0;
-	$conflicts   = [];
-	$preview     = [];
-	$post_to_uid = [];
-
-	foreach ( $members as $row ) {
-		$universal_id = sanitize_text_field( (string) ( $row['universal_part_id'] ?? '' ) );
-		if ( '' === $universal_id || ! isset( $parts_by_id[ $universal_id ] ) ) {
-			$conflicts[] = [ 'universal_part_id' => $universal_id, 'reason' => 'Unknown universal_part_id in members.csv.' ];
-			continue;
-		}
-
-		$post_id = dtb_parts_universal_resolve_member_product_id( $row );
-		if ( $post_id <= 0 ) {
-			$unresolved++;
-			if ( count( $preview ) < 25 ) {
-				$preview[] = [
-					'universal_part_id' => $universal_id,
-					'brand'             => (string) ( $row['brand'] ?? '' ),
-					'brand_sku'         => (string) ( $row['brand_sku'] ?? '' ),
-					'manufacturer_sku'  => (string) ( $row['manufacturer_sku'] ?? '' ),
-					'result'            => 'unresolved',
-				];
-			}
-			continue;
-		}
-
-		if ( isset( $post_to_uid[ $post_id ] ) && $post_to_uid[ $post_id ] !== $universal_id ) {
-			$conflicts[] = [
-				'post_id'           => $post_id,
-				'previous_universal' => $post_to_uid[ $post_id ],
-				'next_universal'     => $universal_id,
-				'reason'             => 'One product resolved to multiple universal IDs in the same sync.',
-			];
-			continue;
-		}
-		$post_to_uid[ $post_id ] = $universal_id;
-		$resolved++;
-
-		$part_row = $parts_by_id[ $universal_id ];
-		if ( 'apply' === $mode ) {
-			dtb_parts_apply_universal_meta(
-				$post_id,
-				[
-					'universal_part_id'         => $universal_id,
-					'universal_part_status'     => (string) ( $row['status'] ?? $part_row['status'] ?? 'review' ),
-					'universal_part_confidence' => (string) ( $row['confidence'] ?? $part_row['confidence'] ?? 'review' ),
-					'universal_part_family'     => (string) ( $part_row['part_family'] ?? '' ),
-					'universal_part_signature'  => (string) ( $part_row['source_audit_key'] ?? '' ),
-				],
-				true
-			);
-			update_post_meta( $post_id, DTB_ProductMeta::UNIVERSAL_PART_SYNCED_AT, gmdate( 'c' ) );
-			$updated++;
-		}
-
-		if ( count( $preview ) < 25 ) {
-			$preview[] = [
-				'post_id'           => $post_id,
-				'universal_part_id' => $universal_id,
-				'brand'             => (string) ( $row['brand'] ?? '' ),
-				'brand_sku'         => (string) ( $row['brand_sku'] ?? '' ),
-				'result'            => 'resolved',
-			];
-		}
+	$projection = new DTB_UniversalPartsProjectionService();
+	$result = $projection->sync_members( $mode );
+	if ( ! empty( $result['error'] ) ) {
+		wp_send_json_error( [ 'code' => $result['error'], 'message' => $result['message'] ], 503 );
+		return;
 	}
-
-	wp_send_json_success(
-		[
-			'mode'       => $mode,
-			'resolved'   => $resolved,
-			'unresolved' => $unresolved,
-			'updated'    => $updated,
-			'conflicts'  => $conflicts,
-			'preview'    => $preview,
-			'message'    => 'apply' === $mode ? sprintf( 'Universal sync applied. %d products updated.', $updated ) : sprintf( 'Dry run complete. %d resolved, %d unresolved.', $resolved, $unresolved ),
-		]
-	);
+	wp_send_json_success( $result );
 }
 
 function dtb_ajax_parts_universal_export(): void {

@@ -11,8 +11,9 @@ propose `_dtb_compatible_tool_skus` relationships without mutating the catalog:
   product-to-schematic identity.
 
 Exact SKU and shared canonical schematic identity are required. No fuzzy name
-matching is performed. Variation tool SKUs collapse to a valid canonical parent
-SKU. Multi-tool schematic matches remain review-only.
+matching is performed. Variation tool SKUs remain exact variation identities;
+they are never widened to their variable-product parent. Multi-tool schematic
+matches remain review-only.
 """
 
 from __future__ import annotations
@@ -39,6 +40,9 @@ PARENT_SKU_FIELD = "Meta: _dtb_parent_product_sku"
 COMPATIBLE_FIELD = "Meta: _dtb_compatible_tool_skus"
 REPLACEMENT_FIELD = "Meta: _dtb_replacement_part_for"
 TRUTHY = {"1", "true", "yes", "y"}
+# Schematic sources sometimes use a shortened display label while the catalog
+# uses the canonical brand label. This list affects conflict reporting only.
+SCHEMATIC_BRAND_LABEL_ALIASES = {"columbia": "columbia tools"}
 
 
 def value(row: dict[str, str], field: str) -> str:
@@ -51,6 +55,10 @@ def is_part(row: dict[str, str]) -> bool:
         value(row, PRODUCT_KIND_FIELD).casefold() == "part"
         or value(row, IS_PART_FIELD).casefold() in TRUTHY
     )
+
+
+def is_published(row: dict[str, str]) -> bool:
+    return value(row, "Published").casefold() in TRUTHY
 
 
 def load_catalog(path: Path) -> tuple[list[dict[str, str]], dict[str, dict[str, str]]]:
@@ -102,13 +110,13 @@ def canonical_schematic_id(
 def canonical_tool_sku(sku: str, catalog: dict[str, dict[str, str]]) -> str | None:
     key = sku.upper()
     row = catalog.get(key)
-    if row is None or is_part(row):
+    if row is None or is_part(row) or not is_published(row):
         return None
-    parent = value(row, PARENT_SKU_FIELD).upper()
-    if parent:
+    if value(row, "Type").casefold() == "variation":
+        parent = (value(row, "Parent") or value(row, PARENT_SKU_FIELD)).upper()
         parent_row = catalog.get(parent)
-        if parent_row is not None and not is_part(parent_row):
-            return parent
+        if parent_row is None or is_part(parent_row) or not is_published(parent_row):
+            return None
     return key
 
 
@@ -124,7 +132,31 @@ def build_tool_index(
         resolved = canonical_tool_sku(sku, catalog)
         if resolved:
             tools[schematic_id].add(resolved)
-    return {schematic_id: sorted(skus) for schematic_id, skus in tools.items()}
+    return {
+        schematic_id: prefer_exact_variation_targets(skus, catalog)
+        for schematic_id, skus in tools.items()
+    }
+
+
+def prefer_exact_variation_targets(
+    tool_skus: set[str],
+    catalog: dict[str, dict[str, str]],
+) -> list[str]:
+    """Drop a variable parent when the same schematic names exact child SKUs."""
+    exact_parent_skus = {
+        (value(catalog[sku], "Parent") or value(catalog[sku], PARENT_SKU_FIELD)).upper()
+        for sku in tool_skus
+        if sku in catalog and value(catalog[sku], "Type").casefold() == "variation"
+    }
+    return sorted(
+        sku
+        for sku in tool_skus
+        if not (
+            sku in exact_parent_skus
+            and sku in catalog
+            and value(catalog[sku], "Type").casefold() == "variable"
+        )
+    )
 
 
 def augment_tool_index_from_master(
@@ -145,7 +177,10 @@ def augment_tool_index_from_master(
             resolved = canonical_tool_sku(product_sku, catalog)
             if resolved:
                 tools.setdefault(schematic_id, set()).add(resolved)
-    return {schematic_id: sorted(skus) for schematic_id, skus in tools.items()}
+    return {
+        schematic_id: prefer_exact_variation_targets(skus, catalog)
+        for schematic_id, skus in tools.items()
+    }
 
 
 def resolve_part_sku(
@@ -184,6 +219,74 @@ def existing_target_skus(row: dict[str, str]) -> set[str]:
     return values
 
 
+def build_cross_brand_identity_candidates(
+    diagnostics: list[dict[str, str]],
+    catalog_rows: list[dict[str, str]],
+) -> list[dict[str, str]]:
+    """Expose exact cross-brand part identity collisions for human review only."""
+    catalog_index: dict[str, list[tuple[dict[str, str], str]]] = defaultdict(list)
+    catalog_fields = ("SKU", "Meta: _dtb_mpn", "Meta: _dtb_manufacturer_sku", "Meta: schema_mpn")
+    for row in catalog_rows:
+        if not is_part(row):
+            continue
+        for field in catalog_fields:
+            token = row.get(field) or ""
+            if token:
+                catalog_index[token].append((row, field))
+
+    candidates: dict[tuple[str, str, str, str], dict[str, object]] = {}
+    source_fields = (
+        ("raw_part_identifier", "raw_part_identifier"),
+        ("source_sku", "source_sku"),
+        ("source_part_id", "source_part_id"),
+        ("source_display_id", "source_display_id"),
+        ("source_part_number", "source_part_number"),
+    )
+    for diagnostic in diagnostics:
+        if diagnostic.get("status") != "unresolved_schematic_identity":
+            continue
+        source_brand = diagnostic.get("brand") or ""
+        for output_field, source_field in source_fields:
+            token = diagnostic.get(source_field) or ""
+            if not token:
+                continue
+            for catalog_row, catalog_field in catalog_index.get(token, []):
+                catalog_brand = value(catalog_row, "Meta: _dtb_brand_label") or value(catalog_row, "Brands")
+                source_brand_key = SCHEMATIC_BRAND_LABEL_ALIASES.get(source_brand.casefold(), source_brand.casefold())
+                catalog_brand_key = SCHEMATIC_BRAND_LABEL_ALIASES.get(catalog_brand.casefold(), catalog_brand.casefold())
+                if not catalog_brand or catalog_brand_key == source_brand_key:
+                    continue
+                sku = value(catalog_row, "SKU")
+                key = (diagnostic.get("source_file", ""), diagnostic.get("raw_schematic_id", ""), sku, catalog_brand)
+                entry = candidates.setdefault(key, {
+                    "source_brand": source_brand,
+                    "source_schematic_id": diagnostic.get("raw_schematic_id", ""),
+                    "source_file": diagnostic.get("source_file", ""),
+                    "source_product_sku": diagnostic.get("source_product_sku", ""),
+                    "source_schematic_tool": diagnostic.get("source_schematic_tool", ""),
+                    "source_schematic_tool_path": diagnostic.get("source_schematic_tool_path", ""),
+                    "candidate_part_sku": sku,
+                    "candidate_part_name": value(catalog_row, "Name"),
+                    "candidate_brand": catalog_brand,
+                    "matched_source_fields": set(),
+                    "matched_catalog_fields": set(),
+                    "matched_identifier_values": set(),
+                })
+                entry["matched_source_fields"].add(output_field)
+                entry["matched_catalog_fields"].add(catalog_field)
+                entry["matched_identifier_values"].add(token)
+
+    rows: list[dict[str, str]] = []
+    for entry in candidates.values():
+        row = {key: val for key, val in entry.items() if not isinstance(val, set)}
+        for field in ("matched_source_fields", "matched_catalog_fields", "matched_identifier_values"):
+            row[field] = json.dumps(sorted(entry[field]), ensure_ascii=False, separators=(",", ":"))
+        row["status"] = "cross_brand_exact_identity_conflict"
+        row["reason"] = "Exact identifier collision across brands; candidate is not an identity mapping or fitment claim and requires source review"
+        rows.append(row)
+    return sorted(rows, key=lambda row: (row["source_brand"], row["source_file"], row["source_schematic_id"], row["candidate_part_sku"]))
+
+
 def prepare_proposals(
     *,
     catalog: dict[str, dict[str, str]],
@@ -199,7 +302,7 @@ def prepare_proposals(
     aliases = schematic_aliases or {}
     known_ids = set(tool_index)
     diagnostic_rows = diagnostics if diagnostics is not None else []
-    diagnostic_seen: set[tuple[str, str, str]] = set()
+    diagnostic_seen: set[tuple[str, str, str, str]] = set()
 
     with master_path.open("r", encoding="utf-8-sig", newline="") as handle:
         reader = csv.DictReader(handle)
@@ -208,19 +311,33 @@ def prepare_proposals(
             if requested_brand and requested_brand not in brand.casefold():
                 continue
 
-            raw_schematic_id = (source_row.get("schematic_id") or "").strip()
-            raw_part_id = (source_row.get("sku") or source_row.get("part_number") or "").strip().upper()
-            schematic_id = canonical_schematic_id(raw_schematic_id, aliases, known_ids)
-            if not raw_part_id or not raw_schematic_id:
+            raw_schematic_id = source_row.get("schematic_id") or ""
+            raw_schematic_lookup = raw_schematic_id.strip()
+            raw_sku = source_row.get("sku") or ""
+            raw_part_number = source_row.get("part_number") or ""
+            raw_part_id = raw_sku or raw_part_number
+            raw_part_lookup = raw_part_id.strip().upper()
+            source_file = (source_row.get("source_file_from_brands") or "").strip().replace("\\", "/")
+            schematic_id = canonical_schematic_id(raw_schematic_lookup, aliases, known_ids)
+            if not raw_part_lookup or not raw_schematic_lookup:
                 continue
             if not schematic_id:
-                key = (raw_part_id, raw_schematic_id, "unresolved_schematic_identity")
+                key = (source_file, raw_part_id, raw_schematic_id, "unresolved_schematic_identity")
                 if key not in diagnostic_seen:
                     diagnostic_seen.add(key)
                     diagnostic_rows.append({
                         "brand": brand,
                         "raw_schematic_id": raw_schematic_id,
                         "raw_part_identifier": raw_part_id,
+                        "source_file": source_file,
+                        "source_product_sku": source_row.get("product_sku") or "",
+                        "source_schematic_tool": source_row.get("schematic_tool") or "",
+                        "source_schematic_tool_path": source_row.get("schematic_tool_path") or "",
+                        "source_sku": raw_sku,
+                        "source_part_id": source_row.get("part_id") or "",
+                        "source_display_id": source_row.get("display_id") or "",
+                        "source_part_number": raw_part_number,
+                        "source_part_name": source_row.get("part_name") or "",
                         "status": "unresolved_schematic_identity",
                         "reason": "master schematic identity does not resolve to a canonical tool schematic",
                     })
@@ -228,13 +345,22 @@ def prepare_proposals(
 
             part_sku, part_resolution = resolve_part_sku(source_row, catalog)
             if not part_sku:
-                key = (raw_part_id, schematic_id, part_resolution)
+                key = (source_file, raw_part_id, schematic_id, part_resolution)
                 if key not in diagnostic_seen:
                     diagnostic_seen.add(key)
                     diagnostic_rows.append({
                         "brand": brand,
                         "raw_schematic_id": raw_schematic_id,
                         "raw_part_identifier": raw_part_id,
+                        "source_file": source_file,
+                        "source_product_sku": source_row.get("product_sku") or "",
+                        "source_schematic_tool": source_row.get("schematic_tool") or "",
+                        "source_schematic_tool_path": source_row.get("schematic_tool_path") or "",
+                        "source_sku": raw_sku,
+                        "source_part_id": source_row.get("part_id") or "",
+                        "source_display_id": source_row.get("display_id") or "",
+                        "source_part_number": raw_part_number,
+                        "source_part_name": source_row.get("part_name") or "",
                         "status": part_resolution,
                         "reason": "master part identifier does not resolve to exactly one canonical part SKU",
                     })
@@ -249,15 +375,18 @@ def prepare_proposals(
             targets = tool_index.get(schematic_id, [])
             existing = existing_target_skus(part)
             missing_targets = [target for target in targets if target.upper() not in existing]
-            if targets and not missing_targets:
+            if not is_published(part):
+                status = "review_part_unpublished"
+                reason = "exact part identity is not published and is not eligible for the current fitment projection"
+            elif targets and not missing_targets:
                 status = "already_populated"
                 reason = "all exact schematic tool SKU targets already exist on the canonical part"
             elif len(missing_targets) == 1:
                 status = "proposal_exact"
-                reason = "exact part SKU and one canonical tool family share schematic identity; target is missing from current compatibility metadata"
+                reason = "exact part SKU and exact tool product/variation SKU share canonical schematic identity; target is missing from current compatibility metadata; variation owners require exact variant review"
             elif len(missing_targets) > 1:
                 status = "review_multi_tool"
-                reason = "exact part SKU shares schematic identity with multiple canonical tool families not already present"
+                reason = "exact part SKU shares canonical schematic identity with multiple exact tool product/variation SKUs not already present; variation owners require exact variant review"
             else:
                 status = "review_no_tool"
                 reason = "part occurrence is known but no canonical non-part tool SKU resolves to this schematic"
@@ -267,7 +396,7 @@ def prepare_proposals(
                     "brand": brand,
                     "schematic_id": schematic_id,
                     "source_schematic_id": raw_schematic_id,
-                    "source_file": (source_row.get("source_file_from_brands") or "").strip().replace("\\", "/"),
+                    "source_file": source_file,
                     "part_sku": part_sku,
                     "part_name": value(part, "Name"),
                     "part_type": value(part, "Type"),
@@ -340,19 +469,37 @@ def main() -> int:
     proposal_path = output / "schematic-compatibility-proposals.csv"
     summary_path = output / "schematic-compatibility-summary.json"
     diagnostics_path = output / "schematic-compatibility-unresolved.csv"
+    cross_brand_path = output / "schematic-cross-brand-identity-candidates.csv"
     write_csv(proposal_path, proposals)
     diagnostics_path.parent.mkdir(parents=True, exist_ok=True)
     with diagnostics_path.open("w", encoding="utf-8", newline="") as handle:
-        fields = ("brand", "raw_schematic_id", "raw_part_identifier", "status", "reason")
+        fields = (
+            "brand", "raw_schematic_id", "raw_part_identifier", "source_file",
+            "source_product_sku", "source_schematic_tool", "source_schematic_tool_path",
+            "source_sku", "source_part_id", "source_display_id", "source_part_number",
+            "source_part_name", "status", "reason",
+        )
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         writer.writerows(sorted(diagnostics, key=lambda item: (item["status"], item["brand"], item["raw_schematic_id"], item["raw_part_identifier"])))
+
+    cross_brand_candidates = build_cross_brand_identity_candidates(diagnostics, _rows)
+    with cross_brand_path.open("w", encoding="utf-8", newline="") as handle:
+        fields = (
+            "source_brand", "source_schematic_id", "source_file", "source_product_sku",
+            "source_schematic_tool", "source_schematic_tool_path", "candidate_part_sku",
+            "candidate_part_name", "candidate_brand", "matched_source_fields",
+            "matched_catalog_fields", "matched_identifier_values", "status", "reason",
+        )
+        writer = csv.DictWriter(handle, fieldnames=fields)
+        writer.writeheader()
+        writer.writerows(cross_brand_candidates)
 
     counts: dict[str, int] = defaultdict(int)
     for proposal in proposals:
         counts[proposal["status"]] += 1
     summary = {
-        "schema_version": 2,
+        "schema_version": 4,
         "brand_filter": args.brand or None,
         "mutates_catalog": False,
         "proposal_rows": len(proposals),
@@ -361,9 +508,11 @@ def main() -> int:
         "unique_schematics": len({item["schematic_id"] for item in proposals}),
         "unresolved_rows": len(diagnostics),
         "unresolved_by_status": dict(sorted(Counter(item["status"] for item in diagnostics).items())),
+        "cross_brand_identity_candidates": len(cross_brand_candidates),
         "outputs": {
             "proposals": proposal_path.relative_to(ROOT).as_posix() if proposal_path.is_relative_to(ROOT) else str(proposal_path),
             "unresolved": diagnostics_path.relative_to(ROOT).as_posix() if diagnostics_path.is_relative_to(ROOT) else str(diagnostics_path),
+            "cross_brand_identity_candidates": cross_brand_path.relative_to(ROOT).as_posix() if cross_brand_path.is_relative_to(ROOT) else str(cross_brand_path),
         },
     }
     summary_path.parent.mkdir(parents=True, exist_ok=True)

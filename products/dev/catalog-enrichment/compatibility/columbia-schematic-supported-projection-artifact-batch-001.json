@@ -1,0 +1,583 @@
+{
+  "artifact_type": "dtb_compatibility_projection",
+  "batch_count": 4,
+  "batch_index": 1,
+  "batch_inventory": [
+    {
+      "batch_index": 1,
+      "part_skus": [
+        "CR11",
+        "CR12",
+        "CR4",
+        "CR6",
+        "CT104",
+        "CT105",
+        "CT107",
+        "CT109",
+        "CT10A",
+        "CT112",
+        "CT116A",
+        "CT119",
+        "CT127",
+        "CT19",
+        "CT2",
+        "CT20",
+        "CT31",
+        "CT36",
+        "CT40",
+        "CT43",
+        "CT45",
+        "CT47",
+        "CT53",
+        "CT54",
+        "CT55"
+      ],
+      "rows_sha256": "efd0d17dcc1eb4401f4df2ed549e4ce07a265dc7517a7a43d2a9f4220c4c6cbf"
+    },
+    {
+      "batch_index": 2,
+      "part_skus": [
+        "CT56",
+        "CT58",
+        "CT64",
+        "CT65",
+        "CT67",
+        "CT72",
+        "CT76",
+        "CT78",
+        "CT79",
+        "CT83",
+        "CT87-CS",
+        "FA199",
+        "FA200",
+        "FA214",
+        "FA218",
+        "FA220",
+        "FA227",
+        "FA252",
+        "FA254",
+        "FA288",
+        "FA291",
+        "FA292",
+        "FA294",
+        "FA295",
+        "FA298"
+      ],
+      "rows_sha256": "f1650bb3b5249c9f5403c0b3f022de155bf0353515a5542214c6887380fb3f2a"
+    },
+    {
+      "batch_index": 3,
+      "part_skus": [
+        "FA299",
+        "FA300",
+        "FA301",
+        "FA303",
+        "FA305",
+        "FA306",
+        "FA307",
+        "FA313",
+        "HH10A",
+        "HNS12",
+        "HNS12A",
+        "HNS13",
+        "HNS18",
+        "HNS20",
+        "HP44",
+        "HP47",
+        "MP11",
+        "MP14",
+        "MP2",
+        "MP24",
+        "MP25",
+        "MP28",
+        "MP3",
+        "MP32",
+        "MP36"
+      ],
+      "rows_sha256": "db1a00e2cf8d867cf5483dedf2caaf4b229a2952132d4c8bfcba07a6759714b2"
+    },
+    {
+      "batch_index": 4,
+      "part_skus": [
+        "MP39",
+        "MP5",
+        "MP6"
+      ],
+      "rows_sha256": "76180bd649aa413c0de0632d6b8885194750a6fb6feda5705ad1852cca0b0406"
+    }
+  ],
+  "batch_inventory_sha256": "52e4e89312cc90a41d84bf017f168e773b4032f639a6c5f605950345033bd133",
+  "catalog_apply_report_sha256": "55f19cc536a9860c6712fb7b3b4b5aa4ab06de28713fe724f296f64b0a7dde9d",
+  "catalog_sha256": "b2562f2bb67cfa3aa419e081a1ddf514ebcd5fc1d5c42c05690cc87690017025",
+  "excluded_fields": [
+    "SKU",
+    "MPN",
+    "GTIN",
+    "part_number",
+    "Upsells",
+    "Cross-sells",
+    "price",
+    "stock",
+    "taxonomy",
+    "media"
+  ],
+  "manifest_sha256": "af7b1c3365c5a69cf46422193b976e11527672b1b09e2c6ee74069ff0bb8bcb4",
+  "release_id": "7eb9dbbb35a3c0f5a96f3ca4",
+  "rows": [
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "COBCR",
+          "CR"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "0128efa405db7e7276603610a0e0f6e1a869e23b6de3dc3e78e75a13a341bed2",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CR11"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "CR"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "77347369b4e637d921eada5ce2760fe0ca7c4f7b610e714e5ddf7c12c8c91304",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CR12"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "CR"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "2193dd7eafbd5f2846a4c02804a9cbde5c20605aef74e506eba3ab661210ca84",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CR4"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "COBCR",
+          "CR"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "cd33acb006d0c465be66e8c1ca49f078f5b8da990f579fd116ba559ee9ce839e",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CR6"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "ff795a7d641e6ca91a50ee981ce0d147eeca77a6a91bff0e916da713bb3c8376",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT104"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "c1f8d663f2617945bb54dd82b4d9fa4ed6b5b5a2555b3e2bed9cfd35827f0234",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT105"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "a966e168892908daaf2b3c77c9abb123e40312f147f5806dd966dec11a940902",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT107"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "8a093530d56badd8de9b2df4b1a864a482f447b2b3ed3a16a56f8eb55b96c437",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT109"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "ef33fd1c891ace6e5c0dfb310a85fa73c58f0ad9c8f99eef94934ee12a471105",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT10A"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "778cc3310cce2b6e4327dc376c9bc71b15d3bdc44f6daffa6b8a6ea6cfce8362",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT112"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "29c7b88f7d5b6788dc5130c02c008db4325cf5907b2982da2bcd67a729a06c46",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT116A"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "4c096f8208f07654fd228d6726b6b9c33088a3e27bf4509fba9f18736cfeba28",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT119"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "6d6bb3a2dab695ab3d66c1642af509aa493c334352dcf7883f040c350cf8326d",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT127"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "1de96dc4a140a1a726f0d910da1ddaf850adf1884330e1858119f5c9ea292877",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT19"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "2d369e00971e8a3f04e3f65e7492aff47e6b99211dbc8c7b4d4f6fed83ba10a9",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT2"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "b819506c0e4cc5ebbd143a74ca61addcf5d9ea462a21745b888f003bad2e87c9",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT20"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "7fcdc0cab6f15207f884ff92d4dd867deff134ea2fcaf5920447a0c2d24aa493",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT31"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "4b76c053d70cc57a71c55785b5bc3d879f14cbf5c73190953d20048b3bac2ccd",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT36"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "HMP",
+          "PTAPER",
+          "TBMP"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "19709224c725861bffea35d07b31b662bce24e5227eab61ab71e44dc5047ba43",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT40"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "02102b748ab192e30727549ef79a83bc4a47712e3fd061b2e5b95d0610f3a0af",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT43"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "bd5ae0f9b8d94f2161c45e1c998595e64a98320842ccf07362e4cf9d9e22c9e2",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT45"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "fe13fe02ca182b874f42cb85869bd021c9b505e109df9927f24e1d0600f79cbc",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT47"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "f70ba74eb27a7919177485e1306108707f6901d56c36966c51a1773d0930e6d2",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT53"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "bdf697041974f2ad65dba2072c25b8e1adcdb3d8ae148302fd4afcfb3bad3ef8",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT54"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "3648f0ea1fe19a8cd863b245fc41f18340e1e38efe17dbdda1b014c569f41259",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "CT55"
+    }
+  ],
+  "schema_version": 1
+}

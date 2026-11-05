@@ -111,7 +111,7 @@ final class DTB_ProductDetailController {
 			return [];
 		}
 
-		// Toolsets use exact included SKUs; other products keep their existing recommendations.
+		// Toolsets use exact included SKUs; all other PDP recommendations must be explicitly curated.
 		$category_slug = (string) ( $product['displayCategory']['slug'] ?? '' );
 		$is_toolset = in_array( $category_slug, [ 'automatic-tool-sets', 'automatic-tool-sets-kits', 'semi-automatic-tool-sets-kits', 'toolsets', 'tool-sets-kits', 'tool-sets-and-kits' ], true );
 		$candidate_ids = [];
@@ -143,7 +143,9 @@ final class DTB_ProductDetailController {
 			}
 			return array_values( $included_cards );
 		} else {
-			$candidate_ids = array_merge( $source_product->get_upsell_ids(), wc_get_related_products( $product_id, self::RELATED_PRODUCT_LIMIT * 2, [ $product_id ] ) );
+			// WooCommerce's generated related products are category-driven and can be unstable.
+			// Only operator-curated upsells qualify for this product-detail rail.
+			$candidate_ids = $source_product->get_upsell_ids();
 		}
 		$candidate_ids = array_values( array_unique( array_filter( array_map( 'absint', $candidate_ids ) ) ) );
 		$visible_ids   = [];

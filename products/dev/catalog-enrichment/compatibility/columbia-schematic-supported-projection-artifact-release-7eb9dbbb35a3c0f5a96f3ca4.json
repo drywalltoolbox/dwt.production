@@ -1,0 +1,137 @@
+{
+  "artifacts": [
+    {
+      "artifact": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\columbia-schematic-supported-projection-artifact-batch-001.json",
+      "rows": 25,
+      "sha256": "ae7a394133c7db8c73c30e4cfbd548cb0a7e53463f34f9684f7e8b00cbc96847"
+    },
+    {
+      "artifact": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\columbia-schematic-supported-projection-artifact-batch-002.json",
+      "rows": 25,
+      "sha256": "761df66fe4dfe35f469e489b81905ace2bf37b47c87811ef31f8a90eeb0e4f93"
+    },
+    {
+      "artifact": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\columbia-schematic-supported-projection-artifact-batch-003.json",
+      "rows": 25,
+      "sha256": "baadeae9a3cc02231b06085ad465f6b276b7543008f44c5a4f9de66b80adfbc3"
+    },
+    {
+      "artifact": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\columbia-schematic-supported-projection-artifact-batch-004.json",
+      "rows": 3,
+      "sha256": "5b209ddfda707e083acf8902a2b201bd7ba1ad7d77effdc4aa21e90baa0597ec"
+    }
+  ],
+  "batch_count": 4,
+  "batch_inventory": [
+    {
+      "batch_index": 1,
+      "part_skus": [
+        "CR11",
+        "CR12",
+        "CR4",
+        "CR6",
+        "CT104",
+        "CT105",
+        "CT107",
+        "CT109",
+        "CT10A",
+        "CT112",
+        "CT116A",
+        "CT119",
+        "CT127",
+        "CT19",
+        "CT2",
+        "CT20",
+        "CT31",
+        "CT36",
+        "CT40",
+        "CT43",
+        "CT45",
+        "CT47",
+        "CT53",
+        "CT54",
+        "CT55"
+      ],
+      "rows_sha256": "efd0d17dcc1eb4401f4df2ed549e4ce07a265dc7517a7a43d2a9f4220c4c6cbf"
+    },
+    {
+      "batch_index": 2,
+      "part_skus": [
+        "CT56",
+        "CT58",
+        "CT64",
+        "CT65",
+        "CT67",
+        "CT72",
+        "CT76",
+        "CT78",
+        "CT79",
+        "CT83",
+        "CT87-CS",
+        "FA199",
+        "FA200",
+        "FA214",
+        "FA218",
+        "FA220",
+        "FA227",
+        "FA252",
+        "FA254",
+        "FA288",
+        "FA291",
+        "FA292",
+        "FA294",
+        "FA295",
+        "FA298"
+      ],
+      "rows_sha256": "f1650bb3b5249c9f5403c0b3f022de155bf0353515a5542214c6887380fb3f2a"
+    },
+    {
+      "batch_index": 3,
+      "part_skus": [
+        "FA299",
+        "FA300",
+        "FA301",
+        "FA303",
+        "FA305",
+        "FA306",
+        "FA307",
+        "FA313",
+        "HH10A",
+        "HNS12",
+        "HNS12A",
+        "HNS13",
+        "HNS18",
+        "HNS20",
+        "HP44",
+        "HP47",
+        "MP11",
+        "MP14",
+        "MP2",
+        "MP24",
+        "MP25",
+        "MP28",
+        "MP3",
+        "MP32",
+        "MP36"
+      ],
+      "rows_sha256": "db1a00e2cf8d867cf5483dedf2caaf4b229a2952132d4c8bfcba07a6759714b2"
+    },
+    {
+      "batch_index": 4,
+      "part_skus": [
+        "MP39",
+        "MP5",
+        "MP6"
+      ],
+      "rows_sha256": "76180bd649aa413c0de0632d6b8885194750a6fb6feda5705ad1852cca0b0406"
+    }
+  ],
+  "batch_inventory_sha256": "52e4e89312cc90a41d84bf017f168e773b4032f639a6c5f605950345033bd133",
+  "catalog_apply_report_sha256": "55f19cc536a9860c6712fb7b3b4b5aa4ab06de28713fe724f296f64b0a7dde9d",
+  "catalog_mutated": false,
+  "catalog_sha256": "b2562f2bb67cfa3aa419e081a1ddf514ebcd5fc1d5c42c05690cc87690017025",
+  "manifest_sha256": "af7b1c3365c5a69cf46422193b976e11527672b1b09e2c6ee74069ff0bb8bcb4",
+  "release_id": "7eb9dbbb35a3c0f5a96f3ca4",
+  "schema_version": 1,
+  "status": "prepared"
+}

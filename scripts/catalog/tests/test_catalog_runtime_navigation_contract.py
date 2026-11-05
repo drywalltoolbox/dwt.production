@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
@@ -23,6 +24,10 @@ def test_frontend_desktop_menu_contains_no_parallel_taxonomy_registry() -> None:
 def test_backend_and_frontend_facets_contract_versions_match() -> None:
     backend = BACKEND_NAVIGATION.read_text(encoding="utf-8")
     frontend = FRONTEND_CACHE.read_text(encoding="utf-8")
-    assert "CONTRACT_VERSION = '2.1'" in backend
-    assert "CATALOG_FACETS_CONTRACT_VERSION = '2.1'" in frontend
-    assert "FACETS_CACHE_VERSION = 'v15-contract-2-1'" in frontend
+    backend_version = re.search(r"CONTRACT_VERSION = '([^']+)'", backend)
+    frontend_version = re.search(r"CATALOG_FACETS_CONTRACT_VERSION = '([^']+)'", frontend)
+    cache_version = re.search(r"FACETS_CACHE_VERSION = '([^']+)'", frontend)
+    assert backend_version and frontend_version and cache_version
+    assert backend_version.group(1) == frontend_version.group(1)
+    cache_contract = backend_version.group(1).replace(".", "-")
+    assert f"contract-{cache_contract}" in cache_version.group(1)

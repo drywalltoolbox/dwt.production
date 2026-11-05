@@ -218,6 +218,9 @@ for legacy_suffix, target_key in LEGACY_PATH_TARGETS.items():
     target = _navigation_taxon(target_key)
     for legacy_root in ("Drywall Finishing Tools", DRYWALL_ROOT):
         PATH_ALIASES[normalize_key(f"{legacy_root} > {legacy_suffix}")] = normalize_key(target.path)
+PATH_ALIASES[normalize_key("Taping & Finishing Tools > Semi-Automatic Taping Tools > Tool Sets")] = normalize_key(
+    "Taping & Finishing Tools > Semi-Automatic Tool Sets & Kits"
+)
 PATH_ALIASES[normalize_key("Drywall Finishing Tools > Parts")] = normalize_key("Replacement Parts")
 PATH_ALIASES[normalize_key("Taping & Finishing Tools > Goosenecks")] = normalize_key(
     "Automatic Taping Tools > Goosenecks, Box Fillers & Adapters"

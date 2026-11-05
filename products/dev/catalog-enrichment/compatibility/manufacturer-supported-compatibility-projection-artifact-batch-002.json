@@ -1,0 +1,544 @@
+{
+  "artifact_type": "dtb_compatibility_projection",
+  "batch_count": 2,
+  "batch_index": 2,
+  "batch_inventory": [
+    {
+      "batch_index": 1,
+      "part_skus": [
+        "BH1",
+        "BH5",
+        "BH6",
+        "CR-3",
+        "CR1",
+        "CT111",
+        "CT115",
+        "CT120",
+        "CT98",
+        "FA207",
+        "FA210",
+        "FA219",
+        "FA224",
+        "FA228",
+        "FA231",
+        "FA234",
+        "FA237",
+        "FA238",
+        "FA239",
+        "FA241",
+        "FA243",
+        "FA244",
+        "FA247",
+        "FA249",
+        "FA256"
+      ],
+      "rows_sha256": "9f24c24ccfd14baed9966300654d9ab177a3a5837dbfae2d550e153451964888"
+    },
+    {
+      "batch_index": 2,
+      "part_skus": [
+        "FA258",
+        "FA260",
+        "FA262",
+        "FA268",
+        "FA270",
+        "FA271",
+        "FA272",
+        "FA273",
+        "FA274",
+        "FA280",
+        "FA286",
+        "FA311",
+        "FA312",
+        "FA317",
+        "FFB16",
+        "FFB32",
+        "FFB32A",
+        "FFB38",
+        "HH30",
+        "HH31",
+        "HH32",
+        "HH33",
+        "HH5",
+        "HP1",
+        "MP23"
+      ],
+      "rows_sha256": "9e7e35117e7c358ed11b0a1bab78ff91b1c5c5f390acb9f5a7c14ba6e9c6576b"
+    }
+  ],
+  "batch_inventory_sha256": "f5aff2bd911a7fda71b7cf17c89929dc7af15e33069047742114b78340903cee",
+  "catalog_apply_report_sha256": "9fd367c3c9a8f0c8ca0002ef652d99dfd9732f7b3b6e106642d891845e44e0ed",
+  "catalog_sha256": "571d10d205f2ec8275ea3da5ea7dd74c3da7512ce94acad385af63d1315ce46f",
+  "excluded_fields": [
+    "SKU",
+    "MPN",
+    "GTIN",
+    "part_number",
+    "Upsells",
+    "Cross-sells",
+    "price",
+    "stock",
+    "taxonomy",
+    "media"
+  ],
+  "manifest_sha256": "67aa3a94c23f50e647968f4c64d51bfb0bd34f36ec156419916a914b25ff6a4a",
+  "release_id": "fb766610309f5e8bd73695f7",
+  "rows": [
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER",
+          "SAT"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "4e6717e58842a737db66a303014653870d95fd22b64e3e15a84eb6df235768a9",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA258"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "3NS"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "feac7fe00f42dbc201cf2bc63822205819f6354571cb2ff74a37290d79b72f86",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA260"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "CR"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "08c4732bc02e26f927b81002442d037d3b24646b77ea2c11e73ad6113c1edf1c",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA262"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "3NS"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "5ccfe6db8495e96c9ff7c6b1bbd3876bc809434c2e7d41f08bf7ad677c90e3c9",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA268"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "HMP",
+          "TBMP"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "ae7b1c4731fc14d26bf974191fa98703036f63f237f39bd749b5ffeffae0d4a4",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA270"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "3NS",
+          "HMP"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "afbeccbbd78fafb54191963e139f1c566613929fed36c2d5bd18ddede529f377",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA271"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "CMH"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "c80184fa6ff73667602f5fc3dabba5ac9d33dc5c1eff59eb1d9d9641a986d631",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA272"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "HMP"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "84acaf67980612f4bf89c75f42ec3f7cc6cdae3219ebc27fc7c0be9e6c00bd5d",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA273"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "COBCR",
+          "HMP"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "4f49c95d4b7082560c20c3343a61b00b39f8bc33bac70ff81744f9deae723ed9",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA274"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "3NS"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "fb73851b76fec83ff189315ec806c4531405330b305229b2bc92fb98c22cd38d",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA280"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "PTAPER"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "ff2f7cea309a9ef7d94864dc9aabc9c4116a08cfd7cf3c0d94c40c55bdfc7482",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA286"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "CMH"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "e6964371832081f73314d0becefc3370a51088a480bcdeba2511b704147d3acd",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA311"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "COBCR"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "743d77ba86e53dcad61874c520036861baecdb284c9f45bae7b04e84bab8a05c",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA312"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "CHXL"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "ff613c490cc223ef9aec6a29605b20c6f5404fe399d25ccd8f825728eef4f6e6",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FA317"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "3NS"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "7e873d036e90588893285793e86f4dcc3bb9db31c7f506fdaf500483d9d29520",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FFB16"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "3NS"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "c6ee9bfdd87b85708d1c8c763cc3257024bd07c7aa13168a18bcc99cace1f46c",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FFB32"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "3NS"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "49086832b5390dfb9751099916ecee4baa71c32cb89fbae895b6182e0ff1e1cf",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FFB32A"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "3NS"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "7d06de4229aac31bfb48a16c2f63348f3839c59f48fdcb874fd85c6e37dbc186",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "FFB38"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "CHXL"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "af329a29c61529da799f40c9b05de94be3f9eca04e2480a9ba2b1545763a96c3",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "HH30"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "CHXL"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "0497cd5b5da9a43d00615539d0dbf0b480dbf8b98ea6c8834044c9eafdd845d0",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "HH31"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "CHXL"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "afe6f54082cf2faf144aaacc46e3a43a8f24f3e3e226aec345a5c179363f705c",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "HH32"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "CHXL"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "dc6d28c5601f65036bf62b43747b004dea909f3247343e5d27f0234d36ff06e0",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "HH33"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "CHXL"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "f634b20ed6c17b25946c488e97690b45e15fde8ef22a9b58a0502550e16721ed",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "HH5"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "HMP"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "d4cded6cd9063c45b8c2ff0d2d3923714b3c1d200c8fb3c108e9c99773d48c2d",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "HP1"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "HMP",
+          "TBMP"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "510d72dd2d47071430c0d4ea68b180f84a25a2409475e02e60867025453046a0",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "MP23"
+    }
+  ],
+  "schema_version": 1
+}

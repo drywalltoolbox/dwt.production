@@ -13,12 +13,19 @@ if ( ! dtb_is_admin_or_ajax_request() ) {
 
 add_action( 'admin_enqueue_scripts', 'dtb_parts_manager_enqueue_assets' );
 
+/** Whether this operator should use the consolidated Product & Parts workspace. */
+function dtb_parts_manager_uses_combined_workspace(): bool {
+	return current_user_can( 'dtb_manage_product_mapping' );
+}
+
 /**
  * Load Parts Manager assets only on the DTB Parts Manager admin page.
  */
 function dtb_parts_manager_enqueue_assets(): void {
 	$page = sanitize_key( $_GET['page'] ?? '' ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-	if ( 'dtb-parts-manager' !== $page ) {
+	$is_parts_page = 'dtb-parts-manager' === $page && ! dtb_parts_manager_uses_combined_workspace();
+	$is_combined_workspace = 'dtb-product-mapping' === $page && current_user_can( 'dtb_manage_parts' );
+	if ( ! $is_parts_page && ! $is_combined_workspace ) {
 		return;
 	}
 
@@ -63,8 +70,10 @@ function dtb_parts_manager_render_page(): void {
 		dtb_admin_shell_access_denied();
 		return;
 	}
-
-	$brands = defined( 'DTB_BRANDS' ) && is_array( DTB_BRANDS ) ? DTB_BRANDS : [];
+	if ( dtb_parts_manager_uses_combined_workspace() ) {
+		wp_safe_redirect( admin_url( 'admin.php?page=dtb-product-mapping' ) );
+		exit;
+	}
 
 	dtb_admin_shell_open( [
 		'title'    => __( 'Parts Manager', 'drywall-toolbox' ),
@@ -74,13 +83,29 @@ function dtb_parts_manager_render_page(): void {
 		'template' => 'tool',
 		'icon'     => 'dashicons-admin-tools',
 	] );
+	dtb_parts_manager_render_workspace();
+	dtb_admin_shell_close();
+}
+
+/** Render the capability-checked Parts Manager body for standalone or combined workspaces. */
+function dtb_parts_manager_render_workspace( bool $embedded = false ): void {
+	if ( ! current_user_can( 'dtb_manage_parts' ) ) {
+		return;
+	}
+	$brands = defined( 'DTB_BRANDS' ) && is_array( DTB_BRANDS ) ? DTB_BRANDS : [];
 	?>
-	<div class="dtb-pm-shell" data-dtb-parts-manager>
+	<div class="dtb-pm-shell<?php echo $embedded ? ' dtb-pm-shell--embedded' : ''; ?>" data-dtb-parts-manager>
+		<?php if ( $embedded ) : ?>
+		<header class="dtb-pm-embedded-header">
+			<div><h2><?php esc_html_e( 'Catalog & parts data', 'drywall-toolbox' ); ?></h2><p><?php esc_html_e( 'Manage catalog part records, schematic maps, and universal-part projections.', 'drywall-toolbox' ); ?></p></div>
+			<div class="dtb-pm-hero-actions"><button type="button" class="dtb-pm-btn dtb-pm-btn-primary" data-dtb-pm-add><?php esc_html_e( 'Add Part', 'drywall-toolbox' ); ?></button><button type="button" class="dtb-pm-btn dtb-pm-btn-secondary" data-dtb-pm-refresh><?php esc_html_e( 'Refresh', 'drywall-toolbox' ); ?></button></div>
+		</header>
+		<?php else : ?>
 		<section class="dtb-pm-hero">
 			<div>
 				<p class="dtb-pm-eyebrow"><?php esc_html_e( 'Backend parts operations', 'drywall-toolbox' ); ?></p>
 				<h1><?php esc_html_e( 'Parts Manager', 'drywall-toolbox' ); ?></h1>
-				<p><?php esc_html_e( 'Control brand-specific repair parts, schematic maps, and universal-part metadata without changing customer-facing brand presentation.', 'drywall-toolbox' ); ?></p>
+				<p><?php esc_html_e( 'Manage brand-specific repair parts and schematic maps. Universal-part values are read-only projections from the seed records below.', 'drywall-toolbox' ); ?></p>
 			</div>
 			<div class="dtb-pm-hero-actions">
 				<button type="button" class="dtb-pm-btn dtb-pm-btn-primary" data-dtb-pm-add><?php esc_html_e( 'Add Part', 'drywall-toolbox' ); ?></button>
@@ -94,6 +119,7 @@ function dtb_parts_manager_render_page(): void {
 			<div class="dtb-pm-metric"><span data-dtb-metric="active_universal">—</span><label><?php esc_html_e( 'Active Universal', 'drywall-toolbox' ); ?></label></div>
 			<div class="dtb-pm-metric"><span data-dtb-metric="review_universal">—</span><label><?php esc_html_e( 'Review / Quarantine', 'drywall-toolbox' ); ?></label></div>
 		</section>
+		<?php endif; ?>
 
 		<nav class="dtb-pm-tabs" aria-label="Parts Manager sections">
 			<button type="button" class="active" data-dtb-tab="parts"><?php esc_html_e( 'Parts', 'drywall-toolbox' ); ?></button>
@@ -152,7 +178,7 @@ function dtb_parts_manager_render_page(): void {
 			<div class="dtb-pm-grid-2">
 				<div class="dtb-pm-card">
 					<h2><?php esc_html_e( 'Import brand-specific parts', 'drywall-toolbox' ); ?></h2>
-					<p class="dtb-form-note">Required columns: <code>sku</code>, <code>title</code>. Optional: <code>id</code>, <code>brand_label</code>, <code>manufacturer_sku</code>, <code>price</code>, <code>status</code>, <code>description</code>, <code>universal_part_id</code>, <code>universal_part_status</code>.</p>
+					<p class="dtb-form-note">Required columns: <code>sku</code>, <code>title</code>. Optional: <code>id</code>, <code>brand_label</code>, <code>manufacturer_sku</code>, <code>price</code>, <code>status</code>, <code>description</code>. Universal-part projection fields are read-only here; edit the seed records and use reviewed sync.</p>
 					<input id="dtb-pm-import-file" type="file" accept=".csv,text/csv">
 					<div class="dtb-toolbar-inline-wrap"><button type="button" id="dtb-pm-import" class="dtb-pm-btn dtb-pm-btn-primary"><?php esc_html_e( 'Import Parts CSV', 'drywall-toolbox' ); ?></button><span id="dtb-pm-import-spinner" class="dtb-inline-hidden"><span class="spinner is-active"></span></span></div>
 					<div id="dtb-pm-import-msg" class="dtb-form-msg"></div>
@@ -172,7 +198,7 @@ function dtb_parts_manager_render_page(): void {
 		<section id="dtb-pm-tab-universal" class="dtb-pm-panel">
 			<div class="dtb-pm-card">
 				<div class="dtb-pm-card-header">
-					<div><h2><?php esc_html_e( 'Universal parts seed index', 'drywall-toolbox' ); ?></h2><p><?php esc_html_e( 'Review backend universal-part seed records. Active rows may be synced to matching Woo part products; review/quarantine rows remain protected.', 'drywall-toolbox' ); ?></p></div>
+					<div><h2><?php esc_html_e( 'Universal parts seed index', 'drywall-toolbox' ); ?></h2><p><?php esc_html_e( 'The canonical parts, members, and compatibility seed files own universal-part identities. Active member rows may be synced to exact Woo part products; review/quarantine rows remain protected.', 'drywall-toolbox' ); ?></p></div>
 					<div class="dtb-pm-export-actions">
 						<button type="button" class="dtb-pm-btn dtb-pm-btn-secondary" data-dtb-universal-export="parts"><?php esc_html_e( 'Export Parts', 'drywall-toolbox' ); ?></button>
 						<button type="button" class="dtb-pm-btn dtb-pm-btn-secondary" data-dtb-universal-export="members"><?php esc_html_e( 'Export Members', 'drywall-toolbox' ); ?></button>
@@ -211,19 +237,12 @@ function dtb_parts_manager_render_page(): void {
 			<input type="hidden" id="dtb-pm-id" value="0">
 			<div class="dtb-pm-grid">
 				<div class="dtb-pm-row"><label><?php esc_html_e( 'Title *', 'drywall-toolbox' ); ?></label><input id="dtb-pm-title" class="dtb-pm-input dtb-w-full" type="text"></div>
-				<div class="dtb-pm-row"><label><?php esc_html_e( 'SKU *', 'drywall-toolbox' ); ?></label><input id="dtb-pm-sku" class="dtb-pm-input dtb-w-full" type="text"></div>
+				<div class="dtb-pm-row"><label><?php esc_html_e( 'SKU *', 'drywall-toolbox' ); ?> <span class="dtb-pm-protected-hint" data-protected-hint hidden><?php esc_html_e( 'Protected', 'drywall-toolbox' ); ?></span></label><input id="dtb-pm-sku" class="dtb-pm-input dtb-w-full" type="text" aria-describedby="dtb-pm-sku-help"><small id="dtb-pm-sku-help" class="dtb-pm-field-help"><?php esc_html_e( 'SKU is fixed after creation. Use an approved catalog identity change to correct it.', 'drywall-toolbox' ); ?></small></div>
 				<div class="dtb-pm-row"><label><?php esc_html_e( 'Brand', 'drywall-toolbox' ); ?></label><input id="dtb-pm-brand-label" class="dtb-pm-input dtb-w-full" type="text"></div>
-				<div class="dtb-pm-row"><label><?php esc_html_e( 'Manufacturer SKU', 'drywall-toolbox' ); ?></label><input id="dtb-pm-msku" class="dtb-pm-input dtb-w-full" type="text"></div>
+				<div class="dtb-pm-row"><label><?php esc_html_e( 'Manufacturer SKU', 'drywall-toolbox' ); ?> <span class="dtb-pm-protected-hint" data-protected-hint hidden><?php esc_html_e( 'Protected', 'drywall-toolbox' ); ?></span></label><input id="dtb-pm-msku" class="dtb-pm-input dtb-w-full" type="text" aria-describedby="dtb-pm-msku-help"><small id="dtb-pm-msku-help" class="dtb-pm-field-help"><?php esc_html_e( 'Manufacturer part number is fixed after creation and must remain exact.', 'drywall-toolbox' ); ?></small></div>
 				<div class="dtb-pm-row"><label><?php esc_html_e( 'Price', 'drywall-toolbox' ); ?></label><input id="dtb-pm-price" class="dtb-pm-input dtb-w-full" type="text" placeholder="0.00"></div>
 				<div class="dtb-pm-row"><label><?php esc_html_e( 'Status', 'drywall-toolbox' ); ?></label><select id="dtb-pm-post-status" class="dtb-pm-select dtb-w-full"><option value="draft">Draft</option><option value="publish">Publish</option><option value="private">Private</option><option value="pending">Pending</option></select></div>
 			</div>
-			<div class="dtb-pm-grid dtb-pm-grid--universal">
-				<div class="dtb-pm-row"><label><?php esc_html_e( 'Universal Part ID', 'drywall-toolbox' ); ?></label><input id="dtb-pm-universal-id" class="dtb-pm-input dtb-w-full" type="text" placeholder="UP-SCREW-..."></div>
-				<div class="dtb-pm-row"><label><?php esc_html_e( 'Universal Status', 'drywall-toolbox' ); ?></label><select id="dtb-pm-universal-modal-status" class="dtb-pm-select dtb-w-full"><option value="">None</option><option value="active">Active</option><option value="review">Review</option><option value="quarantine">Quarantine</option></select></div>
-				<div class="dtb-pm-row"><label><?php esc_html_e( 'Confidence', 'drywall-toolbox' ); ?></label><select id="dtb-pm-universal-confidence" class="dtb-pm-select dtb-w-full"><option value="">None</option><option value="verified">Verified</option><option value="high">High</option><option value="medium">Medium</option><option value="low">Low</option><option value="review">Review</option></select></div>
-				<div class="dtb-pm-row"><label><?php esc_html_e( 'Family', 'drywall-toolbox' ); ?></label><input id="dtb-pm-universal-family" class="dtb-pm-input dtb-w-full" type="text" placeholder="screw, nut, washer..."></div>
-			</div>
-			<div class="dtb-pm-row"><label><?php esc_html_e( 'Universal Signature', 'drywall-toolbox' ); ?></label><input id="dtb-pm-universal-signature" class="dtb-pm-input dtb-w-full" type="text"></div>
 			<div class="dtb-pm-row"><label><?php esc_html_e( 'Description', 'drywall-toolbox' ); ?></label><textarea id="dtb-pm-description" class="dtb-pm-input dtb-pm-textarea"></textarea></div>
 			<div class="dtb-pm-modal-actions">
 				<button type="button" id="dtb-pm-save" class="dtb-pm-btn dtb-pm-btn-primary"><?php esc_html_e( 'Save Part', 'drywall-toolbox' ); ?></button>
@@ -235,5 +254,4 @@ function dtb_parts_manager_render_page(): void {
 		</div>
 	</div>
 	<?php
-	dtb_admin_shell_close();
 }

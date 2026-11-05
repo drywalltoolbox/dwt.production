@@ -8,30 +8,21 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Run variation create/update mutation.
+ * Retired variation mutation compatibility entry point.
  *
  * @param array $payload Variation payload.
  * @return array|WP_Error
  */
 function dtb_product_mapping_run_save_variation( array $payload ) {
-	$parent_id    = absint( $payload['parent_id'] ?? 0 );
-	$variation_id = absint( $payload['variation_id'] ?? 0 );
-	$sku          = sanitize_text_field( $payload['sku'] ?? '' );
-	$price        = wc_format_decimal( sanitize_text_field( $payload['price'] ?? '' ) );
-	$sale_price   = wc_format_decimal( sanitize_text_field( $payload['sale_price'] ?? '' ) );
-	$stock        = sanitize_text_field( $payload['stock'] ?? '' );
-	$attributes   = (array) ( $payload['attributes'] ?? [] );
-
-	return dtb_product_mapping_repo_save_variation( $parent_id, $variation_id, $sku, $price, $sale_price, $stock, $attributes );
+	return new WP_Error( 'variation_lifecycle_owned_by_woocommerce', 'Variation creation and updates belong to WooCommerce product administration and are not part of Product Relationships.' );
 }
 
 /**
- * Run variation delete mutation.
+ * Retired variation deletion compatibility entry point.
  *
  * @param array $payload Variation payload.
  * @return array|WP_Error
  */
 function dtb_product_mapping_run_delete_variation( array $payload ) {
-	$variation_id = absint( $payload['variation_id'] ?? 0 );
-	return dtb_product_mapping_repo_delete_variation( $variation_id );
+	return new WP_Error( 'variation_lifecycle_owned_by_woocommerce', 'Variation deletion belongs to WooCommerce product administration and is not part of Product Relationships.' );
 }

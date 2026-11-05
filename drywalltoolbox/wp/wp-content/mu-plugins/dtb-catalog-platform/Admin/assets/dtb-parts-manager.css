@@ -22,6 +22,30 @@
   max-width: 1560px;
 }
 
+.dtb-pm-shell--embedded {
+  gap: 12px;
+}
+
+.dtb-pm-embedded-header {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  justify-content: space-between;
+}
+
+.dtb-pm-embedded-header h2 {
+  font-size: 18px;
+  line-height: 1.25;
+  margin: 0 0 4px;
+}
+
+.dtb-pm-embedded-header p {
+  color: var(--dtb-pm-muted);
+  font-size: 13px;
+  margin: 0;
+}
+
 .dtb-pm-hero,
 .dtb-pm-card,
 .dtb-pm-metric {
@@ -121,6 +145,26 @@
 .dtb-pm-tabs button.active {
   background: var(--dtb-pm-primary);
   color: #fff;
+}
+
+.dtb-pm-protected-hint {
+  color: var(--dtb-pm-muted);
+  font-size: 11px;
+  font-weight: 600;
+  margin-inline-start: 4px;
+}
+
+.dtb-pm-field-help {
+  color: var(--dtb-pm-muted);
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+.dtb-pm-input[readonly] {
+  background: var(--dtb-pm-surface-soft);
+  cursor: text;
 }
 
 .dtb-pm-panel {

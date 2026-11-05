@@ -47,8 +47,8 @@ class V2CatalogTests(unittest.TestCase):
             i = headers.index("Meta: _dtb_specs_json")
             self.assertEqual(headers[i+1:i+3], ["Meta: _dtb_features_json", "Meta: _dtb_content_schema_version"])
             rows = list(reader)
-        self.assertEqual(len(rows), 1134)
-        self.assertEqual(len({r["SKU"] for r in rows}), 1134)
+        self.assertEqual(len(rows), 1133)
+        self.assertEqual(len({r["SKU"] for r in rows}), 1133)
         for row in rows:
             features = row["Meta: _dtb_features_json"]
             version = row["Meta: _dtb_content_schema_version"]

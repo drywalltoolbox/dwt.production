@@ -1,0 +1,28 @@
+{
+  "artifacts": [
+    {
+      "artifact": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\verified-current-platinum-projection-release-f415c46ef3750b9503e008ed-batch-001.json",
+      "rows": 1,
+      "sha256": "cead56770b08931f59c9c83f38a977eaae44bcb47fbafcec591ca97a2f86d1c3"
+    }
+  ],
+  "batch_count": 1,
+  "batch_inventory": [
+    {
+      "batch_index": 1,
+      "part_skus": [
+        "FB-26-12"
+      ],
+      "rows_sha256": "b22f1ccfea71272032ad6aba5a8e82b28386702e5747d84730974e77edd7fbaa"
+    }
+  ],
+  "batch_inventory_sha256": "0e68334bc35d5c14a547ff7338db09cb5d457e2aa905d729fa101c525161a3c7",
+  "catalog_apply_report_sha256": "47571a1db04cb4c10e6e7453c443a3e8e10d24ea011ac2483722dfc94e9ec94a",
+  "catalog_mutated": false,
+  "catalog_sha256": "921e773b8294efedb7f5a6f901769dbca3c228bf1640d70a24ebf83ebd26ee1c",
+  "manifest_sha256": "f85a442d2f7c64ef47512629d54bbd540255400f14ca8c5b194bd457a8a6ea54",
+  "release_id": "f415c46ef3750b9503e008ed",
+  "schema_version": 1,
+  "source_refresh": "approved_historical_row",
+  "status": "prepared"
+}

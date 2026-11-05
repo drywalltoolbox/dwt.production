@@ -32,11 +32,12 @@ function dtb_catalog_operations_enqueue_context_styles(): void {
  * @return array<int, array<string, string>>
  */
 function dtb_catalog_operations_cards(): array {
+	$workspace_slug = current_user_can( 'dtb_manage_product_mapping' ) ? 'dtb-product-mapping' : 'dtb-parts-manager';
+	$workspace_capability = current_user_can( 'dtb_manage_product_mapping' ) ? 'dtb_manage_product_mapping' : 'dtb_manage_parts';
 	$cards = [
 		[ 'capability' => 'dtb_manage_catalog_health', 'title' => __( 'Overview & Health', 'drywall-toolbox' ), 'description' => __( 'Audit variable products, required metadata, catalog integrity, and remediation queues.', 'drywall-toolbox' ), 'slug' => 'dtb-catalog-health', 'icon' => 'dashicons-heart' ],
 		[ 'capability' => 'dtb_manage_import_export', 'title' => __( 'Import / Export', 'drywall-toolbox' ), 'description' => __( 'Validate, import, and export the supported DTB catalog CSV contract.', 'drywall-toolbox' ), 'slug' => 'dtb-import-export', 'icon' => 'dashicons-database-import' ],
-		[ 'capability' => 'dtb_manage_product_mapping', 'title' => __( 'Product Relationships', 'drywall-toolbox' ), 'description' => __( 'Resolve product mappings and review relationship conflicts without changing protected identifiers.', 'drywall-toolbox' ), 'slug' => 'dtb-product-mapping', 'icon' => 'dashicons-randomize' ],
-		[ 'capability' => 'dtb_manage_parts', 'title' => __( 'Parts & Compatibility', 'drywall-toolbox' ), 'description' => __( 'Manage parts, compatible-tool relationships, schematic mappings, and universal-part projections.', 'drywall-toolbox' ), 'slug' => 'dtb-parts-manager', 'icon' => 'dashicons-admin-tools' ],
+		[ 'capability' => $workspace_capability, 'title' => __( 'Product & Parts Relationships', 'drywall-toolbox' ), 'description' => __( 'Review product relationships and open the authorized parts, schematic, and universal-part workflows.', 'drywall-toolbox' ), 'slug' => $workspace_slug, 'icon' => 'dashicons-networking' ],
 		[ 'capability' => 'dtb_manage_inventory_intelligence', 'title' => __( 'Inventory Projections', 'drywall-toolbox' ), 'description' => __( 'Inspect WooCommerce stock projections and universal-part rollups; Veeqo remains inventory authority.', 'drywall-toolbox' ), 'slug' => 'dtb-inventory-intelligence', 'icon' => 'dashicons-chart-area' ],
 		[ 'capability' => 'dtb_manage_image_sync', 'title' => __( 'Media Sync', 'drywall-toolbox' ), 'description' => __( 'Register and link catalog media from the active WordPress uploads directory.', 'drywall-toolbox' ), 'slug' => 'dtb-image-sync', 'icon' => 'dashicons-images-alt2' ],
 		[ 'capability' => 'dtb_manage_catalog_pricing', 'title' => __( 'Pricing', 'drywall-toolbox' ), 'description' => __( 'Review pricing data and apply authorized WooCommerce price updates.', 'drywall-toolbox' ), 'slug' => 'dtb-pricing-manager', 'icon' => 'dashicons-money-alt' ],
@@ -57,29 +58,63 @@ function dtb_catalog_operations_cards(): array {
  */
 function dtb_catalog_operations_render_context_navigation(): void {
 	$current = isset( $_GET['page'] ) ? sanitize_key( wp_unslash( $_GET['page'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	$can_manage_relationships = current_user_can( 'dtb_manage_product_mapping' );
+	$can_manage_parts = current_user_can( 'dtb_manage_parts' );
+	$workspace_slug = $can_manage_relationships ? 'dtb-product-mapping' : 'dtb-parts-manager';
+	$workspace_capability = $can_manage_relationships ? 'dtb_manage_product_mapping' : 'dtb_manage_parts';
 	$pages   = [
 		'dtb-catalog-operations'   => [ 'dtb_view_catalog_operations', __( 'Overview', 'drywall-toolbox' ) ],
 		'dtb-catalog-health'       => [ 'dtb_manage_catalog_health', __( 'Health', 'drywall-toolbox' ) ],
 		'dtb-import-export'        => [ 'dtb_manage_import_export', __( 'Data Transfer', 'drywall-toolbox' ) ],
-		'dtb-product-mapping'      => [ 'dtb_manage_product_mapping', __( 'Relationships', 'drywall-toolbox' ) ],
-		'dtb-parts-manager'        => [ 'dtb_manage_parts', __( 'Parts', 'drywall-toolbox' ) ],
 		'dtb-inventory-intelligence' => [ 'dtb_manage_inventory_intelligence', __( 'Projections', 'drywall-toolbox' ) ],
 		'dtb-image-sync'           => [ 'dtb_manage_image_sync', __( 'Media', 'drywall-toolbox' ) ],
 		'dtb-pricing-manager'      => [ 'dtb_manage_catalog_pricing', __( 'Pricing', 'drywall-toolbox' ) ],
 		'dtb-seo-tools'            => [ 'dtb_manage_seo_tools', __( 'SEO', 'drywall-toolbox' ) ],
 	];
+	if ( $can_manage_relationships || $can_manage_parts ) {
+		$pages[ $workspace_slug ] = [ $workspace_capability, __( 'Relationships & Parts', 'drywall-toolbox' ) ];
+	}
 
-	if ( ! isset( $pages[ $current ] ) ) {
+	$is_workspace_page = in_array( $current, [ 'dtb-product-mapping', 'dtb-parts-manager' ], true );
+	$navigation_current = $is_workspace_page ? $workspace_slug : $current;
+	if ( ! isset( $pages[ $navigation_current ] ) ) {
 		return;
 	}
 
-	echo '<nav class="dtb-catalog-operations-nav" aria-label="' . esc_attr__( 'Catalog Operations', 'drywall-toolbox' ) . '"><strong>' . esc_html__( 'Catalog Operations:', 'drywall-toolbox' ) . '</strong> ';
-	foreach ( $pages as $slug => [ $capability, $label ] ) {
-		if ( ! current_user_can( $capability ) ) {
+	$groups = [
+		[ 'label' => __( 'Products', 'drywall-toolbox' ), 'primary' => 'dtb-catalog-operations', 'items' => [ 'dtb-catalog-operations', 'dtb-catalog-health', $workspace_slug ] ],
+		[ 'label' => __( 'Pricing', 'drywall-toolbox' ), 'primary' => 'dtb-pricing-manager', 'items' => [ 'dtb-pricing-manager' ] ],
+		[ 'label' => __( 'Media & Content', 'drywall-toolbox' ), 'primary' => 'dtb-image-sync', 'items' => [ 'dtb-image-sync', 'dtb-seo-tools' ] ],
+		[ 'label' => __( 'Data & Maintenance', 'drywall-toolbox' ), 'primary' => 'dtb-import-export', 'items' => [ 'dtb-import-export', 'dtb-inventory-intelligence' ] ],
+	];
+
+	echo '<nav class="dtb-catalog-operations-nav" aria-label="' . esc_attr__( 'Catalog Operations', 'drywall-toolbox' ) . '">';
+	echo '<span class="dtb-catalog-operations-nav__heading">' . esc_html__( 'Catalog', 'drywall-toolbox' ) . '</span>';
+	foreach ( $groups as $group ) {
+		$allowed = array_values( array_filter( $group['items'], static fn( string $slug ): bool => isset( $pages[ $slug ] ) && current_user_can( $pages[ $slug ][0] ) ) );
+		if ( ! $allowed ) {
 			continue;
 		}
-		$class = $slug === $current ? 'button button-primary' : 'button';
-		echo '<a class="' . esc_attr( $class ) . '" href="' . esc_url( admin_url( 'admin.php?page=' . $slug ) ) . '">' . esc_html( $label ) . '</a> ';
+		$target = in_array( $group['primary'], $allowed, true ) ? $group['primary'] : $allowed[0];
+		$active = in_array( $navigation_current, $group['items'], true );
+		echo '<a class="dtb-catalog-operations-nav__group' . ( $active ? ' is-active' : '' ) . '"' . ( $active ? ' aria-current="page"' : '' ) . ' href="' . esc_url( admin_url( 'admin.php?page=' . $target ) ) . '">' . esc_html( $group['label'] ) . '</a>';
+	}
+	$active_group = null;
+	foreach ( $groups as $group ) {
+		if ( in_array( $navigation_current, $group['items'], true ) ) {
+			$active_group = $group;
+			break;
+		}
+	}
+	if ( $active_group && count( $active_group['items'] ) > 1 ) {
+		echo '<div class="dtb-catalog-operations-nav__details" aria-label="' . esc_attr__( 'Related utilities', 'drywall-toolbox' ) . '">';
+		foreach ( $active_group['items'] as $slug ) {
+			if ( ! isset( $pages[ $slug ] ) || ! current_user_can( $pages[ $slug ][0] ) ) {
+				continue;
+			}
+			echo '<a' . ( $navigation_current === $slug ? ' aria-current="page" class="is-active"' : '' ) . ' href="' . esc_url( admin_url( 'admin.php?page=' . $slug ) ) . '">' . esc_html( $pages[ $slug ][1] ) . '</a>';
+		}
+		echo '</div>';
 	}
 	echo '</nav>';
 }
@@ -94,7 +129,7 @@ function dtb_catalog_operations_render_page(): void {
 
 	dtb_admin_shell_open( [
 		'title'    => __( 'Catalog Operations', 'drywall-toolbox' ),
-		'subtitle' => __( 'One workspace for catalog health, data transfer, relationships, parts, media, pricing, and SEO.', 'drywall-toolbox' ),
+		'subtitle' => __( 'Find products, review pricing, manage media, and maintain catalog data from one workspace.', 'drywall-toolbox' ),
 		'section'  => 'tools',
 		'page'     => 'dtb-catalog-operations',
 		'template' => 'dashboard',

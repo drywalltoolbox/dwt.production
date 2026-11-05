@@ -1,0 +1,187 @@
+{
+  "artifact_type": "dtb_compatibility_projection",
+  "batch_count": 4,
+  "batch_index": 4,
+  "batch_inventory": [
+    {
+      "batch_index": 1,
+      "part_skus": [
+        "CR11",
+        "CR12",
+        "CR4",
+        "CR6",
+        "CT104",
+        "CT105",
+        "CT107",
+        "CT109",
+        "CT10A",
+        "CT112",
+        "CT116A",
+        "CT119",
+        "CT127",
+        "CT19",
+        "CT2",
+        "CT20",
+        "CT31",
+        "CT36",
+        "CT40",
+        "CT43",
+        "CT45",
+        "CT47",
+        "CT53",
+        "CT54",
+        "CT55"
+      ],
+      "rows_sha256": "efd0d17dcc1eb4401f4df2ed549e4ce07a265dc7517a7a43d2a9f4220c4c6cbf"
+    },
+    {
+      "batch_index": 2,
+      "part_skus": [
+        "CT56",
+        "CT58",
+        "CT64",
+        "CT65",
+        "CT67",
+        "CT72",
+        "CT76",
+        "CT78",
+        "CT79",
+        "CT83",
+        "CT87-CS",
+        "FA199",
+        "FA200",
+        "FA214",
+        "FA218",
+        "FA220",
+        "FA227",
+        "FA252",
+        "FA254",
+        "FA288",
+        "FA291",
+        "FA292",
+        "FA294",
+        "FA295",
+        "FA298"
+      ],
+      "rows_sha256": "f1650bb3b5249c9f5403c0b3f022de155bf0353515a5542214c6887380fb3f2a"
+    },
+    {
+      "batch_index": 3,
+      "part_skus": [
+        "FA299",
+        "FA300",
+        "FA301",
+        "FA303",
+        "FA305",
+        "FA306",
+        "FA307",
+        "FA313",
+        "HH10A",
+        "HNS12",
+        "HNS12A",
+        "HNS13",
+        "HNS18",
+        "HNS20",
+        "HP44",
+        "HP47",
+        "MP11",
+        "MP14",
+        "MP2",
+        "MP24",
+        "MP25",
+        "MP28",
+        "MP3",
+        "MP32",
+        "MP36"
+      ],
+      "rows_sha256": "db1a00e2cf8d867cf5483dedf2caaf4b229a2952132d4c8bfcba07a6759714b2"
+    },
+    {
+      "batch_index": 4,
+      "part_skus": [
+        "MP39",
+        "MP5",
+        "MP6"
+      ],
+      "rows_sha256": "76180bd649aa413c0de0632d6b8885194750a6fb6feda5705ad1852cca0b0406"
+    }
+  ],
+  "batch_inventory_sha256": "52e4e89312cc90a41d84bf017f168e773b4032f639a6c5f605950345033bd133",
+  "catalog_apply_report_sha256": "55f19cc536a9860c6712fb7b3b4b5aa4ab06de28713fe724f296f64b0a7dde9d",
+  "catalog_sha256": "921e773b8294efedb7f5a6f901769dbca3c228bf1640d70a24ebf83ebd26ee1c",
+  "excluded_fields": [
+    "SKU",
+    "MPN",
+    "GTIN",
+    "part_number",
+    "Upsells",
+    "Cross-sells",
+    "price",
+    "stock",
+    "taxonomy",
+    "media"
+  ],
+  "manifest_sha256": "af7b1c3365c5a69cf46422193b976e11527672b1b09e2c6ee74069ff0bb8bcb4",
+  "release_id": "1c6819a97b8f309db1d0959b",
+  "rows": [
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "HMP",
+          "TBMP"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "83702c7b0985d13a019e2d9926fa1135971d5542ba3d2b96a5ec0ea8111f43a5",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "MP39"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "HMP",
+          "TBMP"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "536339194cfc665fc9fdde0f1bf7a11661e79517c2f258892eeb3d028c10b572",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "MP5"
+    },
+    {
+      "after": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "HMP",
+          "TBMP"
+        ]
+      },
+      "approvals": [
+        {
+          "approval_sha256": "72e991b488d5ea931d3cf3bbd06d4015809702562ca2a711127c29abdddc7fbb",
+          "field": "Meta: _dtb_compatible_tool_skus",
+          "workflow": "compatibility"
+        }
+      ],
+      "before": {
+        "Meta: _dtb_compatible_tool_skus": []
+      },
+      "sku": "MP6"
+    }
+  ],
+  "schema_version": 1,
+  "source_refresh": "approved_historical_row"
+}
