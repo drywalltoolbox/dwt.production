@@ -94,6 +94,20 @@ if [[ "$action" == "publish" ]]; then
   printf '%s\n' "$release" > "$private/.next-current-release"
   mv -f "$private/.next-current-release" "$state"
   trap - ERR
+  # Keep one server-side rollback copy: the snapshot created for this publish.
+  # Older release history lives in GitHub and is not retained on SiteGround.
+  for saved in "$snapshots"/*; do
+    [[ -d "$saved" ]] || continue
+    saved_release="${saved##*/}"
+    [[ "$saved_release" =~ ^[a-f0-9]{40}$ && "$saved_release" != "$release" ]] || continue
+    if ! rm -rf -- "$saved"; then
+      echo "Warning: could not remove older staging snapshot: $saved_release" >&2
+    fi
+  done
+  # The published tree is now authoritative; the private upload is disposable.
+  if ! rm -rf -- "$incoming"; then
+    echo "Warning: could not remove published incoming release: $release" >&2
+  fi
   echo "Published staging release: $release"
 else
   [[ "$current" == "$release" ]] ||
@@ -117,5 +131,11 @@ else
   done
   printf '%s\n' "$previous" > "$private/.next-current-release"
   mv -f "$private/.next-current-release" "$state"
+  # The rollback consumed this snapshot. The restored tree is now current, so
+  # retaining the same files again would only duplicate it without enabling
+  # another rollback.
+  if ! rm -rf -- "$backup"; then
+    echo "Warning: could not remove consumed rollback snapshot: $release" >&2
+  fi
   echo "Rolled back staging release: $release"
 fi

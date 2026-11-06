@@ -10,7 +10,7 @@ GitHub Actions deploys the React storefront to `/staging/` only. Production depl
 
 ## Release safety
 
-The release identity is derived from the source SHA, workflow run ID, and run attempt. Before publication, the deploy job checks that identity and the build's SHA-256 manifest, validates the artifact paths, and rechecks the payload after extraction. SiteGround verifies the incoming hashes, locks the publish directory, snapshots the current staging tree, and swaps the manifest and HTML shell last. Rollback remains an explicit operator action.
+The release identity is derived from the source SHA, workflow run ID, and run attempt. Before publication, the deploy job checks that identity and the build's SHA-256 manifest, validates the artifact paths, and rechecks the payload after extraction. SiteGround verifies the incoming hashes, locks the publish directory, snapshots the current staging tree, and swaps the manifest and HTML shell last. After a successful publish, it removes older release snapshots and the just-published incoming upload, retaining only the snapshot for the latest publish. This provides one server-side rollback; the rollback consumes that snapshot. GitHub remains the long-term source/build history, while old versions must be rebuilt or republished from GitHub. Cleanup failures are warnings and do not invalidate an otherwise successful publish.
 
 The public shell and asset probes retry transient connection/TLS failures up to three times. HTTP errors, incorrect content types, missing HTML, or a missing `X-Robots-Tag: noindex` header still fail the workflow. A SiteGround CAPTCHA challenge on the asset probe is reported as unverified; it does not invalidate the independent artifact and server-side hash checks.
 
@@ -31,6 +31,6 @@ The publish and rollback workflows use OpenSSH with `StrictHostKeyChecking=no` a
 
 ## Server-side behavior and limits
 
-`scripts/deployment/staging-release.sh` requires the target to be the `staging` directory immediately under `public_html`; the private release directory must remain outside the webroot. It validates checksums before mutation, acquires an exclusive lock, snapshots the prior tree, and attempts restoration after a partial publish failure. A stale lock is never cleared automatically; inspect it before manual recovery.
+`scripts/deployment/staging-release.sh` requires the target to be the `staging` directory immediately under `public_html`; the private release directory must remain outside the webroot. It validates checksums before mutation, acquires an exclusive lock, snapshots the prior tree, and attempts restoration after a partial publish failure. After successful publication it keeps only that publish's snapshot and deletes the incoming upload; rollback restores and then removes the consumed snapshot. A stale lock is never cleared automatically; inspect it before manual recovery.
 
 `rsync --delete` makes the staging directory a build-owned mirror. Do not keep persistent uploads or operator-edited files there. Old open tabs may need a refresh after hashed assets are replaced. The HTTP check confirms the shell and noindex response; it does not establish visual or end-to-end application correctness.
