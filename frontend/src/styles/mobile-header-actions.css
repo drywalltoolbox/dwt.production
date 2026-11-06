@@ -63,8 +63,8 @@
 
   .header-mobile-menu-controls__back-icon {
     display: block;
-    width: 3em;
-    height: 3em;
+    width: 40px;
+    height: 40px;
     pointer-events: none;
   }
 
@@ -159,8 +159,8 @@
   }
 
   .header-mobile-actions-switcher__close .header-mobile-toggle.hamburger svg {
-    width: 2.5em;
-    height: 2.5em;
+    width: 40px;
+    height: 40px;
   }
 
   .header-mobile-actions-switcher.is-subpage .header-mobile-actions-switcher__commerce {

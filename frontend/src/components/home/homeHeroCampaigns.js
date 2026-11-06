@@ -13,7 +13,7 @@ export const HOME_HERO_CAMPAIGNS = [
     id: 'parts',
     label: 'Parts',
     eyebrow: '',
-    titleLines: ['Find The Right Fix', 'Genuine OEM Parts', 'From Trusted Brands'],
+    titleLines: ['Right Part.', 'No Guesswork.'],
     accentLine: 1,
     description: 'Browse by brand or use our interactive schematics to find the exact replacement part you need.',
     primaryAction: { label: 'Shop Parts', to: '/parts' },

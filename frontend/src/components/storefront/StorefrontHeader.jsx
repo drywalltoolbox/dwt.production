@@ -629,7 +629,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
                   tabIndex={mobileMenuOpen && mobileNavigationDepth > 0 ? 0 : -1}
                 >
                   <svg className="header-mobile-menu-controls__back-icon" viewBox="0 0 32 32" fill="none" aria-hidden="true" focusable="false">
-                    <path d="M15 8 7 16l8 8M7 16h18" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+                    <path d="M15 8 7 16l8 8M7 16h18" stroke="currentColor" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round" />
                   </svg>
                 </button>
               </div>
