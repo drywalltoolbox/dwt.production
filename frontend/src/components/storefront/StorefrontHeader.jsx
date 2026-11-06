@@ -17,7 +17,7 @@ import { getRepairPackageGroups } from '../../data/repairPackages.js';
 import { SCHEMATIC_BRANDS } from '../../data/schematicBrands.js';
 import { getBrandLogo } from '../../utils/brandAssets.js';
 import { resolveCategoryThumbnail } from '../../utils/categoryThumbnailImages.js';
-import HEADER_BACKGROUND_DESKTOP_URL from '../../assets/brand/dtb-header-background-desktop.jpg';
+import HEADER_BACKGROUND_DESKTOP_URL from '../../assets/brand/dtb-header-background-desktop.webp';
 import HEADER_BACKGROUND_MOBILE_URL from '../../assets/brand/dtb-header-background-mobile.jpg';
 import { buildCatalogUrl } from '../../utils/catalogUrlState.js';
 import '../../styles/mobile-hamburger.css';
