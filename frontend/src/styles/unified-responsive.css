@@ -914,3 +914,15 @@ body,
     max-width: 100%;
   }
 }
+
+/* Desktop catalogs keep filtering in the persistent sidebar; the toolbar only
+   needs sorting, view mode, and the result count. */
+@media (min-width: 64rem) {
+  .dtb-listing-toolbar {
+    grid-template-columns: minmax(0, auto) auto minmax(0, 1fr);
+  }
+
+  .dtb-listing-toolbar__pill {
+    display: none;
+  }
+}

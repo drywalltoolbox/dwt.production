@@ -272,7 +272,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
         <div className="dtb-product-card__price-col">
           <div className="dtb-product-card__price-group">
             <strong className={`dtb-product-card__price${hasVariableRange ? ' dtb-product-card__price--range' : ''}`} style={{ color: outOfStock ? 'var(--dtb-muted)' : 'var(--dtb-text)' }} aria-label={hasVariableRange ? `${money(variableMinPrice)} to ${money(variableMaxPrice)}` : undefined}>
-              {hasVariableRange ? <><span className="dtb-product-card__range-min" aria-hidden="true">${money(variableMinPrice)}</span><span className="dtb-product-card__range-max" aria-hidden="true"><span className="dtb-product-card__range-dash">–</span>${money(variableMaxPrice)}</span></> : priceStr}
+              {hasVariableRange ? <><span className="dtb-product-card__range-min" aria-hidden="true">${money(variableMinPrice)}</span><span className="dtb-product-card__range-dash" aria-hidden="true">–</span><span className="dtb-product-card__range-max" aria-hidden="true">${money(variableMaxPrice)}</span></> : priceStr}
             </strong>
             {comparePriceStr ? <span className="dtb-product-card__compare-price">{comparePriceStr}</span> : null}
           </div>
@@ -291,7 +291,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
             data-dtb-card-action="quantity"
           >
             <span>{quantity}</span>
-            <ChevronDown size={15} strokeWidth={2} aria-hidden="true" />
+            <ChevronDown size={14} strokeWidth={1.8} aria-hidden="true" />
           </button>
         </div>}
         {isVariable ? (

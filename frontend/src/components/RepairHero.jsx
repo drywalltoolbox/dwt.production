@@ -38,6 +38,7 @@ export default function RepairHero({
   titleId = 'repair-hero-title',
   media = RESPONSIVE_HERO_MEDIA.repairs,
   homeSlide = false,
+  showGuarantees = !homeSlide,
   isActive = true,
 }) {
   const actionPresentation = ACTION_PRESENTATION[campaign.id];
@@ -83,8 +84,12 @@ export default function RepairHero({
             </Link>
           </div>
         </div>
+        {showGuarantees && (
+          <div className="repair-hero__guarantees">
+            <RepairGuarantees />
+          </div>
+        )}
       </div>
-      {!homeSlide && <RepairGuarantees />}
     </section>
   );
 }

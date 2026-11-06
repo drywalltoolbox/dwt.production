@@ -152,7 +152,7 @@ export const DEFAULT_QUERY = {
   workflowScope: '',
   search: '',
   page: 1,
-  perPage: 24,
+  perPage: 25,
   sort: 'popular',
 };
 
@@ -208,7 +208,7 @@ export function parseCatalogQuery(searchParams, pathParams = {}) {
     workflowScope: searchParams.get('workflow_scope') || '',
     search,
     page: Math.max(1, parseInt(searchParams.get('page') || '1', 10)),
-    perPage: Math.max(1, Math.min(100, parseInt(searchParams.get('per_page') || '24', 10))),
+    perPage: Math.max(1, Math.min(100, parseInt(searchParams.get('per_page') || '25', 10))),
     sort: searchParams.get('sort') || 'popular',
   };
 }

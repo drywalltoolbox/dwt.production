@@ -32,7 +32,7 @@ export default function ProductShoppingCardSkeleton({ variant = 'grid' }) {
   );
 }
 
-export function ProductSkeletonGrid({ count = 24, variant = 'grid', className = '' }) {
+export function ProductSkeletonGrid({ count = 25, variant = 'grid', className = '' }) {
   const classes = [
     'dtb-product-skeleton-grid',
     `dtb-product-skeleton-grid--${variant}`,

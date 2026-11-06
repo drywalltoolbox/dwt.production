@@ -42,7 +42,7 @@ function normalizeImageMeta(rawImage, product = {}, index = 0) {
 
   if (typeof rawImage === 'string') {
     const src = rawImage.trim();
-    if (!src) return null;
+    if (!src || imageIdentity(src) === imageIdentity(PLACEHOLDER_IMAGE)) return null;
     return {
       src,
       srcSet: index === 0 ? (product?.image_srcset || '') : '',
@@ -51,7 +51,7 @@ function normalizeImageMeta(rawImage, product = {}, index = 0) {
   }
 
   const src = String(rawImage.src || rawImage.url || rawImage.full || rawImage.large || '').trim();
-  if (!src) return null;
+  if (!src || imageIdentity(src) === imageIdentity(PLACEHOLDER_IMAGE)) return null;
 
   return {
     src,
@@ -340,7 +340,6 @@ export default function ProductImageGallery({ product }) {
     setLastResetKey(resetKey);
     setCurrentIndex(0);
     setDirection(0);
-    setImgLoaded({});
     setLightbox({ open: false, index: 0, dir: 0 });
     setParentImageMeta([]);
   }

@@ -613,12 +613,12 @@
   background: transparent;
 }
 
-.repair-landing .repair-hero__scrim {
+.repair-landing--services .repair-hero__scrim {
   display: none;
 }
 
 @media (max-width: 47.99rem) {
-  .repair-landing .repair-hero__scrim {
+  .repair-landing--services .repair-hero__scrim {
     display: block;
     background: linear-gradient(180deg, transparent 12%, rgba(2, 10, 25, .4) 35%, rgba(2, 10, 25, .88) 65%, #020b1b 100%);
   }

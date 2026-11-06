@@ -460,7 +460,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   const page = Number(pagination?.page || query.page || 1);
   const totalPages = Math.max(1, Number(pagination?.totalPages || 1));
   const total = Number(pagination?.total || mappedProducts.length || 0);
-  const perPage = Number(pagination?.perPage || query.perPage || 24);
+  const perPage = Number(pagination?.perPage || query.perPage || 25);
   const pageStart = (page - 1) * perPage;
   const desktopHeading = isCategoryProductRoute ? pageHeading : title;
   const unifiedHeadingTitle = isCategoryProductRoute ? selectedCategoryLabel : desktopHeading;
@@ -647,7 +647,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   const toggleBrand = (brand) => {
     const canonical = canonicalBrandLabel(brand);
     const nextBrand = canonicalBrandLabel(selectedBrand) === canonical ? '' : canonical;
-    setQuery({ brands: nextBrand ? [nextBrand] : [], displayCategory: [], category: '', search: query.search || '', sort: query.sort || 'popular', perPage: query.perPage || 24 });
+    setQuery({ brands: nextBrand ? [nextBrand] : [], displayCategory: [], category: '', search: query.search || '', sort: query.sort || 'popular', perPage: query.perPage || 25 });
   };
 
   const toggleDisplayCategory = (displayCategory) => {
@@ -667,7 +667,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
         category: '',
         search: query.search || '',
         sort: query.sort || 'popular',
-        perPage: query.perPage || 24,
+        perPage: query.perPage || 25,
       });
       return;
     }
@@ -941,7 +941,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
 
                 <LoadingCardTransition
                   loading={itemsLoading}
-                  skeleton={<ProductSkeletonGrid count={24} variant={displayMode} />}
+                  skeleton={<ProductSkeletonGrid count={25} variant={displayMode} />}
                   label="Loading catalog products"
                 >
                   {productGridContent}

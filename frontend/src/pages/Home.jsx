@@ -84,7 +84,9 @@ export default function Home() {
 
         <section className="home-commerce-categories dtb-container dtb-container--fluid" aria-label="Shop popular tool categories">
           <div className="storefront-section__head">
-            <h2 className="storefront-section__title">Shop by Tool Type</h2>
+            <div className="storefront-section__head-text">
+              <h2 className="storefront-section__title">Shop by Tool Type</h2>
+            </div>
           </div>
           <StorefrontRail label="Shop popular tool categories" className="dtb-tool-type-rail">
             {HOME_CATEGORIES.map(([name, slug]) => (
@@ -130,7 +132,7 @@ export default function Home() {
                 )}
                 className={`dtb-home-product-section dtb-home-brand-section dtb-home-brand-section--${brandToSlug(brand.brand)}`}
                 viewAllHref={brand.to}
-                viewAllLabel="View All"
+                viewAllLabel="View all"
               >
                 <StorefrontProductRail
                   brand={brand.brand}

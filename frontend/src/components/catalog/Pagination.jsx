@@ -1,4 +1,5 @@
 import './pagination.css';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 /**
  * Stable, accessible catalog pagination.
@@ -70,7 +71,8 @@ export default function Pagination({
               onClick={() => changePage(currentPage - 1)}
               aria-label="Previous page"
             >
-              Previous
+              <ChevronLeft size={16} strokeWidth={2} aria-hidden="true" />
+              <span>Previous</span>
             </button>
 
             <ol className="pgn-11__list">
@@ -100,7 +102,8 @@ export default function Pagination({
               onClick={() => changePage(currentPage + 1)}
               aria-label="Next page"
             >
-              Next
+              <span>Next</span>
+              <ChevronRight size={16} strokeWidth={2} aria-hidden="true" />
             </button>
           </nav>
         )}

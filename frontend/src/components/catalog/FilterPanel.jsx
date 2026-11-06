@@ -173,7 +173,7 @@ export default function FilterPanel({
           />
 
           <Motion.div
-            className="absolute inset-x-0 top-0"
+            className="absolute inset-x-0 top-0 bottom-0 dtb-filter-drawer"
             initial={{ y: reduceMotion ? 0 : -dtbDistance.medium }}
             animate={{ y: 0 }}
             exit={{ y: reduceMotion ? 0 : -dtbDistance.small }}
@@ -185,13 +185,9 @@ export default function FilterPanel({
               aria-modal="true"
               aria-labelledby="dtb-mobile-filter-title"
               tabIndex={-1}
-              className="w-full bg-white shadow-2xl overflow-hidden flex flex-col rounded-b-2xl filter-mobile-sheet-enter"
-              style={{
-                maxHeight: 'min(78dvh, calc(100dvh - var(--header-height) - 0.5rem))',
-                paddingBottom: 'env(safe-area-inset-bottom)',
-              }}
+              className="dtb-filter-drawer__panel w-full bg-white shadow-2xl overflow-hidden flex flex-col filter-mobile-sheet-enter"
             >
-              <div className="sticky top-0 bg-white border-b border-slate-200 px-4 py-4 flex items-center justify-between shrink-0">
+              <div className="dtb-filter-drawer__header sticky top-0 bg-white border-b border-slate-200 px-4 py-4 flex items-center justify-between shrink-0">
                 <h2 id="dtb-mobile-filter-title" className="text-base font-semibold text-slate-900 flex items-center gap-2">
                   <Sliders size={18} />
                   Advanced Filters
@@ -208,7 +204,7 @@ export default function FilterPanel({
                 </button>
               </div>
 
-              <div className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-3 py-3">
+              <div className="dtb-filter-drawer__body flex-1 min-h-0 overflow-y-auto overscroll-contain px-3 py-3">
                 <FilterContent
                   categories={categories}
                   brands={filterBrands}
@@ -228,7 +224,7 @@ export default function FilterPanel({
                 />
               </div>
 
-              <div className="sticky bottom-0 bg-white border-t border-slate-200 px-4 py-3 shrink-0">
+              <div className="dtb-filter-drawer__footer sticky bottom-0 bg-white border-t border-slate-200 px-4 py-3 shrink-0">
                 <div className="flex gap-3">
                   <button
                     onClick={onClearFilters}
@@ -272,7 +268,7 @@ function FilterContent({
 }) {
   return (
     <div
-      className={`overflow-hidden border border-slate-200 bg-white ${
+      className={`${isMobile ? 'dtb-filter-content--mobile' : ''} overflow-hidden border border-slate-200 bg-white ${
         isMobile ? 'rounded-2xl' : 'rounded-2xl shadow-sm'
       }`}
     >

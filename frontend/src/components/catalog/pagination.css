@@ -4,7 +4,7 @@
   --pgn-11-text: #0f172a;
   --pgn-11-muted: #64748b;
   --pgn-11-line: #e2e8f0;
-  --pgn-11-active: #111827;
+  --pgn-11-active: #2255ee;
   --pgn-11-active-fg: #ffffff;
   --pgn-11-ring: var(--color-primary-600, #2255ee);
 
@@ -46,18 +46,19 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: center;
-  gap: 0.75rem;
-  padding-top: 1.25rem;
+  gap: 0.5rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--pgn-11-line);
 }
 
 .pgn-11__list {
   display: flex;
-  flex: 1 1 18rem;
+  flex: 0 1 auto;
   align-items: center;
   justify-content: center;
-  gap: 0.3rem;
+  gap: 0.35rem;
   min-width: 0;
+  max-width: 100%;
   list-style: none;
   margin: 0;
   padding: 0;
@@ -72,17 +73,19 @@
 
 .pgn-11__num,
 .pgn-11__edge {
-  display: inline-grid;
-  place-items: center;
-  min-width: 2.75rem;
-  height: 2.75rem;
-  padding: 0 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0 0.75rem;
   border: 1px solid var(--pgn-11-line);
-  border-radius: 0.625rem;
+  border-radius: 0.75rem;
   background: var(--pgn-11-surface);
   color: var(--pgn-11-text);
   font: inherit;
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
   cursor: pointer;
@@ -91,11 +94,13 @@
 
 .pgn-11__num {
   flex: 0 0 auto;
+  min-width: 2.5rem;
   padding-inline: 0.5rem;
 }
 
 .pgn-11__edge {
-  flex: 0 0 7rem;
+  flex: 0 0 auto;
+  min-width: 6.5rem;
 }
 
 .pgn-11__edge--previous {
@@ -123,7 +128,7 @@
   background: var(--pgn-11-active);
   border-color: var(--pgn-11-active);
   color: var(--pgn-11-active-fg);
-  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.14);
+  box-shadow: 0 4px 12px rgba(34, 85, 238, 0.2);
 }
 
 .pgn-11__edge:disabled {
@@ -134,12 +139,33 @@
 .pgn-11__gap {
   display: grid;
   flex: 0 0 1.5rem;
-  place-items: end center;
+  place-items: center;
   min-width: 1.5rem;
-  height: 2.75rem;
-  padding-bottom: 0.6rem;
+  height: 2.5rem;
   color: var(--pgn-11-muted);
   user-select: none;
+}
+
+@media (max-width: 520px) {
+  .pgn-11__nav {
+    column-gap: 0.375rem;
+    row-gap: 0.5rem;
+  }
+
+  .pgn-11__edge {
+    min-width: 5.5rem;
+    height: 2.375rem;
+    padding-inline: 0.55rem;
+  }
+
+  .pgn-11__num {
+    min-width: 2.375rem;
+    height: 2.375rem;
+  }
+
+  .pgn-11__gap {
+    height: 2.375rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

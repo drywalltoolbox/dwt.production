@@ -356,8 +356,25 @@
   }
 }
 @media (max-width: 767px) {
-  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading button { min-height: 48px; padding: 12px 15px; }
-  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__panel { padding: 5px 15px 15px; }
+  /* Keep mobile PDP details visually continuous with the page, not boxed in
+     by the desktop accordion card treatment. */
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion {
+    margin-top: 18px;
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+    background: transparent;
+  }
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__item + .dtb-pdp-info-accordion__item {
+    border-top: 1px solid rgba(112, 132, 162, .2);
+  }
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading button {
+    min-height: 50px;
+    padding: 12px 2px;
+    background: transparent;
+  }
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading button:hover { background: rgba(34, 85, 238, .035); }
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__panel { padding: 5px 2px 16px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading svg { transition: none; }

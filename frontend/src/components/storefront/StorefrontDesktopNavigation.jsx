@@ -357,23 +357,6 @@ function RepairsPanelRenderer({ item, onNavigate }) {
       <MegaMenuHero item={item} onNavigate={onNavigate} />
       {entries.length > 0 ? (
         <>
-          <div style={{ padding: '18px 32px 12px' }}>
-            <Link
-              to="/repairs/packages"
-              onClick={onNavigate}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '8px',
-                color: 'var(--mega-ink)',
-                fontWeight: 760,
-                textDecoration: 'none',
-              }}
-            >
-              <span>View all repair service packages</span>
-              <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
-            </Link>
-          </div>
           <div className="dtb-mega-menu__brand-grid dtb-mega-menu__brand-grid--repairs">
             {entries.map((entry) => (
               <RepairCard key={entry.to || entry.slug || entry.label} entry={entry} onNavigate={onNavigate} />

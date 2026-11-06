@@ -14,8 +14,8 @@
 
 .home-hero__stage {
   position: relative;
-  height: clamp(32rem, 66vh, 42rem);
-  height: clamp(32rem, 66svh, 42rem);
+  height: clamp(30rem, 58vh, 37rem);
+  height: clamp(30rem, 58svh, 37rem);
   overflow: hidden;
   background: var(--dtb-shell, #081225);
   touch-action: pan-y;
@@ -83,6 +83,44 @@
       transparent 100%
     ),
     linear-gradient(0deg, rgba(3, 10, 24, 0.38) 0%, transparent 26%);
+}
+
+/* Give homepage campaign copy a soft landing zone. The blur and tint begin
+   just beyond center, then feather back toward the text without masking the
+   subject on the right side of the artwork. */
+@media (min-width: 48rem) {
+  .home-hero__slide[data-campaign] .home-hero__repair-surface .repair-hero__scrim {
+    background:
+      linear-gradient(
+        90deg,
+        #020b1b 0%,
+        rgba(3, 14, 33, .99) 12%,
+        rgba(3, 15, 35, .97) 24%,
+        rgba(4, 19, 43, .8) 32%,
+        rgba(5, 24, 53, .5) 41%,
+        rgba(5, 24, 53, .16) 49%,
+        transparent 54%
+      ),
+      linear-gradient(0deg, rgba(2, 9, 22, .7) 0%, rgba(2, 9, 22, .08) 36%, transparent 58%);
+  }
+
+  .home-hero__repair-surface .repair-hero__media::after {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      270deg,
+      transparent 38%,
+      rgba(3, 11, 27, .045) 56%,
+      rgba(3, 11, 27, .12) 78%,
+      rgba(3, 11, 27, .17) 100%
+    );
+    -webkit-backdrop-filter: blur(3px) saturate(.96);
+    backdrop-filter: blur(3px) saturate(.96);
+    -webkit-mask-image: linear-gradient(90deg, #000 0%, #000 28%, rgba(0, 0, 0, .55) 35%, transparent 43%, transparent 100%);
+    mask-image: linear-gradient(90deg, #000 0%, #000 28%, rgba(0, 0, 0, .55) 35%, transparent 43%, transparent 100%);
+    content: '';
+    pointer-events: none;
+  }
 }
 
 .home-hero__content-shell {
@@ -418,8 +456,8 @@
    small-viewport unit; retain the vh fallback for older engines. */
 @media (min-width: 768px) and (max-width: 1024px) {
   .home-hero__stage {
-    height: clamp(30rem, 68vh, 40rem);
-    height: clamp(30rem, 68svh, 40rem);
+    height: clamp(30rem, 64vh, 36rem);
+    height: clamp(30rem, 64svh, 36rem);
   }
 }
 

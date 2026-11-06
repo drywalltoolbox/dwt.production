@@ -5,7 +5,7 @@ import {
   getRenderableCatalogProducts,
 } from '../services/catalogPlatformCache.js';
 
-const DEFAULT_PAGINATION = { page: 1, perPage: 24, total: 0, totalPages: 0 };
+const DEFAULT_PAGINATION = { page: 1, perPage: 25, total: 0, totalPages: 0 };
 
 function normalizeItems(data) {
   return Array.isArray(data?.items) ? data.items : [];
