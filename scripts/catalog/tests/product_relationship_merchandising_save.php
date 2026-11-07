@@ -34,18 +34,16 @@ final class FakeWpdb {
 class WC_Product {}
 
 final class FakeProduct extends WC_Product {
-	public function __construct( public int $id, public array $upsells, public array $cross_sells ) {}
+	public function __construct( public int $id, public array $cross_sells ) {}
 	public function get_id(): int { return $this->id; }
-	public function get_upsell_ids(): array { return $this->upsells; }
 	public function get_cross_sell_ids(): array { return $this->cross_sells; }
 	public function is_type( string $type ): bool { return false; }
-	public function set_upsell_ids( array $ids ): void { $this->upsells = $ids; }
 	public function set_cross_sell_ids( array $ids ): void { $this->cross_sells = $ids; }
 	public function save(): int {
 		if ( 'before' === $GLOBALS['save_mode'] ) {
 			throw new RuntimeException( 'provider or database detail must not be returned to the operator' );
 		}
-		$GLOBALS['product_state'][ $this->id ] = [ $this->upsells, $this->cross_sells ];
+		$GLOBALS['product_state'][ $this->id ] = [ $this->cross_sells ];
 		if ( 'after' === $GLOBALS['save_mode'] ) {
 			throw new RuntimeException( 'write completed before the exception' );
 		}
@@ -69,22 +67,22 @@ function wc_get_products( array $args ): array {
 	$products = array_values( array_filter( array_map( 'wc_get_product', $args['include'] ?? [] ) ) );
 	if ( ! empty( $GLOBALS['concurrent_change_on_target_read'] ) ) {
 		$GLOBALS['concurrent_change_on_target_read'] = false;
-		$GLOBALS['product_state'][1] = [ [ 2, 3 ], [] ];
+		$GLOBALS['product_state'][1] = [ [ 2, 3 ] ];
 	}
 	return $products;
 }
 
 global $wpdb;
 $wpdb = new FakeWpdb();
-$GLOBALS['product_state'] = [ 1 => [ [ 2 ], [] ], 2 => [ [], [] ], 3 => [ [], [] ] ];
+$GLOBALS['product_state'] = [ 1 => [ [ 2 ] ], 2 => [ [] ], 3 => [ [] ] ];
 $GLOBALS['save_mode'] = 'after';
 $GLOBALS['product_batch_reads'] = 0;
 $GLOBALS['concurrent_change_on_target_read'] = false;
 require_once __DIR__ . '/../../../drywalltoolbox/wp/wp-content/mu-plugins/dtb-catalog-platform/Infrastructure/ProductRelationshipRepository.php';
 
-$expected = hash( 'sha256', json_encode( [ [ 2 ], [] ] ) );
-$saved = dtb_product_mapping_repo_save_relationships( 1, [ 3 ], [], $expected );
-if ( is_wp_error( $saved ) || [ [ 3 ], [] ] !== $GLOBALS['product_state'][1] ) {
+$expected = hash( 'sha256', json_encode( [ 2 ] ) );
+$saved = dtb_product_mapping_repo_save_relationships( 1, [ 3 ], $expected );
+if ( is_wp_error( $saved ) || [ [ 3 ] ] !== $GLOBALS['product_state'][1] ) {
 	fwrite( STDERR, "Expected post-write exception with verified read-back to report success.\n" );
 	exit( 1 );
 }
@@ -93,11 +91,11 @@ if ( 1 !== $GLOBALS['product_batch_reads'] ) {
 	exit( 1 );
 }
 
-$GLOBALS['product_state'][1] = [ [ 2 ], [] ];
+$GLOBALS['product_state'][1] = [ [ 2 ] ];
 $GLOBALS['save_mode'] = 'before';
-$expected = hash( 'sha256', json_encode( [ [ 2 ], [] ] ) );
-$failed = dtb_product_mapping_repo_save_relationships( 1, [ 3 ], [], $expected );
-if ( ! is_wp_error( $failed ) || 'relationship_write_failed' !== $failed->get_error_code() || [ [ 2 ], [] ] !== $GLOBALS['product_state'][1] ) {
+$expected = hash( 'sha256', json_encode( [ 2 ] ) );
+$failed = dtb_product_mapping_repo_save_relationships( 1, [ 3 ], $expected );
+if ( ! is_wp_error( $failed ) || 'relationship_write_failed' !== $failed->get_error_code() || [ [ 2 ] ] !== $GLOBALS['product_state'][1] ) {
 	fwrite( STDERR, "Expected pre-write exception with unmatched read-back to return a bounded failure.\n" );
 	exit( 1 );
 }
@@ -106,11 +104,11 @@ if ( 2 !== $GLOBALS['product_batch_reads'] ) {
 	exit( 1 );
 }
 
-$GLOBALS['product_state'][1] = [ [ 2 ], [] ];
+$GLOBALS['product_state'][1] = [ [ 2 ] ];
 $GLOBALS['concurrent_change_on_target_read'] = true;
-$expected = hash( 'sha256', json_encode( [ [ 2 ], [] ] ) );
-$conflict = dtb_product_mapping_repo_save_relationships( 1, [ 3 ], [], $expected );
-if ( ! is_wp_error( $conflict ) || 'relationship_conflict' !== $conflict->get_error_code() || [ [ 2, 3 ], [] ] !== $GLOBALS['product_state'][1] ) {
+$expected = hash( 'sha256', json_encode( [ 2 ] ) );
+$conflict = dtb_product_mapping_repo_save_relationships( 1, [ 3 ], $expected );
+if ( ! is_wp_error( $conflict ) || 'relationship_conflict' !== $conflict->get_error_code() || [ [ 2, 3 ] ] !== $GLOBALS['product_state'][1] ) {
 	fwrite( STDERR, "Expected a concurrent WooCommerce edit during target validation to be detected before the save overwrote it.\n" );
 	exit( 1 );
 }

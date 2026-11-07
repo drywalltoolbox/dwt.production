@@ -366,18 +366,13 @@ def audit(
                 else:
                     other_product_targets += 1
 
-    upsell_sources = 0
     cross_sell_sources = 0
-    merch_overlap = 0
     self_links = 0
     for row in published:
         sku = (row.get("SKU") or "").strip().upper()
-        upsells = set(values(row.get("Upsells") or ""))
         cross_sells = set(values(row.get("Cross-sells") or ""))
-        upsell_sources += bool(upsells)
         cross_sell_sources += bool(cross_sells)
-        merch_overlap += bool(upsells.intersection(cross_sells))
-        self_links += bool(sku and sku in upsells.union(cross_sells))
+        self_links += bool(sku and sku in cross_sells)
 
     proposal_summary = json.loads(proposals_path.read_text(encoding="utf-8")) if proposals_path.exists() else {}
     review_manifests = {
@@ -457,9 +452,7 @@ def audit(
             "unresolved_targets": dict(sorted(fitment_unresolved.items())),
         },
         "merchandising": {
-            "published_products_with_upsells": upsell_sources,
             "published_products_with_cross_sells": cross_sell_sources,
-            "same_target_in_both_fields": merch_overlap,
             "self_link_sources": self_links,
         },
         "schematic_proposals": {

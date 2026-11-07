@@ -3,7 +3,7 @@
   "report_type": "dtb_catalog_product_relationship_tree",
   "mutates_catalog": false,
   "runtime_projection_audited": false,
-  "catalog_sha256": "c81dbebcc5af7a017e91a436d49040d7ec80267dcad8a71d23a557757806bbe5",
+  "catalog_sha256": "8b5e25612f90478c96859969e61a4a7f63910665fea1bcb3693a39bee18f7729",
   "tapetech_matrix_sha256": "37b3560b4c1fb3f4ef0943809b6dc42fdad58e215ab4b1af61f8b4c0e6872752",
   "manufacturer_evidence": {
     "path": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\manufacturer-supported-compatibility-evidence.csv",

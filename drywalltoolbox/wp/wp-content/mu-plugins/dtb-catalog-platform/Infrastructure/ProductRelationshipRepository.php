@@ -333,11 +333,10 @@ function dtb_product_mapping_repo_audit_page( int $after_id = 0, int $max_id = 0
 			'replacement_part_for' => dtb_product_mapping_audit_skus( $product_id, DTB_ProductMeta::REPLACEMENT_PART_FOR ),
 			'legacy_compatible_tools' => $native( '_dtb_compatible_tools' ),
 			'legacy_compatible_parts' => $native( '_dtb_compatible_parts' ),
-			'upsell_ids' => $native( '_upsell_ids' ),
 			'crosssell_ids' => $native( '_crosssell_ids' ),
 		];
 		$truncated = false;
-		foreach ( [ 'compatible_tool_skus', 'replacement_part_for', 'legacy_compatible_tools', 'legacy_compatible_parts', 'upsell_ids', 'crosssell_ids' ] as $key ) {
+		foreach ( [ 'compatible_tool_skus', 'replacement_part_for', 'legacy_compatible_tools', 'legacy_compatible_parts', 'crosssell_ids' ] as $key ) {
 			if ( count( $fields[ $key ] ) > 200 ) {
 				$fields[ $key ] = array_slice( $fields[ $key ], 0, 200 );
 				$truncated = true;
@@ -373,7 +372,7 @@ function dtb_product_mapping_repo_audit_page( int $after_id = 0, int $max_id = 0
 }
 
 /**
- * Get a product's upsells and cross-sells.
+ * Get a product's cross-sells.
  *
  * @param int $product_id Product ID.
  * @return array|WP_Error
@@ -384,11 +383,10 @@ function dtb_product_mapping_repo_get_relationships( int $product_id ) {
 		return new WP_Error( 'product_missing', 'Product not found.' );
 	}
 
-	$upsell_ids = array_values( array_map( 'absint', $product->get_upsell_ids() ) );
 	$crosssell_ids = array_values( array_map( 'absint', $product->get_cross_sell_ids() ) );
 	$family_related = dtb_product_mapping_repo_get_family_related_products( $product );
 	$category_related = dtb_product_mapping_repo_get_category_related_products( $product );
-	$target_ids = array_values( array_unique( array_merge( $upsell_ids, $crosssell_ids ) ) );
+	$target_ids = $crosssell_ids;
 	$targets_by_id = [];
 	if ( $target_ids ) {
 		$targets = wc_get_products(
@@ -426,7 +424,6 @@ function dtb_product_mapping_repo_get_relationships( int $product_id ) {
 		'product_id' => $product_id,
 		'name'       => $product->get_name(),
 		'sku'        => $product->get_sku(),
-		'upsells'    => $format( $upsell_ids ),
 		'crosssells' => $format( $crosssell_ids ),
 		'family_related' => array_map(
 			static function ( WC_Product $related ): array {
@@ -454,7 +451,7 @@ function dtb_product_mapping_repo_get_relationships( int $product_id ) {
 			},
 			$category_related
 		),
-		'version'    => hash( 'sha256', wp_json_encode( [ $upsell_ids, $crosssell_ids ] ) ),
+		'version'    => hash( 'sha256', wp_json_encode( $crosssell_ids ) ),
 	];
 }
 
@@ -564,14 +561,13 @@ function dtb_product_mapping_repo_get_category_related_products( WC_Product $sou
 }
 
 /**
- * Save upsell/cross-sell relationships.
+ * Save cross-sell relationships.
  *
  * @param int          $product_id Product ID.
- * @param string|array $upsell_raw Upsell IDs raw input.
  * @param string|array $cross_raw Cross-sell IDs raw input.
  * @return array|WP_Error
  */
-function dtb_product_mapping_repo_save_relationships( int $product_id, $upsell_raw, $cross_raw, string $expected_version = '' ) {
+function dtb_product_mapping_repo_save_relationships( int $product_id, $cross_raw, string $expected_version = '' ) {
 	if ( $product_id <= 0 ) {
 		return new WP_Error( 'product_missing', 'Product not found.' );
 	}
@@ -583,18 +579,18 @@ function dtb_product_mapping_repo_save_relationships( int $product_id, $upsell_r
 		return $lock;
 	}
 	try {
-		return dtb_product_mapping_repo_save_relationships_locked( $product_id, $upsell_raw, $cross_raw, $expected_version );
+		return dtb_product_mapping_repo_save_relationships_locked( $product_id, $cross_raw, $expected_version );
 	} finally {
 		dtb_product_mapping_release_lock( $lock );
 	}
 }
 
-function dtb_product_mapping_repo_save_relationships_locked( int $product_id, $upsell_raw, $cross_raw, string $expected_version ) {
+function dtb_product_mapping_repo_save_relationships_locked( int $product_id, $cross_raw, string $expected_version ) {
 	$product = wc_get_product( $product_id );
 	if ( ! $product || $product instanceof WC_Product_Variation || 'publish' !== get_post_status( $product_id ) ) {
 		return new WP_Error( 'product_missing', 'Product not found.' );
 	}
-	$current_version = hash( 'sha256', wp_json_encode( [ array_values( array_map( 'absint', $product->get_upsell_ids() ) ), array_values( array_map( 'absint', $product->get_cross_sell_ids() ) ) ] ) );
+	$current_version = hash( 'sha256', wp_json_encode( array_values( array_map( 'absint', $product->get_cross_sell_ids() ) ) ) );
 	if ( ! hash_equals( $current_version, $expected_version ) ) {
 		return new WP_Error( 'relationship_conflict', 'Relationships changed since they were loaded. Refresh and review the current selections.' );
 	}
@@ -629,15 +625,11 @@ function dtb_product_mapping_repo_save_relationships_locked( int $product_id, $u
 		}
 		return $ids;
 	};
-	$upsells = $parse_ids( $upsell_raw );
 	$crosses = $parse_ids( $cross_raw );
-	if ( is_wp_error( $upsells ) || is_wp_error( $crosses ) ) {
-		return is_wp_error( $upsells ) ? $upsells : $crosses;
+	if ( is_wp_error( $crosses ) ) {
+		return $crosses;
 	}
-	if ( array_intersect( $upsells, $crosses ) ) {
-		return new WP_Error( 'relationship_type_conflict', 'A product cannot be both an upsell and a cross-sell for the same item.' );
-	}
-	$target_ids = array_values( array_unique( array_merge( $upsells, $crosses ) ) );
+	$target_ids = $crosses;
 	$targets_by_id = [];
 	if ( $target_ids ) {
 		try {
@@ -686,14 +678,13 @@ function dtb_product_mapping_repo_save_relationships_locked( int $product_id, $u
 	if ( ! $fresh_product || $fresh_product instanceof WC_Product_Variation || 'publish' !== get_post_status( $product_id ) ) {
 		return new WP_Error( 'product_missing', 'Product not found.' );
 	}
-	$fresh_version = hash( 'sha256', wp_json_encode( [ array_values( array_map( 'absint', $fresh_product->get_upsell_ids() ) ), array_values( array_map( 'absint', $fresh_product->get_cross_sell_ids() ) ) ] ) );
+	$fresh_version = hash( 'sha256', wp_json_encode( array_values( array_map( 'absint', $fresh_product->get_cross_sell_ids() ) ) ) );
 	if ( ! hash_equals( $fresh_version, $expected_version ) ) {
 		return new WP_Error( 'relationship_conflict', 'Relationships changed while the selections were being validated. Refresh and review the current selections.' );
 	}
 	$product = $fresh_product;
 	$save_error = null;
 	try {
-		$product->set_upsell_ids( $upsells );
 		$product->set_cross_sell_ids( $crosses );
 		$product->save();
 	} catch ( Throwable $error ) {
@@ -716,8 +707,8 @@ function dtb_product_mapping_repo_save_relationships_locked( int $product_id, $u
 		}
 		return new WP_Error( 'relationship_write_unverified', 'WooCommerce could not verify the saved relationships. Reload the product before retrying.' );
 	}
-	if ( ! $verified || array_values( $verified->get_upsell_ids() ) !== $upsells || array_values( $verified->get_cross_sell_ids() ) !== $crosses ) {
+	if ( ! $verified || array_values( $verified->get_cross_sell_ids() ) !== $crosses ) {
 		return new WP_Error( 'relationship_write_failed', $save_error ? 'WooCommerce reported a save error and the requested relationships were not verified. Reload the product before retrying.' : 'The saved relationships could not be verified. Reload before retrying.' );
 	}
-	return [ 'message' => 'Relationships saved.', 'version' => hash( 'sha256', wp_json_encode( [ $upsells, $crosses ] ) ) ];
+	return [ 'message' => 'Cross-sells saved.', 'version' => hash( 'sha256', wp_json_encode( $crosses ) ) ];
 }

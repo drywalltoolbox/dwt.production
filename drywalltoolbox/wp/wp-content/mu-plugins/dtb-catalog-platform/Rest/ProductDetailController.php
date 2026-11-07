@@ -154,9 +154,9 @@ final class DTB_ProductDetailController {
 			return self::get_included_products( $product_id, self::get_included_skus( $product_id ) );
 		}
 
-		// WooCommerce's generated related products are category-driven and can be unstable.
-		// Only operator-curated upsells qualify for this product-detail rail.
-		$candidate_ids = $source_product->get_upsell_ids();
+		// Keep upsells out of the storefront while cross-sells are the launch focus.
+		// This rail reads only the operator-curated WooCommerce cross-sell mapping.
+		$candidate_ids = $source_product->get_cross_sell_ids();
 		$candidate_ids = array_values( array_unique( array_filter( array_map( 'absint', $candidate_ids ) ) ) );
 		$visible_ids   = [];
 

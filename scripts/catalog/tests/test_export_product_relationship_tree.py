@@ -10,7 +10,7 @@ CATALOG_FIELDS = [
     "SKU", "Name", "Type", "Published", "Visibility in catalog", "Parent",
     "Meta: _dtb_product_kind", "Meta: _dtb_is_parts",
     "Meta: _dtb_compatible_tool_skus", "Meta: _dtb_replacement_part_for",
-    "Upsells", "Cross-sells", "Meta: _dtb_brand_label",
+    "Cross-sells", "Meta: _dtb_brand_label",
     "Meta: _dtb_brand_key", "Meta: _dtb_brand_label", "Meta: product_family", "Meta: series", "Meta: model", "Categories",
     "Meta: _dtb_display_category_key",
     "Meta: _includes_0_sku", "Meta: _includes_0_name",
@@ -32,11 +32,11 @@ def test_exports_distinct_exact_edges_and_complete_entity_coverage(tmp_path: Pat
     catalog = tmp_path / "catalog.csv"
     tapetech = tmp_path / "tapetech.csv"
     rows = [
-        {"SKU": "PART-1", "Name": "Part", "Type": "simple", "Published": "1", "Visibility in catalog": "visible", "Parent": "", "Meta: _dtb_product_kind": "part", "Meta: _dtb_is_parts": "1", "Meta: _dtb_compatible_tool_skus": '["TOOL-1"]', "Meta: _dtb_replacement_part_for": "", "Upsells": "", "Cross-sells": "", "Meta: _dtb_brand_label": "TapeTech", "Meta: _includes_0_sku": "", "Meta: _includes_0_name": ""},
-        {"SKU": "TOOL-1", "Name": "Tool", "Type": "simple", "Published": "1", "Visibility in catalog": "visible", "Parent": "", "Meta: _dtb_product_kind": "tool", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Upsells": "", "Cross-sells": "", "Meta: _dtb_brand_label": "TapeTech", "Meta: _includes_0_sku": "", "Meta: _includes_0_name": ""},
-        {"SKU": "KIT-1", "Name": "Kit", "Type": "variable", "Published": "1", "Visibility in catalog": "visible", "Parent": "", "Meta: _dtb_product_kind": "toolset", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Upsells": "", "Cross-sells": "", "Meta: _dtb_brand_label": "TapeTech", "Meta: _includes_0_sku": "", "Meta: _includes_0_name": ""},
-        {"SKU": "KIT-1-A", "Name": "Kit option A", "Type": "variation", "Published": "1", "Visibility in catalog": "visible", "Parent": "KIT-1", "Meta: _dtb_product_kind": "toolset", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Upsells": "", "Cross-sells": "", "Meta: _dtb_brand_label": "TapeTech", "Meta: _includes_0_sku": "TOOL-1", "Meta: _includes_0_name": "1x Tool"},
-        {"SKU": "UNMAPPED", "Name": "No relationships", "Type": "simple", "Published": "1", "Visibility in catalog": "visible", "Parent": "", "Meta: _dtb_product_kind": "tool", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Upsells": "", "Cross-sells": "", "Meta: _dtb_brand_label": "TapeTech", "Meta: _includes_0_sku": "", "Meta: _includes_0_name": ""},
+        {"SKU": "PART-1", "Name": "Part", "Type": "simple", "Published": "1", "Visibility in catalog": "visible", "Parent": "", "Meta: _dtb_product_kind": "part", "Meta: _dtb_is_parts": "1", "Meta: _dtb_compatible_tool_skus": '["TOOL-1"]', "Meta: _dtb_replacement_part_for": "", "Cross-sells": "", "Meta: _dtb_brand_label": "TapeTech", "Meta: _includes_0_sku": "", "Meta: _includes_0_name": ""},
+        {"SKU": "TOOL-1", "Name": "Tool", "Type": "simple", "Published": "1", "Visibility in catalog": "visible", "Parent": "", "Meta: _dtb_product_kind": "tool", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Cross-sells": "", "Meta: _dtb_brand_label": "TapeTech", "Meta: _includes_0_sku": "", "Meta: _includes_0_name": ""},
+        {"SKU": "KIT-1", "Name": "Kit", "Type": "variable", "Published": "1", "Visibility in catalog": "visible", "Parent": "", "Meta: _dtb_product_kind": "toolset", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Cross-sells": "", "Meta: _dtb_brand_label": "TapeTech", "Meta: _includes_0_sku": "", "Meta: _includes_0_name": ""},
+        {"SKU": "KIT-1-A", "Name": "Kit option A", "Type": "variation", "Published": "1", "Visibility in catalog": "visible", "Parent": "KIT-1", "Meta: _dtb_product_kind": "toolset", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Cross-sells": "", "Meta: _dtb_brand_label": "TapeTech", "Meta: _includes_0_sku": "TOOL-1", "Meta: _includes_0_name": "1x Tool"},
+        {"SKU": "UNMAPPED", "Name": "No relationships", "Type": "simple", "Published": "1", "Visibility in catalog": "visible", "Parent": "", "Meta: _dtb_product_kind": "tool", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Cross-sells": "", "Meta: _dtb_brand_label": "TapeTech", "Meta: _includes_0_sku": "", "Meta: _includes_0_name": ""},
     ]
     write_csv(catalog, CATALOG_FIELDS, rows)
     write_csv(tapetech, ["PartNumber", "Description", "Number of Tools Where Part Is Used", "TOOL-1"], [

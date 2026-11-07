@@ -18,8 +18,11 @@ $method = substr( $source, $start, $end - $start );
 if ( str_contains( $method, 'wc_get_related_products(' ) ) {
 	throw new RuntimeException( 'Generated WooCommerce related products must not enter the curated PDP rail.' );
 }
-if ( ! str_contains( $method, '$candidate_ids = $source_product->get_upsell_ids();' ) ) {
-	throw new RuntimeException( 'Non-toolset PDP recommendations must use explicitly curated WooCommerce upsells.' );
+if ( ! str_contains( $method, '$candidate_ids = $source_product->get_cross_sell_ids();' ) ) {
+	throw new RuntimeException( 'Non-toolset PDP recommendations must use explicitly curated WooCommerce cross-sells.' );
+}
+if ( str_contains( $method, 'get_upsell_ids' ) ) {
+	throw new RuntimeException( 'Upsell relationships must not be read for PDP recommendations.' );
 }
 if ( ! str_contains( $method, "preg_match( '/^_includes_(\\d+)_sku$/', \$key, \$matches )" ) ) {
 	throw new RuntimeException( 'Toolset PDP recommendations must retain exact included-SKU resolution.' );

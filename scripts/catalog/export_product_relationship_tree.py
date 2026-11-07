@@ -40,7 +40,7 @@ COVERAGE_FIELDS = [
     "visibility", "variation_parent_count", "variation_child_count",
     "fitment_outgoing_count", "fitment_incoming_count", "family_related_count",
     "category_related_count",
-    "bundle_components_count", "included_in_bundle_count", "pdp_upsell_count",
+    "bundle_components_count", "included_in_bundle_count",
     "cart_cross_sell_count", "recorded_relationship_count", "coverage_state",
 ]
 FAMILY_FIELDS = [
@@ -97,7 +97,7 @@ def sku_list(raw: str) -> list[str]:
 
 def load_catalog(path: Path) -> tuple[list[dict[str, str]], dict[str, dict[str, str]]]:
     fields, rows = read_csv(path)
-    required = {"SKU", "Name", "Type", "Published", "Visibility in catalog", "Parent", KIND, IS_PART, COMPATIBLE, REPLACEMENT, "Upsells", "Cross-sells", "Meta: _dtb_brand_key", "Meta: _dtb_display_category_key"}
+    required = {"SKU", "Name", "Type", "Published", "Visibility in catalog", "Parent", KIND, IS_PART, COMPATIBLE, REPLACEMENT, "Cross-sells", "Meta: _dtb_brand_key", "Meta: _dtb_display_category_key"}
     if not required.issubset(fields):
         raise ValueError(f"Catalog missing required columns: {sorted(required - set(fields))}")
     by_sku: dict[str, dict[str, str]] = {}
@@ -298,9 +298,9 @@ def build(
                     note = str(row.get(name_field) or "").strip()
                     add_edge(row, "kit_contains", target_sku, field, index, evidence_status="canonical_structured_bundle_content", evidence_source="Canonical toolset included-SKU metadata", evidence_ref=f"products/launch/official/dtb_official_catalog.csv:{sku}", evidence_note=note)
 
-        for field, relationship in (("Upsells", "pdp_upsell"), ("Cross-sells", "cart_cross_sell")):
-            for index, target_sku in enumerate(sku_list(row.get(field, ""))):
-                add_edge(row, relationship, target_sku, field, str(index + 1), evidence_status="canonical_merchandising_recorded", evidence_source="Canonical catalog merchandising field", evidence_ref=f"products/launch/official/dtb_official_catalog.csv:{sku}", evidence_note="Directional merchandising placement; not a fitment claim.")
+        field = "Cross-sells"
+        for index, target_sku in enumerate(sku_list(row.get(field, ""))):
+            add_edge(row, "cart_cross_sell", target_sku, field, str(index + 1), evidence_status="canonical_merchandising_recorded", evidence_source="Canonical catalog merchandising field", evidence_ref=f"products/launch/official/dtb_official_catalog.csv:{sku}", evidence_note="Directional merchandising placement; not a fitment claim.")
 
     # Family discovery uses the canonical brand, kind, and family assignment.
     # Series and category differences are allowed: these are broad family
@@ -449,8 +449,6 @@ def build(
         elif relation == "kit_contains":
             by_coverage[owner]["bundle_components_count"] += 1
             by_coverage[edge["target_sku"].upper()]["included_in_bundle_count"] += 1
-        elif relation == "pdp_upsell":
-            by_coverage[owner]["pdp_upsell_count"] += 1
         elif relation == "cart_cross_sell":
             by_coverage[owner]["cart_cross_sell_count"] += 1
         elif relation == "variation_of":

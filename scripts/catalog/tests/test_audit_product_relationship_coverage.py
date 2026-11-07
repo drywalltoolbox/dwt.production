@@ -28,7 +28,6 @@ def test_canonical_audit_reports_raw_target_sku_identity_issues(tmp_path: Path) 
         "Meta: _dtb_is_parts",
         "Meta: _dtb_compatible_tool_skus",
         "Meta: _dtb_replacement_part_for",
-        "Upsells",
         "Cross-sells",
     ]
     rows = [
@@ -42,7 +41,6 @@ def test_canonical_audit_reports_raw_target_sku_identity_issues(tmp_path: Path) 
             "Meta: _dtb_is_parts": "1",
             "Meta: _dtb_compatible_tool_skus": '["tool-1", " TOOL-1 ", "TOOL-2"]',
             "Meta: _dtb_replacement_part_for": '[""]',
-            "Upsells": "",
             "Cross-sells": "",
         },
         {
@@ -55,7 +53,6 @@ def test_canonical_audit_reports_raw_target_sku_identity_issues(tmp_path: Path) 
             "Meta: _dtb_is_parts": "0",
             "Meta: _dtb_compatible_tool_skus": "",
             "Meta: _dtb_replacement_part_for": "",
-            "Upsells": "",
             "Cross-sells": "",
         },
         {
@@ -68,7 +65,6 @@ def test_canonical_audit_reports_raw_target_sku_identity_issues(tmp_path: Path) 
             "Meta: _dtb_is_parts": "0",
             "Meta: _dtb_compatible_tool_skus": "",
             "Meta: _dtb_replacement_part_for": "",
-            "Upsells": "",
             "Cross-sells": "",
         },
         {
@@ -81,7 +77,6 @@ def test_canonical_audit_reports_raw_target_sku_identity_issues(tmp_path: Path) 
             "Meta: _dtb_is_parts": "1",
             "Meta: _dtb_compatible_tool_skus": "",
             "Meta: _dtb_replacement_part_for": "",
-            "Upsells": "",
             "Cross-sells": "",
         },
     ]
@@ -143,13 +138,12 @@ def test_coverage_pipeline_matches_missing_parts_to_current_review_candidates(tm
         "SKU", "Type", "Published", "Visibility in catalog", "Brands",
         "Meta: _dtb_product_kind", "Meta: _dtb_is_parts",
         "Meta: _dtb_compatible_tool_skus", "Meta: _dtb_replacement_part_for",
-        "Upsells", "Cross-sells",
+        "Cross-sells",
     ]
     part_one = {
         "SKU": "PART-1", "Type": "simple", "Published": "1", "Visibility in catalog": "visible",
         "Brands": "Test", "Meta: _dtb_product_kind": "part", "Meta: _dtb_is_parts": "1",
-        "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "",
-        "Upsells": "", "Cross-sells": "",
+        "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Cross-sells": "",
     }
     part_two = {**part_one, "SKU": "PART-2"}
     tool = {**part_one, "SKU": "TOOL-1", "Meta: _dtb_product_kind": "tool", "Meta: _dtb_is_parts": "0"}
@@ -211,12 +205,12 @@ def test_coverage_pipeline_matches_missing_parts_to_current_review_candidates(tm
 
 
 def test_variation_part_owners_are_counted_separately_and_keep_exact_identity(tmp_path: Path) -> None:
-    fields = ["SKU", "Type", "Published", "Parent", "Visibility in catalog", "Brands", "Meta: _dtb_product_kind", "Meta: _dtb_is_parts", "Meta: _dtb_compatible_tool_skus", "Meta: _dtb_replacement_part_for", "Upsells", "Cross-sells"]
+    fields = ["SKU", "Type", "Published", "Parent", "Visibility in catalog", "Brands", "Meta: _dtb_product_kind", "Meta: _dtb_is_parts", "Meta: _dtb_compatible_tool_skus", "Meta: _dtb_replacement_part_for", "Cross-sells"]
     rows = [
-        {"SKU": "PART-FAMILY", "Type": "variable", "Published": "1", "Visibility in catalog": "visible", "Brands": "Test", "Meta: _dtb_product_kind": "part", "Meta: _dtb_is_parts": "1", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Upsells": "", "Cross-sells": ""},
-        {"SKU": "PART-CHILD-A", "Type": "variation", "Published": "1", "Parent": "PART-FAMILY", "Visibility in catalog": "visible", "Brands": "Test", "Meta: _dtb_product_kind": "", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Upsells": "", "Cross-sells": ""},
-        {"SKU": "PART-CHILD-B", "Type": "variation", "Published": "1", "Parent": "PART-FAMILY", "Visibility in catalog": "hidden", "Brands": "Test", "Meta: _dtb_product_kind": "", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": '["TOOL-1"]', "Meta: _dtb_replacement_part_for": "", "Upsells": "", "Cross-sells": ""},
-        {"SKU": "TOOL-1", "Type": "simple", "Published": "1", "Visibility in catalog": "visible", "Brands": "Test", "Meta: _dtb_product_kind": "tool", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Upsells": "", "Cross-sells": ""},
+        {"SKU": "PART-FAMILY", "Type": "variable", "Published": "1", "Visibility in catalog": "visible", "Brands": "Test", "Meta: _dtb_product_kind": "part", "Meta: _dtb_is_parts": "1", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Cross-sells": ""},
+        {"SKU": "PART-CHILD-A", "Type": "variation", "Published": "1", "Parent": "PART-FAMILY", "Visibility in catalog": "visible", "Brands": "Test", "Meta: _dtb_product_kind": "", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Cross-sells": ""},
+        {"SKU": "PART-CHILD-B", "Type": "variation", "Published": "1", "Parent": "PART-FAMILY", "Visibility in catalog": "hidden", "Brands": "Test", "Meta: _dtb_product_kind": "", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": '["TOOL-1"]', "Meta: _dtb_replacement_part_for": "", "Cross-sells": ""},
+        {"SKU": "TOOL-1", "Type": "simple", "Published": "1", "Visibility in catalog": "visible", "Brands": "Test", "Meta: _dtb_product_kind": "tool", "Meta: _dtb_is_parts": "0", "Meta: _dtb_compatible_tool_skus": "", "Meta: _dtb_replacement_part_for": "", "Cross-sells": ""},
     ]
     catalog_path = tmp_path / "catalog.csv"
     with catalog_path.open("w", encoding="utf-8", newline="") as handle:

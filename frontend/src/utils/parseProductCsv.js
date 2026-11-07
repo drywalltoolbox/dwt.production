@@ -6,7 +6,7 @@
  *
  * The CSV uses:
  *   • RFC-4180 quoting — fields containing commas/newlines are wrapped in ""
- *   • Pipe ( | ) as a multi-value separator for Images, Tags, Upsells, etc.
+ *   • Pipe ( | ) as a multi-value separator for supported multi-value fields.
  *   • A "Categories" column whose leaf name maps to our internal category keys
  *   • An "Attribute 1 name / value" pair for the Brand
  *   • A "Meta: upc" column for UPC barcodes
@@ -94,7 +94,10 @@ export function parseCsvText(csvText) {
     const values = tokenizeLine(line);
     const row = {};
     headers.forEach((h, idx) => {
-      row[h.trim()] = (values[idx] || '').trim();
+      const header = h.trim();
+      // Upsell relationships are not part of the storefront CSV data model.
+      if (/^(?:meta:\s*)?_?upsell(?:s|_ids)?$/i.test(header)) return;
+      row[header] = (values[idx] || '').trim();
     });
     rows.push(row);
   }

@@ -388,8 +388,9 @@
   }
 
   .dtb-product-card:not(.dtb-product-card--variable) .dtb-product-card__price {
-    font-size: clamp(.875rem, 3.5vw, 1rem);
-    line-height: 1.2;
+    font-size: clamp(1.08rem, 4.8vw, 1.22rem);
+    line-height: 1.12;
+    font-weight: 850;
     font-variant-numeric: tabular-nums;
     max-width: none;
     overflow-wrap: normal;
@@ -420,7 +421,8 @@
   }
 
   .dtb-product-card--variable .dtb-product-card__price {
-    font-size: clamp(1rem, 4.4vw, 1.1rem);
+    font-size: clamp(1.08rem, 4.8vw, 1.22rem);
+    font-weight: 850;
     letter-spacing: -.035em;
     line-height: 1.05;
     white-space: pre-line;
@@ -428,6 +430,14 @@
 }
 
 @media (min-width: 768px) {
+  .dtb-product-card--grid .dtb-product-card__price,
+  .dtb-product-card--rail .dtb-product-card__price,
+  .dtb-product-card--list .dtb-product-card__price {
+    font-size: clamp(1.08rem, 1.18vw, 1.28rem);
+    font-weight: 850;
+    line-height: 1.12;
+  }
+
   .dtb-product-card--variable .dtb-product-card__price {
     white-space: pre-line;
     line-height: 1.05;
@@ -653,8 +663,9 @@
     row-gap:2px;
   }
   .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__price {
-    font-size:clamp(.82rem, 3.8vw, .96rem);
-    line-height:1.15;
+    font-size:clamp(1rem, 4.4vw, 1.14rem);
+    font-weight:850;
+    line-height:1.12;
   }
   .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__compare-price {
     font-size:clamp(.62rem, 2.8vw, .7rem);

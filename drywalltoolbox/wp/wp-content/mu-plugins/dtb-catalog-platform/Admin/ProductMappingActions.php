@@ -73,7 +73,7 @@ function dtb_ajax_pm_relationship_audit_page(): void {
 }
 
 /**
- * AJAX: Get upsell/cross-sell relationships.
+ * AJAX: Get product cross-sell relationships.
  */
 function dtb_ajax_pm_get_relationships() {
 	dtb_product_mapping_validate_ajax_request();
@@ -92,7 +92,7 @@ function dtb_ajax_pm_get_relationships() {
 }
 
 /**
- * AJAX: Save upsell/cross-sell relationships.
+ * AJAX: Save product cross-sell relationships.
  */
 function dtb_ajax_pm_save_relationships() {
 	dtb_product_mapping_validate_ajax_request();
@@ -104,7 +104,6 @@ function dtb_ajax_pm_save_relationships() {
 
 	$result = dtb_product_mapping_save_relationships(
 		$product_id,
-		$_POST['upsell_ids'] ?? '',
 		$_POST['crosssell_ids'] ?? '',
 		sanitize_text_field( wp_unslash( $_POST['version'] ?? '' ) )
 	);

@@ -21,7 +21,7 @@ EXPECTED_COLUMNS = (
     "Low stock amount", "Backorders allowed?", "Sold individually?", "Weight (lbs)",
     "Length (in)", "Width (in)", "Height (in)", "Allow customer reviews?", "Purchase note",
     "Sale price", "Regular price", "Categories", "Tags", "Shipping class", "Images",
-    "Download limit", "Download expiry days", "Parent", "Grouped products", "Upsells",
+    "Download limit", "Download expiry days", "Parent", "Grouped products",
     "Cross-sells", "External URL", "Button text", "Position", "Cost of goods", "Brands", "Attribute 1 name",
     "Attribute 1 value(s)", "Attribute 1 visible", "Attribute 1 global", "Attribute 1 default",
     "Meta: schema_brand", "Meta: schema_mpn", "Meta: _dtb_manufacturer_sku", "Meta: _dtb_mpn",

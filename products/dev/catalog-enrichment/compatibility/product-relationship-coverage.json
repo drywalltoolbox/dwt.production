@@ -51,17 +51,18 @@
     "unresolved_targets": {}
   },
   "catalog_rows": 1133,
-  "catalog_sha256": "c81dbebcc5af7a017e91a436d49040d7ec80267dcad8a71d23a557757806bbe5",
+  "catalog_sha256": "8b5e25612f90478c96859969e61a4a7f63910665fea1bcb3693a39bee18f7729",
   "coverage_pipeline": {
     "candidate_owner_count_by_manifest": {
       "documented_evidence": 0,
-      "schematic": 1
+      "schematic": 0
     },
     "interpretation": "A review candidate is a current digest-bound proposal, not approved fitment. An uncovered part has no current candidate in the audited manifests; it is not evidence of incompatibility.",
-    "missing_fitment_parts_with_current_review_candidate": 1,
-    "missing_fitment_parts_without_current_review_candidate": 197,
+    "missing_fitment_parts_with_current_review_candidate": 0,
+    "missing_fitment_parts_without_current_review_candidate": 198,
     "published_parts_missing_fitment": 198,
     "uncovered_part_skus": [
+      "050064F",
       "055007",
       "114CDWS5",
       "114CDWS8M",
@@ -322,7 +323,7 @@
     "without_candidate_by_brand": {
       "Columbia Tools": 147,
       "Platinum Drywall Tools": 17,
-      "TapeTech": 24,
+      "TapeTech": 25,
       "USG Sheetrock Tools": 9
     }
   },
@@ -334,8 +335,6 @@
   "interpretation": "Missing relationship metadata means no structured relationship is recorded; it does not mean incompatible.",
   "merchandising": {
     "published_products_with_cross_sells": 21,
-    "published_products_with_upsells": 0,
-    "same_target_in_both_fields": 0,
     "self_link_sources": 0
   },
   "review_manifests": {
@@ -361,10 +360,8 @@
     },
     "schematic": {
       "candidate_target_identity_issues": {},
-      "catalog_digest_matches": true,
-      "current_candidate_owner_skus": [
-        "050064F"
-      ],
+      "catalog_digest_matches": false,
+      "current_candidate_owner_skus": [],
       "evidence_references": 4,
       "exact_variation_target_edges": 1,
       "invalid_approved_rows": 0,
@@ -381,7 +378,7 @@
         "needs_review": 1
       },
       "sha256": "f441dc12426372b5787e1a558647d10d307486418221cb67c48f2af10400664d",
-      "stale_rows": 0,
+      "stale_rows": 1,
       "unsupported_mutations": 0,
       "variable_parent_target_edges": 0
     }

@@ -465,7 +465,7 @@ def direct_findings(
                     current=include_sku, source="production-readiness audit",
                     detail=f"Included component target is absent; paired name={clean(row.get(name_field))!r}.",
                 ))
-        for field in ("Grouped products", "Upsells", "Cross-sells"):
+        for field in ("Grouped products", "Cross-sells"):
             raw_targets = clean(row.get(field))
             if not raw_targets:
                 continue
