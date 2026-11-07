@@ -1,7 +1,7 @@
 import { useState, useEffect, useMemo, useRef } from 'react';
 import { m as Motion, useReducedMotion } from 'framer-motion';
 import MotionPresence from '../motion/MotionPresence.jsx';
-import { dtbDistance, dtbSpring, dtbTransition, reducedTransition } from '../../motion/dtbMotion.js';
+import { dtbSpring, dtbTransition, reducedTransition } from '../../motion/dtbMotion.js';
 import { X, ChevronDown, Sliders } from 'lucide-react';
 import '../../styles/filter-panel.css';
 
@@ -124,6 +124,8 @@ export default function FilterPanel({
     selectedCategories.length > 0 ||
     priceRange[0] !== 0 ||
     priceRange[1] !== maxPrice;
+  const activeFilterCount = selectedBrands.length + selectedCategories.length
+    + (priceRange[0] !== 0 || priceRange[1] !== maxPrice ? 1 : 0);
 
   return (
     <>
@@ -154,8 +156,7 @@ export default function FilterPanel({
         {isOpen ? (
         <Motion.div
           key="mobile-filters"
-          className="fixed inset-0 z-50 lg:hidden"
-          style={{ top: 'var(--header-height)' }}
+          className="dtb-filter-drawer__overlay fixed inset-0 lg:hidden"
           inert={!isOpen ? true : undefined}
           aria-hidden={!isOpen ? 'true' : undefined}
           initial={{ opacity: 0 }}
@@ -163,20 +164,11 @@ export default function FilterPanel({
           exit={{ opacity: 0 }}
           transition={reduceMotion ? reducedTransition : dtbTransition.fast}
         >
-          <div
-            className="absolute inset-0 bg-black/35 backdrop-blur-[1px] filter-mobile-overlay-enter"
-            onClick={(e) => {
-              if (e.target === e.currentTarget) {
-                onClose();
-              }
-            }}
-          />
-
           <Motion.div
-            className="absolute inset-x-0 top-0 bottom-0 dtb-filter-drawer"
-            initial={{ y: reduceMotion ? 0 : -dtbDistance.medium }}
+            className="absolute inset-0 dtb-filter-drawer"
+            initial={{ y: reduceMotion ? 0 : '100%' }}
             animate={{ y: 0 }}
-            exit={{ y: reduceMotion ? 0 : -dtbDistance.small }}
+            exit={{ y: reduceMotion ? 0 : '100%' }}
             transition={reduceMotion ? reducedTransition : dtbSpring.gentle}
           >
             <div
@@ -185,26 +177,30 @@ export default function FilterPanel({
               aria-modal="true"
               aria-labelledby="dtb-mobile-filter-title"
               tabIndex={-1}
-              className="dtb-filter-drawer__panel w-full bg-white shadow-2xl overflow-hidden flex flex-col filter-mobile-sheet-enter"
+              className="dtb-filter-drawer__panel w-full overflow-hidden flex flex-col filter-mobile-sheet-enter"
             >
-              <div className="dtb-filter-drawer__header sticky top-0 bg-white border-b border-slate-200 px-4 py-4 flex items-center justify-between shrink-0">
-                <h2 id="dtb-mobile-filter-title" className="text-base font-semibold text-slate-900 flex items-center gap-2">
-                  <Sliders size={18} />
-                  Advanced Filters
-                </h2>
+              <div className="dtb-filter-drawer__header flex items-center justify-between shrink-0">
+                <div className="dtb-filter-drawer__heading">
+                  <span className="dtb-filter-drawer__icon" aria-hidden="true"><Sliders size={19} /></span>
+                  <div>
+                    <h2 id="dtb-mobile-filter-title">Filters</h2>
+                    <p>Refine your product results</p>
+                  </div>
+                  {activeFilterCount > 0 && <span className="dtb-filter-drawer__active-count">{activeFilterCount} active</span>}
+                </div>
                 <button
                   ref={closeButtonRef}
                   type="button"
                   onClick={onClose}
-                  className="p-2 hover:bg-slate-100 rounded-xl transition-colors touch-target"
+                  className="dtb-filter-drawer__close touch-target"
                   aria-label="Close filters"
                   title="Close filters (ESC)"
                 >
-                  <X size={22} className="text-slate-600" />
+                  <X size={22} />
                 </button>
               </div>
 
-              <div className="dtb-filter-drawer__body flex-1 min-h-0 overflow-y-auto overscroll-contain px-3 py-3">
+              <div className="dtb-filter-drawer__body flex-1 min-h-0 overflow-y-auto overscroll-contain">
                 <FilterContent
                   categories={categories}
                   brands={filterBrands}
@@ -224,19 +220,22 @@ export default function FilterPanel({
                 />
               </div>
 
-              <div className="dtb-filter-drawer__footer sticky bottom-0 bg-white border-t border-slate-200 px-4 py-3 shrink-0">
-                <div className="flex gap-3">
+              <div className="dtb-filter-drawer__footer shrink-0">
+                <div className="dtb-filter-drawer__actions">
                   <button
+                    type="button"
                     onClick={onClearFilters}
-                    className="flex-1 border border-slate-300 text-slate-700 font-medium py-2.5 px-4 rounded-xl hover:bg-slate-50 transition-colors"
+                    className="dtb-filter-drawer__clear"
+                    disabled={!hasActiveFilters}
                   >
-                    Clear All
+                    Clear filters
                   </button>
                   <button
+                    type="button"
                     onClick={onClose}
-                    className="flex-1 bg-primary-600 hover:bg-primary-700 text-white font-semibold py-2.5 px-4 rounded-xl transition-colors"
+                    className="dtb-filter-drawer__apply"
                   >
-                    Apply
+                    Show {resultsCount ?? ''}{resultsCount !== undefined ? ' products' : 'products'}
                   </button>
                 </div>
               </div>
@@ -272,9 +271,11 @@ function FilterContent({
         isMobile ? 'rounded-2xl' : 'rounded-2xl shadow-sm'
       }`}
     >
-      <div className="flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3.5">
-        <h3 className="text-xs font-bold tracking-wider text-slate-900 uppercase">Filters</h3>
-        {hasActiveFilters && (
+      <div className={`dtb-filter-content__summary flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3.5 ${isMobile ? 'dtb-filter-content__summary--mobile' : ''}`}>
+        {isMobile ? (
+          <p className="text-sm text-slate-600"><strong className="text-primary-700">{resultsCount ?? 0}</strong> products match</p>
+        ) : <h3 className="text-xs font-bold tracking-wider text-slate-900 uppercase">Filters</h3>}
+        {!isMobile && hasActiveFilters && (
           <button
             type="button"
             onClick={onClearFilters}
