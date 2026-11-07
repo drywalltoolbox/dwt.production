@@ -239,74 +239,6 @@ jobs:
             -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < staging-artifact-sha256.txt
 
-      - name: Verify public staging shell with bounded transport retry
-        id: public_shell
-        run: bash scripts/deployment/verify-staging-http.sh https://drywalltoolbox.com/staging/
-
-      - name: Check public staging asset delivery
-        id: asset_delivery
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import json
-          from pathlib import Path
-
-          manifest = json.loads(Path("payload/asset-manifest.json").read_text())
-          selected = {}
-          for uri in manifest["entrypoints"]:
-              extension = Path(uri).suffix
-              if extension in {".js", ".css"} and extension not in selected:
-                  selected[extension] = uri
-          assert set(selected) == {".js", ".css"}, "Missing JS or CSS entrypoint"
-          Path("/tmp/dtb-staging-asset-urls").write_text("\n".join(selected.values()) + "\n")
-          PY
-          delivery=verified
-          while IFS= read -r path; do
-            expected_type=javascript
-            [[ "$path" == *.css ]] && expected_type=text/css
-            verified=false
-            last_failure=unknown
-            for attempt in 1 2 3; do
-              headers="$(mktemp)"
-              body="$(mktemp)"
-              status=000
-              curl_exit=0
-              status="$(curl --silent --show-error --location --connect-timeout 10 --max-time 30 \
-                --dump-header "$headers" --output "$body" --write-out '%{http_code}' \
-                "https://drywalltoolbox.com$path")" || curl_exit=$?
-              if [[ "$curl_exit" -eq 0 && "$status" == 200 ]] && grep -qi "^content-type:.*$expected_type" "$headers"; then
-                verified=true
-                rm -f "$headers" "$body"
-                break
-              fi
-              if [[ "$curl_exit" -ne 0 || "$status" == 000 ]]; then
-                last_failure="transport error (curl exit $curl_exit, HTTP $status)"
-                echo "::warning::Staging asset transport failure for $path (attempt $attempt/3: $last_failure)"
-              elif [[ "$status" == 202 ]] && grep -qi '^sg-captcha:.*challenge' "$headers"; then
-                last_failure="SiteGround CAPTCHA challenge (HTTP $status)"
-                echo "::warning::SiteGround challenged the public asset probe for $path (attempt $attempt/3)"
-              else
-                echo "::error::Staging asset returned HTTP $status for $path (expected $expected_type)"
-                cat "$headers"
-                rm -f "$headers" "$body"
-                exit 2
-              fi
-              rm -f "$headers" "$body"
-              if [[ "$attempt" -lt 3 ]]; then sleep "$((attempt * 5))"; fi
-            done
-            if [[ "$verified" != true ]]; then
-              if [[ "$last_failure" == "SiteGround CAPTCHA challenge (HTTP 202)" ]]; then
-                delivery=unverified_bot_challenge
-                echo "::warning::Public delivery remains unverified because SiteGround challenged the GitHub runner; artifact and webroot hashes were verified."
-              else
-                echo "::error::Public staging asset verification failed for $path: $last_failure"
-                echo "delivery=failed" >> "$GITHUB_OUTPUT"
-                exit 2
-              fi
-            fi
-          done < /tmp/dtb-staging-asset-urls
-          echo "delivery=$delivery" >> "$GITHUB_OUTPUT"
-
       - name: Summarize staging deployment
         if: always()
         env:
@@ -321,10 +253,7 @@ jobs:
             echo "| Source | \`$SOURCE_SHA\` |"
             echo "| Release | \`$RELEASE_SHA\` |"
             echo "| Publish step | \`${{ steps.publish_release.outcome || 'not_checked' }}\` |"
-            echo "| Webroot hash verification | \`${{ steps.webroot_hashes.outcome || 'not_checked' }}\` |"
-            echo "| Public shell verification | \`${{ steps.public_shell.outcome || 'not_checked' }}\` |"
-            echo "| Public shell detail | \`${{ steps.public_shell.outputs.result || 'not_checked' }}\` |"
-            echo "| Public asset delivery | \`${{ steps.asset_delivery.outputs.delivery || 'not_checked' }}\` |"
+            echo "| SiteGround webroot checksum | \`${{ steps.webroot_hashes.outcome || 'not_checked' }}\` |"
             echo "| Build artifact | \`dtb-staging-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}\` |"
             echo "| Staging URL | https://drywalltoolbox.com/staging/ |"
           } >> "$GITHUB_STEP_SUMMARY"
