@@ -11,6 +11,7 @@ export function useCatalogProductDetail(slug) {
         product: null,
         variations: [],
         relatedProducts: [],
+        relatedProductsByVariation: {},
         computed: null,
       };
     }
@@ -19,9 +20,10 @@ export function useCatalogProductDetail(slug) {
       product: state.product,
       variations: state.variations,
       relatedProducts: state.relatedProducts,
+      relatedProductsByVariation: state.relatedProductsByVariation,
       computed: state.computed,
     });
-  }, [state.product, state.variations, state.relatedProducts, state.computed]);
+  }, [state.product, state.variations, state.relatedProducts, state.relatedProductsByVariation, state.computed]);
 
   return {
     ...state,

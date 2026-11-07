@@ -18,7 +18,7 @@
 import { useReducer, useEffect } from 'react';
 import { apiClient } from '../api/client.js';
 
-const INIT = { product: null, variations: [], relatedProducts: [], computed: null, status: 'idle', error: null };
+const INIT = { product: null, variations: [], relatedProducts: [], relatedProductsByVariation: {}, computed: null, status: 'idle', error: null };
 const DETAIL_CACHE_TTL = 2 * 60 * 1000;
 const detailCache = new Map();
 const detailInflight = new Map();
@@ -80,6 +80,7 @@ function reducer(_state, action) {
         product: action.product,
         variations: action.variations,
         relatedProducts: action.relatedProducts,
+        relatedProductsByVariation: action.relatedProductsByVariation,
         computed: action.computed,
         status: 'ready',
         error: null,
@@ -101,6 +102,7 @@ function initialStateForSlug(slug) {
     product: cached.product,
     variations: Array.isArray(cached.variations) ? cached.variations : [],
     relatedProducts: Array.isArray(cached.relatedProducts) ? cached.relatedProducts : [],
+    relatedProductsByVariation: cached.relatedProductsByVariation && typeof cached.relatedProductsByVariation === 'object' ? cached.relatedProductsByVariation : {},
     computed: cached.computed ?? null,
     status: 'ready',
     error: null,
@@ -129,6 +131,7 @@ export function useProductDetail(slug) {
         product: cached.product,
         variations: Array.isArray(cached.variations) ? cached.variations : [],
         relatedProducts: Array.isArray(cached.relatedProducts) ? cached.relatedProducts : [],
+        relatedProductsByVariation: cached.relatedProductsByVariation && typeof cached.relatedProductsByVariation === 'object' ? cached.relatedProductsByVariation : {},
         computed: cached.computed ?? null,
       });
     } else {
@@ -150,6 +153,7 @@ export function useProductDetail(slug) {
           product: data.product,
           variations: Array.isArray(data.variations) ? data.variations : [],
           relatedProducts: Array.isArray(data.relatedProducts) ? data.relatedProducts : [],
+          relatedProductsByVariation: data.relatedProductsByVariation && typeof data.relatedProductsByVariation === 'object' ? data.relatedProductsByVariation : {},
           computed: data.computed ?? null,
         });
       })

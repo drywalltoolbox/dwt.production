@@ -157,7 +157,13 @@ Run the focused release-ledger transition check locally with:
 php .\scripts\catalog\tests\product_relationship_projection_state.php
 ```
 
-No `Upsells` or `Cross-sells` field is writable through the catalog manifest workflow or fitment projection. WooCommerce CRUD remains the merchandising authority.
+The digest-bound compatibility manifest and fitment projector still cannot write `Upsells` or `Cross-sells`. A separate, additive catalog projection may derive directional cart cross-sells from exact canonical fitment and produce a SKU-only WooCommerce import delta. Preview it with:
+
+```powershell
+python .\scripts\catalog\project_exact_fitment_cross_sells.py
+```
+
+The projection links a published, visible tool to published, visible simple replacement parts with exact `_dtb_compatible_tool_skus` evidence. For variable tools it includes only parts that fit every published, visible variation. It leaves upsells and similarity recommendations empty. Candidate ordering prefers parts with fewer public tool fitments, then exact SKU; this is a deterministic relevance heuristic, not sales evidence. The JSON report records every source edge, and the generated two-column import file contains only changed tool SKUs and `Cross-sells`, so it cannot clear unrelated runtime fields. It preserves existing canonical cross-sells additively, verifies all SKUs, and defaults to preview. Applying to the official CSV requires `--apply --expected-sha256 <current-file-sha256>`; the writer locks the catalog and verifies an exact sibling `.bak` before the atomic write. Import that narrow delta separately through WooCommerce's update-existing product importer, map only SKU and Cross-sells, and reconcile live WooCommerce readback. A full-catalog import is not part of this workflow.
 
 ## Content review queues
 
@@ -238,6 +244,18 @@ python .\scripts\catalog\export_catalog_where_used_matrix.py
 The read-only exporter writes `products/dev/catalog-enrichment/compatibility/catalog-where-parts-are-used.csv`. It includes every canonical catalog part SKU as a row, exact tool/product SKUs as columns, and the current `_dtb_compatible_tool_skus` edges as `1`. A blank cell means that relationship is not recorded in the canonical catalog; it does not mean the products are incompatible. The status and evidence-source columns keep unpopulated owners visible and identify source coverage.
 
 TapeTech rows join the supplied manufacturer matrix by exact part SKU. The exporter fails if an exact TapeTech part row's catalog relationships disagree with the matrix for target SKUs present in the catalog. The workbook and CSV reference copies were checked for identical cell data. In the current catalog snapshot, 173 TapeTech part SKUs join exactly and 432 source edges resolve to exact catalog tool SKUs. TapeTech-marked tool SKUs absent from the catalog are not added as products or relationships. This export is a derived review map, not an alternate canonical source and not a production projection artifact.
+
+### Unified relationship tree and family coverage
+
+Refresh the normalized, exact-identity map for the whole catalog with:
+
+```powershell
+python .\scripts\catalog\export_product_relationship_tree.py
+```
+
+The read-only export writes `product-relationship-tree.csv`, `product-relationship-coverage.csv`, `product-family-membership.csv`, and `product-relationship-tree-summary.json` under `products/dev/catalog-enrichment/compatibility/`. The edge map preserves separate `part_fits_tool`, `kit_contains`, `pdp_upsell`, and `cart_cross_sell` types, exact product/variation scope, canonical field, status, and evidence provenance. TapeTech fitment edges are labeled as manufacturer-matrix matches only when both exact catalog SKUs match the marked source row and model column. It never infers compatibility or recommendations from family similarity.
+
+Family membership is a distinct exact projection of the current canonical `brand_key`, `product_family`, `series`, `model`, and category values. It is an inventory and review surface, not a claim that family peers substitute for one another. Review source quality before using family or series cohorts for “similar product” candidates. Blank family metadata is reported as missing; it is not silently filled from product names or category proximity. The summary marks live WooCommerce state as unaudited; use the protected relationship projector and live readback for runtime changes.
 
 Keep specialized tools separate when they have distinct authorities or failure modes, including:
 

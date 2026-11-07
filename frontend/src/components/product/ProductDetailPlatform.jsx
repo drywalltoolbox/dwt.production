@@ -1,3 +1,4 @@
+import { useCallback, useState } from 'react';
 import ProductDetail from './ProductDetail.jsx';
 import ProductRelatedProducts from './ProductRelatedProducts.jsx';
 import { useCatalogProductDetail } from '../../hooks/useCatalogProductDetail.js';
@@ -21,9 +22,23 @@ export default function ProductDetailPlatform({
     product: detailProduct,
     variations,
     relatedProducts,
+    relatedProductsByVariation,
     computed,
     status,
   } = useCatalogProductDetail(slug);
+  const [variationSelection, setVariationSelection] = useState(null);
+  const hasCurrentVariationSelection = variationSelection?.slug === slug
+    && variationSelection?.initialVariationId === (initialResolvedVariation?.id || null);
+  const selectedVariationId = hasCurrentVariationSelection
+    ? variationSelection.variationId
+    : (initialResolvedVariation?.id || null);
+  const handleVariationChange = useCallback((variation) => {
+    setVariationSelection({
+      slug,
+      initialVariationId: initialResolvedVariation?.id || null,
+      variationId: variation?.id || null,
+    });
+  }, [initialResolvedVariation?.id, slug]);
 
   const fallbackProduct = product ? toLegacyProductCardDTO(product) : null;
   const resolvedProduct = detailProduct || fallbackProduct;
@@ -38,6 +53,10 @@ export default function ProductDetailPlatform({
   const resolvedInitialVariation = initialResolvedVariation
     ? toLegacyVariationDTO(initialResolvedVariation, product || null)
     : null;
+  const variationRelatedProducts = selectedVariationId
+    ? relatedProductsByVariation?.[String(selectedVariationId)]
+    : null;
+  const displayedRelatedProducts = Array.isArray(variationRelatedProducts) ? variationRelatedProducts : relatedProducts;
 
   const resolvedSelectedAttrs = Object.keys(initialSelectedAttrs || {}).length > 0
     ? initialSelectedAttrs
@@ -48,6 +67,7 @@ export default function ProductDetailPlatform({
       <ProductDetail
         product={resolvedProduct}
         onAddToCart={onAddToCart}
+        onVariationChange={handleVariationChange}
         onClose={onClose}
         onNavigateToProduct={onNavigateToProduct}
         initialVariations={resolvedVariations}
@@ -59,7 +79,7 @@ export default function ProductDetailPlatform({
         autoSelectDefaultVariation={false}
       />
       <ProductRelatedProducts
-        products={relatedProducts}
+        products={displayedRelatedProducts}
         context={computed?.relatedProductsContext}
         onAddToCart={onAddToCart}
         onOpenProduct={onOpenProduct}

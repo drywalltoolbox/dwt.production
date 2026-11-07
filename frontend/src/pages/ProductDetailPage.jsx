@@ -28,6 +28,7 @@ import { useParams, Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import useCatalogProductDetail from '../hooks/useCatalogProductDetail.js';
 import useCompatibleParts from '../hooks/useCompatibleParts.js';
+import useCompatibleTools from '../hooks/useCompatibleTools.js';
 import { getVariationSelectionMap } from '../utils/variationSelection';
 import { buildBreadcrumbSchema, buildProductSchema, stripHtml } from '../utils/schema';
 import ProductDetail from '../components/product/ProductDetail';
@@ -77,7 +78,7 @@ export default function ProductDetailPage() {
   const [toast, setToast] = useState(null);
   const [locallySelectedVariation, setLocallySelectedVariation] = useState(null);
 
-  const { product, variations, relatedProducts, computed, status, error } = useCatalogProductDetail(slug);
+  const { product, variations, relatedProducts, relatedProductsByVariation, computed, status, error } = useCatalogProductDetail(slug);
 
   const urlVariantId = useMemo(
     () => legacyPathVariantId ?? getVariantParam(location.search),
@@ -111,10 +112,20 @@ export default function ProductDetailPage() {
   }, [product?.id, resolvedInitialVariation, urlVariantId, variations]);
 
   const selectedVariation = locallySelectedVariation || resolvedInitialVariation;
+  const selectedVariationRelatedProducts = selectedVariation?.id
+    ? relatedProductsByVariation?.[String(selectedVariation.id)]
+    : null;
+  const displayedRelatedProducts = Array.isArray(selectedVariationRelatedProducts)
+    ? selectedVariationRelatedProducts
+    : relatedProducts;
   const compatiblePartsSku = product?.product_kind === 'part'
     ? ''
     : (selectedVariation?.sku || product?.sku || '');
   const { products: compatibleParts } = useCompatibleParts(compatiblePartsSku);
+  const compatibleToolsSku = product?.product_kind === 'part'
+    ? (selectedVariation?.sku || product?.sku || '')
+    : '';
+  const { products: compatibleTools } = useCompatibleTools(compatibleToolsSku);
 
   useEffect(() => {
     if (!slug || !variationId) return;
@@ -272,7 +283,14 @@ export default function ProductDetailPage() {
           onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
         />
         <ProductRelatedProducts
-          products={relatedProducts}
+          products={compatibleTools}
+          context="compatible_tools"
+          id="product-compatible-tools"
+          onAddToCart={handleAddToCart}
+          onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
+        />
+        <ProductRelatedProducts
+          products={displayedRelatedProducts}
           context={computed?.relatedProductsContext}
           onAddToCart={handleAddToCart}
           onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}

@@ -75,6 +75,12 @@ The Product Relationships screen may edit WooCommerce upsell and cross-sell rela
 
 Coverage reports must define the eligible published part/tool denominator and distinguish canonical verified fitment, unresolved legacy links, missing relationship data, invalid targets, and source-to-runtime projection drift. Missing data is not incompatibility. Schematic lifecycle and universal equivalence continue to link to their owning tools rather than being rewritten through Product Relationships.
 
+### Controlled exact-fitment cart cross-sell import
+
+The official catalog CSV remains a catalog/import artifact, not the general source of WooCommerce merchandising. A narrow exception is the digest-guarded `project_exact_fitment_cross_sells.py` release projection: it may add directional tool-to-part cart cross-sells derived only from exact canonical part fitment. It requires published, catalog-visible tool and part records, exact SKU resolution, and simple part targets. A variable tool parent receives a part only when that exact part fits every published, visible child variation. It does not create upsells or use shared brand, family, category, schematic, or name similarity as evidence. The deterministic candidate order prefers parts with fewer public tool fitments and then exact SKU; this is a relevance heuristic, not observed co-purchase evidence.
+
+The projection is additive, writes only `Cross-sells`, creates an exact `.bak`, and emits a two-column `SKU,Cross-sells` update file. Import only that delta with WooCommerce's update-existing products option and map only SKU and Cross-sells. This avoids blank catalog cells clearing WooCommerce-owned placements. A full-catalog import does not follow from this exception. Reconcile every changed SKU through WooCommerce readback before treating the projection as live. Future operator-authored relationships remain WooCommerce-owned and must be read back before any later replacement or reconciliation.
+
 ### Public compatibility lookup contract
 
 `GET /dtb/v1/products/{sku}/compatible-parts` and `GET /dtb/v1/parts/{sku}/compatible-tools` accept one URL path segment containing letters, digits, periods, underscores, and hyphens. `GET /dtb/v1/products/compatible-parts?skus=SKU1,SKU2` accepts a comma-separated list of 1–20 exact cart SKUs and an optional bounded result limit. The route validates the SKU syntax; WooCommerce remains the source of product identity.

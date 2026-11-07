@@ -1,0 +1,1134 @@
+sku,name,type,parent_sku,product_kind,is_part,published,visibility,fitment_outgoing_count,fitment_incoming_count,bundle_components_count,included_in_bundle_count,pdp_upsell_count,cart_cross_sell_count,recorded_relationship_count,coverage_state
+030250,USG Sheetrock Acoustical Sealant,simple,,,0,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+03TT,"TapeTech EasyClean® Automatic Taper - Mini-Taper 40.5""",variation,TT-EASYCLEAN-AUTOMATIC-TAPER,tool,0,1,visible,0,56,0,0,0,0,56,has_recorded_relationships
+050019,Disengaging Cam,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050023F,Spacer Bar,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050027,Automatic Taper Replacement Needle Holder Lock,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050034F,Disengaging Rod,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050041F,Disengaging Rod Bearing,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050043F,Anvil,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050058,Control Valve,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050063,Cut Off Cover,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050064F,Automatic Taper Valve,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+050070F,Axle Creaser Wheel,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050083F,Cable Drum,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050086F,Bushing Head,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050110F,Driver Shaft,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+050113F,Cutter Block Tube,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050123,CAM,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050128F,Chain Roller Bushing,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050132F,Cut-Off Spring,simple,,part,1,0,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050141,Left Chain Support,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050145,Creaser Chain,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050150F,Hub,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050152F,Spacer Rod,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+050154,Bearing Bracket,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050163,Main Chain Guide,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050200,Plastic Piston,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050204,Cup Washer,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050205,"Hex Head Cup Bolt 1/4-20X3 /4""",simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050212F,Lock Block for 07TT,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+050249,Creaser Connector,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+050251F,Tube Protector,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+050405B,Keeper Axle - Black,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+050410B,Control Tube Flange - Black,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+050412,Wheel Keeper Wire Form,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+050413,Control Tube Wheel,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+050500,Brake Roller,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+051105,Side Plate- Stainless Steel,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+052052,Lock for 07TT,simple,,part,1,0,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+052121F,Driver Shaft,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+052125,Sprocket Driver,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+0521496,Sprocket Bushing [6],simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+052150,Brake Adjuster,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+052214,WHEEL ENCLOSURE,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+052403,PLUNGER STOP LOCKING STRAP,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+052404B,Keeper Yoke,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+052407B,Keeper Tube Cradle,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+052409,Keeper Wireform,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+052576,Brake Spring Mount,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+054028,Gooser Assembly,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+054032F,Push Rod Assembly,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+054059F,Filler Tube Assembly,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+054075,Tape Runner Assembly,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+054095F,Long Creaser Assembly,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+054096F,Short Creaser Assembly,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+054101,Tape Guide Assembly,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+054104,Tape Runner Assembly,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+054110F,Shaft Drive Assembly - Includes Sprocket,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+054111F,Gooser Guide Bushing,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+054116F,Drive Dog Assembly,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+054118F,Drive Dog Holder Assembly,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+055007,Automatic Taper Locking Roller Assembly Brake,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+056135,Stainless Steel Cutter Chain Assembly,simple,,part,1,0,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+056142F,Cutter Chain,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+059005,4-40 Hex S.S. Nut,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+059013,Screw 6-32 X 5/16 Rd.,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+059024,.15 Chain Keeper,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+059029,Screw 6-32 X 5/8 Fl.,simple,,part,1,1,hidden,5,0,0,0,0,0,5,has_recorded_relationships
+059038,#4 Medium Spring Lockwasher,simple,,part,1,1,hidden,8,0,0,0,0,0,8,has_recorded_relationships
+059040,O Ring 568-006 Buna,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+059044,Insert,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+059060,"Stopnut 3-48 Hex., Nyloc SST",simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+059061F,Valve Spring,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+059067,Key Ring,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+059091,"6-32 X 1/2"" Fillister Head Sst Screw",simple,,part,1,1,hidden,7,0,0,0,0,0,7,has_recorded_relationships
+059092,"8-32"" x 1-1/2"" Round Head Screw SST",simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+059098,"Shim, Side Plate",simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+059107,1/4 in x 6-32 Stainless Steel Flat Head Screw,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+059117,"Screw Self Tap #8 x5/16""",simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+059119,Drive Dog Holder Pin,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+059120,"Axle, Drive Dog",simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+059129,Cutter Block Pin,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+059161,"4-40 X 3/8"" Fillister Head Sst Screw +",simple,,part,1,1,hidden,8,0,0,0,0,0,8,has_recorded_relationships
+059201,Screw 5-40 X 3/4 RD Head SST,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+059217,"4-40 X 3/8"" BIND HEADSST SCREW",simple,,part,1,1,hidden,5,0,0,0,0,0,5,has_recorded_relationships
+07TT,TapeTech EasyClean® Automatic Taper - Standard,variation,TT-EASYCLEAN-AUTOMATIC-TAPER,tool,0,1,visible,0,71,0,6,0,0,77,has_recorded_relationships
+07TT-C,TapeTech EasyClean® Automatic Taper - Carbon Fiber,variation,TT-EASYCLEAN-AUTOMATIC-TAPER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+10FBB,"10"" Fat Boy Finishing Box",variation,COL-FAT-BOY-FLAT-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+10FBBA,"10"" Automatic Fat Boy Finishing Box",variation,COL-AUTOMATIC-FAT-BOY-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+10FFB,"10"" Flat Finishing Box",variation,COL-FLAT-FINISHER-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+10FFBA,"10"" Automatic Flat Finishing Box",variation,COL-AUTOMATIC-FLAT-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+114CDWS5,"#6 X 1-1/4"" Textured Head, Coarse Thread Drywall Screw w/ TENZ [5LB]",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+114CDWS8M,"#6 X 1-1/4"" Textured Head, Coarse Thread Drywall Screw w/ TENZ [Bulk]",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+114FDWS5,"6 X 1-1/4"" Textured Head, Fine Thread Drywall Screw [5LB]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+114FDWS8M,"6 X 1-1/4"" Textured Head, Fine Thread Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+114SDSZ5,"#6 X 1-1/4"" Textured Bugle Head, Self Drill Drywall Screw [5LB]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+114SDSZ8M,"#6 X 1-1/4"" Textured Bugle Head, Self Drill Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+118SDSZ10M,"#6 X 1-1/8"" Textured Bugle Head, Self Drill Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+118SDSZ5,"#6 X 1-1/8"" Textured Bugle Head, Self Drill Drywall Screw [5LB]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+12FBB,"12"" Fat Boy Finishing Box",variation,COL-FAT-BOY-FLAT-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+12FBBA,"12"" Automatic Fat Boy Finishing Box",variation,COL-AUTOMATIC-FAT-BOY-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+12FFB,"12"" Flat Finishing Box",variation,COL-FLAT-FINISHER-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+12FFBA,"12"" Automatic Flat Finishing Box",variation,COL-AUTOMATIC-FLAT-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+140002C,MudRunner Main Tube,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+140003,Tube Cap,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+142001,Tube Only for Mudrunner,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+149021,Round Lip U-Cup,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+149028,Nylon Bushing #6,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+149032,"O-Ring, Buna, 2-230",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+149120,Threaded Gas Spring,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+14FFB,"14"" Flat Finishing Box",variation,COL-FLAT-FINISHER-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+14FFBA,"14"" Automatic Flat Finishing Box",variation,COL-AUTOMATIC-FLAT-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+14TT,TapeTech MudRunner® Compound Applicator - Standard,variation,TT-MUDRUNNER,tool,0,1,visible,0,9,0,3,0,0,12,has_recorded_relationships
+151005,Wheel Angle Roller Roller,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+151011,Inner Roller,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+158CDWS5,"#6 X 1-5/8"" Textured Head, Coarse Thread Drywall Screw w/ TENZ [5LB]",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+158CDWS5M,"#6 X 1-5/8"" Textured Head, Coarse Thread Drywall Screw w/ TENZ [Bulk]",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+158FDWS5,"6 X 1-5/8"" Textured Head, Fine Thread Drywall Screw [5LB]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+158FDWS5M,"6 X 1-5/8"" Textured Head, Fine Thread Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+158SDSZ5,"#6 X 1-5/8"" Textured Bugle Head, Self Drill Drywall Screw [5LB]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+158SDSZ5M,"#6 X 1-5/8"" Textured Bugle Head, Self Drill Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+159023,Nylon Washer,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+159024,External Retaining Ring,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+159026,Long Nut,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+159027,"Washer 3/8"" OD 3/16"" IDSST",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+15TTE,TapeTech Inside Corner Roller,simple,,tool,0,1,visible,0,5,0,6,0,0,11,has_recorded_relationships
+16TT,TapeTech Applicator Head - Outside Corner,variation,TT-APPLICATOR-HEAD,tool,0,1,visible,0,3,0,1,0,0,4,has_recorded_relationships
+16TT90,TapeTech Applicator Head - Inside Corner,variation,TT-APPLICATOR-HEAD,tool,0,1,visible,0,3,0,1,0,0,4,has_recorded_relationships
+178SDSZ4M,"#6 X 1-7/8"" Textured Bugle Head, Self Drill Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+178SDSZ5,"#6 X 1-7/8"" Textured Bugle Head, Self Drill Drywall Screw [5LB]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+179009,Nyliner Type 6,simple,,part,1,1,hidden,10,0,0,0,0,0,10,has_recorded_relationships
+17TT,TapeTech Outside Corner Roller,variation,TT-OUTSIDE-CORNER-ROLLER,tool,0,1,visible,0,1,0,1,0,0,2,has_recorded_relationships
+17TTE,TapeTech Flex Tape Outside Corner Roller,variation,TT-OUTSIDE-CORNER-ROLLER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+190002,Block,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+190034,Coupler,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+196003,Hinge Casting Assembly,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+1CDWS5,"#6 X 1"" Textured Head, Coarse Thread Drywall Screw w/ TENZ [5LB]",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+1FDWS10M,"6 X 1"" Textured Head, Fine Thread Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+1FDWS5,"USG Sheetrock 6 X 1"" Textured Head, Fine Thread Drywall Screw [5lbs.]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+2.5AH,"2.5"" Angle Head",variation,COL-ANGLE-HEAD,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+2.5CSF,"2.5"" Combo Flusher",variation,COL-COMBO-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+2.5DF,"2.5"" Direct Flusher",variation,COL-DIRECT-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+2.5SF,"2.5"" Standard Flusher",variation,COL-STANDARD-FLUSHER,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+200052F,Finishing Box Shoulder Screw,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+202020,Spring Anchor,simple,,part,1,1,hidden,9,0,0,0,0,0,9,has_recorded_relationships
+202028,Flat Box Threaded Washer,simple,,part,1,1,hidden,10,0,0,0,0,0,10,has_recorded_relationships
+202036,Shoulder Screw,simple,,part,1,1,hidden,9,0,0,0,0,0,9,has_recorded_relationships
+203010,7 & 10 Inch Crown Spring,simple,,part,1,1,hidden,6,0,0,0,0,0,6,has_recorded_relationships
+209046,Flat Box Washer,simple,,part,1,1,hidden,10,0,0,0,0,0,10,has_recorded_relationships
+209047,Flat Box Nyliner Bearing,simple,,part,1,1,hidden,9,0,0,0,0,0,9,has_recorded_relationships
+209050,Box Screw,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+209058,6-32 Brass Nut,simple,,part,1,1,hidden,10,0,0,0,0,0,10,has_recorded_relationships
+210024F,"7"" Wiper For Power Assist ECH/TTEC Boxes",simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+210058F,Latch,simple,,part,1,1,hidden,7,0,0,0,0,0,7,has_recorded_relationships
+210059,Shoulder Screw,simple,,part,1,1,hidden,8,0,0,0,0,0,8,has_recorded_relationships
+212086,Power Assist Hook,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+212CDWS25M,"8 X 2-1/2"" Textured Head, Coarse Thread Drywall Screw w/ TENZ [Bulk]",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+212CDWS5,"USG Sheetrock 8 X 2-1/2"" Textured Head, Coarse Thread Drywall Screw w/ TENZ [5lbs.]",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+212FDWS25M,"8 X 2-1/2"" Textured Head, Fine Thread Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+212FDWS5,"8 X 2-1/2"" Textured Head, Fine Thread Drywall Screw [5LB]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+213051,"Box Wheel, side guide",simple,,part,1,1,hidden,9,0,0,0,0,0,9,has_recorded_relationships
+219091,Spring,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+219092,"4-40 X 1"" Bind Head Screw",simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+219095,#4 NYLON FLAT WASHER,simple,,part,1,1,hidden,4,0,0,0,0,0,4,has_recorded_relationships
+238SDSZ3M,"#8 X 2-3/8"" Textured Bugle Head, Self Drill Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+238SDSZ5,"#8 X 2-3/8"" Textured Bugle Head, Self Drill Drywall Screw [5LB]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+250009,"10"" Shim",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+250026F,"New Wiper One Piece For 10"" Flat Box",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+250040F,"10"" Tie Rod",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+251023G,Side Plate,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+251025G,Side Plate,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+254005,"10"" Clamp Assembly",simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+256027G,"10"" Gold Pressure Plate",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+258SDSZ2M,"#8 X 2-5/8"" Textured Bugle Head, Self Drill Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+258SDSZ5,"#8 X 2-5/8"" Textured Bugle Head, Self Drill Drywall Screw [5LB]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+260024F,"10"" Wiper",simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+2AH,"2"" Angle Head",variation,COL-ANGLE-HEAD,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+2CDWS5,"#6 X 2"" Textured Head, Coarse Thread Drywall Screw w/ TENZ [5LB]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+2FDWS35M,"#6 X 2"" Textured Head, Fine Thread Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+2FDWS5,"#6 X 2"" Textured Head, Fine Thread Drywall Screw [5LB]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+2NS,"2"" Nail Spotter",variation,COL-NAIL-SPOTTER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3.5AH,"3.5"" Angle Head",variation,COL-ANGLE-HEAD,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3.5CSF,"3.5"" Combo Flusher",variation,COL-COMBO-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3.5DF,"3.5"" Direct Flusher",variation,COL-DIRECT-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3.5SF,"3.5"" Standard Flusher",variation,COL-STANDARD-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+300009,"12"" Shim",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+300026F,12 in Flat Box Wiper,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+300040F,"12"" Tie Rod",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+306027G,"12"" Pressure Plate (Gold)",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+310024F,"12"" Viton Wiper",simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+310051F,Flat Box Wheel,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+310071,"12"" Spacer Rod",simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+310096,"12"" SEAL",simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+340310,USG Sheetrock Tools 90 Degree Outside Corner Paper Face Bead Roller,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340311,USG Sheetrock Tools Paper Face Bead Hopper,simple,,,0,1,visible,0,3,0,0,0,0,3,has_recorded_relationships
+340316,Outside Bullnose Hopper Gate for Bead Hopper,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+340317,Inside 90° Hopper Gate for Bead Hopper,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+340318,Outside 90° Hopper Gate for Bead Hopper,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+340401,10 in USG Sheetrock Tools MATRIX Stainless Steel Mud Pan,simple,,,0,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340402,12 in USG Sheetrock Tools MATRIX Stainless Steel Mud Pan,simple,,,0,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340403,14 in USG Sheetrock Tools MATRIX Stainless Steel Mud Pan,simple,,,0,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340404,8 in USG Sheetrock Tools Mud Pan Grip,simple,,,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340405,10 in USG Sheetrock Tools Classic Stainless Steel Drywall Mud Pan,simple,,,0,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340406,12 in USG Sheetrock Tools Classic Stainless Steel Drywall Mud Pan,simple,,,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340407,14 in USG Sheetrock Tools Classic Stainless Steel Drywall Mud Pan,simple,,,0,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340413,30 in USG Sheetrock Tools Mud Mixer,simple,,,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340414,6 in USG Sheetrock Tools Jab Saw,simple,,,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340416,48 in USG Sheetrock Tools Heavy Duty T-Square,simple,,,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340417,54 in USG Sheetrock Tools Heavy Duty T-Square,simple,,,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340800,USG Sheetrock Tools The Dimpler Screw Setting Tool [Box of 10],simple,,,0,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340925,"USG Sheetrock Tools Professional Magnesium Drywall Stilts - 18""-30""",variation,USG-MAGNESIUM-STILTS,stilt,0,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+340926,"USG Sheetrock Tools Professional Magnesium Drywall Stilts - 24""-40""",variation,USG-MAGNESIUM-STILTS,stilt,0,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+350033F,Seal Block,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+3AH,"3"" Angle Head",variation,COL-ANGLE-HEAD,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3BH,3' 180 Grip Flat Box Handle,variation,COL-180-GRIP-FLAT-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3CDWS2M,"#8 X 3"" Textured Head, Coarse Thread Drywall Screw w/ TENZ [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3CDWS5,"USG Sheetrock 8 X 3"" Textured Head, Coarse Thread Drywall Screw w/ TENZ [5lbs]",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3CSF,"3"" Combo Flusher",variation,COL-COMBO-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3DF,"3"" Direct Flusher",variation,COL-DIRECT-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3FDWS2M,"8 X 3"" Textured Head, Fine Thread Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3FDWS5,"#8 X 3"" Textured Head, Fine Thread Drywall Screw [5LB]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3NS,"3"" Nail Spotter",variation,COL-NAIL-SPOTTER,tool,0,1,visible,0,22,0,0,0,0,22,has_recorded_relationships
+3SDSZ2M,"#8 X 3"" Textured Bugle Head, Self Drill Drywall Screw [Bulk]",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3SF,"3"" Standard Flusher",variation,COL-STANDARD-FLUSHER,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+3WTCSF,"Columbia Combo Flusher - 3"" Widetrack",variation,COL-COMBO-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3WTDF,"3"" Widetrack Direct Flusher",variation,COL-DIRECT-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+3WTSF,"3"" Widetrack Standard Flusher",variation,COL-STANDARD-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-600P,LEVEL5 Entry to Automatic Finishing Set - With Automatic Taper,variation,LV5-ENTRY-FINISHING-SET,toolset,0,1,visible,0,0,12,0,0,0,12,has_recorded_relationships
+4-602,LEVEL5 Entry to Automatic Finishing Set - Tools Only,variation,LV5-ENTRY-FINISHING-SET,toolset,0,1,visible,0,0,10,0,0,0,10,has_recorded_relationships
+4-630,LEVEL5 The Starter Taping Set,simple,,toolset,0,1,visible,0,0,5,0,0,0,5,has_recorded_relationships
+4-677P,LEVEL5 The Ultimate Taping & Finishing Set,simple,,toolset,0,1,visible,0,0,14,0,0,0,14,has_recorded_relationships
+4-701,LEVEL5 Corner Applicator - 7”,variation,LV5-CORNER-APPLICATOR,tool,0,1,visible,0,0,0,3,0,0,3,has_recorded_relationships
+4-702,LEVEL5 Corner Applicator - 8”,variation,LV5-CORNER-APPLICATOR,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-707,LEVEL5 Corner Roller,simple,,tool,0,1,visible,0,0,0,5,0,0,5,has_recorded_relationships
+4-711,LEVEL5 Flat Box Handle (Fixed Length) - 34”,variation,LV5-FLAT-BOX-HANDLE-FIXED,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-712,LEVEL5 Flat Box Handle (Fixed Length) - 42”,variation,LV5-FLAT-BOX-HANDLE-FIXED,tool,0,1,visible,0,0,0,4,0,0,4,has_recorded_relationships
+4-714,LEVEL5 Gooseneck,simple,,tool,0,1,visible,0,0,0,3,0,0,3,has_recorded_relationships
+4-715,LEVEL5 Box Filler,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-732,LEVEL5 Corner Finisher - 2.5”,variation,LV5-CORNER-FINISHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-733,LEVEL5 Corner Finisher - 3”,variation,LV5-CORNER-FINISHER,tool,0,1,visible,0,0,0,4,0,0,4,has_recorded_relationships
+4-734,LEVEL5 Corner Finisher - 3.5”,variation,LV5-CORNER-FINISHER,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+4-735,LEVEL5 Corner Finisher - 4”,variation,LV5-CORNER-FINISHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-740,LEVEL5 Flat Box Handle (Fixed Length) - 54”,variation,LV5-FLAT-BOX-HANDLE-FIXED,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-741,LEVEL5 Compound Tube,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-743,LEVEL5 Corner Flusher - 3”,variation,LV5-CORNER-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-744,LEVEL5 Corner Flusher - 3.5”,variation,LV5-CORNER-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-746,LEVEL5 Outside Corner Tool,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-754,LEVEL5 Nail Spotter - 2”,variation,LV5-NAIL-SPOTTER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-755,LEVEL5 Nail Spotter - 3”,variation,LV5-NAIL-SPOTTER,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+4-759,LEVEL5 Flat Box Handle (Extendable) - 48” - 78”,variation,LV5-FLAT-BOX-HANDLE-EXT,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-760,LEVEL5 Automatic Taper,simple,,tool,0,1,visible,0,0,0,3,0,0,3,has_recorded_relationships
+4-764,LEVEL5 Flat Box (Standard) - 7”,variation,LV5-FLAT-BOX-STANDARD,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+4-765,LEVEL5 Flat Box (Standard) - 10”,variation,LV5-FLAT-BOX-STANDARD,tool,0,1,visible,0,0,0,4,0,0,4,has_recorded_relationships
+4-766,LEVEL5 Flat Box (Standard) - 12”,variation,LV5-FLAT-BOX-STANDARD,tool,0,1,visible,0,0,0,4,0,0,4,has_recorded_relationships
+4-767,LEVEL5 Flat Box (MEGA) - 7”,variation,LV5-FLAT-BOX-MEGA,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-768,LEVEL5 Flat Box (MEGA) - 10”,variation,LV5-FLAT-BOX-MEGA,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-769,LEVEL5 Flat Box (MEGA) - 12”,variation,LV5-FLAT-BOX-MEGA,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-770,LEVEL5 Flat Box (Standard) - 14”,variation,LV5-FLAT-BOX-STANDARD,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-771,LEVEL5 Compound Pump,simple,,tool,0,1,visible,0,0,0,5,0,0,5,has_recorded_relationships
+4-772,LEVEL5 MiniShot,simple,,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+4-773,LEVEL5 MiniShot Ext. Handle,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-777,"LEVEL5 Corner Roller Handle - 54""",variation,LV5-CORNER-ROLLER-HANDLE,tool,0,1,visible,0,0,0,3,0,0,3,has_recorded_relationships
+4-778,"LEVEL5 50"" Fixed Handle - Corner Applicator",variation,LV5-FIXED-HANDLE-50,tool,0,1,visible,0,0,0,3,0,0,3,has_recorded_relationships
+4-779,"LEVEL5 50"" Fixed Handle - Corner Finisher",variation,LV5-FIXED-HANDLE-50,tool,0,1,visible,0,0,0,3,0,0,3,has_recorded_relationships
+4-780,LEVEL5 Flat Box Handle (Extendable) - 40” - 62”,variation,LV5-FLAT-BOX-HANDLE-EXT,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-781,LEVEL5 Flat Box Handle (Extendable) - 30” - 42”,variation,LV5-FLAT-BOX-HANDLE-EXT,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-782,LEVEL5 Flat Box Handle (Extendable) - 23” - 32”,variation,LV5-FLAT-BOX-HANDLE-EXT,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-792,"LEVEL5 31""- 50"" Corner Roller/Nail Spotter Handle",simple,,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+4-794,LEVEL5 Corner Applicator Handle (Extendable) - 31”- 50”,variation,LV5-CORNER-HANDLE-APPLICATOR-EXT,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-795,LEVEL5 Corner Finisher Handle (Extendable) - 31”- 50”,variation,LV5-CORNER-HANDLE-FINISHER-EXT,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+4-798,LEVEL5 Corner Applicator Handle (Extendable) - 43”- 72”,variation,LV5-CORNER-HANDLE-APPLICATOR-EXT,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4-799,LEVEL5 Corner Finisher Handle (Extendable) - 43”- 72”,variation,LV5-CORNER-HANDLE-FINISHER-EXT,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+402002F,4800 Spring Retainer,simple,,part,1,1,hidden,5,0,0,0,0,0,5,has_recorded_relationships
+402012,Ball Retainer,simple,,part,1,1,hidden,5,0,0,0,0,0,5,has_recorded_relationships
+402017F,Center Clip (Short),simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+402033,Ball Coupling,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+40XTT,"TapeTech Corner Finisher - 2""",variation,TT-CORNER-FINISHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+411003,Tape Tech Part 411003,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+42BH,"42"" 180 Grip Flat Box Handle",variation,COL-180-GRIP-FLAT-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+42TT,"TapeTech Corner Finisher - 2.5""",variation,TT-CORNER-FINISHER,tool,0,1,visible,0,5,0,4,0,0,9,has_recorded_relationships
+480002F,4040 Wear Pad,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+480005,Outside Tension Spring,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+480021,Inside Tension Spring,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+480027,Wheel Bushing,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+486001F,"3"" Easy Roll Head Casting",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+48TT,"TapeTech Corner Finisher - 3"" EasyRoll® Adjustable",variation,TT-CORNER-FINISHER,tool,0,1,visible,0,8,0,8,0,0,16,has_recorded_relationships
+48XTT,"TapeTech Corner Finisher - 3.5"" EasyRoll® Adjustable",variation,TT-CORNER-FINISHER,tool,0,1,visible,0,6,0,0,0,0,6,has_recorded_relationships
+499024,Washer - .188Id X,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+4BH,4' 180 Grip Flat Box Handle,variation,COL-180-GRIP-FLAT-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4DF,"4"" Direct Flusher",variation,COL-DIRECT-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+4SF,"4"" Standard Flusher",variation,COL-STANDARD-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+5-311,LEVEL5 Drywall Banjo,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+5-777,"LEVEL5 Corner Roller Handle - 50""",variation,LV5-CORNER-ROLLER-HANDLE,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+5.5FBB,"5.5"" Fat Boy Finishing Box",variation,COL-FAT-BOY-FLAT-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+5.5FFB,"5.5"" Flat Finishing Box",variation,COL-FLAT-FINISHER-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+500028,7 in Wiper,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+502005F,"7"" Pivot Pressure Plate",simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+502006,PIVOTBEARING,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+502007,Bearing,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+502034,Latch for Corner Box,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+506009,Stainless Steel Cone,simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+509008,"10-32 X 1/2"" Bind Head Screw +",simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+5BH,5' 180 Grip Flat Box Handle,variation,COL-180-GRIP-FLAT-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+632026,"Spring, Nail Spotter",simple,,part,1,1,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+634028,"2"" Pressure Plate Assembly w/ New Style Tab",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+650007,Skid for NS03TT,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+650040,Special Washer,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+681015,"3"" Wiper For EZ Clean Nailspotter",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+6BH,6' 180 Grip Flat Box Handle,variation,COL-180-GRIP-FLAT-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+700004F,Gland,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+700010F,Valve Seal,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+700036,5/16-24 X 1-7/16 Stud,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+704040,Filler Tube Assembly,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+709007,"Hex Head Nut - 5/16"" X 24 - 6 Pack",simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+709046,Lock Clip,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+720009,Piston Cup,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+722039,Discharge Tube,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+729009,"Wiper, U-Cup",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+729060,O-Ring Gasket - Large,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+729072,Head O-Ring,simple,,part,1,1,hidden,3,0,0,0,0,0,3,has_recorded_relationships
+762011,"Foot Valve, Universal",simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+76TT,TapeTech EasyClean® Pump - Standard,variation,TT-EASYCLEAN-PUMP,tool,0,1,visible,0,7,0,10,0,0,17,has_recorded_relationships
+76TT-CA,TapeTech EasyClean® Pump - Canada,variation,TT-EASYCLEAN-PUMP,tool,0,1,visible,0,7,0,0,0,0,7,has_recorded_relationships
+76XLTT,TapeTech EasyClean® Pump - Extra Long,variation,TT-EASYCLEAN-PUMP,tool,0,1,visible,0,7,0,0,0,0,7,has_recorded_relationships
+7CFB,"7"" Throttle Box Corner Box",variation,COL-THROTTLE-CORNER-FLUSHER-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+7FFB,"7"" Flat Finishing Box",variation,COL-FLAT-FINISHER-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+800018F,Box Handle Notched Connector Plate,simple,,part,1,1,hidden,8,0,0,0,0,0,8,has_recorded_relationships
+800021F,Pin,simple,,part,1,1,hidden,8,0,0,0,0,0,8,has_recorded_relationships
+800027,Short Connector,simple,,part,1,1,hidden,4,0,0,0,0,0,4,has_recorded_relationships
+8000TT,TapeTech Wizard® Compact Finishing Box Handle - Standard,variation,TT-WIZARD-COMPACT-FINISHING-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+8000TT-PA,TapeTech Wizard® Compact Finishing Box Handle - Power Assist,variation,TT-WIZARD-COMPACT-FINISHING-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+801009,Coupling Pin (Repair Only Box Handles),simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+8034TT,"TapeTech Flat Box Handle - 34""",variation,TT-FLAT-BOX-HANDLE,tool,0,1,visible,0,7,0,0,0,0,7,has_recorded_relationships
+804003F,Grip Assembly For Box Handle,simple,,part,1,1,visible,8,0,0,0,0,0,8,has_recorded_relationships
+804234,"34"" Connector Assembly",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+804254,54 in Connector Assembly,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+804272,"72"" Connector Assembly",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+8042TT,"TapeTech Flat Box Handle - 42""",variation,TT-FLAT-BOX-HANDLE,tool,0,1,visible,0,6,0,3,0,0,9,has_recorded_relationships
+8054TT,"TapeTech Flat Box Handle - 54""",variation,TT-FLAT-BOX-HANDLE,tool,0,1,visible,0,7,0,0,0,0,7,has_recorded_relationships
+8072TT,"TapeTech Flat Box Handle - 72""",variation,TT-FLAT-BOX-HANDLE,tool,0,1,visible,0,7,0,0,0,0,7,has_recorded_relationships
+808015F,"Hing Assy., Universal With Serial Number",simple,,part,1,1,hidden,8,0,0,0,0,0,8,has_recorded_relationships
+809011,3/4 in x 5/16-18 Dog Point Thumbscrew,simple,,part,1,1,hidden,10,0,0,0,0,0,10,has_recorded_relationships
+811018,"Connector Plate, Notched",simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+8134TT,"TapeTech EasyFinish™ Box Handle - 34""",variation,TT-EASYFINISH-BOX-HANDLE,tool,0,1,visible,0,6,0,0,0,0,6,has_recorded_relationships
+8142TT,"TapeTech EasyFinish™ Box Handle - 42""",variation,TT-EASYFINISH-BOX-HANDLE,tool,0,1,visible,0,6,0,0,0,0,6,has_recorded_relationships
+8154TT,"TapeTech EasyFinish™ Box Handle - 54""",variation,TT-EASYFINISH-BOX-HANDLE,tool,0,1,visible,0,6,0,0,0,0,6,has_recorded_relationships
+8172TT,"TapeTech EasyFinish™ Box Handle - 72""",variation,TT-EASYFINISH-BOX-HANDLE,tool,0,1,visible,0,6,0,0,0,0,6,has_recorded_relationships
+819038,Grip Adjuster Spring,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+857355,Gooseneck Cleaning Brush,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+859016,"Round Vinyl Black Cap, .315- ID, 2"" DP",simple,,part,1,0,hidden,2,0,0,0,0,0,2,has_recorded_relationships
+85T,TapeTech Gooseneck - Standard,variation,TT-GOOSENECK,tool,0,1,visible,0,1,0,6,0,0,7,has_recorded_relationships
+85XLTT,TapeTech Gooseneck - Extra Long,variation,TT-GOOSENECK,tool,0,1,visible,0,2,0,0,0,0,2,has_recorded_relationships
+861014,Gooseneck Spacer,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+880028,Compression Spring,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+880038,Connecting Rod,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+880053,Lock Block,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+882012,Acutator Clip Pin,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+882013,Locking Pin,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+882014,Locking Clip,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+883020,Extrusion Insert for XH-TT,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+889017,Conical Spring,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+889030,4-40 X 3/16 Fillisterhead Screw,simple,,part,1,1,hidden,6,0,0,0,0,0,6,has_recorded_relationships
+889035,6-32 x 1/4 Pan Head Screw,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+889055,Nylon Spacer,simple,,part,1,1,hidden,1,0,0,0,0,0,1,has_recorded_relationships
+88TTE,TapeTech XTender Finishing Box Handle,simple,,tool,0,1,visible,0,15,0,3,0,0,18,has_recorded_relationships
+8CFB,"8"" Throttle Box Corner Box",variation,COL-THROTTLE-CORNER-FLUSHER-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+8FBB,"8"" Fat Boy Finishing Box",variation,COL-FAT-BOY-FLAT-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+8FBBA,"8"" Automatic Fat Boy Finishing Box",variation,COL-AUTOMATIC-FAT-BOY-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+8FFB,"8"" Flat Finishing Box",variation,COL-FLAT-FINISHER-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+8FFBA,"8"" Automatic Flat Finishing Box",variation,COL-AUTOMATIC-FLAT-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+90T,TapeTech 90T Filler Adapter,simple,,tool,0,1,visible,0,2,0,9,0,0,11,has_recorded_relationships
+90TT,Filler Adapter,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+920003,Ball Coupling,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+AH1,Head Casting for Angle Heads,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH1-2,"Head Casting for AH1 Angle Heads - 2""",variation,AH1,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH1-2.5,"Head Casting for AH1 Angle Heads - 2.5""",variation,AH1,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH1-3,"Head Casting for AH1 Angle Heads - 3""",variation,AH1,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH1-3.5,"Head Casting for AH1 Angle Heads - 3.5""",variation,AH1,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH18,Socket Wear Adaptor,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH1A,Spring Housing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH1B,Return Spring,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH3,Top Blade,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH3-2,"2"" Top Blade",variation,AH3,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH3-2.5,"2.5"" Top Blade",variation,AH3,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH3-3,"3"" Top Blade",variation,AH3,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH3-3.5,"3.5"" Top Blade",variation,AH3,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH32,"2"" Angle Head Carbide Blade",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+AH325,"2.5"" Angle Head Carbide Blade",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+AH33,"3"" Angle Head Carbide Blade",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+AH335,"3.5"" Angle Head Carbide Blade",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+AH4,Side Blade,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH5,Frame Retainer Clip,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH6A,Ball Holder Release Clip,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH7,Frame Tension Spring,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH7-2,"Frame Tension Spring 2""",variation,AH7,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH7-2.5,"Frame Tension Spring 2.5""",variation,AH7,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH7-3,"Frame Tension Spring 3""",variation,AH7,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH7-3.5,"Frame Tension Spring 3.5""",variation,AH7,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH72,"2"" Angle Head Frame Tension Spring",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+AH725,"2.5"" Angle Head Frame Tension Spring",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+AH73,"3"" Angle Head Tension Spring",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+AH735,"3.5"" Angle Head Frame Tension Spring",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+AH8,Top Retainer Corner Clip,variation,AH8-CLIP,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH8-CLIP,Top Retainer Corner Clip,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH8A,Top Retainer Corner Clip,variation,AH8-CLIP,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH9,Bottom Retainer Corner Clip,variation,AH9-CLIP,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH9-CLIP,Bottom Retainer Corner Clip,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AH9A,Bottom Retainer Corner Clip,variation,AH9-CLIP,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+AHA,Angle Head Adapter,simple,,part,1,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+BF,Box Filler,variation,COL-BOX-FILLER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH,"TapeTech Brakeless Box Handle - Fixed 34""",variation,TT-BRAKELESS-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH1,Handle Mounting Base Anodized Black,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+BH11,Strap Connecting Pin-Old Style,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH2,180 Grip Head Anodize Black,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH24A,Bearing Sleeve,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH26,Cam,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH3,BH Mounting Bracket-Assy,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH4,Lower Brake Lever,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH5,Upper Mounting Bracket,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+BH6,Hinge Pin,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+BH7,Cam Follower,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH9,Brake Connecting Strap,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH9-3,Brake Connecting Strap 3',variation,BH9,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH9-4,Brake Connecting Strap 4',variation,BH9,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH9-42,"Brake Connecting Strap 42""",variation,BH9,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH9-5,Brake Connecting Strap 5',variation,BH9,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BH9-6,Brake Connecting Strap 6',variation,BH9,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BHE,"TapeTech Brakeless Box Handle - Extendable 34""-60""",variation,TT-BRAKELESS-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+BHE-SW,"TapeTech Brakeless Box Handle - Rotational Extendable 34""-60""",variation,TT-BRAKELESS-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+C1H,Columbia One Handle,variation,COL-ONE-HANDLE,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+C1HEXT,Columbia One Ext Handle 3'-5',variation,COL-ONE-HANDLE,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+C1HS,Columbia Stub One Handle,variation,COL-ONE-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CA07TT,"TapeTech Corner Applicator - 7""",variation,TT-CORNER-APPLICATOR,tool,0,1,visible,0,8,0,0,0,0,8,has_recorded_relationships
+CA08TT,"TapeTech Corner Applicator - 8""",variation,TT-CORNER-APPLICATOR,tool,0,1,visible,0,8,0,5,0,0,13,has_recorded_relationships
+CAA-TT,TapeTech Support Handle Adapter - Corner Applicator,variation,TT-SUPPORT-HANDLE-ADAPTER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CBNCR,Outside Bullnose Bead Corner Roller,variation,COL-OUTSIDE-CORNER-ROLLER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CC,Corner Cobra,simple,,tool,0,1,visible,0,1,0,0,0,1,2,has_recorded_relationships
+CEXT90,External 90 Applicator Head,variation,COL-BILLET-MUD-APPLICATOR,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CF1B,Direct Plate,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CF25COMBO,"TapeTech Combo Corner Flusher - 2.5""",variation,TT-COMBO-CORNER-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CF25TT,"TapeTech Direct Corner Flusher - 2.5""",variation,TT-DIRECT-CORNER-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CF3,"Platinum 3"" Corner Flusher",simple,,tool,0,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CF30COMBO,"TapeTech Combo Corner Flusher - 3""",variation,TT-COMBO-CORNER-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CF30TT,"TapeTech Direct Corner Flusher - 3""",variation,TT-DIRECT-CORNER-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CF35COMBO,"TapeTech Combo Corner Flusher - 3.5""",variation,TT-COMBO-CORNER-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CF35TT,"TapeTech Direct Corner Flusher - 3.5""",variation,TT-DIRECT-CORNER-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CF40COMBO,"TapeTech Combo Corner Flusher - 4""",variation,TT-COMBO-CORNER-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CF40TT,"TapeTech Direct Corner Flusher - 4""",variation,TT-DIRECT-CORNER-FLUSHER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CF4L,Ball Spring Long,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CFA-TT,TapeTech Support Handle Adapter - Corner Finisher,variation,TT-SUPPORT-HANDLE-ADAPTER,tool,0,1,visible,0,0,0,7,0,0,7,has_recorded_relationships
+CFB10,"5/16-18 X 3/4"" Thumb Screw",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB11A,Door Stop,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB15,Door Hinge,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB15A,Hinge Bushing Plastic Washer,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB16,Bearing Sleeve,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB1A,Hinge Seal,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CFB28,"Roll Face 8""",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CFB3,Side Plate,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB3-7,"Corner Box Side Plate 7""",variation,CFB3,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB3-8,"Corner Box Side Plate 8""",variation,CFB3,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB4,Corner Flusher Box Door,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB4-7,"Door 7""",variation,CFB4,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB4-8,"Door 8""",variation,CFB4,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB47,"7"" Pressure Door",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CFB48,"8"" Pressure Door",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CFB5B,Cone Ball,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB6,Mud Supply Valve Unit,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB7,Door Gasket,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB7-7,"Door Gasket 7""",variation,CFB7,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB7-8,"Door Gasket 8""",variation,CFB7,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB77,"7"" Angle Box Door Gasket",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CFB78,"8"" Door Gasket for Angle Box",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CFB8,Box Mount,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CFB8A,ONE Angle Box Door Adaptor,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CFLT,Flat Applicator Head,variation,COL-BILLET-MUD-APPLICATOR,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+CH55TT,TapeTech Cove Applicator Head - 55 mm,variation,TT-COVE-APPLICATOR-HEAD,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CH75TT,TapeTech Cove Applicator Head - 75 mm,variation,TT-COVE-APPLICATOR-HEAD,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CH83TT,TapeTech Cove Applicator Head - 83 mm,variation,TT-COVE-APPLICATOR-HEAD,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CH90TT,TapeTech Cove Applicator Head - 90 mm,variation,TT-COVE-APPLICATOR-HEAD,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CHXL,Long Extendable Handle 4'-8',variation,COL-ONE-HANDLE,tool,0,1,visible,0,9,0,0,0,0,9,has_recorded_relationships
+CLT24,"24"" Cam Lock Compound Tube",variation,COL-CAM-LOCK-TUBE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CLT32,"32"" Cam Lock Compound Tube",variation,COL-CAM-LOCK-TUBE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CLT42,"42"" Cam Lock Compound Tube",variation,COL-CAM-LOCK-TUBE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CLT55,"55"" Cam Lock Compound Tube",variation,COL-CAM-LOCK-TUBE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CLTBF,Cam Lock Box Filler Attachment,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CMH,Closet Monster Handle,simple,,tool,0,1,visible,0,5,0,0,0,5,10,has_recorded_relationships
+CMT24,"24"" Compound Tube",variation,COL-COMPOUND-TUBE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CMT32,"32"" Compound Tube",variation,COL-COMPOUND-TUBE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CMT42,"42"" Compound Tube",variation,COL-COMPOUND-TUBE,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+CMT55,"55"" Compound Tube",variation,COL-COMPOUND-TUBE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CNTT,Cleaning Nozzle,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+COBCR,Outside 90 Bead Cormer Roller,variation,COL-OUTSIDE-CORNER-ROLLER,tool,0,1,visible,0,7,0,0,0,0,7,has_recorded_relationships
+COBCRE,Columbia Outside Corner Roller - European,variation,COL-OUTSIDE-CORNER-ROLLER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COBCRW,Outside Wide Bead Corner Roller,variation,COL-OUTSIDE-CORNER-ROLLER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-180-GRIP-FLAT-BOX-HANDLE,Columbia 180° Grip Flat Box Handle,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-ANGLE-HEAD,Columbia Angle Head,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-AUTOMATIC-FAT-BOY-BOX,Columbia Automatic Fat Boy Box,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-AUTOMATIC-FLAT-BOX,Columbia Automatic Flat Box,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-AUTOMATIC-TAPER,Columbia Automatic Taper,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-BILLET-MUD-APPLICATOR,Columbia Billet Mud Applicator,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-BOX-FILLER,Columbia Box Filler,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-CAM-LOCK-TUBE,Columbia Cam Lock Tube,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-COMBO-FLUSHER,Columbia Combo Flusher,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-COMPOUND-TUBE,Columbia Compound Tube,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-DIRECT-FLUSHER,Columbia Direct Flusher,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-FAT-BOY-FLAT-BOX,Columbia Fat Boy Flat Box,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-FLAT-FINISHER-BOX,Columbia Flat Finisher Box,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-GOOSENECK,Columbia Gooseneck,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-HOT-MUD-PUMP,Columbia Hot Mud Pump,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-MATRIX-FLAT-BOX-HANDLE,Columbia Matrix Flat Box Handle,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-NAIL-SPOTTER,Columbia Nail Spotter,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-ONE-HANDLE,Columbia One Handle,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-OUTSIDE-CORNER-ROLLER,Columbia Outside Corner Roller,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-PREDATOR-MATRIX-HANDLE,Columbia Predator Matrix Handle,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-PREDATOR-ONE-HANDLE,Columbia Predator One Handle,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-STANDARD-FLUSHER,Columbia Standard Flusher,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-THROTTLE-CORNER-FLUSHER-BOX,Columbia Throttle Corner Flusher Box,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+COL-UHMW-MUD-APPLICATOR,Columbia UHMW Mud Applicator,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-1,Platinum Compound Pump Large O-Ring,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-11,Platinum Compound Pump Quick-Release Cylinder Clamp,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-2,Platinum Compound Pump Foot Bracket,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-20,Platinum Compound Pump Discharge Tube,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-26,Platinum Compound Pump U-Cup Seal,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-32,Platinum Compound Pump Large Nut,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-39,Platinum Compound Pump Handle with Ball Knob,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-45,Platinum Compound Pump Valve Disc,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-48,Platinum Compound Pump Piston Cup,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-50,Platinum Compound Pump Nylon-Insert Lock Nut,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-56,Platinum Compound Pump Intake Screen,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-59,Platinum Compound Pump Screen Wing Nut,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CP-7,Platinum Compound Pump Handle Pin,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CPFGN,Columbia Powerfill 5 Gallon Taper Gooseneck Fill Tube,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CPFP,Columbia PowerFill 3.5 Pro Series Cordless Loading Pump,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CR,Corner Roller,simple,,tool,0,1,visible,0,9,0,1,0,9,19,has_recorded_relationships
+CR-3,Bearing Sleeve,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CR1,Head Casting,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CR11,Handle Connecting Link,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+CR12,Hinge Pin,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CR2,Roller,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CR4,Cut Washer,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CR6,Handle Mounting Swivel,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+CT-INSERT-BUSHING,Insert Bushing,variable,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT-NYLATRON-CHAIN-ROLLER,Nylatron Chain Roller,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT-SPROCKET,Drive Sprocket,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT-WAFER-BUSHING,Wafer Bushing,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT10,Crimping Arm Bushing Right,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT101,Return Spring,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT103,Taper Body,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT104,Connection Strap,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT105,Crimper Lever,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT107,Piston Body,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT109,1/4 - 20 Castle Nut,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT10A,Crimping Arm Bushing Left,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT111,Taper Piston Cup,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT112,Slotted Bolt,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT115,Guard Ring,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT115A,Guard Ring O-Ring,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT116A,Band Adaptor,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT118A,Retaining Spring Clip New,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT119,Spool Retaining Spring,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT12,Tape Advance Release Bracket,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT120,Tape Spool,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT121A,O-Ring,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT122A,Band Adaptor,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT123,Retaining Quick Release Spring Shaft,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT124,Hand Grip Guard Ring,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT125,Rollers,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT125A,Bearing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT126,Hand Grip Body,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT127,Extension Shaft Bracket,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT128A,Shaft Guide Strap,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT13,Dog Base Bracket,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT130,Extension Shaft,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT132,Connecting Link,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT14A,Adjustable Brake,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT15,Adjustable Brake Ratchet Rod,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT16,Brake Dog,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT17,Separation Plate,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT19,Paper Feed Guide,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT2,Nylatron Insert Bushing,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT20,Hinge Block,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT22,Bracket,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT23,Reinforcing Rod,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT24TT,"TapeTech Compound Tube - 24""",variation,TT-COMPOUND-TUBE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT28,Roller Bushing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT29,Right Nylatron Chain Roller,variation,CT-NYLATRON-CHAIN-ROLLER,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT29A,Left Nylatron Chain Roller,variation,CT-NYLATRON-CHAIN-ROLLER,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT3,SS Right Insert Bushing,variation,CT-INSERT-BUSHING,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT31,Chain Tension & Guide Bracket,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT34R,Block For Removable Cap,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT35,Cap Reinforcing Tab,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT36,Return Spring Tube,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT36TT,"TapeTech Compound Tube - 36""",variation,TT-COMPOUND-TUBE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT3A,SS Left Insert Bushing,variation,CT-INSERT-BUSHING,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT4,Left Wafer Bushing,variation,CT-WAFER-BUSHING,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT40,Return Spring Ring,simple,,part,1,1,visible,3,0,0,0,0,0,3,has_recorded_relationships
+CT41,Knife Retainer Block,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT42A,Pyramid Blade,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT42TT,"TapeTech Compound Tube - 42""",variation,TT-COMPOUND-TUBE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT43,Micro Chain,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT45,Connecting Rod,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT47,Creaser Wheel,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT49,SS Crimping Arm Right,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT5,Right Wafer Bushing,variation,CT-WAFER-BUSHING,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT50,Crimping Wheel Bushing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT53,Toe Kicker,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT54,Return Spring,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT55,Carriage Guide Rod,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT56,Carriage Guide Rod Stop,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT57,Tape Advance Carriage,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT58,Guide Rod Bushing,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT6,SS Side Plate Right,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT62,Needle Holding Shaft,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT63,Needle,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT64,Needle Return Shaft,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT65,Needle Return Spring,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT67,Ratchet Gear,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT68,Hub,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT6A,SS Side Plate Left,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT7,Side Plate Support Left,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT70,Drive Shaft,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT71,Drive Sprocket Small,variation,CT-SPROCKET,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT72,Cable,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT73,Stainless Steel Cable Drum,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT76,Nylatron Washer,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT77,Drive Sprocket Large,variation,CT-SPROCKET,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT78,Drive Chain,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT79,Hollow Shaft,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT7A,Side Plate Hub,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT8,Side Plate Support Right,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT80,Manual Drive Grip,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT81,Clutch Return Spring,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT82,Clutch Lever,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT83,Clutch Dog,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT85,Clutch Release Shaft,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT86,Toe Kicker Cable,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT87,Engraved Cover Plate Cap,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT87-CS,Cap Seal,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CT87A,Bracket Brace,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT87CS,Cover Plate Cork Seal,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT88,Clutch Release Rod,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT89,Release Rod Sleeve,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT90,Rod Sleeve Housing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT92,Release Clip,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT92A,Toe Kicker Cable Retainer Clip,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT93,Mud Shut Off Lever Arm,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT94,Mud Shut-Off Upper Plate,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT95,Control Valve,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CT96,Mud Shut Off Gasket,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT97,Mud Supply Valve Body,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CT98,Mud Supply Seal,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+CTA01TT,TapeTech Compound Tube Filler Adapter,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+CTA84,Sub Assy Cable Guide Pulley,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CTA87CL,Cover Plate Assembly,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+CTA99,Removable Cover Plate Pin,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+DS-DURA-III,Dura-III Adjustable,variable,,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+DSS1422US,Dura-III Adjustable - 14”-22”,variation,DS-DURA-III,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+DSS1830US,Dura-III Adjustable - 18”-30”,variation,DS-DURA-III,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+DSS2440US,Dura-III Adjustable - 24”-40”,variation,DS-DURA-III,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+DSS3864US,Dura-III Adjustable - 38”-64”,variation,DS-DURA-III,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+EALFED48,4′ Aluminum Featheredge,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+EALFED60,5′ Aluminum Featheredge,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+EALFED72,6′ Aluminum Featheredge,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+EHC07,"TapeTech MaxxBox® High Capacity Finishing Box - 7""",variation,TT-MAXXBOX-HIGH-CAPACITY-FINISHING-BOX,tool,0,1,visible,0,16,0,0,0,0,16,has_recorded_relationships
+EHC10,"TapeTech MaxxBox® High Capacity Finishing Box - 10""",variation,TT-MAXXBOX-HIGH-CAPACITY-FINISHING-BOX,tool,0,1,visible,0,17,0,0,0,0,17,has_recorded_relationships
+EHC12,"TapeTech MaxxBox® High Capacity Finishing Box - 12""",variation,TT-MAXXBOX-HIGH-CAPACITY-FINISHING-BOX,tool,0,1,visible,0,17,0,0,0,0,17,has_recorded_relationships
+EHWJS100,Portable Hot Wire Foam Cutter,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+EIFSAND0614,6″ x 14″ EIFS Vacuum Hand Rasp,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+ERASP0214,2″ x 14″ Tungsten Carbide Rasp,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+ERASP0414,4″ x 14″ Tungsten Carbide EIFS Rasp,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+ERASP0614,6″ x 14″ Tungsten Carbide EIFS Rasp,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+ERASP0814,8″ x 14″ Tungsten Carbide EIFS Rasp,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+ERASPSERRATED0414,4″ x 14″ Tungsten Carbide EIFS Claw Rasp,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+ERASPSERRATED0614,"6"" x 14"" Tungsten Carbide Claw Rasp",simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+EZ07TT,"TapeTech EasyClean® Finishing Box - 7""",variation,TT-EASYCLEAN-FINISHING-BOX,tool,0,1,visible,0,13,0,0,0,0,13,has_recorded_relationships
+EZ10TT,"TapeTech EasyClean® Finishing Box - 10""",variation,TT-EASYCLEAN-FINISHING-BOX,tool,0,1,visible,0,18,0,5,0,0,23,has_recorded_relationships
+EZ12TT,"TapeTech EasyClean® Finishing Box - 12""",variation,TT-EASYCLEAN-FINISHING-BOX,tool,0,1,visible,0,16,0,5,0,0,21,has_recorded_relationships
+EZ15TT,"TapeTech EasyClean® Finishing Box - 15""",variation,TT-EASYCLEAN-FINISHING-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA199,2/56 X 3/16 Binder Slot,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA2,"4-40 x 1/8"" Binder Slot",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA200,1/16 X 1/4 Split Pin Ss,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA201,1/16 X 3/8 Split Pin,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FA202,1/16 x 1/2 Cotter Pin,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA203,1/16 X 3/4 Cotter Pin,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA206,4/40 Hex Nut,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA207,4/40 Nyloc Nut,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA208,4/40 X 1/8 Binder Slot,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FA210,4/40 X 3/16 Binder Slot,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA212,"4-40 X 3/16"" Truss Slot",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA213,"4-40 X 1/4"" Binder Slot",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA214,4/40 X 1/4 Flat Slot,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA215,4/40 X 5/16 Binder Slot,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA216,4/40 X 3/8 Fillister Slot,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA218,4/40 X 3/8 Flat Slot,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA219,4/40 X 1/2 Fillister Slot,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA220,4/40 X 3/4 Hex Bolt,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA222,5/40 X 7/16 Fillister Slot,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FA224,1/8 X 3/8 Split Pin,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA225,1/8 X 3/8 Aluminum Backup Wash,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA227,"6-32 X 1/4"" Flat Slot",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA228,#6 Flat Washer,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA229,#6 Lock Washer,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA230,#6 Star Washer,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA231,6/32 X 3/8 Hex Bolt,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA232,6-32 Hex Nut,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA233,6-32 Nyloc Nut,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA234,6-32 Nyloc Jam Nut,simple,,part,1,1,visible,3,0,0,0,0,0,3,has_recorded_relationships
+FA235,6-32 X 1/8 Set Screw SS,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA236,"6-32 X 1/8"" Binder Slot",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA237,"6-32 X 3/16"" Binder Slot",simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA238,"6-32 X 3/16"" Fillister Slot",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA239,"6-32 X 1/4"" Binder Slot",simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA241,"6-32 X 3/8"" Binder Slot",simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA243,"6-32 X 3/8"" Flat Slot",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA244,"6-32 X 1/2"" Pan Slot",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA245,"6-32 X 1/2"" Fillister Slot",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA247,6-32 X 5/8 Hex Bolt,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA249,"8-32 X 3/16"" Set Screw",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA252,#8 Star Washer External Tooth Stainless,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA253,#8 Flat Washer,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA254,8/32 Nyloc Nut,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA256,"8-32 X 3/16"" Pan Slot",simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA257,"8-32 X 1/4"" Fillister Slot",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA258,8/32 X 1/4 Half Dog Set Screw,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA259,"8-32 X 5/16"" Binder Slot",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA260,"8-32 X 3/8"" Pan Slot",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA261,"8-32 X 3/8"" Socket Head",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA262,"8-32 X 1/2"" Socket Head",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA264,"8-32 X 5/8"" Truss Slot",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA265,"8-32 X 3/4"" Truss Slot",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA266,"8-32 X 1"" Flat Slot",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FA267,"8-32 X 1-1/2"" Pan Slot",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA268,#10 Flat Washer,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA270,"#10 X 3/4"" Fender Washer",simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA271,10-24 Nyloc Nut,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA272,10-24 Wing Nut,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA273,"10-24 X 1"" Hex Bolt",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA274,"10-24 X 3/8"" Socket Head",simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA275,10/24 X 7/8 Hex Bolt,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA276,"10-24 X 7/8"" Pan Slot",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA278,#8 Belleville Washer,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FA279,"10-24 X 1"" Fillister Slot",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FA280,#10 Belleville Washer,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA281,10-32 Nyloc Jam Nut,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FA285,"1/4"" X 1/2"" X 0.0625"" Thick Plastic Washer",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FA286,"1/4"" X 1/2"" Flat Washer",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA288,"1/4"" X 3/4"" Split Pin",simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA289,"Old Style 1/4"" X 2"" Split Pin",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FA290,1/4-20 Nyloc Nut,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FA291,1/4-20 Hex Nut,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA292,1/4-20 Nyloc Jam Nut,simple,,part,1,1,visible,4,0,0,0,0,0,4,has_recorded_relationships
+FA294,"1/4-20 X 3/8"" Socket Head",simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA295,"1/4-20 X 1/2"" Flathead Socket",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA296,"1/4-20 X 1/2"" Hex Bolt",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA297,"1/4-20 X 5/8"" Socket Head",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA298,"1/4-20 X 7/8"" Flat Socket",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA299,1/4-20 X 1-1/2 Hex Bolt,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA3,"1/2"" x 7/8"" Flat Washer",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA300,"1/4-20 X 2"" Hex Bolt",simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA301,"1/4-20 X 2-1/4"" Hex Bolt",simple,,part,1,1,visible,3,0,0,0,0,0,3,has_recorded_relationships
+FA302,"1/4-28 X 1/4"" Set Screw",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA303,5-16 Flat Washer,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA305,"5/16-18 X 3/4"" Hex Bolt",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA306,"5/16-18 X 1-1/4"" Hex Bolt",simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA307,5/16-24 Jam Nut,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA308,"1/2 X 7/8"" Flat Washer",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FA311,"1/4-28 X 1/2"" Socket Head",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA312,"10/24 X 1/4"" Set Screw",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA313,1/4-20 X 1/4 Soc Head Setscrew,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+FA314,10-24 X 1-1/2 Pan Slot,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FA315,10/32 X 3/8 Flat Socket Head,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA316,"10-32 X 1/2"" Flat Socket Head",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA317,"5/32 X 7/8"" Roll Pin",simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FA320,1/4-28 X 3/8 Socket Set Screw,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA365,"3/16 X 1"" Spring Pin Ss",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA376,8-32 X 5/16 Ss Socket Head,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA379,"1/8"" Ss E-Clip",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA380,1/4 Ss E-Clip,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FA382,"10-32 X 1/4"" Ss Set Screw",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FB-26-10,"Platinum 10"" Flat Box Door Rubber Wiper Gasket (2nd Generation)",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FB-26-12,Flat Box Door Wiper,simple,,part,1,1,visible,3,0,0,0,0,0,3,has_recorded_relationships
+FFB11,Adjuster Spring,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB11-10,"Adjuster Spring - 10""",variation,FFB11,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB11-12,"Adjuster Spring 12""",variation,FFB11,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB11-8,"Adjuster Spring - 8""",variation,FFB11,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB16,Door Spring Nut,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FFB17,Door Spring,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB25,Rubber Gasket Retainer,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB25-10,"Rubber Gasket Retainer-10""",variation,FFB25,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB25-12,"Rubber Gasket Retainer 12""",variation,FFB25,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB32,New Thumb Release Door Stop,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FFB32A,Thumb Release Clip Screw,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FFB36,Box Wheel Hub,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB37,Flat Box Wheel O-ring,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB38,Bushing,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+FFB39,Axle Wheel Screw,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB43,Bead Wheel Bushing,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+FFB4A,Door Washer,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB4B,Aluminum Backing Washer,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB5,Axle,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB5-10,"Axle 10""",variation,FFB5,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB5-12,"Axle 12""",variation,FFB5,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB5-14,"Axle 14""",variation,FFB5,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB5-7,"Axle 7""",variation,FFB5,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB5-8,"Axle 8""",variation,FFB5,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB5A,Axle Bushing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB7,Shoe - Right,variation,FFB7-SHOE,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB7-SHOE,Shoe,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB7A,Shoe - Left,variation,FFB7-SHOE,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB8,Bar Retainer Clip,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB9,Flat Finishing Box Blade,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB9-10,"Blade 10""",variation,FFB9,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB9-12,"Blade 12""",variation,FFB9,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB9-14,"Blade 14""",variation,FFB9,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB9-5.5,"Blade 5.5""",variation,FFB9,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB9-7,"Blade 7""",variation,FFB9,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FFB9-8,"Blade 8""",variation,FFB9,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FHTT,TapeTech Support Handle - Fiberglass,variation,TT-SUPPORT-HANDLE,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+FHTT-CC,TapeTech Support Handle - Closet Crusher Fiberglass,variation,TT-SUPPORT-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+FMH,Flat Mud Head Plastic,variation,COL-UHMW-MUD-APPLICATOR,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+GN,Gooseneck,variation,COL-GOOSENECK,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+GSR-TT,TapeTech Gooseneck Riser,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+GSRTT,Gooseneck Riser,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+H-03,Ball Grip,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HFFB14,Flat Box Hinged Door Gasket,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HFFB14-10,"Hinge Box Door Gasket 10""",variation,HFFB14,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HFFB14-12,"Hinge Box Door Gasket 12""",variation,HFFB14,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HFFB14-14,"Hinge Box Door Gasket 14""",variation,HFFB14,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HFFB14-8,"Hinge Box Door Gasket 8""",variation,HFFB14,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HFFB1A-10,"Mud Seal Strip - 10""",simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HFFB3,Regular Side Plate-Both Sides,variation,HFFB3-PLATE,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HFFB3-PLATE,Hinge Box End Plate,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HFFB3A,Hinge Box End Plate - Left,variation,HFFB3-PLATE,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HFFB4D,Nylatron Bushing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH-BRASS-CONNECTOR,Brass Connector,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH10A,Top Cap,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+HH10B,Bottom Cap,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH12,Head Spring,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH13,Brake Cam,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH14,Brake Piston,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH15,Hand Protector,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH16,Piston Housing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH16A,Bleeder Screw,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH17A,Brass Connector 1,variation,HH-BRASS-CONNECTOR,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH17B,Brass Connector 2,variation,HH-BRASS-CONNECTOR,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH17C,Line Pincher,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH19,Cap,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH2,Upper Mounting Bracket,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH23,Piston O-Ring,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH30,Extension Release Trigger,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+HH31,Release Clip Pin,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+HH32,Pin Bushing,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+HH33,Release Trigger Spring,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+HH35,Grip (No Ends),simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH5,Extension Housing,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+HH7,Brake,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH8,Handle Tube,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HH9,Coiled Hydraulic Line,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HMP,Loading Pump,variation,COL-HOT-MUD-PUMP,tool,0,1,visible,0,30,0,0,0,0,30,has_recorded_relationships
+HMP-C,Columbia Hot Mud Pump - CDN,variation,COL-HOT-MUD-PUMP,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS-DOOR-SPRING,Door Spring,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS10,Door Spring Long,variation,HNS-DOOR-SPRING,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS10A,Door Spring Short,variation,HNS-DOOR-SPRING,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS12,Handle Clamp,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+HNS12A,Handle Roll Pin,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+HNS13,Roll Pin Bushing,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+HNS15,Door Gasket for Hinged Nailspotters,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS15-2,"Hinged Nail Spotter Door Gasket 2""",variation,HNS15,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS15-3,"Hinged Nail Spotter Door Gasket 3""",variation,HNS15,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS17A,Nail Spotter Handle Tightness Screw,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS18,Pivot,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+HNS20,Wedge,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+HNS4,Hinged Nailspotter Door,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS4-2,"Door 2""",variation,HNS4,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS4-3,"Door 3""",variation,HNS4,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS7,Hinged Nailspotter Blade,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS7-2,"2"" Nail Spotter Blade",variation,HNS7,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS7-3,"3"" Nail Spotter Blade",variation,HNS7,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS8,Blade Holder,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS8-2,"Blade Holder 2""",variation,HNS8,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNS8-3,"Blade Holder 3""",variation,HNS8,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HNSA-14,Sub Assembled Handle Link,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HP1,Pump Cylinder,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+HP44,Collar O-Ring (Large),simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+HP45,O Ring Enclosure,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HP46,Pump Latch Keeper,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+HP47,Latch Clamp Assembly,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+HPA-48,Handle Pin,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+IA90,Inside 90 Applicator Head,variation,COL-UHMW-MUD-APPLICATOR,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+ICA2-1,Inside Corner Applicator 2 Wheel,variation,COL-BILLET-MUD-APPLICATOR,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+ICA4-1,Inside Corner Applicator 4 Wheel,variation,COL-BILLET-MUD-APPLICATOR,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+ICATW,Two Way Internal Corner Applicator,variation,COL-BILLET-MUD-APPLICATOR,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+JCT01TT,Jam Clearing Tool,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+LV5-CORNER-APPLICATOR,LEVEL5 Corner Applicator,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+LV5-CORNER-FINISHER,LEVEL5 Corner Finisher,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+LV5-CORNER-FLUSHER,LEVEL5 Corner Flusher,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+LV5-CORNER-HANDLE-APPLICATOR-EXT,LEVEL5 Corner Applicator Handle (Extendable),variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+LV5-CORNER-HANDLE-FINISHER-EXT,LEVEL5 Corner Finisher Handle (Extendable),variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+LV5-CORNER-ROLLER-HANDLE,LEVEL5 Corner Roller Handle,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+LV5-ENTRY-FINISHING-SET,LEVEL5 Entry to Automatic Finishing Set,variable,,toolset,0,1,visible,0,0,10,0,0,0,10,has_recorded_relationships
+LV5-FIXED-HANDLE-50,"LEVEL5 50"" Fixed Handle",variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+LV5-FLAT-BOX-HANDLE-EXT,LEVEL5 Flat Box Handle (Extendable),variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+LV5-FLAT-BOX-HANDLE-FIXED,LEVEL5 Flat Box Handle (Fixed Length),variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+LV5-FLAT-BOX-MEGA,LEVEL5 Flat Box (MEGA),variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+LV5-FLAT-BOX-STANDARD,LEVEL5 Flat Box (Standard),variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+LV5-NAIL-SPOTTER,LEVEL5 Nail Spotter,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH,"Matrix 40"" - 60"" Flat Box Handle",variation,COL-MATRIX-FLAT-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH1,Matrix Handle Mounting Plate Anodized Black,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH10,Octagon,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH11,Matrix Handle Grip Bushing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH12,Matrix Pinch Brake Spring,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH13,Matrix Large Nyliner Bushing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH15,Matrix Pinch Brake Activator,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH16,Matrix Connecting Rod Housing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH17,Matrix Pinch Brake,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH18,Matrix Pinch Brake Housing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH19,Pinch Brake Sleeve Housing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH2,Matrix Handle Head,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH20,Matrix Small Nyliner Bushing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH21,Matrix Grip Adjuster Housing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH22,Matrix Grip Adjustment Pin,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH23,Matrix Grip Adjusting Fastener,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH24,Matrix Pinch Brake Stem,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH25,Matrix Pinch Brake Bushing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH3,Matrix Lower Mounting Bracket,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH3A,Matrix Mounting Bracket Stem,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH4,Matrix Handle Grip Anodized Black,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH5,Matrix Connecting Link Pin,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH6,Matrix Hinge Pin,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH7,Matrix Connecting Link (Fork),simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH8,Matrix Brake Rod Bushing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MH9,Matrix Pinch Brake Rod,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+MH9A,Brake Activation Rod,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MHL,"Matrix 56"" - 76"" Flat Box Handle Long",variation,COL-MATRIX-FLAT-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MHS,"Matrix 29"" - 39"" Flat Box Handle Short",variation,COL-MATRIX-FLAT-BOX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MP-PISTON-BACKING-WASHER,Piston Backing Washer,variable,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MP11,Piston Shaft,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+MP13,Piston Backing Washer (Large),variation,MP-PISTON-BACKING-WASHER,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MP13A,Piston Backing Washer (Small),variation,MP-PISTON-BACKING-WASHER,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MP14,Piston Cup,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+MP2,Foot Valve,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+MP23,Mud Pump Seal (U-Cup),simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+MP23A,O-Ring,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MP24,Mud Pump Screen,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+MP25,Filler Studs,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+MP28,Filler Nut,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+MP3,Pump Flapper Valve,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+MP32,Backing Washer Locator,simple,,part,1,1,visible,1,0,0,0,0,0,1,has_recorded_relationships
+MP33,Filler Gasket,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MP36,Steel Bushing,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+MP39,Sleeve,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+MP5,Head Bushing,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+MP6,Handle Link,simple,,part,1,1,visible,2,0,0,0,0,0,2,has_recorded_relationships
+MP7,Pump Handle,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MP8,Leg,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MR01TT,TapeTech MudRunner® Compound Applicator - Pro,variation,TT-MUDRUNNER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+MRX01TT,TapeTech Extension,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+NS-30,Platinum 2-Inch & 3-Inch Nail Spotter Pivot Spacer Sleeve,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+NS-31,Platinum 2-Inch & 3-Inch Nail Spotter Split Nylon Flange Bushing,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+NS-33,Platinum 2-Inch & 3-Inch Nail Spotter Linkage Arm Assembly,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+NS-34,Platinum 2-Inch & 3-Inch Nail Spotter Domed Hex Cap Nut,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+NS-41,Platinum 2-Inch & 3-Inch Nail Spotter Handle Pivot Shoulder Fastener,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+NS-43,Platinum 2-Inch & 3-Inch Nail Spotter Short Linkage Screw,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+NS02TT,"TapeTech Nail Spotter - 2""",variation,TT-NAIL-SPOTTER,tool,0,1,visible,0,2,0,2,0,0,4,has_recorded_relationships
+NS03TT,"TapeTech Nail Spotter - 3""",variation,TT-NAIL-SPOTTER,tool,0,1,visible,0,5,0,2,0,0,7,has_recorded_relationships
+NSA-TT,TapeTech Support Handle Adapter - Nail Spotter,variation,TT-SUPPORT-HANDLE-ADAPTER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+OA90,Outside 90 Corner Applicator,variation,COL-UHMW-MUD-APPLICATOR,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+OA90-325,Outside 90 Corner Applicator 325,variation,COL-UHMW-MUD-APPLICATOR,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PAHC07,"TapeTech Power Assist® MaxxBox® Finishing Box - 7""",variation,TT-POWER-ASSIST-MAXXBOX-FINISHING-BOX,tool,0,1,visible,0,17,0,0,0,0,17,has_recorded_relationships
+PAHC10,"TapeTech Power Assist® MaxxBox® Finishing Box - 10""",variation,TT-POWER-ASSIST-MAXXBOX-FINISHING-BOX,tool,0,1,visible,0,18,0,1,0,0,19,has_recorded_relationships
+PAHC12,"TapeTech Power Assist® MaxxBox® Finishing Box - 12""",variation,TT-POWER-ASSIST-MAXXBOX-FINISHING-BOX,tool,0,1,visible,0,18,0,1,0,0,19,has_recorded_relationships
+PC1H,Predator Columbia One Handle,variation,COL-PREDATOR-ONE-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PC1HEXT,Predator Columbia One Ext 3'-5',variation,COL-PREDATOR-ONE-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PCHXL,Predator Extendable Long 4'-8',variation,COL-PREDATOR-ONE-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PCLT42,"Predator 42"" Cam Lock Compound Tube",simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PCMT42,"Predator 42"" Compound Tube",simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PHMP,Predator Loading Pump,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PMH,"Predator Matrix 40"" - 60"" Flat Box Handle",variation,COL-PREDATOR-MATRIX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PMHL,"Predator Matrix 56"" - 76"" Flat Box Handle - Long",variation,COL-PREDATOR-MATRIX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PMHS,"Predator Matrix 29"" - 39"" Flat Box Handle - Short",variation,COL-PREDATOR-MATRIX-HANDLE,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-10FB,"Platinum Flat Finishing Box - 10""",variation,PT-FB,tool,0,1,visible,0,1,0,1,0,0,2,has_recorded_relationships
+PT-12FB,"Platinum Flat Finishing Box - 12""",variation,PT-FB,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+PT-14FB,"Platinum Flat Finishing Box - 14""",variation,PT-FB,tool,0,1,visible,0,1,0,0,0,0,1,has_recorded_relationships
+PT-2.5CF,"Platinum Stainless Steel Corner Flusher - 2.5""",variation,PT-SSCF,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-2NS,"Platinum Nail Spotter - 2""",variation,PT-NS,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-3.5CF,"Platinum Stainless Steel Corner Flusher - 3.5""",variation,PT-SSCF,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-3CF,"Platinum Angle Head Corner Finisher with Wheels - 3""",variation,PT-CF,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+PT-3NS,"Platinum Nail Spotter - 3""",variation,PT-NS,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-8FB,"Platinum Flat Finishing Box - 8""",variation,PT-FB,tool,0,1,visible,0,1,0,0,0,0,1,has_recorded_relationships
+PT-90-APPLICATOR,Platinum 90° Corner Applicator,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-AICA,Platinum 4 Wheel Inside Angle / Corner Applicator,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-BF,Platinum Box Filler Attachment,simple,,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+PT-BH,Platinum Flat Box Handle,variable,,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+PT-BH34,"Platinum Flat Box Handle - 34""",variation,PT-BH,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-BH42,"Platinum Flat Box Handle - 42""",variation,PT-BH,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-BH54,"Platinum Flat Box Handle - 54""",variation,PT-BH,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-CA8,"Platinum 8"" Corner Applicator",simple,,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+PT-CAH50,"Platinum 50"" Corner Tool Handle - Corner Box",variation,PT-CORNER-HANDLE-50,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+PT-CF,Platinum Angle Head Corner Finisher with Wheels,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-CF2.5,"Platinum Angle Head Corner Finisher with Wheels - 2.5""",variation,PT-CF,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-CF3.5,"Platinum Angle Head Corner Finisher with Wheels - 3.5""",variation,PT-CF,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-CFH50,"Platinum 50"" Corner Tool Handle - Angle Head",variation,PT-CORNER-HANDLE-50,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+PT-CORNER-HANDLE-50,"Platinum 50"" Corner Tool Handle",variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-CP,Platinum Drywall Pump w/Filler,simple,,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+PT-CR,Platinum Corner Roller - Inside,variation,PT-INSIDE-CORNER-ROLLER,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+PT-CRE,Platinum Corner Roller - ECO Inside,variation,PT-INSIDE-CORNER-ROLLER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-CRH50,"Platinum 50"" Corner Tool Handle - Corner Roller",variation,PT-CORNER-HANDLE-50,tool,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+PT-CT,Platinum Compound Tube,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-CT24,"Platinum Compound Tube - 24""",variation,PT-CT,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-CT36,"Platinum Compound Tube - 36""",variation,PT-CT,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-CT42,"Platinum Compound Tube - 42""",variation,PT-CT,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-EBH,"Platinum Extendable Flat Box Handle 40"" – 64""",simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-EXT3IN1-1,Platinum Extendable Angle Head Handle,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-FA,"Platinum 4"" Flat Applicator",simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-FB,Platinum Flat Finishing Box,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-FIN,Platinum Drywall Starter Finishing Set,simple,,toolset,0,1,visible,0,0,11,0,0,0,11,has_recorded_relationships
+PT-GN,Platinum Gooseneck,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-ICA,Platinum 90° Corner Applicator - Inside,variation,PT-90-APPLICATOR,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-INSIDE-CORNER-ROLLER,Platinum Inside Corner Roller,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-MNBH,Platinum Mini Box Handle,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-NS,Platinum Nail Spotter,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-OCA,Platinum 90° Corner Applicator - Outside,variation,PT-90-APPLICATOR,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-OCR,Platinum Outside 90-Degree Corner Bead Roller,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-SSCF,Platinum Stainless Steel Corner Flusher,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PT-TP,Platinum Semi Automatic Drywall Taper,simple,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+PTAPER,Columbia One Predator Taper,simple,,tool,0,1,visible,0,62,0,0,0,61,123,has_recorded_relationships
+QB06-QSX,"TapeTech QuickBox® QSX Finishing Box - 6.5""",variation,TT-QUICKBOX-QSX-FINISHING-BOX,tool,0,1,visible,0,4,0,0,0,0,4,has_recorded_relationships
+QB08-QSX,"TapeTech QuickBox® QSX Finishing Box - 8.5""",variation,TT-QUICKBOX-QSX-FINISHING-BOX,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+QCATT,Quick-Connect Adapter,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+RC,Road Case,simple,,accessory,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+RTTCTT,Taper Cable Repair Tool,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+S1-A-1624,"SurPro S1 Aluminum Drywall Stilts - 16""-24""",variation,SP-S1-A,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S1-A-2030,"SurPro S1 Aluminum Drywall Stilts - 20""-30""",variation,SP-S1-A,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S1-A-2640,"SurPro S1 Aluminum Drywall Stilts - 26""-40""",variation,SP-S1-A,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S1-M-1624,"SurPro S1 Magnesium Drywall Stilts - 16""-24""",variation,SP-S1-M,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S1-M-2030,"SurPro S1 Magnesium Drywall Stilts - 20""-30""",variation,SP-S1-M,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S1-M-2640,"SurPro S1 Magnesium Drywall Stilts - 26""-40""",variation,SP-S1-M,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S1X-A-2131,"SurPro S1X Aluminum Drywall Stilts - 21""-31""",variation,SP-S1X-A,stilt,0,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S1X-A-2640,"SurPro S1X Aluminum Drywall Stilts - 26""-40""",variation,SP-S1X-A,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S1X-M-2131,"SurPro S1X Magnesium Drywall Stilts - 21""-31""",variation,SP-S1X-M,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S1X-M-2640,"SurPro S1X Magnesium Drywall Stilts - 26""-40""",variation,SP-S1X-M,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S2-A-1624,"SurPro S2 Aluminum Drywall Stilts - 16""-24""",variation,SP-S2-A,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S2-A-2030,"SurPro S2 Aluminum Drywall Stilts - 20""-30""",variation,SP-S2-A,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S2-A-2640,"SurPro S2 Aluminum Drywall Stilts - 26""-40""",variation,SP-S2-A,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S2-M-1624,"SurPro S2 Magnesium Drywall Stilts - 16""-24""",variation,SP-S2-M,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S2-M-2030,"SurPro S2 Magnesium Drywall Stilts - 20""-30""",variation,SP-S2-M,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S2-M-2640,"SurPro S2 Magnesium Drywall Stilts - 26""-40""",variation,SP-S2-M,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S2X-A-2640,"SurPro S2X Aluminum Drywall Stilts - 26""-40""",variation,SP-S2X-A,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S2X-A-3852,"SurPro S2X Aluminum Drywall Stilts - 38""-52""",variation,SP-S2X-A,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S2X-M-2131,"SurPro S2X Magnesium Drywall Stilts - 21""-31""",variation,SP-S2X-M,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+S2X-M-2640,"SurPro S2X Magnesium Drywall Stilts - 26""-40""",variation,SP-S2X-M,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SACS,Semi Automatic Commando Set,simple,,toolset,0,1,visible,0,0,10,0,0,0,10,has_recorded_relationships
+SAT,Semi Automatic Taper,simple,,tool,0,1,visible,0,4,0,0,0,4,8,has_recorded_relationships
+SB212,"Replacement 12"" Blade for Tomahawk",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+SCP001WD,"7""X13"" Galvaniz Steel Bucket Scoop",simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+SP-S1-A,SurPro S1 Aluminum Drywall Stilts,variable,,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SP-S1-M,SurPro S1 Magnesium Drywall Stilts,variable,,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SP-S1X-A,SurPro S1X Aluminum Drywall Stilts,variable,,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SP-S1X-M,SurPro S1X Magnesium Drywall Stilts,variable,,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SP-S2-A,SurPro S2 Aluminum Drywall Stilts,variable,,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SP-S2-M,SurPro S2 Magnesium Drywall Stilts,variable,,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SP-S2X-A,SurPro S2X Aluminum Drywall Stilts,variable,,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SP-S2X-M,SurPro S2X Magnesium Drywall Stilts,variable,,stilt,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS1,Leg Band with Pad for Stilts,simple,,part,1,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS10,USG Adjustable Heel Bracket w/ Screws,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS231830,USG Lower Strut Tube for Model 1830,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS232440,USG Lower Strut Tube for Model 2440,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS24,"1/2-20 x 1-5/8"" Cap Screws with Nuts & Washer",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS26,USG Lower Foot Plate,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS27,"USG 1/4-20 X 3-1/8"" Cap Screw w/ Nut & Bushing Washers",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS28,Quick Release Clamp w/ Nut Bolt and Washers,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS3,USG Leg Band Spacer w/ Nut Bolt & Washers,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS31,USG Clamp Bracket w/ Nut Bolt and Washers,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS33,Strut Tube Plug Cap,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS42,USG Adjustable Height Knob Bolt w/ Washer,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS47L1830,USG Left Rear Upper Leg Model 1830,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS47L2440,USG Left Rear Upper Leg for Model 2440,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS47R1830,USG Right Rear Upper Leg for Model 1830,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS47R2440,USG Right Rear Upper Leg for Model 2440,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS48,Upper & Lower Nylon Tube Sleeve Set,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS501830,USG Front Upper Leg for Model 1830,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS502440,USG Front Upper Leg Model 2440,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS511830,USG Lower Leg for Model 1830,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS512440,USG Lower Leg Model 2440,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRS9,"Upper Foot Plate (Screws, Washers, and Strap Plates)",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRSKIT1,"Spring Assembly w/ Bracket, Nut, Bolts & Washers",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRSKIT21830,USG Complete Leg Strut Assembly for Model 1830,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRSKIT22440,USG Complete Leg Strut for Model 2440,simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRSSA,"USG 1""Arch Foot Strap for Stilt",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRSSL,"1-1/2"" Leg Strap w/ Buckle for Stilt",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+SRSST,"USG 1"" Adjustable Toe Strap w/ Buckle",simple,,part,1,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+STAPER,"Columbia Automatic Taper - Sawed Off 39""",variation,COL-AUTOMATIC-TAPER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+T032,Gooser Release Cam,simple,,part,1,0,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+TAPER,Automatic Taper,variation,COL-AUTOMATIC-TAPER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TBBF,Tall Boy Box Filler,variation,COL-BOX-FILLER,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TBGN,Tall Boy Gooseneck,variation,COL-GOOSENECK,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TBMP,Tall Boy Loading Pump,variation,COL-HOT-MUD-PUMP,tool,0,1,visible,0,21,0,0,0,0,21,has_recorded_relationships
+TC01TT,Tool Caddy,simple,,part,1,1,hidden,0,0,0,0,0,0,0,no_relationship_recorded
+TCS,Semi Automatic Tool Case,simple,,accessory,0,1,visible,0,0,0,1,0,0,1,has_recorded_relationships
+TT-APPLICATOR-HEAD,TapeTech Applicator Head,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-BRAKELESS-BOX-HANDLE,TapeTech Brakeless Box Handle,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-COMBO-CORNER-FLUSHER,TapeTech Combo Corner Flusher,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-COMPOUND-TUBE,TapeTech Compound Tube,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-CORNER-APPLICATOR,TapeTech Corner Applicator,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-CORNER-FINISHER,TapeTech Corner Finisher,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-COVE-APPLICATOR-HEAD,TapeTech Cove Applicator Head,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-DIRECT-CORNER-FLUSHER,TapeTech Direct Corner Flusher,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-EASYCLEAN-AUTOMATIC-TAPER,TapeTech EasyClean® Automatic Taper,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-EASYCLEAN-FINISHING-BOX,TapeTech EasyClean® Finishing Box,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-EASYCLEAN-PUMP,TapeTech EasyClean® Pump,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-EASYFINISH-BOX-HANDLE,TapeTech EasyFinish™ Box Handle,variable,,tool,0,1,visible,0,0,0,0,0,1,1,has_recorded_relationships
+TT-FLAT-BOX-HANDLE,TapeTech Flat Box Handle,variable,,tool,0,1,visible,0,0,0,0,0,1,1,has_recorded_relationships
+TT-GOOSENECK,TapeTech Gooseneck,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-MAXXBOX-HIGH-CAPACITY-FINISHING-BOX,TapeTech MaxxBox® High Capacity Finishing Box,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-MUDRUNNER,TapeTech MudRunner® Compound Applicator,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-NAIL-SPOTTER,TapeTech Nail Spotter,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-OUTSIDE-CORNER-ROLLER,TapeTech Outside Corner Roller,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-POWER-ASSIST-MAXXBOX-FINISHING-BOX,TapeTech Power Assist® MaxxBox® Finishing Box,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-QUICKBOX-QSX-FINISHING-BOX,TapeTech QuickBox® QSX Finishing Box,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-SUPPORT-HANDLE,TapeTech Support Handle,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-SUPPORT-HANDLE-ADAPTER,TapeTech Support Handle Adapter,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TT-WIZARD-COMPACT-FINISHING-BOX-HANDLE,TapeTech Wizard® Compact Finishing Box Handle,variable,,tool,0,1,visible,0,0,0,0,0,0,0,no_relationship_recorded
+TTBBS,TapeTech Basic Box Set,simple,,toolset,0,1,visible,0,0,5,0,0,0,5,has_recorded_relationships
+TTBTS,TapeTech Basic Taping Set,simple,,toolset,0,1,visible,0,0,7,0,0,0,7,has_recorded_relationships
+TTCFS,TapeTech Corner Finishing Set,simple,,toolset,0,1,visible,0,0,5,0,0,0,5,has_recorded_relationships
+TTCFS-M,TapeTech MudRunner Corner Finishing Set,simple,,toolset,0,1,visible,0,0,4,0,0,0,4,has_recorded_relationships
+TTPFB,TapeTech Paper Faced Bead Pro Set,simple,,toolset,0,1,visible,0,0,8,0,0,0,8,has_recorded_relationships
+TTPPS,TapeTech Pro Performance Set,simple,,toolset,0,1,visible,0,0,15,0,0,0,15,has_recorded_relationships
+TTPPS-EF,TapeTech Pro Performance Easy Finish Set,simple,,toolset,0,1,visible,0,0,15,0,0,0,15,has_recorded_relationships
+TTPSS,TapeTech Professional Starter Set,simple,,toolset,0,1,visible,0,0,12,0,0,0,12,has_recorded_relationships
+TTSFS,TapeTech Standard Full Set - Standard,simple,,toolset,0,1,visible,0,0,13,0,0,0,13,has_recorded_relationships
+TTSFS-2,TapeTech Standard Full Set - With 2 Pumps,simple,,toolset,0,1,visible,0,0,13,0,0,0,13,has_recorded_relationships
+USG-MAGNESIUM-STILTS,USG Sheetrock Tools Professional Magnesium Drywall Stilts,variable,,stilt,0,0,visible,0,0,0,0,0,0,0,no_relationship_recorded
+XHTT,TapeTech Support Handle - Extension,variation,TT-SUPPORT-HANDLE,tool,0,1,visible,0,0,0,7,0,0,7,has_recorded_relationships

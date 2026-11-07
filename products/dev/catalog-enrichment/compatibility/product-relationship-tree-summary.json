@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "report_type": "dtb_catalog_product_relationship_tree",
+  "mutates_catalog": false,
+  "runtime_projection_audited": false,
+  "catalog_sha256": "c1e95a17b5bf9b88616597a081946ade1a8ebdb8aa94b90f9f19ec0100223fcb",
+  "tapetech_matrix_sha256": "37b3560b4c1fb3f4ef0943809b6dc42fdad58e215ab4b1af61f8b4c0e6872752",
+  "catalog_entities": 1133,
+  "relationship_edges": 863,
+  "relationship_counts": {
+    "cart_cross_sell": 82,
+    "kit_contains": 169,
+    "part_fits_tool": 612
+  },
+  "catalog_entities_with_recorded_relationships": 415,
+  "catalog_entities_without_recorded_relationships": 718,
+  "tapetech_exact_part_rows": 173,
+  "tapetech_exact_catalog_fitment_edges": 432,
+  "family_metadata": {
+    "entities_with_family_and_series": 756,
+    "entities_with_family_only": 0,
+    "entities_with_series_only": 0,
+    "entities_without_family_or_series": 377,
+    "distinct_brand_family_series_groups": 493,
+    "groups_with_multiple_catalog_entities": 111,
+    "brand_coverage": {
+      "columbia-taping-tools": {
+        "catalog_entities": 566,
+        "with_family": 510,
+        "with_series": 510,
+        "with_family_and_series": 510,
+        "distinct_family_series_groups": 294
+      },
+      "dura-stilts": {
+        "catalog_entities": 5,
+        "with_family": 5,
+        "with_series": 5,
+        "with_family_and_series": 5,
+        "distinct_family_series_groups": 4
+      },
+      "level5": {
+        "catalog_entities": 60,
+        "with_family": 60,
+        "with_series": 60,
+        "with_family_and_series": 60,
+        "distinct_family_series_groups": 45
+      },
+      "platinum": {
+        "catalog_entities": 68,
+        "with_family": 45,
+        "with_series": 45,
+        "with_family_and_series": 45,
+        "distinct_family_series_groups": 40
+      },
+      "surpro": {
+        "catalog_entities": 28,
+        "with_family": 28,
+        "with_series": 28,
+        "with_family_and_series": 28,
+        "distinct_family_series_groups": 27
+      },
+      "tapetech": {
+        "catalog_entities": 322,
+        "with_family": 108,
+        "with_series": 108,
+        "with_family_and_series": 108,
+        "distinct_family_series_groups": 83
+      },
+      "usg-sheetrock-tools": {
+        "catalog_entities": 84,
+        "with_family": 0,
+        "with_series": 0,
+        "with_family_and_series": 0,
+        "distinct_family_series_groups": 0
+      }
+    },
+    "interpretation": "Membership is copied from exact canonical product_family and series fields. It is not proof of substitution, compatibility, or source verification; review family definitions before using them to generate recommendations."
+  },
+  "unresolved_or_noncanonical_targets": {},
+  "interpretation": "No recorded relationship is not evidence of incompatibility or a recommendation. AI or similarity-based candidates require evidence review before projection."
+}

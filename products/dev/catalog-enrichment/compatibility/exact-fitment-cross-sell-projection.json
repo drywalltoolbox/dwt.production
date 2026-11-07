@@ -1,0 +1,386 @@
+{
+  "applied": true,
+  "backup": "D:\\AMD\\projects\\dwt.production\\products\\launch\\official\\dtb_official_catalog.csv.bak",
+  "catalog_columns": 151,
+  "catalog_rows": 1133,
+  "counts": {
+    "cross_sell_edge_additions": 82,
+    "eligible_public_part_owner_rows": 317,
+    "tool_rows_with_additions": 7
+  },
+  "import_csv": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\exact-fitment-cross-sells-woo-import.csv",
+  "input_sha256": "29a0582d8bf05c1fbf91b3d1c88e57244c74a475d3e44c8701e8122911cf1d36",
+  "mode": "apply",
+  "policy": {
+    "direction": "visible tool to exact compatible visible simple replacement part",
+    "inventory_or_price_fields_changed": false,
+    "ordering": "parts that fit fewer published visible tools first, then exact SKU; this is a deterministic relevance heuristic, not purchase evidence",
+    "similarity_inference_used": false,
+    "source": "Meta: _dtb_compatible_tool_skus",
+    "target_field": "Cross-sells",
+    "upsells_created": false,
+    "variable_tool_rule": "part must have exact fitment to every published visible variation"
+  },
+  "projected_sha256": "c5e92186ae4092bbe32b864d66fcaed52fbf970107fb497f5f948b73bfe83639",
+  "proposals": [
+    {
+      "compatible_part_skus": [
+        "CT104",
+        "CT105",
+        "CT107",
+        "CT109",
+        "CT10A",
+        "CT111",
+        "CT112",
+        "CT115",
+        "CT116A",
+        "CT119",
+        "CT127",
+        "CT19",
+        "CT2",
+        "CT20",
+        "CT31",
+        "CT36",
+        "CT43",
+        "CT45",
+        "CT47",
+        "CT53",
+        "CT54",
+        "CT55",
+        "CT56",
+        "CT58",
+        "CT64",
+        "CT65",
+        "CT67",
+        "CT72",
+        "CT76",
+        "CT78",
+        "CT79",
+        "CT83",
+        "CT87-CS",
+        "CT98",
+        "FA199",
+        "FA200",
+        "FA207",
+        "FA219",
+        "FA220",
+        "FA224",
+        "FA227",
+        "FA238",
+        "FA243",
+        "FA244",
+        "FA249",
+        "FA286",
+        "FA291",
+        "FA295",
+        "FA298",
+        "FA210",
+        "FA214",
+        "FA218",
+        "FA228",
+        "FA237",
+        "FA239",
+        "FA241",
+        "FA254",
+        "FA258",
+        "CT40",
+        "FA234",
+        "FA292"
+      ],
+      "current_cross_sells": [],
+      "evidence_tool_skus": [
+        "PTAPER"
+      ],
+      "proposed_cross_sells": [
+        "CT104",
+        "CT105",
+        "CT107",
+        "CT109",
+        "CT10A",
+        "CT111",
+        "CT112",
+        "CT115",
+        "CT116A",
+        "CT119",
+        "CT127",
+        "CT19",
+        "CT2",
+        "CT20",
+        "CT31",
+        "CT36",
+        "CT43",
+        "CT45",
+        "CT47",
+        "CT53",
+        "CT54",
+        "CT55",
+        "CT56",
+        "CT58",
+        "CT64",
+        "CT65",
+        "CT67",
+        "CT72",
+        "CT76",
+        "CT78",
+        "CT79",
+        "CT83",
+        "CT87-CS",
+        "CT98",
+        "FA199",
+        "FA200",
+        "FA207",
+        "FA219",
+        "FA220",
+        "FA224",
+        "FA227",
+        "FA238",
+        "FA243",
+        "FA244",
+        "FA249",
+        "FA286",
+        "FA291",
+        "FA295",
+        "FA298",
+        "FA210",
+        "FA214",
+        "FA218",
+        "FA228",
+        "FA237",
+        "FA239",
+        "FA241",
+        "FA254",
+        "FA258",
+        "CT40",
+        "FA234",
+        "FA292"
+      ],
+      "public_tool_fanout_by_part_sku": {
+        "CT104": 1,
+        "CT105": 1,
+        "CT107": 1,
+        "CT109": 1,
+        "CT10A": 1,
+        "CT111": 1,
+        "CT112": 1,
+        "CT115": 1,
+        "CT116A": 1,
+        "CT119": 1,
+        "CT127": 1,
+        "CT19": 1,
+        "CT2": 1,
+        "CT20": 1,
+        "CT31": 1,
+        "CT36": 1,
+        "CT40": 3,
+        "CT43": 1,
+        "CT45": 1,
+        "CT47": 1,
+        "CT53": 1,
+        "CT54": 1,
+        "CT55": 1,
+        "CT56": 1,
+        "CT58": 1,
+        "CT64": 1,
+        "CT65": 1,
+        "CT67": 1,
+        "CT72": 1,
+        "CT76": 1,
+        "CT78": 1,
+        "CT79": 1,
+        "CT83": 1,
+        "CT87-CS": 1,
+        "CT98": 1,
+        "FA199": 1,
+        "FA200": 1,
+        "FA207": 1,
+        "FA210": 2,
+        "FA214": 2,
+        "FA218": 2,
+        "FA219": 1,
+        "FA220": 1,
+        "FA224": 1,
+        "FA227": 1,
+        "FA228": 2,
+        "FA234": 3,
+        "FA237": 2,
+        "FA238": 1,
+        "FA239": 2,
+        "FA241": 2,
+        "FA243": 1,
+        "FA244": 1,
+        "FA249": 1,
+        "FA254": 2,
+        "FA258": 2,
+        "FA286": 1,
+        "FA291": 1,
+        "FA292": 4,
+        "FA295": 1,
+        "FA298": 1
+      },
+      "ranking_signal": "exact_fitment_specificity_then_sku; no sales ranking because current WooCommerce total_sales values are zero",
+      "scope": "exact_simple_tool_sku",
+      "sku": "PTAPER"
+    },
+    {
+      "compatible_part_skus": [
+        "FA292"
+      ],
+      "current_cross_sells": [],
+      "evidence_tool_skus": [
+        "CC"
+      ],
+      "proposed_cross_sells": [
+        "FA292"
+      ],
+      "public_tool_fanout_by_part_sku": {
+        "FA292": 4
+      },
+      "ranking_signal": "exact_fitment_specificity_then_sku; no sales ranking because current WooCommerce total_sales values are zero",
+      "scope": "exact_simple_tool_sku",
+      "sku": "CC"
+    },
+    {
+      "compatible_part_skus": [
+        "CR-3",
+        "CR1",
+        "CR12",
+        "CR4",
+        "FA262",
+        "CR11",
+        "CR6",
+        "FA288",
+        "FA299"
+      ],
+      "current_cross_sells": [],
+      "evidence_tool_skus": [
+        "CR"
+      ],
+      "proposed_cross_sells": [
+        "CR-3",
+        "CR1",
+        "CR12",
+        "CR4",
+        "FA262",
+        "CR11",
+        "CR6",
+        "FA288",
+        "FA299"
+      ],
+      "public_tool_fanout_by_part_sku": {
+        "CR-3": 1,
+        "CR1": 1,
+        "CR11": 2,
+        "CR12": 1,
+        "CR4": 1,
+        "CR6": 2,
+        "FA262": 1,
+        "FA288": 2,
+        "FA299": 2
+      },
+      "ranking_signal": "exact_fitment_specificity_then_sku; no sales ranking because current WooCommerce total_sales values are zero",
+      "scope": "exact_simple_tool_sku",
+      "sku": "CR"
+    },
+    {
+      "compatible_part_skus": [
+        "BH1",
+        "BH5",
+        "BH6",
+        "FA272",
+        "FA311"
+      ],
+      "current_cross_sells": [],
+      "evidence_tool_skus": [
+        "CMH"
+      ],
+      "proposed_cross_sells": [
+        "BH1",
+        "BH5",
+        "BH6",
+        "FA272",
+        "FA311"
+      ],
+      "public_tool_fanout_by_part_sku": {
+        "BH1": 1,
+        "BH5": 1,
+        "BH6": 1,
+        "FA272": 1,
+        "FA311": 1
+      },
+      "ranking_signal": "exact_fitment_specificity_then_sku; no sales ranking because current WooCommerce total_sales values are zero",
+      "scope": "exact_simple_tool_sku",
+      "sku": "CMH"
+    },
+    {
+      "compatible_part_skus": [
+        "CT120",
+        "FA239",
+        "FA258",
+        "FA234"
+      ],
+      "current_cross_sells": [],
+      "evidence_tool_skus": [
+        "SAT"
+      ],
+      "proposed_cross_sells": [
+        "CT120",
+        "FA239",
+        "FA258",
+        "FA234"
+      ],
+      "public_tool_fanout_by_part_sku": {
+        "CT120": 1,
+        "FA234": 3,
+        "FA239": 2,
+        "FA258": 2
+      },
+      "ranking_signal": "exact_fitment_specificity_then_sku; no sales ranking because current WooCommerce total_sales values are zero",
+      "scope": "exact_simple_tool_sku",
+      "sku": "SAT"
+    },
+    {
+      "compatible_part_skus": [
+        "804003F"
+      ],
+      "current_cross_sells": [],
+      "evidence_tool_skus": [
+        "8134TT",
+        "8142TT",
+        "8154TT",
+        "8172TT"
+      ],
+      "proposed_cross_sells": [
+        "804003F"
+      ],
+      "public_tool_fanout_by_part_sku": {
+        "804003F": 8
+      },
+      "ranking_signal": "exact_fitment_specificity_then_sku; no sales ranking because current WooCommerce total_sales values are zero",
+      "scope": "intersection_of_all_published_visible_variations",
+      "sku": "TT-EASYFINISH-BOX-HANDLE"
+    },
+    {
+      "compatible_part_skus": [
+        "804003F"
+      ],
+      "current_cross_sells": [],
+      "evidence_tool_skus": [
+        "8034TT",
+        "8042TT",
+        "8054TT",
+        "8072TT"
+      ],
+      "proposed_cross_sells": [
+        "804003F"
+      ],
+      "public_tool_fanout_by_part_sku": {
+        "804003F": 8
+      },
+      "ranking_signal": "exact_fitment_specificity_then_sku; no sales ranking because current WooCommerce total_sales values are zero",
+      "scope": "intersection_of_all_published_visible_variations",
+      "sku": "TT-FLAT-BOX-HANDLE"
+    }
+  ],
+  "report_type": "exact_fitment_directional_cart_cross_sell_projection",
+  "schema_version": 1
+}

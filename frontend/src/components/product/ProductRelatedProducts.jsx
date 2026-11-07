@@ -19,6 +19,13 @@ export function getRelatedProductsCopy(context = 'related') {
       railLabel: 'Compatible tools',
     };
   }
+  if (context === 'included_components') {
+    return {
+      eyebrow: 'Included with this configuration',
+      title: 'Included components',
+      railLabel: 'Included components',
+    };
+  }
   return {
     title: 'Related products',
     railLabel: 'Related products',

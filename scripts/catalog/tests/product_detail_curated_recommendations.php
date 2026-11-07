@@ -21,8 +21,16 @@ if ( str_contains( $method, 'wc_get_related_products(' ) ) {
 if ( ! str_contains( $method, '$candidate_ids = $source_product->get_upsell_ids();' ) ) {
 	throw new RuntimeException( 'Non-toolset PDP recommendations must use explicitly curated WooCommerce upsells.' );
 }
-if ( ! str_contains( $method, "get_post_meta( \$product_id, '_includes_' . \$index . '_sku', true )" ) ) {
+if ( ! str_contains( $method, "preg_match( '/^_includes_(\\d+)_sku$/', \$key, \$matches )" ) ) {
 	throw new RuntimeException( 'Toolset PDP recommendations must retain exact included-SKU resolution.' );
 }
+if ( ! str_contains( $source, "'relatedProductsByVariation' => \$related_products_by_variation" )
+	|| ! str_contains( $method, 'private static function get_related_products_by_variation' )
+	|| ! str_contains( $method, "( \$variation['meta_data'] ?? [] )" ) ) {
+	throw new RuntimeException( 'Variable toolsets must expose exact variation-specific included components.' );
+}
+if ( ! str_contains( $source, "'relatedProductsContext' => \$is_toolset ? 'included_components' : 'related'" ) ) {
+	throw new RuntimeException( 'PDP relationship copy must distinguish included components from related products.' );
+}
 
-echo "PDP recommendation source contract passed.\n";
+echo "PDP curated and variation-specific relationship source contract passed.\n";

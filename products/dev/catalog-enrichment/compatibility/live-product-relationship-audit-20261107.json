@@ -1,0 +1,53 @@
+{
+  "audit_schema": 1,
+  "scope": "WooCommerce product native upsell and cross-sell relationships",
+  "catalog_sha256": "c1e95a17b5bf9b88616597a081946ade1a8ebdb8aa94b90f9f19ec0100223fcb",
+  "runtime_products": 821,
+  "products_with_upsells": 0,
+  "upsell_edges": 0,
+  "products_with_cross_sells": 7,
+  "cross_sell_edges": 82,
+  "projected_source_skus": [
+    {
+      "sku": "PTAPER",
+      "live": 61,
+      "expected": 61
+    },
+    {
+      "sku": "CC",
+      "live": 1,
+      "expected": 1
+    },
+    {
+      "sku": "CR",
+      "live": 9,
+      "expected": 9
+    },
+    {
+      "sku": "CMH",
+      "live": 5,
+      "expected": 5
+    },
+    {
+      "sku": "SAT",
+      "live": 4,
+      "expected": 4
+    },
+    {
+      "sku": "TT-EASYFINISH-BOX-HANDLE",
+      "live": 1,
+      "expected": 1
+    },
+    {
+      "sku": "TT-FLAT-BOX-HANDLE",
+      "live": 1,
+      "expected": 1
+    }
+  ],
+  "projected_cross_sell_edges_read_back": 82,
+  "readback_matches_import_delta": true,
+  "readback_issues": [],
+  "audited_at_utc": "2026-11-07 11:35:03 UTC",
+  "source": "MCP DTB authenticated WooCommerce REST readback",
+  "notes": "Read-only audit of native WooCommerce upsell_ids and cross_sell_ids; no Veeqo or margin fields included."
+}

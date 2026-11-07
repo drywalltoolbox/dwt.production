@@ -1,0 +1,28 @@
+{
+  "applied": false,
+  "backup": null,
+  "catalog_columns": 151,
+  "catalog_rows": 1133,
+  "counts": {
+    "cross_sell_edge_additions": 0,
+    "eligible_public_part_owner_rows": 317,
+    "tool_rows_with_additions": 0
+  },
+  "import_csv": null,
+  "input_sha256": "c5e92186ae4092bbe32b864d66fcaed52fbf970107fb497f5f948b73bfe83639",
+  "mode": "preview",
+  "policy": {
+    "direction": "visible tool to exact compatible visible simple replacement part",
+    "inventory_or_price_fields_changed": false,
+    "ordering": "parts that fit fewer published visible tools first, then exact SKU; this is a deterministic relevance heuristic, not purchase evidence",
+    "similarity_inference_used": false,
+    "source": "Meta: _dtb_compatible_tool_skus",
+    "target_field": "Cross-sells",
+    "upsells_created": false,
+    "variable_tool_rule": "part must have exact fitment to every published visible variation"
+  },
+  "projected_sha256": "c5e92186ae4092bbe32b864d66fcaed52fbf970107fb497f5f948b73bfe83639",
+  "proposals": [],
+  "report_type": "exact_fitment_directional_cart_cross_sell_projection",
+  "schema_version": 1
+}

@@ -88,11 +88,16 @@ final class DTB_ProductDetailController {
 			? DTB_VariationReadModelService::get_last_diagnostics()
 			: [ 'available' => false ];
 		$related_products = self::get_related_products( $product['id'], $product );
+		$is_toolset = self::is_toolset( $product );
+		$related_products_by_variation = $is_toolset && 'variable' === $product['type']
+			? self::get_related_products_by_variation( $variations, $product['id'] )
+			: [];
 
 		return new WP_REST_Response( [
 			'product'         => $product,
 			'variations'      => $variations,
 			'relatedProducts' => $related_products,
+			'relatedProductsByVariation' => $related_products_by_variation,
 			'computed'        => [
 				'defaultVariation'      => $default_var,
 				'hasInStockVariation'   => $in_stock_count > 0,
@@ -100,6 +105,7 @@ final class DTB_ProductDetailController {
 				'inStockVariationCount' => $in_stock_count,
 				'variationMatrix'       => dtb_catalog_build_variation_matrix( $variations ),
 				'variationDiagnostics'  => $variation_diagnostics,
+				'relatedProductsContext' => $is_toolset ? 'included_components' : 'related',
 			],
 		], 200 );
 	}
@@ -112,41 +118,13 @@ final class DTB_ProductDetailController {
 		}
 
 		// Toolsets use exact included SKUs; all other PDP recommendations must be explicitly curated.
-		$category_slug = (string) ( $product['displayCategory']['slug'] ?? '' );
-		$is_toolset = in_array( $category_slug, [ 'automatic-tool-sets', 'automatic-tool-sets-kits', 'semi-automatic-tool-sets-kits', 'toolsets', 'tool-sets-kits', 'tool-sets-and-kits' ], true );
-		$candidate_ids = [];
-		if ( $is_toolset ) {
-			$included_cards = [];
-			// Only exact recorded component SKUs qualify; never substitute upsells.
-			for ( $index = 0; $index < 20; $index++ ) {
-				$sku = trim( (string) get_post_meta( $product_id, '_includes_' . $index . '_sku', true ) );
-				if ( '' === $sku ) {
-					continue;
-				}
-				$included_id = wc_get_product_id_by_sku( $sku );
-				$included = $included_id ? wc_get_product( $included_id ) : false;
-				if ( ! $included || $included_id === $product_id || 'publish' !== get_post_status( $included_id ) ) continue;
-				if ( $included->is_type( 'variation' ) ) {
-					$parent = wc_get_product( $included->get_parent_id() );
-					if ( ! $parent || 'publish' !== get_post_status( $parent->get_id() ) || ! $parent->is_visible() || ! $included->variation_is_visible() ) continue;
-					$dto = DTB_VariationReadModelService::get_normalized_by_id( $included_id );
-					if ( ! is_array( $dto ) ) continue;
-					$dto['slug'] = $parent->get_slug();
-					$dto['includedVariation'] = true;
-					$dto['parentName'] = $parent->get_name();
-					$included_cards[ $included_id ] = $dto;
-				} elseif ( $included->is_visible() ) {
-					$raw = dtb_catalog_wc_fetch_product_by_id( $included_id );
-					if ( is_array( $raw ) ) $included_cards[ $included_id ] = dtb_catalog_normalize_product( $raw );
-				}
-				if ( count( $included_cards ) >= self::RELATED_PRODUCT_LIMIT ) break;
-			}
-			return array_values( $included_cards );
-		} else {
-			// WooCommerce's generated related products are category-driven and can be unstable.
-			// Only operator-curated upsells qualify for this product-detail rail.
-			$candidate_ids = $source_product->get_upsell_ids();
+		if ( self::is_toolset( $product ) ) {
+			return self::get_included_products( $product_id, self::get_included_skus( $product_id ) );
 		}
+
+		// WooCommerce's generated related products are category-driven and can be unstable.
+		// Only operator-curated upsells qualify for this product-detail rail.
+		$candidate_ids = $source_product->get_upsell_ids();
 		$candidate_ids = array_values( array_unique( array_filter( array_map( 'absint', $candidate_ids ) ) ) );
 		$visible_ids   = [];
 
@@ -166,6 +144,90 @@ final class DTB_ProductDetailController {
 			'dtb_catalog_normalize_product',
 			dtb_catalog_wc_fetch_products_by_ids( $visible_ids )
 		) );
+	}
+
+	/** Determine toolset semantics from canonical product kind, with legacy category fallback. */
+	private static function is_toolset( array $product ): bool {
+		if ( 'toolset' === strtolower( (string) ( $product['productKind'] ?? '' ) ) ) {
+			return true;
+		}
+
+		$category_slug = (string) ( $product['displayCategory']['slug'] ?? '' );
+		return in_array( $category_slug, [ 'automatic-tool-sets', 'automatic-tool-sets-kits', 'semi-automatic-tool-sets-kits', 'toolsets', 'tool-sets-kits', 'tool-sets-and-kits' ], true );
+	}
+
+	/** Read included SKUs from an exact product/variation DTO, falling back to the owner meta. */
+	private static function get_included_skus( int $owner_id, array $meta_data = [] ): array {
+		$includes = [];
+		foreach ( $meta_data as $entry ) {
+			$key = (string) ( $entry['key'] ?? '' );
+			if ( preg_match( '/^_includes_(\d+)_sku$/', $key, $matches ) && '' !== trim( (string) ( $entry['value'] ?? '' ) ) ) {
+				$includes[(int) $matches[1]] = trim( (string) $entry['value'] );
+			}
+		}
+		if ( ! $includes && $owner_id > 0 ) {
+			for ( $index = 0; $index < 20; $index++ ) {
+				$sku = trim( (string) get_post_meta( $owner_id, '_includes_' . $index . '_sku', true ) );
+				if ( '' !== $sku ) {
+					$includes[$index] = $sku;
+				}
+			}
+		}
+		ksort( $includes, SORT_NUMERIC );
+		return array_values( $includes );
+	}
+
+	/** Resolve only exact, published, visible component SKUs into bounded product cards. */
+	private static function get_included_products( int $owner_id, array $skus ): array {
+		$included_cards = [];
+		foreach ( $skus as $sku ) {
+			$included_id = wc_get_product_id_by_sku( $sku );
+			$included = $included_id ? wc_get_product( $included_id ) : false;
+			if ( ! $included || $included_id === $owner_id || (string) $included->get_sku() !== $sku || 'publish' !== get_post_status( $included_id ) ) {
+				continue;
+			}
+			if ( $included->is_type( 'variation' ) ) {
+				$parent = wc_get_product( $included->get_parent_id() );
+				if ( ! $parent || 'publish' !== get_post_status( $parent->get_id() ) || ! $parent->is_visible() || ! $included->variation_is_visible() ) {
+					continue;
+				}
+				$dto = DTB_VariationReadModelService::get_normalized_by_id( $included_id );
+				if ( ! is_array( $dto ) ) {
+					continue;
+				}
+				$dto['slug'] = $parent->get_slug();
+				$dto['includedVariation'] = true;
+				$dto['parentName'] = $parent->get_name();
+				$included_cards[$included_id] = $dto;
+			} elseif ( $included->is_visible() ) {
+				$raw = dtb_catalog_wc_fetch_product_by_id( $included_id );
+				if ( is_array( $raw ) ) {
+					$included_cards[$included_id] = dtb_catalog_normalize_product( $raw );
+				}
+			}
+			if ( count( $included_cards ) >= self::RELATED_PRODUCT_LIMIT ) {
+				break;
+			}
+		}
+		return array_values( $included_cards );
+	}
+
+	/** Build variation-specific toolset contents from each exact variation's recorded includes. */
+	private static function get_related_products_by_variation( array $variations, int $parent_product_id ): array {
+		$by_variation = [];
+		$parent_skus = self::get_included_skus( $parent_product_id );
+		foreach ( $variations as $variation ) {
+			$variation_id = absint( $variation['id'] ?? 0 );
+			if ( $variation_id <= 0 ) {
+				continue;
+			}
+			$variation_skus = self::get_included_skus( $variation_id, (array) ( $variation['meta_data'] ?? [] ) );
+			if ( ! $variation_skus ) {
+				continue;
+			}
+			$by_variation[(string) $variation_id] = self::get_included_products( $variation_id, $variation_skus ?: $parent_skus );
+		}
+		return $by_variation;
 	}
 
 	/**

@@ -500,13 +500,16 @@ export function toProductDetailDTO(payload = {}) {
   const variations = Array.isArray(payload?.variations)
     ? payload.variations.map((variation) => toLegacyVariationDTO(variation, payload?.product || null))
     : [];
-  const relatedProducts = Array.isArray(payload?.relatedProducts)
-    ? payload.relatedProducts.map((relatedProduct) => {
-        if (!relatedProduct?.includedVariation) return toLegacyProductCardDTO(relatedProduct);
-        const variation = toLegacyVariationDTO(relatedProduct, { id: relatedProduct.parentId, name: relatedProduct.parentName, brand: relatedProduct.brand });
-        return { ...variation, type: 'variation', is_variable: false, includedVariation: true, brand: relatedProduct.brand?.label || '', cardProduct: variation };
-      })
-    : [];
+  const adaptRelatedProduct = (relatedProduct) => {
+    if (!relatedProduct?.includedVariation) return toLegacyProductCardDTO(relatedProduct);
+    const variation = toLegacyVariationDTO(relatedProduct, { id: relatedProduct.parentId, name: relatedProduct.parentName, brand: relatedProduct.brand });
+    return { ...variation, type: 'variation', is_variable: false, includedVariation: true, brand: relatedProduct.brand?.label || '', cardProduct: variation };
+  };
+  const adaptRelatedProducts = (items) => Array.isArray(items) ? items.map(adaptRelatedProduct) : [];
+  const relatedProducts = adaptRelatedProducts(payload?.relatedProducts);
+  const relatedProductsByVariation = payload?.relatedProductsByVariation && typeof payload.relatedProductsByVariation === 'object'
+    ? Object.fromEntries(Object.entries(payload.relatedProductsByVariation).map(([variationId, items]) => [variationId, adaptRelatedProducts(items)]))
+    : {};
 
   const defaultVariation = payload?.computed?.defaultVariation
     ? toLegacyVariationDTO(payload.computed.defaultVariation, payload?.product || null)
@@ -517,6 +520,7 @@ export function toProductDetailDTO(payload = {}) {
     product,
     variations,
     relatedProducts,
+    relatedProductsByVariation,
     computed: {
       ...(payload?.computed || {}),
       defaultVariation,
