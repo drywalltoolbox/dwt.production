@@ -272,31 +272,180 @@
 
 @media (max-width: 767px) {
   .dtb-breadcrumb-bar {
-    gap: 0.5rem 0.75rem;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0;
+    min-height: 2.25rem;
     margin-bottom: 0.8rem;
+    overflow: hidden;
+  }
+
+  .dtb-breadcrumb {
+    flex: 1 1 auto;
+    width: 0;
+    overflow: hidden;
+  }
+
+  .dtb-breadcrumb-bar--compact .dtb-breadcrumb ol {
+    flex-wrap: nowrap;
+  }
+
+  .dtb-breadcrumb li {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .dtb-breadcrumb li:first-child {
+    flex: 0 0 auto;
+  }
+
+  .dtb-breadcrumb li + li::before {
+    flex: 0 0 auto;
+    margin-inline: 0.42rem;
+    color: #8b97a8;
+    font-size: 0.85rem;
+    font-weight: 600;
   }
 
   .dtb-breadcrumb a,
   .dtb-breadcrumb__action,
   .dtb-breadcrumb__current {
-    min-height: 1.8rem;
-    font-size: 0.75rem;
+    display: block;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 2rem;
+    overflow: hidden;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    font-size: 0.76rem;
+    line-height: 2rem;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
-  .dtb-breadcrumb li + li::before {
-    margin-inline: 0.18rem;
+  .dtb-breadcrumb a,
+  .dtb-breadcrumb__action {
+    color: #64748b;
+    font-weight: 600;
   }
 
-  .dtb-breadcrumb-bar--compact .dtb-breadcrumb ol {
-    flex-wrap: wrap;
+  .dtb-breadcrumb a:hover,
+  .dtb-breadcrumb__action:hover {
+    border: 0;
+    background: transparent;
+    color: var(--dtb-primary, #2255ee);
   }
 
-  .dtb-breadcrumb-bar--compact .dtb-breadcrumb__current {
-    max-width: 52vw;
+  .dtb-breadcrumb a:focus-visible,
+  .dtb-breadcrumb__action:focus-visible {
+    outline: 0;
+    box-shadow: inset 0 -2px currentColor;
+  }
+
+  .dtb-breadcrumb__current {
+    color: #17243a;
+    font-weight: 760;
+  }
+
+  .dtb-breadcrumb-bar--inverse .dtb-breadcrumb a,
+  .dtb-breadcrumb-bar--inverse .dtb-breadcrumb__action,
+  .dtb-breadcrumb-bar--inverse .dtb-breadcrumb__current {
+    border: 0;
+    background: transparent;
+  }
+
+  .dtb-breadcrumb-bar--inverse .dtb-breadcrumb a:hover,
+  .dtb-breadcrumb-bar--inverse .dtb-breadcrumb__action:hover {
+    background: transparent;
+  }
+
+  .dtb-breadcrumb-filters {
+    flex: 0 1 42%;
+    width: 42%;
+    max-width: 42%;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.35rem;
+    overflow: hidden;
+  }
+
+  .dtb-breadcrumb-bar:not(:has(.dtb-breadcrumb)) .dtb-breadcrumb-filters {
+    flex-basis: 100%;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .dtb-breadcrumb-filter-chip {
+    min-width: 0;
+    min-height: 2rem;
+    flex: 0 1 auto;
+    gap: 0.25rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #475569;
+    font-size: 0.72rem;
+    font-weight: 650;
   }
 
   .dtb-breadcrumb-filter-chip > span {
-    max-width: 62vw;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .dtb-breadcrumb-filter-chip:has(button:hover),
+  .dtb-breadcrumb-filter-chip:has(button:focus-visible) {
+    border-color: transparent;
+    background: transparent;
+    color: inherit;
+  }
+
+  .dtb-breadcrumb-filter-chip button {
+    width: 1.75rem;
+    height: 1.75rem;
+    flex-basis: 1.75rem;
+    border-radius: 0;
+    background-color: #64748b;
+    transform: none;
+  }
+
+  .dtb-breadcrumb-filter-chip button:hover {
+    background-color: var(--dtb-primary, #2255ee);
+    transform: none;
+  }
+
+  .dtb-breadcrumb-filter-chip button:focus-visible {
+    outline: 0;
+    box-shadow: inset 0 0 0 2px var(--dtb-primary, #2255ee);
+  }
+
+  .dtb-breadcrumb-bar--inverse .dtb-breadcrumb-filter-chip:has(button:hover),
+  .dtb-breadcrumb-bar--inverse .dtb-breadcrumb-filter-chip:has(button:focus-visible) {
+    border-color: transparent;
+    background: transparent;
+    color: #fff;
+  }
+
+  .dtb-breadcrumb-bar--inverse .dtb-breadcrumb-filter-chip {
+    border: 0;
+    background: transparent;
+    color: #fff;
+    backdrop-filter: none;
+  }
+
+  .dtb-breadcrumb-bar--inverse .dtb-breadcrumb-filter-chip button {
+    background-color: rgba(255, 255, 255, 0.84);
+  }
+
+  .dtb-breadcrumb-bar--compact .dtb-breadcrumb__current {
+    max-width: 100%;
   }
 }
 

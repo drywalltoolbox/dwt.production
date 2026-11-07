@@ -477,9 +477,10 @@
     display: inline-flex;
     grid-template-columns: none;
     gap: 0 4px;
-    font-size: clamp(.68rem, 3.2vw, .9rem);
-    font-weight: 750;
-    letter-spacing: -.035em;
+    font-size: clamp(.9rem, 4.3vw, 1.05rem);
+    font-weight: 850;
+    letter-spacing: -.025em;
+    line-height: 1.12;
   }
 }
 
@@ -487,7 +488,7 @@
   @media (max-width: 767px) {
     .dtb-product-card__price-col { container-type: inline-size; }
     .dtb-product-card .dtb-product-card__price--range {
-      font-size: clamp(.66rem, 5.8cqi, 1rem);
+      font-size: clamp(.8rem, 9.2cqi, 1.05rem);
     }
   }
 }
