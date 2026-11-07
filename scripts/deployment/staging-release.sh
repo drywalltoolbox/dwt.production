@@ -27,6 +27,27 @@ snapshots="$private/snapshots"
 state="$private/current-release"
 lock="$private/.staging-release-lock"
 mkdir -p "$private/incoming" "$snapshots"
+[[ ! -L "$private/incoming" && ! -L "$snapshots" ]] ||
+  { echo "Release data directories must not be symlinks" >&2; exit 2; }
+
+cleanup_stale_incoming() {
+  local candidate name removed=0
+  for candidate in "$private/incoming"/*; do
+    [[ -d "$candidate" && ! -L "$candidate" ]] || continue
+    name="${candidate##*/}"
+    # Only remove abandoned, release-identified uploads. Keep unknown entries,
+    # symlinks, the current release identity, and anything modified in 24 hours.
+    [[ "$name" =~ ^[a-f0-9]{40}$ && "$name" != "$current" ]] || continue
+    if find "$candidate" -maxdepth 0 -type d -mmin +1440 -print -quit | grep -q .; then
+      if rm -rf -- "$candidate"; then
+        removed=$((removed + 1))
+      else
+        echo "Warning: could not remove stale incoming release: $name" >&2
+      fi
+    fi
+  done
+  echo "Stale incoming releases removed: $removed (age threshold: 24 hours)"
+}
 
 if [[ "$action" == "prepare" ]]; then
   # Incoming content is uploaded separately, outside the webroot.
@@ -108,6 +129,7 @@ if [[ "$action" == "publish" ]]; then
   if ! rm -rf -- "$incoming"; then
     echo "Warning: could not remove published incoming release: $release" >&2
   fi
+  cleanup_stale_incoming
   echo "Published staging release: $release"
 else
   [[ "$current" == "$release" ]] ||
