@@ -15,7 +15,7 @@ import './styles/machined-design.css';
 import './styles/hero-section.css';
 import './styles/trusted-brands.css';
 import './styles/home-hero.css';
-import './styles/home-hero-desktop-target.css';
+import './styles/home-hero-desktop.css';
 import './styles/storefront-shell.css';
 import './styles/storefront-sections.css';
 import './styles/storefront-product-card.css';
@@ -37,8 +37,8 @@ import './styles/global-typography.css';
  * component geometry remains local while transition behavior stays global. */
 import './styles/storefront-motion.css';
 
-/* Final and exclusive cross-route responsive authority. */
-import './styles/unified-responsive.css';
+/* Shared cross-route responsive defaults; route CSS stays feature-scoped. */
+import './styles/responsive-shared.css';
 import './styles/side-sheet.css';
 
 import { initializeGeminiStorefront } from './integrations/geminiStorefront.js';

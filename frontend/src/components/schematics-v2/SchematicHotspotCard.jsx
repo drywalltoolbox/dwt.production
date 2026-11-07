@@ -3,9 +3,9 @@
  *
  * Ported verbatim (markup, BEM class names, and title auto-fit logic) from
  * the legacy `docs/_working/frontend-legacy/frontend/src/components/schematics/
- * SchematicHotspotCard.jsx`. Styling lives in `mobile-schematic.css` /
- * `schematic-hotspot-card-polish.css` under the `.schematic-hotspot-card*`
- * selectors — do not rename these classes without updating both files.
+ * SchematicHotspotCard.jsx`. Active styles live in `schematics-page.css` and
+ * `schematic-hotspot-card.css` under the `.schematic-hotspot-card*`
+ * selectors — do not rename these classes without updating those styles.
  *
  * Data wiring: the dtb-schematics REST payload
  * (`GET /wp-json/dtb/v1/schematics/{id}`, see `frontend/src/api/schematicsApi.js`)

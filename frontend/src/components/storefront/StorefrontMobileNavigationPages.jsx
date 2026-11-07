@@ -7,19 +7,13 @@ import '../../styles/storefront-mobile-navigation-pages.css';
  * In-drawer navigation: category selections push a new menu page instead of
  * expanding inline. The shell, header, cart and search retain their owners.
  */
-export default function StorefrontMobileNavigationPages({ isOpen, sections, links, onNavigate, onStackDepthChange, loadingCategories = false }) {
+export default function StorefrontMobileNavigationPages({ sections, links, onNavigate, onStackDepthChange, loadingCategories = false }) {
   const [stack, setStack] = useState([]);
   const [direction, setDirection] = useState('forward');
   const contentRef = useRef(null);
   const headingRef = useRef(null);
   const current = stack[stack.length - 1];
   const pageTitle = current?.title || 'Browse Drywall Toolbox';
-
-  useEffect(() => {
-    if (isOpen) return;
-    setStack([]);
-    setDirection('back');
-  }, [isOpen]);
 
   const back = useCallback(() => {
     setDirection('back');

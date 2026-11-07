@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
-import '../../styles/account-activity-modern.css';
+import '../../styles/account-activity.css';
 
 const TYPE_CONFIG = {
   order: { className: 'is-order' },

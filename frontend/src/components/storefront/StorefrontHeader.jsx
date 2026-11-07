@@ -316,11 +316,11 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     },
   ], [desktopProductNavigation, drawerBrands, partsBrands, partsCategories, repairPackageGroups]);
 
-  const closeMobileMenu = () => {
+  const closeMobileMenu = useCallback(() => {
     setMobileMenuOpen(false);
     setMobileNavigationDepth(0);
     mobileNavigationBackRef.current = null;
-  };
+  }, []);
   const handleMobileNavigationStackChange = useCallback((depth, backAction) => {
     setMobileNavigationDepth(depth);
     mobileNavigationBackRef.current = backAction;
@@ -328,12 +328,12 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
   const handleMobileNavigationBack = useCallback(() => {
     mobileNavigationBackRef.current?.();
   }, []);
-  const closeMenus = () => {
+  const closeMenus = useCallback(() => {
     setDesktopNavOpen(null);
     closeMobileMenu();
     setAccountDropdownOpen(false);
     setDesktopSearchOpen(false);
-  };
+  }, [closeMobileMenu]);
 
   const closeSearchOverlay = useCallback(() => {
     if (searchOverlayResetTimerRef.current) {
@@ -390,7 +390,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     prevPathnameRef.current = location.pathname;
     const t = setTimeout(() => { closeMenus(); closeSearchOverlay(); }, 0);
     return () => clearTimeout(t);
-  }, [location.pathname, closeSearchOverlay]);
+  }, [location.pathname, closeMenus, closeSearchOverlay]);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -403,7 +403,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [closeSearchOverlay]);
+  }, [closeMenus, closeSearchOverlay]);
 
   useEffect(() => {
     const mq = window.matchMedia('(min-width: 641px) and (max-width: 1024px)');
@@ -799,7 +799,6 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
 
       <StorefrontMobileDrawer isOpen={mobileMenuOpen} onClose={closeMobileMenu}>
         <StorefrontMobileNavigationPages
-          isOpen={mobileMenuOpen}
           onStackDepthChange={handleMobileNavigationStackChange}
           loadingCategories={catalogFacetsLoading || catalogFacetsRefreshing}
           onNavigate={closeDrawerAndNavigate}

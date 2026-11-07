@@ -26,7 +26,7 @@ export default function InteriorPageHero({
             items={breadcrumbs}
             activeFilters={activeFilters}
             onRemoveFilter={onRemoveFilter}
-            className="dtb-breadcrumb-bar--compact"
+            className="dtb-breadcrumb-bar--compact dtb-breadcrumb-bar--interior-hero"
           />
         )}
         <div className="dtb-interior-hero__body">

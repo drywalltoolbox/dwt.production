@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom';
 import { shouldShowCompareAtPrice } from '../../utils/productPricing.js';
 import { brandToSlug } from '../../utils/catalogUrlState.js';
 import ProductRating from './ProductRating.jsx';
-import '../../styles/product-detail-overview-refinements.css';
-import '../../styles/product-detail-brand-refinements.css';
+import '../../styles/product-detail-overview.css';
+import '../../styles/product-detail-brand.css';
 
 function getProductUrl(product) {
   const slug = product?.slug || product?.post_name || '';

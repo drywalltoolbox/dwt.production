@@ -1,5 +1,5 @@
 /**
- * frontend/src/styles/schematics-v2.css
+ * frontend/src/styles/schematics-page.css
  *
  * Presentation authority for the rebuilt /schematics route
  * (frontend/src/pages/SchematicsPage.jsx and
@@ -823,7 +823,7 @@
 /* ---- Part detail card ("hotspot card") -----------------------------------
    Ported verbatim from the legacy schematics implementation
    (docs/_working/frontend-legacy/frontend/src/styles/mobile-schematic.css +
-   schematic-hotspot-card-polish.css, and the `.part-modal-detached` /
+   schematic-hotspot-card.css, and the `.part-modal-detached` /
    `.mobile-part-modal-overlay` positioning wrappers from the legacy
    `Schematics.jsx`). Rendered by SchematicHotspotCard.jsx inside the
    `.part-modal.part-modal-detached` (desktop) or `.mobile-part-modal-overlay`
@@ -1227,15 +1227,6 @@
     background: #1e40af;
     box-shadow: 0 4px 8px rgba(59, 130, 246, 0.4);
   }
-}
-
-/* ---- Part card polish (loading skeleton states) ---------------------------
-   Ported from schematic-hotspot-card-polish.css. Currently unused because
-   the REST API resolves parts synchronously before the dialog renders (no
-   per-part network fetch like the legacy version), but kept so a future
-   async part-detail state can reuse `aria-busy="true"` without new CSS. */
-.schematic-hotspot-card[aria-busy='true'] {
-  cursor: progress;
 }
 
 @media (forced-colors: active) {

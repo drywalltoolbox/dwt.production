@@ -2,7 +2,7 @@
  * Stable storefront visibility contracts.
  *
  * These are product decisions, not responsive overrides. Keep them separate
- * from unified-responsive.css and do not use this file for layout corrections.
+ * from responsive-shared.css and do not use this file for layout corrections.
  */
 
 .dtb-listing-search,

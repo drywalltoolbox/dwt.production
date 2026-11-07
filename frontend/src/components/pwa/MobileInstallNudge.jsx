@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Share, X } from 'lucide-react';
-import './MobileInstallNudge.css';
+import './mobile-install-nudge.css';
 
 const MOBILE_INSTALL_NUDGE_DISMISSED_KEY = 'dtb:a2hs-install-nudge-dismissed:v1';
 const MOBILE_INSTALL_NUDGE_SHOWN_KEY = 'dtb:a2hs-install-nudge-shown:v1';

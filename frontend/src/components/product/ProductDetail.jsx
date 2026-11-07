@@ -31,13 +31,13 @@ import { useEditableComponent } from '../../designer/useEditableComponent.js';
 // The PDP is loaded only for a product route or an explicit Quick View. Keep
 // its substantial visual system out of the storefront entry stylesheet.
 import '../../styles/technical-specifications.css';
-import '../../styles/product-detail-modern.css';
+import '../../styles/product-detail-base.css';
 import '../../styles/product-variation-selector-overlay.css';
 import '../../styles/reviews.css';
 import '../../styles/product-detail-typography.css';
 import '../../styles/product-detail-production.css';
-import '../../styles/product-detail-desktop-polish.css';
-import '../../styles/product-detail-approved-mockup.css';
+import '../../styles/product-detail-desktop-components.css';
+import '../../styles/product-detail-page.css';
 import '../../styles/product-detail-description.css';
 
 function buildSeedVariations(initialVariations = [], initialResolvedVariation = null) {

@@ -70,6 +70,12 @@
   margin: 0;
 }
 
+.dtb-breadcrumb-bar--interior-hero {
+  margin: 0 0 clamp(0.65rem, 1vw, 0.9rem);
+  padding: 0;
+  background: transparent;
+}
+
 .dtb-breadcrumb-bar--compact .dtb-breadcrumb {
   min-width: 0;
   overflow: hidden;

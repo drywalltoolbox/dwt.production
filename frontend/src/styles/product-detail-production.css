@@ -3,7 +3,7 @@
  *
  * This layer refines the existing PDP composition without changing commerce
  * ownership or cart/checkout behavior. Cross-route mobile behavior remains
- * owned by unified-responsive.css, which is loaded after this stylesheet.
+ * owned by responsive-shared.css, which is loaded after this stylesheet.
  */
 
 .dtb-product-page-shell {

@@ -10,8 +10,8 @@
  *     placed below the clicked hotspot and flipped above / clamped to the
  *     wrapper bounds when it would otherwise overflow.
  *   - Mobile (<=768px): a fixed, viewport-centered `.mobile-part-modal-overlay`
- *     with a `.mobile-modal-backdrop`, matching the legacy mobile behavior
- *     (CSS in mobile-schematic.css only shows these under max-width:768px).
+ *     with a `.mobile-modal-backdrop`, styled by the active `schematics-page.css`
+ *     mobile rules.
  *
  * The dialog is an interaction boundary above the diagram/hotspot layer.
  * Pointer events must not leak into the diagram's zoom/pan handlers while a

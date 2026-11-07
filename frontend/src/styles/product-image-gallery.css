@@ -2,7 +2,7 @@
  * Canonical product-detail image-gallery presentation authority.
  *
  * ProductImageGallery owns image identity, ordering, selection, navigation and
- * lightbox behavior. unified-responsive.css owns cross-route containment and
+ * lightbox behavior. responsive-shared.css owns cross-route containment and
  * responsive safety. This file owns the shared full-PDP and quick-view gallery
  * visual sizing and horizontal thumbnail presentation.
  *

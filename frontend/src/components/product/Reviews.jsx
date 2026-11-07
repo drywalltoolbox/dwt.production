@@ -29,11 +29,6 @@ export default function Reviews({ productId, productName = '', reviewFormOpen = 
   const visibleSummary = hasCurrentReviews ? summary : { average_rating: 0, rating_count: 0 };
   const visibleReviews = hasCurrentReviews ? reviews : [];
   const visibleHasMore = hasCurrentReviews && hasMore;
-  const visibleError = endpoint
-    ? (loadedEndpoint === endpoint ? error : '')
-    : 'Reviews are unavailable for this product.';
-
-
   useEffect(() => {
     if (!reviewFormOpen || typeof document === 'undefined') return undefined;
     const dialog = dialogRef.current;

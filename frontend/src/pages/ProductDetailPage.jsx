@@ -40,7 +40,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { addRecentlyViewed } from '../utils/recentlyViewed.js';
 import { buildVariantSearch, getVariantParam, resolveInitialVariation } from '../utils/variationUrl.js';
 // Full-page-only calibration intentionally stays out of the Quick View chunk.
-import '../styles/product-detail-full-page-target.css';
+import '../styles/product-detail-page-desktop.css';
 
 function getVariationDisplayName(product, selectedVariation, effectiveVariationName) {
   const variationName = `${selectedVariation?.name || ''}`.trim();

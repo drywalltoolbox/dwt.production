@@ -4,7 +4,7 @@ import { AnimatePresence, m as Motion, useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { PLACEHOLDER_IMAGE } from '../../constants/images.js';
 import { apiClient } from '../../api/client.js';
-import '../../styles/product-image-gallery-refinements.css';
+import '../../styles/product-image-gallery.css';
 import { dtbEase, dtbTransition } from '../../motion/dtbMotion.js';
 
 const LIGHTBOX_Z_INDEX = 10010;

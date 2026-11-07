@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { ArrowRight, X } from 'lucide-react';
 import { DTB_LOGO_WHITE_URL as dtbLogo, handleDtbLogoFallback } from '../../utils/dtbLogoAssets.js';
-import './HomepageSignupCTA.css';
+import './homepage-signup-cta.css';
 
 export default function HomepageSignupCTA({ offer, onClose, onSignup }) {
   const dialogRef = useRef(null);

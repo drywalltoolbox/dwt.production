@@ -1,9 +1,10 @@
 /*
- * Drywall Toolbox unified responsive presentation authority.
+ * Drywall Toolbox shared responsive foundations.
  *
- * Feature styles own base appearance. This file exclusively owns cross-route
- * responsive geometry, safe areas, stacking, touch density and containment.
- * Do not create additional fix, patch, mockup, polish or mobile-authority CSS.
+ * This entry stylesheet provides cross-route geometry, safe areas, stacking,
+ * touch density and containment defaults. Lazy route styles load afterward
+ * and may define responsive behavior for their own feature components.
+ * Keep cross-route rules here; keep feature-specific rules with their owner.
  */
 
 :root {

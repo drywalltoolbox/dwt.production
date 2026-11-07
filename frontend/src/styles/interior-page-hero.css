@@ -10,11 +10,6 @@
   padding: clamp(0.85rem, 1.3vw, 1.15rem) var(--dtb-viewport-gutter, 2rem)
     clamp(1.2rem, 2vw, 1.65rem);
 }
-.dtb-interior-hero .dtb-breadcrumb-bar {
-  margin: 0 0 clamp(0.65rem, 1vw, 0.9rem);
-  padding: 0;
-  background: transparent;
-}
 .dtb-interior-hero__body {
   position: relative;
   padding-left: clamp(1.25rem, 2vw, 1.9rem);

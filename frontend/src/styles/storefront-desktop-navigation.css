@@ -19,7 +19,6 @@
   .site-header {
     isolation: isolate;
     z-index: 10020;
-    min-height: 98px;
   }
 
   .site-header,
@@ -29,24 +28,6 @@
   .site-header .dtb-desktop-nav,
   .site-header .dtb-desktop-nav-menu {
     overflow: visible !important;
-  }
-
-  .site-header .site-header-inner {
-    width: 100%;
-    max-width: none;
-    height: 98px !important;
-    min-height: 98px !important;
-    padding: 0 clamp(var(--dtb-space-6), 3.4vw, 64px) !important;
-  }
-
-  .site-header .header-desktop-layout {
-    grid-template-columns:
-      clamp(190px, 12vw, 226px)
-      minmax(0, 1fr)
-      clamp(300px, 20.5vw, 390px)
-      auto;
-    gap: clamp(var(--dtb-space-3), 1.35vw, var(--dtb-space-5));
-    height: 98px;
   }
 
   .site-header .header-left {
@@ -60,35 +41,10 @@
     align-items: center;
   }
 
-  .site-header .logo-image {
-    width: 100%;
-    max-width: 188px;
-    height: auto;
-    max-height: 62px;
-  }
-
   .site-header .header-center--desktop-search {
-    grid-column: 2 / 4;
-    grid-row: 1;
     z-index: 2;
     display: flex;
     justify-content: flex-end;
-    width: 100%;
-    min-width: 0;
-    justify-self: stretch;
-    pointer-events: none;
-  }
-
-  .site-header .dtb-desktop-search--header {
-    width: clamp(240px, 20vw, 390px);
-    max-width: 100%;
-    pointer-events: auto;
-    transition: width 420ms cubic-bezier(0.22, 1, 0.36, 1);
-  }
-
-  .site-header .dtb-desktop-search--header .dtb-desktop-search-pill {
-    width: 100%;
-    max-width: none;
   }
 
   .site-header .header-desktop-layout.is-desktop-search-open .dtb-desktop-search--header {
@@ -103,13 +59,6 @@
     border-radius: 10px 10px 0 0;
   }
 
-  .site-header .header-right {
-    grid-column: auto;
-    gap: clamp(var(--dtb-space-4), 1.4vw, var(--dtb-space-5));
-    margin-left: 0;
-    padding-right: 0;
-  }
-
   .site-header .header-desktop-actions .header-icon {
     width: 36px;
     height: 36px;
@@ -122,23 +71,6 @@
 
   .site-header .header-desktop-actions .cart-area {
     margin-left: 0;
-  }
-
-  .site-header .header-desktop-nav-row {
-    grid-column: 2;
-    grid-row: 1;
-    position: relative;
-    z-index: 10025;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-width: 0;
-    height: 100%;
-    padding: 0;
-    border: 0;
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 190ms ease, visibility 0s linear 0s;
   }
 
   .site-header .header-desktop-layout.is-desktop-search-open .header-desktop-nav-row {
@@ -1284,62 +1216,6 @@
   }
 }
 
-/* Desktop header mockup geometry. Reuse existing navigation, search and commerce controls. */
-@media (min-width: 1025px) {
-  .site-header .site-header-inner {
-    height: 190px !important;
-    min-height: 190px !important;
-  }
-  .site-header .header-desktop-layout {
-    display: grid;
-    grid-template-columns: clamp(210px, 18vw, 300px) minmax(0, 1fr) auto;
-    grid-template-rows: 122px 68px;
-    column-gap: clamp(22px, 3vw, 58px);
-    row-gap: 0;
-    height: 190px;
-    align-items: center;
-  }
-  .site-header .header-left { grid-column: 1; grid-row: 1; }
-  .site-header .logo-image { max-width: 270px; max-height: 88px; }
-  .site-header .header-center--desktop-search {
-    grid-column: 2;
-    grid-row: 1;
-    justify-content: stretch;
-  }
-  .site-header .dtb-desktop-search--header {
-    width: 100%;
-    max-width: 960px;
-    margin-inline: auto;
-  }
-  .site-header .header-right {
-    grid-column: 3;
-    grid-row: 1;
-    justify-self: end;
-    gap: clamp(12px, 1.5vw, 26px);
-  }
-  .site-header .header-desktop-nav-row {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    justify-content: center;
-    height: 68px;
-    border-top: 1px solid transparent;
-    background-image: linear-gradient(90deg, transparent 0%, rgba(166, 194, 233, .10) 5%, rgba(166, 194, 233, .30) 17%, rgba(190, 211, 241, .38) 50%, rgba(166, 194, 233, .30) 83%, rgba(166, 194, 233, .10) 95%, transparent 100%);
-    background-position: top;
-    background-repeat: no-repeat;
-    background-size: 100% 1px;
-  }
-  .site-header .dtb-desktop-nav { justify-content: center; gap: clamp(20px, 2.5vw, 44px); }
-  .site-header .dtb-desktop-nav-tab { font-size: clamp(.94rem, .98vw, 1.08rem); }
-}
-@media (min-width: 1025px) and (max-width: 1240px) {
-  .site-header .header-desktop-layout {
-    grid-template-columns: 190px minmax(0, 1fr) auto;
-    column-gap: 18px;
-  }
-  .site-header .logo-image { max-width: 188px; }
-  .site-header .dtb-desktop-nav { gap: 12px; }
-}
-
 /* Shared selector-sheet geometry: Schematics and Repairs match the Brands cards. */
 @media (min-width: 1025px) {
   .site-header .dtb-desktop-nav-dropdown--schematics .dtb-mega-menu__brand-grid {
@@ -1367,49 +1243,6 @@
   }
 }
 
-
-/* Compact mockup-aligned desktop header. The existing search, nav and commerce
-   components remain authoritative; only their presentation is adjusted. */
-@media (min-width: 1025px) {
-  .site-header .site-header-inner {
-    height: 138px !important;
-    min-height: 138px !important;
-    padding-inline: clamp(24px, 3.6vw, 64px) !important;
-  }
-  .site-header .header-desktop-layout {
-    grid-template-columns: clamp(178px, 16vw, 245px) minmax(0,1fr) auto;
-    grid-template-rows: 90px 48px;
-    column-gap: clamp(20px, 2.7vw, 46px);
-    height: 138px;
-    min-height: 138px;
-  }
-  .site-header .header-left { grid-column: 1; grid-row: 1; }
-  .site-header .logo-image {
-    width: auto;
-    max-width: min(100%, 205px);
-    max-height: 58px;
-    object-fit: contain;
-  }
-  .site-header .header-desktop-nav-row {
-    grid-column: 1 / -1;
-    grid-row: 2;
-    height: 48px;
-    min-height: 48px;
-    border-top: 1px solid transparent;
-    background-image: linear-gradient(90deg, transparent 0%, rgba(166, 194, 233, .10) 5%, rgba(166, 194, 233, .30) 17%, rgba(190, 211, 241, .38) 50%, rgba(166, 194, 233, .30) 83%, rgba(166, 194, 233, .10) 95%, transparent 100%);
-    background-position: top;
-    background-repeat: no-repeat;
-    background-size: 100% 1px;
-  }
-  .site-header .dtb-desktop-nav { gap: clamp(12px, 1.8vw, 30px); }
-}
-@media (min-width:1025px) and (max-width:1240px) {
-  .site-header .header-desktop-layout {
-    grid-template-columns: 170px minmax(0,1fr) auto;
-    column-gap: 16px;
-  }
-  .site-header .logo-image { max-width: 165px; }
-}
 
 /* Shop category workspace from the approved parent/child mega-menu mockup. */
 @media (min-width: 1025px) {
@@ -1832,6 +1665,7 @@
   }
 
   .site-header .header-desktop-layout {
+    display: grid;
     box-sizing: border-box;
     grid-template-columns: minmax(150px, 1fr) minmax(0, min(49vw, 842px)) minmax(150px, 1fr);
     grid-template-rows: 85px 47px;
@@ -1902,6 +1736,10 @@
     height: 47px;
     padding: 0;
     border-top: 0;
+    background-image: linear-gradient(90deg, transparent 0%, rgba(166, 194, 233, .10) 5%, rgba(166, 194, 233, .30) 17%, rgba(190, 211, 241, .38) 50%, rgba(166, 194, 233, .30) 83%, rgba(166, 194, 233, .10) 95%, transparent 100%);
+    background-position: top;
+    background-repeat: no-repeat;
+    background-size: 100% 1px;
     opacity: 1;
     visibility: visible;
     transition: none;

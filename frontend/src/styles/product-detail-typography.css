@@ -1,7 +1,7 @@
 /* Product purchase-card typography authority.
  *
  * This file owns only component typography. Viewport composition and breakpoint
- * behavior belong to unified-responsive.css. Fluid values avoid a second
+ * behavior belong to responsive-shared.css. Fluid values avoid a second
  * responsive cascade while preserving readable scaling inside the PDP region.
  */
 

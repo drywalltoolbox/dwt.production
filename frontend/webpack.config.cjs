@@ -511,15 +511,13 @@ module.exports = (envFlags, argv) => {
         new MiniCssExtractPlugin({
           filename:      'assets/css/[name].[contenthash:8].css',
           chunkFilename: 'assets/css/[name].[contenthash:8].chunk.css',
-          // Different entry points/async chunks can require the same CSS
-          // module graph in different orders (for example after code-splitting
-          // a component like ProductDetail into its own chunk). Webpack cannot
-          // always prove a single global order is safe and warns "Conflicting
-          // order" even when the files involved have zero overlapping
-          // selectors. Verified case-by-case that our CSS files are scoped to
-          // disjoint class namespaces (BEM-style, component-scoped) with no
-          // cross-file cascade dependency, so a non-deterministic chunk-load
-          // order across pages cannot change which rule wins.
+          // Async route chunks can import shared CSS modules in different
+          // dependency orders. Webpack's order warning compares module order,
+          // not selector overlap. Keep route and component rules scoped, and
+          // express intended variants on the owning component (for example,
+          // breadcrumb modifiers) so independent chunks do not rely on a
+          // cross-file cascade. Re-audit actual selector overlap when this
+          // suppression is reviewed; do not treat it as proof of isolation.
           ignoreOrder: true,
         }),
 
@@ -704,7 +702,7 @@ module.exports = (envFlags, argv) => {
       // budget exists to catch, not something to hide by raising the
       // ceiling again. maxEntrypointSize below has ~3% headroom over the
       // measured baseline so routine dependency bumps don't flap, while
-      // still failing if a change re-inflates the initial bundle.
+      // warning when a change re-inflates the initial bundle past budget.
       // maxAssetSize covers the largest legitimate single asset today
       // (the shared `common` async route chunk, ~561 KB, loaded on demand
       // by multiple lazy pages — not part of the initial entrypoint) with

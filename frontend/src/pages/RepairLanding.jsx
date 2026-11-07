@@ -9,11 +9,11 @@ import '../styles/repair-merchandising.css';
 import '../styles/repair-landing-responsive.css';
 import '../styles/repair-landing-desktop.css';
 import '../styles/repair-guarantees.css';
-import '../styles/repair-hero-desktop-promises.css';
+import '../styles/repair-hero-presentation.css';
 import '../styles/repair-service-cards-mobile.css';
 import '../styles/repair-hero-shared.css';
 import '../styles/repair-service-paths.css';
-import '../styles/repair-landing-hero-parity.css';
+import '../styles/repair-landing-hero-desktop.css';
 
 const PROCESS_STEPS = [
   { title: 'Identify the tool', description: 'Tell us the brand, tool family, model, symptoms, and service goal. Photos can be added during intake.' },

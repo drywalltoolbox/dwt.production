@@ -57,7 +57,6 @@ export default function Contact() {
   });
   const [submitting, setSubmitting] = useState(false);
   const submittingRef = useRef(false);
-  submittingRef.current = submitting;
   const [success, setSuccess]       = useState(false);
   const [tracking, setTracking]     = useState(null);
   const [error, setError]           = useState('');
@@ -66,6 +65,7 @@ export default function Contact() {
     if (!wizardOpen) return undefined;
     const body = document.body;
     const html = document.documentElement;
+    const opener = openerRef.current;
     const scrollY = window.scrollY;
     const scrollX = window.scrollX;
     const prior = {
@@ -117,7 +117,7 @@ export default function Contact() {
       html.style.overflow = prior.htmlOverflow;
       window.scrollTo({ left: scrollX, top: scrollY, behavior: 'instant' });
       document.removeEventListener('keydown', onKeyDown);
-      openerRef.current?.focus({ preventScroll: true });
+      opener?.focus({ preventScroll: true });
     };
   }, [wizardOpen]);
 
@@ -143,6 +143,7 @@ export default function Contact() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (submittingRef.current) return;
     if (!formData.message.trim()) { setError('Enter your inquiry message.'); return; }
     if (!formData.inquiryType) {
       setError('Please select an inquiry type.');
@@ -150,6 +151,7 @@ export default function Contact() {
       return;
     }
     setError('');
+    submittingRef.current = true;
     setSubmitting(true);
 
     try {
@@ -174,6 +176,7 @@ export default function Contact() {
     } catch (err) {
       setError(err?.message || 'Unable to send your message. Please call us directly at 612-978-1007.');
     } finally {
+      submittingRef.current = false;
       setSubmitting(false);
     }
   };
