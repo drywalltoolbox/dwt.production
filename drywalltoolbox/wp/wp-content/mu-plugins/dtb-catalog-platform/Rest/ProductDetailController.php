@@ -88,6 +88,25 @@ final class DTB_ProductDetailController {
 			? DTB_VariationReadModelService::get_last_diagnostics()
 			: [ 'available' => false ];
 		$related_products = self::get_related_products( $product['id'], $product );
+		$family_related_products = [];
+		$category_related_products = [];
+		$family_source = wc_get_product( $product['id'] );
+		if ( $family_source instanceof WC_Product ) {
+			$family_related_products = array_values( array_map(
+				'dtb_catalog_normalize_product',
+				dtb_catalog_wc_fetch_products_by_ids( array_map(
+					static fn( WC_Product $related ): int => $related->get_id(),
+					dtb_product_mapping_repo_get_family_related_products( $family_source )
+				) )
+			) );
+			$category_related_products = array_values( array_map(
+				'dtb_catalog_normalize_product',
+				dtb_catalog_wc_fetch_products_by_ids( array_map(
+					static fn( WC_Product $related ): int => $related->get_id(),
+					dtb_product_mapping_repo_get_category_related_products( $family_source )
+				) )
+			) );
+		}
 		$is_toolset = self::is_toolset( $product );
 		$related_products_by_variation = $is_toolset && 'variable' === $product['type']
 			? self::get_related_products_by_variation( $variations, $product['id'] )
@@ -97,6 +116,8 @@ final class DTB_ProductDetailController {
 			'product'         => $product,
 			'variations'      => $variations,
 			'relatedProducts' => $related_products,
+			'familyRelatedProducts' => $family_related_products,
+			'categoryRelatedProducts' => $category_related_products,
 			'relatedProductsByVariation' => $related_products_by_variation,
 			'computed'        => [
 				'defaultVariation'      => $default_var,

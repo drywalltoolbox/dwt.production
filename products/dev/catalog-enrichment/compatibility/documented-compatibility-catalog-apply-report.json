@@ -1,49 +1,75 @@
 {
   "applied": true,
-  "approved_change_count": 4,
+  "approved_change_count": 7,
   "approved_changes": [
     {
-      "approval_sha256": "4034cbd58a827b843c4934e5bf7322e6d02c5c9d09a456e5a2a09c5799fe0377",
-      "current_value": "",
-      "field": "Meta: _dtb_compatible_tool_skus",
-      "proposed_value": "[\"340311\"]",
-      "sku": "340316",
-      "workflow": "compatibility"
-    },
-    {
-      "approval_sha256": "90da6e03b381d7fc422202047b174e572e29dba2c4f0375236b22f3058bbf6a6",
-      "current_value": "",
-      "field": "Meta: _dtb_compatible_tool_skus",
-      "proposed_value": "[\"340311\"]",
-      "sku": "340317",
-      "workflow": "compatibility"
-    },
-    {
-      "approval_sha256": "40c5544b91548e01f635e503a7f51b30007ff3afb83c285439d5d508aaa5fbe1",
-      "current_value": "",
-      "field": "Meta: _dtb_compatible_tool_skus",
-      "proposed_value": "[\"340311\"]",
-      "sku": "340318",
-      "workflow": "compatibility"
-    },
-    {
-      "approval_sha256": "ff806969256910ca077ed572a48d2ea6eea22add12177266266265ff9a6d4c72",
+      "approval_sha256": "db27504e6692821fa205a42f516efdb5c060fa337572b26e7d41575d27651ed5",
       "current_value": "",
       "field": "Meta: _dtb_compatible_tool_skus",
       "proposed_value": "[\"PTAPER\"]",
-      "sku": "CT-INSERT-BUSHING",
+      "sku": "CT-SPROCKET",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "ebd74acdf3a922be2905b050ab09151617096d817fb34df6de0c3073589bf980",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"PTAPER\"]",
+      "sku": "CT70",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "cadd614aed4e4484158c6136c7661f4ebdeb318b1e5d033c75cb086c7316119c",
+      "current_value": "[\"PTAPER\"]",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"CMH\",\"PTAPER\"]",
+      "sku": "FA249",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "ba76b9112e868042e5847f8ffa99295318666fd61f7e29a5b71d7d400a0e5a5f",
+      "current_value": "[\"3NS\"]",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"3NS\",\"CMH\"]",
+      "sku": "FA268",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "62777239cb5feebedb3bdc52963f646492a16537feca61b73e56f9518a1f33cf",
+      "current_value": "[\"COBCR\"]",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"CMH\",\"COBCR\"]",
+      "sku": "FA312",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "739eb499a6bcd5186ca9ddf4520dabe7f248d38063f468f29e9e9151379bac42",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"3NS\"]",
+      "sku": "HNS-DOOR-SPRING",
+      "workflow": "compatibility"
+    },
+    {
+      "approval_sha256": "3321a86b1816f778a3d22048ba9d5318a051959f220c8d944306110b3bcc5b25",
+      "current_value": "",
+      "field": "Meta: _dtb_compatible_tool_skus",
+      "proposed_value": "[\"HMP\",\"TBMP\"]",
+      "sku": "MP-PISTON-BACKING-WASHER",
       "workflow": "compatibility"
     }
   ],
   "backup": "D:\\AMD\\projects\\dwt.production\\products\\launch\\official\\dtb_official_catalog.csv.bak",
-  "catalog_sha256_after": "947c3e688e8e4910ae1c6e5d3371fc37025e5ee17b6ea5f98da878a9ebd31676",
-  "catalog_sha256_before": "6de14672687c0beab0919e4f9d21b64ad570682b9e0e344f657c757dd66eca8c",
-  "manifest": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\documented-compatibility-review-manifest-next.csv",
-  "manifest_rows": 4,
-  "manifest_sha256": "22ff9475afd4f9851b8fe3fff4b45259958c6ade8309064ad3c4cd942bac3de6",
+  "catalog_sha256_after": "09649ef889bef4ac1997e09012c4cec6de944d3a7069bdd993cb9e95e015bb60",
+  "catalog_sha256_before": "c1e95a17b5bf9b88616597a081946ade1a8ebdb8aa94b90f9f19ec0100223fcb",
+  "manifest": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\documented-compatibility-review-manifest.csv",
+  "manifest_archive": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\documented-compatibility-review-manifest.approved-c42b0cb765026211.csv",
+  "manifest_archive_sha256": "c42b0cb765026211d08c5e8f4c132549cd51da1ceeb17544f8f28dc8836a72ce",
+  "manifest_rows": 7,
+  "manifest_sha256": "c42b0cb765026211d08c5e8f4c132549cd51da1ceeb17544f8f28dc8836a72ce",
   "mode": "apply",
   "review_statuses": {
-    "approved": 4
+    "approved": 7
   },
   "schema_version": 1
 }

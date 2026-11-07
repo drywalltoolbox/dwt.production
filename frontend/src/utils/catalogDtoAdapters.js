@@ -507,6 +507,8 @@ export function toProductDetailDTO(payload = {}) {
   };
   const adaptRelatedProducts = (items) => Array.isArray(items) ? items.map(adaptRelatedProduct) : [];
   const relatedProducts = adaptRelatedProducts(payload?.relatedProducts);
+  const familyRelatedProducts = adaptRelatedProducts(payload?.familyRelatedProducts);
+    const categoryRelatedProducts = adaptRelatedProducts(payload?.categoryRelatedProducts);
   const relatedProductsByVariation = payload?.relatedProductsByVariation && typeof payload.relatedProductsByVariation === 'object'
     ? Object.fromEntries(Object.entries(payload.relatedProductsByVariation).map(([variationId, items]) => [variationId, adaptRelatedProducts(items)]))
     : {};
@@ -520,6 +522,8 @@ export function toProductDetailDTO(payload = {}) {
     product,
     variations,
     relatedProducts,
+    familyRelatedProducts,
+      categoryRelatedProducts,
     relatedProductsByVariation,
     computed: {
       ...(payload?.computed || {}),

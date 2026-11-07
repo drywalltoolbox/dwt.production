@@ -52,6 +52,15 @@ def test_valid_priced_row_has_no_objective_price_blocker() -> None:
     assert "regular_price_below_map" not in observed
 
 
+def test_below_cost_margin_is_excluded_from_readiness_findings() -> None:
+    assert "nonpositive_gross_margin" not in codes([row(**{"Regular price": "4.00", "Cost of goods": "5.00"})])
+
+
+def test_inventory_projection_review_is_excluded_from_readiness_findings() -> None:
+    observed = codes([row(Stock="10")])
+    assert "inventory_projection_runtime_verification_required" not in observed
+
+
 def test_duplicate_slugs_are_blocked() -> None:
     observed = codes([row(SKU="A"), row(SKU="B")])
     assert "duplicate_slug" in observed

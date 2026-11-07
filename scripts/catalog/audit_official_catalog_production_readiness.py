@@ -4,7 +4,7 @@
 This audit complements the structural/enrichment pipeline. It does not invent
 product facts or mutate the canonical CSV. Existing enrichment, SEO/content,
 and compatibility evidence is consolidated with objective WooCommerce import,
-commerce-mode, URL, media, shipping, price, slug, and Veeqo-projection checks.
+commerce-mode, URL, media, shipping, price, and slug checks. Optional Veeqo review is out of scope by default.
 """
 
 from __future__ import annotations
@@ -327,13 +327,6 @@ def direct_findings(
                     current=clean(row.get("Cost of goods")), source="production-readiness audit",
                     detail="Cost must be a non-negative decimal when populated.",
                 ))
-        if regular is not None and cost is not None and cost >= regular:
-            results.append(finding(
-                catalog_sha, row, code="nonpositive_gross_margin", severity="critical", gate="blocker",
-                domain="commerce", workflow="pricing_review", field="Regular price",
-                current=clean(row.get("Regular price")), source="production-readiness audit",
-                detail=f"Cost {cost} is greater than or equal to regular price {regular}.",
-            ))
         if regular is not None and map_price is not None and regular < map_price:
             results.append(finding(
                 catalog_sha, row, code="regular_price_below_map", severity="critical", gate="blocker",
@@ -352,17 +345,8 @@ def direct_findings(
                     catalog_sha, row, code="shippable_missing_weight", severity="high", gate="review",
                     domain="shipping", workflow="shipping_evidence", field="Weight (lbs)", current="",
                     source="production-readiness audit",
-                    detail="Potentially purchasable physical item lacks catalog weight; verify against Veeqo/supplier evidence.",
+                    detail="Potentially purchasable physical item lacks catalog weight; verify against supplier or packaging evidence.",
                 ))
-
-        if clean(row.get("Stock")):
-            results.append(finding(
-                catalog_sha, row, code="catalog_quantity_requires_veeqo_authority_review", severity="high", gate="review",
-                domain="integration", workflow="veeqo_inventory_review", field="Stock",
-                current=clean(row.get("Stock")), source="production-readiness audit",
-                detail="Catalog contains an explicit WooCommerce stock quantity even though Veeqo owns sellable inventory truth.",
-                confidence="requires_runtime_projection_review",
-            ))
 
         inherit_parent = clean(row.get("Meta: _dtb_inherit_parent_image")).casefold() in {"1", "true", "yes"}
         if type_ != "variation" and inherit_parent:
@@ -395,7 +379,7 @@ def direct_findings(
                     catalog_sha, row, code="shippable_missing_dimensions", severity="high", gate="review",
                     domain="shipping", workflow="shipping_evidence", field="; ".join(missing_dimensions), current="",
                     source="production-readiness audit",
-                    detail="Potentially purchasable physical item lacks one or more packaged dimensions; verify against Veeqo/supplier evidence.",
+                    detail="Potentially purchasable physical item lacks one or more packaged dimensions; verify against supplier or packaging evidence.",
                 ))
 
         for field in URL_FIELDS:
@@ -591,14 +575,6 @@ def direct_findings(
                     confidence="review_required_not_automatically_wrong",
                 ))
 
-    results.append(finding(
-        catalog_sha, None, code="inventory_projection_runtime_verification_required", severity="high", gate="review",
-        domain="integration", workflow="veeqo_runtime_verification", field="In stock?; Stock",
-        current="All catalog rows are marked in stock; quantity fields are blank.",
-        source="production-readiness audit",
-        detail="CSV structure cannot prove Veeqo inventory projection, allocation, or live stock behavior.",
-        confidence="confirmed_scope_limit",
-    ))
     results.append(finding(
         catalog_sha, None, code="shipping_class_policy_unconfirmed", severity="medium", gate="review",
         domain="shipping", workflow="shipping_policy_review", field="Shipping class",
@@ -906,11 +882,13 @@ def report_markdown(
         "",
         f"Catalog SHA-256 (normalized LF): `{summary['format']['sha256_normalized_lf']}`",
         "",
+        "Margin and Veeqo findings are retired from this audit scope at the user's direction. They are not evaluated or included in blocker, review, or advisory totals.",
+        "",
         "## Verdict",
         "",
         f"**{readiness['verdict']}** — {readiness['blocker_findings']} blocker finding rows across {readiness['blocker_skus']} product SKUs.",
         "",
-        "The CSV is structurally valid, but it is not approved for production import until production URL and commerce-mode blockers are resolved and the approved result is revalidated.",
+        "The CSV is structurally valid, but it is not ready for production import while any active blocker findings remain. Margin and Veeqo checks are excluded by user direction.",
         "",
         "## Evidence summary",
         "",
@@ -933,7 +911,6 @@ def report_markdown(
     lines.extend(f"| `{code}` | {count} |" for code, count in top_codes)
     previous = summary["previous_version_comparison"]
     media = summary.get("media_url_validation") or {}
-    veeqo = summary["veeqo_comparison"]
     backlog = summary["evidence_backlog"]
     lines.extend([
         "",
@@ -954,13 +931,11 @@ def report_markdown(
         f"- Production media candidates: {media.get('valid_production_candidates', 'not run')} valid and {media.get('invalid_production_candidates', 'not run')} invalid by HTTP status/content type.",
         f"- Local media coverage: {summary['local_media_comparison']['catalog_unique_basenames']} of {summary['local_media_comparison']['catalog_unique_basenames']} catalog basenames present; {len(summary['local_media_comparison']['unused_local_basenames'])} local files unused.",
         f"- Physical data coverage: {summary['metrics']['weight_rows']} rows with weight; {summary['metrics']['complete_dimension_rows']} rows with all dimensions; shipping class is unconfirmed catalog-wide.",
-        f"- Generated Veeqo bootstrap projection comparison: {veeqo.get('shared_skus')} shared, {len(veeqo.get('catalog_only_skus', []))} catalog-only, {len(veeqo.get('veeqo_only_skus', []))} projection-only; direct source-field differences: {json.dumps(veeqo.get('field_differences_by_type', {}), sort_keys=True)}.",
-        "- `veeqo_inventory.csv` is a generated bootstrap/import projection, not a live Veeqo export or synchronization authority. Do not import it over the already-configured live Veeqo catalog; validate bundle composition and stock through read-only live reconciliation.",
         f"- Compatibility research: {backlog['compatibility'].get('proposal_rows')} exact proposals across {backlog['compatibility'].get('unique_parts')} parts/{backlog['compatibility'].get('unique_schematics')} schematics; {backlog['compatibility'].get('unresolved_rows')} unresolved evidence rows remain.",
         f"- Content review: {backlog['accuracy_review'].get('rows')} accuracy findings across {backlog['accuracy_review'].get('unique_skus')} SKUs; {backlog['seo_pre_generation'].get('findings_by_workflow', {}).get('editorial_review')} editorial findings; no automatic copy application is approved.",
     ])
     selected_codes = (
-        "production_image_candidate_invalid", "nonpositive_gross_margin", "include_target_absent",
+        "production_image_candidate_invalid", "include_target_absent",
         "invalid_parent_attribute_default", "missing_image", "structured_part_number_identity_mismatch",
         "inherit_parent_image_on_nonvariation", "variation_gallery_equals_parent_without_inheritance",
         "variation_inheritance_gallery_mismatch", "sibling_variations_share_explicit_gallery",
@@ -986,7 +961,7 @@ def report_markdown(
         "",
         "1. Decide and document the canonical `_dtb_commerce_mode` mapping, including whether priced `quote_only` parts are intended to be purchasable.",
         "2. Verify every referenced media asset on the production host, then replace staging-host URLs through an exact-SKU approved manifest.",
-        "3. Resolve objective price/MAP/publication blockers and confirm shipping/inventory ownership and runtime projections.",
+        "3. Resolve objective price/MAP/publication blockers and confirm shipping data and runtime projections.",
         "4. Resolve the single missing-image SKU using authoritative media.",
         "5. Complete claim-accuracy review before editorial/SEO rewriting.",
         "6. Review compatibility proposals; do not apply generated proposals without approval.",
@@ -994,7 +969,7 @@ def report_markdown(
         "",
         "## Scope boundaries",
         "",
-        "This audit establishes CSV and repository evidence only. It does not prove WooCommerce import behavior, live payment/cart behavior, Veeqo synchronization, deployment, or production rendering.",
+        "This audit establishes CSV and repository evidence only. It does not prove WooCommerce import behavior, live payment/cart behavior, deployment, or production rendering.",
         "",
     ])
     return "\n".join(lines)
@@ -1006,6 +981,7 @@ def main() -> int:
     parser.add_argument("--include-gap-audit", type=Path, default=DEFAULT_GAPS)
     parser.add_argument("--enrichment-dir", type=Path, default=DEFAULT_ENRICHMENT)
     parser.add_argument("--veeqo", type=Path, default=DEFAULT_VEEQO)
+    parser.add_argument("--include-veeqo-review", action="store_true", help="include the normally out-of-scope Veeqo review")
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
     args = parser.parse_args()
 
@@ -1022,7 +998,11 @@ def main() -> int:
     media_validation_csv = args.output_dir.resolve() / "media-url-validation.csv"
     media_findings = incorporate_media_validation(rows_by_sku, catalog_sha, media_validation_csv)
     findings = deduplicate(direct + generated + media_findings + workflow_safety_findings(catalog_sha))
-    veeqo_summary, veeqo_differences = veeqo_comparison(rows, args.veeqo.resolve())
+    veeqo_summary, veeqo_differences = (
+        veeqo_comparison(rows, args.veeqo.resolve())
+        if args.include_veeqo_review
+        else ({ "available": False, "excluded_by_scope": True }, [])
+    )
     local_media = local_media_comparison(rows, DEFAULT_MEDIA_DIR.resolve())
     previous_version, previous_changes = previous_version_comparison(catalog_path, fields, rows)
     media_validation_path = args.output_dir.resolve() / "media-url-validation-summary.json"
@@ -1058,6 +1038,7 @@ def main() -> int:
             "by_code": dict(sorted(code_counts.items())),
             "by_brand": count_by([item for item in findings if item["brand"]], "brand"),
         },
+        "scope_exclusions": ["nonpositive_gross_margin", "catalog_quantity_requires_veeqo_authority_review"],
         "veeqo_comparison": veeqo_summary,
         "local_media_comparison": local_media,
         "previous_version_comparison": previous_version,
@@ -1069,7 +1050,7 @@ def main() -> int:
         },
         "inputs": {
             "enrichment_dir": str(args.enrichment_dir.resolve().relative_to(ROOT)).replace("\\", "/"),
-            "veeqo": str(args.veeqo.resolve().relative_to(ROOT)).replace("\\", "/") if args.veeqo.resolve().is_file() else None,
+            "veeqo": str(args.veeqo.resolve().relative_to(ROOT)).replace("\\", "/") if args.include_veeqo_review and args.veeqo.resolve().is_file() else None,
         },
     }
 

@@ -109,6 +109,23 @@ def build_projection(rows: list[dict[str, str]]) -> tuple[list[dict[str, Any]], 
             tool = by_sku.get(tool_sku)
             if tool is None:
                 raise ProjectionError(f"{part['SKU']}: fitment target {tool_sku!r} is not an exact catalog SKU")
+            if (tool.get("Type") or "").strip().casefold() == "variation":
+                parent = by_sku.get((tool.get("Parent") or "").strip())
+                if (
+                    parent is None
+                    or (parent.get("Type") or "").strip().casefold() != "variable"
+                    or (parent.get("Meta: _dtb_product_kind") or "").strip().casefold() != "tool"
+                    or not truthy(parent, "Published")
+                    or (parent.get("Visibility in catalog") or "").strip().casefold() != "visible"
+                    or not truthy(tool, "Published")
+                    or (tool.get("Visibility in catalog") or "").strip().casefold() != "visible"
+                ):
+                    continue
+                # Keep the exact child identity for the all-variations
+                # intersection below. Fan-out/ranking counts the parent once.
+                part_targets_by_tool[tool_sku].add(part["SKU"])
+                public_tools_by_part[part["SKU"]].add(parent["SKU"])
+                continue
             if (tool.get("Meta: _dtb_product_kind") or "").strip().casefold() != "tool":
                 continue
             if not truthy(tool, "Published") or (tool.get("Visibility in catalog") or "").strip().casefold() != "visible":
@@ -278,6 +295,7 @@ def main() -> int:
             "target_field": CROSS_SELL_FIELD,
             "direction": "visible tool to exact compatible visible simple replacement part",
             "variable_tool_rule": "part must have exact fitment to every published visible variation",
+            "variation_fitment_handling": "exact variation-target edges are retained per child; parent cross-sells use only their intersection across all published visible children",
             "ordering": "parts that fit fewer published visible tools first, then exact SKU; this is a deterministic relevance heuristic, not purchase evidence",
             "upsells_created": False,
             "similarity_inference_used": False,

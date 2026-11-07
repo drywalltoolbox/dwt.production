@@ -3,25 +3,25 @@
     "ambiguous_owner_skus": 0,
     "blank_target_references": 0,
     "duplicate_targets_within_owner": 0,
-    "exact_published_product_targets": 106,
-    "exact_published_variation_targets": 499,
+    "exact_published_product_targets": 111,
+    "exact_published_variation_targets": 502,
     "exact_target_skus_at_max_owner_fanout": [
       "07TT"
     ],
     "malformed_relationship_parts": 0,
     "max_published_part_owner_fanout_for_exact_target_sku": 68,
     "missing_parts_by_brand": {
-      "Columbia Tools": 257,
+      "Columbia Tools": 253,
       "Platinum Drywall Tools": 17,
       "TapeTech": 37,
       "USG Sheetrock Tools": 9
     },
     "noncanonical_target_sku_references": 0,
-    "other_published_product_targets": 106,
+    "other_published_product_targets": 111,
     "part_relationship_owners_by_scope": {
       "parent": {
-        "with_structured_fitment": 298,
-        "without_structured_fitment": 247
+        "with_structured_fitment": 302,
+        "without_structured_fitment": 243
       },
       "variation": {
         "with_structured_fitment": 0,
@@ -38,19 +38,19 @@
       "visible": {
         "published_part_variations": 73,
         "published_parts": 344,
-        "with_structured_fitment": 134,
-        "without_structured_fitment": 283
+        "with_structured_fitment": 138,
+        "without_structured_fitment": 279
       }
     },
-    "parts_with_structured_relationships": 298,
-    "parts_without_structured_relationships": 320,
+    "parts_with_structured_relationships": 302,
+    "parts_without_structured_relationships": 316,
     "published_variable_parent_targets": 0,
     "target_field_overlap_parts": 0,
     "target_sku_whitespace_references": 0,
     "unresolved_targets": {}
   },
   "catalog_rows": 1133,
-  "catalog_sha256": "c1e95a17b5bf9b88616597a081946ade1a8ebdb8aa94b90f9f19ec0100223fcb",
+  "catalog_sha256": "3b256b4015f2604b946055c7805e840c2124c67cd22eb3ef305cc11f94bc338c",
   "coverage_pipeline": {
     "candidate_owner_count_by_manifest": {
       "documented_evidence": 0,
@@ -58,8 +58,8 @@
     },
     "interpretation": "A review candidate is a current digest-bound proposal, not approved fitment. An uncovered part has no current candidate in the audited manifests; it is not evidence of incompatibility.",
     "missing_fitment_parts_with_current_review_candidate": 0,
-    "missing_fitment_parts_without_current_review_candidate": 320,
-    "published_parts_missing_fitment": 320,
+    "missing_fitment_parts_without_current_review_candidate": 316,
+    "published_parts_missing_fitment": 316,
     "uncovered_part_skus": [
       "050064F",
       "050110F",
@@ -164,7 +164,6 @@
       "CP-7",
       "CR2",
       "CT-NYLATRON-CHAIN-ROLLER",
-      "CT-SPROCKET",
       "CT-WAFER-BUSHING",
       "CT101",
       "CT103",
@@ -194,7 +193,6 @@
       "CT63",
       "CT68",
       "CT6A",
-      "CT70",
       "CT71",
       "CT73",
       "CT77",
@@ -321,7 +319,6 @@
       "HH7",
       "HH8",
       "HH9",
-      "HNS-DOOR-SPRING",
       "HNS10",
       "HNS10A",
       "HNS15",
@@ -367,7 +364,6 @@
       "MH7",
       "MH8",
       "MH9A",
-      "MP-PISTON-BACKING-WASHER",
       "MP13",
       "MP13A",
       "MP23A",
@@ -519,7 +515,7 @@
       }
     ],
     "without_candidate_by_brand": {
-      "Columbia Tools": 257,
+      "Columbia Tools": 253,
       "Platinum Drywall Tools": 17,
       "TapeTech": 37,
       "USG Sheetrock Tools": 9
@@ -570,14 +566,14 @@
       "manufacturer_evidence_by_role": {
         "context_only": 3
       },
-      "new_candidate_edges": 879,
-      "other_product_target_edges": 14,
+      "new_candidate_edges": 875,
+      "other_product_target_edges": 10,
       "present": true,
       "rows": 173,
       "rows_by_review_status": {
         "needs_review": 173
       },
-      "sha256": "24be3db4944533dba203b6efa059afca91cc18b63d86e8f315dabdf3fc4d403d",
+      "sha256": "c6db681c0a7f245a431def17bf2b84faddd48bfef7fc0953fa149900adca5957",
       "stale_rows": 173,
       "unsupported_mutations": 0,
       "variable_parent_target_edges": 0

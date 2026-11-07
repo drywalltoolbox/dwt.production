@@ -386,6 +386,8 @@ function dtb_product_mapping_repo_get_relationships( int $product_id ) {
 
 	$upsell_ids = array_values( array_map( 'absint', $product->get_upsell_ids() ) );
 	$crosssell_ids = array_values( array_map( 'absint', $product->get_cross_sell_ids() ) );
+	$family_related = dtb_product_mapping_repo_get_family_related_products( $product );
+	$category_related = dtb_product_mapping_repo_get_category_related_products( $product );
 	$target_ids = array_values( array_unique( array_merge( $upsell_ids, $crosssell_ids ) ) );
 	$targets_by_id = [];
 	if ( $target_ids ) {
@@ -426,8 +428,139 @@ function dtb_product_mapping_repo_get_relationships( int $product_id ) {
 		'sku'        => $product->get_sku(),
 		'upsells'    => $format( $upsell_ids ),
 		'crosssells' => $format( $crosssell_ids ),
+		'family_related' => array_map(
+			static function ( WC_Product $related ): array {
+				return [
+					'id' => $related->get_id(),
+					'name' => $related->get_name(),
+					'sku' => (string) $related->get_sku(),
+					'status' => (string) get_post_status( $related->get_id() ),
+					'type' => (string) $related->get_type(),
+					'catalog_visibility' => (string) $related->get_catalog_visibility(),
+				];
+			},
+			$family_related
+		),
+		'category_related' => array_map(
+			static function ( WC_Product $related ): array {
+				return [
+					'id' => $related->get_id(),
+					'name' => $related->get_name(),
+					'sku' => (string) $related->get_sku(),
+					'status' => (string) get_post_status( $related->get_id() ),
+					'type' => (string) $related->get_type(),
+					'catalog_visibility' => (string) $related->get_catalog_visibility(),
+				];
+			},
+			$category_related
+		),
 		'version'    => hash( 'sha256', wp_json_encode( [ $upsell_ids, $crosssell_ids ] ) ),
 	];
+}
+
+/** Resolve exact same-family tool/toolset discovery peers without writing merchandising IDs. */
+function dtb_product_mapping_repo_get_family_related_products( WC_Product $source ): array {
+	$kind = strtolower( trim( (string) $source->get_meta( '_dtb_product_kind', true ) ) );
+	if ( ! in_array( $kind, [ 'tool', 'toolset' ], true ) ) {
+		return [];
+	}
+	$group = [
+		'_dtb_brand_key' => trim( (string) $source->get_meta( '_dtb_brand_key', true ) ),
+		'product_family' => trim( (string) $source->get_meta( 'product_family', true ) ),
+	];
+	if ( in_array( '', $group, true ) ) {
+		return [];
+	}
+	$meta_query = [ 'relation' => 'AND' ];
+	foreach ( $group as $key => $value ) {
+		$meta_query[] = [ 'key' => $key, 'value' => $value, 'compare' => '=' ];
+	}
+	$meta_query[] = [ 'key' => '_dtb_product_kind', 'value' => $kind, 'compare' => '=' ];
+	$candidates = wc_get_products( [
+		'status' => 'publish',
+		'visibility' => 'visible',
+		'limit' => 50,
+		'return' => 'objects',
+		'exclude' => [ $source->get_id() ],
+		'meta_query' => $meta_query,
+	] );
+	usort( $candidates, static function ( $left, $right ): int {
+		$left_sku = $left instanceof WC_Product ? (string) $left->get_sku() : '';
+		$right_sku = $right instanceof WC_Product ? (string) $right->get_sku() : '';
+		return strnatcasecmp( $left_sku, $right_sku );
+	} );
+
+	$related = [];
+	foreach ( $candidates as $candidate ) {
+		if ( ! $candidate instanceof WC_Product || ! in_array( $candidate->get_type(), [ 'simple', 'variable' ], true ) || ! $candidate->is_visible() ) {
+			continue;
+		}
+		$matches_group = strtolower( trim( (string) $candidate->get_meta( '_dtb_product_kind', true ) ) ) === $kind;
+		foreach ( $group as $key => $value ) {
+			$matches_group = $matches_group && trim( (string) $candidate->get_meta( $key, true ) ) === $value;
+		}
+		if ( ! $matches_group ) {
+			continue;
+		}
+		$related[] = $candidate;
+		if ( count( $related ) >= 10 ) {
+			break;
+		}
+	}
+	return $related;
+}
+
+/** Resolve exact same-category non-part discovery peers without writing merchandising IDs. */
+function dtb_product_mapping_repo_get_category_related_products( WC_Product $source ): array {
+	$kind = strtolower( trim( (string) $source->get_meta( '_dtb_product_kind', true ) ) );
+	if ( ! in_array( $kind, [ 'tool', 'toolset', 'stilt', 'accessory' ], true ) ) {
+		return [];
+	}
+	$group = [
+		'_dtb_brand_key' => trim( (string) $source->get_meta( '_dtb_brand_key', true ) ),
+		'_dtb_display_category_key' => trim( (string) $source->get_meta( '_dtb_display_category_key', true ) ),
+	];
+	if ( in_array( '', $group, true ) ) {
+		return [];
+	}
+	$meta_query = [ 'relation' => 'AND' ];
+	foreach ( $group as $key => $value ) {
+		$meta_query[] = [ 'key' => $key, 'value' => $value, 'compare' => '=' ];
+	}
+	$meta_query[] = [ 'key' => '_dtb_product_kind', 'value' => $kind, 'compare' => '=' ];
+	$candidates = wc_get_products( [
+		'status' => 'publish',
+		'visibility' => 'visible',
+		'limit' => 50,
+		'return' => 'objects',
+		'exclude' => [ $source->get_id() ],
+		'meta_query' => $meta_query,
+	] );
+	usort( $candidates, static function ( $left, $right ): int {
+		return strnatcasecmp(
+			$left instanceof WC_Product ? (string) $left->get_sku() : '',
+			$right instanceof WC_Product ? (string) $right->get_sku() : ''
+		);
+	} );
+
+	$related = [];
+	foreach ( $candidates as $candidate ) {
+		if ( ! $candidate instanceof WC_Product || ! in_array( $candidate->get_type(), [ 'simple', 'variable' ], true ) || ! $candidate->is_visible() ) {
+			continue;
+		}
+		$matches_group = strtolower( trim( (string) $candidate->get_meta( '_dtb_product_kind', true ) ) ) === $kind;
+		foreach ( $group as $key => $value ) {
+			$matches_group = $matches_group && trim( (string) $candidate->get_meta( $key, true ) ) === $value;
+		}
+		if ( ! $matches_group ) {
+			continue;
+		}
+		$related[] = $candidate;
+		if ( count( $related ) >= 10 ) {
+			break;
+		}
+	}
+	return $related;
 }
 
 /**

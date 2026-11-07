@@ -26,6 +26,20 @@ export function getRelatedProductsCopy(context = 'related') {
       railLabel: 'Included components',
     };
   }
+  if (context === 'family_related') {
+    return {
+      eyebrow: 'Same brand and product family',
+      title: 'More from this product family',
+      railLabel: 'Related products from this family',
+    };
+  }
+  if (context === 'category_related') {
+    return {
+      eyebrow: 'Same brand and product category',
+      title: 'More in this category',
+      railLabel: 'Products in this category',
+    };
+  }
   return {
     title: 'Related products',
     railLabel: 'Related products',

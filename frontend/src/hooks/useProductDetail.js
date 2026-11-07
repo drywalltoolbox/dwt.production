@@ -5,7 +5,7 @@
  * GET /wp-json/dtb/v1/catalog/products/:slug/detail.
  *
  * Returns:
- *   { product, variations, relatedProducts, computed, status, error }
+ *   { product, variations, relatedProducts, familyRelatedProducts, categoryRelatedProducts, computed, status, error }
  *
  * Status values:
  *   'idle'      — no slug provided
@@ -18,7 +18,7 @@
 import { useReducer, useEffect } from 'react';
 import { apiClient } from '../api/client.js';
 
-const INIT = { product: null, variations: [], relatedProducts: [], relatedProductsByVariation: {}, computed: null, status: 'idle', error: null };
+const INIT = { product: null, variations: [], relatedProducts: [], familyRelatedProducts: [], categoryRelatedProducts: [], relatedProductsByVariation: {}, computed: null, status: 'idle', error: null };
 const DETAIL_CACHE_TTL = 2 * 60 * 1000;
 const detailCache = new Map();
 const detailInflight = new Map();
@@ -80,6 +80,8 @@ function reducer(_state, action) {
         product: action.product,
         variations: action.variations,
         relatedProducts: action.relatedProducts,
+        familyRelatedProducts: action.familyRelatedProducts,
+        categoryRelatedProducts: action.categoryRelatedProducts,
         relatedProductsByVariation: action.relatedProductsByVariation,
         computed: action.computed,
         status: 'ready',
@@ -102,6 +104,8 @@ function initialStateForSlug(slug) {
     product: cached.product,
     variations: Array.isArray(cached.variations) ? cached.variations : [],
     relatedProducts: Array.isArray(cached.relatedProducts) ? cached.relatedProducts : [],
+    familyRelatedProducts: Array.isArray(cached.familyRelatedProducts) ? cached.familyRelatedProducts : [],
+    categoryRelatedProducts: Array.isArray(cached.categoryRelatedProducts) ? cached.categoryRelatedProducts : [],
     relatedProductsByVariation: cached.relatedProductsByVariation && typeof cached.relatedProductsByVariation === 'object' ? cached.relatedProductsByVariation : {},
     computed: cached.computed ?? null,
     status: 'ready',
@@ -131,6 +135,8 @@ export function useProductDetail(slug) {
         product: cached.product,
         variations: Array.isArray(cached.variations) ? cached.variations : [],
         relatedProducts: Array.isArray(cached.relatedProducts) ? cached.relatedProducts : [],
+        familyRelatedProducts: Array.isArray(cached.familyRelatedProducts) ? cached.familyRelatedProducts : [],
+        categoryRelatedProducts: Array.isArray(cached.categoryRelatedProducts) ? cached.categoryRelatedProducts : [],
         relatedProductsByVariation: cached.relatedProductsByVariation && typeof cached.relatedProductsByVariation === 'object' ? cached.relatedProductsByVariation : {},
         computed: cached.computed ?? null,
       });
@@ -153,6 +159,8 @@ export function useProductDetail(slug) {
           product: data.product,
           variations: Array.isArray(data.variations) ? data.variations : [],
           relatedProducts: Array.isArray(data.relatedProducts) ? data.relatedProducts : [],
+          familyRelatedProducts: Array.isArray(data.familyRelatedProducts) ? data.familyRelatedProducts : [],
+          categoryRelatedProducts: Array.isArray(data.categoryRelatedProducts) ? data.categoryRelatedProducts : [],
           relatedProductsByVariation: data.relatedProductsByVariation && typeof data.relatedProductsByVariation === 'object' ? data.relatedProductsByVariation : {},
           computed: data.computed ?? null,
         });

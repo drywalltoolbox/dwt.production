@@ -1,0 +1,28 @@
+{
+  "artifacts": [
+    {
+      "artifact": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\current-catalog-20261107\\platinum-flat-box-projection-release-d70b383fc0f06fd243e43334-batch-001.json",
+      "rows": 1,
+      "sha256": "0204f24521d2e60cfd2afbf087b5d9def63bbfe469759f4ac70b8337ab134587"
+    }
+  ],
+  "batch_count": 1,
+  "batch_inventory": [
+    {
+      "batch_index": 1,
+      "part_skus": [
+        "FB-26-12"
+      ],
+      "rows_sha256": "b22f1ccfea71272032ad6aba5a8e82b28386702e5747d84730974e77edd7fbaa"
+    }
+  ],
+  "batch_inventory_sha256": "0e68334bc35d5c14a547ff7338db09cb5d457e2aa905d729fa101c525161a3c7",
+  "catalog_apply_report_sha256": "47571a1db04cb4c10e6e7453c443a3e8e10d24ea011ac2483722dfc94e9ec94a",
+  "catalog_mutated": false,
+  "catalog_sha256": "c1e95a17b5bf9b88616597a081946ade1a8ebdb8aa94b90f9f19ec0100223fcb",
+  "manifest_sha256": "f85a442d2f7c64ef47512629d54bbd540255400f14ca8c5b194bd457a8a6ea54",
+  "release_id": "d70b383fc0f06fd243e43334",
+  "schema_version": 1,
+  "source_refresh": "approved_historical_row",
+  "status": "prepared"
+}

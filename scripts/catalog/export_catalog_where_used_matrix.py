@@ -108,16 +108,16 @@ def build(catalog_path: Path, tapetech_path: Path) -> tuple[list[str], list[dict
     if missing_targets:
         raise ValueError(f"Canonical relationships have unresolved target SKUs: {missing_targets[:20]}")
 
-    # Include every published, visible exact-SKU tool-like record and every
-    # currently recorded exact target, while excluding variable parent SKUs.
+    # This is a full-catalog mapping aid, not a storefront availability list.
+    # Include every canonical tool-like non-part identity regardless of status,
+    # visibility, or WooCommerce product type. Preserve variable parents and
+    # exact child variation SKUs as separate columns. A variable parent column
+    # does not imply fitment: only an exact recorded target sets a cell.
     eligible_kinds = {"tool", "toolset", "stilt", "accessory"}
     target_rows = {
         row["SKU"].strip(): row
         for row in catalog_rows
-        if row.get("Type", "").strip().casefold() in {"simple", "variation"}
-        and row.get("Published", "").strip().casefold() in TRUTHY
-        and row.get("Visibility in catalog", "").strip().casefold() == "visible"
-        and row.get(PART_FLAG, "").strip().casefold() not in TRUTHY
+        if not is_part(row)
         and row.get(PART_KIND, "").strip().casefold() in eligible_kinds
     }
     for targets in relationships.values():
@@ -186,6 +186,25 @@ def build(catalog_path: Path, tapetech_path: Path) -> tuple[list[str], list[dict
         "part_rows_without_recorded_relationships": sum(not values for values in relationships.values()),
         "relationship_edges": sum(len(values) for values in relationships.values()),
         "tool_sku_columns": len(target_skus),
+        "tool_target_scope": {
+            "catalog_tool_like_skus": sum(
+                1 for row in target_rows.values()
+                if not is_part(row) and row.get(PART_KIND, "").strip().casefold() in eligible_kinds
+            ),
+            "existing_exact_targets_outside_tool_kind_universe": sorted(
+                sku for sku, row in target_rows.items()
+                if is_part(row) or row.get(PART_KIND, "").strip().casefold() not in eligible_kinds
+            ),
+            "by_product_type": dict(sorted({
+                product_type: sum(1 for row in target_rows.values() if row.get("Type", "").strip().casefold() == product_type)
+                for product_type in {row.get("Type", "").strip().casefold() for row in target_rows.values()}
+            }.items())),
+            "by_published_state": dict(sorted({
+                status: sum(1 for row in target_rows.values() if row.get("Published", "").strip().casefold() == status)
+                for status in {row.get("Published", "").strip().casefold() for row in target_rows.values()}
+            }.items())),
+            "interpretation": "All catalog tool-like non-part SKUs are columns, including variable parents, variations, hidden records, and unpublished records. A blank cell means no exact relationship is recorded; inclusion does not claim compatibility or storefront availability.",
+        },
         "tapetech_exact_part_rows": tape_exact_parts,
         "tapetech_catalog_relationship_edges": tape_exact_edges,
         "catalog_sha256": sha256(catalog_path),

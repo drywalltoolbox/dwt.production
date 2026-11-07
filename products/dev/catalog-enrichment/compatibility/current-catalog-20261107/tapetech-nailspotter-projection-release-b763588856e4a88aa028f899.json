@@ -1,0 +1,29 @@
+{
+  "artifacts": [
+    {
+      "artifact": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\current-catalog-20261107\\tapetech-nailspotter-projection-release-b763588856e4a88aa028f899-batch-001.json",
+      "rows": 2,
+      "sha256": "99a0026b10e8ba70f8f85eede5c528071f85a1c3e469e6260838b40c8d6b9743"
+    }
+  ],
+  "batch_count": 1,
+  "batch_inventory": [
+    {
+      "batch_index": 1,
+      "part_skus": [
+        "632026",
+        "681015"
+      ],
+      "rows_sha256": "5a0bb21a39960b0ee9143cfd828b0db0eec21a4726298589430519b9471967e1"
+    }
+  ],
+  "batch_inventory_sha256": "cdf9feb9c577a3d59455a6d79062530891530a2574cd92b92efab1d5e481c422",
+  "catalog_apply_report_sha256": "1129d0cca6e3c814a799edd4db34aad65ae4e1a4048cc1120b9625d2cca3a028",
+  "catalog_mutated": false,
+  "catalog_sha256": "c1e95a17b5bf9b88616597a081946ade1a8ebdb8aa94b90f9f19ec0100223fcb",
+  "manifest_sha256": "6eaecacc33187362b14d751787ef753e00193cb2424cd5691e6e014f8f707216",
+  "release_id": "b763588856e4a88aa028f899",
+  "schema_version": 1,
+  "source_refresh": "approved_historical_row",
+  "status": "prepared"
+}

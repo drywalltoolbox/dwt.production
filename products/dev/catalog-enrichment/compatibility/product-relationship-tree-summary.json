@@ -3,19 +3,70 @@
   "report_type": "dtb_catalog_product_relationship_tree",
   "mutates_catalog": false,
   "runtime_projection_audited": false,
-  "catalog_sha256": "c1e95a17b5bf9b88616597a081946ade1a8ebdb8aa94b90f9f19ec0100223fcb",
+  "catalog_sha256": "3b256b4015f2604b946055c7805e840c2124c67cd22eb3ef305cc11f94bc338c",
   "tapetech_matrix_sha256": "37b3560b4c1fb3f4ef0943809b6dc42fdad58e215ab4b1af61f8b4c0e6872752",
-  "catalog_entities": 1133,
-  "relationship_edges": 863,
-  "relationship_counts": {
-    "cart_cross_sell": 82,
-    "kit_contains": 169,
-    "part_fits_tool": 612
+  "manufacturer_evidence": {
+    "path": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\manufacturer-supported-compatibility-evidence.csv",
+    "sha256": "c8c7301885a25bfccb3e57a41a61a3aaf06206fc80b8ae57d064c14b73aafb6d",
+    "verified_exact_part_tool_pairs": 174,
+    "interpretation": "Each manufacturer-supported pair is bound to an exact canonical part/tool SKU edge, a credential-free HTTPS source, a locator, and a note. This is edge-level source support; it does not establish that every other part/tool edge has manufacturer evidence."
   },
-  "catalog_entities_with_recorded_relationships": 415,
-  "catalog_entities_without_recorded_relationships": 718,
+  "catalog_entities": 1133,
+  "relationship_edges": 1863,
+  "relationship_counts": {
+    "cart_cross_sell": 86,
+    "kit_contains": 169,
+    "part_fits_tool": 620,
+    "same_catalog_category": 404,
+    "same_product_family": 272,
+    "variation_of": 312
+  },
+  "same_product_family": {
+    "groups": 18,
+    "directed_edges": 272,
+    "source_fields": [
+      "Meta: _dtb_brand_key",
+      "Meta: _dtb_product_kind",
+      "Meta: product_family"
+    ],
+    "interpretation": "Exact brand, product-kind, and product-family matches for tools and toolsets. Series and category may differ. This is broad family discovery, not fitment, equivalence, replacement, upgrade, bundle contents, or commercial suitability."
+  },
+  "same_catalog_category": {
+    "groups": 24,
+    "directed_edges": 404,
+    "source_fields": [
+      "Meta: _dtb_brand_key",
+      "Meta: _dtb_product_kind",
+      "Meta: _dtb_display_category_key"
+    ],
+    "eligible_product_kinds": [
+      "tool",
+      "toolset",
+      "stilt",
+      "accessory"
+    ],
+    "interpretation": "Exact brand, product-kind, and display-category peers for published visible non-part products. Discovery-only; it does not establish fitment, equivalence, substitution, or a curated commercial recommendation."
+  },
+  "variation_hierarchy": {
+    "variation_to_parent_edges": 312,
+    "interpretation": "Exact SKU-to-parent-SKU structure from the canonical WooCommerce Parent field; it is not a fitment or merchandising relationship."
+  },
+  "catalog_entities_with_recorded_relationships": 771,
+  "catalog_entities_without_recorded_relationships": 362,
   "tapetech_exact_part_rows": 173,
   "tapetech_exact_catalog_fitment_edges": 432,
+  "part_family_affiliations": {
+    "rows": 460,
+    "part_owners": 303,
+    "owners_with_multiple_families": 73,
+    "evidence_status_counts": {
+      "canonical_relationship_recorded": 10,
+      "canonical_relationship_source_not_in_matrix": 3,
+      "manufacturer_document_exact_callout": 152,
+      "manufacturer_matrix_exact_match": 295
+    },
+    "interpretation": "Derived family/subfamily affiliations inherit the evidence status of exact recorded fitment edges and are not written back as canonical part metadata."
+  },
   "family_metadata": {
     "entities_with_family_and_series": 756,
     "entities_with_family_only": 0,
@@ -23,6 +74,23 @@
     "entities_without_family_or_series": 377,
     "distinct_brand_family_series_groups": 493,
     "groups_with_multiple_catalog_entities": 111,
+    "missing_by_brand": {
+      "columbia-taping-tools": 56,
+      "platinum": 23,
+      "tapetech": 214,
+      "usg-sheetrock-tools": 84
+    },
+    "missing_by_product_kind": {
+      "(missing product kind)": 14,
+      "part": 358,
+      "stilt": 3,
+      "tool": 2
+    },
+    "missing_by_type": {
+      "simple": 374,
+      "variable": 1,
+      "variation": 2
+    },
     "brand_coverage": {
       "columbia-taping-tools": {
         "catalog_entities": 566,
@@ -74,8 +142,8 @@
         "distinct_family_series_groups": 0
       }
     },
-    "interpretation": "Membership is copied from exact canonical product_family and series fields. It is not proof of substitution, compatibility, or source verification; review family definitions before using them to generate recommendations."
+    "interpretation": "Membership is copied from exact canonical product_family and series fields. It does not prove substitution, compatibility, or independent source verification. The separate same_product_family edge uses exact brand, kind, and product_family while allowing category and series differences; same_catalog_category separately uses exact brand, kind, and display-category fields. Both are discovery-only."
   },
   "unresolved_or_noncanonical_targets": {},
-  "interpretation": "No recorded relationship is not evidence of incompatibility or a recommendation. AI or similarity-based candidates require evidence review before projection."
+  "interpretation": "No recorded relationship is not evidence of incompatibility or a recommendation. Family discovery uses exact canonical brand, product kind, and product family, while remaining separate from fitment and merchandising."
 }

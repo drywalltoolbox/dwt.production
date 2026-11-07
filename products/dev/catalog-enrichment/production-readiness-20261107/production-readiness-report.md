@@ -1,17 +1,19 @@
 # DTB Official Catalog Production-Readiness Audit
 
-Generated: `2026-11-07T11:26:35.684276+00:00`
+Generated: `2026-11-07T12:09:55.254547+00:00`
 
 Catalog: `products/launch/official/dtb_official_catalog.csv`  
 Catalog SHA-256 (working bytes): `c1e95a17b5bf9b88616597a081946ade1a8ebdb8aa94b90f9f19ec0100223fcb`
 
 Catalog SHA-256 (normalized LF): `232209d3eab7c180a2427e6318b13d76c71ab501465167996018b9a5d4b72b10`
 
+Margin and Veeqo findings are retired from this audit scope at the user's direction. They are not evaluated or included in blocker, review, or advisory totals.
+
 ## Verdict
 
-**NOT READY FOR PRODUCTION IMPORT** — 1451 blocker finding rows across 1133 product SKUs.
+**NOT READY FOR PRODUCTION IMPORT** — 1385 blocker finding rows across 1133 product SKUs.
 
-The CSV is structurally valid, but it is not approved for production import until production URL and commerce-mode blockers are resolved and the approved result is revalidated.
+The CSV is structurally valid, but it is not ready for production import while any active blocker findings remain. Margin and Veeqo checks are excluded by user direction.
 
 ## Evidence summary
 
@@ -20,9 +22,9 @@ The CSV is structurally valid, but it is not approved for production import unti
 - Structural validator: passed
 - Owner rows: 821
 - Variation rows: 312
-- Total consolidated findings: 7619
-- Blocker findings: 1451
-- Review findings: 6168
+- Total consolidated findings: 6525
+- Blocker findings: 1385
+- Review findings: 5140
 - Catalog file mutated by this audit: no
 - Existing sibling backup matches the audited catalog: false
 
@@ -31,7 +33,6 @@ The CSV is structurally valid, but it is not approved for production import unti
 | Finding | Count |
 | --- | ---: |
 | `missing_slug` | 1133 |
-| `catalog_quantity_requires_veeqo_authority_review` | 1027 |
 | `description_long_for_class` | 702 |
 | `compatibility_proposal_exact` | 648 |
 | `claim_needs_evidence:oem_or_genuine` | 553 |
@@ -50,15 +51,16 @@ The CSV is structurally valid, but it is not approved for production import unti
 | `unsupported_commerce_mode` | 81 |
 | `claim_needs_evidence:performance_superlative` | 69 |
 | `claim_needs_evidence:productivity_claim` | 68 |
+| `repetitive_language:demanding_environment` | 42 |
 
 ## Previous-version consolidation
 
-- Baseline commit: `765aecfecd38bbe680c5d3f559ded8e2fafe926c`
-- Catalog-change commit: `df5f1f2414bcf8d781ef6b787c397883984f9c4b`
+- Baseline commit: `df5f1f2414bcf8d781ef6b787c397883984f9c4b`
+- Catalog-change commit: `e474e1d00d7c5d5bc0acc6c1113e1a27a277aaba`
 - Added/removed SKUs: 0/0
-- Changed SKUs / field values: 210/210
+- Changed SKUs / field values: 189/189
 - Protected identifier changes: 0
-- Field changes: {"Cross-sells": 7, "Images": 21, "Name": 182}
+- Field changes: {"Cross-sells": 7, "Name": 182}
 
 The historical enrichment baseline was taxonomy-only. The current comparison additionally includes the bounded P0 schematic-URL, attribute-default, and image-inheritance corrections; row count, schema, SKU population, and protected identifiers remain preserved. Current taxonomy preview reports zero changes and zero unresolved rows.
 
@@ -68,14 +70,11 @@ The historical enrichment baseline was taxonomy-only. The current comparison add
 - Production media candidates: not run valid and not run invalid by HTTP status/content type.
 - Local media coverage: 1725 of 1725 catalog basenames present; 379 local files unused.
 - Physical data coverage: 679 rows with weight; 390 rows with all dimensions; shipping class is unconfirmed catalog-wide.
-- Generated Veeqo bootstrap projection comparison: 1027 shared, 0 catalog-only, 107 projection-only; direct source-field differences: {"price": 521, "primary_image": 452}.
-- `veeqo_inventory.csv` is a generated bootstrap/import projection, not a live Veeqo export or synchronization authority. Do not import it over the already-configured live Veeqo catalog; validate bundle composition and stock through read-only live reconciliation.
 - Compatibility research: 648 exact proposals across 396 parts/41 schematics; 2733 unresolved evidence rows remain.
 - Content review: 1192 accuracy findings across 637 SKUs; 1962 editorial findings; no automatic copy application is approved.
 
 ## Exact bounded exception sets
 
-- `nonpositive_gross_margin` (66 SKUs): `340800`, `BH11`, `BH26`, `CFB15A`, `CR-3`, `CR1`, `CT101`, `CT76`, `FA206`, `FA207`, `FA216`, `FA227`, `FA235`, `FA238`, `FA249`, `FA254`, `FA258`, `FA271`, `FA272`, `FA274`, `FA288`, `FA291`, `FA294`, `FA297`, `FA299`, `FA300`, `FA301`, `FA303`, `FA305`, `FA306`, `FA307`, `FA311`, `FA313`, `FA315`, `FA316`, `FA317`, `FA320`, `FA365`, `FA376`, `FA379`, `FA380`, `FFB25-10`, `FFB25-12`, `FFB32A`, `FFB7`, `FFB7A`, `FFB9-10`, `FFB9-12`, `FFB9-14`, `FFB9-5.5`, `FFB9-7`, `FFB9-8`, `HH15`, `HH16A`, `HH33`, `HNS10`, `HNS10A`, `HNS13`, `HP46`, `MH12`, `MH3`, `MP13`, `MP23`, `MP32`, `MP36`, `MP39`
 - `structured_part_number_identity_mismatch` (1 SKUs): `PT-GN`
 - `variation_gallery_equals_parent_without_inheritance` (21 SKUs): `DSS1422US`, `S1-A-1624`, `S1-A-2030`, `S1-A-2640`, `S1-M-1624`, `S1-M-2030`, `S1-M-2640`, `S1X-A-2131`, `S1X-A-2640`, `S1X-M-2131`, `S1X-M-2640`, `S2-A-1624`, `S2-A-2030`, `S2-A-2640`, `S2-M-1624`, `S2-M-2030`, `S2-M-2640`, `S2X-A-2640`, `S2X-A-3852`, `S2X-M-2131`, `S2X-M-2640`
 - `variation_inheritance_gallery_mismatch` (13 SKUs): `3.5CSF`, `42BH`, `4BH`, `5BH`, `6BH`, `CFB7-8`, `CLT32`, `CLT42`, `CLT55`, `CMT32`, `CMT42`, `CMT55`, `OA90-325`
@@ -95,7 +94,7 @@ The sibling backup is the pre-P0 rollback snapshot and is therefore expected not
 
 1. Decide and document the canonical `_dtb_commerce_mode` mapping, including whether priced `quote_only` parts are intended to be purchasable.
 2. Verify every referenced media asset on the production host, then replace staging-host URLs through an exact-SKU approved manifest.
-3. Resolve objective price/MAP/publication blockers and confirm shipping/inventory ownership and runtime projections.
+3. Resolve objective price/MAP/publication blockers and confirm shipping data and runtime projections.
 4. Resolve the single missing-image SKU using authoritative media.
 5. Complete claim-accuracy review before editorial/SEO rewriting.
 6. Review compatibility proposals; do not apply generated proposals without approval.
@@ -103,4 +102,4 @@ The sibling backup is the pre-P0 rollback snapshot and is therefore expected not
 
 ## Scope boundaries
 
-This audit establishes CSV and repository evidence only. It does not prove WooCommerce import behavior, live payment/cart behavior, Veeqo synchronization, deployment, or production rendering.
+This audit establishes CSV and repository evidence only. It does not prove WooCommerce import behavior, live payment/cart behavior, deployment, or production rendering.

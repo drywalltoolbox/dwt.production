@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    {
+      "artifact": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\compatibility-projection-artifact-release-fdd0869c8be59050eb8df8a3-batch-001.json",
+      "rows": 7,
+      "sha256": "854ee526d48ef5673c5d71ceedd186a43c452cb8536654e6cfa86b71f46294a4"
+    }
+  ],
+  "batch_count": 1,
+  "batch_inventory": [
+    {
+      "batch_index": 1,
+      "part_skus": [
+        "CT-SPROCKET",
+        "CT70",
+        "FA249",
+        "FA268",
+        "FA312",
+        "HNS-DOOR-SPRING",
+        "MP-PISTON-BACKING-WASHER"
+      ],
+      "rows_sha256": "b4a1f9c96d6c8fc2019f92e597b9cd6941d1768c70a604d3eb064d80bef9fc03"
+    }
+  ],
+  "batch_inventory_sha256": "ddc94371ba969db0fdfd7434b23d4a85c4c8877a88f9f1b8bc62ec105aba37db",
+  "catalog_apply_report_sha256": "637234fe9d76822f9d12b914cf7b5e46269cbf3b3ff28c614cf38def84c04365",
+  "catalog_mutated": false,
+  "catalog_sha256": "09649ef889bef4ac1997e09012c4cec6de944d3a7069bdd993cb9e95e015bb60",
+  "manifest_sha256": "c42b0cb765026211d08c5e8f4c132549cd51da1ceeb17544f8f28dc8836a72ce",
+  "release_id": "fdd0869c8be59050eb8df8a3",
+  "schema_version": 1,
+  "source_refresh": "current_apply",
+  "status": "prepared"
+}

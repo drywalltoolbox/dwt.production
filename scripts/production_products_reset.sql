@@ -1,25 +1,25 @@
 -- =============================================================================
--- DTB WooCommerce — PRODUCTION CATALOG + MEDIA FULL RESET v2
+-- DTB WooCommerce — PRODUCTION PRODUCT CATALOG RESET v3
 -- Database:  dbb5qa8fmosn28
 -- Prefix:    kf5_
 -- WordPress/WooCommerce versions: verify in the target runtime before execution
 -- HPOS tables: present; legacy and HPOS order storage are both preserved
--- Revised:   2026-08-31
+-- Revised:   2026-11-07
 --
 -- DESTRUCTIVE SCOPE
 --   Deletes all WooCommerce products and variations.
---   Deletes all registered WordPress media attachments and attachment metadata.
+--   Preserves every Media Library attachment, attachment metadata, relationship, and physical image file.
 --   Deletes product categories, tags, brands, shipping classes, and pa_* terms.
 --   Deletes product reviews, downloadable-product permissions, and product lookup rows.
 --   Preserves users, customers, coupons, settings, pages/posts, orders, HPOS order
---   tables, order items, Action Scheduler, DTB operational tables, and physical files.
+--   tables, order items, Action Scheduler, DTB operational tables, and the complete Media Library.
 --
 -- IMPORTANT
 --   1. Export a complete database backup before running.
 --   2. This script is hard-coded for database dbb5qa8fmosn28 and prefix kf5_.
 --   3. Execute STEP 0 first and stop unless every required table is PRESENT.
 --   4. Run steps in order. Helper tables intentionally persist between executions.
---   5. SQL does not delete files from wp-content/uploads.
+--   5. Product image references are removed with product metadata; Media Library entries and files are preserved.
 --   6. Existing order records may retain historical product IDs that no longer resolve.
 --   7. Product-ID mappings in third-party integration tables are preserved and must be
 --      separately audited before importing replacement products.
@@ -87,7 +87,7 @@ ORDER BY detected_prefix;
 
 -- =============================================================================
 -- STEP 0.5 — PROTECTED DATA SNAPSHOT
--- Save these values. STEP 25 must report the same values.
+-- Save these values. STEP 21 must report the same values.
 -- The verified target schema contains all four WooCommerce HPOS tables.
 -- =============================================================================
 
@@ -126,10 +126,26 @@ DROP TABLE IF EXISTS _dtb_reset_term_taxonomy_ids;
 -- STEP 2 — PRE-RESET COUNTS
 -- =============================================================================
 
+SET @dtb_reset_attachments_before := (
+    SELECT COUNT(*) FROM kf5_posts WHERE post_type = 'attachment'
+);
+SET @dtb_reset_attachment_meta_before := (
+    SELECT COUNT(*)
+    FROM kf5_postmeta pm
+    INNER JOIN kf5_posts p ON p.ID = pm.post_id
+    WHERE p.post_type = 'attachment'
+);
+SET @dtb_reset_attachment_terms_before := (
+    SELECT COUNT(*)
+    FROM kf5_term_relationships tr
+    INNER JOIN kf5_posts p ON p.ID = tr.object_id
+    WHERE p.post_type = 'attachment'
+);
+
 SELECT
     (SELECT COUNT(*) FROM kf5_posts WHERE post_type = 'product') AS products,
     (SELECT COUNT(*) FROM kf5_posts WHERE post_type = 'product_variation') AS product_variations,
-    (SELECT COUNT(*) FROM kf5_posts WHERE post_type = 'attachment') AS registered_attachments,
+    (SELECT COUNT(*) FROM kf5_posts WHERE post_type = 'attachment') AS registered_attachments_before,
     (SELECT COUNT(*)
        FROM kf5_comments c
        INNER JOIN kf5_posts p ON p.ID = c.comment_post_ID
@@ -165,26 +181,7 @@ FROM _dtb_reset_product_ids;
 
 
 -- =============================================================================
--- STEP 4 — STAGE ALL REGISTERED ATTACHMENT IDS
--- WARNING: this intentionally stages every Media Library attachment.
--- =============================================================================
-
-CREATE TABLE _dtb_reset_attachment_ids (
-    ID BIGINT UNSIGNED NOT NULL,
-    PRIMARY KEY (ID)
-) ENGINE=InnoDB;
-
-INSERT INTO _dtb_reset_attachment_ids (ID)
-SELECT ID
-FROM kf5_posts
-WHERE post_type = 'attachment';
-
-SELECT COUNT(*) AS staged_attachments
-FROM _dtb_reset_attachment_ids;
-
-
--- =============================================================================
--- STEP 5 — STAGE PRODUCT AND ATTACHMENT COMMENT / REVIEW IDS
+-- STEP 4 — STAGE PRODUCT COMMENT / REVIEW IDS
 -- =============================================================================
 
 CREATE TABLE _dtb_reset_comment_ids (
@@ -196,19 +193,14 @@ INSERT INTO _dtb_reset_comment_ids (comment_ID)
 SELECT c.comment_ID
 FROM kf5_comments c
 INNER JOIN _dtb_reset_product_ids p
-    ON p.ID = c.comment_post_ID
-UNION
-SELECT c.comment_ID
-FROM kf5_comments c
-INNER JOIN _dtb_reset_attachment_ids a
-    ON a.ID = c.comment_post_ID;
+    ON p.ID = c.comment_post_ID;
 
-SELECT COUNT(*) AS staged_product_and_attachment_comments
+SELECT COUNT(*) AS staged_product_comments
 FROM _dtb_reset_comment_ids;
 
 
 -- =============================================================================
--- STEP 6 — STAGE DOWNLOADABLE PRODUCT PERMISSION IDS
+-- STEP 5 — STAGE DOWNLOADABLE PRODUCT PERMISSION IDS
 -- =============================================================================
 
 CREATE TABLE _dtb_reset_download_permission_ids (
@@ -227,9 +219,11 @@ FROM _dtb_reset_download_permission_ids;
 
 
 -- =============================================================================
--- STEP 7 — STAGE CATALOG-OWNED TAXONOMY ROWS
+-- STEP 6 — STAGE CATALOG-OWNED TAXONOMY ROWS
 -- Preserves product_type and product_visibility.
 -- Preserves global attribute definitions in kf5_woocommerce_attribute_taxonomies.
+-- Catalog taxonomy rows used by surviving non-product objects (including attachments)
+-- are excluded so their term relationships and Media Library organization remain intact.
 -- =============================================================================
 
 CREATE TABLE _dtb_reset_term_taxonomy_ids (
@@ -253,17 +247,29 @@ SELECT
     term_taxonomy_id,
     term_id,
     taxonomy
-FROM kf5_term_taxonomy
-WHERE taxonomy IN (
-    'product_cat',
-    'product_tag',
-    'product_shipping_class',
-    'pa_brand',
-    'product_brand',
-    'pwb-brand',
-    'yith_product_brand'
+FROM kf5_term_taxonomy tt
+WHERE (
+    tt.taxonomy IN (
+        'product_cat',
+        'product_tag',
+        'product_shipping_class',
+        'pa_brand',
+        'product_brand',
+        'pwb-brand',
+        'yith_product_brand'
+    )
+    OR tt.taxonomy LIKE 'pa\_%'
 )
-OR taxonomy LIKE 'pa\_%';
+AND NOT EXISTS (
+    SELECT 1
+    FROM kf5_term_relationships tr
+    INNER JOIN kf5_posts surviving_post
+        ON surviving_post.ID = tr.object_id
+    LEFT JOIN _dtb_reset_product_ids product_id
+        ON product_id.ID = surviving_post.ID
+    WHERE tr.term_taxonomy_id = tt.term_taxonomy_id
+      AND product_id.ID IS NULL
+);
 
 SELECT taxonomy, COUNT(*) AS staged_terms
 FROM _dtb_reset_term_taxonomy_ids
@@ -272,7 +278,7 @@ ORDER BY taxonomy;
 
 
 -- =============================================================================
--- STEP 8 — DELETE PRODUCT COMMENT META
+-- STEP 7 — DELETE PRODUCT COMMENT META
 -- =============================================================================
 
 DELETE cm
@@ -287,7 +293,7 @@ INNER JOIN _dtb_reset_comment_ids c
 
 
 -- =============================================================================
--- STEP 9 — DELETE PRODUCT COMMENTS / REVIEWS
+-- STEP 8 — DELETE PRODUCT COMMENTS / REVIEWS
 -- =============================================================================
 
 DELETE c
@@ -302,7 +308,7 @@ INNER JOIN _dtb_reset_comment_ids staged
 
 
 -- =============================================================================
--- STEP 10 — DELETE PRODUCT POSTMETA
+-- STEP 9 — DELETE PRODUCT POSTMETA
 -- =============================================================================
 
 DELETE pm
@@ -317,7 +323,7 @@ INNER JOIN _dtb_reset_product_ids p
 
 
 -- =============================================================================
--- STEP 11 — DELETE PRODUCT TERM RELATIONSHIPS
+-- STEP 10 — DELETE PRODUCT TERM RELATIONSHIPS
 -- =============================================================================
 
 DELETE tr
@@ -332,7 +338,7 @@ INNER JOIN _dtb_reset_product_ids p
 
 
 -- =============================================================================
--- STEP 12 — DELETE PRODUCT LOOKUP DATA
+-- STEP 11 — DELETE PRODUCT LOOKUP DATA
 -- =============================================================================
 
 DELETE lookup
@@ -362,7 +368,7 @@ SELECT
 
 
 -- =============================================================================
--- STEP 13 — DELETE DOWNLOAD LOGS AND PERMISSIONS
+-- STEP 12 — DELETE DOWNLOAD LOGS AND PERMISSIONS
 -- =============================================================================
 
 DELETE log_row
@@ -382,7 +388,7 @@ INNER JOIN _dtb_reset_download_permission_ids p
 
 
 -- =============================================================================
--- STEP 14 — DELETE PRODUCT AND VARIATION POSTS
+-- STEP 13 — DELETE PRODUCT AND VARIATION POSTS
 -- =============================================================================
 
 DELETE post_row
@@ -396,62 +402,7 @@ WHERE post_type IN ('product', 'product_variation');
 
 
 -- =============================================================================
--- STEP 15 — REMOVE REFERENCES TO ATTACHMENTS FROM SURVIVING POSTMETA
---
--- Prevents pages, posts, settings, or other surviving post objects from retaining
--- broken _thumbnail_id values pointing at attachment records deleted in STEP 17.
--- Product postmeta was already removed in STEP 10.
--- =============================================================================
-
-DELETE pm
-FROM kf5_postmeta pm
-INNER JOIN _dtb_reset_attachment_ids a
-    ON CAST(pm.meta_value AS UNSIGNED) = a.ID
-WHERE pm.meta_key = '_thumbnail_id';
-
-SELECT ROW_COUNT() AS surviving_thumbnail_references_deleted;
-
-
--- =============================================================================
--- STEP 16 — DELETE ATTACHMENT POSTMETA AND TERM RELATIONSHIPS
--- =============================================================================
-
-DELETE pm
-FROM kf5_postmeta pm
-INNER JOIN _dtb_reset_attachment_ids a
-    ON a.ID = pm.post_id;
-
-DELETE tr
-FROM kf5_term_relationships tr
-INNER JOIN _dtb_reset_attachment_ids a
-    ON a.ID = tr.object_id;
-
-SELECT
-    (SELECT COUNT(*)
-       FROM kf5_postmeta pm
-       INNER JOIN _dtb_reset_attachment_ids a ON a.ID = pm.post_id) AS remaining_attachment_meta,
-    (SELECT COUNT(*)
-       FROM kf5_term_relationships tr
-       INNER JOIN _dtb_reset_attachment_ids a ON a.ID = tr.object_id) AS remaining_attachment_relationships;
-
-
--- =============================================================================
--- STEP 17 — DELETE ALL REGISTERED ATTACHMENT POSTS
--- Physical files remain on disk.
--- =============================================================================
-
-DELETE post_row
-FROM kf5_posts post_row
-INNER JOIN _dtb_reset_attachment_ids a
-    ON a.ID = post_row.ID;
-
-SELECT COUNT(*) AS remaining_registered_attachments
-FROM kf5_posts
-WHERE post_type = 'attachment';
-
-
--- =============================================================================
--- STEP 18 — DELETE RELATIONSHIPS FOR STAGED CATALOG TAXONOMIES
+-- STEP 14 — DELETE RELATIONSHIPS FOR STAGED CATALOG TAXONOMIES
 -- =============================================================================
 
 DELETE tr
@@ -466,7 +417,7 @@ INNER JOIN _dtb_reset_term_taxonomy_ids staged
 
 
 -- =============================================================================
--- STEP 19 — DELETE TERM META FOR EXCLUSIVELY CATALOG-OWNED TERMS
+-- STEP 15 — DELETE TERM META FOR EXCLUSIVELY CATALOG-OWNED TERMS
 -- If a term is also registered to a surviving non-catalog taxonomy, its metadata
 -- is preserved to avoid modifying unrelated WordPress content.
 -- =============================================================================
@@ -499,7 +450,7 @@ WHERE NOT EXISTS (
 
 
 -- =============================================================================
--- STEP 20 — DELETE STAGED TERM TAXONOMY ROWS
+-- STEP 16 — DELETE STAGED TERM TAXONOMY ROWS
 -- =============================================================================
 
 DELETE tt
@@ -514,7 +465,7 @@ INNER JOIN _dtb_reset_term_taxonomy_ids staged
 
 
 -- =============================================================================
--- STEP 21 — DELETE ONLY NOW-ORPHANED STAGED TERMS
+-- STEP 17 — DELETE ONLY NOW-ORPHANED STAGED TERMS
 -- Shared terms still registered to another taxonomy are preserved.
 -- =============================================================================
 
@@ -536,7 +487,7 @@ WHERE surviving.term_id IS NULL;
 
 
 -- =============================================================================
--- STEP 22 — VERIFY PRESERVED GLOBAL ATTRIBUTE DEFINITIONS
+-- STEP 18 — VERIFY PRESERVED GLOBAL ATTRIBUTE DEFINITIONS
 -- Empty is valid if this installation has no registered global attributes.
 -- =============================================================================
 
@@ -552,7 +503,7 @@ ORDER BY attribute_id;
 
 
 -- =============================================================================
--- STEP 23 — RESET PRESERVED WC SYSTEM TAXONOMY COUNTS
+-- STEP 19 — RESET PRESERVED WC SYSTEM TAXONOMY COUNTS
 -- =============================================================================
 
 UPDATE kf5_term_taxonomy
@@ -571,11 +522,12 @@ ORDER BY tt.taxonomy, t.name;
 
 
 -- =============================================================================
--- STEP 24 — FLUSH CATALOG / MEDIA TRANSIENTS AND DERIVED CACHE OPTIONS
+-- STEP 20 — FLUSH PRODUCT CATALOG TRANSIENTS AND DERIVED CACHE OPTIONS
 --
 -- This intentionally avoids broad patterns such as "%product_cat%" that may
--- match durable plugin configuration. Only known transient/cache namespaces
--- and the WooCommerce attribute-taxonomy cache option are removed.
+-- match durable plugin configuration. Only known WooCommerce/catalog transient
+-- namespaces and the WooCommerce attribute-taxonomy cache option are removed.
+-- Attachment and media-specific caches are not reset.
 -- =============================================================================
 
 DELETE FROM kf5_options
@@ -587,10 +539,6 @@ WHERE option_name LIKE '\_transient\_wc\_%'
    OR option_name LIKE '\_site\_transient\_timeout\_wc\_%'
    OR option_name LIKE '\_transient\_wp\_product%'
    OR option_name LIKE '\_transient\_timeout\_wp\_product%'
-   OR option_name LIKE '\_transient\_wp\_get\_attachment%'
-   OR option_name LIKE '\_transient\_timeout\_wp\_get\_attachment%'
-   OR option_name LIKE '\_transient\_wc\_product\_image%'
-   OR option_name LIKE '\_transient\_timeout\_wc\_product\_image%'
    OR option_name = 'wc_attribute_taxonomies'
    OR option_name LIKE 'woocommerce\_cache\_%';
 
@@ -598,16 +546,38 @@ SELECT ROW_COUNT() AS cache_option_rows_deleted;
 
 
 -- =============================================================================
--- STEP 25 — FINAL CATALOG + PROTECTED-DATA VERIFICATION
+-- STEP 21 — FINAL CATALOG + PROTECTED-DATA VERIFICATION
 --
--- Catalog/media counts should be zero.
--- Protected counts must match STEP 0.5.
+-- Product/catalog counts should be zero. Media Library attachment count must
+-- equal its pre-reset count; attachment records and metadata are preserved.
+-- Other protected counts must match STEP 0.5.
 -- =============================================================================
 
 SELECT
     (SELECT COUNT(*) FROM kf5_posts WHERE post_type = 'product') AS remaining_products,
     (SELECT COUNT(*) FROM kf5_posts WHERE post_type = 'product_variation') AS remaining_variations,
     (SELECT COUNT(*) FROM kf5_posts WHERE post_type = 'attachment') AS remaining_attachments,
+    @dtb_reset_attachments_before AS attachments_before,
+    (SELECT COUNT(*)
+       FROM kf5_postmeta pm
+       INNER JOIN kf5_posts p ON p.ID = pm.post_id
+      WHERE p.post_type = 'attachment') AS attachment_postmeta_after,
+    @dtb_reset_attachment_meta_before AS attachment_postmeta_before,
+    (SELECT COUNT(*)
+       FROM kf5_term_relationships tr
+       INNER JOIN kf5_posts p ON p.ID = tr.object_id
+      WHERE p.post_type = 'attachment') AS attachment_term_relationships_after,
+    @dtb_reset_attachment_terms_before AS attachment_term_relationships_before,
+    CASE WHEN (SELECT COUNT(*) FROM kf5_posts WHERE post_type = 'attachment') = @dtb_reset_attachments_before
+          AND (SELECT COUNT(*)
+                 FROM kf5_postmeta pm
+                 INNER JOIN kf5_posts p ON p.ID = pm.post_id
+                WHERE p.post_type = 'attachment') = @dtb_reset_attachment_meta_before
+          AND (SELECT COUNT(*)
+                 FROM kf5_term_relationships tr
+                 INNER JOIN kf5_posts p ON p.ID = tr.object_id
+                WHERE p.post_type = 'attachment') = @dtb_reset_attachment_terms_before
+         THEN 'PRESERVED' ELSE 'CHECK - MEDIA LIBRARY COUNTS CHANGED' END AS media_library_status,
     (SELECT COUNT(*)
        FROM kf5_comments c
        INNER JOIN kf5_posts p ON p.ID = c.comment_post_ID
@@ -643,8 +613,8 @@ SELECT
 
 
 -- =============================================================================
--- STEP 26 — DROP RESET HELPER TABLES
--- Run only after STEP 25 has been reviewed.
+-- STEP 22 — DROP RESET HELPER TABLES
+-- Run only after STEP 21 has been reviewed.
 -- =============================================================================
 
 DROP TABLE IF EXISTS _dtb_reset_product_ids;
@@ -655,14 +625,14 @@ DROP TABLE IF EXISTS _dtb_reset_term_taxonomy_ids;
 
 SET SQL_SAFE_UPDATES = 1;
 
-SELECT 'DTB catalog + Media Library database reset complete.' AS status;
+SELECT 'DTB product catalog database reset complete; Media Library preserved.' AS status;
 
 
 -- =============================================================================
 -- POST-RESET OPERATIONAL SEQUENCE
 --
--- 1. Purge SiteGround Dynamic Cache and any persistent object cache.
--- 2. Re-register/sync media attachments.
+-- 1. Purge SiteGround Dynamic Cache and any persistent object cache for catalog data.
+-- 2. Leave Media Library attachments, metadata, and physical files intact; no media re-registration is needed.
 -- 3. Import the canonical WooCommerce catalog with "Update existing products" OFF.
 -- 4. Rebuild WooCommerce product lookup tables:
 --      wp wc tool run regenerate_product_lookup_tables --user=<ADMIN_ID>
