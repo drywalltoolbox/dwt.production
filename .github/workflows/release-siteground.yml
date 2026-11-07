@@ -1,0 +1,533 @@
+name: DTB Release Management — SiteGround
+
+# The Release Management engine for the production WordPress application
+# tree. GitHub remains the implementation source of truth; the official
+# SiteGround Git repository (production /wp) remains the sanctioned
+# deployment backend — this workflow orchestrates controlled, observable
+# promotion to it. It never uses FTP/SFTP/rsync-to-arbitrary-host, and it
+# never runs automatically on push or merge: every release is an explicit,
+# operator-initiated, confirmed action.
+#
+# Deploy source: any reviewed ref (branch, tag, or commit SHA) on this
+# repository. Rollback source: a previously recorded dtb-release/<id> tag
+# created by a prior successful "plan-and-validate" run — an immutable,
+# reproducible snapshot of exactly what was pushed to SiteGround for that
+# release, so rollback never depends on rebuilding from a possibly-different
+# current source state.
+#
+# Deployment scope: production /wp only — .htaccess, index.php,
+# wp-content/mu-plugins, wp-content/themes (see
+# scripts/deployment/protected-paths.json). The frontend build and
+# site-root files continue to deploy through the existing operator-managed
+# FileZilla path; this workflow never touches them.
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: Action to run
+        required: true
+        type: choice
+        options:
+          - deploy
+          - rollback
+        default: deploy
+      ref:
+        description: "Deploy only — branch, tag, or commit SHA to release"
+        required: false
+        type: string
+        default: main
+      confirm:
+        description: Type DEPLOY for deploy, or ROLLBACK for rollback
+        required: true
+        type: string
+      rollback_release_id:
+        description: "Rollback only — release ID to restore (e.g. rel-123456-abcdef1), from Deployment Center history"
+        required: false
+        type: string
+
+concurrency:
+  group: siteground-production-release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  DTB_PRODUCTION_BASE_URL: https://drywalltoolbox.com
+
+jobs:
+  guard:
+    name: Validate release intent
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      release_id: ${{ steps.ids.outputs.release_id }}
+    steps:
+      - name: Validate dispatch inputs
+        shell: bash
+        env:
+          DISPATCH_ACTION: ${{ inputs.action }}
+          DISPATCH_CONFIRM: ${{ inputs.confirm }}
+          DISPATCH_REF: ${{ inputs.ref }}
+          DISPATCH_ROLLBACK_RELEASE_ID: ${{ inputs.rollback_release_id }}
+        run: |
+          set -euo pipefail
+          if [[ "$DISPATCH_ACTION" == "deploy" ]]; then
+            [[ "$DISPATCH_CONFIRM" == "DEPLOY" ]] || { echo 'Confirmation must be DEPLOY.' >&2; exit 1; }
+            [[ -n "$DISPATCH_REF" ]] || { echo 'ref is required for deploy.' >&2; exit 1; }
+            [[ "$DISPATCH_REF" =~ ^[A-Za-z0-9._/-]+$ ]] || { echo 'ref contains disallowed characters.' >&2; exit 1; }
+          else
+            [[ "$DISPATCH_CONFIRM" == "ROLLBACK" ]] || { echo 'Confirmation must be ROLLBACK.' >&2; exit 1; }
+            [[ "$DISPATCH_ROLLBACK_RELEASE_ID" =~ ^rel-[0-9]+-[0-9a-f]{7,40}$ ]] || { echo 'rollback_release_id must look like rel-<run_id>-<short_sha>.' >&2; exit 1; }
+          fi
+      - name: Compute release id
+        id: ids
+        shell: bash
+        env:
+          DISPATCH_ACTION: ${{ inputs.action }}
+          DISPATCH_REF: ${{ inputs.ref }}
+          DISPATCH_ROLLBACK_RELEASE_ID: ${{ inputs.rollback_release_id }}
+        run: |
+          set -euo pipefail
+          if [[ "$DISPATCH_ACTION" == "deploy" ]]; then
+            echo "release_id=rel-${GITHUB_RUN_ID}-$(printf '%s' "$DISPATCH_REF" | sha1sum | cut -c1-7)" >> "$GITHUB_OUTPUT"
+          else
+            echo "release_id=rollback-${GITHUB_RUN_ID}-${DISPATCH_ROLLBACK_RELEASE_ID}" >> "$GITHUB_OUTPUT"
+          fi
+
+  plan-and-validate:
+    name: Plan, validate, and tag an immutable release manifest
+    if: ${{ inputs.action == 'deploy' }}
+    needs: guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    outputs:
+      commit_sha: ${{ steps.resolve.outputs.commit_sha }}
+    steps:
+      - name: Checkout requested ref
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
+          fetch-depth: 1
+
+      - name: Resolve commit SHA
+        id: resolve
+        shell: bash
+        run: echo "commit_sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+
+      - name: Validate custom PHP syntax (production /wp tree only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          find drywalltoolbox/wp/wp-content/mu-plugins drywalltoolbox/wp/wp-content/themes -type f -name '*.php' -print0 \
+            | xargs -0 -n1 php -l
+
+      - name: Validate protected-path policy sync
+        shell: bash
+        run: |
+          set -euo pipefail
+          php -r '
+            define("ABSPATH", "/tmp/");
+            require "drywalltoolbox/wp/wp-content/mu-plugins/dtb-deployment/Services/ProtectedPathPolicy.php";
+            echo json_encode([
+              "owned_paths"     => dtb_deployment_owned_paths(),
+              "protected_paths" => dtb_deployment_protected_paths(),
+            ]);
+          ' > /tmp/php-policy.json
+
+          jq -Sc '{owned_paths: (.owned_paths | sort), protected_paths: (.protected_paths | sort)}' \
+            scripts/deployment/protected-paths.json > /tmp/json-policy-sorted.json
+          jq -Sc '{owned_paths: (.owned_paths | sort), protected_paths: (.protected_paths | sort)}' \
+            /tmp/php-policy.json > /tmp/php-policy-sorted.json
+
+          if ! diff -u /tmp/json-policy-sorted.json /tmp/php-policy-sorted.json; then
+            echo 'scripts/deployment/protected-paths.json and ProtectedPathPolicy.php have drifted out of sync.' >&2
+            exit 1
+          fi
+
+      - name: Validate checkout JavaScript syntax
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/assets/woo-native-checkout-steps.js \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/assets/woo-native-checkout-ui.js \
+            drywalltoolbox/wp/wp-content/mu-plugins/dtb-commerce/assets/woo-native-checkout-performance.js; do
+            [[ -f "$f" ]] && node --check "$f"
+          done
+
+      - name: Assemble the /wp release payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf release-payload
+          mkdir -p release-payload/wp-content
+          cp drywalltoolbox/wp/.htaccess release-payload/.htaccess
+          cp drywalltoolbox/wp/index.php release-payload/index.php
+          cp -a drywalltoolbox/wp/wp-content/mu-plugins release-payload/wp-content/mu-plugins
+          cp -a drywalltoolbox/wp/wp-content/themes release-payload/wp-content/themes
+
+      - name: Enforce protected-path boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f release-payload/.htaccess
+          test -f release-payload/index.php
+          test -d release-payload/wp-content/mu-plugins
+          test -d release-payload/wp-content/themes
+
+          # Derive the forbidden-path list from the single declared source of
+          # truth (scripts/deployment/protected-paths.json) instead of a
+          # second, hand-maintained inline list, so future additions to that
+          # file are enforced here automatically.
+          mapfile -t protected_paths < <(jq -r '.protected_paths[]' scripts/deployment/protected-paths.json)
+          find_expr=()
+          for protected in "${protected_paths[@]}"; do
+            if [[ "$protected" == */* ]]; then
+              find_expr+=( -o -path "release-payload/${protected}*" )
+            else
+              find_expr+=( -o -name "$protected" )
+            fi
+          done
+          # Drop the leading "-o" before use.
+          if find release-payload \( "${find_expr[@]:1}" \) -print -quit | grep -q .; then
+            echo 'Forbidden runtime-owned or secret content entered the payload.' >&2
+            exit 1
+          fi
+
+      - name: Report release_planned and release_validated
+        if: always()
+        shell: bash
+        env:
+          DTB_DEPLOYMENT_WEBHOOK_SECRET: ${{ secrets.DTB_DEPLOYMENT_WEBHOOK_SECRET }}
+          DISPATCH_REF: ${{ inputs.ref }}
+        run: |
+          set -euo pipefail
+          release_id="${{ needs.guard.outputs.release_id }}"
+          commit_sha="${{ steps.resolve.outputs.commit_sha }}"
+          cat > /tmp/release-meta.json <<JSON
+          {
+            "ref": "${DISPATCH_REF}",
+            "commit_sha": "${commit_sha}",
+            "actor": "${{ github.actor }}",
+            "workflow_run_id": "${{ github.run_id }}",
+            "workflow_run_url": "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          }
+          JSON
+          bash scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_planned "$release_id" /tmp/release-meta.json \
+            || echo "::warning::release_planned webhook report failed (non-blocking)"
+          bash scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_validated "$release_id" /tmp/release-meta.json \
+            || echo "::warning::release_validated webhook report failed (non-blocking)"
+
+      - name: Tag the immutable release manifest on GitHub
+        shell: bash
+        env:
+          DISPATCH_REF: ${{ inputs.ref }}
+        run: |
+          set -euo pipefail
+          release_id="${{ needs.guard.outputs.release_id }}"
+          git config user.name "DTB Release Engine"
+          git config user.email "release-engine@drywalltoolbox.com"
+
+          # Build a tree object from the exact assembled payload and tag it —
+          # this is the immutable release manifest: a reproducible snapshot of
+          # precisely what will be (or, on rollback, was) pushed to
+          # SiteGround for this release, independent of subsequent history.
+          rm -rf /tmp/manifest-index
+          mkdir -p /tmp/manifest-index
+          export GIT_INDEX_FILE=/tmp/manifest-index/index
+          git --work-tree=release-payload add -A
+          tree_sha=$(git write-tree)
+          commit_sha_tag=$(git commit-tree "$tree_sha" -p "${{ steps.resolve.outputs.commit_sha }}" \
+            -m "DTB release manifest ${release_id} (${DISPATCH_REF})")
+          git tag "dtb-release/${release_id}" "$commit_sha_tag"
+          git push origin "refs/tags/dtb-release/${release_id}"
+
+      - name: Upload release payload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dtb-release-payload-${{ needs.guard.outputs.release_id }}
+          path: release-payload/
+          if-no-files-found: error
+          retention-days: 30
+
+  deploy:
+    name: Backup, deploy, and verify SiteGround
+    if: ${{ inputs.action == 'deploy' }}
+    needs:
+      - guard
+      - plan-and-validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: siteground-production
+      url: https://drywalltoolbox.com
+    env:
+      SITEGROUND_GIT_REMOTE: ${{ secrets.SITEGROUND_GIT_REMOTE }}
+      SITEGROUND_GIT_BRANCH: ${{ secrets.SITEGROUND_GIT_BRANCH }}
+      DTB_DEPLOYMENT_WEBHOOK_SECRET: ${{ secrets.DTB_DEPLOYMENT_WEBHOOK_SECRET }}
+    steps:
+      - name: Checkout release tooling
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Download release payload artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: dtb-release-payload-${{ needs.guard.outputs.release_id }}
+          path: release-payload
+
+      - name: Configure SiteGround Git SSH access
+        shell: bash
+        env:
+          SITEGROUND_SSH_PRIVATE_KEY: ${{ secrets.SITEGROUND_GIT_SSH_PRIVATE_KEY }}
+          SITEGROUND_SSH_KNOWN_HOSTS: ${{ secrets.SITEGROUND_GIT_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          umask 077
+          printf '%s\n' "$SITEGROUND_SSH_PRIVATE_KEY" > ~/.ssh/siteground_deploy_key
+          chmod 600 ~/.ssh/siteground_deploy_key
+          printf '%s\n' "$SITEGROUND_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+          if ! ssh-keygen -y -P "" -f ~/.ssh/siteground_deploy_key > /dev/null 2>&1; then
+            echo "::error::SITEGROUND_GIT_SSH_PRIVATE_KEY must be a valid, unencrypted dedicated deployment key."
+            exit 1
+          fi
+
+          git config --global core.sshCommand \
+            "ssh -i $HOME/.ssh/siteground_deploy_key -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$HOME/.ssh/known_hosts"
+
+      - name: Report release_backup_started
+        run: |
+          release_id="${{ needs.guard.outputs.release_id }}"
+          echo '{}' > /tmp/meta.json
+          bash scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_backup_started "$release_id" /tmp/meta.json \
+            || echo "::warning::webhook report failed (non-blocking)"
+
+      - name: Back up the current SiteGround managed surface
+        id: backup
+        shell: bash
+        run: |
+          set -euo pipefail
+          release_id="${{ needs.guard.outputs.release_id }}"
+          echo "SITEGROUND_RELEASE_OUTPUT=/tmp/siteground-release-output.env" >> "$GITHUB_ENV"
+          SITEGROUND_RELEASE_OUTPUT=/tmp/siteground-release-output.env \
+            bash scripts/deployment/siteground-git-release.sh backup /tmp/siteground-work "$release_id"
+          # shellcheck disable=SC1091
+          source /tmp/siteground-release-output.env
+          echo "backup_ref=${BACKUP_REF}" >> "$GITHUB_OUTPUT"
+
+      - name: Report release_backed_up
+        run: |
+          release_id="${{ needs.guard.outputs.release_id }}"
+          echo "{\"backup_ref\": \"${{ steps.backup.outputs.backup_ref }}\"}" > /tmp/meta.json
+          bash scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_backed_up "$release_id" /tmp/meta.json \
+            || echo "::warning::webhook report failed (non-blocking)"
+
+      - name: Report release_deploy_started
+        run: |
+          release_id="${{ needs.guard.outputs.release_id }}"
+          echo '{}' > /tmp/meta.json
+          bash scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_deploy_started "$release_id" /tmp/meta.json \
+            || echo "::warning::webhook report failed (non-blocking)"
+
+      - name: Deploy with automatic rollback on failure
+        id: deploy_apply
+        shell: bash
+        env:
+          DISPATCH_REF: ${{ inputs.ref }}
+        run: |
+          set -euo pipefail
+          release_id="${{ needs.guard.outputs.release_id }}"
+          backup_ref="${{ steps.backup.outputs.backup_ref }}"
+
+          rollback_on_failure() {
+            trap - ERR
+            echo '::warning::Release step failed; automatically restoring the pre-deploy managed surface.'
+            echo '{}' > /tmp/meta.json
+            bash scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_failed "$release_id" /tmp/meta.json \
+              || echo "::warning::webhook report failed (non-blocking)"
+
+            rm -rf /tmp/auto-restore-payload
+            mkdir -p /tmp/auto-restore-payload
+            git -C /tmp/siteground-work/siteground archive "$backup_ref" | tar -x -C /tmp/auto-restore-payload
+            SITEGROUND_RELEASE_OUTPUT=/tmp/siteground-restore-output.env \
+              bash scripts/deployment/siteground-git-release.sh deploy /tmp/auto-restore-payload /tmp/siteground-work "auto-restore-${release_id}" "automatic rollback"
+
+            echo "{\"restored_ref\": \"${backup_ref}\"}" > /tmp/meta.json
+            bash scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_rolled_back_automatically "$release_id" /tmp/meta.json \
+              || echo "::warning::webhook report failed (non-blocking)"
+            exit 1
+          }
+          trap rollback_on_failure ERR
+
+          SITEGROUND_RELEASE_OUTPUT=/tmp/siteground-deploy-output.env \
+            bash scripts/deployment/siteground-git-release.sh deploy release-payload /tmp/siteground-work "$release_id" "${DISPATCH_REF}@${{ needs.plan-and-validate.outputs.commit_sha }}"
+          # shellcheck disable=SC1091
+          source /tmp/siteground-deploy-output.env
+          echo "deploy_commit=${DEPLOY_COMMIT}" >> "$GITHUB_OUTPUT"
+
+          echo "{\"deploy_commit\": \"${DEPLOY_COMMIT}\"}" > /tmp/meta.json
+          bash scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_deployed "$release_id" /tmp/meta.json \
+            || echo "::warning::webhook report failed (non-blocking)"
+
+          curl --fail --silent --show-error --retry 4 --retry-delay 5 --max-time 30 "$DTB_PRODUCTION_BASE_URL/" > /dev/null
+          curl --fail --silent --show-error --retry 4 --retry-delay 5 --max-time 30 "$DTB_PRODUCTION_BASE_URL/wp-json/dtb/v1/health" \
+            | php -r '$data=json_decode(stream_get_contents(STDIN), true); exit(is_array($data) && ($data["status"] ?? null) === "ok" ? 0 : 1);'
+          curl --fail --silent --show-error --retry 4 --retry-delay 5 --max-time 30 "$DTB_PRODUCTION_BASE_URL/checkout/" > /dev/null
+
+          trap - ERR
+          echo '{}' > /tmp/meta.json
+          bash scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_verified "$release_id" /tmp/meta.json \
+            || echo "::warning::webhook report failed (non-blocking)"
+          bash scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_completed "$release_id" /tmp/meta.json \
+            || echo "::warning::webhook report failed (non-blocking)"
+
+      - name: Record release evidence
+        if: always()
+        shell: bash
+        env:
+          DISPATCH_REF: ${{ inputs.ref }}
+        run: |
+          {
+            echo '### DTB SiteGround release'
+            echo "- Release ID: \`${{ needs.guard.outputs.release_id }}\`"
+            echo "- Ref: \`${DISPATCH_REF}\` @ \`${{ needs.plan-and-validate.outputs.commit_sha }}\`"
+            echo "- Host: \`${DTB_PRODUCTION_BASE_URL}\`"
+            echo "- Backup ref (SiteGround): \`${{ steps.backup.outputs.backup_ref }}\`"
+            echo "- Manifest tag (GitHub): \`dtb-release/${{ needs.guard.outputs.release_id }}\`"
+            echo "- Result: \`${{ job.status }}\`"
+            echo '- Database, Stripe, webhook, Veeqo, and QuickBooks runtime acceptance remain separate operator checks.'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  rollback:
+    name: Restore a prior release from its GitHub manifest tag
+    if: ${{ inputs.action == 'rollback' }}
+    needs: guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment:
+      name: siteground-production
+      url: https://drywalltoolbox.com
+    env:
+      SITEGROUND_GIT_REMOTE: ${{ secrets.SITEGROUND_GIT_REMOTE }}
+      SITEGROUND_GIT_BRANCH: ${{ secrets.SITEGROUND_GIT_BRANCH }}
+      DTB_DEPLOYMENT_WEBHOOK_SECRET: ${{ secrets.DTB_DEPLOYMENT_WEBHOOK_SECRET }}
+    steps:
+      - name: Checkout release tooling and fetch the target manifest tag
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DISPATCH_ROLLBACK_RELEASE_ID: ${{ inputs.rollback_release_id }}
+        run: |
+          set -euo pipefail
+          git init -q dtb-repo
+          cd dtb-repo
+          git remote add origin "${{ github.server_url }}/${{ github.repository }}.git"
+          git -c http.extraheader="AUTHORIZATION: bearer ${GH_TOKEN}" \
+            fetch --depth 1 origin "refs/tags/dtb-release/${DISPATCH_ROLLBACK_RELEASE_ID}"
+          git checkout -q FETCH_HEAD
+          # Bring in current release tooling from the branch that dispatched this workflow.
+          git -c http.extraheader="AUTHORIZATION: bearer ${GH_TOKEN}" \
+            fetch --depth 1 origin "${{ github.ref }}"
+          git checkout -q FETCH_HEAD -- scripts/deployment
+
+      - name: Extract the target release payload
+        run: |
+          set -euo pipefail
+          rm -rf rollback-payload
+          mkdir -p rollback-payload
+          git -C dtb-repo archive HEAD -- .htaccess index.php wp-content/mu-plugins wp-content/themes | tar -x -C rollback-payload
+
+      - name: Configure SiteGround Git SSH access
+        shell: bash
+        env:
+          SITEGROUND_SSH_PRIVATE_KEY: ${{ secrets.SITEGROUND_GIT_SSH_PRIVATE_KEY }}
+          SITEGROUND_SSH_KNOWN_HOSTS: ${{ secrets.SITEGROUND_GIT_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          umask 077
+          printf '%s\n' "$SITEGROUND_SSH_PRIVATE_KEY" > ~/.ssh/siteground_deploy_key
+          chmod 600 ~/.ssh/siteground_deploy_key
+          printf '%s\n' "$SITEGROUND_SSH_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+          if ! ssh-keygen -y -P "" -f ~/.ssh/siteground_deploy_key > /dev/null 2>&1; then
+            echo "::error::SITEGROUND_GIT_SSH_PRIVATE_KEY must be a valid, unencrypted dedicated deployment key."
+            exit 1
+          fi
+
+          git config --global core.sshCommand \
+            "ssh -i $HOME/.ssh/siteground_deploy_key -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$HOME/.ssh/known_hosts"
+
+      - name: Report release_rollback_started
+        env:
+          DISPATCH_ROLLBACK_RELEASE_ID: ${{ inputs.rollback_release_id }}
+        run: |
+          release_id="${{ needs.guard.outputs.release_id }}"
+          echo "{\"restoring_release_id\": \"${DISPATCH_ROLLBACK_RELEASE_ID}\"}" > /tmp/meta.json
+          bash dtb-repo/scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_rollback_started "$release_id" /tmp/meta.json \
+            || echo "::warning::webhook report failed (non-blocking)"
+
+      - name: Back up current state, then restore the target release
+        id: restore
+        shell: bash
+        env:
+          DISPATCH_ROLLBACK_RELEASE_ID: ${{ inputs.rollback_release_id }}
+        run: |
+          set -euo pipefail
+          release_id="${{ needs.guard.outputs.release_id }}"
+
+          rollback_failed() {
+            trap - ERR
+            echo '{}' > /tmp/meta.json
+            bash dtb-repo/scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_rollback_failed "$release_id" /tmp/meta.json \
+              || echo "::warning::webhook report failed (non-blocking)"
+            exit 1
+          }
+          trap rollback_failed ERR
+
+          SITEGROUND_RELEASE_OUTPUT=/tmp/siteground-rollback-backup-output.env \
+            bash dtb-repo/scripts/deployment/siteground-git-release.sh backup /tmp/siteground-work "$release_id"
+
+          SITEGROUND_RELEASE_OUTPUT=/tmp/siteground-rollback-deploy-output.env \
+            bash dtb-repo/scripts/deployment/siteground-git-release.sh deploy rollback-payload /tmp/siteground-work "$release_id" "rollback:${DISPATCH_ROLLBACK_RELEASE_ID}"
+
+          curl --fail --silent --show-error --retry 4 --retry-delay 5 --max-time 30 "$DTB_PRODUCTION_BASE_URL/" > /dev/null
+          curl --fail --silent --show-error --retry 4 --retry-delay 5 --max-time 30 "$DTB_PRODUCTION_BASE_URL/wp-json/dtb/v1/health" \
+            | php -r '$data=json_decode(stream_get_contents(STDIN), true); exit(is_array($data) && ($data["status"] ?? null) === "ok" ? 0 : 1);'
+
+          trap - ERR
+          echo "{\"restored_release_id\": \"${DISPATCH_ROLLBACK_RELEASE_ID}\"}" > /tmp/meta.json
+          bash dtb-repo/scripts/deployment/report-release-event.sh "$DTB_PRODUCTION_BASE_URL" release_rolled_back "$release_id" /tmp/meta.json \
+            || echo "::warning::webhook report failed (non-blocking)"
+
+      - name: Record rollback evidence
+        if: always()
+        shell: bash
+        env:
+          DISPATCH_ROLLBACK_RELEASE_ID: ${{ inputs.rollback_release_id }}
+        run: |
+          {
+            echo '### DTB SiteGround rollback'
+            echo "- Release ID: \`${{ needs.guard.outputs.release_id }}\`"
+            echo "- Restored release: \`${DISPATCH_ROLLBACK_RELEASE_ID}\`"
+            echo "- Host: \`${DTB_PRODUCTION_BASE_URL}\`"
+            echo "- Result: \`${{ job.status }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

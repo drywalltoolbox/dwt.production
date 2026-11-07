@@ -3,74 +3,66 @@
     "ambiguous_owner_skus": 0,
     "blank_target_references": 0,
     "duplicate_targets_within_owner": 0,
-    "exact_published_product_targets": 111,
-    "exact_published_variation_targets": 502,
+    "exact_published_product_targets": 125,
+    "exact_published_variation_targets": 1482,
     "exact_target_skus_at_max_owner_fanout": [
-      "07TT"
+      "07TT",
+      "PTAPER"
     ],
     "malformed_relationship_parts": 0,
-    "max_published_part_owner_fanout_for_exact_target_sku": 68,
+    "max_published_part_owner_fanout_for_exact_target_sku": 76,
     "missing_parts_by_brand": {
-      "Columbia Tools": 253,
+      "Columbia Tools": 147,
       "Platinum Drywall Tools": 17,
-      "TapeTech": 37,
+      "TapeTech": 25,
       "USG Sheetrock Tools": 9
     },
     "noncanonical_target_sku_references": 0,
-    "other_published_product_targets": 111,
+    "other_published_product_targets": 125,
     "part_relationship_owners_by_scope": {
       "parent": {
-        "with_structured_fitment": 302,
-        "without_structured_fitment": 243
+        "with_structured_fitment": 390,
+        "without_structured_fitment": 155
       },
       "variation": {
-        "with_structured_fitment": 0,
-        "without_structured_fitment": 73
+        "with_structured_fitment": 30,
+        "without_structured_fitment": 43
       }
     },
     "parts_by_catalog_visibility": {
       "hidden": {
         "published_part_variations": 0,
         "published_parts": 201,
-        "with_structured_fitment": 164,
-        "without_structured_fitment": 37
+        "with_structured_fitment": 176,
+        "without_structured_fitment": 25
       },
       "visible": {
         "published_part_variations": 73,
         "published_parts": 344,
-        "with_structured_fitment": 138,
-        "without_structured_fitment": 279
+        "with_structured_fitment": 244,
+        "without_structured_fitment": 173
       }
     },
-    "parts_with_structured_relationships": 302,
-    "parts_without_structured_relationships": 316,
+    "parts_with_structured_relationships": 420,
+    "parts_without_structured_relationships": 198,
     "published_variable_parent_targets": 0,
     "target_field_overlap_parts": 0,
     "target_sku_whitespace_references": 0,
     "unresolved_targets": {}
   },
   "catalog_rows": 1133,
-  "catalog_sha256": "3b256b4015f2604b946055c7805e840c2124c67cd22eb3ef305cc11f94bc338c",
+  "catalog_sha256": "c81dbebcc5af7a017e91a436d49040d7ec80267dcad8a71d23a557757806bbe5",
   "coverage_pipeline": {
     "candidate_owner_count_by_manifest": {
       "documented_evidence": 0,
-      "schematic": 0
+      "schematic": 1
     },
     "interpretation": "A review candidate is a current digest-bound proposal, not approved fitment. An uncovered part has no current candidate in the audited manifests; it is not evidence of incompatibility.",
-    "missing_fitment_parts_with_current_review_candidate": 0,
-    "missing_fitment_parts_without_current_review_candidate": 316,
-    "published_parts_missing_fitment": 316,
+    "missing_fitment_parts_with_current_review_candidate": 1,
+    "missing_fitment_parts_without_current_review_candidate": 197,
+    "published_parts_missing_fitment": 198,
     "uncovered_part_skus": [
-      "050064F",
-      "050110F",
-      "054059F",
       "055007",
-      "056142F",
-      "059060",
-      "059061F",
-      "059117",
-      "059119",
-      "059129",
       "114CDWS5",
       "114CDWS8M",
       "149120",
@@ -79,7 +71,6 @@
       "159024",
       "1CDWS5",
       "200052F",
-      "209050",
       "212CDWS25M",
       "212CDWS5",
       "310051F",
@@ -87,69 +78,39 @@
       "402017F",
       "402033",
       "729060",
-      "762011",
-      "801009",
       "857355",
-      "883020",
       "90TT",
       "920003",
       "AH1",
-      "AH1-2",
       "AH1-2.5",
       "AH1-3",
-      "AH1-3.5",
-      "AH18",
-      "AH1A",
       "AH1B",
       "AH3",
       "AH3-2",
       "AH3-2.5",
-      "AH3-3",
       "AH3-3.5",
-      "AH4",
-      "AH5",
       "AH6A",
       "AH7",
       "AH7-2",
-      "AH7-2.5",
-      "AH7-3",
       "AH7-3.5",
-      "AH8",
       "AH8-CLIP",
       "AH8A",
-      "AH9",
       "AH9-CLIP",
       "AH9A",
       "AHA",
-      "BH11",
-      "BH2",
-      "BH24A",
-      "BH26",
-      "BH3",
-      "BH4",
-      "BH7",
       "BH9",
-      "BH9-3",
       "BH9-4",
       "BH9-42",
       "BH9-5",
       "BH9-6",
       "CFB10",
       "CFB11A",
-      "CFB15",
-      "CFB15A",
-      "CFB16",
       "CFB3",
       "CFB3-7",
-      "CFB3-8",
       "CFB4",
       "CFB4-7",
-      "CFB4-8",
-      "CFB5B",
-      "CFB6",
       "CFB7",
       "CFB7-7",
-      "CFB7-8",
       "CFB8",
       "CP-11",
       "CP-2",
@@ -162,29 +123,22 @@
       "CP-56",
       "CP-59",
       "CP-7",
-      "CR2",
       "CT-NYLATRON-CHAIN-ROLLER",
       "CT-WAFER-BUSHING",
-      "CT101",
-      "CT103",
       "CT121A",
       "CT124",
       "CT125",
       "CT125A",
       "CT126",
       "CT13",
-      "CT130",
-      "CT132",
       "CT14A",
       "CT15",
       "CT16",
       "CT28",
       "CT29",
       "CT29A",
-      "CT3",
       "CT35",
       "CT3A",
-      "CT4",
       "CT42A",
       "CT5",
       "CT50",
@@ -193,16 +147,13 @@
       "CT63",
       "CT68",
       "CT6A",
-      "CT71",
       "CT73",
-      "CT77",
       "CT7A",
       "CT80",
       "CT81",
       "CT82",
       "CT85",
       "CT86",
-      "CT87",
       "CT87A",
       "CT88",
       "CT89",
@@ -222,7 +173,6 @@
       "ERASPSERRATED0414",
       "ERASPSERRATED0614",
       "FA2",
-      "FA202",
       "FA203",
       "FA206",
       "FA212",
@@ -230,61 +180,31 @@
       "FA215",
       "FA216",
       "FA225",
-      "FA229",
-      "FA230",
-      "FA232",
-      "FA233",
-      "FA235",
-      "FA236",
-      "FA245",
-      "FA253",
-      "FA257",
       "FA259",
       "FA261",
       "FA264",
-      "FA265",
       "FA267",
-      "FA275",
-      "FA276",
-      "FA296",
       "FA297",
       "FA3",
-      "FA302",
       "FA315",
       "FA316",
       "FA320",
-      "FA365",
-      "FA376",
-      "FA379",
-      "FA380",
       "FA382",
       "FB-26-10",
-      "FFB11",
-      "FFB11-10",
       "FFB11-12",
       "FFB11-8",
-      "FFB17",
       "FFB25",
-      "FFB25-10",
       "FFB25-12",
       "FFB36",
-      "FFB37",
       "FFB39",
-      "FFB4A",
-      "FFB4B",
       "FFB5",
       "FFB5-10",
       "FFB5-12",
       "FFB5-14",
       "FFB5-7",
       "FFB5-8",
-      "FFB5A",
-      "FFB7",
       "FFB7-SHOE",
-      "FFB7A",
-      "FFB8",
       "FFB9",
-      "FFB9-10",
       "FFB9-12",
       "FFB9-14",
       "FFB9-5.5",
@@ -292,12 +212,9 @@
       "FFB9-8",
       "H-03",
       "HFFB14",
-      "HFFB14-10",
       "HFFB14-12",
       "HFFB14-14",
       "HFFB14-8",
-      "HFFB1A-10",
-      "HFFB3",
       "HFFB3-PLATE",
       "HFFB3A",
       "HFFB4D",
@@ -315,57 +232,22 @@
       "HH19",
       "HH2",
       "HH23",
-      "HH35",
       "HH7",
-      "HH8",
       "HH9",
-      "HNS10",
-      "HNS10A",
       "HNS15",
       "HNS15-2",
-      "HNS15-3",
       "HNS17A",
       "HNS4",
       "HNS4-2",
-      "HNS4-3",
       "HNS7",
       "HNS7-2",
-      "HNS7-3",
       "HNS8",
       "HNS8-2",
-      "HNS8-3",
       "HNSA-14",
       "HP45",
       "HP46",
       "HPA-48",
       "JCT01TT",
-      "MH1",
-      "MH10",
-      "MH11",
-      "MH12",
-      "MH13",
-      "MH15",
-      "MH16",
-      "MH17",
-      "MH18",
-      "MH19",
-      "MH2",
-      "MH20",
-      "MH21",
-      "MH22",
-      "MH23",
-      "MH24",
-      "MH25",
-      "MH3",
-      "MH3A",
-      "MH4",
-      "MH5",
-      "MH6",
-      "MH7",
-      "MH8",
-      "MH9A",
-      "MP13",
-      "MP13A",
       "MP23A",
       "MP33",
       "MP7",
@@ -379,39 +261,6 @@
       "TC01TT"
     ],
     "uncovered_parts_with_exact_source_identity_but_unresolved_schematic": [
-      {
-        "interpretation": "The exact part SKU appears in schematic source rows, but the tool schematic identity is unresolved; no fitment target is proposed.",
-        "occurrence_count": 1,
-        "part_sku": "050110F",
-        "schematic_ids": [
-          "asgard-hammer-automatic-taper-at01-ad-sch"
-        ],
-        "source_files": [
-          "Asgard/Schematics/Tapers/AT01-AD/schematic_data.json"
-        ]
-      },
-      {
-        "interpretation": "The exact part SKU appears in schematic source rows, but the tool schematic identity is unresolved; no fitment target is proposed.",
-        "occurrence_count": 1,
-        "part_sku": "059060",
-        "schematic_ids": [
-          "asgard-ca08-ad-applicator-box-head-sch"
-        ],
-        "source_files": [
-          "Asgard/Schematics/AngleHeads/CA08-AD/schematic_data.json"
-        ]
-      },
-      {
-        "interpretation": "The exact part SKU appears in schematic source rows, but the tool schematic identity is unresolved; no fitment target is proposed.",
-        "occurrence_count": 1,
-        "part_sku": "059061F",
-        "schematic_ids": [
-          "asgard-ca08-ad-applicator-box-head-sch"
-        ],
-        "source_files": [
-          "Asgard/Schematics/AngleHeads/CA08-AD/schematic_data.json"
-        ]
-      },
       {
         "interpretation": "The exact part SKU appears in schematic source rows, but the tool schematic identity is unresolved; no fitment target is proposed.",
         "occurrence_count": 6,
@@ -431,17 +280,6 @@
           "Asgard/Schematics/FinishingBoxes/PA07-AD/schematic_data.json",
           "Asgard/Schematics/FinishingBoxes/PA10-AD/schematic_data.json",
           "Asgard/Schematics/FinishingBoxes/PA12-AD/schematic_data.json"
-        ]
-      },
-      {
-        "interpretation": "The exact part SKU appears in schematic source rows, but the tool schematic identity is unresolved; no fitment target is proposed.",
-        "occurrence_count": 1,
-        "part_sku": "209050",
-        "schematic_ids": [
-          "asgard-finishing-box-7-ez07-ad-sch"
-        ],
-        "source_files": [
-          "Asgard/Schematics/FinishingBoxes/EZ07-AD/schematic_data.json"
         ]
       },
       {
@@ -479,45 +317,12 @@
         "source_files": [
           "Asgard/Schematics/AngleHeads/CFA-AD/schematic_data.json"
         ]
-      },
-      {
-        "interpretation": "The exact part SKU appears in schematic source rows, but the tool schematic identity is unresolved; no fitment target is proposed.",
-        "occurrence_count": 1,
-        "part_sku": "762011",
-        "schematic_ids": [
-          "asgard-loading-pump-lp01-ad-sch"
-        ],
-        "source_files": [
-          "Asgard/Schematics/Pumps/LP01-AD/schematic_data.json"
-        ]
-      },
-      {
-        "interpretation": "The exact part SKU appears in schematic source rows, but the tool schematic identity is unresolved; no fitment target is proposed.",
-        "occurrence_count": 1,
-        "part_sku": "883020",
-        "schematic_ids": [
-          "asgard-xh-ad-extension-support-handle-43-76-sch"
-        ],
-        "source_files": [
-          "Asgard/Schematics/Handles/XH-AD/schematic_data.json"
-        ]
-      },
-      {
-        "interpretation": "The exact part SKU appears in schematic source rows, but the tool schematic identity is unresolved; no fitment target is proposed.",
-        "occurrence_count": 1,
-        "part_sku": "FA365",
-        "schematic_ids": [
-          "columbia-combo-flusher-3-3csf-sch"
-        ],
-        "source_files": [
-          "Columbia/Schematics/Sanders/SanderHead/schematic_data.json"
-        ]
       }
     ],
     "without_candidate_by_brand": {
-      "Columbia Tools": 253,
+      "Columbia Tools": 147,
       "Platinum Drywall Tools": 17,
-      "TapeTech": 37,
+      "TapeTech": 24,
       "USG Sheetrock Tools": 9
     }
   },
@@ -528,7 +333,7 @@
   },
   "interpretation": "Missing relationship metadata means no structured relationship is recorded; it does not mean incompatible.",
   "merchandising": {
-    "published_products_with_cross_sells": 7,
+    "published_products_with_cross_sells": 21,
     "published_products_with_upsells": 0,
     "same_target_in_both_fields": 0,
     "self_link_sources": 0
@@ -556,25 +361,27 @@
     },
     "schematic": {
       "candidate_target_identity_issues": {},
-      "catalog_digest_matches": false,
-      "current_candidate_owner_skus": [],
-      "evidence_references": 276,
-      "exact_variation_target_edges": 865,
+      "catalog_digest_matches": true,
+      "current_candidate_owner_skus": [
+        "050064F"
+      ],
+      "evidence_references": 4,
+      "exact_variation_target_edges": 1,
       "invalid_approved_rows": 0,
       "invalid_owners": 0,
       "malformed_rows": 0,
       "manufacturer_evidence_by_role": {
         "context_only": 3
       },
-      "new_candidate_edges": 875,
-      "other_product_target_edges": 10,
+      "new_candidate_edges": 1,
+      "other_product_target_edges": 0,
       "present": true,
-      "rows": 173,
+      "rows": 1,
       "rows_by_review_status": {
-        "needs_review": 173
+        "needs_review": 1
       },
-      "sha256": "c6db681c0a7f245a431def17bf2b84faddd48bfef7fc0953fa149900adca5957",
-      "stale_rows": 173,
+      "sha256": "f441dc12426372b5787e1a558647d10d307486418221cb67c48f2af10400664d",
+      "stale_rows": 0,
       "unsupported_mutations": 0,
       "variable_parent_target_edges": 0
     }
@@ -586,11 +393,9 @@
   "schema_version": 13,
   "schematic_proposals": {
     "by_status": {
-      "already_populated": 296,
-      "proposal_exact": 50,
-      "review_multi_tool": 223,
-      "review_part_unpublished": 40,
-      "review_part_variation_owner": 39
+      "already_populated": 607,
+      "proposal_exact": 1,
+      "review_part_unpublished": 40
     },
     "cross_brand_identity_candidates": 177,
     "proposal_rows": 648,

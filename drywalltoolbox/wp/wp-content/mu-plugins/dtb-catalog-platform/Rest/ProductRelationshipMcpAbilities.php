@@ -220,7 +220,7 @@ final class DTB_Product_Relationship_MCP_Abilities {
 		try {
 			$release = DTB_ProductRelationshipProjectionService::read_release_status( $release_id );
 			$batch = $release['batches'][ (string) $batch_index ] ?? null;
-			if ( ! is_array( $batch ) || ! in_array( $batch['status'] ?? '', [ 'applied', 'rollback_failed' ], true ) || ! is_string( $batch['report_path'] ?? null ) || ! is_string( $batch['current_report_sha256'] ?? null ) || ! hash_equals( strtolower( $batch['current_report_sha256'] ), $expected_sha256 ) ) {
+			if ( ! is_array( $batch ) || ! in_array( $batch['status'] ?? '', [ 'applied', 'failed', 'rollback_failed' ], true ) || ! is_string( $batch['report_path'] ?? null ) || ! is_string( $batch['current_report_sha256'] ?? null ) || ! hash_equals( strtolower( $batch['current_report_sha256'] ), $expected_sha256 ) ) {
 				return new WP_Error( 'dtb_relationship_rollback_conflict', 'The batch is not eligible or its current rollback report digest changed.', [ 'status' => 409 ] );
 			}
 			$result = DTB_ProductRelationshipProjectionService::rollback_report( $batch['report_path'], $expected_sha256 );

@@ -107,6 +107,17 @@ final class DTB_ProductDetailController {
 				) )
 			) );
 		}
+		$placed_product_ids = array_fill_keys(
+			array_map(
+				static fn( array $related ): int => absint( $related['id'] ?? 0 ),
+				array_merge( $related_products, $family_related_products )
+			),
+			true
+		);
+		$category_related_products = array_values( array_filter(
+			$category_related_products,
+			static fn( array $related ): bool => ! isset( $placed_product_ids[ absint( $related['id'] ?? 0 ) ] )
+		) );
 		$is_toolset = self::is_toolset( $product );
 		$related_products_by_variation = $is_toolset && 'variable' === $product['type']
 			? self::get_related_products_by_variation( $variations, $product['id'] )

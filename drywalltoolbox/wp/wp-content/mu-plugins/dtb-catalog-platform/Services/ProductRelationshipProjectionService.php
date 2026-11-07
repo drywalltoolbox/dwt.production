@@ -1126,12 +1126,7 @@ final class DTB_ProductRelationshipProjectionService {
 				throw new RuntimeException( "Public compatible-parts route read-back failed for tool SKU {$target_sku}." );
 			}
 			$data = $response->get_data();
-			$actual_parts = [];
-			foreach ( (array) ( $data['products'] ?? [] ) as $product ) {
-				if ( ! empty( $product['sku'] ) ) {
-					$actual_parts[ strtoupper( (string) $product['sku'] ) ] = true;
-				}
-			}
+			$actual_parts = self::compatible_part_sku_set( (array) ( $data['products'] ?? [] ) );
 			foreach ( $rows as $row ) {
 				$part_targets = [];
 				foreach ( array_merge( $row['before'], $row['after'] ) as $values ) {
@@ -1172,6 +1167,30 @@ final class DTB_ProductRelationshipProjectionService {
 				$skus[ $sku ] = true;
 			}
 			foreach ( (array) ( $product['compatible_variations'] ?? [] ) as $variation ) {
+				if ( ! is_array( $variation ) ) {
+					continue;
+				}
+				$variation_sku = strtoupper( trim( (string) ( $variation['sku'] ?? '' ) ) );
+				if ( '' !== $variation_sku ) {
+					$skus[ $variation_sku ] = true;
+				}
+			}
+		}
+		return $skus;
+	}
+
+	/** Include exact part variation SKUs returned beneath each parent product DTO. */
+	private static function compatible_part_sku_set( array $products ): array {
+		$skus = [];
+		foreach ( $products as $product ) {
+			if ( ! is_array( $product ) ) {
+				continue;
+			}
+			$sku = strtoupper( trim( (string) ( $product['sku'] ?? '' ) ) );
+			if ( '' !== $sku ) {
+				$skus[ $sku ] = true;
+			}
+			foreach ( (array) ( $product['compatible_part_variations'] ?? [] ) as $variation ) {
 				if ( ! is_array( $variation ) ) {
 					continue;
 				}

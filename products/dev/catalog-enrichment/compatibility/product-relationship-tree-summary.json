@@ -3,7 +3,7 @@
   "report_type": "dtb_catalog_product_relationship_tree",
   "mutates_catalog": false,
   "runtime_projection_audited": false,
-  "catalog_sha256": "3b256b4015f2604b946055c7805e840c2124c67cd22eb3ef305cc11f94bc338c",
+  "catalog_sha256": "c81dbebcc5af7a017e91a436d49040d7ec80267dcad8a71d23a557757806bbe5",
   "tapetech_matrix_sha256": "37b3560b4c1fb3f4ef0943809b6dc42fdad58e215ab4b1af61f8b4c0e6872752",
   "manufacturer_evidence": {
     "path": "D:\\AMD\\projects\\dwt.production\\products\\dev\\catalog-enrichment\\compatibility\\manufacturer-supported-compatibility-evidence.csv",
@@ -12,11 +12,11 @@
     "interpretation": "Each manufacturer-supported pair is bound to an exact canonical part/tool SKU edge, a credential-free HTTPS source, a locator, and a note. This is edge-level source support; it does not establish that every other part/tool edge has manufacturer evidence."
   },
   "catalog_entities": 1133,
-  "relationship_edges": 1863,
+  "relationship_edges": 3059,
   "relationship_counts": {
-    "cart_cross_sell": 86,
+    "cart_cross_sell": 288,
     "kit_contains": 169,
-    "part_fits_tool": 620,
+    "part_fits_tool": 1614,
     "same_catalog_category": 404,
     "same_product_family": 272,
     "variation_of": 312
@@ -51,17 +51,17 @@
     "variation_to_parent_edges": 312,
     "interpretation": "Exact SKU-to-parent-SKU structure from the canonical WooCommerce Parent field; it is not a fitment or merchandising relationship."
   },
-  "catalog_entities_with_recorded_relationships": 771,
-  "catalog_entities_without_recorded_relationships": 362,
+  "catalog_entities_with_recorded_relationships": 858,
+  "catalog_entities_without_recorded_relationships": 275,
   "tapetech_exact_part_rows": 173,
   "tapetech_exact_catalog_fitment_edges": 432,
   "part_family_affiliations": {
-    "rows": 460,
-    "part_owners": 303,
-    "owners_with_multiple_families": 73,
+    "rows": 1110,
+    "part_owners": 421,
+    "owners_with_multiple_families": 214,
     "evidence_status_counts": {
-      "canonical_relationship_recorded": 10,
-      "canonical_relationship_source_not_in_matrix": 3,
+      "canonical_relationship_recorded": 612,
+      "canonical_relationship_source_not_in_matrix": 77,
       "manufacturer_document_exact_callout": 152,
       "manufacturer_matrix_exact_match": 295
     },

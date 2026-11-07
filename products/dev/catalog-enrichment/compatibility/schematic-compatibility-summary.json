@@ -1,11 +1,9 @@
 {
   "brand_filter": null,
   "by_status": {
-    "already_populated": 296,
-    "proposal_exact": 50,
-    "review_multi_tool": 223,
-    "review_part_unpublished": 40,
-    "review_part_variation_owner": 39
+    "already_populated": 607,
+    "proposal_exact": 1,
+    "review_part_unpublished": 40
   },
   "cross_brand_identity_candidates": 177,
   "mutates_catalog": false,
