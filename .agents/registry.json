@@ -33,6 +33,16 @@
         "marketing": "marketing-specialist"
       }
     },
+    "marketing-plan": {
+      "workflow": "research",
+      "role": "marketing-specialist",
+      "skills": ["dtb-marketing-live-intelligence"]
+    },
+    "marketing-review": {
+      "workflow": "review",
+      "role": "marketing-specialist",
+      "skills": ["dtb-marketing-live-intelligence"]
+    },
     "ui-design": {
       "workflow": "ui",
       "execution": "domain-write",
@@ -47,6 +57,11 @@
       "workflow": "ui",
       "execution": "domain-write",
       "skills": ["dtb-design-system"]
+    },
+    "image-production": {
+      "workflow": "ui",
+      "execution": "domain-write",
+      "skills": ["dtb-product-image-engineering"]
     },
     "context-maintenance": {
       "workflow": "context",
@@ -63,6 +78,7 @@
     "checkout": { "subjectRole": "commerce-checkout-engineer", "implementationRole": "commerce-checkout-engineer", "minimumRisk": "high" },
     "orders": { "subjectRole": "commerce-checkout-engineer", "implementationRole": "commerce-checkout-engineer", "minimumRisk": "high" },
     "catalog": { "subjectRole": "catalog-data-engineer", "implementationRole": "catalog-data-engineer", "minimumRisk": "medium" },
+    "product-imagery": { "subjectRole": "product-image-art-director", "implementationRole": "catalog-data-engineer", "skills": ["dtb-product-image-engineering"], "minimumRisk": "medium" },
     "schematics": { "subjectRole": "wordpress-backend-engineer", "implementationRole": "wordpress-backend-engineer", "minimumRisk": "medium" },
     "media": { "subjectRole": "wordpress-backend-engineer", "implementationRole": "wordpress-backend-engineer", "minimumRisk": "medium" },
     "marketing": { "subjectRole": "marketing-specialist", "implementationRole": "wordpress-backend-engineer" },
@@ -82,6 +98,7 @@
     "wordpress-backend-engineer": { "path": ".agents/roles/wordpress-backend-engineer.md", "mode": "write", "requiredSkills": ["dtb-php-wordpress-quality"] },
     "commerce-checkout-engineer": { "path": ".agents/roles/commerce-checkout-engineer.md", "mode": "write", "requiredSkills": ["dtb-php-wordpress-quality"], "minimumRisk": "high" },
     "catalog-data-engineer": { "path": ".agents/roles/catalog-data-engineer.md", "mode": "write", "requiredSkills": [] },
+    "product-image-art-director": { "path": ".agents/roles/product-image-art-director.md", "mode": "read", "requiredSkills": ["dtb-product-image-engineering"] },
     "integration-engineer": { "path": ".agents/roles/integration-engineer.md", "mode": "write", "requiredSkills": ["dtb-php-wordpress-quality", "dtb-integration-engineering"], "minimumRisk": "high" },
     "ai-governance-engineer": { "path": ".agents/roles/ai-governance-engineer.md", "mode": "write", "requiredSkills": ["dtb-ai-context-engineering", "dtb-ai-workspace-governance"], "minimumRisk": "medium" },
     "market-intelligence-analyst": { "path": ".agents/roles/market-intelligence-analyst.md", "mode": "read", "requiredSkills": ["dtb-market-research"] },
@@ -109,7 +126,8 @@
     "dtb-external-skill-security": ".agents/skills/dtb-external-skill-security/SKILL.md",
     "dtb-frontend-architecture-decisions": ".agents/skills/dtb-frontend-architecture-decisions/SKILL.md",
     "dtb-market-research": ".agents/skills/dtb-market-research/SKILL.md",
-    "dtb-marketing-live-intelligence": ".agents/skills/dtb-marketing-live-intelligence/SKILL.md"
+    "dtb-marketing-live-intelligence": ".agents/skills/dtb-marketing-live-intelligence/SKILL.md",
+    "dtb-product-image-engineering": ".agents/skills/dtb-product-image-engineering/SKILL.md"
   },
   "flags": {
     "ui": { "skills": ["dtb-design-system"] },
@@ -119,6 +137,7 @@
     "frontend-architecture": { "skills": ["dtb-frontend-architecture-decisions"], "minimumRisk": "medium", "reviewers": ["code-reviewer"] },
     "refactor": { "skills": ["dtb-refactoring"], "minimumRisk": "medium", "reviewers": ["code-reviewer"] },
     "seo": { "skills": ["dtb-seo"] },
+    "product-image": { "skills": ["dtb-product-image-engineering"] },
     "auth": { "minimumRisk": "high", "reviewers": ["security-reviewer", "test-verifier"] },
     "authorization": { "minimumRisk": "high", "reviewers": ["security-reviewer", "test-verifier"] },
     "customer-data": { "minimumRisk": "high", "reviewers": ["security-reviewer", "test-verifier"] },

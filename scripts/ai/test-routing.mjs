@@ -67,6 +67,20 @@ assert.equal(marketResearch.role.id, 'market-intelligence-analyst');
 assert.equal(marketResearch.role.mode, 'read');
 assert.throws(() => resolveTask({ intent: 'implement', domain: 'market-research', risk: 'low' }, registry), /does not define an implementation role/);
 
+const marketingPlan = resolveTask({ intent: 'marketing-plan', domain: 'marketing', risk: 'low' }, registry);
+assert.equal(marketingPlan.role.id, 'marketing-specialist');
+assert.equal(marketingPlan.role.mode, 'read');
+assert(marketingPlan.skills.some((item) => item.id === 'dtb-marketing-live-intelligence'));
+
+const marketingReview = resolveTask({ intent: 'marketing-review', domain: 'marketing', risk: 'low' }, registry);
+assert.equal(marketingReview.role.id, 'marketing-specialist');
+assert.equal(marketingReview.workflow.id, 'review');
+
+const productImagery = resolveTask({ intent: 'image-production', domain: 'product-imagery', risk: 'low' }, registry);
+assert.equal(productImagery.role.id, 'catalog-data-engineer');
+assert.equal(productImagery.subjectRole.id, 'product-image-art-director');
+assert(productImagery.skills.some((item) => item.id === 'dtb-product-image-engineering'));
+
 for (const [flag, rule] of Object.entries(registry.flags)) {
   const domain = flag === 'catalog-identifiers' ? 'catalog' : flag === 'payment' || flag === 'checkout-contract' || flag === 'refund-contract' ? 'checkout' : flag.includes('provider') || flag === 'queue' || flag === 'queue-identity' || flag === 'webhook' ? 'integrations' : flag === 'ai-governance' || flag === 'external-skill' ? 'ai-governance' : 'platform';
   const intent = domain === 'ai-governance' ? 'context-maintenance' : 'change';
