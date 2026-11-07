@@ -11,8 +11,8 @@ permissions:
   contents: read
 
 concurrency:
-  group: dtb-staging-build
-  cancel-in-progress: false
+  group: dtb-frontend-pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build-staging:
@@ -45,6 +45,10 @@ jobs:
       - name: Install locked dependencies
         working-directory: frontend
         run: npm ci --no-audit --no-fund
+
+      - name: Lint customer account workspace contracts
+        working-directory: frontend
+        run: npx eslint src/api/accountWorkspace.js src/api/jobs.js src/components/dashboard/AccountHub.jsx src/components/dashboard/OverviewTab.jsx src/components/dashboard/JobsTab.jsx src/components/account/AccountHubSheet.jsx
 
       - name: Build staging frontend
         working-directory: frontend
