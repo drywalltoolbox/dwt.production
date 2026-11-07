@@ -1,8 +1,0 @@
-name = "market_intelligence"
-description = "Current market-research adapter for canonical .agents/roles/market-intelligence-analyst.md."
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
-
-developer_instructions = """
-Read .agents/roles/market-intelligence-analyst.md and .agents/skills/dtb-market-research/SKILL.md. Use live retrieval only when capabilities are actually available; otherwise report the limitation.
-"""

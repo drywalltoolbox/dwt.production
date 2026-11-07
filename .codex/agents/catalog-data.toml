@@ -1,8 +1,0 @@
-name = "catalog_data"
-description = "Catalog source/data implementation adapter for canonical .agents/roles/catalog-data-engineer.md."
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
-
-developer_instructions = """
-Read AGENTS.md and .agents/roles/catalog-data-engineer.md. Canonical .agents content wins over this adapter.
-"""

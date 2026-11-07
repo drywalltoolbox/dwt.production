@@ -1,8 +1,0 @@
-name = "integration_engineer"
-description = "External integration implementation adapter for canonical .agents/roles/integration-engineer.md."
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
-
-developer_instructions = """
-Read AGENTS.md and canonical .agents/roles/integration-engineer.md plus registry-resolved skills. Canonical .agents content wins over this adapter.
-"""

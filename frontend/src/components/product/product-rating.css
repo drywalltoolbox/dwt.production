@@ -1,7 +1,0 @@
-.dtb-product-rating { display: inline-flex; align-items: center; gap: .38rem; color: #5e718e; font-size: .78rem; font-weight: 600; line-height: 1.2; }
-.dtb-product-rating__stars { display: inline-flex; gap: 2px; }
-.dtb-product-rating__star { position: relative; display: inline-block; width: 1em; height: 1em; color: #d7dee8; }
-.dtb-product-rating__star svg { display: block; width: 100%; height: 100%; fill: currentColor; }
-.dtb-product-rating__star-fill { position: absolute; inset: 0 auto 0 0; overflow: hidden; color: #f4a30b; }
-.dtb-product-rating--compact { font-size: .72rem; gap: .3rem; }
-.dtb-product-rating--compact .dtb-product-rating__label { white-space: nowrap; }

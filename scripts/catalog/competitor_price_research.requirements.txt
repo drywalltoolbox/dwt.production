@@ -1,5 +1,0 @@
-# Runtime dependencies for scripts/catalog/competitor_price_research.py
-# Install into an isolated virtual environment; do not vendor these packages.
-cloudscraper>=1.2.71,<2.0
-beautifulsoup4>=4.12,<5.0
-rapidfuzz>=3.9,<4.0
