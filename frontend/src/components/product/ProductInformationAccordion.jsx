@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown, ClipboardList, FileText, Layers, Ruler, Truck } from 'lucide-react';
 
 /** Full-page PDP information only; product, variation and cart state stay upstream. */
 export default function ProductInformationAccordion({ description, features, specs, partsUrl, specificationsRequest = 0 }) {
@@ -79,10 +79,10 @@ export default function ProductInformationAccordion({ description, features, spe
   };
 
   const sections = [
-    { key: 'description', title: 'Description', content: description },
-    { key: 'features', title: 'Features', content: features || <p>Product features are not separately listed.</p> },
-    { key: 'specs', title: 'Specifications', content: specs || <p>No additional specifications are listed.</p> },
-    { key: 'parts', title: 'Parts & Schematics', content: (
+    { key: 'description', title: 'Description', Icon: FileText, content: description },
+    { key: 'features', title: 'Features', Icon: ClipboardList, content: features || <p>Product features are not separately listed.</p> },
+    { key: 'specs', title: 'Specifications', Icon: Ruler, content: specs || <p>No additional specifications are listed.</p> },
+    { key: 'parts', title: 'Parts & Schematics', Icon: Layers, content: (
       <div className="dtb-pdp-parts-guide">
         <p className="dtb-pdp-parts-guide__copy">
           <strong>Choose your tool model in our interactive schematic, find the part number, then confirm fit before ordering.</strong>
@@ -93,18 +93,19 @@ export default function ProductInformationAccordion({ description, features, spe
         </Link>
       </div>
     ) },
-    { key: 'shipping', title: 'Shipping & Returns', content: (
+    { key: 'shipping', title: 'Shipping & Returns', Icon: Truck, content: (
       <p>Shipping charges are calculated at checkout. <Link to="/shipping-policy">Shipping policy</Link> · <Link to="/return-policy">Returns policy</Link></p>
     ) },
   ];
 
   return (
     <section className="dtb-pdp-info-accordion" aria-label="Product information">
-      {sections.map(({ key, title, content }) => (
+      {sections.map(({ key, title, Icon, content }) => (
         <div className="dtb-pdp-info-accordion__item" key={key}>
           <h2 className="dtb-pdp-info-accordion__heading">
             <button ref={key === "specs" ? specificationsButtonRef : undefined} type="button" aria-expanded={isOpen(key)} aria-controls={`dtb-pdp-detail-${key}`} data-pdp-section={key} onClick={() => toggle(key)}>
-              <span>{title}</span><ChevronDown size={17} aria-hidden="true" className={isOpen(key) ? 'is-open' : ''} />
+              <span className="dtb-pdp-info-accordion__label"><Icon size={18} strokeWidth={1.8} aria-hidden="true" /><span>{title}</span></span>
+              <ChevronDown size={18} aria-hidden="true" className={isOpen(key) ? 'is-open' : ''} />
             </button>
           </h2>
           <div
