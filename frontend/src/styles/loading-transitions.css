@@ -492,7 +492,7 @@ html.dtb-checkout-route-booting #dtb-checkout-route-loader {
     width: calc(100% + var(--dtb-viewport-gutter, 14px) + var(--dtb-viewport-gutter, 14px));
     margin-inline: calc(-1 * var(--dtb-viewport-gutter, 14px));
     padding: 8px;
-    background: #f2f5fa;
+    background: #f5f6f8;
     gap: 8px;
     row-gap: 10px;
   }
@@ -511,7 +511,7 @@ html.dtb-checkout-route-booting #dtb-checkout-route-loader {
     aspect-ratio: 1.16 / 1;
     min-height: 0;
     border-radius: 13px 13px 0 0;
-    background: linear-gradient(155deg, #fbfcfe 0%, #f3f6fb 100%);
+    background: #fff;
     box-shadow: none;
   }
 
