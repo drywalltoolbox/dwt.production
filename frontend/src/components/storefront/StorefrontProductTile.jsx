@@ -9,6 +9,7 @@ import { preloadRoute } from '../../routing/routeModules.js';
 import { preloadQuickViewModules } from '../../routing/quickViewModules.js';
 import { preloadProductDetail } from '../../hooks/useProductDetail.js';
 import getQuantityMenuPosition from '../../utils/quantityMenuPosition.js';
+import { getBrandLogo } from '../../utils/brandAssets.js';
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches);
@@ -46,6 +47,10 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const stockStatus = commerceProduct.stock_status || displayProduct.stock_status || 'instock';
   const outOfStock = stockStatus === 'outofstock';
   const name = displayProduct.name || commerceProduct.name || displayProduct.part_number || 'Product';
+  const brand = typeof displayProduct.brand === 'string'
+    ? displayProduct.brand
+    : (displayProduct.brand?.label || displayProduct.brand?.name || '');
+  const brandLogo = getBrandLogo(brand);
 
   // Variable parents are grouping records, not manufacturer sellable identities.
   // Never expose their internal/canonical parent SKU on customer product cards.
@@ -264,7 +269,12 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
         )}
       </div>
       <div className="dtb-product-card__meta">
-        {displayProduct.brand ? <span className="dtb-product-card__brand">{displayProduct.brand}</span> : null}
+        {brand ? (
+          <span className={`dtb-product-card__brand${brandLogo ? ' dtb-product-card__brand--logo' : ''}`}>
+            {brandLogo ? <img src={brandLogo} alt={brand} width="160" height="52" loading="lazy" decoding="async" /> : null}
+            <span className="dtb-product-card__brand-label" aria-hidden={brandLogo ? 'true' : undefined}>{brand}</span>
+          </span>
+        ) : null}
         <button type="button" onClick={handleTitleClick} className="dtb-product-card__name" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} data-dtb-card-action="title" aria-label={isMobile ? `Open full page for ${name}` : `View product details for ${name}`}>{name}</button>
         <span className={`dtb-product-card__sku${sku ? '' : ' dtb-product-card__sku--empty'}`} aria-hidden={sku ? undefined : true}>{sku ? `SKU: ${sku}` : '\u00a0'}</span>
         <div className="dtb-product-card__divider" />

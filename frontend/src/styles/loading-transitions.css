@@ -487,42 +487,96 @@ html.dtb-checkout-route-booting #dtb-checkout-route-loader {
 }
 
 @media (max-width: 767px) {
+  .dtb-product-skeleton-grid:not(.dtb-product-skeleton-grid--list) {
+    box-sizing: border-box;
+    width: calc(100% + var(--dtb-viewport-gutter, 14px) + var(--dtb-viewport-gutter, 14px));
+    margin-inline: calc(-1 * var(--dtb-viewport-gutter, 14px));
+    padding: 8px;
+    background: #f2f5fa;
+    gap: 8px;
+    row-gap: 10px;
+  }
+
+  .dtb-product-card-skeleton--grid,
+  .dtb-product-card-skeleton--rail {
+    border: 1px solid #d9e1ed;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 3px 12px rgba(25, 45, 79, .065), inset 0 1px 0 rgba(255, 255, 255, .96);
+  }
+
+  .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__image,
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__image {
+    --dtb-product-skeleton-image-inset: 0px;
+    aspect-ratio: 1.16 / 1;
+    min-height: 0;
+    border-radius: 13px 13px 0 0;
+    background: linear-gradient(155deg, #fbfcfe 0%, #f3f6fb 100%);
+    box-shadow: none;
+  }
+
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__meta,
   .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__meta {
     display: grid;
-    grid-template-rows: 1.05em 2.64em 1.2em 12px auto;
-    align-content: start;
+    grid-template-rows: 18px auto 1.3em auto auto;
+    align-content: stretch;
     flex: 1;
-    gap: 5px;
-    padding: 11px 12px 13px;
+    gap: 4px;
+    padding: 1px 14px 12px;
+    background: #fff;
   }
 
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__brand,
   .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__brand { grid-row: 1; }
+  .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__brand,
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__brand {
+    margin-left: 0;
+    width: 46%;
+    height: 14px;
+    border: 0;
+    border-radius: 2px;
+    background: linear-gradient(180deg, #e5eaf3 0%, #d9e1ed 100%);
+  }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__name-lines,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__name-lines { grid-row: 2; gap: 6px; }
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__name-lines { grid-row: 2; gap: 6px; justify-content: flex-start; margin: 4px 0 0; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__name,
   .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__name { height: 10px; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__sku,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__sku { grid-row: 3; }
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__sku { grid-row: 3; margin-top: 6px; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__divider,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__divider { grid-row: 4; }
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__divider { position: relative; left: -6px; grid-row: 4; width: calc(100% + 12px); min-height: 1px; margin-top: 4px; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__footer,
   .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__footer {
     grid-row: 5;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-end;
     gap: 8px;
     min-height: 0;
     margin-top: 0;
-    padding: 0;
+    padding: 7px 0 0;
   }
 
+  .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__price,
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__price { width: 58%; height: 20px; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__controls,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__controls { flex: 1; }
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__controls { position: relative; left: -5px; width: calc(100% + 12px); justify-content: stretch; gap: 8px; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__quantity,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__quantity { display: none; }
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__quantity {
+    display: block;
+    width: clamp(48px, 28%, 72px);
+    height: 36px;
+    flex: 0 0 clamp(48px, 28%, 72px);
+    border: 1px solid #d6deeb;
+    border-radius: 12px;
+  }
+  .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__action,
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__action {
+    width: auto;
+    height: 36px;
+    flex: 1 1 0;
+    border-radius: 12px;
+  }
 }
 
 @media (min-width: 1024px) {
