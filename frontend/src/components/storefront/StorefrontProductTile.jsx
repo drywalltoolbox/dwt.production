@@ -9,7 +9,6 @@ import { preloadRoute } from '../../routing/routeModules.js';
 import { preloadQuickViewModules } from '../../routing/quickViewModules.js';
 import { preloadProductDetail } from '../../hooks/useProductDetail.js';
 import getQuantityMenuPosition from '../../utils/quantityMenuPosition.js';
-import { getBrandLogo } from '../../utils/brandAssets.js';
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches);
@@ -50,7 +49,6 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const brand = typeof displayProduct.brand === 'string'
     ? displayProduct.brand
     : (displayProduct.brand?.label || displayProduct.brand?.name || '');
-  const brandLogo = getBrandLogo(brand);
 
   // Variable parents are grouping records, not manufacturer sellable identities.
   // Never expose their internal/canonical parent SKU on customer product cards.
@@ -80,7 +78,10 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
     && salePriceValue < regularPriceValue
     ? `$${money(regularPriceValue)}`
     : null;
-  const image = variationContext?.image_thumbnail || variationContext?.image || displayProduct.image_thumbnail || displayProduct.image;
+  // Product thumbnails may be separately cropped for square commerce tiles.
+  // Use the featured source first so the card's contain fit shows the complete
+  // product; keep the thumbnail only as a fallback when no source image exists.
+  const image = variationContext?.image || variationContext?.image_thumbnail || displayProduct.image || displayProduct.image_thumbnail;
   const imageSrcset = variationContext?.image_srcset || displayProduct.image_srcset;
   const slug = displayProduct.slug || commerceProduct.slug;
   const productUrl = slug ? `/products/${slug}${displayProduct.includedVariation ? `?variant=${encodeURIComponent(displayProduct.id)}` : ''}` : null;
@@ -236,7 +237,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
     <article className={`dtb-product-card dtb-product-card--${variant} storefront-motion-card${isVariable ? ' dtb-product-card--variable' : ''}`} style={{ '--dtb-card-delay': `${Math.min(index, 8) * 30}ms` }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={openModalFromMobileCard}>
       <div className="dtb-product-card__image">
         <div ref={imageButtonRef} role="button" tabIndex={0} className="dtb-product-card__image-hit" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} onClick={handleImageClick} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleImageClick(e); } }} aria-label={isMobile ? `Quick view ${name}` : `View ${name}`}>
-          <ProductCardImage product={displayProduct} src={image} srcSet={imageSrcset} sizes={variant === 'rail' ? '(max-width: 767px) min(80vw, 290px), 240px' : variant === 'list' ? '(max-width: 767px) 32vw, 240px' : '(max-width: 767px) 50vw, (max-width: 1024px) 33vw, 240px'} alt={name} className="dtb-product-card__img" padding="0" fit="contain" preferThumbnail eager={false} />
+          <ProductCardImage product={displayProduct} src={image} srcSet={imageSrcset} sizes={variant === 'rail' ? '(max-width: 767px) min(80vw, 290px), 240px' : variant === 'list' ? '(max-width: 767px) 32vw, 240px' : '(max-width: 767px) 50vw, (max-width: 1024px) 33vw, 240px'} alt={name} className="dtb-product-card__img" padding="0" fit="contain" mobileFit={isMobile && variant !== 'list'} eager={false} />
         </div>
         {showDesktopOverlay && (
           <div
@@ -270,9 +271,8 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
       </div>
       <div className="dtb-product-card__meta">
         {brand ? (
-          <span className={`dtb-product-card__brand${brandLogo ? ' dtb-product-card__brand--logo' : ''}`}>
-            {brandLogo ? <img src={brandLogo} alt={brand} width="160" height="52" loading="lazy" decoding="async" /> : null}
-            <span className="dtb-product-card__brand-label" aria-hidden={brandLogo ? 'true' : undefined}>{brand}</span>
+          <span className="dtb-product-card__brand">
+            <span className="dtb-product-card__brand-label">{brand}</span>
           </span>
         ) : null}
         <button type="button" onClick={handleTitleClick} className="dtb-product-card__name" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} data-dtb-card-action="title" aria-label={isMobile ? `Open full page for ${name}` : `View product details for ${name}`}>{name}</button>
