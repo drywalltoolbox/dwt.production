@@ -60,12 +60,9 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const showDesktopOverlay = !isMobile && variant !== 'list';
 
   const variableMinPrice = isVariable ? parsePrice(displayProduct.min_price ?? displayProduct.price?.min) : null;
-  const variableMaxPrice = isVariable ? parsePrice(displayProduct.max_price ?? displayProduct.price?.max) : null;
-  const hasVariableRange = variableMinPrice !== null && variableMaxPrice !== null;
+  const hasVariableMinPrice = variableMinPrice !== null;
   const priceStr = isVariable
-    ? (hasVariableRange
-      ? `$${money(variableMinPrice)}\n-$${money(variableMaxPrice)}`
-      : 'View options')
+    ? (hasVariableMinPrice ? `From $${money(variableMinPrice)}` : 'View options')
     : `$${money(commerceProduct.price ?? displayProduct.price ?? 0)}`;
 
   const salePriceValue = parsePrice(commerceProduct.sale_price ?? displayProduct.sale_price);
@@ -276,13 +273,15 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
           </span>
         ) : null}
         <button type="button" onClick={handleTitleClick} className="dtb-product-card__name" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} data-dtb-card-action="title" aria-label={isMobile ? `Open full page for ${name}` : `View product details for ${name}`}>{name}</button>
-        <span className={`dtb-product-card__sku${sku ? '' : ' dtb-product-card__sku--empty'}`} aria-hidden={sku ? undefined : true}>{sku ? `SKU: ${sku}` : '\u00a0'}</span>
+        <span className={`dtb-product-card__sku${isVariable ? ' dtb-product-card__sku--options' : sku ? '' : ' dtb-product-card__sku--empty'}`} aria-hidden={!isVariable && !sku ? true : undefined}>
+          {isVariable ? 'Multiple options available' : sku ? `SKU: ${sku}` : '\u00a0'}
+        </span>
         <div className="dtb-product-card__divider" />
         <div className="dtb-product-card__footer">
         <div className="dtb-product-card__price-col">
           <div className="dtb-product-card__price-group">
-            <strong className={`dtb-product-card__price${hasVariableRange ? ' dtb-product-card__price--range' : ''}`} style={{ color: outOfStock ? 'var(--dtb-muted)' : 'var(--dtb-text)' }} aria-label={hasVariableRange ? `${money(variableMinPrice)} to ${money(variableMaxPrice)}` : undefined}>
-              {hasVariableRange ? <><span className="dtb-product-card__range-min" aria-hidden="true">${money(variableMinPrice)}</span><span className="dtb-product-card__range-dash" aria-hidden="true">–</span><span className="dtb-product-card__range-max" aria-hidden="true">${money(variableMaxPrice)}</span></> : priceStr}
+            <strong className={`dtb-product-card__price${hasVariableMinPrice ? ' dtb-product-card__price--from' : ''}`} style={{ color: outOfStock ? 'var(--dtb-muted)' : 'var(--dtb-text)' }} aria-label={hasVariableMinPrice ? `From ${money(variableMinPrice)}` : undefined}>
+              {hasVariableMinPrice ? <><span className="dtb-product-card__price-prefix">From</span><span>${money(variableMinPrice)}</span></> : priceStr}
             </strong>
             {comparePriceStr ? <span className="dtb-product-card__compare-price">{comparePriceStr}</span> : null}
           </div>
@@ -311,13 +310,12 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
             onClick={handleQuickView}
             onFocus={warmProductRoute}
             onPointerEnter={handlePointerIntent}
-            aria-label={`Choose options for ${name}`}
+            aria-label={`View options for ${name}`}
             data-dtb-card-action="options"
           >
             <span className="dtb-add-to-cart__surface" aria-hidden="true" />
             <span className="dtb-add-to-cart__content">
-              <SlidersHorizontal className="dtb-add-to-cart__cart" aria-hidden="true" />
-              <span className="dtb-add-to-cart__label"><span className="dtb-card-action__desktop-label">View Options</span><span className="dtb-card-action__mobile-label">View</span></span>
+              <span className="dtb-add-to-cart__label"><span className="dtb-card-action__desktop-label">View</span><span className="dtb-card-action__mobile-label">View</span></span>
             </span>
           </button>
         ) : (

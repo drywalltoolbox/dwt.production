@@ -672,7 +672,7 @@ function composeEffectiveVariationProduct(parentProduct, selectedVariation, sele
 }
 
 function getBrandLabel(product, effectiveProduct = null) {
-  return (
+  const brand = (
     product?.brand?.label ||
     effectiveProduct?.brand?.label ||
     product?.brandLabel ||
@@ -681,6 +681,11 @@ function getBrandLabel(product, effectiveProduct = null) {
     effectiveProduct?.brand ||
     ''
   );
+
+  if (typeof brand === 'string') return brand;
+  if (!brand || typeof brand !== 'object') return '';
+
+  return brand.label || brand.name || brand.key || brand.slug || brand.id || '';
 }
 
 function ProductReviewsButton({ onClick, className = '', rating = 0, ratingCount = 0 }) {

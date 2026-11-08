@@ -160,8 +160,9 @@
 
   .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__compare-at {
     color: #94a3b8;
-    font-size: 13px;
-    font-weight: 650;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.1;
     text-decoration: line-through;
   }
 

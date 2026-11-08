@@ -575,7 +575,9 @@
   }
 
   .dtb-product-page-shell .dtb-pdp-header__compare-at {
-    font-size: .82rem;
+    font-size: .9rem;
+    font-weight: 600;
+    line-height: 1.1;
   }
 
   .dtb-product-page-shell .dtb-pdp-header__summary {

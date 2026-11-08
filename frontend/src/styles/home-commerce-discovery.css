@@ -26,31 +26,23 @@
   background: linear-gradient(100deg, rgba(34, 85, 238, .025), rgba(255, 255, 255, 0) 58%);
 }
 
-.dtb-home-brand-section .storefront-section__head::after {
-  right: calc(-1 * var(--dtb-viewport-gutter, 1rem));
-  left: calc(-1 * var(--dtb-viewport-gutter, 1rem));
-  height: 1px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(49, 95, 233, .24), rgba(112, 132, 162, .17) 38%, rgba(112, 132, 162, .14) 76%, rgba(49, 95, 233, .1));
-  content: '';
-}
-
-/* Slim, full-width dividers give homepage discovery rails a shared premium
-   rhythm without making each section feel boxed in. */
+/* Match home rail headers to the full-width divider used by the catalog header. */
 .home-commerce-categories .storefront-section__head,
-.dtb-home-product-section .storefront-section__head {
+.dtb-home-product-section .storefront-section__head,
+.dtb-home-brand-section .storefront-section__head {
   position: relative;
+  min-height: 44px;
 }
 
 .home-commerce-categories .storefront-section__head::after,
-.dtb-home-product-section .storefront-section__head::after {
+.dtb-home-product-section .storefront-section__head::after,
+.dtb-home-brand-section .storefront-section__head::after {
   position: absolute;
   right: calc(-1 * var(--dtb-viewport-gutter, 1rem));
   bottom: 0;
   left: calc(-1 * var(--dtb-viewport-gutter, 1rem));
   height: 1px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, rgba(49, 95, 233, .24), rgba(112, 132, 162, .17) 38%, rgba(112, 132, 162, .14) 76%, rgba(49, 95, 233, .1));
+  background: rgba(184, 204, 228, .72);
   content: '';
   pointer-events: none;
 }
@@ -121,7 +113,8 @@
   .home-commerce-categories .storefront-section__head {
     position: relative;
     margin: 0 0 .65rem;
-    padding: 0 0 .72rem;
+    min-height: 47px;
+    padding: 0 0 .68rem;
   }
 
   .home-commerce-categories .storefront-section__title,
@@ -182,6 +175,7 @@
   .dtb-home-product-section:not(.dtb-home-brand-section) .storefront-section__head {
     position: relative;
     margin-bottom: .8rem;
+    min-height: 47px;
     padding-bottom: .68rem;
   }
 

@@ -53,15 +53,27 @@ export const BRAND_LOGOS_BY_SLUG = {
 export function getBrandLogo(value) {
   if (!value) return '';
 
-  const raw = String(value).trim();
-  if (BRAND_LOGOS_BY_LABEL[raw]) return BRAND_LOGOS_BY_LABEL[raw];
-  if (BRAND_LOGOS_BY_SLUG[raw]) return BRAND_LOGOS_BY_SLUG[raw];
+  const candidates = typeof value === 'object'
+    ? [value.label, value.name, value.key, value.slug, value.id]
+    : [value];
 
-  const canonical = canonicalBrandLabel(raw);
-  if (BRAND_LOGOS_BY_LABEL[canonical]) return BRAND_LOGOS_BY_LABEL[canonical];
+  for (const candidate of candidates) {
+    if (candidate == null) continue;
 
-  const slug = brandToSlug(raw);
-  return BRAND_LOGOS_BY_SLUG[slug] || '';
+    const raw = String(candidate).trim();
+    if (!raw) continue;
+    if (BRAND_LOGOS_BY_LABEL[raw]) return BRAND_LOGOS_BY_LABEL[raw];
+    if (BRAND_LOGOS_BY_SLUG[raw]) return BRAND_LOGOS_BY_SLUG[raw];
+
+    const canonical = canonicalBrandLabel(raw);
+    if (BRAND_LOGOS_BY_LABEL[canonical]) return BRAND_LOGOS_BY_LABEL[canonical];
+
+    const slug = brandToSlug(raw);
+    const logo = BRAND_LOGOS_BY_SLUG[slug];
+    if (logo) return logo;
+  }
+
+  return '';
 }
 
 export default getBrandLogo;
