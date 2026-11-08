@@ -427,6 +427,11 @@
     height: 16px;
   }
 
+  .dtb-product-card--grid [data-dtb-card-action="options"] .dtb-add-to-cart__cart,
+  .dtb-product-card--rail [data-dtb-card-action="options"] .dtb-add-to-cart__cart {
+    display: none !important;
+  }
+
   .dtb-product-card--grid .dtb-product-card__action--mobile-icon .dtb-add-to-cart__label,
   .dtb-product-card--rail .dtb-product-card__action--mobile-icon .dtb-add-to-cart__label {
     display: inline !important;

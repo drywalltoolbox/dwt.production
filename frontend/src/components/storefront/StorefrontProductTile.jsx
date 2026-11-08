@@ -317,7 +317,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
             <span className="dtb-add-to-cart__surface" aria-hidden="true" />
             <span className="dtb-add-to-cart__content">
               <SlidersHorizontal className="dtb-add-to-cart__cart" aria-hidden="true" />
-              <span className="dtb-add-to-cart__label"><span className="dtb-card-action__desktop-label">View Options</span><span className="dtb-card-action__mobile-label">View Options</span></span>
+              <span className="dtb-add-to-cart__label"><span className="dtb-card-action__desktop-label">View Options</span><span className="dtb-card-action__mobile-label">View</span></span>
             </span>
           </button>
         ) : (
