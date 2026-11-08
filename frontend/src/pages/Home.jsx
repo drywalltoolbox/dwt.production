@@ -9,6 +9,7 @@ import { getBrandLogo } from '../utils/brandAssets.js';
 import { brandToSlug } from '../utils/catalogUrlState.js';
 import { ToolTypeTile } from '../components/catalog/ShopByToolType.jsx';
 import StorefrontRail from '../components/storefront/StorefrontRail.jsx';
+import usgSheetrockToolsLogo from '/brands/USG-Sheetrock-Tools/usg-sheetrock-tools.svg';
 import '../styles/home-commerce-discovery.css';
 
 const HOME_CATEGORIES = [
@@ -61,7 +62,9 @@ const HOME_BRAND_PRODUCT_SECTIONS = HOME_BRAND_ORDER.map((brandName) => {
   return {
     name,
     brand: brandName,
-    logo: getBrandLogo(brandName),
+    // Keep the USG rail's build asset explicit: this SVG wraps a large embedded
+    // raster and should not depend on a lazy request after the rail is reached.
+    logo: brandName === 'USG Sheetrock Tools' ? usgSheetrockToolsLogo : getBrandLogo(brandName),
     logoWidth: HOME_BRAND_LOGO_DIMENSIONS[brandName][0],
     logoHeight: HOME_BRAND_LOGO_DIMENSIONS[brandName][1],
     to: `/products/brands/${brandToSlug(brandName)}`,
@@ -126,7 +129,7 @@ export default function Home() {
                     alt={brand.name}
                     width={brand.logoWidth}
                     height={brand.logoHeight}
-                    loading="lazy"
+                    loading={brand.brand === 'USG Sheetrock Tools' ? 'eager' : 'lazy'}
                     decoding="async"
                   />
                 )}

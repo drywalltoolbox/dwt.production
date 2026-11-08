@@ -5,7 +5,6 @@ import loadMotionFeatures from './motion/asyncFeatures.js';
 import PageTransition from './components/routing/PageTransition';
 import RouteIntentPreloader from './components/routing/RouteIntentPreloader.jsx';
 import StorefrontScrollExperience from './components/routing/StorefrontScrollExperience.jsx';
-import RouteLoadingSurface from './components/routing/RouteLoadingSurface.jsx';
 import { createLazyRoute } from './routing/routeModules.js';
 import { CartProvider } from './context/CartContext';
 import { WooCommerceProvider } from './context/WooCommerceContext';
@@ -257,7 +256,7 @@ function AppRoutes() {
   const rewardsEnabled = isRewardsEnabled();
   const productSelectorElement = <Products title="Products" isPartsFilter={0} />;
   const routes = (
-    <Suspense fallback={<RouteLoadingSurface pathname={location.pathname} />}>
+    <Suspense fallback={null}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products forceProductGrid title="Products" isPartsFilter={0} />} />

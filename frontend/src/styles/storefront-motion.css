@@ -13,34 +13,16 @@
   --dtb-document-fade-duration: var(--dtb-motion-duration-normal);
 }
 
-/* A route stays covered while its route/data boundary and first viewport
-   assets settle. The content then enters under a softly fading preloader. */
+/* Route content enters without a full-screen loading overlay or fallback. */
 .dtb-page-transition {
   position: relative;
   width: 100%;
   min-height: 100%;
 }
 
-.dtb-page-transition[data-route-ready='false'] .dtb-page-transition__content {
-  visibility: hidden;
-}
-
 .dtb-page-transition__content[data-route-enter='true'] {
   animation: dtb-route-enter var(--dtb-document-fade-duration, 320ms)
     var(--dtb-motion-ease-emphasized, cubic-bezier(.16, 1, .3, 1)) both;
-}
-
-.dtb-page-transition__loader {
-  position: fixed;
-  z-index: 1201;
-  inset: 0;
-  opacity: 1;
-  transition: opacity 260ms var(--dtb-motion-ease-emphasized, cubic-bezier(.16, 1, .3, 1));
-}
-
-.dtb-page-transition__loader[data-exiting='true'] {
-  opacity: 0;
-  pointer-events: none;
 }
 
 @keyframes dtb-route-enter {

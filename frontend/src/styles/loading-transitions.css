@@ -291,87 +291,6 @@
   height: 8px;
 }
 
-.dtb-checkout-handoff-screen,
-#dtb-checkout-route-loader {
-  position: fixed;
-  z-index: 2147483000;
-  inset: 0;
-  display: flex;
-  min-height: 100dvh;
-  padding: var(--dtb-space-5);
-  background: #f8fafc;
-  color: #0f172a;
-  align-items: center;
-  justify-content: center;
-}
-
-#dtb-checkout-route-loader {
-  visibility: hidden;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 220ms var(--dtb-loading-ease), visibility 0s linear 220ms;
-}
-
-html.dtb-checkout-handoff-active #dtb-checkout-route-loader,
-html.dtb-checkout-route-booting #dtb-checkout-route-loader {
-  visibility: visible;
-  opacity: 1;
-  pointer-events: auto;
-  transition-delay: 0s;
-}
-
-.dtb-checkout-handoff-screen__content,
-.dtb-checkout-route-loader__content {
-  display: flex;
-  width: min(100%, 320px);
-  flex-direction: column;
-  align-items: center;
-  gap: var(--dtb-space-4);
-  text-align: center;
-}
-
-.dtb-checkout-handoff-screen__spinner,
-.dtb-checkout-route-loader__spinner {
-  display: grid;
-  width: 46px;
-  height: 46px;
-  border: 1px solid #dbe3ee;
-  border-radius: 999px;
-  background: #ffffff;
-  color: #2255ee;
-  box-shadow: 0 12px 34px rgba(15, 23, 42, 0.1);
-  place-items: center;
-}
-
-.dtb-checkout-handoff-screen__spinner-icon,
-.dtb-checkout-route-loader__spinner::before {
-  width: 20px;
-  height: 20px;
-  animation: dtb-checkout-handoff-spin 900ms cubic-bezier(0.45, 0, 0.55, 1) infinite;
-}
-
-.dtb-checkout-route-loader__spinner::before {
-  border: 2px solid #bfdbfe;
-  border-top-color: #2255ee;
-  border-radius: 999px;
-  content: "";
-}
-
-.dtb-checkout-handoff-screen__content p,
-.dtb-checkout-route-loader__content p {
-  margin: 0;
-  color: #475569;
-  font-size: 14px;
-  font-weight: 650;
-  letter-spacing: -0.01em;
-}
-
-@keyframes dtb-checkout-handoff-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @keyframes dtb-loading-shimmer {
   100% {
     transform: translateX(100%);
@@ -598,9 +517,7 @@ html.dtb-checkout-route-booting #dtb-checkout-route-loader {
 
   .dtb-loading-bar,
   .dtb-product-card-skeleton__image-shimmer,
-  .dtb-selector-skeleton-card__image-shimmer,
-  .dtb-checkout-handoff-screen__spinner-icon,
-  .dtb-checkout-route-loader__spinner::before {
+  .dtb-selector-skeleton-card__image-shimmer {
     animation: none;
   }
 }

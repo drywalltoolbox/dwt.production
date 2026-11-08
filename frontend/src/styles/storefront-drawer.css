@@ -679,13 +679,6 @@
   gap: var(--dtb-space-2);
 }
 
-.storefront-search-overlay__product-detail-loading {
-  min-height: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 .storefront-search-overlay__quick-link,
 .storefront-search-overlay__result,
 .storefront-search-overlay__view-all {

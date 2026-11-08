@@ -34,7 +34,6 @@ import { buildBreadcrumbSchema, buildProductSchema, stripHtml } from '../utils/s
 import ProductDetail from '../components/product/ProductDetail';
 import SEOHead from '../components/shared/SEOHead';
 import Breadcrumb from '../components/shared/Breadcrumb.jsx';
-import RouteLoadingSurface from '../components/routing/RouteLoadingSurface.jsx';
 import Toast from '../components/ui/Toast';
 import ProductRelatedProducts from '../components/product/ProductRelatedProducts.jsx';
 import { useState, useEffect, useCallback, useMemo } from 'react';
@@ -169,12 +168,7 @@ export default function ProductDetailPage() {
   }, [location]);
 
   if (status === 'loading' || status === 'idle') {
-    return (
-      <>
-        <SEOHead noindex title="Loading product…" />
-        <RouteLoadingSurface pathname={location.pathname} label="Loading product" />
-      </>
-    );
+    return <SEOHead noindex title="Loading product…" />;
   }
 
   if (status === 'error') {

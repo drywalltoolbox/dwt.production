@@ -33,8 +33,6 @@
           window.history.replaceState(window.history.state, document.title, pwaUrl.pathname + pwaUrl.search + pwaUrl.hash);
         } catch (e) {}
       }
-      document.documentElement.classList.remove('dtb-document-transition-active');
-      document.documentElement.classList.remove('dtb-checkout-handoff-active');
       (function () {
         var standaloneQuery = window.matchMedia ? window.matchMedia('(display-mode: standalone)') : null;
         function syncAppDisplayMode() {
@@ -70,44 +68,6 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Drywall Toolbox">
 
-    <!--
-      Initial document continuity surface. It exists before React/CSS bundles
-      execute, then yields only after React has committed across two animation
-      frames. Checkout has its own dedicated handoff and suppresses this shell.
-    -->
-    <style>
-      #dtb-app-boot-shell{position:fixed;z-index:2147482000;inset:0;display:grid;place-items:center;min-height:100svh;overflow:hidden;isolation:isolate;background:radial-gradient(ellipse at 50% 44%,#102b50 0%,#0b1c35 38%,#061225 76%);color:#fff;opacity:1;transform:scale(1);transition:opacity 280ms cubic-bezier(.22,1,.36,1),transform 420ms cubic-bezier(.16,1,.3,1)}
-      #dtb-app-boot-shell::before{position:absolute;z-index:-1;inset:-20%;content:"";background:radial-gradient(ellipse at 50% 48%,rgba(39,112,255,.2),transparent 42%),radial-gradient(ellipse at 50% 100%,rgba(12,67,151,.16),transparent 50%);pointer-events:none}
-      #dtb-app-boot-shell__content{display:flex;width:min(100% - 2rem,28rem);flex-direction:column;align-items:center;gap:22px;text-align:center;transition:opacity 240ms ease,transform 320ms cubic-bezier(.22,1,.36,1)}
-      #dtb-app-boot-shell__logo{display:block;width:clamp(168px,24vw,248px);height:auto;max-height:82px;object-fit:contain;filter:drop-shadow(0 12px 28px rgba(0,0,0,.28));animation:dtb-boot-logo-enter 540ms cubic-bezier(.16,1,.3,1) both}
-      #dtb-app-boot-shell__signal{position:relative;display:block;width:clamp(112px,18vw,148px);height:3px;overflow:hidden;border-radius:999px;background:rgba(187,211,247,.18)}
-      #dtb-app-boot-shell__signal::after{position:absolute;inset:0 auto 0 -42%;width:42%;border-radius:inherit;background:linear-gradient(90deg,transparent,#66a6ff,transparent);content:"";animation:dtb-boot-signal 1.45s ease-in-out infinite}
-      #dtb-app-boot-shell__label{margin:0;color:#9db2d1;font:700 11px/1.4 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:.18em;text-transform:uppercase}
-      html[data-dtb-app-mounted="true"] #dtb-app-boot-shell{opacity:0;transform:scale(1.012);pointer-events:none}
-      html[data-dtb-app-mounted="true"] #dtb-app-boot-shell__content{opacity:0;transform:translateY(-12px)}
-      html.dtb-checkout-route-booting #dtb-app-boot-shell{display:none}
-      @keyframes dtb-boot-logo-enter{from{opacity:0;transform:translateY(24px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-      @keyframes dtb-boot-signal{0%{transform:translateX(0)}100%{transform:translateX(345%)}}
-      @media (prefers-reduced-motion:reduce){#dtb-app-boot-shell,#dtb-app-boot-shell__content{transition-duration:1ms}#dtb-app-boot-shell__logo,#dtb-app-boot-shell__signal::after{animation:none}}
-      #dtb-checkout-route-loader{position:fixed;z-index:2147483000;inset:0;display:none;min-height:100vh;background:#f8fafc;color:#0f172a;align-items:center;justify-content:center}
-      html.dtb-checkout-route-booting #dtb-checkout-route-loader{display:flex}
-      .dtb-checkout-route-loader__content{display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center}
-      .dtb-secure-checkout-spinner{display:block;width:3.25em;height:3.25em;transform-origin:center;animation:dtb-secure-checkout-rotate 2s linear infinite}
-      .dtb-secure-checkout-spinner__circle{fill:none;stroke:hsl(214,97%,59%);stroke-width:2;stroke-dasharray:1,200;stroke-dashoffset:0;stroke-linecap:round;animation:dtb-secure-checkout-dash 1.5s ease-in-out infinite}
-      .dtb-checkout-route-loader__content p{margin:0;color:#475569;font:700 14px/1.5 "Nunito",ui-sans-serif,system-ui,sans-serif}
-      @keyframes dtb-secure-checkout-rotate{100%{transform:rotate(360deg)}}
-      @keyframes dtb-secure-checkout-dash{0%{stroke-dasharray:1,200;stroke-dashoffset:0}50%{stroke-dasharray:90,200;stroke-dashoffset:-35px}100%{stroke-dashoffset:-125px}}
-      @media (prefers-reduced-motion:reduce){.dtb-secure-checkout-spinner,.dtb-secure-checkout-spinner__circle{animation:none}.dtb-secure-checkout-spinner__circle{stroke-dasharray:90,200;stroke-dashoffset:-35px}}
-    </style>
-    <script>
-      if (/\/checkout\/?$/.test(window.location.pathname)) {
-        document.documentElement.classList.add('dtb-checkout-route-booting');
-        window.setTimeout(function () {
-          document.documentElement.classList.remove('dtb-checkout-route-booting');
-        }, 8000);
-      }
-    </script>
-
     <!-- Early connection to the production API / WP backend -->
     <link rel="preconnect" href="<%= htmlWebpackPlugin.options.siteUrl %>" crossorigin>
     <!-- Barlow Semi Condensed is reserved for hero display headlines; all other type remains locally hosted Geist. -->
@@ -134,21 +94,6 @@
     </script>
   </head>
   <body>
-    <div id="dtb-app-boot-shell" aria-hidden="true">
-      <div id="dtb-app-boot-shell__content">
-        <img id="dtb-app-boot-shell__logo" src="https://drywalltoolbox.com/logos/logo-white.svg" alt="" width="440" height="120" />
-        <span id="dtb-app-boot-shell__signal"></span>
-        <p id="dtb-app-boot-shell__label">Preparing Drywall Toolbox</p>
-      </div>
-    </div>
-    <div id="dtb-checkout-route-loader" aria-live="polite" role="status">
-      <div class="dtb-checkout-route-loader__content">
-        <svg class="dtb-secure-checkout-spinner" viewBox="25 25 50 50" aria-hidden="true" focusable="false">
-          <circle class="dtb-secure-checkout-spinner__circle" r="20" cy="50" cx="50"></circle>
-        </svg>
-        <p>Preparing your secure checkout…</p>
-      </div>
-    </div>
     <div id="root"></div>
 
     <!--
@@ -173,29 +118,64 @@
 
         function showFallback() {
           if (appHasMounted()) return;
-          var bootShell = document.getElementById('dtb-app-boot-shell');
-          if (bootShell) bootShell.remove();
           var root = document.getElementById('root');
           if (!root) return;
           root.innerHTML =
-            '<main style="box-sizing:border-box;min-height:100svh;display:grid;place-items:center;' +
-            'background:radial-gradient(circle at 50% 42%,#ffffff 0,#f8fbff 46%,#eef4fb 100%);' +
-            'color:#071a38;font-family:system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;padding:32px 20px;">' +
-            '<section role="alert" aria-labelledby="dtb-boot-fallback-title" style="box-sizing:border-box;width:min(100%,460px);' +
-            'padding:42px 38px 36px;border:1px solid rgba(174,195,222,.7);border-radius:18px;background:rgba(255,255,255,.94);' +
-            'box-shadow:0 24px 70px rgba(7,26,56,.11);text-align:center;">' +
-            '<img src="https://drywalltoolbox.com/logos/logo-black.svg" alt="Drywall Toolbox" width="220" height="60" ' +
-            'style="display:block;width:min(220px,72%);height:auto;margin:0 auto 30px;object-fit:contain;">' +
-            '<div aria-hidden="true" style="width:42px;height:3px;margin:0 auto 22px;border-radius:999px;background:#0878ff;"></div>' +
-            '<h1 id="dtb-boot-fallback-title" style="margin:0;color:#071a38;font-size:clamp(22px,5vw,28px);font-weight:800;' +
-            'line-height:1.12;letter-spacing:-.035em;">We’re having trouble loading the store</h1>' +
-            '<p style="max-width:34ch;margin:14px auto 0;color:#587092;font-size:15px;font-weight:450;line-height:1.6;">' +
-            'The storefront did not finish loading. Your browser can retry the connection without changing your account or cart.</p>' +
-            '<button type="button" onclick="location.reload()" style="appearance:none;width:100%;min-height:48px;margin-top:28px;' +
-            'border:1px solid #0878ff;border-radius:10px;background:#0878ff;color:#fff;font:700 15px/1 system-ui,-apple-system,sans-serif;' +
-            'box-shadow:0 8px 20px rgba(8,120,255,.18);cursor:pointer;">Try again</button>' +
-            '<p style="margin:18px 0 0;color:#7b8da8;font-size:12px;line-height:1.5;">If the problem continues, check your connection and try again.</p>' +
-            '</section></main>';
+            '<main style="--ink:#101b2b;--muted:#64748b;--blue:#2458e8;--line:#dbe3ee;box-sizing:border-box;' +
+            'min-height:100svh;display:grid;grid-template-rows:auto 1fr auto;overflow:hidden;background:#f4f6f8;' +
+            'color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;' +
+            'padding:clamp(22px,4vw,48px) clamp(20px,6vw,88px) max(18px,env(safe-area-inset-bottom));">' +
+            '<header style="display:flex;align-items:center;gap:12px;font-size:13px;font-weight:750;letter-spacing:.015em;">' +
+            '<span aria-hidden="true" style="display:grid;width:34px;height:34px;place-items:center;border-radius:10px;' +
+            'background:#14243c;color:#fff;font-size:15px;font-weight:900;letter-spacing:-.08em;">DT</span>' +
+            '<span>DRYWALL TOOLBOX</span></header>' +
+            '<div style="display:grid;place-items:center;padding:48px 0 64px;">' +
+            '<section role="alert" aria-labelledby="dtb-boot-fallback-title" style="box-sizing:border-box;width:min(100%,900px);' +
+            'display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);overflow:hidden;border:1px solid var(--line);' +
+            'border-radius:24px;background:#fff;box-shadow:0 24px 64px rgba(16,27,43,.08);">' +
+            '<div style="display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:clamp(28px,5vw,64px);">' +
+            '<span style="display:inline-flex;align-items:center;gap:8px;padding:7px 11px;border:1px solid #f2d5ad;border-radius:999px;' +
+            'background:#fff8ed;color:#865213;font-size:11px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;">' +
+            '<span aria-hidden="true" style="width:7px;height:7px;border-radius:50%;background:#d78c2f;"></span>Store connection interrupted</span>' +
+            '<h1 id="dtb-boot-fallback-title" style="max-width:12ch;margin:24px 0 0;color:var(--ink);' +
+            'font-size:clamp(34px,5.5vw,58px);font-weight:780;line-height:.99;letter-spacing:-.055em;">We hit a snag.<br>Let’s get you back.</h1>' +
+            '<p style="max-width:42ch;margin:18px 0 0;color:var(--muted);font-size:15px;line-height:1.7;">' +
+            'The store didn’t finish loading. Your account and cart are safe. Try reconnecting, or open the storefront directly.</p>' +
+            '<div style="display:flex;flex-wrap:wrap;gap:10px;width:100%;margin-top:30px;">' +
+            '<button type="button" data-dtb-retry style="appearance:none;min-height:50px;padding:0 22px;border:1px solid #2458e8;' +
+            'border-radius:10px;background:#2458e8;color:#fff;font:750 14px/1 inherit;cursor:pointer;box-shadow:0 7px 18px rgba(36,88,232,.2);">' +
+            '<span data-dtb-retry-label>Reconnect to the store</span></button>' +
+            '<a href="/" style="display:inline-flex;min-height:50px;align-items:center;justify-content:center;padding:0 20px;' +
+            'border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);font-size:14px;font-weight:700;text-decoration:none;">Open homepage</a></div>' +
+            '<p role="status" aria-live="polite" data-dtb-retry-status style="min-height:18px;margin:12px 0 0;color:var(--muted);font-size:12px;line-height:1.5;">' +
+            'A retry won’t change your account or cart.</p></div>' +
+            '<div aria-hidden="true" style="position:relative;display:grid;min-height:390px;place-items:center;overflow:hidden;' +
+            'background:linear-gradient(145deg,#101c30 0%,#172c4c 56%,#2458e8 160%);">' +
+            '<div style="position:absolute;width:360px;height:360px;border:1px solid rgba(255,255,255,.12);border-radius:50%;"></div>' +
+            '<div style="position:absolute;width:260px;height:260px;border:1px solid rgba(255,255,255,.13);border-radius:50%;"></div>' +
+            '<div style="position:relative;display:grid;width:142px;height:142px;place-items:center;border:1px solid rgba(255,255,255,.25);' +
+            'border-radius:36px;background:rgba(255,255,255,.08);color:#fff;box-shadow:0 20px 60px rgba(0,0,0,.18);transform:rotate(-7deg);">' +
+            '<svg width="68" height="68" viewBox="0 0 68 68" fill="none"><path d="M16 23a23 23 0 0 1 39-5l4 5M59 13v10H49M52 45a23 23 0 0 1-39 5l-4-5M9 55V45h10" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>' +
+            '<span style="position:absolute;right:clamp(22px,4vw,48px);bottom:32px;color:rgba(255,255,255,.62);font-size:11px;font-weight:700;letter-spacing:.16em;">BACK ON THE JOB, SOON</span>' +
+            '</div></section></div>' +
+            '<footer style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;color:#718096;font-size:11px;line-height:1.5;">' +
+            '<span>DRYWALL TOOLBOX <span style="padding:0 6px;color:#c3ccd7;">/</span> PROFESSIONAL TOOLS, READY WHEN YOU ARE</span>' +
+            '<a href="mailto:info@drywalltoolbox.com" style="color:#53647a;font-weight:700;text-decoration:none;">Need help? Contact support</a></footer></main>';
+
+          var retryButton = root.querySelector('[data-dtb-retry]');
+          if (retryButton) retryButton.addEventListener('click', function () {
+            var label = retryButton.querySelector('[data-dtb-retry-label]');
+            var status = root.querySelector('[data-dtb-retry-status]');
+            retryButton.disabled = true;
+            retryButton.style.opacity = '.78';
+            if (label) label.textContent = 'Reconnecting…';
+            if (status) status.textContent = 'Refreshing the storefront connection…';
+            try { window.sessionStorage.removeItem(RETRY_KEY); } catch (e) {}
+            var retryUrl = new URL(window.location.href);
+            retryUrl.searchParams.delete('_boot');
+            retryUrl.searchParams.set('_boot', Date.now().toString(36));
+            window.location.replace(retryUrl.toString());
+          });
         }
 
         function attemptRecovery() {

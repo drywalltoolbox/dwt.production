@@ -216,7 +216,7 @@ export default function StorefrontSearchOverlay({
 
       <ProductModal isOpen={isModalOpen && !!modalProduct} product={modalProduct} onClose={closeQuickView}>
         {modalProduct ? (
-          <Suspense fallback={<div className="storefront-search-overlay__product-detail-loading" aria-busy="true" />}>
+          <Suspense fallback={null}>
             <ProductDetailPlatform key={modalProduct.id} product={modalProduct} onAddToCart={handleAddToCart} onClose={closeQuickView} onOpenProduct={openQuickView} />
           </Suspense>
         ) : null}

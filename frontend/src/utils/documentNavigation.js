@@ -1,45 +1,11 @@
 let navigationPending = false;
 
-function resetDocumentTransition() {
+function resetNavigationPending() {
   navigationPending = false;
-  hideCheckoutHandoff();
-  if (typeof document !== 'undefined') {
-    document.documentElement.classList.remove('dtb-document-transition-active');
-    document.documentElement.classList.remove('dtb-checkout-handoff-active');
-  }
-}
-
-/**
- * Durable visual bridge from React cart to the native Woo checkout document.
- * Overlay is presentation-only; never changes the Store API handoff.
- */
-export function showCheckoutHandoff() {
-  if (typeof document === 'undefined') return;
-  let overlay = document.getElementById('dtb-checkout-transition');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'dtb-checkout-transition';
-    overlay.className = 'dtb-checkout-transition';
-    overlay.setAttribute('role', 'status');
-    overlay.setAttribute('aria-live', 'polite');
-    overlay.setAttribute('aria-label', 'Preparing secure checkout');
-    // Adaptation of the supplied Framer logo-fill preloader: a subdued logo
-    // under a bottom-to-top reveal of the same DTB brand asset.
-    overlay.innerHTML = '<div class="dtb-checkout-transition__panel"><div class="dtb-checkout-transition__logo" aria-hidden="true"><img class="dtb-checkout-transition__logo-base" src="https://drywalltoolbox.com/logos/dtb-logo-white.webp" alt="" width="260" height="76"/><div class="dtb-checkout-transition__logo-fill"><img src="https://drywalltoolbox.com/logos/dtb-logo-white.webp" alt="" width="260" height="76"/></div></div><strong>Preparing your secure checkout</strong><p>Connecting your cart securely…</p><span class="dtb-checkout-transition__trust">DRYWALL TOOLBOX · SECURE CHECKOUT</span></div>';
-    document.body.appendChild(overlay);
-  }
-  // Do not activate the legacy #dtb-checkout-route-loader: one overlay only.
-  window.requestAnimationFrame(() => overlay.classList.add('dtb-checkout-transition--visible'));
-}
-export function hideCheckoutHandoff() {
-  if (typeof document === 'undefined') return;
-  document.documentElement.classList.remove('dtb-checkout-handoff-active');
-  const overlay = document.getElementById('dtb-checkout-transition');
-  if (overlay) overlay.remove();
 }
 
 if (typeof window !== 'undefined') {
-  window.addEventListener('pageshow', resetDocumentTransition);
+  window.addEventListener('pageshow', resetNavigationPending);
 }
 
 /**

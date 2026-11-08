@@ -30,7 +30,6 @@ import './styles/global-loading.css';
 import './styles/cart-interaction-feedback.css';
 import './styles/add-to-cart-button.css';
 import './styles/loading-transitions.css';
-import './styles/checkout-handoff-transition.css';
 import './styles/global-typography.css';
 
 /* Shared timing/easing authority loads after feature appearance styles so
@@ -75,12 +74,10 @@ if (typeof window !== 'undefined') {
 function markAppMounted() {
   if (typeof document === 'undefined') return;
 
-  document.documentElement.classList.remove('dtb-document-transition-active');
-  document.documentElement.classList.remove('dtb-checkout-handoff-active');
   document.documentElement.setAttribute('data-dtb-app-mounted', 'true');
 
-  // The boot watchdog uses this session flag only while recovering from an
-  // entry-bundle failure. Clear it as soon as a healthy React frame commits.
+  // Tell the entry-bundle watchdog that React mounted successfully, then clear
+  // any retry marker left by a prior failed entry bundle.
   try {
     window.sessionStorage.removeItem('dtb:boot-retry');
   } catch {
@@ -88,32 +85,10 @@ function markAppMounted() {
   }
 }
 
-function AppBootMarker() {
+function AppMountedMarker() {
   useEffect(() => {
-    let firstFrame = 0;
-    let secondFrame = 0;
-    let removeTimer = 0;
-
-    // Keep the static HTML boot surface in place until React has committed and
-    // the browser has crossed two paint opportunities. This prevents the
-    // document shell from disappearing into a blank/intermediate frame while
-    // startup JS, providers, and route rendering settle.
-    firstFrame = window.requestAnimationFrame(() => {
-      secondFrame = window.requestAnimationFrame(() => {
-        markAppMounted();
-
-        const bootShell = document.getElementById('dtb-app-boot-shell');
-        if (bootShell) {
-          removeTimer = window.setTimeout(() => bootShell.remove(), 320);
-        }
-      });
-    });
-
-    return () => {
-      window.cancelAnimationFrame(firstFrame);
-      window.cancelAnimationFrame(secondFrame);
-      window.clearTimeout(removeTimer);
-    };
+    markAppMounted();
+    return undefined;
   }, []);
 
   return null;
@@ -124,7 +99,7 @@ createRoot(document.getElementById('root')).render(
     <HelmetProvider>
       <GlobalMotionProvider>
         <ErrorBoundary>
-          <AppBootMarker />
+          <AppMountedMarker />
           <App />
         </ErrorBoundary>
       </GlobalMotionProvider>

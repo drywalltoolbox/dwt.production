@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import SEOHead from '../components/shared/SEOHead.jsx';
 import { navigateDocument } from '../utils/documentNavigation.js';
 import { getWooCheckoutFallbackUrl, getWooCheckoutUrl } from '../utils/checkoutUrl.js';
-import RouteLoadingSurface from '../components/routing/RouteLoadingSurface.jsx';
 
 const HANDOFF_MARKER = 'dtb:native-checkout-handoff:v1';
 const HANDOFF_LOOP_WINDOW_MS = 15000;
@@ -47,5 +46,5 @@ export default function WooNativeCheckout() {
     navigateDocument(getWooCheckoutUrl(), { replace: true, transition: 'checkout' });
   }, []);
 
-  return (<><SEOHead noindex title="Checkout" /><RouteLoadingSurface label="Preparing your secure checkout…" /></>);
+  return <SEOHead noindex title="Checkout" />;
 }

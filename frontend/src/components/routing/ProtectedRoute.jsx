@@ -5,7 +5,7 @@
  *
  * Behaviour:
  *   - While the session check is still in progress (isLoading === true):
- *       Renders a geometry-preserving pending surface so there is no premature redirect or second full-page spinner.
+ *       Renders no placeholder and does not redirect until session validation completes.
  *   - Session check complete, user is NOT authenticated:
  *       Redirects to /login, preserving the originally requested path in
  *       router location state ({ from: location }) so Login.jsx can return
@@ -26,15 +26,15 @@
 
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuthContext } from '../../auth/AuthContext.js';
-import RouteLoadingSurface from './RouteLoadingSurface.jsx';
 
 export default function ProtectedRoute( { children } ) {
   const { isAuthenticated, isLoading } = useAuthContext();
   const location                       = useLocation();
 
-  // Still waiting for the /validate round-trip — don't redirect yet.
+  // Still waiting for the /validate round-trip — don't redirect or render a
+  // placeholder while session ownership is being established.
   if ( isLoading ) {
-    return <RouteLoadingSurface pathname={location.pathname} label="Checking your session" />;
+    return null;
   }
 
   // Session confirmed invalid → send to login, remember where we came from.

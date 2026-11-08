@@ -20,12 +20,12 @@ Route loading is not page animation. Data loading is not route loading. Image lo
 The customer-facing contract is:
 
 1. Persistent content stays persistent.
-2. Destination geometry appears immediately when a lazy route is unresolved.
-3. Only unresolved regions display loading treatment after the route module is available.
+2. Unresolved lazy route modules render no placeholder or pre-loader.
+3. Once mounted, route components own any scoped data or media loading treatment they need.
 4. Page roots never animate from `opacity: 0`.
 5. Likely route code is requested from navigation intent before the click completes.
 6. Motion confirms a state transition; it must not conceal application latency.
-7. Loading indicators must preserve the geometry of the state they replace instead of introducing an unrelated full-page surface.
+7. Scoped loading indicators preserve the geometry of the state they replace and never introduce an unrelated full-page surface.
 
 The persistent header, footer, cart shell, navigation surfaces, and other application chrome remain mounted during normal route navigation.
 
@@ -44,31 +44,15 @@ Do not define a second independent dynamic import for a route that already exist
 
 Preloading is an optimization only. Routing correctness must never depend on a successful preload.
 
-## Lazy-route pending surfaces
+## Route loading and document entry
 
-The application-level `Suspense` boundary uses `RouteLoadingSurface`, not a centered route spinner.
+The application `Suspense` boundary uses `fallback={null}`. Lazy route modules do not display a full-screen fallback surface while loading. `PageTransition` applies only the brief route-content entrance motion after a pathname change; it does not hold the route behind an overlay or wait for fonts, data, or images.
 
-The pending surface is intentionally static and geometry-oriented:
+Protected routes render no placeholder while authentication is being validated. They still wait for the authoritative session result before rendering protected content or redirecting.
 
-- catalog routes reserve heading and product-grid geometry;
-- product routes reserve gallery and purchase-panel geometry;
-- account/content routes reserve stable content-panel geometry.
+`frontend/index.html` contains no static pre-loader or checkout pre-loader. Checkout remains a full-document WooCommerce handoff, with its existing session convergence, navigation, and error handling; it adds no branded or spinner overlay. Local cart button progress feedback remains in the checkout control.
 
-These surfaces do not attempt to reproduce business data and do not own loading state after the route module has rendered. Route components remain responsible for their own data skeletons and unresolved regions.
-
-Protected routes use the same pending-surface language while authentication is validating. Authentication and redirect behavior remain unchanged.
-
-## Initial document handoff
-
-`frontend/index.html` owns a minimal static boot surface that can paint before the React entry bundle executes. It is presentation-only and contains no commerce, authentication, routing, or data authority.
-
-`frontend/src/main.jsx` owns the handoff. `AppBootMarker` waits for React to commit and for two `requestAnimationFrame` boundaries before setting `data-dtb-app-mounted="true"`. The static shell then performs only a short opacity release and is removed from the document.
-
-The boot surface must remain visually quiet: stable application background, DTB branding, no full-screen progress animation, no artificial minimum display duration. Under `prefers-reduced-motion: reduce`, its transition is effectively immediate.
-
-Checkout retains its dedicated document-level handoff. `dtb-checkout-route-booting` suppresses the ordinary application boot surface so the two loaders never compete.
-
-The boot watchdog remains the failure authority when the entry bundle does not mount. Before showing its recovery UI it removes the static boot shell, ensuring a failed boot cannot leave the recovery action obscured.
+The entry-bundle watchdog remains the failure recovery authority. Its recovery UI appears only after the React entry bundle fails to mount; it is an error state, not a loading/pre-loader surface.
 
 ## Shared native scroll experience (October 2026)
 
@@ -159,12 +143,12 @@ Springs do not receive CSS easing functions.
 
 Use the narrowest valid loading boundary:
 
-- **Route module unresolved:** `RouteLoadingSurface`.
-- **Authentication unresolved:** the protected-route pending surface.
+- **Route module unresolved:** render no fallback surface.
+- **Authentication unresolved:** render no placeholder and wait for validation.
 - **Page data unresolved:** a skeleton local to that page region.
 - **Image unresolved:** image placeholder/skeleton inside its existing media geometry.
 - **Mutation pending:** preserve existing content and disable/annotate the affected control; do not replace the complete page.
-- **Document navigation/checkout handoff:** keep the current document visible until the browser commits the destination unless the dedicated checkout flow owns a different safe handoff.
+- **Document navigation/checkout handoff:** keep the current document visible until the browser commits the destination; do not add a pre-loader overlay.
 
 Avoid sequential replacement chains such as route spinner → page spinner → skeleton → content.
 
