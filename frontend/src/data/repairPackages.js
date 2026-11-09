@@ -307,7 +307,28 @@ export function getRepairPackageById( packageId ) {
 }
 
 export function getRepairToolFamilyFromCategory( category = '' ) {
-  const normalized = String( category ).toLowerCase();
+  const raw = String( category ).trim();
+  const catalogCategoryFamilies = {
+    'Automatic Tapers': 'automatic_taper',
+    'Semi-Automatic Tapers & Banjos': 'automatic_taper',
+    'Flat Boxes': 'flat_box',
+    'Corner Finishers': 'corner_finisher',
+    'Corner Flushers': 'corner_finisher',
+    'Angle Boxes & Corner Applicators': 'corner_applicator',
+    'Applicator Heads': 'corner_applicator',
+    'Powered Compound Applicators': 'corner_applicator',
+    'Automatic Corner Rollers': 'corner_roller',
+    'Corner Rollers': 'corner_roller',
+    'Corner Bead Rollers': 'corner_roller',
+    'Automatic Nail Spotters': 'nail_spotter',
+    'Loading Pumps': 'pump',
+    'Goosenecks, Box Fillers & Adapters': 'handle',
+    'Compound Tubes': 'handle',
+    Handles: 'handle',
+  };
+  if ( catalogCategoryFamilies[raw] ) return catalogCategoryFamilies[raw];
+
+  const normalized = raw.toLowerCase();
   if ( ! normalized ) return 'diagnostic';
 
   const family = Object.entries( REPAIR_TOOL_FAMILIES ).find( ( [ key, config ] ) => {

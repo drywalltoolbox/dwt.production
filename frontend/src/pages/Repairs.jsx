@@ -5,18 +5,14 @@ import { m as Motion } from 'framer-motion';
 import { PackageCheck } from 'lucide-react';
 import SEOHead from '../components/shared/SEOHead';
 import Dropdown from '../components/ui/Dropdown';
-import { useCatalogFacets } from '../hooks/useCatalogFacets.js';
-import { canonicalBrandLabel } from '../utils/catalogUrlState.js';
-import { SCHEMATIC_DEFINITIONS } from '../data/schematicMappings';
 import {
-  normalizeRepairCategory,
   getOfficialRepairBrands,
-  getOfficialRepairBrandsForCategory,
+  getOfficialRepairCategoriesForBrand,
+  getOfficialRepairCategoriesForFamily,
+  getOfficialRepairModelLabel,
   getOfficialRepairModelsForBrandCategory,
 } from '../data/repairCatalogMap.js';
 import {
-  REPAIR_SERVICE_TOOL_CATEGORIES,
-  REPAIR_TOOL_FAMILIES,
   getRepairPackageById,
   getRepairPackagesForToolFamily,
   getRepairToolFamilyFromCategory,
@@ -28,55 +24,14 @@ import { RESPONSIVE_HERO_MEDIA } from '../assets/media/responsiveHeroMedia.js';
 import '../styles/repairs-workflow.css';
 import '../styles/repair-step-nav.css';
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   Brands & tools sourced from schematicMappings — the single source of truth
-   for every tool we carry schematics / repair support for.
-   ───────────────────────────────────────────────────────────────────────── */
-const SUPPORTED_BRANDS = Object.keys(SCHEMATIC_DEFINITIONS).sort((a, b) => a.localeCompare(b)); // alphabetical
-
-function normalizeCategoryForBrand(category, _brand) {
-  return normalizeRepairCategory(category);
-}
-
-/**
- * Returns the tool model objects for a specific brand + category combination.
- * Each object has { value, label } where value is the full display string
- * stored in form state and label is the same (title + MPN when available).
- */
-function getModelsForBrandCategory(brand, category) {
-  const entries = SCHEMATIC_DEFINITIONS[brand];
-  if (!entries || !category) return [];
-  return entries
-    .filter((t) => normalizeCategoryForBrand(t.category, brand) === category)
-    .map((t) => {
-      const label = t.mpn ? `${t.title} — ${t.mpn}` : t.title;
-      return { value: label, label };
-    })
-    .sort((a, b) => a.label.localeCompare(b.label));
-}
-
-function brandHasRepairModelsForCategory(brand, category) {
-  if (!brand || !category) return true;
-  return (
-    getOfficialRepairModelsForBrandCategory(brand, category).length > 0 ||
-    getModelsForBrandCategory(brand, category).length > 0
-  );
-}
-
-function getLiveBrandsFromFacets(facets) {
-  if (!Array.isArray(facets?.brands)) return [];
-  return facets.brands
-    .map((b) => canonicalBrandLabel(b?.label || b?.name || b?.key || b?.slug || ''))
-    .filter(Boolean)
-    .filter((v, i, a) => a.indexOf(v) === i)
-    .sort((a, b) => a.localeCompare(b));
-}
-
 /**
  * Builds a human-readable tool description for the success screen.
  */
 function getToolDisplayName({ toolBrand, toolModel, toolCategory }) {
-  return [toolBrand, toolModel || toolCategory].filter(Boolean).join(' — ');
+  const modelLabel = toolModel
+    ? getOfficialRepairModelLabel(toolBrand, toolCategory, toolModel)
+    : toolCategory;
+  return [toolBrand, modelLabel].filter(Boolean).join(' — ');
 }
 
 const BLANK_FORM = {
@@ -1094,9 +1049,6 @@ export function RepairStartExperience() {
   const resumeFormData = resumeState?.formData && typeof resumeState.formData === 'object'
     ? resumeState.formData
     : null;
-  const initialPackageToolCategory = initialPackage?.toolFamily && initialPackage.toolFamily !== 'diagnostic'
-    ? REPAIR_TOOL_FAMILIES[initialPackage.toolFamily]?.label || ''
-    : '';
   const [step, setStep] = useState(() => {
     if (!resumeFormData) return 1;
     const resumeStep = Number(resumeState?.step) || 2;
@@ -1105,10 +1057,8 @@ export function RepairStartExperience() {
   const [formData, setFormData] = useState(() => ({
     ...BLANK_FORM,
     ...resumeFormData,
-    toolCategory: initialPackageToolCategory || resumeFormData?.toolCategory || BLANK_FORM.toolCategory,
-    toolModel: initialPackageToolCategory && initialPackageToolCategory !== resumeFormData?.toolCategory
-      ? BLANK_FORM.toolModel
-      : (resumeFormData?.toolModel || BLANK_FORM.toolModel),
+    toolCategory: resumeFormData?.toolCategory || BLANK_FORM.toolCategory,
+    toolModel: resumeFormData?.toolModel || BLANK_FORM.toolModel,
     serviceType: initialPackage?.name || BLANK_FORM.serviceType,
     pricingTierId: initialPackage?.id || BLANK_FORM.pricingTierId,
     packageId: initialPackage?.id || BLANK_FORM.packageId,
@@ -1155,14 +1105,13 @@ export function RepairStartExperience() {
 
   // Service type selection helper
   function selectTier(tier) {
-    const tierCategory = tier.toolFamily && tier.toolFamily !== 'diagnostic'
-      ? REPAIR_TOOL_FAMILIES[tier.toolFamily]?.label || ''
-      : '';
+    const currentCategoryMatchesFamily = tier.toolFamily === 'diagnostic'
+      || getRepairToolFamilyFromCategory(formData.toolCategory) === tier.toolFamily;
 
     setFormData((prev) => ({
       ...prev,
-      toolCategory:   tierCategory || prev.toolCategory,
-      toolModel:      tierCategory && tierCategory !== prev.toolCategory ? '' : prev.toolModel,
+      toolCategory:   currentCategoryMatchesFamily ? prev.toolCategory : '',
+      toolModel:      currentCategoryMatchesFamily ? prev.toolModel : '',
       serviceType:    tier.name,
       pricingTierId:  tier.id,
       packageId:      tier.id,
@@ -1186,45 +1135,26 @@ export function RepairStartExperience() {
   // Shipping rate state
 
   // Live catalog facets (official catalog source) for brands/categories.
-  const { facets: catalogFacets } = useCatalogFacets({});
-
-  const liveBrands = useMemo(
-    () => getLiveBrandsFromFacets(catalogFacets),
-    [catalogFacets],
-  );
-
   const officialBrands = useMemo(() => getOfficialRepairBrands(), []);
 
-  const selectedPackageCategory = useMemo(() => {
-    if (!selectedRepairPackage?.toolFamily || selectedRepairPackage.toolFamily === 'diagnostic') return '';
-    return REPAIR_TOOL_FAMILIES[selectedRepairPackage.toolFamily]?.label || '';
-  }, [selectedRepairPackage]);
+  const selectedPackageFamily = selectedRepairPackage?.toolFamily === 'diagnostic'
+    ? ''
+    : (selectedRepairPackage?.toolFamily || '');
 
   const availableBrands = useMemo(() => {
-    const baseBrands = selectedPackageCategory
-      ? getOfficialRepairBrandsForCategory(selectedPackageCategory)
-      : [...officialBrands, ...liveBrands, ...SUPPORTED_BRANDS];
-
-    const merged = new Set(baseBrands);
-    if (selectedPackageCategory) {
-      [...liveBrands, ...SUPPORTED_BRANDS].forEach((brand) => {
-        if (brandHasRepairModelsForCategory(brand, selectedPackageCategory)) {
-          merged.add(brand);
-        }
-      });
-    }
-
-    return [...merged].sort((a, b) => a.localeCompare(b));
-  }, [officialBrands, liveBrands, selectedPackageCategory]);
+    if (!selectedPackageFamily) return officialBrands;
+    return officialBrands.filter((brand) => getOfficialRepairCategoriesForFamily(brand, selectedPackageFamily).length > 0);
+  }, [officialBrands, selectedPackageFamily]);
 
   const availableCategories = useMemo(() => {
-    if (selectedPackageCategory) return [selectedPackageCategory];
-
-    return REPAIR_SERVICE_TOOL_CATEGORIES.map((category) => category.label);
-  }, [selectedPackageCategory]);
+    if (!formData.toolBrand) return [];
+    return selectedPackageFamily
+      ? getOfficialRepairCategoriesForFamily(formData.toolBrand, selectedPackageFamily)
+      : getOfficialRepairCategoriesForBrand(formData.toolBrand);
+  }, [formData.toolBrand, selectedPackageFamily]);
 
   useEffect(() => {
-    if (brandIsCustom || !selectedPackageCategory || !formData.toolBrand) return;
+    if (brandIsCustom || !formData.toolBrand) return;
     if (availableBrands.includes(formData.toolBrand)) return;
 
     let cancelled = false;
@@ -1233,7 +1163,7 @@ export function RepairStartExperience() {
         setFormData((prev) => ({
           ...prev,
           toolBrand: '',
-          toolCategory: selectedPackageCategory,
+          toolCategory: '',
           toolModel: '',
         }));
       }
@@ -1242,7 +1172,7 @@ export function RepairStartExperience() {
     return () => {
       cancelled = true;
     };
-  }, [availableBrands, brandIsCustom, formData.toolBrand, selectedPackageCategory]);
+  }, [availableBrands, brandIsCustom, formData.toolBrand]);
 
   useEffect(() => {
     if (categoryIsCustom || !formData.toolCategory) return;
@@ -1260,19 +1190,9 @@ export function RepairStartExperience() {
     };
   }, [availableCategories, categoryIsCustom, formData.toolCategory]);
 
-  const fallbackModelOptions = useMemo(
-    () => getModelsForBrandCategory(formData.toolBrand, formData.toolCategory),
-    [formData.toolBrand, formData.toolCategory],
-  );
-
-  const officialModelOptions = useMemo(
+  const availableModelOptions = useMemo(
     () => getOfficialRepairModelsForBrandCategory(formData.toolBrand, formData.toolCategory),
     [formData.toolBrand, formData.toolCategory],
-  );
-
-  const availableModelOptions = useMemo(
-    () => (officialModelOptions.length ? officialModelOptions : fallbackModelOptions),
-    [officialModelOptions, fallbackModelOptions],
   );
 
   /* ── field helpers ── */
@@ -1644,7 +1564,7 @@ export function RepairStartExperience() {
                           placeholder="Select a brand..."
                           options={[
                             ...availableBrands.map((b) => ({ value: b, label: b })),
-                            ...(!selectedPackageCategory ? [{ value: '__other__', label: 'Other / Not Listed' }] : []),
+                            { value: '__other__', label: 'Other / Not Listed' },
                           ]}
                           fullWidth
                           onChange={(val) => {
@@ -1660,7 +1580,7 @@ export function RepairStartExperience() {
                               setFormData((prev) => ({
                                 ...prev,
                                 toolBrand: val,
-                                toolCategory: selectedPackageCategory || '',
+                                toolCategory: '',
                                 toolModel: '',
                               }));
                             }
@@ -2374,7 +2294,7 @@ export function RepairStartExperience() {
                       </div>
                       <ReviewRow label="Brand"       value={formData.toolBrand} />
                       <ReviewRow label="Category"    value={formData.toolCategory} />
-                      <ReviewRow label="Model"       value={formData.toolModel} />
+                      <ReviewRow label="Model"       value={getOfficialRepairModelLabel(formData.toolBrand, formData.toolCategory, formData.toolModel)} />
                       <ReviewRow label="Serial #"    value={formData.serialNumber} />
                       <ReviewRow label="Tool Age"    value={formData.toolAge} />
                     </div>
