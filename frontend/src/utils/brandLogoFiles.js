@@ -1,10 +1,10 @@
 // React storefront logos are imported from the local brand asset library so
 // Webpack emits fingerprinted, cacheable assets with the storefront bundle.
 import tapeTechLogo from '/brands/TapeTech/tapetech_logo.svg';
-import columbiaLogo from '/brands/Columbia/columbia_taping_tools_logo.svg';
-import columbiaWhiteLogo from '/brands/Columbia/columbia_logo_white.svg';
+import columbiaLogo from '/brands/Columbia/columbia-logo.svg';
+import columbiaIconLogo from '/brands/Columbia/columbia-icon.svg';
 import surproLogo from '/brands/SurPro/surpro_logo.svg';
-import surproWhiteLogo from '/brands/SurPro/surpro_logo_white.svg';
+import surproSelectorLogo from '/brands/SurPro/surpro_logo_icon.svg';
 import asgardLogo from '/brands/Asgard/asgard_logo.svg';
 import asgardSelectorLogo from '/brands/Asgard/asgard_logo2.svg';
 import gracoLogo from '/brands/Graco/graco_logo.svg';
@@ -29,8 +29,8 @@ export const BRAND_LOGO_FILES = {
 
 export const FEATURED_BRAND_LOGO_FILES = {
   asgard: asgardSelectorLogo,
-  columbia: columbiaWhiteLogo,
+  columbia: columbiaIconLogo,
   level5: level5WhiteLogo,
-  surpro: surproWhiteLogo,
+  surpro: surproSelectorLogo,
   usgSheetrockTools: usgSheetrockToolsTransparentLogo,
 };
