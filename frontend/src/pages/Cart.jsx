@@ -9,6 +9,7 @@ import {
 
 import SEOHead from '../components/shared/SEOHead';
 import BackButton from '../components/shared/BackButton';
+import Breadcrumb from '../components/shared/Breadcrumb.jsx';
 import { Container } from '../components/layout';
 import CartCrossSellRecommendations from '../components/cart/CartCrossSellRecommendations.jsx';
 import { useCart } from '../context/CartContext';
@@ -150,7 +151,8 @@ export default function Cart() {
     return (
       <div className="page-wrapper dtb-cart-page" aria-busy="true">
         <SEOHead noindex title="Shopping Cart" />
-        <Container width="wide" className="dtb-cart-page__container">
+        <Container size="wide" className="dtb-cart-page__container">
+          <Breadcrumb className="dtb-cart-page__breadcrumb" items={[{ label: 'Home', path: '/' }, { label: 'Shopping cart' }]} />
           <div className="dtb-cart-page__heading-skeleton"><span /><span /></div>
           <div className="dtb-cart-sheet dtb-cart-sheet--loading">
             <div className="dtb-cart-sheet__items">
@@ -167,16 +169,21 @@ export default function Cart() {
 
   if (cartItems.length === 0) {
     return (
-      <div className="dtb-cart-empty">
+      <div className="page-wrapper dtb-cart-page dtb-cart-page--empty">
         <SEOHead noindex title="Shopping Cart" />
-        <div className="dtb-cart-empty__card">
-          <div className="dtb-cart-empty__icon"><ShoppingBag aria-hidden="true" strokeWidth={1.5} /></div>
-          <h1>Your cart is empty</h1>
-          <p>Discover professional drywall tools and equipment for every job.</p>
-          <Link to="/products" className="dtb-cart-empty__action">
-            <ShoppingBag size={16} aria-hidden="true" />Browse products
-          </Link>
-        </div>
+        <Container size="wide" className="dtb-cart-page__container">
+          <Breadcrumb className="dtb-cart-page__breadcrumb" items={[{ label: 'Home', path: '/' }, { label: 'Shopping cart' }]} />
+          <div className="dtb-cart-empty">
+            <div className="dtb-cart-empty__card">
+              <div className="dtb-cart-empty__icon"><ShoppingBag aria-hidden="true" strokeWidth={1.5} /></div>
+              <h1>Your cart is empty</h1>
+              <p>Discover professional drywall tools and equipment for every job.</p>
+              <Link to="/products" className="dtb-cart-empty__action">
+                <ShoppingBag size={16} aria-hidden="true" />Browse products
+              </Link>
+            </div>
+          </div>
+        </Container>
       </div>
     );
   }
@@ -184,13 +191,13 @@ export default function Cart() {
   return (
     <div className="page-wrapper dtb-cart-page">
       <SEOHead noindex title="Shopping Cart" />
-      <Container width="wide" className="dtb-cart-page__container">
+      <Container size="wide" className="dtb-cart-page__container">
+        <Breadcrumb className="dtb-cart-page__breadcrumb" items={[{ label: 'Home', path: '/' }, { label: 'Shopping cart' }]} />
         <header className="dtb-cart-page__heading">
           <div className="dtb-cart-page__heading-row">
-            <BackButton to="/products" label="Products" />
             <div className="dtb-cart-page__title-group">
               <h1>Shopping cart</h1>
-              <p>{cartItems.length} item{cartItems.length !== 1 ? 's' : ''}</p>
+              <span className="dtb-cart-page__item-count">{totalQuantity} item{totalQuantity !== 1 ? 's' : ''}</span>
             </div>
           </div>
           <p className="dtb-cart-page__description">
@@ -383,7 +390,6 @@ export default function Cart() {
             <div className="dtb-cart-sheet__summary-total">
               <span>Estimated total</span><strong>{formatMoney(estimatedTotal, currency)}</strong>
             </div>
-            <p className="dtb-cart-sheet__estimate-note">Shipping and final tax are confirmed at checkout.</p>
 
             <a
               {...checkoutButton.rootProps}

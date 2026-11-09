@@ -110,6 +110,7 @@ export default function StorefrontCartSheet({
   }, []);
 
   const handleClose = useCallback(() => {
+    setSummaryOpen(false);
     if (overlayRef.current?.contains(document.activeElement)) {
       document.activeElement?.blur?.();
     }
@@ -123,6 +124,7 @@ export default function StorefrontCartSheet({
 
   const handleRemove = useCallback(async (key) => {
     if (!key || removingKey === key || isClearing) return;
+    if (cartItems.length === 1) setSummaryOpen(false);
     clearQuantityTimer(key);
     setItemSyncing(key, false);
     setRemovingKey(key);
@@ -132,11 +134,12 @@ export default function StorefrontCartSheet({
     } finally {
       setRemovingKey((current) => (current === key ? null : current));
     }
-  }, [clearQuantityTimer, isClearing, removeFromCart, removingKey, setItemSyncing]);
+  }, [cartItems.length, clearQuantityTimer, isClearing, removeFromCart, removingKey, setItemSyncing]);
 
   const handleClearCart = useCallback(async () => {
     if (cartItems.length === 0 || isClearing || isMutating) return;
 
+    setSummaryOpen(false);
     syncTimersRef.current.forEach((timer) => window.clearTimeout(timer));
     syncTimersRef.current.clear();
     syncingKeysRef.current = new Set();
@@ -223,6 +226,7 @@ export default function StorefrontCartSheet({
       return;
     }
 
+    setSummaryOpen(false);
     let cancelled = false;
     window.queueMicrotask(() => {
       if (cancelled) return;
@@ -287,10 +291,6 @@ export default function StorefrontCartSheet({
     () => cartItems.reduce((count, item) => count + getDisplayQuantity(item, localQuantities), 0),
     [cartItems, localQuantities]
   );
-
-  useEffect(() => {
-    if (!isOpen) setSummaryOpen(false);
-  }, [isOpen]);
 
   return (
     <div
@@ -459,11 +459,42 @@ export default function StorefrontCartSheet({
               </ul>
             )}
           </div>
-          {cartItems.length > 0 ? <CartCrossSellRecommendations cart={cart} cartItems={cartItems} compact /> : null}
+          {cartItems.length > 0 ? <CartCrossSellRecommendations cart={cart} cartItems={cartItems} compact isOpen={isOpen} /> : null}
         </div>
 
         {cartItems.length > 0 && (
           <footer className="scs-footer">
+            <div
+              id="scs-summary-sheet"
+              className={`scs-summary-sheet${summaryOpen ? ' is-open' : ''}`}
+              aria-hidden={!summaryOpen}
+              inert={!summaryOpen ? true : undefined}
+            >
+              <div className="scs-summary-sheet__inner">
+                <div className="scs-totals" aria-label="Order totals">
+                  <div className="scs-total-row">
+                    <span>Subtotal</span>
+                    <strong>{formatStoreMoney(subtotal, currency)}</strong>
+                  </div>
+                  {discount > 0 ? (
+                    <div className="scs-total-row scs-total-row--discount">
+                      <span>Discount</span>
+                      <strong>−{formatStoreMoney(discount, currency)}</strong>
+                    </div>
+                  ) : null}
+                  <div className="scs-total-row">
+                    <span>Shipping</span>
+                    <strong>{shipping > 0 ? formatStoreMoney(shipping, currency) : 'Calculated at checkout'}</strong>
+                  </div>
+                  {tax > 0 ? (
+                    <div className="scs-total-row">
+                      <span>Estimated tax</span>
+                      <strong>{formatStoreMoney(tax, currency)}</strong>
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            </div>
             <button
               type="button"
               className="scs-total-toggle"
@@ -479,44 +510,15 @@ export default function StorefrontCartSheet({
               </span>
               <ChevronDown size={16} aria-hidden="true" />
             </button>
-            <div
-              id="scs-summary-sheet"
-              className={`scs-summary-sheet${summaryOpen ? ' is-open' : ''}`}
-              aria-hidden={!summaryOpen}
-              inert={!summaryOpen ? true : undefined}
-            >
-              <div className="scs-summary-sheet__inner">
-            <div className="scs-totals" aria-label="Order totals">
-              <div className="scs-total-row">
-                <span>Subtotal</span>
-                <strong>{formatStoreMoney(subtotal, currency)}</strong>
-              </div>
-              {discount > 0 ? (
-                <div className="scs-total-row scs-total-row--discount">
-                  <span>Discount</span>
-                  <strong>−{formatStoreMoney(discount, currency)}</strong>
-                </div>
-              ) : null}
-              <div className="scs-total-row">
-                <span>Shipping</span>
-                <strong>{shipping > 0 ? formatStoreMoney(shipping, currency) : 'Calculated at checkout'}</strong>
-              </div>
-              {tax > 0 ? (
-                <div className="scs-total-row">
-                  <span>Estimated tax</span>
-                  <strong>{formatStoreMoney(tax, currency)}</strong>
-                </div>
-              ) : null}
-            </div>
-              </div>
-            </div>
-            <Link
-              to="/cart"
-              onClick={handleNavAndClose}
-              className="scs-view-cart-btn"
-            >
-              View full cart
-            </Link>
+            {isOpen && summaryOpen ? (
+              <Link
+                to="/cart"
+                onClick={handleNavAndClose}
+                className="scs-view-cart-btn"
+              >
+                View full cart
+              </Link>
+            ) : null}
             <a
               href={CHECKOUT_HREF}
               onClick={handleNavAndClose}

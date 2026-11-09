@@ -1,6 +1,8 @@
 export const MAX_CART_CROSS_SELLS = 4;
 export const MAX_CART_COMPATIBILITY_SKUS = 20;
-export const MAX_CART_COMPATIBLE_PARTS = 100;
+// The UI can display at most four results, but it filters unavailable items
+// after the endpoint returns. Keep a bounded candidate buffer for that filtering.
+export const MAX_CART_COMPATIBLE_PARTS = 24;
 
 export function getCartCompatibilitySkus(cartItems = []) {
   const seen = new Set();

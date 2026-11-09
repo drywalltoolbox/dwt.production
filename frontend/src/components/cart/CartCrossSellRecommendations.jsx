@@ -1,4 +1,4 @@
-import { useState, useId } from 'react';
+import { useEffect, useRef, useState, useId } from 'react';
 import { Link } from 'react-router-dom';
 import { useCart } from '../../context/CartContext.jsx';
 import { getVisibleCartRecommendations, getVisibleCrossSells, storePrice } from '../../utils/cartCrossSells.js';
@@ -41,14 +41,21 @@ function formatPrice(value, currency) {
   }
 }
 
-export default function CartCrossSellRecommendations({ cart, cartItems = [], compact = false }) {
+export default function CartCrossSellRecommendations({ cart, cartItems = [], compact = false, isOpen = false }) {
   const { addToCart, isMutating } = useCart();
   const titleId = useId();
   const [feedback, setFeedback] = useState(null);
   const nativeCrossSells = getVisibleCrossSells(cart, cartItems);
-  const compatibleParts = useCartCompatibleParts(cartItems, nativeCrossSells.length < 4);
+  const { products: compatibleParts, isLoading, isError, retry } = useCartCompatibleParts(cartItems, nativeCrossSells.length < 4);
+  const wasOpen = useRef(isOpen);
   const recommendations = getVisibleCartRecommendations(cart, cartItems, compatibleParts);
-  if (!recommendations.length) return null;
+
+  useEffect(() => {
+    if (compact && isOpen && !wasOpen.current && isError) retry();
+    wasOpen.current = isOpen;
+  }, [compact, isError, isOpen, retry]);
+
+  if (!recommendations.length && !isLoading && !isError) return null;
 
   const currency = cart?.totals?.currency_code || 'USD';
   const minorUnit = cart?.totals?.currency_minor_unit;
@@ -57,6 +64,7 @@ export default function CartCrossSellRecommendations({ cart, cartItems = [], com
     <section
       className={`dtb-cart-cross-sells${compact ? ' dtb-cart-cross-sells--compact' : ''}`}
       aria-labelledby={titleId}
+      aria-busy={isLoading}
     >
       <div className="dtb-cart-cross-sells__heading">
         <h2 id={titleId}>Recommended for your cart</h2>
@@ -66,7 +74,13 @@ export default function CartCrossSellRecommendations({ cart, cartItems = [], com
           {feedback.message}
         </p>
       ) : null}
-      <ul className="dtb-cart-cross-sells__list">
+      {isError && !recommendations.length ? (
+        <div className="dtb-cart-cross-sells__load-error" role="status">
+          <span>Recommendations couldn’t load.</span>
+          <button className="dtb-cart-cross-sells__retry" type="button" onClick={retry}>Try again</button>
+        </div>
+      ) : null}
+      {recommendations.length || isLoading ? <ul className="dtb-cart-cross-sells__list">
         {recommendations.map(({ type: recommendationType, product, compatibleWithSku, matchedVariation }, index) => {
           const id = Number(product.id);
           const isCompatiblePart = recommendationType === 'compatible_part';
@@ -104,7 +118,15 @@ export default function CartCrossSellRecommendations({ cart, cartItems = [], com
           return (
             <li className="dtb-cart-cross-sells__item" key={`${recommendationType}-${id}-${index}`}>
               <Link className="dtb-cart-cross-sells__product" to={path}>
-                {image?.src ? <img src={image.thumbnail || image.src} alt="" loading="lazy" decoding="async" /> : null}
+                {image?.src ? (
+                  <img
+                    src={image.thumbnail || image.src}
+                    alt=""
+                    loading={compact ? 'eager' : 'lazy'}
+                    fetchPriority={compact && index === 0 ? 'high' : 'auto'}
+                    decoding="async"
+                  />
+                ) : null}
                 <span className="dtb-cart-cross-sells__details">
                   <span className="dtb-cart-cross-sells__name">{product.name || 'View product'}</span>
                   {compatibleCartItem?.name ? <span className="dtb-cart-cross-sells__fit">Fits {compatibleCartItem.name} in your cart</span> : null}
@@ -144,7 +166,15 @@ export default function CartCrossSellRecommendations({ cart, cartItems = [], com
             </li>
           );
         })}
-      </ul>
+        {isLoading && recommendations.length < 4 ? (
+          <li className="dtb-cart-cross-sells__loading-item" aria-hidden="true">
+            <span className="dtb-cart-cross-sells__loading-image" />
+            <span className="dtb-cart-cross-sells__loading-copy"><i /><i /><i /></span>
+            <span className="dtb-cart-cross-sells__loading-action" />
+          </li>
+        ) : null}
+      </ul> : null}
+      {isLoading ? <span className="dtb-cart-cross-sells__sr-status" role="status">Loading compatible product recommendations</span> : null}
     </section>
   );
 }

@@ -11,6 +11,8 @@ import {
 } from '../api/cart.js';
 import { trackAddToCart, trackRemoveFromCart } from '../analytics/ecommerceEvents.js';
 import { decodeHtmlEntities } from '../utils/string.js';
+import { prefetchCartCompatibleParts } from '../api/cartRecommendations.js';
+import { getVisibleCrossSells } from '../utils/cartCrossSells.js';
 import CartInteractionFeedback from '../components/cart/CartInteractionFeedback.jsx';
 
 const CART_SNAPSHOT_KEY = 'drywall-cart-snapshot';
@@ -280,6 +282,14 @@ export function CartProvider({ children }) {
     cartItemsRef.current = cartItems;
   }, [cartItems]);
 
+  // Warm recommendation data from the immediately available cart snapshot while
+  // the authoritative Store API cart is still initializing. The shared request
+  // cache deduplicates this with the server-cart prefetch below.
+  useEffect(() => {
+    if (cart !== null || cartItems.length === 0) return;
+    prefetchCartCompatibleParts(cartItems);
+  }, [cart, cartItems]);
+
   const beginMutation = useCallback(() => {
     lastMutationIdRef.current += 1;
     pendingMutationCountRef.current += 1;
@@ -315,6 +325,9 @@ export function CartProvider({ children }) {
       return null;
     }
     const normalizedItems = normalizeStoreCart(nextCart);
+    if (getVisibleCrossSells(nextCart, normalizedItems).length < 4) {
+      prefetchCartCompatibleParts(normalizedItems);
+    }
     setCart(nextCart || null);
     setCartItems(normalizedItems);
     cartItemsRef.current = normalizedItems;
@@ -424,6 +437,7 @@ export function CartProvider({ children }) {
     const previousItems = cartItemsRef.current;
     const previousCart = cart;
     const optimisticItems = addOptimisticCartItem(previousItems, product, quantity, mutationId);
+    prefetchCartCompatibleParts(optimisticItems);
     setCart(null);
     setCartItems(optimisticItems);
     cartItemsRef.current = optimisticItems;
@@ -470,6 +484,7 @@ export function CartProvider({ children }) {
     const optimisticItems = previousItems.filter(
       (item) => String(item.cartKey || item.key || item.id) !== key && String(item.id) !== key
     );
+    prefetchCartCompatibleParts(optimisticItems);
     setCartItems(optimisticItems);
     cartItemsRef.current = optimisticItems;
     setCart(null);

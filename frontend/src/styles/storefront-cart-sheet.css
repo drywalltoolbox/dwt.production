@@ -703,7 +703,6 @@
   .storefront-cart-sheet--premium .scs-header { min-height: 68px; padding-inline: 16px; }
   .storefront-cart-sheet--premium .scs-header-icon { display: none; }
   .storefront-cart-sheet--premium .scs-footer { padding-inline: 16px; }
-  .storefront-cart-sheet--premium .scs-summary-sheet.is-open { max-height: min(26dvh, 200px); }
   .storefront-cart-sheet--premium .scs-clear-cart { padding-inline: 9px; }
 }
 @media (max-width: 767px) {
@@ -1143,6 +1142,8 @@
   border-color: #e2e8f0;
   color: #53627a;
   font-size: 12px;
+  animation: scs-view-cart-reveal 240ms cubic-bezier(.22, .75, .28, 1) both;
+  animation-delay: 60ms;
 }
 
 .storefront-cart-sheet--premium .scs-view-cart-btn:hover {
@@ -1157,14 +1158,31 @@
   to { transform: rotate(360deg); }
 }
 
+@keyframes scs-view-cart-reveal {
+  from { opacity: 0; transform: translateY(7px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 480px) {
   .storefront-cart-sheet--premium .scs-footer { padding-inline: 16px; }
   .storefront-cart-sheet--premium .scs-coupon-applied { align-items: flex-start; }
+  .storefront-cart-sheet--premium .scs-summary-sheet.is-open { max-height: min(26dvh, 200px); }
   .storefront-cart-sheet--premium .scs-total-row--grand strong { font-size: clamp(1.05rem, 4.7vw, 1.35rem); }
+  .storefront-cart-sheet--premium .scs-total-row { gap: 8px; }
+  .storefront-cart-sheet--premium .scs-total-row > span { min-width: 0; }
+  .storefront-cart-sheet--premium .scs-total-row > strong {
+    flex: 0 1 auto;
+    max-width: 62%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    text-align: right;
+  }
+  .storefront-cart-sheet--premium .scs-total-row--grand strong { max-width: 68%; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .storefront-cart-sheet--premium .scs-spin { animation: none; }
+  .storefront-cart-sheet--premium .scs-view-cart-btn { animation: none; }
   .storefront-cart-sheet--premium .scs-coupon-toggle svg:last-child { transition: none; }
   .storefront-cart-sheet--premium .scs-total-toggle > svg,
   .storefront-cart-sheet--premium .scs-summary-sheet { transition: none; }

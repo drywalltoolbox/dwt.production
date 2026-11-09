@@ -216,9 +216,10 @@ export const credentialsReady = () => Promise.resolve();
  * Fetch wrapper for DTB, WooCommerce Store API, and read-only proxy routes.
  */
 export async function apiClient(endpoint, options = {}) {
+  const { globalLoading = true, ...requestOptions } = options;
   const requestUrls = buildApiRequestUrls(endpoint);
-  const method = (options.method || 'GET').toUpperCase();
-  const headers = { ...(options.headers || {}) };
+  const method = (requestOptions.method || 'GET').toUpperCase();
+  const headers = { ...(requestOptions.headers || {}) };
 
   if (['POST', 'PUT', 'PATCH'].includes(method) && !headers['Content-Type']) {
     headers['Content-Type'] = 'application/json';
@@ -243,7 +244,7 @@ export async function apiClient(endpoint, options = {}) {
     if (inflightGetRequests.has(requestKey)) return inflightGetRequests.get(requestKey);
   }
 
-  emitGlobalLoadingStart();
+  if (globalLoading) emitGlobalLoadingStart();
 
   const execute = async () => {
     let lastError = null;
@@ -252,7 +253,7 @@ export async function apiClient(endpoint, options = {}) {
       let response;
       try {
         response = await fetch(url, {
-          ...options,
+          ...requestOptions,
           method,
           headers,
           credentials: 'include',
@@ -311,12 +312,14 @@ export async function apiClient(endpoint, options = {}) {
   };
 
   if (method !== 'GET') {
-    return execute().finally(() => emitGlobalLoadingEnd());
+    return execute().finally(() => {
+      if (globalLoading) emitGlobalLoadingEnd();
+    });
   }
 
   const promise = execute().finally(() => {
     inflightGetRequests.delete(requestKey);
-    emitGlobalLoadingEnd();
+    if (globalLoading) emitGlobalLoadingEnd();
   });
   inflightGetRequests.set(requestKey, promise);
   return promise;
