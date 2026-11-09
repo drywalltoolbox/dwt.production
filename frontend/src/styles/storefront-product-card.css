@@ -176,7 +176,7 @@
   .dtb-product-card--grid .dtb-product-card__meta,
   .dtb-product-card--rail .dtb-product-card__meta {
     display: grid;
-    grid-template-rows: auto auto 1.3em auto auto;
+    grid-template-rows: 18px 3.45em 1.3em 1px minmax(78px, auto);
     align-content: stretch;
     flex: 1 1 auto;
     min-width: 0;
@@ -224,7 +224,7 @@
     grid-row: 2;
     align-self: start;
     max-width: 85%;
-    height: auto;
+    height: 3.45em;
     margin-top: 4px;
     min-height: 0;
     max-height: 3.45em;
@@ -311,11 +311,19 @@
     gap: 0 .36em;
     max-width: 100%;
     overflow: visible;
-    font-size: clamp(.88rem, .9vw, 1rem);
+    font-size: clamp(1.05rem, 3.75vw, 1.26rem);
     font-weight: 850;
     letter-spacing: -.015em;
     line-height: 1.12;
     white-space: nowrap;
+  }
+
+  .dtb-product-card--grid .dtb-product-card__price-prefix,
+  .dtb-product-card--rail .dtb-product-card__price-prefix {
+    color: #52627a;
+    font-size: .74em;
+    font-weight: 750;
+    letter-spacing: 0;
   }
 
   .dtb-product-card--grid .dtb-product-card__compare-price,

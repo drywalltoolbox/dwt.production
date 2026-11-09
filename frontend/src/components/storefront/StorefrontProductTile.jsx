@@ -267,11 +267,9 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
         )}
       </div>
       <div className="dtb-product-card__meta">
-        {brand ? (
-          <span className="dtb-product-card__brand">
-            <span className="dtb-product-card__brand-label">{brand}</span>
-          </span>
-        ) : null}
+        <span className={`dtb-product-card__brand${brand ? '' : ' dtb-product-card__brand--empty'}`} aria-hidden={!brand || undefined}>
+          {brand ? <span className="dtb-product-card__brand-label">{brand}</span> : '\u00a0'}
+        </span>
         <button type="button" onClick={handleTitleClick} className="dtb-product-card__name" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} data-dtb-card-action="title" aria-label={isMobile ? `Open full page for ${name}` : `View product details for ${name}`}>{name}</button>
         <span className={`dtb-product-card__sku${isVariable ? ' dtb-product-card__sku--options' : sku ? '' : ' dtb-product-card__sku--empty'}`} aria-hidden={!isVariable && !sku ? true : undefined}>
           {isVariable ? 'Multiple options available' : sku ? `SKU: ${sku}` : '\u00a0'}
