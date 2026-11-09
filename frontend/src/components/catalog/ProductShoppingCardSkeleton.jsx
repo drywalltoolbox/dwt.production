@@ -54,7 +54,6 @@ function BrandSelectorSkeletonCard() {
       <span className="dtb-selector-skeleton-card__brand-frame">
         <SkeletonBar className="dtb-selector-skeleton-card__brand-logo" />
       </span>
-      <SkeletonBar className="dtb-selector-skeleton-card__label" />
     </div>
   );
 }
@@ -72,11 +71,11 @@ function CategorySelectorSkeletonCard() {
 }
 
 export function SelectorSkeletonGrid({ mode = 'brands', count }) {
-  const resolvedCount = count ?? (mode === 'categories' ? 8 : 6);
+  const resolvedCount = count ?? (mode === 'categories' ? 8 : mode === 'brands' ? 7 : 6);
   const Card = mode === 'categories' ? CategorySelectorSkeletonCard : BrandSelectorSkeletonCard;
 
   return (
-    <div className={`dtb-selector-skeleton-grid dtb-selector-skeleton-grid--${mode}`} aria-hidden="true">
+    <div className={`dtb-selector-skeleton-grid dtb-selector-skeleton-grid--${mode}${mode === 'brands' ? ' products-brand-grid' : ''}`} aria-hidden="true">
       {Array.from({ length: resolvedCount }, (_, index) => <Card key={index} />)}
     </div>
   );

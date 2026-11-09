@@ -208,14 +208,14 @@
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__brand-logo-wrap {
-    min-height: 34px;
+    min-height: 50px;
     margin: 0 0 10px;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__brand-logo,
   .product-modal-card-shell.dtb-product-page-shell .product-detail-brand-logo {
-    max-width: 118px;
-    max-height: 36px;
+    max-width: 160px;
+    max-height: 50px;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__title {

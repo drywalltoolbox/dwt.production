@@ -73,7 +73,7 @@
 .dtb-product-page-shell .dtb-pdp-header__brand-logo-wrap {
   display: flex;
   align-items: center;
-  min-height: 38px;
+  min-height: 50px;
   margin-bottom: .45rem;
 }
 
@@ -81,9 +81,9 @@
 .dtb-product-page-shell .product-detail-brand-logo {
   display: block;
   width: auto;
-  max-width: 138px;
+  max-width: 160px;
   height: auto;
-  max-height: 42px;
+  max-height: 50px;
   object-fit: contain;
   object-position: left center;
 }
@@ -526,14 +526,14 @@
   }
 
   .dtb-product-page-shell .dtb-pdp-header__brand-logo-wrap {
-    min-height: 30px;
+    min-height: 44px;
     margin-bottom: .35rem;
   }
 
   .dtb-product-page-shell .dtb-pdp-header__brand-logo,
   .dtb-product-page-shell .product-detail-brand-logo {
-    max-width: 112px;
-    max-height: 34px;
+    max-width: 140px;
+    max-height: 44px;
   }
 
   .dtb-product-page-shell .dtb-pdp-header__brand-eyebrow {

@@ -168,6 +168,15 @@
   object-position: left center;
 }
 
+/* Keep the USG and Dura-Stilts marks at a matching visual height. Their wide
+   source artwork has different aspect ratios, so allow each to use the width
+   it needs while retaining the shared rail height and natural proportions. */
+.dtb-home-brand-section--usg-sheetrock-tools .dtb-home-brand-section__logo,
+.dtb-home-brand-section--dura-stilts .dtb-home-brand-section__logo {
+  max-width: min(100%, clamp(13rem, 21vw, 16.5rem));
+  max-height: clamp(2.1rem, 3.3vw, 3rem);
+}
+
 @media (max-width: 600px) {
   .dtb-home-brand-section .storefront-section__title {
     min-height: 2.9rem;
@@ -179,6 +188,12 @@
 
   .dtb-home-brand-section__logo {
     max-width: min(100%, clamp(9rem, 42vw, 11.5rem));
+    max-height: 2.65rem;
+  }
+
+  .dtb-home-brand-section--usg-sheetrock-tools .dtb-home-brand-section__logo,
+  .dtb-home-brand-section--dura-stilts .dtb-home-brand-section__logo {
+    max-width: min(100%, 14rem);
     max-height: 2.65rem;
   }
 }

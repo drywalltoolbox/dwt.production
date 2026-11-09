@@ -4,7 +4,7 @@
   --dtb-rail-tile-w-desktop: clamp(210px, 22vw, 240px);
 }
 
-.dtb-catalog-listing-page { background: #f5f6f8; }
+.dtb-catalog-listing-page { background: var(--dtb-surface, #fff); }
 
 .dtb-product-grid,.product-skeleton-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); align-items:stretch; gap:clamp(.625rem,2.8vw,.875rem); }
 .dtb-product-grid--list { grid-template-columns:1fr; }
@@ -144,7 +144,7 @@
     width: calc(100% + var(--dtb-viewport-gutter, 14px) + var(--dtb-viewport-gutter, 14px));
     margin-inline: calc(-1 * var(--dtb-viewport-gutter, 14px));
     padding: 8px;
-    background: #f5f6f8;
+    background: transparent;
   }
 
   .dtb-product-card--grid,
