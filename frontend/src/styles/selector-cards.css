@@ -306,7 +306,7 @@
 }
 
 .dtb-selector-card--brand.products-brand-selector__card--columbia .dtb-selector-card__brand-logo {
-  filter: invert(1) drop-shadow(0 2px 7px rgba(0, 0, 0, 0.42));
+  filter: drop-shadow(0 2px 7px rgba(0, 0, 0, 0.42));
 }
 
 .dtb-selector-card--brand.products-brand-selector__card--surpro::before {

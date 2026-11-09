@@ -2,7 +2,7 @@
 // Webpack emits fingerprinted, cacheable assets with the storefront bundle.
 import tapeTechLogo from '/brands/TapeTech/tapetech_logo.svg';
 import columbiaLogo from '/brands/Columbia/columbia-logo.svg';
-import columbiaIconLogo from '/brands/Columbia/columbia-icon.svg';
+import columbiaWhiteLogo from '/brands/Columbia/columbia_logo_white.svg';
 import surproLogo from '/brands/SurPro/surpro_logo.svg';
 import surproSelectorLogo from '/brands/SurPro/surpro_logo_icon.svg';
 import asgardLogo from '/brands/Asgard/asgard_logo.svg';
@@ -27,7 +27,7 @@ export const BRAND_LOGO_FILES = {
 
 export const FEATURED_BRAND_LOGO_FILES = {
   asgard: asgardSelectorLogo,
-  columbia: columbiaIconLogo,
+  columbia: columbiaWhiteLogo,
   level5: level5WhiteLogo,
   surpro: surproSelectorLogo,
   usgSheetrockTools: usgSheetrockToolsTransparentLogo,
