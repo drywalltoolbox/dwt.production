@@ -130,6 +130,96 @@
   font-size: 0.875rem;
 }
 
+/* In the mini cart, keep one complete recommendation in view while cart lines
+   scroll independently. Additional recommendations remain horizontally swipeable. */
+.storefront-cart-sheet .dtb-cart-cross-sells--compact {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  width: 100%;
+  margin: 0;
+  padding: 10px clamp(14px, 4vw, 22px) 12px;
+  border-top: 1px solid var(--dtb-border, #e5eaf1);
+  background: #fff;
+}
+
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__heading h2 {
+  margin: 0 0 7px;
+  color: var(--dtb-text, #17243a);
+  font-size: 0.8rem;
+  font-weight: 750;
+  line-height: 1.25;
+}
+
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__feedback {
+  margin: 0 0 6px;
+  font-size: 0.72rem;
+}
+
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__list {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 100%;
+  grid-template-columns: none;
+  gap: 8px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, .24) transparent;
+  padding: 1px 1px 5px;
+}
+
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__list::-webkit-scrollbar { height: 3px; }
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__list::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(148, 163, 184, .24); }
+
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__item {
+  box-sizing: border-box;
+  min-height: 68px;
+  gap: 8px;
+  padding: 7px 8px;
+  border-color: #e7ecf4;
+  border-radius: 11px;
+  box-shadow: 0 2px 8px rgba(26, 47, 81, .035);
+  scroll-snap-align: start;
+}
+
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__product { gap: 8px; }
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__product img {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: #f7f9fc;
+}
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__details { gap: 1px; }
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__name {
+  font-size: 0.75rem;
+  line-height: 1.25;
+  -webkit-line-clamp: 2;
+}
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__fit {
+  overflow: hidden;
+  font-size: 0.67rem;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__price { font-size: 0.7rem; }
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__add,
+.storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__view {
+  min-height: 38px;
+  padding-inline: 10px;
+  border-radius: 9px;
+  font-size: 0.7rem;
+}
+
+@media (max-width: 360px) {
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact { padding-inline: 12px; }
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__item { grid-template-columns: minmax(0, 1fr) auto; }
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__product img { width: 36px; height: 36px; }
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__add,
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__view { min-height: 36px; padding-inline: 8px; }
+}
+
 @media (min-width: 44rem) {
   .dtb-cart-cross-sells:not(.dtb-cart-cross-sells--compact) .dtb-cart-cross-sells__list {
     grid-template-columns: repeat(2, minmax(0, 1fr));

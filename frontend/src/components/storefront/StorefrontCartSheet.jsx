@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { ShoppingCart, X, Package, Minus, Plus, ArrowRight, Trash2, Tag, ChevronRight, Loader2 } from 'lucide-react';
+import { ShoppingCart, X, Package, Minus, Plus, ArrowRight, Trash2, ChevronDown } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import CartCrossSellRecommendations from '../cart/CartCrossSellRecommendations.jsx';
 
@@ -30,11 +30,6 @@ function formatStoreMoney(value, currency = 'USD') {
   } catch {
     return '$' + safeAmount.toFixed(2);
   }
-}
-
-function getCouponCode(coupon) {
-  if (typeof coupon === 'string') return coupon;
-  return String(coupon?.code || coupon?.name || '').trim();
 }
 
 function getCartItemKey(item) {
@@ -80,8 +75,6 @@ export default function StorefrontCartSheet({
   onClose,
   cartItems = [],
   cart = null,
-  applyCoupon,
-  removeCoupon,
   removeFromCart,
   updateQuantity,
   clearCart,
@@ -96,11 +89,7 @@ export default function StorefrontCartSheet({
 
   const [removingKey, setRemovingKey] = useState(null);
   const [isClearing, setIsClearing] = useState(false);
-  const [couponCode, setCouponCode] = useState('');
-  const [couponOpen, setCouponOpen] = useState(false);
-  const [couponBusy, setCouponBusy] = useState(false);
-  const [couponMessage, setCouponMessage] = useState('');
-  const [couponError, setCouponError] = useState('');
+  const [summaryOpen, setSummaryOpen] = useState(false);
   const [syncingKeys, setSyncingKeys] = useState(() => new Set());
   const [localQuantities, setLocalQuantities] = useState({});
   const setItemSyncing = useCallback((key, isSyncing) => {
@@ -291,42 +280,6 @@ export default function StorefrontCartSheet({
   const tax = parseStoreMoney(cartTotals.total_tax, minorUnit) || 0;
   const orderTotal = parseStoreMoney(cartTotals.total_price, minorUnit)
     ?? Math.max(0, subtotal - discount + shipping + tax);
-  const appliedCoupons = Array.isArray(cart?.coupons) ? cart.coupons : [];
-
-  const handleApplyCoupon = async (event) => {
-    event.preventDefault();
-    const code = couponCode.trim();
-    if (!code || couponBusy || isMutating) return;
-    setCouponBusy(true);
-    setCouponMessage('');
-    setCouponError('');
-    try {
-      await applyCoupon?.(code);
-      setCouponCode('');
-      setCouponOpen(false);
-      setCouponMessage('Discount code applied.');
-    } catch (error) {
-      setCouponError(error?.message || 'We could not apply that code. Check it and try again.');
-    } finally {
-      setCouponBusy(false);
-    }
-  };
-
-  const handleRemoveCoupon = async (code) => {
-    if (!code || couponBusy || isMutating) return;
-    setCouponBusy(true);
-    setCouponMessage('');
-    setCouponError('');
-    try {
-      await removeCoupon?.(code);
-      setCouponMessage('Discount code removed.');
-    } catch (error) {
-      setCouponError(error?.message || 'We could not remove that code. Please try again.');
-    } finally {
-      setCouponBusy(false);
-    }
-  };
-
   const shippingRemaining = Math.max(0, FREE_SHIPPING_THRESHOLD - subtotal);
   const shippingProgress = Math.min(100, Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100));
 
@@ -334,6 +287,10 @@ export default function StorefrontCartSheet({
     () => cartItems.reduce((count, item) => count + getDisplayQuantity(item, localQuantities), 0),
     [cartItems, localQuantities]
   );
+
+  useEffect(() => {
+    if (!isOpen) setSummaryOpen(false);
+  }, [isOpen]);
 
   return (
     <div
@@ -401,178 +358,134 @@ export default function StorefrontCartSheet({
         )}
 
         <div className="scs-body">
-          {cartItems.length === 0 ? (
-            <div className="scs-empty">
-              <div className="scs-empty-icon">
-                <Package size={30} strokeWidth={1.3} />
+          <div className={`scs-items-viewport${cartItems.length === 0 ? ' scs-items-viewport--empty' : ''}`}>
+            {cartItems.length === 0 ? (
+              <div className="scs-empty">
+                <div className="scs-empty-icon">
+                  <Package size={30} strokeWidth={1.3} />
+                </div>
+                <strong className="scs-empty-title">Your cart is empty</strong>
+                <p className="scs-empty-body">Add products to get started.</p>
+                <Link to="/products" onClick={handleNavAndClose} className="scs-browse-btn">
+                  Browse Products
+                </Link>
               </div>
-              <strong className="scs-empty-title">Your cart is empty</strong>
-              <p className="scs-empty-body">Add products to get started.</p>
-              <Link to="/products" onClick={handleNavAndClose} className="scs-browse-btn">
-                Browse Products
-              </Link>
-            </div>
-          ) : (
-            <ul className="scs-item-list" role="list">
-              {cartItems.map((item) => {
-                const key = getCartItemKey(item);
-                const quantity = getDisplayQuantity(item, localQuantities);
-                const isSyncing = syncingKeys.has(key);
-                const isRemoving = removingKey === key;
-                const productHref = getProductDetailHref(item);
-                const skuText = getCartItemSku(item);
-                const lineTotal = ((Number(item.price) || 0) * quantity).toFixed(2);
+            ) : (
+              <ul className="scs-item-list" role="list">
+                {cartItems.map((item) => {
+                  const key = getCartItemKey(item);
+                  const quantity = getDisplayQuantity(item, localQuantities);
+                  const isSyncing = syncingKeys.has(key);
+                  const isRemoving = removingKey === key;
+                  const productHref = getProductDetailHref(item);
+                  const skuText = getCartItemSku(item);
+                  const lineTotal = ((Number(item.price) || 0) * quantity).toFixed(2);
 
-                return (
-                  <li
-                    key={key}
-                    className={`scs-item${isSyncing ? ' scs-item--syncing' : ''}${isRemoving ? ' scs-item--removing' : ''}`}
-                    role="listitem"
-                    aria-busy={isSyncing || isRemoving || isClearing ? 'true' : 'false'}
-                  >
-                    <Link
-                      to={productHref}
-                      className="scs-item-img scs-item-open-target"
-                      onClick={handleNavAndClose}
-                      aria-label={`View ${item.name} details`}
+                  return (
+                    <li
+                      key={key}
+                      className={`scs-item${isSyncing ? ' scs-item--syncing' : ''}${isRemoving ? ' scs-item--removing' : ''}`}
+                      role="listitem"
+                      aria-busy={isSyncing || isRemoving || isClearing ? 'true' : 'false'}
                     >
-                      {item.image
-                        ? <img src={item.image} alt="" loading="lazy" decoding="async" />
-                        : <Package size={22} strokeWidth={1.4} className="scs-item-img-placeholder" />}
-                    </Link>
+                      <Link
+                        to={productHref}
+                        className="scs-item-img scs-item-open-target"
+                        onClick={handleNavAndClose}
+                        aria-label={`View ${item.name} details`}
+                      >
+                        {item.image
+                          ? <img src={item.image} alt="" loading="lazy" decoding="async" />
+                          : <Package size={22} strokeWidth={1.4} className="scs-item-img-placeholder" />}
+                      </Link>
 
-                    <div className="scs-item-body">
-                      <div className="scs-item-top">
-                        <Link
-                          to={productHref}
-                          className="scs-item-name scs-item-name-button"
-                          onClick={handleNavAndClose}
-                          aria-label={`View ${item.name} details`}
-                        >
-                          {item.name}
-                        </Link>
-                        <button
-                          type="button"
-                          onClick={() => handleRemove(key)}
-                          aria-label={`Remove ${item.name}`}
-                          className="scs-item-remove"
-                          disabled={isRemoving || isClearing}
-                        >
-                          <X size={13} strokeWidth={2.5} />
-                        </button>
-                      </div>
-
-                      {skuText ? <span className="scs-item-sku">SKU: {skuText}</span> : null}
-
-                      <div className="scs-item-bottom">
-                        <div className="scs-item-qty-row" role="group" aria-label={`Quantity for ${item.name}`}>
+                      <div className="scs-item-body">
+                        <div className="scs-item-top">
+                          <Link
+                            to={productHref}
+                            className="scs-item-name scs-item-name-button"
+                            onClick={handleNavAndClose}
+                            aria-label={`View ${item.name} details`}
+                          >
+                            {item.name}
+                          </Link>
                           <button
                             type="button"
-                            className="scs-qty-btn"
-                            onClick={() => handleQtyChange(key, -1, quantity)}
-                            aria-label={quantity === 1 ? `Remove ${item.name}` : 'Decrease quantity'}
+                            onClick={() => handleRemove(key)}
+                            aria-label={`Remove ${item.name}`}
+                            className="scs-item-remove"
                             disabled={isRemoving || isClearing}
                           >
-                            {quantity === 1
-                              ? <Trash2 size={11} strokeWidth={2.2} />
-                              : <Minus size={11} strokeWidth={2.5} />}
-                          </button>
-                          <span className="scs-qty-display" aria-live="polite">{quantity}</span>
-                          <button
-                            type="button"
-                            className="scs-qty-btn"
-                            onClick={() => handleQtyChange(key, 1, quantity)}
-                            aria-label="Increase quantity"
-                            disabled={isRemoving || isClearing || quantity >= MAX_CART_QUANTITY}
-                          >
-                            <Plus size={11} strokeWidth={2.5} />
+                            <X size={13} strokeWidth={2.5} />
                           </button>
                         </div>
 
-                        <span className="scs-item-line-total">
-                          {isSyncing ? <span className="scs-sync-dot" aria-hidden="true" /> : null}
-                          ${lineTotal}
-                        </span>
+                        {skuText ? <span className="scs-item-sku">SKU: {skuText}</span> : null}
+
+                        <div className="scs-item-bottom">
+                          <div className="scs-item-qty-row" role="group" aria-label={`Quantity for ${item.name}`}>
+                            <button
+                              type="button"
+                              className="scs-qty-btn"
+                              onClick={() => handleQtyChange(key, -1, quantity)}
+                              aria-label={quantity === 1 ? `Remove ${item.name}` : 'Decrease quantity'}
+                              disabled={isRemoving || isClearing}
+                            >
+                              {quantity === 1
+                                ? <Trash2 size={11} strokeWidth={2.2} />
+                                : <Minus size={11} strokeWidth={2.5} />}
+                            </button>
+                            <span className="scs-qty-display" aria-live="polite">{quantity}</span>
+                            <button
+                              type="button"
+                              className="scs-qty-btn"
+                              onClick={() => handleQtyChange(key, 1, quantity)}
+                              aria-label="Increase quantity"
+                              disabled={isRemoving || isClearing || quantity >= MAX_CART_QUANTITY}
+                            >
+                              <Plus size={11} strokeWidth={2.5} />
+                            </button>
+                          </div>
+
+                          <span className="scs-item-line-total">
+                            {isSyncing ? <span className="scs-sync-dot" aria-hidden="true" /> : null}
+                            ${lineTotal}
+                          </span>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                );
-              })}
-            </ul>
-          )}
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
           {cartItems.length > 0 ? <CartCrossSellRecommendations cart={cart} cartItems={cartItems} compact /> : null}
         </div>
 
         {cartItems.length > 0 && (
           <footer className="scs-footer">
-            <section className="scs-coupon" aria-label="Discount code">
-              {appliedCoupons.length > 0 ? (
-                <div className="scs-coupon-applied">
-                  <span className="scs-coupon-applied__label">
-                    <Tag size={15} aria-hidden="true" />
-                    <span>Discount applied</span>
-                  </span>
-                  <div className="scs-coupon-applied__codes">
-                    {appliedCoupons.map((coupon, index) => {
-                      const code = getCouponCode(coupon);
-                      if (!code) return null;
-                      return (
-                        <span className="scs-coupon-chip" key={code + index}>
-                          <strong>{code}</strong>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveCoupon(code)}
-                            disabled={couponBusy || isMutating}
-                            aria-label={'Remove discount code ' + code}
-                          >
-                            {couponBusy ? <Loader2 size={13} className="scs-spin" /> : <X size={13} />}
-                          </button>
-                        </span>
-                      );
-                    })}
-                  </div>
-                </div>
-              ) : (
-                <>
-                  {!couponOpen ? (
-                    <button
-                      className="scs-coupon-toggle"
-                      type="button"
-                      onClick={() => { setCouponOpen(true); setCouponError(''); setCouponMessage(''); }}
-                      aria-expanded={couponOpen}
-                    >
-                      <Tag size={15} aria-hidden="true" />
-                      <span>Add a discount code</span>
-                      <ChevronRight size={15} aria-hidden="true" />
-                    </button>
-                  ) : (
-                    <form className="scs-coupon-form" onSubmit={handleApplyCoupon}>
-                      <label htmlFor="scs-coupon-code">Discount code</label>
-                      <div className="scs-coupon-form__controls">
-                        <input
-                          id="scs-coupon-code"
-                          type="text"
-                          autoComplete="off"
-                          value={couponCode}
-                          onChange={(event) => setCouponCode(event.target.value)}
-                          placeholder="Enter code"
-                          disabled={couponBusy || isMutating}
-                        />
-                        <button type="submit" disabled={!couponCode.trim() || couponBusy || isMutating}>
-                          {couponBusy ? <Loader2 size={15} className="scs-spin" /> : 'Apply'}
-                        </button>
-                      </div>
-                      <button className="scs-coupon-cancel" type="button" onClick={() => setCouponOpen(false)}>
-                        Cancel
-                      </button>
-                    </form>
-                  )}
-                </>
-              )}
-              {couponMessage ? <p className="scs-coupon-message" role="status">{couponMessage}</p> : null}
-              {couponError ? <p className="scs-coupon-error" role="alert">{couponError}</p> : null}
-            </section>
-
+            <button
+              type="button"
+              className="scs-total-toggle"
+              aria-expanded={summaryOpen}
+              aria-controls="scs-summary-sheet"
+              onClick={() => setSummaryOpen((open) => !open)}
+            >
+              <span className="scs-total-toggle__content">
+                <span className="scs-total-row scs-total-row--grand">
+                  <span>Estimated total</span>
+                  <strong>{formatStoreMoney(orderTotal, currency)}</strong>
+                </span>
+              </span>
+              <ChevronDown size={16} aria-hidden="true" />
+            </button>
+            <div
+              id="scs-summary-sheet"
+              className={`scs-summary-sheet${summaryOpen ? ' is-open' : ''}`}
+              aria-hidden={!summaryOpen}
+              inert={!summaryOpen ? true : undefined}
+            >
+              <div className="scs-summary-sheet__inner">
             <div className="scs-totals" aria-label="Order totals">
               <div className="scs-total-row">
                 <span>Subtotal</span>
@@ -594,12 +507,16 @@ export default function StorefrontCartSheet({
                   <strong>{formatStoreMoney(tax, currency)}</strong>
                 </div>
               ) : null}
-              <div className="scs-total-row scs-total-row--grand">
-                <span>Estimated total</span>
-                <strong>{formatStoreMoney(orderTotal, currency)}</strong>
-              </div>
-              <p className="scs-totals-note">Shipping and final tax are confirmed at checkout.</p>
             </div>
+              </div>
+            </div>
+            <Link
+              to="/cart"
+              onClick={handleNavAndClose}
+              className="scs-view-cart-btn"
+            >
+              View full cart
+            </Link>
             <a
               href={CHECKOUT_HREF}
               onClick={handleNavAndClose}
@@ -608,13 +525,6 @@ export default function StorefrontCartSheet({
               <span>Proceed to checkout</span>
               <ArrowRight size={16} strokeWidth={2.2} />
             </a>
-            <Link
-              to="/cart"
-              onClick={handleNavAndClose}
-              className="scs-view-cart-btn"
-            >
-              View full cart
-            </Link>
           </footer>
         )}
       </aside>

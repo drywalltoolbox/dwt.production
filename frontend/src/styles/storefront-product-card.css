@@ -562,12 +562,9 @@
   .dtb-product-card--grid.dtb-product-card--hover-open .dtb-product-card__commerce-controls,
   .dtb-product-card--rail.dtb-product-card--hover-open .dtb-product-card__commerce-controls,
   .dtb-product-card--list.dtb-product-card--hover-open .dtb-product-card__commerce-controls,
-  .dtb-product-card--grid:focus-within .dtb-product-card__commerce-controls,
-  .dtb-product-card--rail:focus-within .dtb-product-card__commerce-controls,
-  .dtb-product-card--list:focus-within .dtb-product-card__commerce-controls,
-  .dtb-product-card--grid .dtb-product-card__commerce-controls:focus-within,
-  .dtb-product-card--rail .dtb-product-card__commerce-controls:focus-within,
-  .dtb-product-card--list .dtb-product-card__commerce-controls:focus-within {
+  .dtb-product-card--grid:has(:focus-visible) .dtb-product-card__commerce-controls,
+  .dtb-product-card--rail:has(:focus-visible) .dtb-product-card__commerce-controls,
+  .dtb-product-card--list:has(:focus-visible) .dtb-product-card__commerce-controls {
     opacity: 1;
     pointer-events: auto;
     transform: translateY(0);
