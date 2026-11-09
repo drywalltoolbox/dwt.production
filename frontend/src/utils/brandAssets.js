@@ -8,7 +8,6 @@ const {
   asgard: asgardLogo,
   platinum: platinumLogo,
   duraStilts: duraStiltsLogo,
-  graco: gracoLogo,
   level5: level5Logo,
   usgSheetrockTools: usgSheetrockToolsLogo,
 } = BRAND_LOGO_FILES;
@@ -20,7 +19,6 @@ export const BRAND_LOGOS_BY_LABEL = {
   Columbia: columbiaLogo,
   SurPro: surproLogo,
   Asgard: asgardLogo,
-  Graco: gracoLogo,
   'Platinum Drywall Tools': platinumLogo,
   Platinum: platinumLogo,
   'Dura-Stilts': duraStiltsLogo,
@@ -40,7 +38,6 @@ export const BRAND_LOGOS_BY_SLUG = {
   columbia: columbiaLogo,
   surpro: surproLogo,
   asgard: asgardLogo,
-  graco: gracoLogo,
   platinum: platinumLogo,
   'platinum-drywall-tools': platinumLogo,
   'dura-stilts': duraStiltsLogo,

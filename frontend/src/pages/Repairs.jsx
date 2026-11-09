@@ -458,7 +458,7 @@ export default function Repairs() {
     <div style={{ minHeight: '100vh' }} className="page-wrapper">
       <SEOHead
         title="Drywall Tool Repair Services"
-        description="Package-driven drywall tool repair services for TapeTech, Columbia, Asgard, Graco, and other professional finishing tools."
+        description="Package-driven drywall tool repair services for TapeTech, Columbia, Asgard, and other professional finishing tools."
         canonical="/repairs"
       />
 
@@ -1503,7 +1503,7 @@ export function RepairStartExperience() {
     <div style={{ minHeight: '100vh' }} className="page-wrapper">
       <SEOHead
         title="Tool Repair Services"
-        description="Professional drywall tool repair services and guides. Find repair solutions for TapeTech, Columbia, Asgard, Graco, and other professional drywall finishing tools."
+        description="Professional drywall tool repair services and guides. Find repair solutions for TapeTech, Columbia, Asgard, and other professional drywall finishing tools."
         canonical="/repairs"
       />
 

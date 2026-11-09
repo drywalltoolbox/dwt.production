@@ -42,7 +42,6 @@ const TOOLSET_BUILDER_BRANDS = [
   { name: 'SurPro', slug: 'surpro' },
   { name: 'Dura-Stilts', slug: 'dura-stilts' },
   { name: 'Asgard', slug: 'asgard' },
-  { name: 'Graco', slug: 'graco' },
 ].map((brand) => ({ ...brand, logo: getBrandLogo(brand.name) }));
 
 const WORKFLOW_MEDIA = {

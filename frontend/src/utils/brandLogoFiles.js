@@ -7,7 +7,6 @@ import surproLogo from '/brands/SurPro/surpro_logo.svg';
 import surproSelectorLogo from '/brands/SurPro/surpro_logo_icon.svg';
 import asgardLogo from '/brands/Asgard/asgard_logo.svg';
 import asgardSelectorLogo from '/brands/Asgard/asgard_logo2.svg';
-import gracoLogo from '/brands/Graco/graco_logo.svg';
 import platinumLogo from '/brands/Platinum/platinum_logo.svg';
 import duraStiltsLogo from '/brands/Dura-Stilts/dura-stilts-logo.svg';
 import level5Logo from '/brands/Level5/Level5.svg';
@@ -20,7 +19,6 @@ export const BRAND_LOGO_FILES = {
   columbia: columbiaLogo,
   surpro: surproLogo,
   asgard: asgardLogo,
-  graco: gracoLogo,
   platinum: platinumLogo,
   duraStilts: duraStiltsLogo,
   level5: level5Logo,

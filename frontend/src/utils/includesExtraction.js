@@ -7,7 +7,7 @@
 
 import { getIncludesOverride } from './includesOverrides.js';
 
-const BRAND_SPLIT_RE = /\b(?:TapeTech|Asgard|Columbia|Level\s*5|SurPro|Graco|Platinum|Dura-Stilts)\b/g;
+const BRAND_SPLIT_RE = /\b(?:TapeTech|Asgard|Columbia|Level\s*5|SurPro|Platinum|Dura-Stilts)\b/g;
 
 function clean(value) {
   return String(value ?? '').trim();
