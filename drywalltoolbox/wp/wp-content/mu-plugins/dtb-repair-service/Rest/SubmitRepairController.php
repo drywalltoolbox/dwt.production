@@ -38,30 +38,11 @@ if ( is_wp_error( $valid ) ) {
 	);
 }
 
-// Shipping price/name/id are never trusted from the browser. Recalculate the
-// current repair policy quote and persist only the selected server-owned rate.
-$shipping_rate = function_exists( 'dtb_repair_validate_shipping_selection' )
-	? dtb_repair_validate_shipping_selection( $data )
-	: new WP_Error(
-		'dtb_repair_shipping_unavailable',
-		__( 'Return shipping could not be validated. Please refresh shipping options and try again.', 'drywall-toolbox' ),
-		[ 'status' => 503 ]
-	);
-if ( is_wp_error( $shipping_rate ) ) {
-	$status = (int) ( $shipping_rate->get_error_data()['status'] ?? 422 );
-	return new WP_REST_Response(
-		[
-			'success' => false,
-			'code'    => $shipping_rate->get_error_code(),
-			'message' => $shipping_rate->get_error_message(),
-		],
-		$status
-	);
-}
-
-$data['shipping_rate_id']    = (string) $shipping_rate['id'];
-$data['shipping_rate_name']  = (string) $shipping_rate['name'];
-$data['shipping_rate_price'] = (float) $shipping_rate['price'];
+// The customer arranges and pays inbound shipment directly to DTB. DTB covers
+// return shipping after service, so intake must never create a shipping charge.
+$data['shipping_rate_id']    = '';
+$data['shipping_rate_name']  = '';
+$data['shipping_rate_price'] = 0;
 
 $result = dtb_submit_repair_request( $data );
 if ( is_wp_error( $result ) ) {

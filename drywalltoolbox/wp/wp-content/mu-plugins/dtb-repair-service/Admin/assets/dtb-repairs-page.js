@@ -14,13 +14,16 @@
 	var WB     = window.DtbWorkbench;
 	var CONFIG = window.dtbAdminConfig || {};
 	var REST   = ( CONFIG.restUrl || '' ).replace( /\/$/, '' );
-	var TABS   = [ 'overview', 'quote', 'technician', 'timeline', 'conversation', 'all', 'actions' ];
+	var TABS   = [ 'overview', 'intake', 'quote', 'parts', 'technician', 'conversation', 'timeline', 'shipping', 'all', 'actions' ];
 	var TAB_LABELS = {
 		overview: 'Order Details',
+		intake: 'Intake',
 		quote: 'Quote Builder',
+		parts: 'Parts',
 		technician: 'Technician',
-		timeline: 'Timeline',
 		conversation: 'Notes',
+		timeline: 'Timeline',
+		shipping: 'Shipping',
 		all: 'All',
 		actions: 'Actions',
 	};
@@ -31,7 +34,7 @@
 		repairId:    null,
 		data:        null,
 		activeTab:   'overview',
-		loading:     false,
+		requestId:   0,
 		refreshTimer: null,
 	};
 
@@ -91,12 +94,16 @@
 			btn.type             = 'button';
 			btn.className        = 'dtb-modal-tab';
 			btn.dataset.tab      = tab;
+			btn.id               = 'dtb-repair-tab-' + tab;
+			btn.setAttribute( 'aria-controls', 'dtb-repair-panel-' + tab );
 			btn.setAttribute( 'role', 'tab' );
 			btn.setAttribute( 'aria-selected', tab === 'overview' ? 'true' : 'false' );
+			btn.tabIndex = tab === 'overview' ? 0 : -1;
 			btn.textContent = TAB_LABELS[ tab ] || tab.charAt(0).toUpperCase() + tab.slice(1).replace( /-/g, ' ' );
 			btn.addEventListener( 'click', function () {
 				switchTab( tab );
 			} );
+			btn.addEventListener( 'keydown', onTabKeydown );
 			tabBar.appendChild( btn );
 		} );
 
@@ -161,7 +168,10 @@
 	function openRepair( repairId ) {
 		buildDOM();
 		state.repairId  = parseInt( repairId, 10 );
-		state.activeTab = WB.getUrlParam( 'repair_tab' ) || 'overview';
+		if ( ! Number.isFinite( state.repairId ) || state.repairId < 1 ) { return; }
+		var requestedTab = WB.getUrlParam( 'repair_tab' ) || 'overview';
+		state.activeTab = TABS.includes( requestedTab ) ? requestedTab : 'overview';
+		state.data      = null;
 
 		overlay.classList.add( 'dtb-modal-overlay--open' );
 		document.body.classList.add( 'dtb-modal-open' );
@@ -194,21 +204,22 @@
 	// ── Fetch ─────────────────────────────────────────────────────────────────
 
 	function loadRepair( repairId ) {
-		if ( state.loading ) { return; }
-		state.loading = true;
+		repairId = parseInt( repairId, 10 );
+		if ( ! Number.isFinite( repairId ) || repairId < 1 || repairId !== state.repairId ) { return; }
+		var requestId = ++state.requestId;
 		setHeaderLoading( true );
 
 		WB.apiFetch( REST + '/dtb/v1/admin/repairs/' + repairId + '/detail', {
 			method: 'GET',
 		} )
 		.then( function ( data ) {
+			if ( requestId !== state.requestId || repairId !== state.repairId ) { return; }
 			state.data    = data;
-			state.loading = false;
 			setHeaderLoading( false );
 			renderAll();
 		} )
 		.catch( function ( err ) {
-			state.loading = false;
+			if ( requestId !== state.requestId || repairId !== state.repairId ) { return; }
 			setHeaderLoading( false );
 			renderError( err && err.message ? err.message : 'Failed to load repair.' );
 		} );
@@ -225,19 +236,33 @@
 			var active = btn.dataset.tab === tab;
 			btn.classList.toggle( 'dtb-modal-tab--active', active );
 			btn.setAttribute( 'aria-selected', active ? 'true' : 'false' );
+			btn.tabIndex = active ? 0 : -1;
 		} );
 
 		panelContainer.querySelectorAll( '.dtb-modal-tab-panel' ).forEach( function ( p ) {
 			if ( p.dataset.panel === 'actions' ) {
 				p.setAttribute( 'hidden', '' );
+				p.setAttribute( 'aria-hidden', 'true' );
 				return;
 			}
 			if ( p.dataset.panel === tab ) {
 				p.removeAttribute( 'hidden' );
+				p.setAttribute( 'aria-hidden', 'false' );
 			} else {
 				p.setAttribute( 'hidden', '' );
+				p.setAttribute( 'aria-hidden', 'true' );
 			}
 		} );
+		var activeTab = tabBar.querySelector( '[data-tab="' + tab + '"]' );
+		if ( activeTab ) {
+			var tabRect = activeTab.getBoundingClientRect();
+			var barRect = tabBar.getBoundingClientRect();
+			if ( tabRect.left < barRect.left ) {
+				tabBar.scrollLeft -= barRect.left - tabRect.left;
+			} else if ( tabRect.right > barRect.right ) {
+				tabBar.scrollLeft += tabRect.right - barRect.right;
+			}
+		}
 
 		WB.replaceUrlParam( 'repair_tab', tab );
 	}
@@ -250,6 +275,12 @@
 		var panel = document.createElement( 'div' );
 		panel.className = 'dtb-modal-tab-panel';
 		panel.dataset.panel = tab;
+		panel.id = 'dtb-repair-panel-' + tab;
+		panel.setAttribute( 'role', tab === 'actions' ? 'group' : 'tabpanel' );
+		if ( tab !== 'actions' ) {
+			panel.setAttribute( 'aria-labelledby', 'dtb-repair-tab-' + tab );
+		}
+		panel.setAttribute( 'aria-hidden', tab === state.activeTab ? 'false' : 'true' );
 		if ( tab !== state.activeTab ) {
 			panel.setAttribute( 'hidden', '' );
 		}
@@ -268,7 +299,7 @@
 	}
 
 	function renderError( msg ) {
-		panelContainer.innerHTML = '<div class="dtb-modal-error">' + WB.escapeHtml( msg ) + '</div>';
+		panelContainer.innerHTML = '<div class="dtb-modal-error" role="alert">' + WB.escapeHtml( msg ) + '</div>';
 	}
 
 	// ── Render all panels ─────────────────────────────────────────────────────
@@ -278,7 +309,7 @@
 		if ( ! d || ! d.record ) { return; }
 
 		// Update header
-		titleEl.textContent = 'Repair #' + d.record.id + ' — ' + WB.escapeHtml( d.record.customer_name || '' );
+		titleEl.textContent = 'Repair #' + d.record.id + ' — ' + ( d.record.customer_name || '' );
 		metaEl.innerHTML    = statusBadge( d.record.status );
 		if ( heroEl ) {
 			heroEl.innerHTML = renderModalHero( d );
@@ -294,15 +325,21 @@
 		panelContainer.innerHTML = '';
 
 		renderOverview( d );
+		renderIntake( d );
 		renderQuote( d );
+		renderParts( d );
 		renderTechnician( d );
 		renderConversation( d );
 		renderTimeline( d );
+		renderShipping( d );
 		renderAllPanel( d );
 		renderActions( d );
 
 		// Activate correct tab.
 		switchTab( state.activeTab );
+		document.dispatchEvent( new CustomEvent( 'dtb:repair-detail-loaded', {
+			detail: { repairId: d.record.id, data: d },
+		} ) );
 	}
 
 	// ── Compact record-issues helper (integration blockers only) ─────────────
@@ -1134,12 +1171,27 @@
 
 	function initQueueDelegation() {
 		document.addEventListener( 'click', function ( e ) {
-			var row = e.target.closest( '[data-dtb-open-repair]' );
+			var target = e.target instanceof Element ? e.target : e.target.parentElement;
+			var row = target && target.closest( '[data-dtb-open-repair]' );
 			if ( ! row ) { return; }
-			if ( e.target.closest( 'a,button,input,select,textarea,label' ) ) { return; }
+			if ( target.closest( 'a,button,input,select,textarea,label' ) ) { return; }
 			e.preventDefault();
 			openRepair( row.dataset.dtbOpenRepair );
 		} );
+	}
+
+	function onTabKeydown( event ) {
+		var tabs = Array.prototype.slice.call( tabBar.querySelectorAll( '.dtb-modal-tab' ) );
+		var index = tabs.indexOf( event.currentTarget );
+		var nextIndex = index;
+		if ( event.key === 'ArrowRight' ) { nextIndex = ( index + 1 ) % tabs.length; }
+		else if ( event.key === 'ArrowLeft' ) { nextIndex = ( index - 1 + tabs.length ) % tabs.length; }
+		else if ( event.key === 'Home' ) { nextIndex = 0; }
+		else if ( event.key === 'End' ) { nextIndex = tabs.length - 1; }
+		else { return; }
+		event.preventDefault();
+		tabs[nextIndex].focus();
+		tabs[nextIndex].click();
 	}
 
 	// ── Keyboard ─────────────────────────────────────────────────────────────

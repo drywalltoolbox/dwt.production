@@ -99,9 +99,9 @@ $city            = sanitize_text_field( dtb_repair_pick_submission_text( $data, 
 $state           = sanitize_text_field( dtb_repair_pick_submission_text( $data, [ 'state', 'province' ] ) );
 $postcode        = sanitize_text_field( dtb_repair_pick_submission_text( $data, [ 'zip', 'postcode', 'postal_code' ] ) );
 $country         = strtoupper( sanitize_text_field( dtb_repair_pick_submission_text( $data, [ 'country' ], 'US' ) ) );
-$shipping_rate_id    = sanitize_text_field( dtb_repair_pick_submission_text( $data, [ 'shipping_rate_id', 'shippingRateId' ] ) );
-$shipping_rate_name  = sanitize_text_field( dtb_repair_pick_submission_text( $data, [ 'shipping_rate_name', 'shippingRateName' ] ) );
-$shipping_rate_price = (string) (float) dtb_repair_pick_submission_value( $data, [ 'shipping_rate_price', 'shippingRatePrice' ], 0 );
+$shipping_rate_id    = '';
+$shipping_rate_name  = '';
+$shipping_rate_price = '0';
 $source          = sanitize_text_field( dtb_repair_pick_submission_text( $data, [ 'source' ], 'frontend_repair_form' ) );
 $frontend_base_url = function_exists( 'dtb_repair_resolve_frontend_base_url' )
 ? dtb_repair_resolve_frontend_base_url( 0, $data )
@@ -201,7 +201,6 @@ $post_id,
 if ( function_exists( 'dtb_repair_enqueue_job' ) ) {
 dtb_repair_enqueue_job( 'dtb_repair_send_notification', $post_id, [ 'template' => 'repair-submitted-customer' ] );
 dtb_repair_enqueue_job( 'dtb_repair_send_notification', $post_id, [ 'template' => 'repair-submitted-admin' ] );
-dtb_repair_enqueue_job( 'dtb_repair_create_wc_order', $post_id );
 dtb_repair_enqueue_job( 'dtb_repair_refresh_projection', $post_id );
 }
 

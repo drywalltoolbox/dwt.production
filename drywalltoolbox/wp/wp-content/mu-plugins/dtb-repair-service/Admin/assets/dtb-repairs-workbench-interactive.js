@@ -17,7 +17,6 @@
 		payload: null,
 		technicians: null,
 		isRendering: false,
-		lastSignature: '',
 	};
 
 	function qs( selector, ctx ) {
@@ -95,27 +94,26 @@
 		} );
 	}
 
-	function fetchDetail( repairId ) {
-		return apiFetch( REST + '/dtb/v1/admin/repairs/' + repairId + '/detail', { method: 'GET' } );
-	}
-
 	function workbenchAction( actionType, payload ) {
+		var repairId = state.repairId;
 		payload = payload || {};
 		payload.action_type = actionType;
-		return apiFetch( REST + '/dtb/v1/admin/repairs/' + state.repairId + '/workbench', {
+		return apiFetch( REST + '/dtb/v1/admin/repairs/' + repairId + '/workbench', {
 			method: 'POST',
 			body: JSON.stringify( payload ),
-		} ).then( updatePayload );
+		} ).then( function ( response ) { return updatePayload( response, repairId ); } );
 	}
 
 	function legacyAction( path, payload ) {
-		return apiFetch( REST + '/dtb/v1/admin/repairs/' + state.repairId + '/' + path, {
+		var repairId = state.repairId;
+		return apiFetch( REST + '/dtb/v1/admin/repairs/' + repairId + '/' + path, {
 			method: 'POST',
 			body: JSON.stringify( payload || {} ),
-		} ).then( updatePayload );
+		} ).then( function ( response ) { return updatePayload( response, repairId ); } );
 	}
 
-	function updatePayload( payload ) {
+	function updatePayload( payload, expectedRepairId ) {
+		if ( expectedRepairId && expectedRepairId !== state.repairId ) { return payload; }
 		state.payload = payload;
 		renderInteractivePanels();
 		return payload;
@@ -130,14 +128,21 @@
 		if ( ! repairId ) {
 			return;
 		}
-		if ( repairId === state.repairId && state.payload ) {
-			renderInteractivePanels();
+		if ( repairId === state.repairId ) {
 			return;
 		}
 		state.repairId = repairId;
-		fetchDetail( repairId ).then( updatePayload ).catch( function ( error ) {
-			console.warn( 'DTB repair workbench detail load failed:', error );
-		} );
+		state.payload = null;
+		state.technicians = null;
+	}
+
+	function acceptBaseDetail( event ) {
+		var detail = event.detail || {};
+		var repairId = parseInt( detail.repairId, 10 );
+		if ( ! repairId || repairId !== getOpenRepairId() || ! detail.data || ! detail.data.record ) { return; }
+		state.repairId = repairId;
+		state.technicians = null;
+		updatePayload( detail.data, repairId );
 	}
 
 	function section( title, body, extraClass ) {
@@ -634,6 +639,7 @@
 
 	function boot() {
 		bindEvents();
+		document.addEventListener( 'dtb:repair-detail-loaded', acceptBaseDetail );
 		ensureDetailLoaded();
 		var observer = new MutationObserver( function () {
 			window.requestAnimationFrame( ensureDetailLoaded );

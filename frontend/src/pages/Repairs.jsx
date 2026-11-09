@@ -22,7 +22,6 @@ import {
   getRepairToolFamilyFromCategory,
 } from '../data/repairPackages.js';
 import { uploadRepairMedia } from '../api/repairs.js';
-import veeqoService from '../services/veeqo';
 import TransactionSuccessSheet from '../components/confirmation/TransactionSuccessSheet.jsx';
 import ResponsivePicture from '../components/media/ResponsivePicture.jsx';
 import { RESPONSIVE_HERO_MEDIA } from '../assets/media/responsiveHeroMedia.js';
@@ -97,7 +96,6 @@ const BLANK_FORM = {
   contactPreference: 'email',
   // Shipping fields (Step 4)
   address: '', city: '', state: '', zip: '', country: 'US',
-  shippingRateId: '', shippingRateName: '', shippingRatePrice: null,
 };
 
 const STEPS = [
@@ -295,9 +293,9 @@ export const PRICING_TAB_DATA = [
     note: 'Transparent pricing — no hidden fees or surprise surcharges',
     tiers: [
       {
-        id: 'srs', name: 'Standard Return Shipping', price: 'Actual cost', badge: null,
+        id: 'srs', name: 'Standard Return Shipping', price: 'DTB-paid', badge: null,
         target: 'Available to all customers',
-        features: ['Customer pays actual carrier cost', 'Transparent; no markup', 'USPS, FedEx, or UPS'],
+        features: ['DTB covers return shipping', 'After inspection and service', 'Tracking provided'],
       },
       {
         id: 'er', name: 'Expedited Return (2-Day)', price: '+$25 flat', badge: 'Popular',
@@ -1186,9 +1184,6 @@ export function RepairStartExperience() {
   const [orderResult, setOrderResult] = useState(null);
 
   // Shipping rate state
-  const [rates, setRates]           = useState([]);
-  const [ratesLoading, setRatesLoading] = useState(false);
-  const [ratesError, setRatesError] = useState('');
 
   // Live catalog facets (official catalog source) for brands/categories.
   const { facets: catalogFacets } = useCatalogFacets({});
@@ -1287,45 +1282,6 @@ export function RepairStartExperience() {
   const clearErr = (field) =>
     setErrors((prev) => { const n = { ...prev }; delete n[field]; return n; });
 
-  /* ── fetch shipping rates for the destination in formData ── */
-  const fetchShippingRates = useCallback(async (data) => {
-    const { address, city, state: st, zip, country } = data;
-    if (!address || !city || !st || !zip) return;
-
-    setRatesLoading(true);
-    setRatesError('');
-    try {
-      const destination = { address, city, state: st, zip, country };
-      // Repair service items don't have WC product IDs; pass a placeholder.
-      const items = [{
-        id: 0,
-        sku: 'REPAIR-SVC',
-        name: `Repair Service — ${ data.toolBrand } ${ data.toolModel || data.toolCategory }`.trim(),
-        quantity: 1,
-        price: 0,
-        weight: 5, // estimated tool weight in lbs
-        category: 'repair service',
-      }];
-      const result = await veeqoService.getShippingRates(destination, items);
-      setRates(result);
-
-      // Pre-select the first rate.
-      if (result.length > 0 && !data.shippingRateId) {
-        setFormData((prev) => ({
-          ...prev,
-          shippingRateId:    result[0].id,
-          shippingRateName:  result[0].name,
-          shippingRatePrice: result[0].price,
-        }));
-      }
-    } catch (err) {
-      setRatesError('Could not load shipping options. Please try again.');
-      console.error('Shipping rate fetch failed:', err);
-    } finally {
-      setRatesLoading(false);
-    }
-  }, []);
-
   /* ── per-step validation ── */
   function validate(s) {
     const errs = {};
@@ -1357,7 +1313,6 @@ export function RepairStartExperience() {
       if (!formData.city.trim())                 errs.city         = 'City is required.';
       if (!formData.state.trim())                errs.state        = 'State / Province is required.';
       if (!formData.zip.trim())                  errs.zip          = 'ZIP / Postal code is required.';
-      if (!formData.shippingRateId)              errs.shippingRateId = 'Please select a shipping option.';
     }
     return errs;
   }
@@ -1368,11 +1323,6 @@ export function RepairStartExperience() {
     setErrors({});
     const nextStep = step + 1;
     setStep(nextStep);
-
-    // When entering Step 4 (Shipping), auto-fetch rates if address already present.
-    if (nextStep === 4) {
-      fetchShippingRates(formData);
-    }
 
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -1407,11 +1357,6 @@ export function RepairStartExperience() {
 
     setErrors({});
     setStep(targetStep);
-
-    // When entering Step 4 (Shipping), auto-fetch rates if address already present.
-    if (targetStep === 4) {
-      fetchShippingRates(formData);
-    }
 
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
@@ -1451,9 +1396,6 @@ export function RepairStartExperience() {
         state:              formData.state,
         zip:                formData.zip,
         country:            formData.country,
-        shippingRateId:     formData.shippingRateId,
-        shippingRateName:   formData.shippingRateName,
-        shippingRatePrice:  formData.shippingRatePrice,
       });
 
       let mediaUploadError = '';
@@ -1486,7 +1428,6 @@ export function RepairStartExperience() {
     setSubmitted(false);
     setOrderResult(null);
     setSubmitError('');
-    setRates([]);
     setBrandIsCustom(false);
     setCategoryIsCustom(false);
     setModelIsCustom(false);
@@ -2229,7 +2170,7 @@ export function RepairStartExperience() {
                       </p>
                     </div>
                     <p style={{ fontSize: '0.825rem', color: 'rgba(15,23,42,0.65)', margin: '0 0 20px 0' }}>
-                      Enter the address where we should return your tool. Return delivery is quoted separately.
+                      Enter the return address. You arrange and pay inbound shipping directly to the carrier; DTB covers return shipping after inspection and service.
                     </p>
 
                     <div style={{
@@ -2372,115 +2313,15 @@ export function RepairStartExperience() {
                           ]}
                           fullWidth
                           onChange={(value) => {
-                            setFormData((prev) => ({ ...prev, country: value, shippingRateId: '', shippingRateName: '', shippingRatePrice: null }));
-                            setRates([]);
+                            setFormData((prev) => ({ ...prev, country: value }));
                           }}
                         />
                       </Field>
                     </div>
 
-                    {/* Refresh rates button */}
-                    <div style={{ marginBottom: '24px' }}>
-                      <button
-                        type="button"
-                        onClick={() => fetchShippingRates(formData)}
-                        disabled={ratesLoading || !formData.address || !formData.city || !formData.state || !formData.zip}
-                        style={{
-                          display: 'inline-flex', alignItems: 'center', gap: '6px',
-                          padding: '8px 16px',
-                          borderRadius: '10px',
-                          border: '1px solid var(--primary-600)',
-                          background: 'transparent',
-                          color: 'var(--primary-600)',
-                          cursor: (!formData.address || !formData.city || !formData.state || !formData.zip) ? 'not-allowed' : 'pointer',
-                          fontSize: '0.8rem', fontWeight: 700,
-                          opacity: (!formData.address || !formData.city || !formData.state || !formData.zip) ? 0.45 : 1,
-                          transition: 'opacity 0.15s',
-                        }}
-                      >
-                        {ratesLoading ? (
-                          <>
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ animation: 'spin 1s linear infinite' }}>
-                              <path d="M21 12a9 9 0 1 1-6.219-8.56"/>
-                            </svg>
-                            Calculating…
-                          </>
-                        ) : (
-                          <>
-                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                              <polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-.08-4.42"/>
-                            </svg>
-                            {rates.length > 0 ? 'Refresh Rates' : 'Get Shipping Rates'}
-                          </>
-                        )}
-                      </button>
-                    </div>
-
-                    {/* Rate options */}
-                    {ratesError && (
-                      <p style={{ fontSize: '0.82rem', color: '#ef4444', marginBottom: '16px' }}>{ratesError}</p>
-                    )}
-                    {rates.length > 0 && (
-                      <div style={{ marginBottom: '8px' }}>
-                        <p style={{ fontSize: '0.8rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'rgba(15,23,42,0.45)', marginBottom: '10px' }}>
-                          Select Shipping Option
-                        </p>
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                          {rates.map((rate) => {
-                            const active = formData.shippingRateId === rate.id;
-                            return (
-                              <label
-                                key={rate.id}
-                                style={{
-                                  display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                  padding: '12px 16px',
-                                  borderRadius: '12px',
-                                  border: active ? '2px solid var(--primary-600)' : '1.5px solid rgba(15,23,42,0.14)',
-                                  background: active ? 'rgba(34,85,238,0.04)' : 'white',
-                                  cursor: 'pointer',
-                                  transition: 'border-color 0.15s, background 0.15s',
-                                }}
-                              >
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                  <input
-                                    type="radio"
-                                    name="shippingRate"
-                                    value={rate.id}
-                                    checked={active}
-                                    onChange={() => {
-                                      setFormData((prev) => ({
-                                        ...prev,
-                                        shippingRateId:    rate.id,
-                                        shippingRateName:  rate.name,
-                                        shippingRatePrice: rate.price,
-                                      }));
-                                      clearErr('shippingRateId');
-                                    }}
-                                    style={{ accentColor: 'var(--primary-600)', width: '16px', height: '16px', flexShrink: 0 }}
-                                  />
-                                  <span style={{ fontSize: '0.875rem', fontWeight: active ? 700 : 500, color: 'black' }}>
-                                    {rate.name}
-                                  </span>
-                                </div>
-                                <span style={{
-                                  fontSize: '0.875rem', fontWeight: 700,
-                                  color: rate.price === 0 ? '#16a34a' : 'black',
-                                  whiteSpace: 'nowrap', marginLeft: '12px',
-                                }}>
-                                  {rate.price === 0 ? 'FREE' : `$${rate.price.toFixed(2)}`}
-                                </span>
-                              </label>
-                            );
-                          })}
-                        </div>
-                        {errors.shippingRateId && <p style={errStyle}>{errors.shippingRateId}</p>}
-                      </div>
-                    )}
-                    {rates.length === 0 && !ratesLoading && !ratesError && (
-                      <p style={{ fontSize: '0.82rem', color: 'rgba(15,23,42,0.45)', marginTop: '4px' }}>
-                        Enter your address above then click <strong>Get Shipping Rates</strong> to see available options.
-                      </p>
-                    )}
+                    <p role="note" style={{ fontSize: '0.85rem', color: '#334155', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '12px 14px', marginTop: '4px' }}>
+                      Return shipping is covered by Drywall Toolbox after inspection and service. No return-shipping payment is due when you submit this request.
+                    </p>
                   </div>
                 )}
 
@@ -2633,14 +2474,8 @@ export function RepairStartExperience() {
                       <ReviewRow label="ZIP"        value={formData.zip} />
                       <ReviewRow label="Country"    value={formData.country} />
                       <ReviewRow label="Get tool to us" value={formData.inboundShippingMethod === 'local_pickup_dropoff' ? 'Free local pickup / drop-off' : 'Customer arranges and pays carrier directly'} />
-                      <ReviewRow label="Return"     value={formData.returnShippingPreference === 'expedited' ? 'Expedited if available' : formData.returnShippingPreference === 'hold_for_pickup' ? 'Hold for pickup' : 'Standard return shipping'} />
+                      <ReviewRow label="Return"     value={`${formData.returnShippingPreference === 'expedited' ? 'Expedited if available' : formData.returnShippingPreference === 'hold_for_pickup' ? 'Hold for pickup' : 'Standard return shipping'} — covered by Drywall Toolbox`} />
                       <ReviewRow label="Old Parts"  value={formData.oldPartsReturn === 'return' ? 'Return replaced parts' : 'Recycle or discard'} />
-                      <ReviewRow
-                        label="Shipping Option"
-                        value={formData.shippingRateName
-                          ? `${formData.shippingRateName} — ${formData.shippingRatePrice === 0 ? 'FREE' : `$${Number(formData.shippingRatePrice).toFixed(2)}`}`
-                          : ''}
-                      />
                     </div>
 
                     {/* Disclaimer */}

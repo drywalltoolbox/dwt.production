@@ -611,14 +611,8 @@ function dtb_repair_admin_footer_scripts(): void {
 		mountTopGrid();
 		if ( tabButtons.length ) {
 			var byId = function(id) { return document.getElementById(id); };
-			// Debug: log which IDs are missing from the DOM
-			['dtb-repair-command-center','dtb-repair-order-details','dtb-repair-quote-builder',
-			 'dtb-repair-technician','dtb-repair-timeline','dtb-repair-notes','dtb-repair-queue'].forEach(function(id) {
-				var el = document.getElementById(id);
-				if ( ! el ) { console.warn('[DTB Tabs] Postbox not found in DOM: #' + id); }
-				else { console.log('[DTB Tabs] Found #' + id + ' classes:', el.className); }
-			});
 			var SESSION_KEY = 'dtb_repair_tab_' + (window.location.search.match(/[?&]post=(\d+)/) || ['',''])[1];
+			var tabsEl = document.getElementById('dtb-repair-workspace-tabs');
 			var groups = {
 				order_details: [
 					'dtb-repair-command-center',
@@ -653,12 +647,17 @@ function dtb_repair_admin_footer_scripts(): void {
 				'dtb-repair-notes',
 				'dtb-repair-queue'
 			];
+			tabButtons.forEach(function(btn) {
+				var tabKey = btn.getAttribute('data-dtb-tab') || 'order_details';
+				btn.setAttribute('aria-controls', (groups[tabKey] || allKnownIds).join(' '));
+			});
 
 			var setActiveTab = function(tabKey) {
 				tabButtons.forEach(function(btn) {
 					var isActive = btn.getAttribute('data-dtb-tab') === tabKey;
 					btn.classList.toggle('is-active', isActive);
 					btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+					btn.tabIndex = isActive ? 0 : -1;
 				});
 
 				try { window.sessionStorage.setItem(SESSION_KEY, tabKey); } catch(e) {}
@@ -675,6 +674,19 @@ function dtb_repair_admin_footer_scripts(): void {
 					el.classList.toggle('dtb-workspace-hidden', ! show);
 					el.style.display = show ? '' : 'none';
 				});
+
+				var activeButton = tabButtons.find(function(btn) {
+					return btn.getAttribute('data-dtb-tab') === tabKey;
+				});
+				if (activeButton && tabsEl) {
+					var tabRect = activeButton.getBoundingClientRect();
+					var tabsRect = tabsEl.getBoundingClientRect();
+					if (tabRect.left < tabsRect.left) {
+						tabsEl.scrollLeft -= tabsRect.left - tabRect.left;
+					} else if (tabRect.right > tabsRect.right) {
+						tabsEl.scrollLeft += tabRect.right - tabsRect.right;
+					}
+				}
 			};
 
 			tabButtons.forEach(function(btn) {
@@ -682,6 +694,17 @@ function dtb_repair_admin_footer_scripts(): void {
 					var tabKey = btn.getAttribute('data-dtb-tab') || 'order_details';
 					setActiveTab(tabKey);
 					mountTopGrid();
+				});
+				btn.addEventListener('keydown', function(event) {
+					var index = tabButtons.indexOf(btn);
+					if (event.key === 'ArrowRight') { index = (index + 1) % tabButtons.length; }
+					else if (event.key === 'ArrowLeft') { index = (index - 1 + tabButtons.length) % tabButtons.length; }
+					else if (event.key === 'Home') { index = 0; }
+					else if (event.key === 'End') { index = tabButtons.length - 1; }
+					else { return; }
+					event.preventDefault();
+					tabButtons[index].focus();
+					tabButtons[index].click();
 				});
 			});
 

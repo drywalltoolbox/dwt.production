@@ -526,8 +526,6 @@ $city           = sanitize_text_field( (string) get_post_meta( $repair_id, '_rep
 $state          = sanitize_text_field( (string) get_post_meta( $repair_id, '_repair_return_state', true ) );
 $postcode       = sanitize_text_field( (string) get_post_meta( $repair_id, '_repair_return_postcode', true ) );
 $country        = sanitize_text_field( (string) get_post_meta( $repair_id, '_repair_return_country', true ) );
-$shipping_rate_name  = sanitize_text_field( (string) get_post_meta( $repair_id, '_repair_shipping_rate_name', true ) );
-$shipping_rate_price = (float) get_post_meta( $repair_id, '_repair_shipping_rate_price', true );
 $user_id        = (int) get_post_meta( $repair_id, '_repair_customer_user_id', true );
 
 $tier_prices = (array) apply_filters(
@@ -590,15 +588,6 @@ $item->set_amount( $line_amount );
 $item->set_total( $line_amount );
 $item->add_meta_data( '_dtb_repair_service_tier', $service_tier );
 $order->add_item( $item );
-
-if ( $shipping_rate_price > 0 ) {
-	$shipping_item = new WC_Order_Item_Shipping();
-	$shipping_item->set_method_title( $shipping_rate_name ?: __( 'Return Shipping', 'drywall-toolbox' ) );
-	$shipping_item->set_method_id( 'dtb_repair_return_shipping' );
-	$shipping_item->set_instance_id( '0' );
-	$shipping_item->set_total( (string) $shipping_rate_price );
-	$order->add_item( $shipping_item );
-}
 
 $order->update_meta_data( '_dtb_is_repair_order', '1' );
 $order->update_meta_data( '_dtb_order_type', 'repair' );
