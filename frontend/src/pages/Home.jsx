@@ -118,6 +118,12 @@ export default function Home() {
           <HomeHeroBrands brands={HOME_TRUST_BRANDS} />
 
           <div className="dtb-container dtb-container--fluid pb-4">
+            <StorefrontSection
+              className="dtb-home-product-section dtb-home-brand-directory-heading"
+              title="Shop by Brand"
+              subtitle="Explore each brand’s product lineup."
+            />
+
             {/* ── Brand product sections ── */}
             {HOME_BRAND_PRODUCT_SECTIONS.map((brand) => (
               <StorefrontSection

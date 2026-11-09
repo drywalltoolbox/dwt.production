@@ -14,6 +14,22 @@
   transform: none;
 }
 .dtb-home-storefront .dtb-ui-trusted-brands--home { border: 0; background: transparent; }
+
+.dtb-home-brand-directory-heading {
+  padding-block: clamp(1rem, 2.4vw, 1.5rem) .25rem;
+}
+
+.dtb-home-brand-directory-heading .storefront-section__head {
+  margin-bottom: .65rem;
+}
+
+.dtb-home-brand-directory-heading + .dtb-home-brand-section {
+  border-top: 0;
+}
+
+.dtb-home-brand-directory-heading .storefront-section__subtitle {
+  margin-top: .2rem;
+}
 /* Product-led homepage composition; the shared repair landing remains intact. */
 .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__content { text-align: left; align-items: flex-start; }
 
