@@ -17,7 +17,10 @@ export default function StorefrontSection({
       data-layout-region="storefront-section"
     >
       <div className="storefront-section__head">
-        <div className="storefront-section__head-text" data-dtb-scroll-reveal={revealHeading ? '' : undefined}>
+        <div
+          className={`storefront-section__head-text${className.includes('dtb-home-product-section') ? ' dtb-home-section-heading' : ''}`}
+          data-dtb-scroll-reveal={revealHeading ? '' : undefined}
+        >
           {eyebrow ? <p className="storefront-section__eyebrow">{eyebrow}</p> : null}
           {title ? <h2 className="storefront-section__title">{title}</h2> : null}
           {subtitle ? <p className="storefront-section__subtitle">{subtitle}</p> : null}

@@ -87,8 +87,9 @@ export default function Home() {
 
         <section className="home-commerce-categories dtb-container dtb-container--fluid" aria-label="Shop popular tool categories">
           <div className="storefront-section__head">
-            <div className="storefront-section__head-text">
+            <div className="storefront-section__head-text dtb-home-section-heading">
               <h2 className="storefront-section__title">Shop by Tool Type</h2>
+              <p className="storefront-section__subtitle">Browse professional drywall tools by category.</p>
             </div>
           </div>
           <StorefrontRail label="Shop popular tool categories" className="dtb-tool-type-rail">
@@ -109,6 +110,7 @@ export default function Home() {
               className="dtb-home-product-section"
               revealHeading
               title="New Arrivals"
+              subtitle="Explore the latest additions to our tool lineup."
               viewAllHref="/products?sort=newest"
             >
               <StorefrontProductRail sort="newest" maxItems={10} label="New arrivals" />
@@ -121,7 +123,7 @@ export default function Home() {
             <StorefrontSection
               className="dtb-home-product-section dtb-home-brand-directory-heading"
               title="Shop by Brand"
-              subtitle="Explore each brand’s product lineup."
+              subtitle="Shop professional tools and parts from leading brands."
             />
 
             {/* ── Brand product sections ── */}
@@ -140,6 +142,7 @@ export default function Home() {
                   />
                 )}
                 className={`dtb-home-product-section dtb-home-brand-section dtb-home-brand-section--${brandToSlug(brand.brand)}`}
+                subtitle={`Explore ${brand.name} tools and parts.`}
                 viewAllHref={brand.to}
                 viewAllLabel="View all"
               >
