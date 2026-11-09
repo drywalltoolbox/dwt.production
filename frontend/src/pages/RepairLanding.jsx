@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import SEOHead from '../components/shared/SEOHead';
-import RepairHero from '../components/RepairHero';
+import { HomeRepairHero } from '../components/home/HomeHero.jsx';
 import { getOfficialRepairBrands } from '../data/repairCatalogMap.js';
 import { getBrandLogo } from '../utils/brandAssets.js';
 import { HOME_HERO_CAMPAIGNS } from '../components/home/homeHeroCampaigns.js';
@@ -9,11 +9,9 @@ import '../styles/repair-merchandising.css';
 import '../styles/repair-landing-responsive.css';
 import '../styles/repair-landing-desktop.css';
 import '../styles/repair-guarantees.css';
-import '../styles/repair-hero-presentation.css';
 import '../styles/repair-service-cards-mobile.css';
 import '../styles/repair-hero-shared.css';
 import '../styles/repair-service-paths.css';
-import '../styles/repair-landing-hero-desktop.css';
 
 const PROCESS_STEPS = [
   { title: 'Identify the tool', description: 'Tell us the brand, tool family, model, symptoms, and service goal. Photos can be added during intake.' },
@@ -76,10 +74,11 @@ export default function RepairLanding() {
     .slice(0, 8);
 
   return (
-    <div className="repair-landing repair-landing--services page-wrapper">
+    <div className="page-wrapper">
       <SEOHead title="Expert Repair Services | Drywall Toolbox" description={REPAIRS_CAMPAIGN.description} canonical="/repairs" />
-      <RepairHero campaign={REPAIRS_CAMPAIGN} />
+      <HomeRepairHero />
 
+      <div className="repair-landing repair-landing--services">
       <section className="repair-service-details repair-start-options" aria-labelledby="repair-service-paths-title">
         <div className="repair-section-shell repair-start-options__shell">
           <div className="repair-section-heading repair-start-options__heading">
@@ -119,6 +118,7 @@ export default function RepairLanding() {
       <section className="repair-faq" aria-labelledby="repair-faq-title"><div className="repair-section-shell repair-faq__layout"><div className="repair-section-heading"><p className="repair-eyebrow">Repair FAQ</p><h2 id="repair-faq-title">What to know before service starts.</h2><p>Service selection, physical inspection, approval, shipping, service priority, parts, and repair tracking.</p></div><div className="repair-faq__groups">{FAQ_GROUPS.map((group) => { const groupId = faqGroupId(group.title); return (<section className="repair-faq__group" key={group.title} aria-labelledby={groupId}><h3 id={groupId}>{group.title}</h3><div className="repair-faq__list">{group.items.map((item) => (<details key={item.question}><summary>{item.question}</summary><p>{item.answer}</p></details>))}</div></section>); })}</div></div></section>
 
       <section className="repair-closing-cta" aria-labelledby="repair-closing-title"><div className="repair-section-shell repair-closing-cta__inner"><div><p className="repair-eyebrow">Ready to Start?</p><h2 id="repair-closing-title">Send the right information with the tool from day one.</h2></div><div className="repair-closing-cta__actions"><Link className="repair-button repair-button--primary" to="/repairs/start">Start a Repair <span aria-hidden="true">→</span></Link><Link to="/repairs/packages">View Repair Packages <span aria-hidden="true">→</span></Link><Link to="/repairs/track">Track Existing Repair <span aria-hidden="true">→</span></Link></div></div></section>
+      </div>
     </div>
   );
 }

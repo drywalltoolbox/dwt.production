@@ -11,7 +11,7 @@ import ProductShoppingCard from '../components/ui/ProductShoppingCard';
 import ProductModal from '../components/product/ProductModal';
 import ProductDetailPlatform from '../components/product/ProductDetailPlatform';
 import Toast from '../components/ui/Toast';
-import { ProductSkeletonGrid, SelectorSkeletonGrid } from '../components/catalog/ProductShoppingCardSkeleton';
+import { ProductSkeletonGrid } from '../components/catalog/ProductShoppingCardSkeleton';
 import ProductsBrandSelector from '../components/catalog/ProductsBrandSelector.jsx';
 import ProductsCategorySelector from '../components/catalog/ProductsCategorySelector.jsx';
 import CategoryHero from '../components/catalog/CategoryHero.jsx';
@@ -153,6 +153,18 @@ const DISPLAY_CATEGORY_ALIASES = {
   semi_automatic_tapers:     'semi_automatic_tools',
   predator_family:           'predator_family',
   predator:                  'predator_family',
+};
+
+const PARENT_CATEGORY_PREVIEW_ALIASES = {
+  corner_bead_tools: ['bead_rollers', 'bead_tools', 'bead_hoppers'],
+  replacement_parts: ['parts'],
+  tool_cases: ['tool_storage_cases'],
+  drywall_stilts: ['stilts'],
+};
+
+const COLUMBIA_PARENT_CATEGORY_PREVIEWS = {
+  replacement_parts: 'https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_ct77_01.webp',
+  automatic_taping_tools: 'https://drywalltoolbox.com/wp/wp-content/uploads/2026/media/columbia_tools_staper_03.webp',
 };
 
 function canonicalDisplayCategoryId(raw = '') {
@@ -395,15 +407,45 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
 
   const brandCategoryCards = useMemo(() => {
     if (!selectedBrand) return [];
+    const brandDisplayCategories = mergeCategoryEntries(
+      getDisplayCategoriesForBrand(facets?.displayCategoriesByBrand, selectedBrandFacet, selectedBrand, brandSlug)
+    );
+    const categoriesByKey = new Map(brandDisplayCategories.map((category) => [canonicalCategoryKey(category), category]));
+
     return normalizeCatalogNavigationGroups(facets?.navigationGroups)
       .filter((group) => group.count > 0)
-      .map((group) => ({
-        ...group,
-        name: group.label,
-        key: group.key || group.slug,
-        preview: group.image ? { url: group.image } : undefined,
-      }));
-  }, [facets?.navigationGroups, selectedBrand]);
+      .map((group) => {
+        const childKeys = new Set(group.children.map((child) => canonicalCategoryKey(child)));
+        const childCategories = brandDisplayCategories
+          .filter((category) => childKeys.has(canonicalCategoryKey(category)))
+          .sort((a, b) => b.count - a.count);
+        const parentKey = normalizeDisplayCategorySlug(group.slug || group.key || '');
+        const parentAliases = PARENT_CATEGORY_PREVIEW_ALIASES[parentKey] || [];
+        const directCategories = parentAliases
+          .map((key) => categoriesByKey.get(key))
+          .filter(Boolean);
+        const categoryMatches = childCategories.length ? childCategories : directCategories;
+        if (categoryMatches.length === 0) return null;
+
+        const columbiaPreview = brandToSlug(selectedBrandFacet?.slug || selectedBrand) === 'columbia-taping-tools'
+          ? COLUMBIA_PARENT_CATEGORY_PREVIEWS[parentKey]
+          : '';
+        const previewUrl = columbiaPreview
+          || group.image
+          || childCategories.find((category) => category.image)?.image
+          || directCategories.find((category) => category.image)?.image
+          || '';
+
+        return {
+          ...group,
+          name: group.label,
+          key: group.key || group.slug,
+          count: categoryMatches.reduce((sum, category) => sum + category.count, 0),
+          preview: previewUrl ? { url: previewUrl } : undefined,
+        };
+      })
+      .filter(Boolean);
+  }, [brandSlug, facets?.displayCategoriesByBrand, facets?.navigationGroups, selectedBrand, selectedBrandFacet]);
 
   const selectedDisplayCategories = useMemo(
     () => query.displayCategory || [],
@@ -838,33 +880,23 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
         )}
 
         {showBrandLanding ? (
-          <LoadingCardTransition
+          <ProductsBrandSelector
+            brands={brandFacets}
             loading={facetsLoading}
-            skeleton={<SelectorSkeletonGrid mode="brands" />}
-            label="Loading product brands"
-          >
-            <ProductsBrandSelector
-              brands={brandFacets}
-              onSelectBrand={(brand) => navigate(`/products/brands/${brand.slug || brandToSlug(brand.label)}`)}
-            />
-          </LoadingCardTransition>
+            onSelectBrand={(brand) => navigate(`/products/brands/${brand.slug || brandToSlug(brand.label)}`)}
+          />
         ) : showCategoryLanding ? (
-          <LoadingCardTransition
+          <ProductsCategorySelector
+            logoOnlyHeader
+            brand={selectedBrandFacet?.label || selectedBrand}
+            brandLogo={selectedBrandFacet?.logo || getBrandLogo(selectedBrand)}
+            categories={brandCategoryCards}
             loading={facetsLoading}
-            skeleton={<SelectorSkeletonGrid mode="categories" />}
-            label="Loading product categories"
-          >
-            <ProductsCategorySelector
-              logoOnlyHeader
-              brand={selectedBrandFacet?.label || selectedBrand}
-              brandLogo={selectedBrandFacet?.logo || getBrandLogo(selectedBrand)}
-              categories={brandCategoryCards}
-              onBack={resetToBrandList}
-              onSelectCategory={(cat) => cat.isAllProducts
-                ? navigate(`/products/brands/${selectedBrandFacet?.slug || brandToSlug(selectedBrand)}/categories/all-products`)
-                : navigate(buildCategoryPageUrl(cat.slug, selectedBrandFacet?.slug || selectedBrand))}
-            />
-          </LoadingCardTransition>
+            onBack={resetToBrandList}
+            onSelectCategory={(cat) => cat.isAllProducts
+              ? navigate(`/products/brands/${selectedBrandFacet?.slug || brandToSlug(selectedBrand)}/categories/all-products`)
+              : navigate(buildCategoryPageUrl(cat.slug, selectedBrandFacet?.slug || selectedBrand))}
+          />
         ) : (
           <>
             <div className="dtb-listing-search">

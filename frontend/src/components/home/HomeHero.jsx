@@ -11,7 +11,7 @@ const SLIDE_INTERVAL_MS = 8500;
 const HERO_CROSSFADE_DURATION_MS = 620;
 const POINTER_IDLE_MS = 3000;
 
-function HomeHeroSlide({ campaign, reduceMotion, isActive, isEntering = false, isExiting = false }) {
+function HomeHeroSlide({ campaign, reduceMotion, isActive, isEntering = false, isExiting = false, titleId = 'home-hero-title', standalone = false }) {
   const media = campaign.id === 'repairs' ? RESPONSIVE_HERO_MEDIA.repairs : RESPONSIVE_HERO_MEDIA.home;
   const slideDuration = reduceMotion ? 100 : HERO_CROSSFADE_DURATION_MS;
   const slideClassName = [
@@ -28,10 +28,10 @@ function HomeHeroSlide({ campaign, reduceMotion, isActive, isEntering = false, i
       inert={!isActive}
       style={{ '--home-hero-slide-duration': `${slideDuration}ms` }}
     >
-      <div className="repair-landing home-hero__repair-surface" aria-live="off">
+      <div className={`${standalone ? '' : 'repair-landing '}home-hero__repair-surface`} aria-live="off">
         <RepairHero
           campaign={campaign}
-          titleId={isActive ? 'home-hero-title' : null}
+          titleId={isActive ? titleId : null}
           media={media}
           homeSlide
           isActive={isActive}
@@ -308,6 +308,25 @@ export default function HomeHero() {
         </nav>
       </div>
 
+    </section>
+  );
+}
+
+export function HomeRepairHero() {
+  const campaign = HOME_HERO_CAMPAIGNS.find(({ id }) => id === 'repairs');
+  if (!campaign) return null;
+
+  return (
+    <section className="home-hero dtb-home-page" aria-labelledby="repairs-hero-title">
+      <div className="home-hero__stage" data-campaign={campaign.id}>
+        <HomeHeroSlide
+          campaign={campaign}
+          reduceMotion={false}
+          isActive
+          titleId="repairs-hero-title"
+          standalone
+        />
+      </div>
     </section>
   );
 }

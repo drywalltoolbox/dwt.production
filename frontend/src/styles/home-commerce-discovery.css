@@ -1,8 +1,11 @@
-.home-commerce-categories { position: relative; padding-block: clamp(1.5rem, 3vw, 2.5rem); }
+.home-commerce-categories { position: relative; padding-block: clamp(1.65rem, 3.2vw, 2.65rem); }
 
 /* One continuous homepage surface; keep shared catalog cards unchanged elsewhere. */
 .dtb-home-storefront { border: 0; }
 .dtb-home-storefront .storefront-section + .storefront-section { border: 0; }
+.dtb-home-storefront .storefront-section {
+  padding-block: clamp(1.4rem, 3.2vw, 2.7rem);
+}
 .dtb-home-storefront .dtb-home-product-section .storefront-section__view-all,
 .dtb-home-storefront .dtb-home-product-section .storefront-section__view-all:hover {
   min-height: 44px;
@@ -16,7 +19,7 @@
 .dtb-home-storefront .dtb-ui-trusted-brands--home { border: 0; background: transparent; }
 
 .dtb-home-brand-directory-heading {
-  padding-block: clamp(1rem, 2.4vw, 1.5rem) .25rem;
+  padding-block: clamp(1.1rem, 2.4vw, 1.6rem) .55rem;
 }
 
 .dtb-home-brand-directory-heading .storefront-section__head {
@@ -71,6 +74,14 @@
   background: linear-gradient(to bottom, transparent 0%, #94baff 22%, #1262ef 50%, #94baff 78%, transparent 100%);
   content: '';
   pointer-events: none;
+}
+
+.dtb-home-page .dtb-home-brand-section .dtb-home-section-heading {
+  padding-left: 0;
+}
+
+.dtb-home-page .dtb-home-brand-section .dtb-home-section-heading::before {
+  display: none;
 }
 
 .dtb-home-page .storefront-section__subtitle {
@@ -142,7 +153,7 @@
   /* A connected discovery flow with clear section rhythm and softly surfaced
      category choices. Keep the white canvas continuous between sections. */
   .home-commerce-categories {
-    padding: 1.15rem 0 1.8rem;
+    padding: 1.25rem 0 2rem;
   }
 
   .dtb-home-page .home-commerce-categories .storefront-section__title,
@@ -201,8 +212,8 @@
     filter: drop-shadow(0 1px 1px rgba(255, 255, 255, .9));
   }
 
-  .dtb-home-product-section {
-    padding-block: 1.15rem 1.35rem;
+  .dtb-home-storefront .dtb-home-product-section {
+    padding-block: 1.3rem 1.5rem;
   }
 
   .dtb-home-product-section:not(.dtb-home-brand-section) .storefront-section__head {

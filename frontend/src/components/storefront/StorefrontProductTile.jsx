@@ -33,13 +33,31 @@ function parsePrice(value) {
   return Number.isFinite(numeric) ? numeric : null;
 }
 
+function resolveGalleryImageSource(image) {
+  if (typeof image === 'string') return image.trim();
+  return String(image?.src || image?.url || '').trim();
+}
+
+function normalizeImageIdentity(source) {
+  return String(source || '')
+    .split(/[?#]/, 1)[0]
+    .replace(/-\d+x\d+(?=\.[^/.]+$)/, '')
+    .toLowerCase();
+}
+
 
 function isNestedInteractiveTarget(target) {
   return target instanceof Element && Boolean(target.closest('button, a, input, select, textarea, [data-dtb-card-action]'));
 }
 
 export default function StorefrontProductTile({ product, cardProduct, onOpenModal, onAddToCart, index = 0, variant = 'grid' }) {
-  const isVariable = Boolean(product?.is_variable || product?.type === 'variable');
+  const isVariable = Boolean(
+    product?.is_variable
+    || product?.type === 'variable'
+    || product?.add_to_cart_type === 'variation'
+    || product?.addToCartType === 'variation'
+    || cardProduct?.addToCartType === 'variation'
+  );
   const variationContext = isVariable ? cardProduct : null;
   const displayProduct = product || {};
   const commerceProduct = variationContext || displayProduct;
@@ -56,6 +74,9 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const sku = isVariable ? '' : (displayProduct.sku || commerceProduct.sku || '');
   const [overlayActive, setOverlayActive] = useState(false);
   const [overlayHasFocus, setOverlayHasFocus] = useState(false);
+  const [secondaryImageRequested, setSecondaryImageRequested] = useState(false);
+  const [secondaryImageVisible, setSecondaryImageVisible] = useState(false);
+  const [secondaryImageReadyState, setSecondaryImageReadyState] = useState({ source: '', ready: false });
   const isMobile = useIsMobile();
   const showDesktopOverlay = !isMobile && variant !== 'list';
 
@@ -80,6 +101,16 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   // product; keep the thumbnail only as a fallback when no source image exists.
   const image = variationContext?.image || variationContext?.image_thumbnail || displayProduct.image || displayProduct.image_thumbnail;
   const imageSrcset = variationContext?.image_srcset || displayProduct.image_srcset;
+  const imageGallery = isVariable
+    ? (Array.isArray(variationContext?.images) && variationContext.images.length > 0
+        ? variationContext.images
+        : (Array.isArray(displayProduct.images) ? displayProduct.images : []))
+    : (Array.isArray(displayProduct.images) ? displayProduct.images : (Array.isArray(commerceProduct.images) ? commerceProduct.images : []));
+  const primaryImageIdentity = normalizeImageIdentity(image);
+  const secondaryImage = imageGallery
+    .map(resolveGalleryImageSource)
+    .find((source) => source && normalizeImageIdentity(source) !== primaryImageIdentity) || '';
+  const secondaryImageReady = secondaryImageReadyState.source === secondaryImage && secondaryImageReadyState.ready;
   const slug = displayProduct.slug || commerceProduct.slug;
   const productUrl = slug ? `/products/${slug}${displayProduct.includedVariation ? `?variant=${encodeURIComponent(displayProduct.id)}` : ''}` : null;
   const [quantity, setQuantity] = useState(1);
@@ -89,13 +120,23 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const quantityMenuRef = useRef(null);
   const imageButtonRef = useRef(null);
   const overlayRef = useRef(null);
+  const hoverIntentTimerRef = useRef(null);
+  const hoverCloseTimerRef = useRef(null);
   const navigate = useNavigate();
 
+  const clearHoverTimers = useCallback(() => {
+    window.clearTimeout(hoverIntentTimerRef.current);
+    window.clearTimeout(hoverCloseTimerRef.current);
+  }, []);
+
   const closeOverlay = useCallback(() => {
+    clearHoverTimers();
     const activeElement = document.activeElement;
     if (overlayRef.current?.contains(activeElement)) imageButtonRef.current?.focus();
     setOverlayActive(false);
-  }, []);
+  }, [clearHoverTimers]);
+
+  useEffect(() => () => clearHoverTimers(), [clearHoverTimers]);
 
   useEffect(() => {
     if (!quantityOpen) return undefined;
@@ -168,12 +209,35 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   }, [productUrl, slug]);
   const handleMouseEnter = useCallback(() => {
     if (!showDesktopOverlay) return;
-    warmProductRoute();
-    setOverlayActive(true);
+    window.clearTimeout(hoverCloseTimerRef.current);
+    window.clearTimeout(hoverIntentTimerRef.current);
+    hoverIntentTimerRef.current = window.setTimeout(() => {
+      warmProductRoute();
+      setOverlayActive(true);
+    }, 140);
   }, [showDesktopOverlay, warmProductRoute]);
+  const handlePointerEnter = useCallback((event) => {
+    if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+    handleMouseEnter();
+  }, [handleMouseEnter]);
   const handleMouseLeave = useCallback(() => {
-    if (showDesktopOverlay) closeOverlay();
-  }, [closeOverlay, showDesktopOverlay]);
+    if (!showDesktopOverlay) return;
+    window.clearTimeout(hoverIntentTimerRef.current);
+    if (overlayRef.current?.contains(document.activeElement)) return;
+    window.clearTimeout(hoverCloseTimerRef.current);
+    hoverCloseTimerRef.current = window.setTimeout(() => setOverlayActive(false), 140);
+  }, [showDesktopOverlay]);
+
+  useEffect(() => {
+    if (!showDesktopOverlay || !overlayActive || !secondaryImage) {
+      setSecondaryImageVisible(false);
+      return undefined;
+    }
+
+    setSecondaryImageRequested(true);
+    const frame = window.requestAnimationFrame(() => setSecondaryImageVisible(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, [overlayActive, secondaryImage, showDesktopOverlay]);
   // Do not warm PDP/quick-view modules on touch pointerdown. A finger touching
   // the image is often the beginning of a rail swipe, not purchase intent.
   // Keyboard focus and precise mouse/pen hover retain intent-based preloading.
@@ -231,11 +295,28 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   }
 
   return (
-    <article className={`dtb-product-card dtb-product-card--${variant} storefront-motion-card${isVariable ? ' dtb-product-card--variable' : ''}`} style={{ '--dtb-card-delay': `${Math.min(index, 8) * 30}ms` }} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={openModalFromMobileCard}>
+    <article className={`dtb-product-card dtb-product-card--${variant} storefront-motion-card${isVariable ? ' dtb-product-card--variable' : ''}${overlayActive ? ' dtb-product-card--hover-open' : ''}`} style={{ '--dtb-card-delay': `${Math.min(index, 8) * 30}ms` }} onPointerEnter={handlePointerEnter} onPointerLeave={handleMouseLeave} onClick={openModalFromMobileCard}>
       <div className="dtb-product-card__image">
         <div ref={imageButtonRef} role="button" tabIndex={0} className="dtb-product-card__image-hit" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} onClick={handleImageClick} onKeyDown={(e) => { if (e.target !== e.currentTarget) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleImageClick(e); } }} aria-label={isMobile ? `Quick view ${name}` : `View ${name}`}>
           <ProductCardImage product={displayProduct} src={image} srcSet={imageSrcset} sizes={variant === 'rail' ? '(max-width: 767px) min(80vw, 290px), 240px' : variant === 'list' ? '(max-width: 767px) 32vw, 240px' : '(max-width: 767px) 50vw, (max-width: 1024px) 33vw, 240px'} alt={name} className="dtb-product-card__img" padding="0" fit="contain" mobileFit={isMobile && variant !== 'list'} eager={false} />
         </div>
+        {secondaryImageRequested && secondaryImage ? (
+          <img
+            src={secondaryImage}
+            alt=""
+            aria-hidden="true"
+            width="400"
+            height="400"
+            loading="eager"
+            decoding="async"
+            className={`dtb-product-card__secondary-image${secondaryImageVisible && secondaryImageReady ? ' is-visible' : ''}`}
+            onLoad={(event) => {
+              const source = event.currentTarget.currentSrc || event.currentTarget.src;
+              setSecondaryImageReadyState({ source: secondaryImage, ready: Boolean(source) });
+            }}
+            onError={() => setSecondaryImageReadyState({ source: secondaryImage, ready: false })}
+          />
+        ) : null}
         {showDesktopOverlay && (
           <div
             ref={overlayRef}
@@ -313,7 +394,8 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
           >
             <span className="dtb-add-to-cart__surface" aria-hidden="true" />
             <span className="dtb-add-to-cart__content">
-              <span className="dtb-add-to-cart__label"><span className="dtb-card-action__desktop-label">View</span><span className="dtb-card-action__mobile-label">View</span></span>
+              <SlidersHorizontal size={15} strokeWidth={2} aria-hidden="true" />
+              <span className="dtb-add-to-cart__label"><span className="dtb-card-action__desktop-label">Options</span><span className="dtb-card-action__mobile-label">Options</span></span>
             </span>
           </button>
         ) : (

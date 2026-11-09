@@ -4,6 +4,8 @@ import { fetchCatalogProducts } from '../../services/catalogPlatformCache.js';
 import { brandToSlug } from '../../utils/catalogUrlState.js';
 import { resolveCategoryThumbnail } from '../../utils/categoryThumbnailImages.js';
 import { MediaSelectorCard, SelectorGrid } from '../selectors/SelectorCards.jsx';
+import LoadingCardTransition from '../shared/LoadingCardTransition.jsx';
+import { SelectorSkeletonGrid } from './ProductShoppingCardSkeleton.jsx';
 import './products-selector.css';
 
 const ALL_PRODUCTS_CATEGORY = {
@@ -267,6 +269,7 @@ export default function ProductsCategorySelector({
   loadAllProductsPreview = true,
   itemLabel = 'product',
   logoOnlyHeader = false,
+  loading = false,
 }) {
   const [previewState, setPreviewState] = useState({ brand: '', images: [], total: null });
   const [partsPreview, setPartsPreview] = useState({ brand: '', image: '' });
@@ -371,21 +374,27 @@ export default function ProductsCategorySelector({
         </div>
       </div>
 
-      <SelectorGrid variant="categories">
-        {displayCategories.map((category, index) => (
-          <ProductCategoryCard
-            key={category.key || category.slug || category.name}
-            brand={brand}
-            category={['parts', 'replacement_parts', 'replacement-parts'].includes(String(category.key || category.slug || '').toLowerCase()) && partsPreview.brand === brand && partsPreview.image
-              ? { ...category, preview: { url: partsPreview.image } }
-              : category}
-            index={index}
-            onSelectCategory={onSelectCategory}
-            allProductsImages={category.isAllProducts ? allProductsImages : []}
-            itemLabel={itemLabel}
-          />
-        ))}
-      </SelectorGrid>
+      <LoadingCardTransition
+        loading={loading}
+        skeleton={<SelectorSkeletonGrid mode="categories" />}
+        label="Loading product categories"
+      >
+        <SelectorGrid variant="categories">
+          {displayCategories.map((category, index) => (
+            <ProductCategoryCard
+              key={category.key || category.slug || category.name}
+              brand={brand}
+              category={['parts', 'replacement_parts', 'replacement-parts'].includes(String(category.key || category.slug || '').toLowerCase()) && !category.preview?.url && partsPreview.brand === brand && partsPreview.image
+                ? { ...category, preview: { url: partsPreview.image } }
+                : category}
+              index={index}
+              onSelectCategory={onSelectCategory}
+              allProductsImages={category.isAllProducts ? allProductsImages : []}
+              itemLabel={itemLabel}
+            />
+          ))}
+        </SelectorGrid>
+      </LoadingCardTransition>
     </div>
   );
 }

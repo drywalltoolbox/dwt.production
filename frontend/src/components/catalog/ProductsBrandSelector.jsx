@@ -4,6 +4,8 @@ import { dedupeCatalogBrandEntries } from '../../utils/catalogFacets.js';
 import { resolveProductBrandLogo } from '../../utils/brandLogoAssets.js';
 import { resolveFeaturedBrandPresentation } from '../../utils/brandSelectorPresentation.js';
 import { BrandSelectorCard, SelectorGrid } from '../selectors/SelectorCards.jsx';
+import LoadingCardTransition from '../shared/LoadingCardTransition.jsx';
+import { SelectorSkeletonGrid } from './ProductShoppingCardSkeleton.jsx';
 import './products-selector.css';
 
 function normalizeBrandList(brands = [], { includeSchematicOnly = false } = {}) {
@@ -20,7 +22,7 @@ function normalizeBrandList(brands = [], { includeSchematicOnly = false } = {}) 
   });
 }
 
-export default function ProductsBrandSelector({ brands, onSelectBrand, showHero = true, includeSchematicOnly = false }) {
+export default function ProductsBrandSelector({ brands, onSelectBrand, showHero = true, includeSchematicOnly = false, loading = false }) {
   const sortedBrands = useMemo(
     () => normalizeBrandList(brands, { includeSchematicOnly }),
     [brands, includeSchematicOnly],
@@ -37,22 +39,28 @@ export default function ProductsBrandSelector({ brands, onSelectBrand, showHero 
         />
       )}
 
-      <SelectorGrid variant="brands" className="products-brand-grid">
-        {sortedBrands.map((brand) => {
-          const label = brand.label || brand.key || '';
-          return (
-            <BrandSelectorCard
-              key={brand.slug || brand.key || label}
-              name={label}
-              logo={brand.logo}
-              className={brand.selectorClassName}
-              style={brand.selectorStyle}
-              logoStyle={brand.selectorLogoStyle}
-              onClick={() => onSelectBrand(brand)}
-            />
-          );
-        })}
-      </SelectorGrid>
+      <LoadingCardTransition
+        loading={loading}
+        skeleton={<SelectorSkeletonGrid mode="brands" />}
+        label="Loading product brands"
+      >
+        <SelectorGrid variant="brands" className="products-brand-grid">
+          {sortedBrands.map((brand) => {
+            const label = brand.label || brand.key || '';
+            return (
+              <BrandSelectorCard
+                key={brand.slug || brand.key || label}
+                name={label}
+                logo={brand.logo}
+                className={brand.selectorClassName}
+                style={brand.selectorStyle}
+                logoStyle={brand.selectorLogoStyle}
+                onClick={() => onSelectBrand(brand)}
+              />
+            );
+          })}
+        </SelectorGrid>
+      </LoadingCardTransition>
     </div>
   );
 }
