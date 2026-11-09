@@ -493,14 +493,6 @@
   }
 }
 
-@supports (font-size: 1cqi) {
-  @media (max-width: 767px) {
-    .dtb-product-card__price-col { container-type: inline-size; }
-    .dtb-product-card .dtb-product-card__price--from {
-      font-size: clamp(.76rem, 8.4cqi, .95rem);
-    }
-  }
-}
 @keyframes dtb-quantity-menu-in { from { opacity:0;transform:scale(.96) translateY(var(--dtb-quantity-menu-offset,-3px)); } to { opacity:1;transform:scale(1) translateY(0); } }
 @media (min-width: 768px) {
   .dtb-product-card__commerce-controls { display:flex;align-items:center;gap:8px;width:100%;min-width:0; }
