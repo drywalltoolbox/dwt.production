@@ -40,7 +40,7 @@ record="$release_records/$release"
 is_release_file() {
   case "$1" in
     .htaccess|index.html|asset-manifest.json|robots.txt|site.webmanifest|404.html|favicon.ico|favicon.png|favicon-16x16.png|favicon-32x32.png|favicon-48x48.png|apple-touch-icon.png|android-chrome-192x192.png|android-chrome-512x512.png|android-chrome-maskable-192x192.png|android-chrome-maskable-512x512.png) return 0 ;;
-    assets/css/*|assets/fonts/*|assets/images/*|assets/js/*|errors/[0-9][0-9][0-9].html|errors/error.css|errors/error-page.js|errors/dtb-logo-black.webp) return 0 ;;
+    assets/css/*|assets/fonts/*|assets/images/*|assets/js/*|errors/[0-9][0-9][0-9].html|errors/error.css|errors/error-page.js|errors/dtb-logo-black.webp|brands/*/schematic_data*.json) return 0 ;;
     *) return 1 ;;
   esac
 }
@@ -56,6 +56,11 @@ collect_current_managed_files() {
   for path in assets/css assets/fonts assets/images assets/js errors; do
     [[ ! -d "$target/$path" ]] || find "$target/$path" -type f -printf '%P\n' | sed "s#^#$path/#"
   done
+  if [[ -d "$target/brands" ]]; then
+    find "$target/brands" -type f -name 'schematic_data*.json' \
+      ! -name 'schematic_data.schema.json' ! -name 'schematic_data_template.json' \
+      -printf '%P\n' | sed 's#^#brands/#'
+  fi
 }
 
 write_atomically() {

@@ -8,6 +8,7 @@ on:
       - 'drywalltoolbox/.htaccess'
       - '.github/workflows/production-frontend-build.yml'
       - '.github/workflows/production-frontend-publish.yml'
+      - 'scripts/deployment/production-frontend-release.sh'
 
 permissions:
   contents: read
@@ -51,13 +52,19 @@ jobs:
           done
           test ! -e "$root/storefront.html" || { echo "::error::Duplicate storefront shell"; exit 2; }
           test ! -e "$root/logos" || { echo "::error::Shared root logos leaked into frontend artifact"; exit 2; }
-          test ! -e "$root/brands" || { echo "::error::Shared root brands leaked into frontend artifact"; exit 2; }
           test ! -e "$root/assets/email" || { echo "::error::Shared email assets leaked into frontend artifact"; exit 2; }
           python3 - <<'PY'
           import json
           import pathlib
 
           root = pathlib.Path("dist")
+          brands = root / "brands"
+          brand_files = sorted(path for path in brands.rglob("*") if path.is_file())
+          assert brand_files, "No schematic source data was included"
+          for path in brand_files:
+              assert path.name.startswith("schematic_data") and path.suffix.lower() == ".json", f"Unexpected file under brands: {path}"
+              assert path.name not in {"schematic_data.schema.json", "schematic_data_template.json"}, f"Authoring/schema file must not be published: {path}"
+              json.loads(path.read_text())
           manifest = json.loads((root / "asset-manifest.json").read_text())
           entrypoints = manifest.get("entrypoints")
           assert isinstance(entrypoints, list) and entrypoints, "Missing root entrypoints"

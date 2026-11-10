@@ -17,6 +17,10 @@ first release if approval gating is required. The release script updates only th
 allowlisted storefront files. It never mirrors or deletes the whole
 `public_html` tree, and preserves `/wp`, `/staging`, `/brands`, `/logos`,
 `/assets/email`, `.well-known`, uploads, and other unrelated site content.
+Within `/brands`, the release manages only validated nested
+`schematic_data*.json` files (excluding the schema and authoring template).
+Those source datasets are included in rollback snapshots; brand logos and all
+other existing `/brands` files remain outside the release boundary.
 
 The first automatic production publish is enabled by the
 `SITEGROUND_PRODUCTION_UPDRAFT_BACKUP_VERIFIED=true` environment variable,

@@ -856,7 +856,10 @@ function dtb_schematic_reconcile_write_row( ?DTB_Schematic_Record_Entity $record
 
 function dtb_schematic_page_is_metadata_current( array $page, int $attachment_id ): bool {
 	$described = dtb_schematic_attachment_repo_describe( $attachment_id );
-	if ( ! $described || ! $described['exists'] ) {
+	if ( is_wp_error( $described ) || ! is_array( $described ) || empty( $described['exists'] ) ) {
+		if ( is_wp_error( $described ) ) {
+			error_log( sprintf( '[dtb-schematics] unable to inspect metadata for attachment #%d; preserving current page metadata.', $attachment_id ) ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+		}
 		return true; // Nothing we can refresh.
 	}
 	return (int) $page['width'] === (int) $described['width'] && (int) $page['height'] === (int) $described['height'];
