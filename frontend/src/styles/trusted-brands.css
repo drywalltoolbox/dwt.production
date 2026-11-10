@@ -75,7 +75,7 @@
   display: flex;
   width: max-content;
   animation: dtb-brands-lap var(--dtb-brand-loop-duration, 32s) linear infinite;
-  will-change: transform;
+  backface-visibility: hidden;
 }
 
 .dtb-ui-trusted-brands.is-static .dtb-ui-trusted-brands__track,
@@ -87,6 +87,16 @@
 }
 
 .dtb-ui-trusted-brands.is-static .dtb-ui-trusted-brands__lane--clone { display: none; }
+
+.dtb-ui-trusted-brands.is-static .dtb-ui-trusted-brands__viewport {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-mask-image: none;
+  mask-image: none;
+  scrollbar-width: none;
+}
+
+.dtb-ui-trusted-brands.is-static .dtb-ui-trusted-brands__viewport::-webkit-scrollbar { display: none; }
 
 .dtb-ui-trusted-brands__lane {
   display: flex;
@@ -144,7 +154,14 @@
 }
 
 @keyframes dtb-brands-lap {
+  from { transform: translate3d(0, 0, 0); }
   to { transform: translate3d(-50%, 0, 0); }
+}
+
+@media (min-width: 601px) and (prefers-reduced-motion: no-preference) {
+  .dtb-ui-trusted-brands:not(.is-static) .dtb-ui-trusted-brands__track {
+    will-change: transform;
+  }
 }
 
 @media (max-width: 600px) {
@@ -166,6 +183,12 @@
   .dtb-ui-trusted-brands--home .dtb-trusted-brand-link[data-brand="Platinum Drywall Tools"] img {
     height: 3rem;
     max-height: 3rem;
+  }
+}
+
+@media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
+  .dtb-ui-trusted-brands--home:not(.is-static) .dtb-ui-trusted-brands__track {
+    animation-duration: 38s;
   }
 }
 

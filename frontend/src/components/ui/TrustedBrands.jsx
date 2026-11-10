@@ -47,6 +47,7 @@ export default function TrustedBrands({
   transparent = false,
   className = '',
   imageLoading = 'eager',
+  animated = true,
 }) {
   const normalizedBrands = useMemo(
     () => normalizeBrands(Array.isArray(brands) ? brands : []).map((brand) => ({ ...brand, imageLoading })),
@@ -60,7 +61,13 @@ export default function TrustedBrands({
       && typeof window.matchMedia === 'function'
       && window.matchMedia('(prefers-reduced-motion: reduce)').matches
   );
-  const [loopCount, setLoopCount] = useState(() => reducedMotion ? 1 : MIN_LOOPS);
+  const [compactViewport, setCompactViewport] = useState(() =>
+    typeof window !== 'undefined'
+      && typeof window.matchMedia === 'function'
+      && window.matchMedia('(max-width: 767px)').matches
+  );
+  const shouldAnimate = animated && !reducedMotion;
+  const [loopCount, setLoopCount] = useState(() => shouldAnimate && !compactViewport ? MIN_LOOPS : 1);
 
   useEffect(() => {
     const query = window.matchMedia?.('(prefers-reduced-motion: reduce)');
@@ -72,9 +79,18 @@ export default function TrustedBrands({
   }, []);
 
   useEffect(() => {
+    const query = window.matchMedia?.('(max-width: 767px)');
+    if (!query) return undefined;
+    const sync = () => setCompactViewport(query.matches);
+    sync();
+    query.addEventListener?.('change', sync);
+    return () => query.removeEventListener?.('change', sync);
+  }, []);
+
+  useEffect(() => {
     const viewport = viewportRef.current;
     const lane = laneRef.current;
-    if (!viewport || !lane || normalizedBrands.length < 2) return undefined;
+    if (!viewport || !lane || normalizedBrands.length < 2 || !shouldAnimate || compactViewport) return undefined;
 
     const measure = () => {
       const firstItem = lane.firstElementChild;
@@ -98,11 +114,11 @@ export default function TrustedBrands({
     observer.observe(viewport);
     if (lane.firstElementChild) observer.observe(lane.firstElementChild);
     return () => observer.disconnect();
-  }, [normalizedBrands.length, reducedMotion]);
+  }, [normalizedBrands.length, shouldAnimate, compactViewport]);
 
   if (!normalizedBrands.length) return null;
 
-  const loops = Array.from({ length: normalizedBrands.length < 2 || reducedMotion ? 1 : loopCount }, (_, loopIndex) =>
+  const loops = Array.from({ length: normalizedBrands.length < 2 || !shouldAnimate ? 1 : compactViewport ? 1 : loopCount }, (_, loopIndex) =>
     normalizedBrands.map((brand, brandIndex) => ({
       ...brand,
       key: `${brand.to || brand.name}-${loopIndex}-${brandIndex}`,
@@ -111,7 +127,7 @@ export default function TrustedBrands({
   const duration = `${Math.max(18, Number(speed) || 32)}s`;
   const classes = [
     'dtb-ui-trusted-brands',
-    normalizedBrands.length < 2 ? 'is-static' : '',
+    normalizedBrands.length < 2 || !shouldAnimate ? 'is-static' : '',
     dark ? 'dtb-ui-trusted-brands--dark' : '',
     transparent ? 'dtb-ui-trusted-brands--transparent' : '',
     className,

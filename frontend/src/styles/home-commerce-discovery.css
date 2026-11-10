@@ -265,21 +265,17 @@
     animation: none !important;
   }
 
-  .dtb-ui-trusted-brands--home .dtb-ui-trusted-brands__track {
-    animation: none;
-    transform: none;
-    will-change: auto;
-  }
-
-  .dtb-ui-trusted-brands--home .dtb-ui-trusted-brands__lane--clone {
-    display: none;
-  }
-
 }
 
 .dtb-home-page .dtb-product-card-skeleton__image-shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 0.3) 50%, transparent 100%);
+  animation: dtb-loading-shimmer 2.8s ease-in-out infinite;
+}
+
+.dtb-home-page .dtb-loading-bar {
   animation: none;
-  transform: none;
+  background: linear-gradient(90deg, #e8edf5 0%, #e1e8f2 50%, #e8edf5 100%);
+  background-size: 100% 100%;
 }
 
 /* Keep the Tools slide on the same soft image-to-copy scrim treatment as the

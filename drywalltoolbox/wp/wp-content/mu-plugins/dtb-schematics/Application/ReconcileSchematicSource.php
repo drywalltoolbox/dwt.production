@@ -489,7 +489,7 @@ function dtb_schematic_reconcile_finalize_asset( array $asset, ?DTB_Schematic_Re
 	}
 
 	$described = dtb_schematic_attachment_repo_describe( $attachment_id );
-	$has_dimensions = $described && $described['exists'] && $described['width'] > 0 && $described['height'] > 0;
+	$has_dimensions = dtb_schematic_reconcile_described_attachment_has_dimensions( $described );
 	if ( ! $dry_run && ! $has_dimensions ) {
 		$metadata_repair = dtb_schematic_reconcile_repair_attachment_metadata( $attachment_id );
 		if ( is_wp_error( $metadata_repair ) ) {
@@ -498,7 +498,7 @@ function dtb_schematic_reconcile_finalize_asset( array $asset, ?DTB_Schematic_Re
 			$asset['changed'] = true;
 			$asset['notes'][] = sprintf( 'Rebuilt metadata for attachment #%d after an interrupted registration.', $attachment_id );
 			$described      = dtb_schematic_attachment_repo_describe( $attachment_id );
-			$has_dimensions = $described && $described['exists'] && $described['width'] > 0 && $described['height'] > 0;
+			$has_dimensions = dtb_schematic_reconcile_described_attachment_has_dimensions( $described );
 		}
 	}
 
@@ -538,6 +538,20 @@ function dtb_schematic_reconcile_finalize_asset( array $asset, ?DTB_Schematic_Re
 	}
 
 	return $asset;
+}
+
+/**
+ * Narrow the attachment repository's array|WP_Error|false response before
+ * reading its dimensions. A metadata lookup failure should mark the page as
+ * not ready for publication, never become an array-offset fatal.
+ *
+ * @param mixed $described Attachment description from the repository.
+ */
+function dtb_schematic_reconcile_described_attachment_has_dimensions( $described ): bool {
+	return is_array( $described )
+		&& ! empty( $described['exists'] )
+		&& (int) ( $described['width'] ?? 0 ) > 0
+		&& (int) ( $described['height'] ?? 0 ) > 0;
 }
 
 /**
