@@ -38,6 +38,10 @@ function dtb_register_launch_email_preview(): void {
  * @return string
  */
 function dtb_render_launch_announcement_email( string $unsubscribe_url = '' ): string {
+	if ( ! function_exists( 'dtb_render_branded_email' ) ) {
+		return '';
+	}
+
 	$template_path = __DIR__ . '/LaunchEmailTemplate.html';
 	$template      = is_readable( $template_path ) ? file_get_contents( $template_path ) : false;
 
@@ -47,24 +51,38 @@ function dtb_render_launch_announcement_email( string $unsubscribe_url = '' ): s
 	$offer_html = '';
 	if ( class_exists( 'DTB_SignupCouponCampaign' ) && DTB_SignupCouponCampaign::is_active() ) {
 		$account_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account' );
-		$offer_html  = '<tr><td class="offer-wrap" style="padding:0 26px 25px;background:#081827"><table role="presentation" width="100%" bgcolor="#10253d" style="width:100%;border:2px solid #64a0ff;border-radius:15px;background:#10253d"><tr><td align="center" style="padding:18px 20px;color:#fff;font-family:Arial,sans-serif;font-size:17px;line-height:24px;font-weight:700">New account members receive <strong style="color:#78a8ff;font-size:25px;font-style:italic;white-space:nowrap">10% OFF</strong> their first order <a href="' . esc_url( $account_url ) . '" style="display:inline-block;margin-left:9px;color:#fff;background:#2255ee;padding:9px 14px;border-radius:5px;font-size:13px;line-height:16px;text-decoration:none">Create an account&nbsp;&rarr;</a></td></tr></table></td></tr>';
+		$offer_html  = '<table role="presentation" width="100%" bgcolor="#101f37" style="width:100%;margin:22px 0 8px;border:1px solid #4774b0;border-left:5px solid #3472ff;border-collapse:separate"><tr><td style="padding:17px 20px;color:#f5f8ff;font-family:Arial,sans-serif;font-size:16px;line-height:24px"><span style="display:block;color:#9dbbff;font-size:10px;line-height:15px;font-weight:800;letter-spacing:1.5px">A WELCOME OFFER FOR NEW ACCOUNTS</span><strong style="display:inline-block;margin-top:4px;color:#fff;font-size:27px;line-height:32px;font-style:italic">10% OFF</strong><span style="display:inline-block;margin-left:8px;color:#dce7f7">your first order</span><br><a href="' . esc_url( $account_url ) . '" style="display:inline-block;margin-top:11px;padding:10px 15px;border-radius:5px;background:#2255ee;color:#fff;font-size:13px;line-height:17px;font-weight:700;text-decoration:none">Create your account &rarr;</a><span style="display:block;margin-top:9px;color:#b1bfd3;font-size:11px;line-height:16px">One use per new account. The personal coupon is issued with signup. Campaign terms apply.</span></td></tr></table>';
 	}
 
 	$values = array(
-		'{{home_url}}'     => esc_url( home_url( '/' ) ),
 		'{{shop_url}}'     => esc_url( home_url( '/all-products' ) ),
 		'{{parts_url}}'    => esc_url( home_url( '/parts' ) ),
 		'{{schematics_url}}' => esc_url( home_url( '/schematics' ) ),
 		'{{repair_url}}'   => esc_url( home_url( '/repairs/packages' ) ),
-		'{{support_url}}'  => esc_url( function_exists( 'dtb_email_support_url' ) ? dtb_email_support_url() : home_url( '/contact' ) ),
-		'{{logo_url}}'     => esc_url( function_exists( 'dtb_email_logo_url' ) ? dtb_email_logo_url() : home_url( '/assets/email/dtb-logo.png' ) ),
 		'{{hero_url}}'     => esc_url( home_url( '/assets/email/account-welcome-hero.jpeg' ) ),
-		'{{unsubscribe}}' => esc_url( '' !== $unsubscribe_url ? $unsubscribe_url : home_url( '/unsubscribe-preview/' ) ),
 		'{{offer_html}}'   => $offer_html,
-		'{{year}}'         => esc_html( gmdate( 'Y' ) ),
 	);
 
-	return strtr( $template, $values );
+	$content = strtr( $template, $values );
+	$unsubscribe_url = '' !== $unsubscribe_url ? $unsubscribe_url : home_url( '/unsubscribe-preview/' );
+	$footer_note = sprintf(
+		/* translators: %s: unsubscribe link. */
+		__( 'You are receiving this launch announcement because you signed up for Drywall Toolbox launch updates. %s', 'dtb' ),
+		'<a href="' . esc_url( $unsubscribe_url ) . '" style="color:#ffffff;text-decoration:underline">Unsubscribe from launch emails</a>'
+	);
+
+	return dtb_render_branded_email(
+		array(
+			'title'       => __( 'We’re live', 'dtb' ),
+			'preheader'   => __( 'The new Drywall Toolbox is live. Shop tools, find parts, view schematics, and explore repair services.', 'dtb' ),
+			'greeting'    => '',
+			'intro'       => $content,
+			'cta_url'     => home_url( '/all-products' ),
+			'cta_label'   => __( 'Explore the store', 'dtb' ),
+			'signoff'     => __( 'The Drywall Toolbox Team', 'dtb' ),
+			'footer_note' => $footer_note,
+		)
+	);
 }
 
 /** Render a synthetic preview without looking up recipients or sending email. */

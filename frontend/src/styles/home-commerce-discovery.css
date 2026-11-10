@@ -98,6 +98,17 @@
     background: #fff;
   }
 
+  /* Mobile Safari has less compositing memory; keep the hero on the normal
+     page layer and reserve transitions for a brief, simple opacity crossfade. */
+  .dtb-home-page .home-hero__slide {
+    will-change: auto;
+    transition-duration: 180ms;
+  }
+
+  .dtb-home-page .home-hero__ambient {
+    background: none;
+  }
+
   /* Give the mobile hero a little more vertical room so the first discovery
      rail is the natural end of the opening viewport. Keep the change fluid
      across compact phones and taller devices. */
@@ -135,13 +146,8 @@
 
   .dtb-home-page .home-hero .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__scrim::before {
     position: absolute;
-    inset: 14% 0 22%;
-    background: linear-gradient(90deg, rgba(2, 10, 25, .25), rgba(2, 10, 25, .18) 62%, rgba(2, 10, 25, .035)),
-      linear-gradient(180deg, transparent, rgba(2, 10, 25, .08) 18%, rgba(2, 10, 25, .18) 52%, rgba(2, 10, 25, .08) 84%, transparent);
-    -webkit-backdrop-filter: blur(8px) saturate(.92);
-    backdrop-filter: blur(8px) saturate(.92);
-    -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, .42) 10%, #000 24%, #000 76%, transparent 100%);
-    mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, .42) 10%, #000 24%, #000 76%, transparent 100%);
+    inset: 20% 0 18%;
+    background: linear-gradient(90deg, rgba(2, 10, 25, .3), rgba(2, 10, 25, .18) 58%, transparent 100%);
     content: '';
     pointer-events: none;
   }
@@ -182,11 +188,7 @@
     border-radius: 0;
     background: transparent;
     box-shadow: none;
-    transition: transform 180ms ease;
-  }
-
-  .home-commerce-categories .dtb-tool-type-tile:active {
-    transform: scale(.985);
+    transition: none;
   }
 
   .home-commerce-categories .dtb-tool-type-tile__media {
@@ -246,6 +248,47 @@
     padding-inline: 0;
   }
 
+  /* Homepage product rails sit directly on the white canvas. Keep the image,
+     identity, price, and controls as one flat surface without nested panels. */
+  .dtb-home-storefront .dtb-product-card--rail {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .dtb-home-storefront .dtb-product-card--rail .dtb-product-card__image,
+  .dtb-home-storefront .dtb-product-card--rail .dtb-product-card__meta {
+    background: transparent;
+  }
+
+  .dtb-home-storefront .dtb-product-card--rail .dtb-product-card__meta {
+    padding-inline: 0;
+  }
+
+  .dtb-home-storefront .dtb-product-card--rail .dtb-product-card__brand {
+    padding-inline: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: #49617f;
+    font-size: .67rem;
+    font-weight: 750;
+    letter-spacing: .065em;
+  }
+
+  .dtb-home-storefront .dtb-product-card-skeleton--rail {
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .dtb-home-storefront .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__image {
+    border-radius: 0;
+  }
+
   .home-hero-carousel__dot { height: 44px; }
   .home-hero-carousel__dot::before,
   .home-hero-carousel__dot.is-active::after { top: 21px; }
@@ -268,14 +311,27 @@
 }
 
 .dtb-home-page .dtb-product-card-skeleton__image-shimmer {
-  background: linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 0.3) 50%, transparent 100%);
-  animation: dtb-loading-shimmer 2.8s ease-in-out infinite;
+  display: none;
 }
 
 .dtb-home-page .dtb-loading-bar {
   animation: none;
   background: linear-gradient(90deg, #e8edf5 0%, #e1e8f2 50%, #e8edf5 100%);
   background-size: 100% 100%;
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  .dtb-home-page .dtb-product-card-skeleton__image-shimmer {
+    display: block;
+    background: linear-gradient(90deg, transparent 0%, rgb(255 255 255 / 0.3) 50%, transparent 100%);
+    animation: dtb-loading-shimmer 2.8s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dtb-home-page .home-hero__slide {
+    transition: none;
+  }
 }
 
 /* Keep the Tools slide on the same soft image-to-copy scrim treatment as the
