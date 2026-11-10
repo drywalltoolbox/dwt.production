@@ -27,7 +27,11 @@ stage_release() {
   printf 'release asset %s\n' "$version" > "$payload/assets/js/main.$version.js"
   printf 'release css %s\n' "$version" > "$payload/assets/css/main.$version.css"
   printf 'not found %s\n' "$version" > "$payload/errors/404.html"
+  printf 'error css %s\n' "$version" > "$payload/errors/error.css"
+  printf 'error page script %s\n' "$version" > "$payload/errors/error-page.js"
+  printf 'brand mark %s\n' "$version" > "$payload/errors/dtb-logo-black.webp"
   (cd "$payload" && find . -type f ! -name .dtb-file-sha256 -print0 | sort -z | xargs -0 sha256sum > .dtb-file-sha256)
+  bash "$script" prepare "$target" "$private" "$release"
   bash "$script" prepare "$target" "$private" "$release"
   cp -a "$payload/." "$private/incoming/$release/"
 }
@@ -42,16 +46,19 @@ bash "$script" publish "$target" "$private" "$first"
 [[ "$(cat "$target/brands/schematic_data.json")" == 'schematic data' ]]
 [[ "$(cat "$target/assets/email/logo.png")" == 'old email asset' ]]
 [[ -f "$target/assets/js/main.v1.js" && -f "$target/assets/css/main.v1.css" ]]
+[[ -f "$target/errors/error.css" && -f "$target/errors/error-page.js" && -f "$target/errors/dtb-logo-black.webp" ]]
 bash "$script" verify "$target" "$private" "$first" >/dev/null
 
 stage_release "$second" v2
 bash "$script" publish "$target" "$private" "$second"
 [[ "$(cat "$target/index.html")" == 'React storefront v2' ]]
 [[ -f "$target/assets/js/main.v1.js" && -f "$target/assets/js/main.v2.js" ]]
+[[ -f "$target/errors/dtb-logo-black.webp" ]]
 
 bash "$script" rollback "$target" "$private" "$second"
 [[ "$(cat "$target/index.html")" == 'React storefront v1' ]]
 [[ -f "$target/assets/js/main.v1.js" && ! -f "$target/assets/js/main.v2.js" ]]
+[[ -f "$target/errors/error.css" && -f "$target/errors/error-page.js" && -f "$target/errors/dtb-logo-black.webp" ]]
 [[ "$(cat "$target/assets/email/logo.png")" == 'old email asset' ]]
 [[ "$(cat "$target/wp/index.php")" == 'wordpress runtime' ]]
 [[ "$(cat "$target/staging/index.html")" == 'staging app' ]]
