@@ -113,7 +113,7 @@ export default function Home() {
               subtitle="Explore the latest additions to our tool lineup."
               viewAllHref="/products?sort=newest"
             >
-              <StorefrontProductRail sort="newest" maxItems={10} label="New arrivals" />
+              <StorefrontProductRail sort="newest" maxItems={6} label="New arrivals" />
             </StorefrontSection>
           </div>
 
@@ -149,7 +149,7 @@ export default function Home() {
                 <StorefrontProductRail
                   brand={brand.brand}
                   sort="popular"
-                  maxItems={10}
+                  maxItems={4}
                   label={`${brand.name} products`}
                 />
               </StorefrontSection>

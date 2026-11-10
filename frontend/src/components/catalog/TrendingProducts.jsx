@@ -109,7 +109,7 @@ export default function TrendingProducts() {
     if (!shouldLoad) return undefined;
     let mounted = true;
 
-    fetchCatalogProducts({ perPage: 10, sort: 'popular', isParts: false }).then((payload) => {
+    fetchCatalogProducts({ perPage: 6, sort: 'popular', isParts: false }).then((payload) => {
       if (!mounted) return;
       const items = Array.isArray(payload?.items) ? payload.items : [];
       setProducts(items
@@ -118,7 +118,7 @@ export default function TrendingProducts() {
           if (!product || product.is_parts || product.category === 'parts') return false;
           return (Number(product.price) || Number(product.min_price) || Number(product.regular_price) || 0) > 0;
         })
-        .slice(0, 10));
+        .slice(0, 6));
       setLoading(false);
     }).catch((err) => {
       console.error('Error fetching trending products:', err);
