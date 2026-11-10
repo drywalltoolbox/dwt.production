@@ -76,9 +76,14 @@ cool-neutral borders, rounded corners, generous spacing, and the primary
 at 13px or larger with fluid table layouts.
 
 The customer new-account template uses
-`/assets/email/account-welcome-hero.jpeg` behind live welcome text. Its account
-CTA continues to use WooCommerce's password-setting URL when one is supplied,
-and otherwise the WooCommerce My Account URL. The offer block appears only
+`/assets/email/account-welcome-hero.jpeg` as a full-bleed hero background with
+a left-to-right navy scrim, live text shadows, and a prominent account CTA.
+The solid navy table color remains the fallback when a client blocks images or
+gradients. The hero image stays visible behind the text on desktop and mobile.
+The display headline follows the storefront hero's bold italic treatment while
+retaining the email-safe Geist/system stack. The CTA continues to use
+WooCommerce's password-setting URL when one is supplied, and otherwise the
+WooCommerce My Account URL. The offer block appears only
 for a user-owned welcome campaign coupon verified as a 10% percentage
 discount; preview mode uses a clearly marked `PREVIEW10` code and does not
 create a coupon. The header, footer, and account hero artwork assets are

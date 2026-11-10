@@ -1,0 +1,74 @@
+name: Production Frontend Build Validation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - 'drywalltoolbox/.htaccess'
+      - '.github/workflows/production-frontend-build.yml'
+      - '.github/workflows/production-frontend-publish.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: dtb-production-frontend-pr-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-production:
+    name: Build and validate root-mounted production artifact
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Check out reviewed change
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install locked dependencies
+        working-directory: frontend
+        run: npm ci --no-audit --no-fund
+
+      - name: Build production frontend
+        working-directory: frontend
+        run: npm run build:production
+
+      - name: Validate root-mounted production output
+        run: |
+          set -euo pipefail
+          root=dist
+          for file in index.html .htaccess asset-manifest.json robots.txt site.webmanifest; do
+            test -s "$root/$file" || { echo "::error::Missing or empty $file"; exit 2; }
+          done
+          test ! -e "$root/storefront.html" || { echo "::error::Duplicate storefront shell"; exit 2; }
+          test ! -e "$root/logos" || { echo "::error::Shared root logos leaked into frontend artifact"; exit 2; }
+          test ! -e "$root/brands" || { echo "::error::Shared root brands leaked into frontend artifact"; exit 2; }
+          test ! -e "$root/assets/email" || { echo "::error::Shared email assets leaked into frontend artifact"; exit 2; }
+          python3 - <<'PY'
+          import json
+          import pathlib
+
+          root = pathlib.Path("dist")
+          manifest = json.loads((root / "asset-manifest.json").read_text())
+          entrypoints = manifest.get("entrypoints")
+          assert isinstance(entrypoints, list) and entrypoints, "Missing root entrypoints"
+          for uri in entrypoints:
+              assert isinstance(uri, str) and uri.startswith("/assets/"), f"Unexpected root asset URL: {uri}"
+              assert (root / uri.lstrip("/")).is_file(), f"Missing emitted entrypoint: {uri}"
+          html = (root / "index.html").read_text()
+          rules = (root / ".htaccess").read_text()
+          assert "/staging/" not in html, "Staging base path found in production shell"
+          assert 'X-Robots-Tag "noindex, nofollow"' not in rules, "Production root has noindex rules"
+          assert "RewriteRule ^$ index.html [L]" in rules, "Production root route missing"
+          assert "RewriteRule ^ index.html [QSA,L]" in rules, "Production SPA fallback missing"
+          print(f"Validated {len(entrypoints)} root-mounted entrypoints")
+          PY

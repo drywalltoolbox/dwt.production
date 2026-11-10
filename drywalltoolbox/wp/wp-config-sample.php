@@ -1,168 +1,102 @@
 <?php
-
 /**
- * Drywall Toolbox production WordPress configuration template.
+ * The base configuration for WordPress
  *
- * Copy this file to the server-owned wp-config.php and replace every
- * CHANGE_ME value there. Never commit the populated runtime file.
+ * The wp-config.php creation script uses this file during the installation.
+ * You don't have to use the website, you can copy this file to "wp-config.php"
+ * and fill in the values.
  *
- * WordPress core lives physically under /wp while the public site, wp-admin,
- * authentication entry points, and REST API are exposed from the root origin.
+ * This file contains the following configurations:
+ *
+ * * Database settings
+ * * Secret keys
+ * * Database table prefix
+ * * ABSPATH
+ *
+ * @link https://developer.wordpress.org/advanced-administration/wordpress/wp-config/
+ *
+ * @package WordPress
  */
 
-define( 'WP_CACHE', true ); // Managed by SiteGround Speed Optimizer.
+// ** Database settings - You can get this info from your web host ** //
+/** The name of the database for WordPress */
+define( 'DB_NAME', 'database_name_here' );
 
-/**
- * Database.
- */
-define( 'DB_NAME', 'CHANGE_ME_DATABASE_NAME' );
-define( 'DB_USER', 'CHANGE_ME_DATABASE_USER' );
-define( 'DB_PASSWORD', 'CHANGE_ME_DATABASE_PASSWORD' );
+/** Database username */
+define( 'DB_USER', 'username_here' );
+
+/** Database password */
+define( 'DB_PASSWORD', 'password_here' );
+
+/** Database hostname */
 define( 'DB_HOST', 'localhost' );
 
-define( 'DB_CHARSET', 'utf8' );
+/** Database charset to use in creating database tables. */
+define( 'DB_CHARSET', 'utf8mb4' );
+
+/** The database collate type. Don't change this if in doubt. */
 define( 'DB_COLLATE', '' );
 
-/**
- * Authentication keys and salts.
+/**#@+
+ * Authentication unique keys and salts.
  *
- * Generate unique production values at:
- * https://api.wordpress.org/secret-key/1.1/salt/
- */
-define( 'AUTH_KEY',         'CHANGE_ME_UNIQUE_PHRASE' );
-define( 'SECURE_AUTH_KEY',  'CHANGE_ME_UNIQUE_PHRASE' );
-define( 'LOGGED_IN_KEY',    'CHANGE_ME_UNIQUE_PHRASE' );
-define( 'NONCE_KEY',        'CHANGE_ME_UNIQUE_PHRASE' );
-define( 'AUTH_SALT',        'CHANGE_ME_UNIQUE_PHRASE' );
-define( 'SECURE_AUTH_SALT', 'CHANGE_ME_UNIQUE_PHRASE' );
-define( 'LOGGED_IN_SALT',   'CHANGE_ME_UNIQUE_PHRASE' );
-define( 'NONCE_SALT',       'CHANGE_ME_UNIQUE_PHRASE' );
-
-define( 'WP_CACHE_KEY_SALT', 'CHANGE_ME_UNIQUE_CACHE_SALT' );
-
-/**
- * Database table prefix.
+ * Change these to different unique phrases! You can generate these using
+ * the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}.
  *
- * This must match the installed database. Changing it on an existing site
- * disconnects WordPress from its current tables.
- */
-$table_prefix = 'kf5_';
-
-/**
- * Drywall Toolbox SiteGround production topology.
- */
-define( 'WP_HOME', 'https://drywalltoolbox.com' );
-define( 'WP_SITEURL', 'https://drywalltoolbox.com/wp' );
-define( 'DRYWALL_ALLOWED_ORIGIN', 'https://drywalltoolbox.com' );
-
-/**
- * DTB application security.
+ * You can change these at any point in time to invalidate all existing cookies.
+ * This will force all users to have to log in again.
  *
- * Generate a unique 64-character hexadecimal JWT secret server-side. Keep
- * external-order write access undefined so WooCommerce REST order creation
- * remains blocked outside the native checkout/order pipeline.
+ * @since 2.6.0
  */
-define( 'DRYWALL_JWT_SECRET', 'CHANGE_ME_64_CHARACTER_HEX_JWT_SECRET' );
-define( 'DTB_ADMIN_EMAIL', 'CHANGE_ME_OPERATIONAL_ADMIN_EMAIL' );
+define( 'AUTH_KEY',         'put your unique phrase here' );
+define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
+define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
+define( 'NONCE_KEY',        'put your unique phrase here' );
+define( 'AUTH_SALT',        'put your unique phrase here' );
+define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
+define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
+define( 'NONCE_SALT',       'put your unique phrase here' );
+
+/**#@-*/
 
 /**
- * The production frontend and WordPress aliases share the root cookie path.
- * Do not define COOKIE_DOMAIN without a reviewed multi-subdomain requirement.
- */
-define( 'COOKIEPATH', '/' );
-define( 'SITECOOKIEPATH', '/' );
-define( 'ADMIN_COOKIE_PATH', '/' );
-
-/**
- * Existing narrowly scoped topology compatibility switches.
- */
-define( 'DTB_ENABLE_WOO_ADMIN_REST_NONCE_COMPAT', true );
-define( 'DTB_ENABLE_REST_CORS', true );
-define( 'DTB_RESTRICT_USER_ENDPOINTS', true );
-define( 'DTB_WC_PUBLIC_READ', true );
-define( 'DTB_ENABLE_NONCE_REFRESH', true );
-define( 'DTB_SECURITY_LOGGING', true );
-define( 'DTB_ENABLE_PROXY_RATE_LIMIT', true );
-define( 'DTB_ENABLE_LOGIN_RATE_LIMIT', true );
-define( 'DTB_ENABLE_CSP', false );
-define( 'DTB_ENABLE_ADMIN_AUTH_DIAGNOSTICS', false );
-define( 'DTB_ENABLE_ADMIN_LOGIN_TRACE', false );
-define( 'DTB_ENABLE_ADMIN_REST_LOGGING', false );
-define( 'DTB_ENABLE_ADMIN_SMOKE_ROUTE', false );
-
-/**
- * HTTPS and production hardening.
- */
-define( 'FORCE_SSL_ADMIN', true );
-define( 'DISALLOW_FILE_EDIT', true );
-define( 'WP_ENVIRONMENT_TYPE', 'production' );
-define( 'WP_MEMORY_LIMIT', '256M' );
-define( 'WP_MAX_MEMORY_LIMIT', '512M' );
-
-/**
- * Veeqo integration.
+ * WordPress database table prefix.
  *
- * Keep resource IDs at 0 until each live identifier is verified. Keep webhook
- * verification disabled unless Veeqo's live signing contract is verified.
- */
-// Keep Veeqo credentials and verified resource IDs in the ignored wp-config.php
-// used for the target environment. Never place production secrets in this sample.
-// define( 'DTB_VEEQO_API_KEY', 'replace-with-a-server-side-key' );
-// define( 'DTB_VEEQO_CHANNEL_ID', 0 );
-// define( 'DTB_VEEQO_WAREHOUSE_ID', 0 );
-// define( 'DTB_VEEQO_DELIVERY_METHOD_ID', 0 );
-// define( 'DTB_VEEQO_WEBHOOK_SECRET', 'replace-with-a-server-side-secret' );
-define( 'DTB_VEEQO_ENABLE_VERIFIED_WEBHOOKS', false );
-define( 'DTB_VEEQO_DEBUG', false );
-
-/**
- * Native Veeqo kit writes are disabled by default in new installations.
- * Enable only in the protected production wp-config.php after verifying the
- * operator authorization and duplicate-operation safeguards on that server.
- */
-define( 'DTB_VEEQO_KIT_WRITES_ENABLED', false );
-
-/**
- * Production-safe debug defaults.
+ * You can have multiple installations in one database if you give each
+ * a unique prefix. Only numbers, letters, and underscores please!
  *
- * Enable WP_DEBUG and WP_DEBUG_LOG only for a bounded diagnostic window.
+ * At the installation time, database tables are created with the specified prefix.
+ * Changing this value after WordPress is installed will make your site think
+ * it has not been installed.
+ *
+ * @link https://developer.wordpress.org/advanced-administration/wordpress/wp-config/#table-prefix
+ */
+$table_prefix = 'wp_';
+
+/**
+ * For developers: WordPress debugging mode.
+ *
+ * Change this to true to enable the display of notices during development.
+ * It is strongly recommended that plugin and theme developers use WP_DEBUG
+ * in their development environments.
+ *
+ * For information on other constants that can be used for debugging,
+ * visit the documentation.
+ *
+ * @link https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
  */
 define( 'WP_DEBUG', false );
-define( 'WP_DEBUG_DISPLAY', false );
-define( 'WP_DEBUG_LOG', false );
-define( 'SCRIPT_DEBUG', false );
 
-@ini_set( 'display_errors', '0' );
+/* Add any custom values between this line and the "stop editing" line. */
 
-/**
- * QuickBooks Online sandbox integration.
- */
-// QuickBooks remains unconfigured until a reviewed production or sandbox
-// connection is intentionally enabled with newly issued provider credentials.
-define( 'DTB_QBO_ENVIRONMENT', 'sandbox' );
-// Leave credentials undefined here so operator-managed settings are not shadowed.
-// define( 'DTB_QBO_CLIENT_ID', 'replace-with-client-id' );
-// define( 'DTB_QBO_CLIENT_SECRET', 'replace-with-server-side-client-secret' );
-// define( 'DTB_QBO_SANDBOX_WEBHOOK_VERIFIER_TOKEN', 'replace-with-sandbox-token' );
 
-/**
- * Deployment integration. Supply secrets only in the ignored environment config.
- */
-// define( 'DTB_DEPLOYMENT_WEBHOOK_SECRET', 'replace-with-server-side-secret' );
-// define( 'DTB_GITHUB_DEPLOYMENT_TOKEN', 'replace-with-server-side-token' );
-// Optional overrides; the integration has code-owned defaults.
-// define( 'DTB_GITHUB_REPO_OWNER', '' );
-// define( 'DTB_GITHUB_REPO_NAME', '' );
-// define( 'DTB_GITHUB_RELEASE_WORKFLOW_FILE', '' );
 
 /* That's all, stop editing! Happy publishing. */
 
+/** Absolute path to the WordPress directory. */
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', __DIR__ . '/' );
 }
 
-@include_once '/var/lib/sec/wp-settings-pre.php';
-
+/** Sets up WordPress vars and included files. */
 require_once ABSPATH . 'wp-settings.php';
-
-@include_once '/var/lib/sec/wp-settings.php';

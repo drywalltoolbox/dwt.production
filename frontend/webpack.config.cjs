@@ -33,7 +33,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 //
 // Resolution order:
 //   1. CLI --env appEnv=... (explicit build target)
-//   2. APP_ENV / REACT_APP_APP_ENV / REACT_APP_ENV from shell/CI
+//   2. APP_ENV from shell/CI, then REACT_APP_ENV from the selected public env file
 //   3. Fallback from webpack mode (production/development)
 //
 // dotenv.config() does not override pre-set env vars by default, so CI secrets
@@ -61,7 +61,6 @@ module.exports = (envFlags, argv) => {
   const appEnv = (
     cliAppEnv ||
     process.env.APP_ENV ||
-    process.env.REACT_APP_APP_ENV ||
     process.env.REACT_APP_ENV ||
     inferredAppEnv
   ).trim().toLowerCase();
@@ -151,8 +150,6 @@ module.exports = (envFlags, argv) => {
     // Headless WP + WooCommerce architecture
     'process.env.REACT_APP_WP_BASE_URL':                JSON.stringify(env('REACT_APP_WP_BASE_URL')),
     'process.env.REACT_APP_SITE_URL':                   JSON.stringify(env('REACT_APP_SITE_URL')),
-    'process.env.REACT_APP_APP_ENV':                    JSON.stringify(env('REACT_APP_APP_ENV') || appEnv),
-
     // ─── Headless WooCommerce proxy (drywall/v1) ──────────────────────────────
     // Read from the environment-specific .env file loaded above.
     'process.env.REACT_APP_API_BASE_URL':               JSON.stringify(env('REACT_APP_API_BASE_URL')),
@@ -440,13 +437,6 @@ module.exports = (envFlags, argv) => {
 
       HeroImagePreloadPlugin,
 
-      // During pre-launch, production-root index.html remains the public
-      // coming-soon document. Customer-owned routes can use this equivalent
-      // React shell without launching or replacing the homepage.
-      ...(!isDev && appEnv === 'production'
-        ? [new HtmlWebpackPlugin({ ...htmlPluginOptions, filename: 'storefront.html' })]
-        : []),
-
       new CopyWebpackPlugin({
         patterns: [
           {
@@ -473,6 +463,10 @@ module.exports = (envFlags, argv) => {
                 // Shared runtime assets are deployed once at public_html/brands.
                 // Imported brand logos are still emitted as hashed module assets.
                 '**/brands/**',
+                // These assets have independent server-side authorities; the
+                // storefront release must not overwrite shared logos or email media.
+                '**/logos/**',
+                '**/assets/email/**',
               ],
             },
           },
@@ -488,14 +482,9 @@ module.exports = (envFlags, argv) => {
             },
           },
           {
-            from: path.resolve(
-              __dirname,
-              '..',
-              'drywalltoolbox',
-              appEnv === 'staging'
-                ? path.join('staging', '.htaccess')
-                : '.htaccess',
-            ),
+            from: appEnv === 'staging'
+              ? path.resolve(__dirname, '..', 'drywalltoolbox', 'staging', '.htaccess')
+              : path.resolve(__dirname, '.htaccess'),
             to: '.htaccess',
             toType: 'file',
           },

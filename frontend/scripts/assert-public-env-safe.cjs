@@ -121,7 +121,7 @@ async function runPre(secrets) {
 
 async function runPost(secrets) {
   const appEnv = String(
-    process.env.APP_ENV || process.env.REACT_APP_APP_ENV || process.env.REACT_APP_ENV || 'production',
+    process.env.APP_ENV || process.env.REACT_APP_ENV || 'production',
   ).toLowerCase();
   if (!['production', 'staging'].includes(appEnv)) {
     fail(`Post-build safety validation only accepts APP_ENV=production or staging; received ${appEnv}.`, []);

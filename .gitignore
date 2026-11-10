@@ -187,3 +187,7 @@ scripts/supplier-catalog/.venv/
 scripts/supplier-catalog/.browser-profile/
 scripts/supplier-catalog/brands.json
 scripts/supplier-catalog/output/
+
+# SiteGround production deploy key material is local-only. Never commit it.
+docs/deployment/dtb-github-production-private.txt
+docs/deployment/dtb-github-production-public.txt

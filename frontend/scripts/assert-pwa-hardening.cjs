@@ -10,7 +10,7 @@ const indexPath = path.join(frontendRoot, 'index.html');
 const storefrontHeaderPath = path.join(frontendRoot, 'src', 'components', 'storefront', 'StorefrontHeader.jsx');
 const storefrontShellPath = path.join(frontendRoot, 'src', 'styles', 'storefront-shell.css');
 const machinedDesignPath = path.join(frontendRoot, 'src', 'styles', 'machined-design.css');
-const htaccessPath = path.join(repositoryRoot, 'drywalltoolbox', '.htaccess');
+const htaccessPath = path.join(frontendRoot, '.htaccess');
 
 function fail(message) {
   console.error(message);
@@ -70,6 +70,10 @@ if (machinedDesign.includes('[style*="linear-gradient(to right"]')) {
 }
 
 const htaccess = fs.readFileSync(htaccessPath, 'utf8');
+const canonicalRootHtaccess = fs.readFileSync(path.join(repositoryRoot, 'drywalltoolbox', '.htaccess'), 'utf8');
+if (htaccess !== canonicalRootHtaccess) {
+  fail('frontend/.htaccess must match drywalltoolbox/.htaccess before production builds.');
+}
 if (!/<FilesMatch "\^site\\\.webmanifest\$">[\s\S]*?Cache-Control "no-cache, no-store, must-revalidate"/.test(htaccess)) {
   fail('drywalltoolbox/.htaccess must prevent stale browser caching of site.webmanifest.');
 }

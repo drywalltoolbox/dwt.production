@@ -17,20 +17,14 @@ $action_label = ! empty( $password_generated ) && ! empty( $set_password_url )
 	? __( 'Set your password', 'drywall-toolbox' )
 	: __( 'Go to your account', 'drywall-toolbox' );
 
-echo \DTB\Commerce\Email\dtb_email_new_account_hero(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+echo \DTB\Commerce\Email\dtb_email_new_account_hero( $action_url, $action_label ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 $account_font = function_exists( 'dtb_email_font_stack' ) ? dtb_email_font_stack() : "'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
-echo '<table class="dtb-account-identity" role="presentation" border="0" cellpadding="0" cellspacing="0" width="92%" align="center" bgcolor="#f2f7ff" style="width:92%;max-width:600px;margin:16px auto 20px;border-collapse:separate;border:1px solid #d9e5f8;border-radius:14px;background-color:#f2f7ff;font-family:' . esc_attr( $account_font ) . ';">';
-echo '<tr><td class="dtb-account-identity-copy" width="60%" valign="middle" style="width:60%;padding:22px 16px 22px 24px;vertical-align:middle;">';
+echo '<table class="dtb-account-identity" role="presentation" border="0" cellpadding="0" cellspacing="0" width="92%" align="center" bgcolor="#ffffff" style="width:92%;max-width:600px;margin:16px auto 20px;border-collapse:separate;border:1px solid #d9e5f8;border-radius:14px;background-color:#ffffff;font-family:' . esc_attr( $account_font ) . ';">';
+echo '<tr><td class="dtb-account-identity-copy" width="100%" valign="middle" style="width:100%;padding:22px 24px;vertical-align:middle;">';
 echo '<p style="margin:0;color:#10213a;font:750 21px/28px ' . esc_attr( $account_font ) . ';letter-spacing:-.3px;">' . esc_html( sprintf( __( 'Welcome, %s.', 'drywall-toolbox' ), (string) $user_display_name ) ) . '</p>';
 echo '<p style="margin:4px 0 13px;color:#34445e;font:400 15px/22px ' . esc_attr( $account_font ) . ';">' . esc_html__( 'You’re all set. Your account is ready whenever you need it.', 'drywall-toolbox' ) . '</p>';
 echo '<p style="margin:0;color:#52627e;font:400 13px/19px ' . esc_attr( $account_font ) . ';">' . esc_html__( 'Account username:', 'drywall-toolbox' ) . '<br><strong style="color:#10213a;font-size:16px;font-weight:700;">' . esc_html( (string) $user_login ) . '</strong></p>';
-echo '</td><td class="dtb-account-identity-action" width="40%" align="center" valign="middle" style="width:40%;padding:20px 20px 20px 8px;vertical-align:middle;">';
-if ( '' !== esc_url( $action_url ) ) {
-	 echo '<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="border-collapse:separate;margin:0 auto;"><tr><td align="center" bgcolor="#2255EE" style="border-radius:8px;background-color:#2255EE;">';
-	 echo '<a href="' . esc_url( $action_url ) . '" style="display:inline-block;padding:15px 22px;color:#ffffff!important;font:700 15px/21px ' . esc_attr( $account_font ) . ';text-decoration:none;">' . esc_html( $action_label ) . ' &nbsp;&#8594;</a>';
-	echo '</td></tr></table>';
-}
 echo '</td></tr></table>';
 
 $signup_user      = get_user_by( 'login', (string) $user_login );

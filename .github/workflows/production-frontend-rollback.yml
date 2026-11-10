@@ -1,0 +1,107 @@
+name: Rollback Production React Storefront
+
+on:
+  workflow_dispatch:
+    inputs:
+      current_release_sha:
+        description: Current production frontend source SHA to roll back
+        required: true
+        type: string
+      confirm:
+        description: Type ROLLBACK_PRODUCTION
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: siteground-production-frontend
+  cancel-in-progress: false
+
+jobs:
+  rollback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: siteground-production
+      url: https://drywalltoolbox.com
+    env:
+      SITEGROUND_HOST: ${{ secrets.SITEGROUND_SSH_HOST }}
+      SITEGROUND_USER: ${{ secrets.SITEGROUND_SSH_USER }}
+      SITEGROUND_PORT: ${{ secrets.SITEGROUND_SSH_PORT }}
+      SITEGROUND_KEY: ${{ secrets.SITEGROUND_PRODUCTION_SSH_PRIVATE_KEY }}
+      SITEGROUND_KEY_PASSPHRASE: ${{ secrets.SITEGROUND_PRODUCTION_SSH_KEY_PASSPHRASE }}
+      SITEGROUND_KEY_FINGERPRINT: ${{ vars.SITEGROUND_PRODUCTION_SSH_KEY_FINGERPRINT }}
+      PUBLIC_HTML_ROOT: ${{ vars.SITEGROUND_PRODUCTION_PUBLIC_HTML_ROOT }}
+      PRIVATE_RELEASE_ROOT: ${{ vars.SITEGROUND_PRODUCTION_FRONTEND_RELEASE_ROOT }}
+      RELEASE_SHA: ${{ inputs.current_release_sha }}
+    steps:
+      - name: Validate rollback intent and target
+        env:
+          ROLLBACK_CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -euo pipefail
+          [[ "$ROLLBACK_CONFIRM" == "ROLLBACK_PRODUCTION" ]] || { echo "::error::Rollback confirmation did not match"; exit 2; }
+          [[ "$RELEASE_SHA" =~ ^[a-f0-9]{40}$ ]] || { echo "::error::Release SHA must be 40 lowercase hex characters"; exit 2; }
+          for name in SITEGROUND_HOST SITEGROUND_USER SITEGROUND_KEY SITEGROUND_KEY_PASSPHRASE SITEGROUND_KEY_FINGERPRINT PUBLIC_HTML_ROOT PRIVATE_RELEASE_ROOT; do
+            [[ -n "${!name}" ]] || { echo "::error::Missing production rollback setting: $name"; exit 2; }
+          done
+          [[ "$SITEGROUND_PORT" =~ ^[0-9]+$ ]] || { echo "::error::Invalid SiteGround SSH port"; exit 2; }
+          [[ "$PUBLIC_HTML_ROOT" == */public_html ]] || exit 2
+          [[ "$PRIVATE_RELEASE_ROOT" = /* && "$PRIVATE_RELEASE_ROOT" != "$PUBLIC_HTML_ROOT" && "$PRIVATE_RELEASE_ROOT" != "$PUBLIC_HTML_ROOT/"* ]] || exit 2
+
+      - name: Check out release tooling
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          persist-credentials: false
+
+      - name: Configure pinned SiteGround SSH access
+        run: |
+          set -euo pipefail
+          mkdir -m 700 -p "$HOME/.ssh"
+          printf '%s\n' "$SITEGROUND_KEY" > "$HOME/.ssh/siteground_frontend"
+          chmod 600 "$HOME/.ssh/siteground_frontend"
+          [[ -n "$SITEGROUND_KEY_PASSPHRASE" ]] || { echo "::error::Production SSH key passphrase is required"; exit 2; }
+          ssh-keygen -p -P "$SITEGROUND_KEY_PASSPHRASE" -N "" -f "$HOME/.ssh/siteground_frontend" >/dev/null
+          actual_fingerprint="$(ssh-keygen -y -P "" -f "$HOME/.ssh/siteground_frontend" | ssh-keygen -lf - | awk '{print $2}')"
+          [[ "$actual_fingerprint" == "$SITEGROUND_KEY_FINGERPRINT" ]] || { echo "::error::Production SSH key fingerprint mismatch"; exit 2; }
+          ssh-keygen -y -P "" -f "$HOME/.ssh/siteground_frontend" >/dev/null
+
+      - name: Restore previous root storefront from the private snapshot
+        run: |
+          set -euo pipefail
+          printf -v remote '%q ' bash -s -- rollback "$PUBLIC_HTML_ROOT" "$PRIVATE_RELEASE_ROOT" "$RELEASE_SHA"
+          ssh -i "$HOME/.ssh/siteground_frontend" -p "$SITEGROUND_PORT" -o BatchMode=yes -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < scripts/deployment/production-frontend-release.sh
+          live_release="$(ssh -i "$HOME/.ssh/siteground_frontend" -p "$SITEGROUND_PORT" -o BatchMode=yes -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+            "$SITEGROUND_USER@$SITEGROUND_HOST" "cat '$PRIVATE_RELEASE_ROOT/current-release'")"
+          if [[ -n "$live_release" ]]; then
+            printf -v verify_remote '%q ' bash -s -- verify "$PUBLIC_HTML_ROOT" "$PRIVATE_RELEASE_ROOT" "$live_release"
+            ssh -i "$HOME/.ssh/siteground_frontend" -p "$SITEGROUND_PORT" -o BatchMode=yes -o IdentitiesOnly=yes \
+              -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
+              "$SITEGROUND_USER@$SITEGROUND_HOST" "$verify_remote" < scripts/deployment/production-frontend-release.sh
+          fi
+          curl --fail --silent --show-error --max-time 30 https://drywalltoolbox.com/ -o live-index.html
+
+      - name: Summarize production rollback
+        if: always()
+        env:
+          JOB_STATUS: ${{ job.status }}
+        run: |
+          {
+            echo "## Production storefront rollback"
+            echo ""
+            echo "| Field | Value |"
+            echo "| --- | --- |"
+            echo "| Status | \`$JOB_STATUS\` |"
+            echo "| Rolled back release | \`$RELEASE_SHA\` |"
+            echo "| Target | \`/public_html\` |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Remove temporary SSH credentials
+        if: always()
+        run: rm -f "$HOME/.ssh/siteground_frontend"

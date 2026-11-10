@@ -22,16 +22,16 @@ if (appEnv === 'staging' && publicUrl !== '/staging') {
 
 const outputRoot = path.join(repositoryRoot, appEnv === 'staging' ? 'dist-staging' : 'dist');
 const emittedPath = path.join(outputRoot, '.htaccess');
-const routingFilename = appEnv === 'staging'
-  ? path.join('staging', '.htaccess')
-  : '.htaccess';
-const sourcePath = path.join(repositoryRoot, 'drywalltoolbox', routingFilename);
+const sourcePath = appEnv === 'staging'
+  ? path.join(repositoryRoot, 'drywalltoolbox', 'staging', '.htaccess')
+  : path.join(frontendRoot, '.htaccess');
 const manifestPath = path.join(outputRoot, 'asset-manifest.json');
 const indexPath = path.join(outputRoot, 'index.html');
 const robotsPath = path.join(outputRoot, 'robots.txt');
-const storefrontShellPath = path.join(outputRoot, 'storefront.html');
 const schematicSourceRoot = path.join(frontendRoot, 'public', 'brands');
 const sharedBrandsOutputRoot = path.join(outputRoot, 'brands');
+const sharedLogosOutputRoot = path.join(outputRoot, 'logos');
+const sharedEmailAssetsOutputRoot = path.join(outputRoot, 'assets', 'email');
 
 function collectSchematicDatasets(root) {
   const datasets = new Map();
@@ -74,12 +74,23 @@ if (fs.existsSync(sharedBrandsOutputRoot)) {
     'The build artifact contains brands/, but shared brand and schematic assets must remain at public_html/brands.'
   );
 }
+if (fs.existsSync(sharedLogosOutputRoot) || fs.existsSync(sharedEmailAssetsOutputRoot)) {
+  throw new Error('The storefront artifact must preserve the SiteGround logos/ and assets/email/ authorities.');
+}
 
 if (emitted !== expected) {
   throw new Error(
     `${path.relative(repositoryRoot, emittedPath)} does not match its canonical ` +
     `routing source ${path.relative(repositoryRoot, sourcePath)}.`
   );
+}
+
+if (appEnv === 'production') {
+  const sharedRootRoutingPath = path.join(repositoryRoot, 'drywalltoolbox', '.htaccess');
+  const sharedRootRouting = fs.readFileSync(sharedRootRoutingPath, 'utf8');
+  if (expected !== sharedRootRouting) {
+    throw new Error('frontend/.htaccess must match drywalltoolbox/.htaccess before a production build.');
+  }
 }
 
 if (appEnv === 'production' && /^\s*RewriteRule\s+\^cart/m.test(emitted)) {
@@ -91,11 +102,14 @@ if (appEnv === 'production' && !/^\s*RewriteRule\s+\^checkout\/\?\$\s+wp\/index\
 }
 
 if (appEnv === 'production') {
-  if (!fs.existsSync(storefrontShellPath)) {
-    throw new Error('The production build is missing the pre-launch storefront.html React shell.');
+  if (!/^\s*RewriteRule \^\$ index\.html \[L\]$/m.test(emitted)) {
+    throw new Error('Production / must serve the React storefront from index.html.');
   }
-  if (!emitted.includes('RewriteRule ^order-tracking/[0-9]+/?$ storefront.html [QSA,L]')) {
-    throw new Error('Production order-tracking routes must use storefront.html while index.html remains pre-launch.');
+  if (!/^\s*RewriteRule \^ index\.html \[QSA,L\]$/m.test(emitted)) {
+    throw new Error('Production React routes must fall back to index.html.');
+  }
+  if (fs.existsSync(path.join(outputRoot, 'storefront.html'))) {
+    throw new Error('Production output must use one root storefront shell, not a duplicate storefront.html.');
   }
 }
 

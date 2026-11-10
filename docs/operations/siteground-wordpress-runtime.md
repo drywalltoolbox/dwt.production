@@ -22,9 +22,15 @@ must generate admin, login, plugin, nonce, and POST destinations from
 
 - `wp-config.php` is server-owned, ignored by Git, and contains secrets.
 - `wp-config-sample.php` is the tracked WordPress production contract.
-- `drywalltoolbox/.htaccess` owns production root routing and
-  `drywalltoolbox/staging/.htaccess` owns the `/staging` React mount. The build
-  emits the selected contract as `.htaccess` in its corresponding artifact.
+- `drywalltoolbox/.htaccess` is the canonical production root routing contract;
+  `frontend/.htaccess` is its build mirror and must match byte-for-byte.
+  `drywalltoolbox/staging/.htaccess` owns the `/staging` React mount. The root
+  production build emits `frontend/.htaccess`; the staging build emits the
+  staging contract as `.htaccess` in its artifact.
+- `npm run build:production` builds the root-mounted React storefront into
+  `dist/`, including its production routing contract. Upload the artifact
+  contents into `/public_html/` only after the local build and release checks
+  pass; publish `index.html` after its hashed assets are present.
 - the files under `drywalltoolbox/wp/` own the shared WordPress runtime routing
   and dynamic-response cache policy.
 
