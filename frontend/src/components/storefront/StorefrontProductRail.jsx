@@ -65,7 +65,7 @@ export default function StorefrontProductRail({
       if (!entry?.isIntersecting) return;
       setShouldLoad(true);
       observer.disconnect();
-    }, { rootMargin: '280px 0px' });
+    }, { rootMargin: '120px 0px' });
     observer.observe(target);
     return () => observer.disconnect();
   }, []);

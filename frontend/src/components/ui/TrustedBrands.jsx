@@ -18,7 +18,7 @@ function normalizeBrands(brands) {
 function BrandItem({ brand, clone = false }) {
   const content = (
     <>
-      {brand.src ? <img src={brand.src} alt={clone ? '' : brand.name} width="160" height="48" loading={clone ? 'lazy' : 'eager'} decoding="async" /> : <span>{brand.name}</span>}
+      {brand.src ? <img src={brand.src} alt={clone ? '' : brand.name} width="160" height="48" loading={brand.imageLoading || (clone ? 'lazy' : 'eager')} decoding="async" /> : <span>{brand.name}</span>}
     </>
   );
   const itemProps = {
@@ -46,8 +46,12 @@ export default function TrustedBrands({
   dark = false,
   transparent = false,
   className = '',
+  imageLoading = 'eager',
 }) {
-  const normalizedBrands = useMemo(() => normalizeBrands(Array.isArray(brands) ? brands : []), [brands]);
+  const normalizedBrands = useMemo(
+    () => normalizeBrands(Array.isArray(brands) ? brands : []).map((brand) => ({ ...brand, imageLoading })),
+    [brands, imageLoading],
+  );
   const sectionId = useId();
   const viewportRef = useRef(null);
   const laneRef = useRef(null);

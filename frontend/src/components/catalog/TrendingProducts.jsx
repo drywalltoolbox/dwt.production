@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState, useEffect, useCallback, useRef } from 'react';
-import { getProducts } from '../../services/catalog';
+import { fetchCatalogProducts } from '../../services/catalogPlatformCache.js';
+import { toLegacyProductCardDTO } from '../../utils/catalogDtoAdapters.js';
 import { useCart } from '../../context/CartContext';
 import LoadingCardTransition from '../shared/LoadingCardTransition.jsx';
 import StorefrontProductTile from '../storefront/StorefrontProductTile';
@@ -108,41 +109,16 @@ export default function TrendingProducts() {
     if (!shouldLoad) return undefined;
     let mounted = true;
 
-    getProducts().then((allProducts) => {
+    fetchCatalogProducts({ perPage: 10, sort: 'popular', isParts: false }).then((payload) => {
       if (!mounted) return;
-
-      const toolsOnly = allProducts.filter((p) => !p.is_parts && p.category !== 'parts');
-      const withPrice = toolsOnly.filter((p) => {
-        const price = Number(p.price) || Number(p.min_price) || Number(p.regular_price) || 0;
-        return price > 0;
-      });
-
-      const groupedByBrand = {};
-      withPrice.forEach((p) => {
-        const brandName = p.brand || 'Other';
-        if (!groupedByBrand[brandName]) groupedByBrand[brandName] = [];
-        groupedByBrand[brandName].push(p);
-      });
-
-      let balancedSelection = [];
-      Object.keys(groupedByBrand).forEach((brand) => {
-        const brandTools = groupedByBrand[brand];
-        brandTools.sort((a, b) => {
-          const aPrice = Number(a.price) || Number(a.min_price) || Number(a.regular_price) || 0;
-          const bPrice = Number(b.price) || Number(b.min_price) || Number(b.regular_price) || 0;
-          return bPrice - aPrice;
-        });
-        balancedSelection.push(...brandTools.slice(0, 4));
-      });
-
-      balancedSelection.sort((a, b) => {
-        const aPrice = Number(a.price) || Number(a.min_price) || Number(a.regular_price) || 0;
-        const bPrice = Number(b.price) || Number(b.min_price) || Number(b.regular_price) || 0;
-        if (Math.abs(bPrice - aPrice) > 1) return bPrice - aPrice;
-        return (a.brand || '').localeCompare(b.brand || '');
-      });
-
-      setProducts(balancedSelection.slice(0, 10));
+      const items = Array.isArray(payload?.items) ? payload.items : [];
+      setProducts(items
+        .map(toLegacyProductCardDTO)
+        .filter((product) => {
+          if (!product || product.is_parts || product.category === 'parts') return false;
+          return (Number(product.price) || Number(product.min_price) || Number(product.regular_price) || 0) > 0;
+        })
+        .slice(0, 10));
       setLoading(false);
     }).catch((err) => {
       console.error('Error fetching trending products:', err);

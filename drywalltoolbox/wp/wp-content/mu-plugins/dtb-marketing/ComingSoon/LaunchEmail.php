@@ -44,16 +44,23 @@ function dtb_render_launch_announcement_email( string $unsubscribe_url = '' ): s
 	if ( false === $template ) {
 		return '';
 	}
+	$offer_html = '';
+	if ( class_exists( 'DTB_SignupCouponCampaign' ) && DTB_SignupCouponCampaign::is_active() ) {
+		$account_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account' );
+		$offer_html  = '<tr><td class="offer-wrap" style="padding:0 26px 25px;background:#081827"><table role="presentation" width="100%" bgcolor="#10253d" style="width:100%;border:2px solid #64a0ff;border-radius:15px;background:#10253d"><tr><td align="center" style="padding:18px 20px;color:#fff;font-family:Arial,sans-serif;font-size:17px;line-height:24px;font-weight:700">New account members receive <strong style="color:#78a8ff;font-size:25px;font-style:italic;white-space:nowrap">10% OFF</strong> their first order <a href="' . esc_url( $account_url ) . '" style="display:inline-block;margin-left:9px;color:#fff;background:#2255ee;padding:9px 14px;border-radius:5px;font-size:13px;line-height:16px;text-decoration:none">Create an account&nbsp;&rarr;</a></td></tr></table></td></tr>';
+	}
 
 	$values = array(
 		'{{home_url}}'     => esc_url( home_url( '/' ) ),
 		'{{shop_url}}'     => esc_url( home_url( '/all-products' ) ),
 		'{{parts_url}}'    => esc_url( home_url( '/parts' ) ),
+		'{{schematics_url}}' => esc_url( home_url( '/schematics' ) ),
 		'{{repair_url}}'   => esc_url( home_url( '/repairs/packages' ) ),
 		'{{support_url}}'  => esc_url( function_exists( 'dtb_email_support_url' ) ? dtb_email_support_url() : home_url( '/contact' ) ),
 		'{{logo_url}}'     => esc_url( function_exists( 'dtb_email_logo_url' ) ? dtb_email_logo_url() : home_url( '/assets/email/dtb-logo.png' ) ),
 		'{{hero_url}}'     => esc_url( home_url( '/assets/email/account-welcome-hero.jpeg' ) ),
 		'{{unsubscribe}}' => esc_url( '' !== $unsubscribe_url ? $unsubscribe_url : home_url( '/unsubscribe-preview/' ) ),
+		'{{offer_html}}'   => $offer_html,
 		'{{year}}'         => esc_html( gmdate( 'Y' ) ),
 	);
 

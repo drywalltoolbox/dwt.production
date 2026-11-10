@@ -47,6 +47,9 @@ export default function HomeHero() {
   const tabRefs = useRef([]);
   const [interactionPaused, setInteractionPaused] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
+  const [mobileViewport, setMobileViewport] = useState(() =>
+    typeof window !== 'undefined' && window.matchMedia(RESPONSIVE_HERO_MEDIA_QUERY).matches
+  );
   const swipeStartRef = useRef(null);
   const touchStartRef = useRef(null);
   const pointerIdleTimerRef = useRef(null);
@@ -166,12 +169,20 @@ export default function HomeHero() {
   }, []);
 
   useEffect(() => {
-    if (interactionPaused || pointerActive || reduceMotion || !pageVisible) return undefined;
+    const query = window.matchMedia(RESPONSIVE_HERO_MEDIA_QUERY);
+    const updateViewport = () => setMobileViewport(query.matches);
+    updateViewport();
+    query.addEventListener?.('change', updateViewport);
+    return () => query.removeEventListener?.('change', updateViewport);
+  }, []);
+
+  useEffect(() => {
+    if (interactionPaused || pointerActive || reduceMotion || !pageVisible || mobileViewport) return undefined;
     const interval = window.setInterval(() => {
       setActiveIndex((index) => (index + 1) % HOME_HERO_CAMPAIGN_COUNT);
     }, SLIDE_INTERVAL_MS);
     return () => window.clearInterval(interval);
-  }, [interactionPaused, pointerActive, reduceMotion, pageVisible, activeIndex]);
+  }, [interactionPaused, pointerActive, reduceMotion, pageVisible, mobileViewport, activeIndex]);
 
   const handleTabKeyDown = useCallback((event) => {
     let nextIndex = null;

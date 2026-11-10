@@ -2,7 +2,8 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const sourceRoot = path.resolve(__dirname, '..', 'public', 'brands');
-const outputRoot = path.resolve(__dirname, '..', 'dist', 'brands');
+// Webpack emits the deployable site to the repository-root dist directory.
+const outputRoot = path.resolve(__dirname, '..', '..', 'dist', 'brands');
 const excludedNames = new Set(['schematic_data.schema.json', 'schematic_data_template.json']);
 const allowedName = /^schematic_data.*\.json$/i;
 

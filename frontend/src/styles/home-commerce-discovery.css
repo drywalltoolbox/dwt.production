@@ -257,6 +257,31 @@
   }
 }
 
+/* Keep the first mobile paint calm and avoid clip-path animation work in Safari. */
+@media (max-width: 767px) {
+  .home-hero__slide[aria-hidden="false"] .repair-hero h1 .repair-hero__title-line,
+  .home-hero__slide[aria-hidden="false"] .repair-hero__lead,
+  .home-hero__slide[aria-hidden="false"] .repair-hero__actions {
+    animation: none !important;
+  }
+
+  .dtb-ui-trusted-brands--home .dtb-ui-trusted-brands__track {
+    animation: none;
+    transform: none;
+    will-change: auto;
+  }
+
+  .dtb-ui-trusted-brands--home .dtb-ui-trusted-brands__lane--clone {
+    display: none;
+  }
+
+}
+
+.dtb-home-page .dtb-product-card-skeleton__image-shimmer {
+  animation: none;
+  transform: none;
+}
+
 /* Keep the Tools slide on the same soft image-to-copy scrim treatment as the
    other homepage campaigns. */
 .home-hero__slide[data-campaign="tools"] .repair-hero__scrim {

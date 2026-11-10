@@ -45,7 +45,10 @@ function collectSchematicDatasets(root) {
       const absolutePath = path.join(directory, entry.name);
       if (entry.isDirectory()) {
         pending.push(absolutePath);
-      } else if (/^schematic_data[^/]*\.json$/i.test(entry.name)) {
+      } else if (
+        /^schematic_data[^/]*\.json$/i.test(entry.name) &&
+        !['schematic_data.schema.json', 'schematic_data_template.json'].includes(entry.name.toLowerCase())
+      ) {
         const relativePath = path.relative(root, absolutePath).split(path.sep).join('/');
         datasets.set(relativePath, fs.readFileSync(absolutePath));
       }
@@ -69,10 +72,43 @@ for (const [relativePath, sourceContent] of sourceSchematicDatasets) {
     throw new Error(`Invalid schematic hotspot JSON at frontend/public/brands/${relativePath}: ${error.message}`);
   }
 }
-if (fs.existsSync(sharedBrandsOutputRoot)) {
-  throw new Error(
-    'The build artifact contains brands/, but shared brand and schematic assets must remain at public_html/brands.'
-  );
+function collectFiles(root) {
+  const files = new Map();
+  const pending = [root];
+
+  while (pending.length > 0) {
+    const directory = pending.pop();
+    if (!fs.existsSync(directory)) continue;
+
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      const absolutePath = path.join(directory, entry.name);
+      if (entry.isDirectory()) {
+        pending.push(absolutePath);
+      } else if (entry.isFile()) {
+        const relativePath = path.relative(root, absolutePath).split(path.sep).join('/');
+        files.set(relativePath, fs.readFileSync(absolutePath));
+      } else {
+        throw new Error(`Unsupported entry in build brands/: ${absolutePath}`);
+      }
+    }
+  }
+
+  return files;
+}
+
+const emittedSchematicDatasets = collectFiles(sharedBrandsOutputRoot);
+if (appEnv === 'production') {
+  if (emittedSchematicDatasets.size !== sourceSchematicDatasets.size) {
+    throw new Error('Production brands/ must contain exactly the validated schematic JSON source datasets.');
+  }
+  for (const [relativePath, sourceContent] of sourceSchematicDatasets) {
+    const emittedContent = emittedSchematicDatasets.get(relativePath);
+    if (!emittedContent || !emittedContent.equals(sourceContent)) {
+      throw new Error(`Production schematic dataset is missing or differs from source: brands/${relativePath}`);
+    }
+  }
+} else if (emittedSchematicDatasets.size > 0) {
+  throw new Error('Staging output must not publish production-root brands/ schematic data.');
 }
 if (fs.existsSync(sharedLogosOutputRoot) || fs.existsSync(sharedEmailAssetsOutputRoot)) {
   throw new Error('The storefront artifact must preserve the SiteGround logos/ and assets/email/ authorities.');
@@ -302,5 +338,6 @@ if (appEnv === 'staging') {
 process.stdout.write(
   `Routing contract verified: ${path.relative(repositoryRoot, emittedPath)} ` +
   `matches ${path.relative(repositoryRoot, sourcePath)}; ` +
-  `${sourceSchematicDatasets.size} source schematic hotspot datasets are valid and brands/ was excluded.\n`
+  `${sourceSchematicDatasets.size} source schematic hotspot datasets are valid; ` +
+  'production brands/ contains only those datasets (staging excludes it).\n'
 );

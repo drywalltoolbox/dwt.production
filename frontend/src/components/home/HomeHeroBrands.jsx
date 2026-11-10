@@ -6,6 +6,7 @@ export default function HomeHeroBrands({ brands = [] }) {
       brands={brands}
       title={"SHOP BY BRANDS.\nTRUSTED BY PROFESSIONALS."}
       speed={34}
+      imageLoading="lazy"
       className="dtb-ui-trusted-brands--home"
     />
   );
