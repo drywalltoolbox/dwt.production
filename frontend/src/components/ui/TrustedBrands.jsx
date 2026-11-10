@@ -8,7 +8,7 @@ function normalizeBrands(brands) {
   return brands
     .map((brand) => {
       const name = String(brand?.name || '').trim();
-      const src = String(getBrandLogo(name) || brand?.src || brand?.logo || '').trim();
+      const src = String(brand?.src || brand?.logo || getBrandLogo(name) || '').trim();
       const to = String(brand?.to || brand?.href || '').trim();
       return { name, src, to };
     })
