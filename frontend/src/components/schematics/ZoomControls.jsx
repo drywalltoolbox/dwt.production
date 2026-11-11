@@ -49,4 +49,3 @@ export default function ZoomControls({ scale, minScale, maxScale, onZoomIn, onZo
     </div>
   );
 }
-
