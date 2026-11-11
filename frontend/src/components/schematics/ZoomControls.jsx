@@ -1,9 +1,9 @@
 /**
  * frontend/src/components/schematics/ZoomControls.jsx
  */
-import { Minus, Plus, RotateCcw } from 'lucide-react';
+import { Expand, Minimize, Minus, Plus, RotateCcw } from 'lucide-react';
 
-export default function ZoomControls({ scale, minScale, maxScale, onZoomIn, onZoomOut, onReset }) {
+export default function ZoomControls({ scale, minScale, maxScale, onZoomIn, onZoomOut, onReset, isFullscreen, onToggleFullscreen }) {
   return (
     <div className="dtb-schematic-zoom-controls" role="group" aria-label="Diagram zoom controls">
       <button
@@ -37,6 +37,16 @@ export default function ZoomControls({ scale, minScale, maxScale, onZoomIn, onZo
       >
         <RotateCcw size={16} aria-hidden="true" />
       </button>
+      <button
+        type="button"
+        onClick={onToggleFullscreen}
+        aria-label={isFullscreen ? 'Exit fullscreen' : 'View fullscreen'}
+        title={isFullscreen ? 'Exit fullscreen' : 'View fullscreen'}
+        className="dtb-schematic-zoom-btn dtb-schematic-fullscreen-btn"
+      >
+        {isFullscreen ? <Minimize size={16} aria-hidden="true" /> : <Expand size={16} aria-hidden="true" />}
+      </button>
     </div>
   );
 }
+
