@@ -34,6 +34,10 @@ files. It never publishes.
 
 ## Required GitHub environment settings
 
+The public React shell is served from `public_html` and does not pass through
+WordPress's `wp_head()` hook. Keep the Search Console verification meta tag in
+`frontend/index.html`; Google periodically checks that it remains present.
+
 Environment `siteground-production` needs these secrets:
 
 - `SITEGROUND_SSH_HOST`
