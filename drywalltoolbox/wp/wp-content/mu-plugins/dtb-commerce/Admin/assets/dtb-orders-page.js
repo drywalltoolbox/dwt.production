@@ -486,6 +486,7 @@
 		html += '</div>';
 
 		body.innerHTML = html;
+		WB.switchTabs( document.getElementById( MODAL_ID ), 'overview' );
 		if ( footer ) {
 			var url = editUrl( record );
 			footer.innerHTML = url

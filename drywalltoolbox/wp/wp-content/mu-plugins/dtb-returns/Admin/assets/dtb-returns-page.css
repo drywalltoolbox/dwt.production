@@ -32,9 +32,13 @@
    ───────────────────────────────────────────────────────────────────────────── */
 
 #dtb-returns-modal .dtb-modal {
-	width: min( 1200px, 94vw );
+	width: min( 1200px, calc( 100vw - 56px ) );
 	max-height: 90vh;
 	height: 90vh;
+	max-height: calc( 100dvh - 56px );
+	height: calc( 100dvh - 56px );
+	min-height: 0;
+	box-sizing: border-box;
 }
 
 /* Kill platform's default body padding and flip its overflow so our inner

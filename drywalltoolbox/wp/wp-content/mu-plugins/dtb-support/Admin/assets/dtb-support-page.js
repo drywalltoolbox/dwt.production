@@ -659,8 +659,8 @@
 			+ ( typeLabel !== '—' ? '<span class="dtb-support-ticket-pill">' + escHtml( typeLabel ) + '</span>' : '' )
 			+ '</div>'
 			+ '<div class="dtb-support-email-toolbar__btns">'
-			+ '<button type="button" class="dtb-btn dtb-btn--sm dtb-btn--ghost dtb-email-quick-reply" data-dtb-compose-mode="reply" title="Reply to customer">↩ Reply</button>'
-			+ '<button type="button" class="dtb-btn dtb-btn--sm dtb-btn--ghost dtb-email-quick-reply" data-dtb-compose-mode="note" title="Add internal note">📋 Note</button>'
+			+ '<button type="button" class="dtb-btn dtb-btn--sm dtb-btn--ghost dtb-email-quick-reply" data-dtb-compose-mode="reply" title="Reply to customer">Reply</button>'
+			+ '<button type="button" class="dtb-btn dtb-btn--sm dtb-btn--ghost dtb-email-quick-reply" data-dtb-compose-mode="note" title="Add internal note">Note</button>'
 			+ '</div>'
 			+ '</div>'
 
@@ -693,13 +693,13 @@
 			+ '<div class="dtb-support-ticket-left">'
 
 			// Tab navigation — Thread (chat) + Actions
-			+ '<nav class="dtb-support-modal-tabs" role="tablist">'
-			+ '<button class="dtb-support-modal-tab is-active" data-dtb-modal-tab="thread" role="tab" aria-selected="true">Conversation</button>'
-			+ '<button class="dtb-support-modal-tab" data-dtb-modal-tab="actions" role="tab" aria-selected="false">Actions</button>'
+			+ '<nav class="dtb-support-modal-tabs" role="tablist" aria-label="Ticket details">'
+			+ '<button type="button" id="dtb-support-tab-thread" class="dtb-support-modal-tab is-active" data-dtb-modal-tab="thread" role="tab" aria-controls="dtb-support-panel-thread" aria-selected="true" tabindex="0">Conversation</button>'
+			+ '<button type="button" id="dtb-support-tab-actions" class="dtb-support-modal-tab" data-dtb-modal-tab="actions" role="tab" aria-controls="dtb-support-panel-actions" aria-selected="false" tabindex="-1">Actions</button>'
 			+ '</nav>'
 
 			// ── Panel: Conversation (chat + pinned compose) ────────────────────
-			+ '<div class="dtb-support-modal-panel is-active dtb-support-chat-panel" data-dtb-modal-panel="thread">'
+			+ '<div id="dtb-support-panel-thread" class="dtb-support-modal-panel is-active dtb-support-chat-panel" data-dtb-modal-panel="thread" role="tabpanel" aria-labelledby="dtb-support-tab-thread" tabindex="0">'
 
 			// Scrollable chat thread
 			+ '<div class="dtb-chat-thread" id="dtb-chat-thread">'
@@ -712,7 +712,7 @@
 			+ '<div class="dtb-chat-compose__toolbar">'
 			+ '<button type="button" class="dtb-chat-mode-btn is-active" data-dtb-compose-mode="reply">Reply to Customer</button>'
 			+ '<button type="button" class="dtb-chat-mode-btn" data-dtb-compose-mode="note">Internal Note</button>'
-			+ '<button type="button" class="dtb-chat-macro-toggle dtb-btn dtb-btn--ghost dtb-btn--sm" title="Quick response macros" aria-expanded="false" aria-controls="dtb-macro-panel">⚡ Quick Responses</button>'
+			+ '<button type="button" class="dtb-chat-macro-toggle dtb-btn dtb-btn--ghost dtb-btn--sm" title="Quick response macros" aria-expanded="false" aria-controls="dtb-macro-panel">Quick Responses</button>'
 			+ '</div>'
 			+ '<form class="dtb-chat-compose__form dtb-support-reply-form" data-dtb-reply-type="reply">'
 			+ '<div class="dtb-chat-compose__input-row">'
@@ -728,7 +728,7 @@
 			+ '</div>' // .dtb-support-chat-panel
 
 			// ── Panel: Actions ─────────────────────────────────────────────────
-			+ '<div class="dtb-support-modal-panel dtb-support-actions-panel" data-dtb-modal-panel="actions">'
+			+ '<div id="dtb-support-panel-actions" class="dtb-support-modal-panel dtb-support-actions-panel" data-dtb-modal-panel="actions" role="tabpanel" aria-labelledby="dtb-support-tab-actions" tabindex="0" hidden>'
 			+ '<div class="dtb-support-action-summary">'
 			+ '<div><span class="dtb-support-form-label">Recommended next step</span><strong>' + escHtml( next.label ) + '</strong></div>'
 			+ '<p>' + escHtml( next.reason ) + '</p>'
@@ -1035,9 +1035,12 @@
 				var isThread = t.getAttribute( 'data-dtb-modal-tab' ) === 'thread';
 				t.classList.toggle( 'is-active', isThread );
 				t.setAttribute( 'aria-selected', isThread ? 'true' : 'false' );
+				t.tabIndex = isThread ? 0 : -1;
 			} );
 			overlay.querySelectorAll( '.dtb-support-modal-panel' ).forEach( function ( p ) {
-				p.classList.toggle( 'is-active', p.getAttribute( 'data-dtb-modal-panel' ) === 'thread' );
+				var isThread = p.getAttribute( 'data-dtb-modal-panel' ) === 'thread';
+				p.classList.toggle( 'is-active', isThread );
+				p.hidden = ! isThread;
 			} );
 			// Set compose mode
 			var compose = overlay.querySelector( '.dtb-chat-compose' );
@@ -1102,9 +1105,12 @@
 			overlay.querySelectorAll( '.dtb-support-modal-tab' ).forEach( function ( t ) {
 				t.classList.toggle( 'is-active', t === tab );
 				t.setAttribute( 'aria-selected', t === tab ? 'true' : 'false' );
+				t.tabIndex = t === tab ? 0 : -1;
 			} );
 			overlay.querySelectorAll( '.dtb-support-modal-panel' ).forEach( function ( p ) {
-				p.classList.toggle( 'is-active', p.getAttribute( 'data-dtb-modal-panel' ) === tabKey );
+				var isActive = p.getAttribute( 'data-dtb-modal-panel' ) === tabKey;
+				p.classList.toggle( 'is-active', isActive );
+				p.hidden = ! isActive;
 			} );
 		} );
 

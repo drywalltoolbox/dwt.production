@@ -121,14 +121,14 @@ function dtb_parts_manager_render_workspace( bool $embedded = false ): void {
 		</section>
 		<?php endif; ?>
 
-		<nav class="dtb-pm-tabs" aria-label="Parts Manager sections">
-			<button type="button" class="active" data-dtb-tab="parts"><?php esc_html_e( 'Parts', 'drywall-toolbox' ); ?></button>
-			<button type="button" data-dtb-tab="imports"><?php esc_html_e( 'Imports', 'drywall-toolbox' ); ?></button>
-			<button type="button" data-dtb-tab="universal"><?php esc_html_e( 'Universal Parts', 'drywall-toolbox' ); ?></button>
-			<button type="button" data-dtb-tab="sync"><?php esc_html_e( 'Sync & Review', 'drywall-toolbox' ); ?></button>
+		<nav class="dtb-pm-tabs" role="tablist" aria-label="Parts Manager sections">
+			<button type="button" id="dtb-pm-tab-parts" class="active" role="tab" aria-selected="true" aria-controls="dtb-pm-panel-parts" tabindex="0" data-dtb-tab="parts"><?php esc_html_e( 'Parts', 'drywall-toolbox' ); ?></button>
+			<button type="button" id="dtb-pm-tab-imports" role="tab" aria-selected="false" aria-controls="dtb-pm-panel-imports" tabindex="-1" data-dtb-tab="imports"><?php esc_html_e( 'Imports', 'drywall-toolbox' ); ?></button>
+			<button type="button" id="dtb-pm-tab-universal" role="tab" aria-selected="false" aria-controls="dtb-pm-panel-universal" tabindex="-1" data-dtb-tab="universal"><?php esc_html_e( 'Universal Parts', 'drywall-toolbox' ); ?></button>
+			<button type="button" id="dtb-pm-tab-sync" role="tab" aria-selected="false" aria-controls="dtb-pm-panel-sync" tabindex="-1" data-dtb-tab="sync"><?php esc_html_e( 'Sync & Review', 'drywall-toolbox' ); ?></button>
 		</nav>
 
-		<section id="dtb-pm-tab-parts" class="dtb-pm-panel active">
+		<section id="dtb-pm-panel-parts" class="dtb-pm-panel active" role="tabpanel" aria-labelledby="dtb-pm-tab-parts" tabindex="0">
 			<div class="dtb-pm-card">
 				<div class="dtb-pm-card-header">
 					<div><h2><?php esc_html_e( 'Brand-specific parts', 'drywall-toolbox' ); ?></h2><p><?php esc_html_e( 'Search and edit WooCommerce part products. Universal metadata is backend-only and does not replace brand SKUs.', 'drywall-toolbox' ); ?></p></div>
@@ -174,7 +174,7 @@ function dtb_parts_manager_render_workspace( bool $embedded = false ): void {
 			</div>
 		</section>
 
-		<section id="dtb-pm-tab-imports" class="dtb-pm-panel">
+		<section id="dtb-pm-panel-imports" class="dtb-pm-panel" role="tabpanel" aria-labelledby="dtb-pm-tab-imports" tabindex="0" hidden>
 			<div class="dtb-pm-grid-2">
 				<div class="dtb-pm-card">
 					<h2><?php esc_html_e( 'Import brand-specific parts', 'drywall-toolbox' ); ?></h2>
@@ -195,7 +195,7 @@ function dtb_parts_manager_render_workspace( bool $embedded = false ): void {
 			</div>
 		</section>
 
-		<section id="dtb-pm-tab-universal" class="dtb-pm-panel">
+		<section id="dtb-pm-panel-universal" class="dtb-pm-panel" role="tabpanel" aria-labelledby="dtb-pm-tab-universal" tabindex="0" hidden>
 			<div class="dtb-pm-card">
 				<div class="dtb-pm-card-header">
 					<div><h2><?php esc_html_e( 'Universal parts seed index', 'drywall-toolbox' ); ?></h2><p><?php esc_html_e( 'The canonical parts, members, and compatibility seed files own universal-part identities. Active member rows may be synced to exact Woo part products; review/quarantine rows remain protected.', 'drywall-toolbox' ); ?></p></div>
@@ -217,7 +217,7 @@ function dtb_parts_manager_render_workspace( bool $embedded = false ): void {
 			</div>
 		</section>
 
-		<section id="dtb-pm-tab-sync" class="dtb-pm-panel">
+		<section id="dtb-pm-panel-sync" class="dtb-pm-panel" role="tabpanel" aria-labelledby="dtb-pm-tab-sync" tabindex="0" hidden>
 			<div class="dtb-pm-card">
 				<h2><?php esc_html_e( 'Universal synchronization', 'drywall-toolbox' ); ?></h2>
 				<p class="dtb-form-note"><?php esc_html_e( 'Dry run first. Apply only updates Woo product universal metadata for member rows that resolve to existing part SKUs or manufacturer SKUs.', 'drywall-toolbox' ); ?></p>

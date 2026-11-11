@@ -142,7 +142,7 @@ function dtb_admin_linked_from_ticket( int $ticket_id, array $r ): array {
 	}
 
 	// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
-	$row = $wpdb->get_row( $wpdb->prepare( "SELECT order_id, customer_email, customer_user_id FROM {$table} WHERE id = %d", $ticket_id ) );
+	$row = $wpdb->get_row( $wpdb->prepare( "SELECT order_id, customer_email FROM {$table} WHERE id = %d", $ticket_id ) );
 	if ( ! $row ) {
 		$r['confidence']['ticket'] = 'not_found';
 		return $r;
@@ -150,7 +150,9 @@ function dtb_admin_linked_from_ticket( int $ticket_id, array $r ): array {
 
 	$order_id = absint( $row->order_id ?? 0 );
 	$email    = sanitize_email( $row->customer_email ?? '' );
-	$user_id  = absint( $row->customer_user_id ?? 0 );
+	// Support tickets are keyed to customers by email; their schema does not
+	// persist a WordPress user ID.
+	$user_id  = 0;
 	$r['customer_email'] = $email;
 
 	if ( $order_id ) {
@@ -261,8 +263,7 @@ function dtb_admin_cross_link_by_email_user( string $email, int $user_id, string
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 				$ids = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$tickets_table} WHERE customer_email = %s", $email ) );
 			} else {
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching,WordPress.DB.PreparedSQL.InterpolatedNotPrepared
-				$ids = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$tickets_table} WHERE customer_user_id = %d", $user_id ) );
+				$ids = [];
 			}
 			$r['ticket_ids'] = array_values( array_map( 'absint', (array) $ids ) );
 			foreach ( $r['ticket_ids'] as $id ) {

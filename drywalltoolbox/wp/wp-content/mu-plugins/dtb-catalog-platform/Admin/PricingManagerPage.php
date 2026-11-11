@@ -211,7 +211,7 @@ function dtb_pricing_manager_render_data_tab(): void {
 /** Render the reusable product pricing side drawer. */
 function dtb_pricing_manager_render_drawer(): void {
 	?>
-	<aside class="dtb-pricing-drawer" data-pricing-drawer hidden aria-labelledby="dtb-pricing-drawer-title">
+	<aside class="dtb-pricing-drawer" data-pricing-drawer role="dialog" aria-modal="true" aria-hidden="true" hidden aria-labelledby="dtb-pricing-drawer-title">
 		<div class="dtb-pricing-drawer__header">
 			<div><span class="dtb-pricing-drawer__eyebrow" data-drawer-sku></span><h2 id="dtb-pricing-drawer-title" data-drawer-title><?php esc_html_e( 'Product pricing', 'drywall-toolbox' ); ?></h2></div>
 			<button type="button" class="dtb-pricing-drawer__close" data-drawer-close aria-label="<?php esc_attr_e( 'Close pricing panel', 'drywall-toolbox' ); ?>">×</button>

@@ -36,6 +36,7 @@
 		activeTab:   'overview',
 		requestId:   0,
 		refreshTimer: null,
+		focusReturnEl: null,
 	};
 
 	// ── DOM ───────────────────────────────────────────────────────────────────
@@ -53,6 +54,7 @@
 		overlay.setAttribute( 'role', 'dialog' );
 		overlay.setAttribute( 'aria-modal', 'true' );
 		overlay.setAttribute( 'aria-labelledby', 'dtb-repair-modal-title' );
+		overlay.setAttribute( 'aria-hidden', 'true' );
 
 		modal = document.createElement( 'div' );
 		modal.className = 'dtb-modal dtb-modal--fullscreen dtb-repair-modal--fullpage';
@@ -85,6 +87,7 @@
 		tabBar = document.createElement( 'div' );
 		tabBar.className = 'dtb-modal-tabs';
 		tabBar.setAttribute( 'role', 'tablist' );
+		tabBar.setAttribute( 'aria-label', 'Repair details' );
 
 		TABS.forEach( function ( tab ) {
 			if ( tab === 'actions' ) {
@@ -161,12 +164,16 @@
 		overlay.addEventListener( 'click', function ( e ) {
 			if ( e.target === overlay ) { closeModal(); }
 		} );
+		overlay.addEventListener( 'dtb:modal:escape', closeModal );
 	}
 
 	// ── Open / close ──────────────────────────────────────────────────────────
 
 	function openRepair( repairId ) {
 		buildDOM();
+		if ( ! overlay.classList.contains( 'dtb-modal-overlay--open' ) ) {
+			state.focusReturnEl = document.activeElement;
+		}
 		state.repairId  = parseInt( repairId, 10 );
 		if ( ! Number.isFinite( state.repairId ) || state.repairId < 1 ) { return; }
 		var requestedTab = WB.getUrlParam( 'repair_tab' ) || 'overview';
@@ -174,7 +181,10 @@
 		state.data      = null;
 
 		overlay.classList.add( 'dtb-modal-overlay--open' );
+		overlay.setAttribute( 'aria-hidden', 'false' );
 		document.body.classList.add( 'dtb-modal-open' );
+		var closeButton = overlay.querySelector( '.dtb-modal__close' );
+		if ( closeButton ) { closeButton.focus(); }
 
 		WB.replaceUrlParam( 'open_repair', String( state.repairId ) );
 		WB.replaceUrlParam( 'repair_tab', state.activeTab );
@@ -192,13 +202,20 @@
 	function closeModal() {
 		if ( overlay ) {
 			overlay.classList.remove( 'dtb-modal-overlay--open' );
+			overlay.setAttribute( 'aria-hidden', 'true' );
 		}
-		document.body.classList.remove( 'dtb-modal-open' );
+		if ( ! document.querySelector( '.dtb-modal-overlay--open' ) ) {
+			document.body.classList.remove( 'dtb-modal-open' );
+		}
 		clearInterval( state.refreshTimer );
 		WB.clearUrlParam( 'open_repair' );
 		WB.clearUrlParam( 'repair_tab' );
 		state.repairId = null;
 		state.data     = null;
+		if ( state.focusReturnEl && document.documentElement.contains( state.focusReturnEl ) ) {
+			state.focusReturnEl.focus();
+		}
+		state.focusReturnEl = null;
 	}
 
 	// ── Fetch ─────────────────────────────────────────────────────────────────

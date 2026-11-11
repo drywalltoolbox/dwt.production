@@ -179,9 +179,13 @@
 
 .dtb-admin[data-dtb-page="dtb-support"] #dtb-support-ticket-modal .dtb-modal {
 	width: calc(100vw - 24px);
+	width: calc(100dvw - 24px);
 	height: calc(100vh - 24px);
+	height: calc(100dvh - 24px);
 	max-width: none;
 	max-height: none;
+	min-height: 0;
+	box-sizing: border-box;
 	border-radius: var(--dtb-radius-md);
 	display: flex;
 	flex-direction: column;
@@ -258,7 +262,7 @@
 
 .dtb-admin[data-dtb-page="dtb-support"] .dtb-support-ticket-modal__body {
 	display: grid;
-	grid-template-columns: minmax(0, 1.6fr) minmax(260px, .8fr);
+	grid-template-columns: minmax(0, 1.6fr) minmax(min(260px, 30%), .8fr);
 	gap: 12px;
 	flex: 1 1 auto;
 	min-height: 0;
@@ -839,6 +843,13 @@
 .dtb-admin[data-dtb-page="dtb-support"] .dtb-support-ticket-context {
 	display: grid;
 	gap: 10px;
+	align-content: start;
+	min-width: 0;
+	min-height: 0;
+	max-height: 100%;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	padding-right: 2px;
 }
 
 .dtb-admin[data-dtb-page="dtb-support"] .dtb-support-ticket-card {
@@ -907,6 +918,25 @@
 
 	.dtb-admin[data-dtb-page="dtb-support"] .dtb-support-ticket-modal__body {
 		grid-template-columns: 1fr;
+		flex: 0 0 auto;
+		min-height: auto;
+	}
+
+	.dtb-admin[data-dtb-page="dtb-support"] #dtb-support-ticket-modal .dtb-modal__body {
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+		overscroll-behavior: contain;
+	}
+
+	.dtb-admin[data-dtb-page="dtb-support"] .dtb-support-ticket-left {
+		min-height: min(60vh, 620px);
+		min-height: min(60dvh, 620px);
+	}
+
+	.dtb-admin[data-dtb-page="dtb-support"] .dtb-support-ticket-context {
+		max-height: none;
+		overflow: visible;
+		padding-right: 0;
 	}
 
 	.dtb-admin[data-dtb-page="dtb-support"] .dtb-support-actions-grid {

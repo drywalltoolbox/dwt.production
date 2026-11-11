@@ -542,9 +542,7 @@
 		m.el.removeAttribute( 'hidden' );
 		m.el.setAttribute( 'aria-hidden', 'false' );
 
-		if ( config.focusReturnEl ) {
-			m._focusReturnEl = config.focusReturnEl;
-		}
+		m._focusReturnEl = config.focusReturnEl || document.activeElement;
 
 		if ( config.title && m.titleEl ) {
 			m.titleEl.textContent = config.title;
@@ -581,22 +579,28 @@
 		if ( ! m ) {
 			var overlay = document.getElementById( modalId );
 			if ( overlay ) {
-				overlay.classList.remove( 'dtb-modal-overlay--open' );
-				overlay.setAttribute( 'hidden', '' );
-				overlay.setAttribute( 'aria-hidden', 'true' );
+				if ( window.DtbAdmin && window.DtbAdmin.closeModal ) {
+					window.DtbAdmin.closeModal( modalId );
+				} else {
+					overlay.classList.remove( 'dtb-modal-overlay--open' );
+					overlay.setAttribute( 'hidden', '' );
+					overlay.setAttribute( 'aria-hidden', 'true' );
+				}
 			}
 		} else {
 			m.el.classList.remove( 'dtb-modal-overlay--open' );
 			m.el.setAttribute( 'hidden', '' );
 			m.el.setAttribute( 'aria-hidden', 'true' );
-			if ( m._focusReturnEl ) {
+			if ( m._focusReturnEl && document.documentElement.contains( m._focusReturnEl ) ) {
 				m._focusReturnEl.focus();
 				m._focusReturnEl = null;
 			}
 		}
 
 		if ( urlParam ) { clearUrlParam( urlParam ); }
-		document.body.classList.remove( 'dtb-modal-open' );
+		if ( ! document.querySelector( '.dtb-modal-overlay--open, .dtb-pm-modal-overlay.open, .dtb-oo-drawer:not([hidden]), [data-pricing-drawer]:not([hidden])' ) ) {
+			document.body.classList.remove( 'dtb-modal-open' );
+		}
 	}
 
 	/**
@@ -651,29 +655,111 @@
 			return;
 		}
 
+		var prefix = root.id || 'dtb-modal';
+		var tabList = root.querySelector( '.dtb-modal-tabs' );
+		if ( tabList ) {
+			tabList.setAttribute( 'role', 'tablist' );
+			if ( ! tabList.hasAttribute( 'aria-label' ) ) { tabList.setAttribute( 'aria-label', 'Record details' ); }
+		}
+
 		root.querySelectorAll( '.dtb-modal-tab' ).forEach( function ( btn ) {
 			var isActive = btn.getAttribute( 'data-dtb-tab' ) === tabKey;
+			var key = btn.getAttribute( 'data-dtb-tab' ) || '';
+			btn.id = prefix + '-tab-' + key;
+			btn.setAttribute( 'type', 'button' );
+			btn.setAttribute( 'role', 'tab' );
+			btn.setAttribute( 'aria-controls', prefix + '-panel-' + key );
+			btn.tabIndex = isActive ? 0 : -1;
 			btn.classList.toggle( 'dtb-modal-tab--active', isActive );
 			btn.setAttribute( 'aria-selected', isActive ? 'true' : 'false' );
 		} );
 
 		root.querySelectorAll( '.dtb-modal-tab-panel' ).forEach( function ( panel ) {
 			var isActive = panel.getAttribute( 'data-dtb-tab' ) === tabKey;
+			var key = panel.getAttribute( 'data-dtb-tab' ) || '';
+			panel.id = prefix + '-panel-' + key;
+			panel.setAttribute( 'role', 'tabpanel' );
+			panel.setAttribute( 'aria-labelledby', prefix + '-tab-' + key );
+			panel.setAttribute( 'tabindex', '0' );
 			panel.hidden = ! isActive;
 			panel.classList.toggle( 'dtb-modal-tab-panel--active', isActive );
 		} );
 	}
 
 	// ── Global keyboard handler ────────────────────────────────────────────────
+	function visibleFocusableElements( container ) {
+		return Array.prototype.filter.call( container.querySelectorAll(
+			'button:not([disabled]):not([hidden]), [href]:not([hidden]), input:not([disabled]):not([hidden]), select:not([disabled]):not([hidden]), textarea:not([disabled]):not([hidden]), [tabindex]:not([tabindex="-1"]):not([hidden])'
+		), function ( element ) {
+			return element.getClientRects().length > 0;
+		} );
+	}
 
 	document.addEventListener( 'keydown', function ( e ) {
+		var openModals = document.querySelectorAll( '.dtb-modal-overlay--open, .dtb-pm-modal-overlay.open, .dtb-oo-drawer:not([hidden]), [data-pricing-drawer]:not([hidden])' );
+		var openDrawers = document.querySelectorAll( '.dtb-drawer.dtb-drawer--open' );
+
 		if ( e.key === 'Escape' ) {
 			// Close the topmost open modal.
-			var openModals = document.querySelectorAll( '.dtb-modal-overlay--open' );
 			if ( openModals.length ) {
 				var last = openModals[ openModals.length - 1 ];
-				closeRecordModal( last.id );
+				if ( last.classList.contains( 'dtb-pm-modal-overlay' ) || last.classList.contains( 'dtb-oo-drawer' ) || 'dtb-repair-modal-overlay' === last.id || last.hasAttribute( 'data-pricing-drawer' ) ) {
+					last.dispatchEvent( new CustomEvent( 'dtb:modal:escape' ) );
+				} else {
+					closeRecordModal( last.id );
+				}
+				e.preventDefault();
+				e.stopImmediatePropagation();
+			} else if ( openDrawers.length && window.DtbAdmin && window.DtbAdmin.closeDrawer ) {
+				window.DtbAdmin.closeDrawer( openDrawers[ openDrawers.length - 1 ].id );
+				e.preventDefault();
+				e.stopImmediatePropagation();
 			}
+			return;
+		}
+
+		if ( ! e.defaultPrevented && ( e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowUp' ) && e.target.closest ) {
+			var activeTab = e.target.closest( '[role="tab"]' );
+			var tabList = activeTab && activeTab.closest( '[role="tablist"]' );
+			if ( tabList ) {
+				var tabs = Array.prototype.filter.call( tabList.querySelectorAll( '[role="tab"]:not([disabled])' ), function ( tab ) {
+					return tab.getClientRects().length > 0;
+				} );
+				var tabIndex = tabs.indexOf( activeTab );
+				if ( tabs.length && tabIndex >= 0 ) {
+					var backward = e.key === 'ArrowLeft' || e.key === 'ArrowUp';
+					var nextIndex = ( tabIndex + ( backward ? tabs.length - 1 : 1 ) ) % tabs.length;
+					e.preventDefault();
+					tabs[ nextIndex ].focus();
+					tabs[ nextIndex ].click();
+				}
+			}
+		}
+
+		if ( e.key !== 'Tab' ) {
+			return;
+		}
+
+		var focusScope = openModals.length ? openModals[ openModals.length - 1 ] : ( openDrawers.length ? openDrawers[ openDrawers.length - 1 ] : null );
+		if ( ! focusScope ) {
+			return;
+		}
+
+		var focusable = visibleFocusableElements( focusScope );
+		var first = focusable.length ? focusable[ 0 ] : null;
+		var lastFocusable = focusable.length ? focusable[ focusable.length - 1 ] : null;
+
+		if ( ! first ) {
+			e.preventDefault();
+			return;
+		}
+
+		if ( e.shiftKey && ( document.activeElement === first || ! focusScope.contains( document.activeElement ) ) ) {
+			e.preventDefault();
+			lastFocusable.focus();
+		} else if ( ! e.shiftKey && ( document.activeElement === lastFocusable || ! focusScope.contains( document.activeElement ) ) ) {
+			e.preventDefault();
+			first.focus();
 		}
 	} );
 

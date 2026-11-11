@@ -369,7 +369,7 @@ function dtb_oo_render_dashboard_shell( bool $embedded = false ): void {
 	</div>
 
 	<?php /* Timeline Drawer */ ?>
-	<div id="dtb-oo-drawer" class="dtb-oo-drawer" aria-modal="true" role="dialog" aria-label="<?php esc_attr_e( 'Event Timeline', 'dtb' ); ?>" hidden>
+	<div id="dtb-oo-drawer" class="dtb-oo-drawer" aria-modal="true" role="dialog" aria-label="<?php esc_attr_e( 'Event Timeline', 'dtb' ); ?>" aria-hidden="true" hidden>
 		<div class="dtb-oo-drawer-backdrop"></div>
 		<div class="dtb-oo-drawer-panel">
 			<div class="dtb-oo-drawer-header">
@@ -383,7 +383,7 @@ function dtb_oo_render_dashboard_shell( bool $embedded = false ): void {
 	</div>
 
 	<?php /* Action Modal */ ?>
-	<div id="dtb-oo-action-modal" class="dtb-oo-drawer" aria-modal="true" role="dialog" aria-label="<?php esc_attr_e( 'Operator Action', 'dtb' ); ?>" hidden>
+	<div id="dtb-oo-action-modal" class="dtb-oo-drawer" aria-modal="true" role="dialog" aria-label="<?php esc_attr_e( 'Operator Action', 'dtb' ); ?>" aria-hidden="true" hidden>
 		<div class="dtb-oo-drawer-backdrop"></div>
 		<div class="dtb-oo-drawer-panel dtb-oo-action-panel">
 			<div class="dtb-oo-drawer-header">
@@ -577,9 +577,10 @@ function dtb_oo_inline_css(): string {
 /* ---- Drawer / Modal ---- */
 .dtb-oo-drawer { position: fixed; inset: 0; z-index: 160000; }
 .dtb-oo-drawer[hidden] { display: none; }
+body.dtb-oo-drawer-open { overflow: hidden; }
 .dtb-oo-drawer-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.4); }
-.dtb-oo-drawer-panel { position: absolute; top: 0; right: 0; width: 540px; max-width: 95vw; height: 100%; overflow-y: auto; background: #fff; box-shadow: -4px 0 20px rgba(0,0,0,.15); display: flex; flex-direction: column; }
-.dtb-oo-action-panel { top: 50%; right: 50%; transform: translate(50%, -50%); height: auto; max-height: 80vh; border-radius: 6px; width: 480px; }
+.dtb-oo-drawer-panel { position: absolute; top: 0; right: 0; width: 540px; max-width: 95vw; height: 100%; height: 100dvh; overflow-y: auto; overscroll-behavior: contain; background: #fff; box-shadow: -4px 0 20px rgba(0,0,0,.15); display: flex; flex-direction: column; }
+.dtb-oo-action-panel { top: 50%; right: 50%; transform: translate(50%, -50%); height: auto; max-height: 80vh; max-height: calc(100dvh - 32px); border-radius: 6px; width: 480px; }
 .dtb-oo-drawer-header { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid #e0e0e0; background: #f9f9f9; }
 .dtb-oo-drawer-title { margin: 0; font-size: 15px; font-weight: 600; }
 .dtb-oo-drawer-close { font-size: 16px; line-height: 1; padding: 4px 8px; }
@@ -636,6 +637,8 @@ function dtb_oo_inline_js(): string {
     var nonce        = cfg.nonce      || '';
     var pollInterval = Math.max(cfg.pollInterval || 180000, 180000);
     var strings      = cfg.strings    || {};
+    var timelineFocusReturn = null;
+    var actionFocusReturn = null;
 
     var state = {
         tab:        'overview',
@@ -1255,8 +1258,11 @@ function dtb_oo_inline_js(): string {
         var label = entityType === 'product_order' ? 'Order #' + entityId : 'Repair #' + entityId;
         $title.text('Timeline — ' + label);
         $body.html('<p class="dtb-oo-loading">Loading timeline…</p>');
+        if ($drawer.attr('hidden')) { timelineFocusReturn = document.activeElement; }
         $drawer.removeAttr('hidden');
+        $drawer.attr('aria-hidden', 'false');
         $('body').addClass('dtb-oo-drawer-open');
+        $('#dtb-oo-drawer .dtb-oo-drawer-close').trigger('focus');
 
         var ajaxAction = entityType === 'product_order' ? 'dtb_ops_order_timeline' : 'dtb_ops_repair_timeline';
         var dataKey    = entityType === 'product_order' ? 'order_id' : 'repair_id';
@@ -1292,7 +1298,10 @@ function dtb_oo_inline_js(): string {
 
     function closeDrawer() {
         $('#dtb-oo-drawer').attr('hidden', true);
-        $('body').removeClass('dtb-oo-drawer-open');
+        $('#dtb-oo-drawer').attr('aria-hidden', 'true');
+        if ($('#dtb-oo-action-modal').is('[hidden]')) { $('body').removeClass('dtb-oo-drawer-open'); }
+        if (timelineFocusReturn && document.documentElement.contains(timelineFocusReturn)) { timelineFocusReturn.focus(); }
+        timelineFocusReturn = null;
     }
 
     // -------------------------------------------------------------------------
@@ -1321,19 +1330,27 @@ function dtb_oo_inline_js(): string {
         });
 
         $fields.html(html);
+        actionFocusReturn = document.activeElement;
         $modal.removeAttr('hidden');
+        $modal.attr('aria-hidden', 'false');
+        $('body').addClass('dtb-oo-drawer-open');
+        $('#dtb-oo-action-modal .dtb-oo-modal-close').first().trigger('focus');
 
         // Bind submit.
         $('#dtb-oo-action-form').off('submit.dtbModal').on('submit.dtbModal', function (e) {
             e.preventDefault();
             var vals = serializeFormToObj($(this));
-            $modal.attr('hidden', true);
+            closeModal();
             onSubmit(vals);
         });
     }
 
     function closeModal() {
         $('#dtb-oo-action-modal').attr('hidden', true);
+        $('#dtb-oo-action-modal').attr('aria-hidden', 'true');
+        if ($('#dtb-oo-drawer').is('[hidden]')) { $('body').removeClass('dtb-oo-drawer-open'); }
+        if (actionFocusReturn && document.documentElement.contains(actionFocusReturn)) { actionFocusReturn.focus(); }
+        actionFocusReturn = null;
     }
 
     // -------------------------------------------------------------------------
@@ -1476,12 +1493,18 @@ function dtb_oo_inline_js(): string {
     });
 
     // Drawer close.
+    $('#dtb-oo-drawer').on('dtb:modal:escape', closeDrawer);
+    $('#dtb-oo-action-modal').on('dtb:modal:escape', closeModal);
     $(document).on('click', '.dtb-oo-drawer-close, .dtb-oo-drawer-backdrop', function () {
-        closeDrawer();
-        closeModal();
+        var drawer = $(this).closest('.dtb-oo-drawer');
+        if (drawer.attr('id') === 'dtb-oo-action-modal') { closeModal(); }
+        else { closeDrawer(); }
     });
     $(document).on('keydown', function (e) {
-        if (e.key === 'Escape') { closeDrawer(); closeModal(); }
+        if (e.key === 'Escape') {
+            if (!$('#dtb-oo-action-modal').is('[hidden]')) { closeModal(); }
+            else if (!$('#dtb-oo-drawer').is('[hidden]')) { closeDrawer(); }
+        }
     });
 
     // -------------------------------------------------------------------------

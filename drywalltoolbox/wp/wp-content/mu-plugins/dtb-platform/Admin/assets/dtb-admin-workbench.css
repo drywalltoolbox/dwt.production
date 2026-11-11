@@ -36,6 +36,10 @@ body.dtb-modal-open {
 	overflow: hidden;
 }
 
+body.dtb-drawer-open {
+	overflow: hidden;
+}
+
 /* ── Modal shell ───────────────────────────────────────────────────────────── */
 
 .dtb-modal {

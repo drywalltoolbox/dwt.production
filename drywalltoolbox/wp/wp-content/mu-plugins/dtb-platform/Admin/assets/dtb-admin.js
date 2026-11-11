@@ -32,6 +32,8 @@
 	/** @type {DtbAdminConfig} dtbAdminConfig — localized via AdminAssets.php */
 	const cfg = window.dtbAdminConfig || {};
 	const DTB_ADMIN_AUTO_REFRESH_INTERVAL_MS = 180000;
+	const modalFocusReturn = {};
+	const drawerFocusReturn = {};
 
 	const DtbAdmin = {
 		version: '2.0.0',
@@ -217,7 +219,7 @@
 
 		// Escape key.
 		document.addEventListener( 'keydown', function ( e ) {
-			if ( e.key === 'Escape' ) {
+			if ( e.key === 'Escape' && ! document.querySelector( '.dtb-modal-overlay--open, .dtb-pm-modal-overlay.open, .dtb-oo-drawer:not([hidden]), [data-pricing-drawer]:not([hidden])' ) ) {
 				document.querySelectorAll( '.dtb-drawer.dtb-drawer--open' ).forEach( function ( d ) {
 					DtbAdmin.closeDrawer( d.id );
 				} );
@@ -234,8 +236,10 @@
 		const overlay = document.querySelector( '.dtb-drawer-overlay' );
 		if ( ! drawer ) return;
 
+		drawerFocusReturn[ drawerId ] = document.activeElement;
 		drawer.classList.add( 'dtb-drawer--open' );
 		drawer.setAttribute( 'aria-hidden', 'false' );
+		document.body.classList.add( 'dtb-drawer-open' );
 
 		if ( overlay ) {
 			overlay.classList.add( 'dtb-drawer-overlay--open' );
@@ -263,6 +267,12 @@
 			overlay.classList.remove( 'dtb-drawer-overlay--open' );
 			overlay.setAttribute( 'aria-hidden', 'true' );
 		}
+		if ( ! document.querySelector( '.dtb-drawer.dtb-drawer--open' ) ) {
+			document.body.classList.remove( 'dtb-drawer-open' );
+		}
+		const returnTarget = drawerFocusReturn[ drawerId ];
+		if ( returnTarget && document.documentElement.contains( returnTarget ) ) returnTarget.focus();
+		delete drawerFocusReturn[ drawerId ];
 	};
 
 	// =========================================================================
@@ -290,9 +300,8 @@
 
 		document.addEventListener( 'keydown', function ( e ) {
 			if ( e.key === 'Escape' ) {
-				document.querySelectorAll( '.dtb-modal-overlay.dtb-modal-overlay--open' ).forEach( function ( o ) {
-					DtbAdmin.closeModal( o.id );
-				} );
+				const openModals = document.querySelectorAll( '.dtb-modal-overlay.dtb-modal-overlay--open' );
+				if ( openModals.length ) DtbAdmin.closeModal( openModals[ openModals.length - 1 ].id );
 			}
 		} );
 	};
@@ -300,9 +309,10 @@
 	DtbAdmin.openModal = function ( overlayId ) {
 		const overlay = document.getElementById( overlayId );
 		if ( ! overlay ) return;
+		modalFocusReturn[ overlayId ] = document.activeElement;
 		overlay.classList.add( 'dtb-modal-overlay--open' );
 		overlay.setAttribute( 'aria-hidden', 'false' );
-		document.body.style.overflow = 'hidden';
+		document.body.classList.add( 'dtb-modal-open' );
 		const focusable = overlay.querySelector( 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])' );
 		if ( focusable ) setTimeout( function () { focusable.focus(); }, 50 );
 	};
@@ -312,7 +322,12 @@
 		if ( ! overlay ) return;
 		overlay.classList.remove( 'dtb-modal-overlay--open' );
 		overlay.setAttribute( 'aria-hidden', 'true' );
-		document.body.style.overflow = '';
+		if ( ! document.querySelector( '.dtb-modal-overlay--open, .dtb-pm-modal-overlay.open, .dtb-oo-drawer:not([hidden]), [data-pricing-drawer]:not([hidden])' ) ) {
+			document.body.classList.remove( 'dtb-modal-open' );
+		}
+		const returnTarget = modalFocusReturn[ overlayId ];
+		if ( returnTarget && document.documentElement.contains( returnTarget ) ) returnTarget.focus();
+		delete modalFocusReturn[ overlayId ];
 	};
 
 	// =========================================================================

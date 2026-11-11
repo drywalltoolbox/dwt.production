@@ -98,7 +98,13 @@
 		const productId = drawer.querySelector('[data-drawer-product-id]');
 		const useTarget = drawer.querySelector('[data-drawer-use-target]');
 		let current = null;
-		const closeDrawer = () => { drawer.hidden = true; current = null; if (lastFocused?.focus) lastFocused.focus(); };
+		const closeDrawer = () => {
+			drawer.hidden = true;
+			drawer.setAttribute('aria-hidden', 'true');
+			current = null;
+			if (!document.querySelector('.dtb-modal-overlay--open, .dtb-pm-modal-overlay.open, .dtb-oo-drawer:not([hidden]), [data-pricing-drawer]:not([hidden])')) document.body.classList.remove('dtb-modal-open');
+			if (lastFocused?.focus) lastFocused.focus();
+		};
 		const populate = (row) => {
 			current = row;
 			drawer.querySelector('[data-drawer-title]').textContent = row.name || 'Product pricing';
@@ -113,6 +119,7 @@
 			if (row.on_sale) saleNote.textContent = `Active sale. Sale prices are protected by COGS, the ${Number(row.minimum_margin || 0).toFixed(1)}% minimum-margin floor, and MAP when configured.`;
 		};
 		close.addEventListener('click', closeDrawer);
+		drawer.addEventListener('dtb:modal:escape', closeDrawer);
 		document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && !drawer.hidden) closeDrawer(); });
 		useTarget.addEventListener('click', () => { if (current?.suggested_price != null) price.value = Number(current.suggested_price).toFixed(2); });
 		form.addEventListener('submit', async (event) => {
@@ -121,7 +128,7 @@
 			catch (error) { setMessage(error.message, 'error'); }
 			finally { submit.disabled = false; }
 		});
-		return { open: async (id, trigger) => { lastFocused = trigger || document.activeElement; try { populate(await request(`/product/${id}`)); drawer.hidden = false; close.focus(); } catch (error) { setMessage(error.message, 'error'); } } };
+		return { open: async (id, trigger) => { lastFocused = trigger || document.activeElement; try { populate(await request(`/product/${id}`)); drawer.hidden = false; drawer.setAttribute('aria-hidden', 'false'); document.body.classList.add('dtb-modal-open'); close.focus(); } catch (error) { setMessage(error.message, 'error'); } } };
 	};
 	const drawerApi = initDrawer();
 

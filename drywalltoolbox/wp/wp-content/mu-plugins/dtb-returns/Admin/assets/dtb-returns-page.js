@@ -581,6 +581,26 @@
 		html += '</div>'; // .dtb-returns-modal
 
 		els.body.innerHTML = html;
+		var tabList = qs( '.dtb-returns-modal-tabs', els.body );
+		if ( tabList ) {
+			tabList.setAttribute( 'aria-label', 'Return details' );
+		}
+		qsa( '[data-dtb-returns-tab]', els.body ).forEach( function ( tab ) {
+			var key = tab.getAttribute( 'data-dtb-returns-tab' );
+			tab.id = 'dtb-returns-tab-' + key;
+			tab.setAttribute( 'type', 'button' );
+			tab.setAttribute( 'role', 'tab' );
+			tab.setAttribute( 'aria-controls', 'dtb-returns-panel-' + key );
+			tab.tabIndex = 'overview' === key ? 0 : -1;
+		} );
+		qsa( '[data-dtb-returns-panel]', els.body ).forEach( function ( panel ) {
+			var key = panel.getAttribute( 'data-dtb-returns-panel' );
+			panel.id = 'dtb-returns-panel-' + key;
+			panel.setAttribute( 'role', 'tabpanel' );
+			panel.setAttribute( 'aria-labelledby', 'dtb-returns-tab-' + key );
+			panel.setAttribute( 'tabindex', '0' );
+			panel.hidden = 'overview' !== key;
+		} );
 
 		// Restore active tab if navigated away from overview during a reload
 		if ( state.activeTab && state.activeTab !== 'overview' ) {
@@ -596,9 +616,12 @@
 			var active = btn.getAttribute( 'data-dtb-returns-tab' ) === tabName;
 			btn.classList.toggle( 'is-active', active );
 			btn.setAttribute( 'aria-selected', active ? 'true' : 'false' );
+			btn.tabIndex = active ? 0 : -1;
 		} );
 		qsa( '[data-dtb-returns-panel]', body ).forEach( function ( panel ) {
-			panel.classList.toggle( 'is-active', panel.getAttribute( 'data-dtb-returns-panel' ) === tabName );
+			var active = panel.getAttribute( 'data-dtb-returns-panel' ) === tabName;
+			panel.classList.toggle( 'is-active', active );
+			panel.hidden = ! active;
 		} );
 		state.activeTab = tabName;
 	}
