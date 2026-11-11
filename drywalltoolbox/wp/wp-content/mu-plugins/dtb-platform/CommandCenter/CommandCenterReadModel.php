@@ -192,13 +192,27 @@ function dtb_command_center_support_summary(): array {
 	];
 
 	if ( function_exists( 'dtb_support_count_by_status' ) ) {
-		$counts = dtb_support_count_by_status();
+		$counts       = dtb_support_count_by_status();
+		$queue_counts = function_exists( 'dtb_support_get_queue_counts' )
+			? dtb_support_get_queue_counts()
+			: [];
 		$totals['open']        = (int) ( $counts['open'] ?? 0 );
-		$totals['needs_reply'] = (int) ( $counts['needs_reply'] ?? 0 );
-		$totals['past_sla']    = function_exists( 'dtb_support_count_past_sla' )
-			? (int) dtb_support_count_past_sla()
-			: 0;
-		$totals['total_open']  = array_sum( [ $totals['open'], $totals['needs_reply'] ] );
+		$totals['needs_reply'] = (int) ( $queue_counts['needs_reply'] ?? (
+			(int) ( $counts['open'] ?? 0 ) +
+			(int) ( $counts['pending_staff'] ?? 0 ) +
+			(int) ( $counts['in_progress'] ?? 0 )
+		) );
+		$totals['past_sla']    = (int) ( $queue_counts['overdue'] ?? (
+			function_exists( 'dtb_support_count_past_sla' )
+				? dtb_support_count_past_sla()
+				: 0
+		) );
+		$totals['total_open']  = (int) ( $queue_counts['all_active'] ?? array_sum( [
+			(int) ( $counts['open'] ?? 0 ),
+			(int) ( $counts['pending_customer'] ?? 0 ),
+			(int) ( $counts['pending_staff'] ?? 0 ),
+			(int) ( $counts['in_progress'] ?? 0 ),
+		] ) );
 	}
 
 	set_transient( $cache_key, $totals, 2 * MINUTE_IN_SECONDS );
