@@ -313,11 +313,33 @@ def validate_catalog(catalog_path: Path, gap_audit_path: Path) -> dict[str, obje
             specs = json.loads(raw_specs)
             if not isinstance(specs, list):
                 raise ValueError("must be a JSON array")
-            for spec in specs:
-                if isinstance(spec, dict) and normalize_spec_label(spec.get("label")) in EXCLUDED_PDP_SPEC_LABELS:
-                    errors.append(
-                        f"{sku}: prohibited PDP specification label {spec.get('label')!r}"
-                    )
+            for spec_index, spec in enumerate(specs):
+                if not isinstance(spec, dict):
+                    errors.append(f"{sku}: specification {spec_index} must be an object")
+                    continue
+                label = spec.get("label")
+                if not isinstance(label, str) or not label.strip() or len(label) > 160:
+                    errors.append(f"{sku}: specification {spec_index} has an invalid label")
+                    continue
+                if normalize_spec_label(label) in EXCLUDED_PDP_SPEC_LABELS:
+                    errors.append(f"{sku}: prohibited PDP specification label {label!r}")
+
+                if set(spec) == {"label", "value"}:
+                    if not isinstance(spec["value"], str) or not spec["value"].strip() or len(spec["value"]) > 2000:
+                        errors.append(f"{sku}: specification {spec_index} has an invalid value")
+                elif set(spec) == {"label", "items"}:
+                    items = spec["items"]
+                    if not isinstance(items, list) or not items or len(items) > 50:
+                        errors.append(f"{sku}: specification {spec_index} has invalid items")
+                        continue
+                    for item_index, item in enumerate(items):
+                        if (not isinstance(item, dict) or set(item) not in ({"name"}, {"name", "sku"})
+                                or not isinstance(item.get("name"), str) or not item["name"].strip()
+                                or len(item["name"]) > 160
+                                or ("sku" in item and (not isinstance(item["sku"], str) or len(item["sku"]) > 100))):
+                            errors.append(f"{sku}: specification {spec_index} item {item_index} is invalid")
+                else:
+                    errors.append(f"{sku}: specification {spec_index} must use label/value or label/items shape")
         except (json.JSONDecodeError, ValueError) as exc:
             errors.append(f"{sku}: invalid _dtb_specs_json: {exc}")
 

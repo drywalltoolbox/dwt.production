@@ -13,7 +13,7 @@ Located after `Meta: _dtb_specs_json`:
 - `Meta: _dtb_features_json`: JSON text, schema `{"schema_version":1,"features":[{"label":"...","description":"..."}]}`
 - `Meta: _dtb_content_schema_version`: text `2` only once the content has been reviewed and imported.
 
-No feature data is currently migrated; blank fields mean legacy content stays in force. Existing `_dtb_specs_json`, `_includes_*_name/sku`, compatibility and schematic metadata remain unchanged. The version distinguishes the overall product-content contract from Features JSON schema version.
+No feature data is currently migrated; blank fields mean legacy content stays in force. The Features schema migration does not rewrite existing `_dtb_specs_json`, `_includes_*_name/sku`, compatibility, or schematic metadata. Independently, the product-specification policy filters duplicate identity labels from native CSV imports and PDP projections. The version distinguishes the overall product-content contract from Features JSON schema version.
 
 ## Runtime
 `DTB_ProductMeta` defines the two keys and registers them as string metadata. `DTB_CatalogProductNormalizer` exposes `content: {schemaVersion,features,structured}` only for a version-2 content record with a valid Features document. Frontend product DTO translates this into `structured_content`; the shared ProductDetail view prefers it over legacy Features extraction for both PDP and Quick View.

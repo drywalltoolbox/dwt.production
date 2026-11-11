@@ -32,6 +32,7 @@ require_once $_dtb_cp . '/Domain/CatalogProduct.php';
 require_once $_dtb_cp . '/Domain/ProductVariation.php';
 require_once $_dtb_cp . '/Domain/ToolsetData.php';
 require_once $_dtb_cp . '/Domain/CatalogHealthIssue.php';
+require_once $_dtb_cp . '/Domain/CatalogSpecificationPolicy.php';
 
 // Services and infrastructure.
 require_once $_dtb_cp . '/Services/BrandNormalizer.php';
@@ -96,6 +97,7 @@ require_once $_dtb_cp . '/Application/RegisterCategoryHeroImageSize.php';
 require_once $_dtb_cp . '/Application/RegisterCatalogMeta.php';
 require_once $_dtb_cp . '/Application/RegisterCatalogRoutes.php';
 require_once $_dtb_cp . '/Application/RegisterCatalogHooks.php';
+require_once $_dtb_cp . '/Application/CatalogSpecificationsCsv.php';
 require_once $_dtb_cp . '/Application/CatalogContentCsv.php';
 require_once $_dtb_cp . '/Application/NormalizeCatalogProduct.php';
 require_once $_dtb_cp . '/Application/ResolveDefaultVariation.php';

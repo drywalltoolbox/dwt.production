@@ -9,6 +9,7 @@
 - Veeqo remains authoritative for inventory, allocation, fulfillment, shipping, and tracking. The official catalog's `Stock` field is an opening stock import value only; after initial setup, use Veeqo as the live quantity authority.
 - Pricing follows WooCommerce/runtime pricing ownership; enrichment does not create another price authority.
 - Derived research, comparison, and run-report files are not canonical product truth.
+- Product specification row shape, source exclusions, importer filtering, and PDP projection are defined in [Product Specifications: Source, Import, and PDP Projection](../../../docs/architecture/product-specifications.md).
 
 ## Veeqo launch product import
 
