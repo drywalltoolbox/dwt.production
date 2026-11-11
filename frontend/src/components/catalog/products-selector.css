@@ -556,28 +556,51 @@
 }
 
 .product-selector--schematics .product-selector-header {
-  grid-template-columns: 2.75rem minmax(0, 1fr);
-  align-items: start;
+	box-sizing: border-box;
+	grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+	align-items: center;
+	place-items: stretch;
+}
+
+.product-selector--schematics .dtb-product-nav-back {
+	position: static;
+	grid-column: 1;
+	grid-row: 1;
+	justify-self: start;
+	align-self: center;
+	transform: none;
+}
+
+.product-selector--schematics .back-button.dtb-product-nav-back:hover,
+.product-selector--schematics .back-button.dtb-product-nav-back:active {
+	transform: none;
 }
 
 .product-selector--schematics .product-selector-header-content {
+	box-sizing: border-box;
+	grid-column: 2;
+	grid-row: 1;
+	width: 100%;
   min-width: 0;
   display: flex;
-  flex-direction: column;
+	flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: clamp(0.75rem, 2vw, 1.5rem);
-  text-align: center;
+	gap: clamp(1rem, 3vw, 2.5rem);
+	text-align: left;
 }
 
 .product-selector--schematics .product-brand-header-logo {
-  width: min(100%, 18rem);
-  max-height: 4.5rem;
+	flex: 0 1 20rem;
+	width: min(35vw, 20rem);
+	max-width: 100%;
+	max-height: 5rem;
   object-fit: contain;
 }
 
 .product-selector--schematics .product-selector-header-copy {
   min-width: 0;
+	max-width: 42rem;
 }
 
 .product-selector--schematics .product-selector-header-copy h1 {
@@ -585,6 +608,7 @@
   font-size: clamp(1.5rem, 2.4vw, 2.25rem);
   line-height: 1.12;
   text-wrap: balance;
+	text-align: left;
 }
 
 .product-selector--schematics .product-selector-header-copy p {
@@ -595,6 +619,31 @@
 .dtb-selector-grid--categories.dtb-selector-grid--single-centered {
   grid-template-columns: minmax(0, min(100%, 19rem));
   justify-content: center;
+}
+
+@media (max-width: 767px) {
+	.product-selector--schematics .product-selector-header {
+		grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+		min-height: 8.5rem;
+		padding-block: 0.75rem;
+	}
+
+	.product-selector--schematics .product-selector-header-content {
+		flex-direction: column;
+		gap: 0.75rem;
+		text-align: center;
+	}
+
+	.product-selector--schematics .product-brand-header-logo {
+		flex: 0 1 auto;
+		width: min(100%, 15rem);
+		max-height: 3.75rem;
+	}
+
+	.product-selector--schematics .product-selector-header-copy h1 {
+		font-size: clamp(1.25rem, 5vw, 1.75rem);
+		text-align: center;
+	}
 }
 
 @media (min-width: 768px) {
