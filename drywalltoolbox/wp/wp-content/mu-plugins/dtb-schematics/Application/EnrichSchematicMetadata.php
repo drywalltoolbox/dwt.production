@@ -102,3 +102,4 @@ function dtb_schematic_enrich_metadata( DTB_Schematic_Record_Entity $record ) {
 
 	return [ 'record' => $updated, 'changed' => true ];
 }
+

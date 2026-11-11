@@ -1299,3 +1299,4 @@ function dtb_schematic_reconcile_retire_uncovered( array $seen_canonical_ids ): 
 
 	return $retired_count;
 }
+

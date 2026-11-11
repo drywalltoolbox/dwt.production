@@ -342,3 +342,4 @@ function dtb_schematic_shared_variant_options( string $canonical_id ): array {
 
 	return $normalized;
 }
+

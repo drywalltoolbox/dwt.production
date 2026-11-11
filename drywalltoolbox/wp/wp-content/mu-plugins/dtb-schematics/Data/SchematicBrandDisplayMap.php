@@ -32,3 +32,4 @@ const DTB_LEVEL5_SCHEMATIC_DISPLAY_MAP = [
 	'level5-7377-cover-plate-assembly-old-style' => [ 'brand_id' => 'level5', 'brand_name' => 'Level5', 'category_id' => 'automatic-tapers', 'category_name' => 'Automatic Tapers', 'title' => 'Cover Plate Assembly (Old Style) (7377)', 'legacy_title' => 'Cover Plate Assembly (Old Style)' ],
 	'level5-9333-cutter-chain-assembly' => [ 'brand_id' => 'level5', 'brand_name' => 'Level5', 'category_id' => 'automatic-tapers', 'category_name' => 'Automatic Tapers', 'title' => 'Cutter Chain Assembly (9333)', 'legacy_title' => 'Cutter Chain Assembly' ],
 ];
+
