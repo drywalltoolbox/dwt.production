@@ -389,10 +389,9 @@
 		color: var(--dtb-muted);
 		font-weight: 400;
 		margin-top: 2px;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		max-width: 180px;
+		min-width: 0;
+		overflow-wrap: anywhere;
+		white-space: normal;
 	}
 
 	/* ── Age / SLA coloring ───────────────────────────────────── */
@@ -445,11 +444,15 @@
 	@media (max-width: 782px) {
 		.dtb-stats-row     { grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
 		.dtb-stat-num      { font-size: 22px; }
-		.dtb-tab-bar       { padding: 0 10px; flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; gap: 0; }
-		.dtb-tabs          { flex-wrap: nowrap; flex-shrink: 0; }
+		.dtb-tab-bar       { padding: 0 10px; flex-wrap: nowrap; overflow: visible; gap: 0; }
+		.dtb-tabs          { flex: 1 1 0; flex-wrap: nowrap; flex-shrink: 1; min-width: 0; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch; scrollbar-width: thin; scrollbar-color: var(--dtb-border) transparent; }
+		.dtb-tabs::-webkit-scrollbar { display: block; height: 5px; }
+		.dtb-tabs::-webkit-scrollbar-thumb { background: var(--dtb-border); border-radius: 999px; }
 		.dtb-tab           { padding: 0 12px; font-size: 12px; flex-shrink: 0; }
-		.dtb-tab-bar-right { flex-shrink: 0; padding: 6px 0; }
-		.dtb-chip-bar      { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; padding: 8px 10px; gap: 4px; }
+		.dtb-tab-bar-right { flex: 0 0 auto; padding: 6px 0 6px 8px; }
+		.dtb-chip-bar      { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: var(--dtb-border) transparent; padding: 8px 10px; gap: 4px; }
+		.dtb-chip-bar::-webkit-scrollbar { display: block; height: 5px; }
+		.dtb-chip-bar::-webkit-scrollbar-thumb { background: var(--dtb-border); border-radius: 999px; }
 		.dtb-chip          { flex-shrink: 0; }
 		.dtb-table-wrap    { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 		.dtb-call-lookup-bar { flex-wrap: wrap; padding: 10px 12px; }
@@ -3537,5 +3540,38 @@ body.dtb-repair-admin-screen #dtb-tw-qa-checkbox {
 
 /* Hide old multi-td table styles that no longer apply */
 .dtb-quote-line-remove.button-link-delete { display: none !important; }
+
+/* Keep the classic repair editor's sticky save bar readable at narrow widths. */
+body.dtb-repair-admin-screen #dtb-sticky-bar .dtb-sb-title {
+	align-items: center;
+	display: flex;
+	flex: 1 1 auto;
+	gap: 7px;
+	min-width: 0;
+}
+
+body.dtb-repair-admin-screen #dtb-sticky-bar .dtb-sb-repair,
+body.dtb-repair-admin-screen #dtb-sticky-bar .dtb-sticky-status {
+	flex: 0 0 auto;
+}
+
+body.dtb-repair-admin-screen #dtb-sticky-bar .dtb-sb-customer {
+	font-weight: 400;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+body.dtb-repair-admin-screen #dtb-sticky-bar .dtb-sb-actions {
+	flex: 0 0 auto;
+}
+
+@media ( max-width: 782px ) {
+	body.dtb-repair-admin-screen #dtb-sticky-bar .dtb-sb-title {
+		gap: 4px;
+		font-size: 12px;
+	}
+}
 
 

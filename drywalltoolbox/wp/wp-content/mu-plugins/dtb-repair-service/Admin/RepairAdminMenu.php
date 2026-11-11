@@ -397,9 +397,9 @@ function dtb_repair_admin_hero_banner( WP_Post $post ): void {
 
 	<div id="dtb-sticky-bar">
 		<span class="dtb-sb-title">
-			Repair #<?php echo esc_html( (string) $repair_id ); ?>
-			&nbsp;—&nbsp;<?php echo $customer ? esc_html( $customer ) : ''; ?>
-			&nbsp;<span class="dtb-status-badge dtb-sticky-status dtb-status-<?php echo esc_attr( $status ); ?>"><?php echo esc_html( $status_lbl ); ?></span>
+			<span class="dtb-sb-repair">Repair #<?php echo esc_html( (string) $repair_id ); ?></span>
+			<?php if ( $customer ) : ?><span class="dtb-sb-customer">— <?php echo esc_html( $customer ); ?></span><?php endif; ?>
+			<span class="dtb-status-badge dtb-sticky-status dtb-status-<?php echo esc_attr( $status ); ?>"><?php echo esc_html( $status_lbl ); ?></span>
 		</span>
 		<div class="dtb-sb-actions">
 			<button type="button" class="button dtb-sticky-save" onclick="document.getElementById('publish').click();">

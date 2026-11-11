@@ -63,6 +63,21 @@ templates together. The platform's shared `dtb_render_branded_email()` layout
 uses independent header and footer artwork tokens in
 `dtb-platform/Support/Templates/branded-email.html` so non-WooCommerce DTB
 transactional mail follows the same split treatment.
+Both the branded shell and WooCommerce's classic email footer render their
+shared logo, social icons, account/shop/contact navigation, and legal line
+through `dtb_email_global_footer_content_html()` in the platform email layer.
+Campaign-specific footer notes, including launch unsubscribe instructions,
+are inserted into that same global footer composition.
+`dtb_email_button()` is the shared CTA renderer; campaign layouts may select a
+primary or secondary visual variant while preserving the same dimensions,
+corner radius, and focus behavior. The email icon helper serves raster PNGs so
+mail clients do not depend on inline SVG. The launch icon exports are based on
+the supplied `products/launch/media/email/micons.ai` source sheet.
+The shared renderer also accepts opt-in `theme`, `hide_heading`, `flush_body`,
+and `hide_signoff` arguments for campaign layouts that need to use this same
+header/footer shell around a custom, edge-to-edge body. Defaults preserve the
+existing transactional-email layout; the coming-soon launch email uses the
+light palette and flush body mode.
 Email typography uses the self-hosted Geist Variable font from the storefront's
 Fontsource package, with Apple system, Segoe UI, Roboto, Helvetica, and Arial
 fallbacks. The same-origin WOFF2 asset is
@@ -74,6 +89,10 @@ utility labels. Account, order-summary, and support surfaces use restrained
 cool-neutral borders, rounded corners, generous spacing, and the primary
 `#2255EE` token for actions and brand accents. Mobile hero copy remains legible
 at 13px or larger with fluid table layouts.
+The administrator launch preview keeps scripts disabled but grants its
+`srcdoc` iframe the parent origin so it can load the self-hosted WOFF2. Real
+mail clients may still block web fonts and must remain legible with the
+system-font fallbacks.
 
 The customer new-account template uses
 `/assets/email/account-welcome-hero.jpeg` as a full-bleed hero background with

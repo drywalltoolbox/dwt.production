@@ -249,27 +249,43 @@ textarea.dtb-repair-input {
 	display: block;
 	font-size: 0.74rem;
 	font-weight: 700;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	white-space: normal;
 }
 
 .dtb-repair-message-thread {
 	display: flex;
 	flex-direction: column;
 	gap: 0.75rem;
+	min-width: 0;
 	max-height: 460px;
 	overflow: auto;
+	overscroll-behavior: contain;
+	scrollbar-color: #cbd5e1 transparent;
+	scrollbar-width: thin;
 	padding-right: 0.25rem;
+}
+
+.dtb-repair-message-thread::-webkit-scrollbar {
+	width: 6px;
+}
+
+.dtb-repair-message-thread::-webkit-scrollbar-thumb {
+	background: #cbd5e1;
+	border-radius: 999px;
 }
 
 .dtb-repair-message {
 	border-radius: 12px;
+	min-width: 0;
+	overflow-wrap: anywhere;
 	padding: 0.8rem 0.9rem;
 }
 
 .dtb-repair-message p {
 	margin: 0 0 0.45rem;
+	overflow-wrap: anywhere;
 	white-space: pre-wrap;
 }
 

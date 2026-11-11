@@ -319,28 +319,78 @@ body.dtb-admin-screen :where(.dtb-orders-overview-grid, .dtb-repair-modal-worksp
 	}
 }
 
-body.dtb-admin-screen :where(.dtb-modal-tab--active, .dtb-modal-tab[aria-selected='true']) {
+body.dtb-admin-screen :where(
+	#dtb-orders-modal .dtb-modal-tab--active,
+	#dtb-orders-modal .dtb-modal-tab[aria-selected='true'],
+	#dtb-support-ticket-modal .dtb-modal-tab--active,
+	#dtb-support-ticket-modal .dtb-modal-tab[aria-selected='true'],
+	#dtb-repair-modal .dtb-modal-tab--active,
+	#dtb-repair-modal .dtb-modal-tab[aria-selected='true']
+) {
 	background: #fff;
 	border-color: rgba(226, 232, 240, .95);
 	color: #2563eb;
 }
 
+.dtb-admin:where(
+	[data-dtb-page="dtb-command-center"],
+	[data-dtb-page="dtb-orders"],
+	[data-dtb-page="dtb-repairs"],
+	[data-dtb-page="dtb-support"],
+	[data-dtb-page="dtb-returns"],
+	[data-dtb-page="dtb-daily-briefings"]
+) :is(.dtb-table-wrap, .dtb-section-nav) {
+	overscroll-behavior-x: contain;
+	scrollbar-color: #cbd5e1 transparent;
+	scrollbar-width: thin;
+}
+
+.dtb-admin:where(
+	[data-dtb-page="dtb-command-center"],
+	[data-dtb-page="dtb-orders"],
+	[data-dtb-page="dtb-repairs"],
+	[data-dtb-page="dtb-support"],
+	[data-dtb-page="dtb-returns"],
+	[data-dtb-page="dtb-daily-briefings"]
+	) :is(.dtb-table-wrap, .dtb-section-nav)::-webkit-scrollbar {
+	display: block;
+	height: 7px;
+}
+
+.dtb-admin:where(
+	[data-dtb-page="dtb-command-center"],
+	[data-dtb-page="dtb-orders"],
+	[data-dtb-page="dtb-repairs"],
+	[data-dtb-page="dtb-support"],
+	[data-dtb-page="dtb-returns"],
+	[data-dtb-page="dtb-daily-briefings"]
+	) :is(.dtb-table-wrap, .dtb-section-nav)::-webkit-scrollbar-thumb {
+	background: #cbd5e1;
+	border-radius: 999px;
+}
+
 @media (max-width: 782px) {
-	.dtb-admin :where(.dtb-page-header) {
+	.dtb-admin:where([data-dtb-page="dtb-command-center"], [data-dtb-page="dtb-orders"], [data-dtb-page="dtb-repairs"], [data-dtb-page="dtb-support"], [data-dtb-page="dtb-returns"], [data-dtb-page="dtb-daily-briefings"]) :where(.dtb-page-header) {
 		border-radius: 18px;
 		padding: 18px;
 	}
 
-	body.dtb-admin-screen :where(.dtb-modal-overlay, .dtb-pm-modal-overlay) {
+	body.dtb-admin-screen :where(#dtb-orders-modal, #dtb-support-ticket-modal, #dtb-returns-modal, #dtb-repair-modal-overlay) {
 		align-items: stretch;
-		padding: 10px;
+		padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
 	}
 
-	body.dtb-admin-screen :where(.dtb-modal, .dtb-pm-modal, .dtb-modal--fullscreen) {
+	body.dtb-admin-screen :where(#dtb-orders-modal .dtb-modal, #dtb-support-ticket-modal .dtb-modal, #dtb-returns-modal .dtb-modal, #dtb-repair-modal.dtb-modal) {
 		border-radius: 18px;
-		max-height: calc(100vh - 20px);
-		max-height: calc(100dvh - 20px);
-		width: calc(100vw - 20px);
+		max-height: calc(100vh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
+		width: calc(100vw - max(10px, env(safe-area-inset-left)) - max(10px, env(safe-area-inset-right)));
+	}
+
+	@supports ( height: 100dvh ) {
+		body.dtb-admin-screen :where(#dtb-orders-modal .dtb-modal, #dtb-support-ticket-modal .dtb-modal, #dtb-returns-modal .dtb-modal, #dtb-repair-modal.dtb-modal) {
+			max-height: calc(100dvh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
+			width: calc(100dvw - max(10px, env(safe-area-inset-left)) - max(10px, env(safe-area-inset-right)));
+		}
 	}
 
 	body.dtb-admin-screen :where(#dtb-orders-modal .dtb-modal, #dtb-support-ticket-modal .dtb-modal, #dtb-returns-modal .dtb-modal, #dtb-repair-modal.dtb-modal) {
@@ -362,7 +412,7 @@ body.dtb-admin-screen :where(.dtb-modal-tab--active, .dtb-modal-tab[aria-selecte
 		border-radius: 999px;
 	}
 
-	body.dtb-admin-screen :where(.dtb-modal__body) {
+	body.dtb-admin-screen :where(#dtb-orders-modal .dtb-modal__body, #dtb-support-ticket-modal .dtb-modal__body, #dtb-returns-modal .dtb-modal__body, #dtb-repair-modal .dtb-modal__body) {
 		flex-direction: column;
 	}
 }

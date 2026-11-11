@@ -227,21 +227,6 @@ function dtb_orders_render_page(): void {
 	echo dtb_admin_ui_pagination( $paged, $total_pages );
 	dtb_admin_shell_live_region_close();
 
-	// Shared order detail drawer — lives outside the live region so it survives partial refreshes.
-	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	echo dtb_admin_ui_drawer(
-		'dtb-orders-detail-drawer',
-		__( 'Order', 'drywall-toolbox' ),
-		dtb_admin_ui_detail_row( __( 'Order',    'drywall-toolbox' ), '<span data-dtb-target="orderid">—</span>' )
-		. dtb_admin_ui_detail_row( __( 'Type',     'drywall-toolbox' ), '<span data-dtb-target="type">—</span>' )
-		. dtb_admin_ui_detail_row( __( 'Customer', 'drywall-toolbox' ), '<span data-dtb-target="customer">—</span>' )
-		. dtb_admin_ui_detail_row( __( 'Status',   'drywall-toolbox' ), '<span data-dtb-target="status">—</span>' )
-		. dtb_admin_ui_detail_row( __( 'Total',    'drywall-toolbox' ), '<span data-dtb-target="total">—</span>' )
-		. dtb_admin_ui_detail_row( __( 'Date',     'drywall-toolbox' ), '<span data-dtb-target="date">—</span>' ),
-		'<a href="#" class="dtb-btn dtb-btn--sm dtb-orders-detail-view-btn">'
-			. esc_html__( 'View Full Order', 'drywall-toolbox' )
-		. '</a>'
-	);
 	?>
 	<div id="dtb-orders-modal" class="dtb-modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="dtb-orders-modal-title" hidden>
 		<div class="dtb-modal dtb-modal--fullscreen">
@@ -257,20 +242,5 @@ function dtb_orders_render_page(): void {
 		</div>
 	</div>
 	<?php
-	// Update the View Full Order href when drawer populates from a row click.
-	?>
-	<script>
-	(function () {
-		var d = document.getElementById( 'dtb-orders-detail-drawer' );
-		if ( ! d ) return;
-		d.addEventListener( 'dtb:drawer:populate', function ( e ) {
-			var url = e.detail.rowData.dtbFieldViewurl;
-			var btn = d.querySelector( '.dtb-orders-detail-view-btn' );
-			if ( btn && url ) btn.href = url;
-		} );
-	}());
-	</script>
-	<?php
-
 	dtb_admin_shell_close();
 }

@@ -506,7 +506,7 @@
 		var bodyEl  = overlay.querySelector( '.dtb-modal__body' );
 		var footerEl = overlay.querySelector( '.dtb-modal__footer' );
 
-		_modals[ modalId ] = { el: overlay, modal: modal, titleEl: titleEl, bodyEl: bodyEl, footerEl: footerEl };
+		_modals[ modalId ] = { el: overlay, modal: modal, titleEl: titleEl, bodyEl: bodyEl, footerEl: footerEl, urlParam: null };
 
 		// Close button.
 		var closeBtn = overlay.querySelector( '.dtb-modal__close' );
@@ -543,6 +543,7 @@
 		m.el.setAttribute( 'aria-hidden', 'false' );
 
 		m._focusReturnEl = config.focusReturnEl || document.activeElement;
+		m.urlParam = config.urlParam || null;
 
 		if ( config.title && m.titleEl ) {
 			m.titleEl.textContent = config.title;
@@ -554,6 +555,7 @@
 		}
 
 		if ( config.urlParam && config.urlParamValue ) {
+			m.urlParam = config.urlParam;
 			replaceUrlParam( config.urlParam, config.urlParamValue );
 		}
 
@@ -576,11 +578,14 @@
 	 */
 	function closeRecordModal( modalId, urlParam ) {
 		var m = _modals[ modalId ];
+		var overlay = m ? m.el : document.getElementById( modalId );
+		var paramToClear = urlParam || ( m && m.urlParam );
+		var closedByAdmin = false;
 		if ( ! m ) {
-			var overlay = document.getElementById( modalId );
 			if ( overlay ) {
 				if ( window.DtbAdmin && window.DtbAdmin.closeModal ) {
 					window.DtbAdmin.closeModal( modalId );
+					closedByAdmin = true;
 				} else {
 					overlay.classList.remove( 'dtb-modal-overlay--open' );
 					overlay.setAttribute( 'hidden', '' );
@@ -597,7 +602,13 @@
 			}
 		}
 
-		if ( urlParam ) { clearUrlParam( urlParam ); }
+		if ( paramToClear ) { clearUrlParam( paramToClear ); }
+		if ( m ) {
+			m.urlParam = null;
+		}
+		if ( overlay && ! closedByAdmin ) {
+			overlay.dispatchEvent( new CustomEvent( 'dtb:modal:closed' ) );
+		}
 		if ( ! document.querySelector( '.dtb-modal-overlay--open, .dtb-pm-modal-overlay.open, .dtb-oo-drawer:not([hidden]), [data-pricing-drawer]:not([hidden])' ) ) {
 			document.body.classList.remove( 'dtb-modal-open' );
 		}

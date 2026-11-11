@@ -48,12 +48,12 @@
 }
 
 .dtb-orders-status-strip strong {
-	overflow: hidden;
 	color: #172033;
 	font-size: 13px;
 	font-weight: 650;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	white-space: normal;
 }
 
 .dtb-orders-next-action {
@@ -99,6 +99,21 @@
 .dtb-orders-items-wrap {
 	max-width: 100%;
 	overflow-x: auto;
+	overflow-y: hidden;
+	overscroll-behavior-x: contain;
+	scrollbar-color: #cbd5e1 transparent;
+	scrollbar-width: thin;
+}
+
+.dtb-orders-items-wrap::-webkit-scrollbar,
+.dtb-orders-kit__body::-webkit-scrollbar {
+	height: 6px;
+}
+
+.dtb-orders-items-wrap::-webkit-scrollbar-thumb,
+.dtb-orders-kit__body::-webkit-scrollbar-thumb {
+	background: #cbd5e1;
+	border-radius: 999px;
 }
 
 .dtb-orders-items {
@@ -302,6 +317,10 @@
 
 .dtb-orders-kit__body {
 	overflow-x: auto;
+	overflow-y: hidden;
+	overscroll-behavior-x: contain;
+	scrollbar-color: #cbd5e1 transparent;
+	scrollbar-width: thin;
 	border-top: 1px solid #e2e8f0;
 	background: #fff;
 }

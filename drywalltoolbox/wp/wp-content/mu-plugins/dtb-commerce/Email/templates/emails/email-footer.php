@@ -29,25 +29,7 @@ $footer_artwork=home_url('/assets/email/dtb-email-footer-background.jpg');
 <tr><td align="center" valign="top" bgcolor="#061524" style="background-color:#061524;">
 <table id="template_footer" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" background="<?php echo esc_url( $footer_artwork ); ?>" bgcolor="#061524" style="width:100%;border-collapse:collapse;background-color:#061524;background-image:url('<?php echo esc_url( $footer_artwork ); ?>');background-position:center center;background-repeat:no-repeat;background-size:cover;">
 <tr><td id="credit" align="center" bgcolor="#061524" style="padding:31px 22px 30px;text-align:center;background-color:#061524;background-image:url('<?php echo esc_url( $footer_artwork ); ?>');background-position:center center;background-repeat:no-repeat;background-size:cover;color:#c4cfdd;font-family:<?php echo esc_attr( $font ); ?>;">
-<?php if ( $logo_url ) : ?>
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto;border-collapse:collapse;"><tr><td align="center" style="padding:0;">
-<a href="<?php echo esc_url( $home_url ); ?>" style="display:inline-block;text-decoration:none;">
-<img class="dtb-email-brand-logo" src="<?php echo esc_url( $logo_url ); ?>" width="184" alt="Drywall Toolbox" style="display:block;width:184px;max-width:100%;height:auto;border:0;">
-</a></td></tr></table>
-<?php endif; ?>
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:12px auto 0;border-collapse:collapse;"><tr><td align="center" style="padding:0;">
-<?php echo function_exists( 'dtb_email_social_icons' ) ? dtb_email_social_icons() : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-</td></tr></table>
-<?php if ( $link_html ) : ?>
-<table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;margin:18px auto 0;border-collapse:collapse;"><tr><td align="center" style="padding:0;text-align:center;font-family:<?php echo esc_attr( $font ); ?>;">
-<?php echo implode( '', $link_html ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-</td></tr></table>
-<?php endif; ?>
-<table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="margin:19px auto 0;border-collapse:collapse;border-top:1px solid #34475e;">
-<tr><td align="center" style="padding:18px 0 0;text-align:center;color:#aebdd0;font-family:<?php echo esc_attr( $font ); ?>;font-size:11px;line-height:19px;">
-&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> Drywall Toolbox. All rights reserved.
-<?php if ( $privacy_url ) : ?><br><a href="<?php echo esc_url( $privacy_url ); ?>" style="color:#aebdd0;font-size:11px;text-decoration:underline;">Privacy Policy</a><?php endif; ?>
-</td></tr></table>
+<?php echo function_exists( 'dtb_email_global_footer_content_html' ) ? dtb_email_global_footer_content_html( $links ) : ''; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 </td></tr></table>
 </td></tr></table>
 </td></tr></table></div></td></tr></table></td></tr></table>

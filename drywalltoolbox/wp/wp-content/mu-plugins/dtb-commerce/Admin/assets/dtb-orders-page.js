@@ -11,6 +11,7 @@
 	var state = {
 		orderId: null,
 		payload: null,
+		detailRequest: 0,
 	};
 
 	function ordersRegion() {
@@ -496,10 +497,17 @@
 	}
 
 	function fetchOrder( orderId ) {
+		var requestId = ++state.detailRequest;
 		WB.setModalLoading( MODAL_ID, 'Loading order…' );
 		return WB.apiFetch( 'dtb/v1/admin/orders/' + encodeURIComponent( orderId ) + '/detail' )
-			.then( renderWorkbench )
+			.then( function ( payload ) {
+				var modal = document.getElementById( MODAL_ID );
+				if ( requestId !== state.detailRequest || Number( state.orderId ) !== Number( orderId ) || ! modal || ! modal.classList.contains( 'dtb-modal-overlay--open' ) ) { return; }
+				renderWorkbench( payload );
+			} )
 			.catch( function ( err ) {
+				var modal = document.getElementById( MODAL_ID );
+				if ( requestId !== state.detailRequest || Number( state.orderId ) !== Number( orderId ) || ! modal || ! modal.classList.contains( 'dtb-modal-overlay--open' ) ) { return; }
 				WB.setModalError( MODAL_ID, err.message || 'Unable to load order.' );
 			} );
 	}
@@ -521,9 +529,10 @@
 
 	function runTransition( toStatus, button ) {
 		if ( ! state.orderId || ! toStatus ) { return; }
+		var orderId = state.orderId;
 		WB.lockAction( button, 'Working…' );
 		var opNonce = Math.random().toString( 36 ).slice( 2, 8 );
-		WB.apiFetch( 'dtb/v1/admin/orders/' + encodeURIComponent( state.orderId ) + '/actions', {
+		WB.apiFetch( 'dtb/v1/admin/orders/' + encodeURIComponent( orderId ) + '/actions', {
 			method: 'POST',
 			body: {
 				action_type: 'transition',
@@ -532,7 +541,7 @@
 			},
 		} ).then( function ( data ) {
 			WB.showToast( data.message || 'Order status updated.', 'success' );
-			renderWorkbench( data.detail || state.payload || {} );
+			if ( Number( state.orderId ) === Number( orderId ) ) { renderWorkbench( data.detail || state.payload || {} ); }
 		} ).catch( function ( err ) {
 			WB.showToast( err.message || 'Transition failed.', 'error' );
 		} ).finally( function () {
@@ -542,11 +551,12 @@
 
 	function runAction( action, button ) {
 		if ( ! state.orderId || ! action ) { return; }
+		var orderId = state.orderId;
 		WB.lockAction( button, 'Working…' );
 		// Derive idempotency key: record + action + short per-click nonce so the same
 		// action can be repeated without being blocked by the server-side idempotency cache.
 		var opNonce = Math.random().toString( 36 ).slice( 2, 8 );
-		WB.apiFetch( 'dtb/v1/admin/orders/' + encodeURIComponent( state.orderId ) + '/actions', {
+		WB.apiFetch( 'dtb/v1/admin/orders/' + encodeURIComponent( orderId ) + '/actions', {
 			method: 'POST',
 			body: {
 				action_type: action,
@@ -554,7 +564,7 @@
 			},
 		} ).then( function ( data ) {
 			WB.showToast( data.message || 'Order action queued.', 'success' );
-			renderWorkbench( data.detail || state.payload || {} );
+			if ( Number( state.orderId ) === Number( orderId ) ) { renderWorkbench( data.detail || state.payload || {} ); }
 		} ).catch( function ( err ) {
 			WB.showToast( err.message || 'Order action failed.', 'error' );
 		} ).finally( function () {
@@ -624,6 +634,16 @@
 			openOrder( event.detail.id );
 		}
 	} );
+
+	var orderModal = document.getElementById( MODAL_ID );
+	if ( orderModal ) {
+		orderModal.addEventListener( 'dtb:modal:closed', function () {
+			state.detailRequest++;
+			state.orderId = null;
+			state.payload = null;
+		if ( WB && typeof WB.clearUrlParam === 'function' ) { WB.clearUrlParam( 'open_order' ); }
+		} );
+	}
 
 	var initialOrder = WB.getUrlParam( 'open_order' );
 	if ( initialOrder ) {

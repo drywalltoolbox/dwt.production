@@ -53,11 +53,11 @@
 .dtb-wb-action-menu__label {
 	font-size: 0.82rem;
 	font-weight: 700;
-	line-height: 1;
+	line-height: 1.15;
 	max-width: 150px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	white-space: normal;
 }
 
 .dtb-wb-action-menu__chevron {
@@ -73,7 +73,7 @@
 	box-shadow: 0 24px 70px rgba( 15, 23, 42, 0.22 );
 	display: none;
 	max-height: min( 72vh, 620px );
-	min-width: 340px;
+	min-width: min( 340px, calc( 100vw - 2rem ) );
 	overflow: auto;
 	padding: 0;
 	position: absolute;
@@ -104,7 +104,9 @@
 .dtb-wb-action-menu__header span {
 	color: #64748b;
 	font-size: 0.74rem;
-	white-space: nowrap;
+	min-width: 0;
+	text-align: right;
+	white-space: normal;
 }
 
 .dtb-wb-action-menu__body {
@@ -231,9 +233,8 @@
 	line-height: 1.25;
 	margin: 0;
 	max-width: 560px;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	min-width: 0;
+	overflow-wrap: anywhere;
 }
 
 .dtb-wb-modal-hero__chips {
@@ -296,9 +297,9 @@
 	display: block;
 	font-size: 0.82rem;
 	font-weight: 750;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	white-space: normal;
 }
 
 @media ( max-width: 960px ) {
@@ -320,7 +321,7 @@
 @media ( max-width: 620px ) {
 	.dtb-wb-action-menu__panel {
 		left: auto;
-		right: -2.5rem;
+		right: 0;
 		width: calc( 100vw - 2rem );
 	}
 

@@ -328,6 +328,7 @@
 		const returnTarget = modalFocusReturn[ overlayId ];
 		if ( returnTarget && document.documentElement.contains( returnTarget ) ) returnTarget.focus();
 		delete modalFocusReturn[ overlayId ];
+		overlay.dispatchEvent( new CustomEvent( 'dtb:modal:closed' ) );
 	};
 
 	// =========================================================================
@@ -464,7 +465,7 @@
 	// =========================================================================
 
 	DtbAdmin.initTableRowDrawer = function () {
-		document.querySelectorAll( '.dtb-table__row--clickable' ).forEach( function ( row ) {
+		document.querySelectorAll( '.dtb-table__row--clickable[data-dtb-drawer]' ).forEach( function ( row ) {
 			row.addEventListener( 'click', function ( e ) {
 				// Don't fire if clicking a button/link inside the row.
 				if ( e.target.closest( 'a, button, input, .dtb-btn' ) ) return;

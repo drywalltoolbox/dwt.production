@@ -6,6 +6,7 @@
 	var state = {
 		currentTicketId: 0,
 		currentTicketUrl: '',
+		ticketRequestSequence: 0,
 	};
 
 	function byId( id ) {
@@ -710,13 +711,14 @@
 			+ '<div class="dtb-chat-compose">'
 			+ buildMacroHtml( customerName, ticketLabel, orderId, ( intelligence.recommended_macros || payload.recommended_macros || [] ) )
 			+ '<div class="dtb-chat-compose__toolbar">'
-			+ '<button type="button" class="dtb-chat-mode-btn is-active" data-dtb-compose-mode="reply">Reply to Customer</button>'
-			+ '<button type="button" class="dtb-chat-mode-btn" data-dtb-compose-mode="note">Internal Note</button>'
+			+ '<button type="button" class="dtb-chat-mode-btn is-active" data-dtb-compose-mode="reply" aria-pressed="true">Reply to Customer</button>'
+			+ '<button type="button" class="dtb-chat-mode-btn" data-dtb-compose-mode="note" aria-pressed="false">Internal Note</button>'
 			+ '<button type="button" class="dtb-chat-macro-toggle dtb-btn dtb-btn--ghost dtb-btn--sm" title="Quick response macros" aria-expanded="false" aria-controls="dtb-macro-panel">Quick Responses</button>'
 			+ '</div>'
 			+ '<form class="dtb-chat-compose__form dtb-support-reply-form" data-dtb-reply-type="reply">'
 			+ '<div class="dtb-chat-compose__input-row">'
-			+ '<textarea class="dtb-chat-compose__textarea" name="message" placeholder="Write a reply to the customer…" rows="3" autocomplete="off"></textarea>'
+			+ '<label class="dtb-visually-hidden" for="dtb-support-reply-message">Message for the customer or an internal note</label>'
+			+ '<textarea id="dtb-support-reply-message" class="dtb-chat-compose__textarea" name="message" placeholder="Write a reply to the customer…" rows="3" autocomplete="off"></textarea>'
 			+ '<div class="dtb-chat-compose__actions">'
 			+ '<button type="submit" class="dtb-btn dtb-btn--primary dtb-btn--sm">Send</button>'
 			+ '<span class="dtb-support-form-status"></span>'
@@ -842,6 +844,8 @@
 
 		state.currentTicketId = Number( ticketId ) || 0;
 		state.currentTicketUrl = getTicketUrl( ticketId, ticketUrl || '' );
+		var requestSequence = ++state.ticketRequestSequence;
+		var requestedTicketId = state.currentTicketId;
 		if ( els.viewButton ) {
 			els.viewButton.setAttribute( 'data-dtb-ticket-url', state.currentTicketUrl );
 		}
@@ -870,9 +874,15 @@
 				return res.json();
 			} )
 			.then( function ( payload ) {
+				if ( requestSequence !== state.ticketRequestSequence || requestedTicketId !== state.currentTicketId ) {
+					return;
+				}
 				renderTicketModal( els, payload );
 			} )
 			.catch( function () {
+				if ( requestSequence !== state.ticketRequestSequence || requestedTicketId !== state.currentTicketId ) {
+					return;
+				}
 				renderModalError( els );
 			} );
 	}
@@ -1019,6 +1029,16 @@
 	}
 
 	function bindModalActions() {
+		var modal = byId( MODAL_ID );
+		if ( modal ) {
+			modal.addEventListener( 'dtb:modal:closed', function () {
+				state.ticketRequestSequence++;
+				state.currentTicketId = 0;
+				state.currentTicketUrl = '';
+				setTicketParam( '' );
+			} );
+		}
+
 		// ── Email toolbar quick-reply shortcuts ────────────────────────────────
 		document.addEventListener( 'click', function ( evt ) {
 			var quickBtn = evt.target && evt.target.closest ? evt.target.closest( '.dtb-email-quick-reply' ) : null;
@@ -1048,7 +1068,9 @@
 				return;
 			}
 			compose.querySelectorAll( '.dtb-chat-mode-btn' ).forEach( function ( b ) {
-				b.classList.toggle( 'is-active', b.getAttribute( 'data-dtb-compose-mode' ) === mode );
+				var active = b.getAttribute( 'data-dtb-compose-mode' ) === mode;
+				b.classList.toggle( 'is-active', active );
+				b.setAttribute( 'aria-pressed', active ? 'true' : 'false' );
 			} );
 			var form = compose.querySelector( '.dtb-support-reply-form' );
 			if ( form ) {
@@ -1076,7 +1098,9 @@
 				return;
 			}
 			compose.querySelectorAll( '.dtb-chat-mode-btn' ).forEach( function ( b ) {
-				b.classList.toggle( 'is-active', b === modeBtn );
+				var active = b === modeBtn;
+				b.classList.toggle( 'is-active', active );
+				b.setAttribute( 'aria-pressed', active ? 'true' : 'false' );
 			} );
 			var form = compose.querySelector( '.dtb-support-reply-form' );
 			if ( form ) {

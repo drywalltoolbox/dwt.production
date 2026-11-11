@@ -248,6 +248,9 @@
 		if ( ! TABS.includes( tab ) ) { tab = 'overview'; }
 		if ( tab === 'actions' ) { tab = 'overview'; }
 		state.activeTab = tab;
+		if ( modal ) {
+			modal.classList.toggle( 'dtb-repair-modal--conversation-active', tab === 'conversation' );
+		}
 
 		tabBar.querySelectorAll( '.dtb-modal-tab' ).forEach( function ( btn ) {
 			var active = btn.dataset.tab === tab;
@@ -1189,6 +1192,12 @@
 	function initQueueDelegation() {
 		document.addEventListener( 'click', function ( e ) {
 			var target = e.target instanceof Element ? e.target : e.target.parentElement;
+			var quickView = target && target.closest( '[data-dtb-repair-quick-view]' );
+			if ( quickView ) {
+				e.preventDefault();
+				openRepair( quickView.dataset.dtbRepairQuickView );
+				return;
+			}
 			var row = target && target.closest( '[data-dtb-open-repair]' );
 			if ( ! row ) { return; }
 			if ( target.closest( 'a,button,input,select,textarea,label' ) ) { return; }

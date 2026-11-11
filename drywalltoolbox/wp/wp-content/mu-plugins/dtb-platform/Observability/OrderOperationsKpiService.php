@@ -82,6 +82,13 @@ function dtb_oo_enqueue_assets( string $hook ): void {
     // Attach dashboard JS to a guaranteed admin script handle.
     wp_enqueue_script( 'jquery' );
 
+    // Keep dashboard styles with the renderer on both the standalone page and
+    // the embedded DTB Ops page. The CSS function is the source of truth for
+    // this module; defining it without enqueuing it leaves the UI unstyled.
+    wp_register_style( 'dtb-order-operations-dashboard', false, [ 'dtb-admin' ], '1.0.0' );
+    wp_enqueue_style( 'dtb-order-operations-dashboard' );
+    wp_add_inline_style( 'dtb-order-operations-dashboard', dtb_oo_inline_css() );
+
     // Bootstrap data for JS.
     $bootstrap = [
 		'ajaxUrl'         => admin_url( 'admin-ajax.php' ),
@@ -261,7 +268,7 @@ function dtb_oo_render_dashboard_shell( bool $embedded = false ): void {
 				<input type="text" id="dtb-oo-po-bulk-note" placeholder="<?php esc_attr_e( 'Bulk note (for Add Note action)', 'dtb' ); ?>" />
 				<button type="button" class="button button-primary" id="dtb-oo-po-bulk-apply"><?php esc_html_e( 'Apply', 'dtb' ); ?></button>
 			</div>
-			<div id="dtb-oo-product-orders-table"></div>
+			<div id="dtb-oo-product-orders-table" role="region" aria-label="Product orders table" tabindex="0"></div>
 		</div>
 
 		<?php /* Repair Orders Tab */ ?>
@@ -324,7 +331,7 @@ function dtb_oo_render_dashboard_shell( bool $embedded = false ): void {
 				<input type="text" id="dtb-oo-ro-bulk-note" placeholder="<?php esc_attr_e( 'Bulk note (Add Note action)', 'dtb' ); ?>" />
 				<button type="button" class="button button-primary" id="dtb-oo-ro-bulk-apply"><?php esc_html_e( 'Apply', 'dtb' ); ?></button>
 			</div>
-			<div id="dtb-oo-repair-orders-table"></div>
+			<div id="dtb-oo-repair-orders-table" role="region" aria-label="Repair orders table" tabindex="0"></div>
 		</div>
 
 		<?php /* Queue / Actions Tab */ ?>
@@ -339,7 +346,7 @@ function dtb_oo_render_dashboard_shell( bool $embedded = false ): void {
 				</select>
 				<button type="submit" class="button"><?php esc_html_e( 'Filter', 'dtb' ); ?></button>
 			</form>
-			<div id="dtb-oo-queue-table"></div>
+			<div id="dtb-oo-queue-table" role="region" aria-label="Operations queue table" tabindex="0"></div>
 		</div>
 
 		<?php /* Audit Log Tab */ ?>
@@ -356,7 +363,7 @@ function dtb_oo_render_dashboard_shell( bool $embedded = false ): void {
 				<button type="submit" class="button"><?php esc_html_e( 'Filter', 'dtb' ); ?></button>
 				<button type="button" class="button dtb-oo-filter-reset"><?php esc_html_e( 'Reset', 'dtb' ); ?></button>
 			</form>
-			<div id="dtb-oo-audit-log-table"></div>
+			<div id="dtb-oo-audit-log-table" role="region" aria-label="Operations audit log table" tabindex="0"></div>
 		</div>
 
 		<?php /* Settings Tab */ ?>
@@ -369,7 +376,7 @@ function dtb_oo_render_dashboard_shell( bool $embedded = false ): void {
 	</div>
 
 	<?php /* Timeline Drawer */ ?>
-	<div id="dtb-oo-drawer" class="dtb-oo-drawer" aria-modal="true" role="dialog" aria-label="<?php esc_attr_e( 'Event Timeline', 'dtb' ); ?>" aria-hidden="true" hidden>
+	<div id="dtb-oo-drawer" class="dtb-oo-drawer" aria-modal="true" role="dialog" aria-labelledby="dtb-oo-drawer-title" aria-hidden="true" hidden>
 		<div class="dtb-oo-drawer-backdrop"></div>
 		<div class="dtb-oo-drawer-panel">
 			<div class="dtb-oo-drawer-header">
@@ -383,7 +390,7 @@ function dtb_oo_render_dashboard_shell( bool $embedded = false ): void {
 	</div>
 
 	<?php /* Action Modal */ ?>
-	<div id="dtb-oo-action-modal" class="dtb-oo-drawer" aria-modal="true" role="dialog" aria-label="<?php esc_attr_e( 'Operator Action', 'dtb' ); ?>" aria-hidden="true" hidden>
+	<div id="dtb-oo-action-modal" class="dtb-oo-drawer" aria-modal="true" role="dialog" aria-labelledby="dtb-oo-modal-title" aria-hidden="true" hidden>
 		<div class="dtb-oo-drawer-backdrop"></div>
 		<div class="dtb-oo-drawer-panel dtb-oo-action-panel">
 			<div class="dtb-oo-drawer-header">
@@ -486,8 +493,8 @@ function dtb_oo_inline_css(): string {
 /* ---- Layout ---- */
 .dtb-oo-wrap { max-width: 1600px; }
 .dtb-oo-wrap--embedded { max-width: none; }
-.dtb-oo-topbar { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin: 0 0 10px; }
-.dtb-oo-topbar-actions { display: flex; align-items: center; gap: 10px; }
+.dtb-oo-topbar { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; align-items: center; margin: 0 0 10px; }
+.dtb-oo-topbar-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; min-width: 0; }
 .dtb-oo-embedded-title { margin: 0; font-size: 17px; font-weight: 700; color: #1e293b; }
 .dtb-oo-embedded-subtitle { margin: 4px 0 0; font-size: 12px; color: #64748b; }
 .dtb-oo-tabs { margin: 16px 0 0; border-bottom: 1px solid #ccc; }
@@ -495,9 +502,21 @@ function dtb_oo_inline_css(): string {
 .dtb-oo-tab-panel { padding: 16px 0; }
 .dtb-oo-section { background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; padding: 20px; margin: 0 0 20px; }
 .dtb-oo-section h2 { margin-top: 0; font-size: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
-.dtb-oo-wrap--embedded .dtb-oo-tabs { margin-top: 14px; border-bottom-color: #e2e8f0; }
-.dtb-oo-wrap--embedded .dtb-oo-tab { color: #475569; border-color: transparent; border-top-left-radius: 8px; border-top-right-radius: 8px; }
+.dtb-oo-wrap--embedded .dtb-oo-tabs { display: flex; gap: 4px; margin-top: 14px; border-bottom-color: #e2e8f0; max-width: 100%; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: thin; white-space: nowrap; }
+.dtb-oo-wrap--embedded .dtb-oo-tab { flex: 0 0 auto; margin-right: 0; color: #475569; border-color: transparent; border-top-left-radius: 8px; border-top-right-radius: 8px; white-space: nowrap; }
 .dtb-oo-wrap--embedded .dtb-oo-tab.nav-tab-active { color: #1d4ed8; border-color: #c7d2fe #c7d2fe #fff; background: #fff; }
+.dtb-oo-wrap--embedded #dtb-oo-product-orders-table,
+.dtb-oo-wrap--embedded #dtb-oo-repair-orders-table,
+.dtb-oo-wrap--embedded #dtb-oo-queue-table,
+.dtb-oo-wrap--embedded #dtb-oo-audit-log-table { max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-color: #cbd5e1 transparent; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+.dtb-oo-wrap--embedded #dtb-oo-product-orders-table:focus-visible,
+.dtb-oo-wrap--embedded #dtb-oo-repair-orders-table:focus-visible,
+.dtb-oo-wrap--embedded #dtb-oo-queue-table:focus-visible,
+.dtb-oo-wrap--embedded #dtb-oo-audit-log-table:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+.dtb-oo-wrap--embedded #dtb-oo-product-orders-table .dtb-oo-table,
+.dtb-oo-wrap--embedded #dtb-oo-repair-orders-table .dtb-oo-table { min-width: 960px; }
+.dtb-oo-wrap--embedded #dtb-oo-queue-table .dtb-oo-table,
+.dtb-oo-wrap--embedded #dtb-oo-audit-log-table .dtb-oo-table { min-width: 760px; }
 .dtb-oo-wrap--embedded .dtb-oo-kpi-grid { gap: 16px; margin-bottom: 18px; }
 .dtb-oo-wrap--embedded .dtb-oo-kpi { position: relative; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05); overflow: hidden; transition: box-shadow .2s ease, transform .2s ease; }
 .dtb-oo-wrap--embedded .dtb-oo-kpi:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); transform: translateY(-2px); }
@@ -585,7 +604,7 @@ body.dtb-oo-drawer-open { overflow: hidden; }
 .dtb-oo-drawer-title { min-width: 0; margin: 0; font-size: 15px; font-weight: 600; overflow-wrap: anywhere; }
 .dtb-oo-drawer-close { flex: 0 0 auto; font-size: 16px; line-height: 1; padding: 4px 8px; }
 .dtb-oo-drawer-body { min-height: 0; padding: 16px 18px; flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain; }
-.dtb-oo-modal-actions { margin-top: 16px; display: flex; gap: 8px; }
+.dtb-oo-modal-actions { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
 
 /* ---- Timeline ---- */
 .dtb-oo-timeline { list-style: none; margin: 0; padding: 0; position: relative; }
@@ -595,12 +614,12 @@ body.dtb-oo-drawer-open { overflow: hidden; }
 .dtb-oo-tl-dot--customer { border-color: #00a32a; }
 .dtb-oo-tl-dot--operator { border-color: #0073aa; }
 .dtb-oo-tl-dot--internal { border-color: #ccc; }
-.dtb-oo-tl-content { flex: 1; font-size: 13px; }
-.dtb-oo-tl-event { font-weight: 600; }
-.dtb-oo-tl-meta { color: #888; font-size: 11px; margin-top: 2px; }
+.dtb-oo-tl-content { flex: 1; min-width: 0; font-size: 13px; overflow-wrap: anywhere; }
+.dtb-oo-tl-event { font-weight: 600; overflow-wrap: anywhere; }
+.dtb-oo-tl-meta { color: #888; font-size: 11px; margin-top: 2px; overflow-wrap: anywhere; }
 
 /* ---- Notices ---- */
-#dtb-oo-notices { position: fixed; top: 60px; right: 20px; z-index: 170000; display: flex; flex-direction: column; gap: 8px; max-width: 360px; }
+#dtb-oo-notices { position: fixed; top: 60px; right: 20px; z-index: 170000; display: flex; flex-direction: column; gap: 8px; width: min(360px, calc(100vw - 40px)); box-sizing: border-box; }
 .dtb-oo-notice { padding: 10px 14px; border-radius: 4px; font-size: 13px; box-shadow: 0 2px 6px rgba(0,0,0,.15); display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 .dtb-oo-notice--success { background: #d7f5e0; color: #00782a; border: 1px solid #b0dfc0; }
 .dtb-oo-notice--error   { background: #ffe8e8; color: #a30000; border: 1px solid #ffc0c0; }
@@ -638,6 +657,7 @@ function dtb_oo_inline_js(): string {
     var pollInterval = Math.max(cfg.pollInterval || 180000, 180000);
     var strings      = cfg.strings    || {};
     var timelineFocusReturn = null;
+    var timelineRequestId = 0;
     var actionFocusReturn = null;
 
     var state = {
@@ -1251,6 +1271,7 @@ function dtb_oo_inline_js(): string {
     // -------------------------------------------------------------------------
 
     function openTimelineDrawer(entityType, entityId) {
+        var requestId = ++timelineRequestId;
         var $drawer = $('#dtb-oo-drawer');
         var $title  = $('#dtb-oo-drawer-title');
         var $body   = $('#dtb-oo-drawer-body');
@@ -1270,6 +1291,7 @@ function dtb_oo_inline_js(): string {
         postData[dataKey] = entityId;
 
         ajaxPost(ajaxAction, postData, function (data) {
+            if (requestId !== timelineRequestId || $drawer.is('[hidden]')) { return; }
             var events = data.timeline || [];
             if (!events.length) {
                 $body.html('<p class="dtb-oo-empty">No events recorded yet.</p>');
@@ -1292,11 +1314,13 @@ function dtb_oo_inline_js(): string {
             html += '</ul>';
             $body.html(html);
         }, function (msg) {
+            if (requestId !== timelineRequestId || $drawer.is('[hidden]')) { return; }
             $body.html('<p class="dtb-oo-error">' + esc(msg) + '</p>');
         });
     }
 
     function closeDrawer() {
+        timelineRequestId++;
         $('#dtb-oo-drawer').attr('hidden', true);
         $('#dtb-oo-drawer').attr('aria-hidden', 'true');
         if ($('#dtb-oo-action-modal').is('[hidden]')) { $('body').removeClass('dtb-oo-drawer-open'); }

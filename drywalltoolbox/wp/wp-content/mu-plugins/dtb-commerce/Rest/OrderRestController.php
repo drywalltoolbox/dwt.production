@@ -86,16 +86,8 @@ function dtb_orders_admin_queue_handler( WP_REST_Request $request ): WP_REST_Res
 			$type_badge   = function_exists( 'dtb_order_type_badge_type' ) ? dtb_order_type_badge_type( $type ) : 'info';
 
 			echo '<tr class="dtb-table__row dtb-table__row--clickable"'
-				. ' data-dtb-drawer="dtb-orders-detail-drawer"'
 				. ' data-dtb-open-order="' . esc_attr( (string) $order_id ) . '"'
-				. ' data-dtb-drawer-title="' . esc_attr( sprintf( __( 'Order #%s', 'drywall-toolbox' ), $order_id ) ) . '"'
-				. ' data-dtb-field-orderid="' . esc_attr( '#' . $order_id ) . '"'
-				. ' data-dtb-field-type="' . esc_attr( $type_label ) . '"'
-				. ' data-dtb-field-customer="' . esc_attr( $order->get_formatted_billing_full_name() ?: __( 'Guest', 'drywall-toolbox' ) ) . '"'
-				. ' data-dtb-field-status="' . esc_attr( $status_label ) . '"'
-				. ' data-dtb-field-total="' . esc_attr( wp_strip_all_tags( $order->get_formatted_order_total() ) ) . '"'
-				. ' data-dtb-field-date="' . esc_attr( $order->get_date_created() ? $order->get_date_created()->date_i18n( get_option( 'date_format' ) ) : '—' ) . '"'
-				. ' data-dtb-field-viewurl="' . esc_attr( get_edit_post_link( $order_id ) ) . '">';
+				. '>';
 			echo '<td class="dtb-table__cell"><a href="' . esc_url( get_edit_post_link( $order_id ) ) . '">#' . esc_html( $order_id ) . '</a></td>';
 			echo '<td class="dtb-table__cell">' . esc_html( $order->get_date_created() ? $order->get_date_created()->date_i18n( get_option( 'date_format' ) ) : '—' ) . '</td>';
 			echo '<td class="dtb-table__cell">' . dtb_admin_ui_badge( esc_html( $type_label ), $type_badge ) . '</td>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped

@@ -521,10 +521,10 @@
 	letter-spacing: 0.08em;
 }
 
-#dtb-repair-modal .dtb-repair-modal-media-grid span {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+#dtb-repair-modal .dtb-repair-modal-media-grid a > span:not(.dtb-repair-modal-file-thumb) {
+	min-width: 0;
+	overflow-wrap: anywhere;
+	white-space: normal;
 }
 
 #dtb-repair-modal .dtb-repair-modal-parts-list {

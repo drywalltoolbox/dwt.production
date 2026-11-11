@@ -13,6 +13,7 @@
 		currentReturnId : null,
 		activeTab       : 'overview',
 		lastOrder       : null,
+		detailRequest   : 0,
 	};
 
 	// ── DOM helpers ────────────────────────────────────────────────────────────
@@ -634,6 +635,23 @@
 			if ( ! btn ) { return; }
 			switchTab( null, btn.getAttribute( 'data-dtb-returns-tab' ) );
 		} );
+		overlay.addEventListener( 'keydown', function ( e ) {
+			var current = e.target.closest( '[data-dtb-returns-tab]' );
+			if ( ! current ) { return; }
+			var tabs = qsa( '[data-dtb-returns-tab]:not(:disabled)', current.closest( '[role="tablist"]' ) );
+			var index = tabs.indexOf( current );
+			if ( index < 0 || ! tabs.length ) { return; }
+			var nextIndex;
+			if ( e.key === 'Home' ) { nextIndex = 0; }
+			else if ( e.key === 'End' ) { nextIndex = tabs.length - 1; }
+			else if ( e.key === 'ArrowRight' ) { nextIndex = ( index + 1 ) % tabs.length; }
+			else if ( e.key === 'ArrowLeft' ) { nextIndex = ( index - 1 + tabs.length ) % tabs.length; }
+			else { return; }
+			e.preventDefault();
+			var next = tabs[ nextIndex ];
+			switchTab( null, next.getAttribute( 'data-dtb-returns-tab' ) );
+			next.focus();
+		} );
 	}
 
 	// ── Fetch detail ───────────────────────────────────────────────────────────
@@ -644,6 +662,7 @@
 	function openModal( returnId ) {
 		state.currentReturnId = returnId;
 		state.activeTab       = 'overview';
+		var requestId         = ++state.detailRequest;
 
 		// Update URL without navigation
 		try {
@@ -664,6 +683,7 @@
 		showModalLoading( els );
 
 		fetchDetail( returnId, function ( err, data ) {
+			if ( requestId !== state.detailRequest || String( state.currentReturnId ) !== String( returnId ) || ! els.overlay.classList.contains( 'dtb-modal-overlay--open' ) ) { return; }
 			var freshEls = getModalEls();
 			if ( ! freshEls ) { return; }
 			if ( err || ! data || ! data.ok ) {
@@ -677,7 +697,10 @@
 	function reloadModal() {
 		if ( ! state.currentReturnId ) { return; }
 		var savedTab = state.activeTab;
-		fetchDetail( state.currentReturnId, function ( err, data ) {
+		var returnId = state.currentReturnId;
+		var requestId = ++state.detailRequest;
+		fetchDetail( returnId, function ( err, data ) {
+			if ( requestId !== state.detailRequest || String( state.currentReturnId ) !== String( returnId ) ) { return; }
 			var els = getModalEls();
 			if ( ! els || err || ! data || ! data.ok ) { return; }
 			renderModal( els, data );
@@ -696,6 +719,7 @@
 		overlay.addEventListener( 'click', function ( e ) {
 			var btn = e.target.closest( '[data-dtb-returns-sync-order]' );
 			if ( ! btn || ! state.currentReturnId ) { return; }
+			var returnId = state.currentReturnId;
 
 			btn.disabled    = true;
 			btn.textContent = 'Syncing\u2026';
@@ -706,7 +730,7 @@
 				statusEl.className   = 'dtb-returns-sync-status';
 			}
 
-			fetchOrderSync( state.currentReturnId, function ( err, data ) {
+			fetchOrderSync( returnId, function ( err, data ) {
 				btn.disabled    = false;
 				btn.textContent = '\u21bb Sync from WooCommerce';
 
@@ -723,8 +747,10 @@
 					statusEl.classList.add( 'is-success' );
 				}
 
-				state.activeTab = 'order';
-				reloadModal();
+				if ( String( state.currentReturnId ) === String( returnId ) ) {
+					state.activeTab = 'order';
+					reloadModal();
+				}
 			} );
 		} );
 	}
@@ -753,15 +779,6 @@
 		}, true ); // capture phase so we beat the platform's bubble-phase link navigation
 	}
 
-	function makeRowsFocusable() {
-		qsa( '.dtb-returns-row[data-dtb-return-id]' ).forEach( function ( row ) {
-			if ( ! row.getAttribute( 'tabindex' ) ) {
-				row.setAttribute( 'tabindex', '0' );
-				row.setAttribute( 'role', 'button' );
-			}
-		} );
-	}
-
 	// ── Workflow status buttons ────────────────────────────────────────────────
 	function bindWorkflowButtons() {
 		var overlay = byId( MODAL_ID );
@@ -769,6 +786,7 @@
 		overlay.addEventListener( 'click', function ( e ) {
 			var btn = e.target.closest( '[data-dtb-returns-action="status"]' );
 			if ( ! btn || ! state.currentReturnId ) { return; }
+			var returnId = state.currentReturnId;
 			var newStatus = btn.getAttribute( 'data-dtb-returns-value' );
 			var sectionEl = btn.closest( '.dtb-returns-section' );
 			var statusEl  = sectionEl ? qs( '.dtb-returns-form-status', sectionEl ) : null;
@@ -790,8 +808,8 @@
 			// attempt produced no visible response (e.g. network error). Server-side
 			// allowed-transitions validation still prevents invalid state changes.
 			var opNonce = Math.random().toString( 36 ).slice( 2, 8 );
-			apiFetch( 'POST', '/admin/returns/' + state.currentReturnId + '/actions',
-				{ action_type: actionType, idempotency_key: 'returns-' + state.currentReturnId + '-' + actionType + '-' + opNonce },
+			apiFetch( 'POST', '/admin/returns/' + returnId + '/actions',
+				{ action_type: actionType, idempotency_key: 'returns-' + returnId + '-' + actionType + '-' + opNonce },
 				function ( err, data ) {
 					btn.disabled = false;
 					if ( err || ! data || ! data.ok ) {
@@ -799,7 +817,7 @@
 						if ( statusEl ) { statusEl.textContent = msg; statusEl.classList.add( 'is-error' ); }
 						return;
 					}
-					reloadModal();
+					if ( String( state.currentReturnId ) === String( returnId ) ) { reloadModal(); }
 				}
 			);
 		} );
@@ -814,13 +832,14 @@
 			if ( ! form ) { return; }
 			e.preventDefault();
 			if ( ! state.currentReturnId ) { return; }
+			var returnId = state.currentReturnId;
 			var select   = qs( 'select[name="resolution"]', form );
 			var submit   = qs( 'button[type="submit"]', form );
 			var statusEl = qs( '.dtb-returns-form-status', form );
 			if ( ! select || ! select.value ) { return; }
 			if ( submit ) { submit.disabled = true; }
 			if ( statusEl ) { statusEl.textContent = ''; statusEl.className = 'dtb-returns-form-status'; }
-			apiFetch( 'POST', '/admin/returns/' + state.currentReturnId + '/actions',
+			apiFetch( 'POST', '/admin/returns/' + returnId + '/actions',
 				{ action_type: 'set_resolution', resolution: select.value },
 				function ( err, data ) {
 					if ( submit ) { submit.disabled = false; }
@@ -829,7 +848,7 @@
 						return;
 					}
 					if ( statusEl ) { statusEl.textContent = '\u2713 Saved'; statusEl.classList.add( 'is-success' ); }
-					reloadModal();
+					if ( String( state.currentReturnId ) === String( returnId ) ) { reloadModal(); }
 				}
 			);
 		} );
@@ -844,13 +863,14 @@
 			if ( ! form ) { return; }
 			e.preventDefault();
 			if ( ! state.currentReturnId ) { return; }
+			var returnId = state.currentReturnId;
 			var textarea = qs( 'textarea[name="note"]', form );
 			var submit   = qs( 'button[type="submit"]', form );
 			var statusEl = qs( '.dtb-returns-form-status', form );
 			if ( ! textarea || ! textarea.value.trim() ) { return; }
 			if ( submit ) { submit.disabled = true; }
 			if ( statusEl ) { statusEl.textContent = ''; statusEl.className = 'dtb-returns-form-status'; }
-			apiFetch( 'POST', '/admin/returns/' + state.currentReturnId + '/actions',
+			apiFetch( 'POST', '/admin/returns/' + returnId + '/actions',
 				{ action_type: 'add_note', note: textarea.value.trim() },
 				function ( err, data ) {
 					if ( submit ) { submit.disabled = false; }
@@ -860,7 +880,7 @@
 					}
 					textarea.value = '';
 					if ( statusEl ) { statusEl.textContent = '\u2713 Note added'; statusEl.classList.add( 'is-success' ); }
-					reloadModal();
+					if ( String( state.currentReturnId ) === String( returnId ) ) { reloadModal(); }
 				}
 			);
 		} );
@@ -886,8 +906,13 @@
 	function closeModal() {
 		var overlay = byId( MODAL_ID );
 		if ( overlay ) {
-			overlay.classList.remove( 'dtb-modal-overlay--open' );
+			if ( window.DtbAdmin && typeof window.DtbAdmin.closeModal === 'function' ) {
+				window.DtbAdmin.closeModal( MODAL_ID );
+			} else {
+				overlay.classList.remove( 'dtb-modal-overlay--open' );
+			}
 		}
+		state.detailRequest++;
 		state.currentReturnId = null;
 		state.activeTab       = 'overview';
 		state.lastOrder       = null;
@@ -897,6 +922,22 @@
 			url.searchParams.delete( 'return_id' );
 			window.history.replaceState( {}, '', url.toString() );
 		} catch ( e ) {}
+	}
+
+	function bindModalLifecycle() {
+		var overlay = byId( MODAL_ID );
+		if ( ! overlay ) { return; }
+		overlay.addEventListener( 'dtb:modal:closed', function () {
+			state.detailRequest++;
+			state.currentReturnId = null;
+			state.activeTab = 'overview';
+			state.lastOrder = null;
+			try {
+				var url = new URL( window.location.href );
+				url.searchParams.delete( 'return_id' );
+				window.history.replaceState( {}, '', url.toString() );
+			} catch ( e ) {}
+		} );
 	}
 
 	// ── Deep-link — open modal if return_id is already in URL (e.g. page was reloaded with ?return_id=X)
@@ -909,15 +950,6 @@
 		} catch ( e ) {}
 	}
 
-	// ── Live-region (AJAX-refreshed table) ────────────────────────────────────
-	function bindLiveRegion() {
-		var region = byId( 'dtb-returns-workspace' );
-		if ( ! region ) { return; }
-		region.addEventListener( 'dtb:live:navigated', function () {
-			makeRowsFocusable();
-		} );
-	}
-
 	// ── Init ───────────────────────────────────────────────────────────────────
 	function init() {
 		if ( ! byId( MODAL_ID ) ) { return; }
@@ -927,9 +959,8 @@
 		bindNoteForm();
 		bindSyncButton();
 		bindModalClose();
+		bindModalLifecycle();
 		bindRowClicks();
-		bindLiveRegion();
-		makeRowsFocusable();
 		openFromDeepLink();
 	}
 

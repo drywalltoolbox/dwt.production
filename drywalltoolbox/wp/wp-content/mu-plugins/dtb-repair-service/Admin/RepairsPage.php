@@ -413,10 +413,11 @@ function dtb_repairs_render_queue_row( int $repair_id ): void {
 
 	echo '<td class="dtb-table__cell"><div class="dtb-table__actions">';
 	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	echo dtb_admin_ui_button( __( 'Open', 'drywall-toolbox' ), [
-		'href' => $edit_link,
+	echo dtb_admin_ui_button( __( 'View', 'drywall-toolbox' ), [
+		'href' => '#',
 		'size' => 'xs',
 		'type' => 'ghost',
+		'data' => [ 'dtb-repair-quick-view' => $repair_id ],
 	] );
 	echo '</div></td>';
 	echo '</tr>';
@@ -487,19 +488,6 @@ function dtb_repairs_render_page(): void {
 	] );
 
 	dtb_repairs_render_queue_workspace( $query, $paged, $total_pages );
-
-	// Repair detail drawer.
-	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	echo dtb_admin_ui_drawer(
-		'dtb-repairs-detail-drawer',
-		__( 'Repair Detail', 'drywall-toolbox' ),
-		'<div class="dtb-drawer-loading">' . esc_html__( 'Select a repair to view details.', 'drywall-toolbox' ) . '</div>',
-		dtb_admin_ui_button( __( 'Open Full Record', 'drywall-toolbox' ), [
-			'type' => 'secondary',
-			'size' => 'sm',
-			'data' => [ 'dtb-drawer-action' => 'view' ],
-		] )
-	);
 
 	dtb_admin_shell_live_region_close();
 	dtb_admin_shell_close();

@@ -54,7 +54,7 @@ email:
 | Progress tracker | `dtb_email_progress_steps( $steps )` | standalone lifecycle icons + connecting line + labels; caller-driven per-step tone (`done`/`active`/`warning`/`danger`/`upcoming`) — only used where the template has authoritative state for every stage it shows |
 | Card | `dtb_email_card_open( $title, $meta, $icon )` / `dtb_email_card_close()` | white rounded bordered section (order summary, addresses, shipment summary); native `do_action()` output can be echoed directly between open/close; icons are reserved for the address panel |
 | Next-steps grid | `dtb_email_next_steps_grid( $items )` | icon-free compact text grid retained for exceptional content; omitted from processing emails because the lifecycle tracker already communicates the next state |
-| Support card | `dtb_email_support_card( $text, $cta_url, $cta_label )` | "need help?" card with an outlined CTA button and the default `support` icon from `/logos/email-icons/support.png` |
+| Support card | `dtb_email_support_card( $text, $cta_url, $cta_label )` | "need help?" card with an outlined CTA button and the default `repairs` icon from the active four-file email icon library |
 | Status badge | `dtb_email_status_badge( $label, $tone )` | exceptional state detail where the heading alone is insufficient, currently full/partial refund distinction and concise admin state |
 | CTA button | `dtb_email_button( $url, $label )` | pay, retry payment, reset password, view account — MSO-safe with a VML fallback |
 | Detail/summary table | `dtb_email_details_table_light( $rows )` | compact carrier/tracking and other lifecycle-specific label/value data; never duplicates order summary data |

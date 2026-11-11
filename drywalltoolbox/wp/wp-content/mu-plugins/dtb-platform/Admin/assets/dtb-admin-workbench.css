@@ -54,6 +54,12 @@ body.dtb-drawer-open {
 	max-width: 1100px;
 }
 
+@supports ( height: 100dvh ) {
+	.dtb-modal {
+		max-height: calc( 100dvh - 4rem );
+	}
+}
+
 .dtb-modal--fullscreen {
 	max-width: 1300px;
 }
@@ -77,9 +83,9 @@ body.dtb-drawer-open {
 	font-weight: 600;
 	line-height: 1.4;
 	margin: 0;
-	white-space: nowrap;
-	overflow: hidden;
-	text-overflow: ellipsis;
+	min-width: 0;
+	overflow-wrap: anywhere;
+	white-space: normal;
 }
 
 .dtb-modal__meta {
@@ -88,7 +94,9 @@ body.dtb-drawer-open {
 	display: flex;
 	align-items: center;
 	gap: 0.5rem;
-	flex-shrink: 0;
+	flex: 0 1 auto;
+	flex-wrap: wrap;
+	min-width: 0;
 }
 
 .dtb-modal__close {
@@ -127,6 +135,7 @@ body.dtb-drawer-open {
 	flex-direction: column;
 	flex: 1;
 	min-width: 0;
+	min-height: 0;
 	overflow-y: auto;
 }
 
@@ -150,6 +159,30 @@ body.dtb-drawer-open {
 	}
 }
 
+@media ( max-width: 782px ) {
+	.dtb-modal-overlay {
+		align-items: flex-end;
+		padding: max( 0.5rem, env( safe-area-inset-top ) ) max( 0.5rem, env( safe-area-inset-right ) ) max( 0.5rem, env( safe-area-inset-bottom ) ) max( 0.5rem, env( safe-area-inset-left ) );
+	}
+
+	.dtb-modal {
+		position: relative;
+		top: auto;
+		bottom: auto;
+		width: 100%;
+		max-height: calc( 100vh - 1rem );
+		border-radius: 8px;
+	}
+}
+
+@supports ( height: 100dvh ) {
+	@media ( max-width: 782px ) {
+		.dtb-modal {
+			max-height: calc( 100dvh - max( 1rem, calc( env( safe-area-inset-top ) + env( safe-area-inset-bottom ) ) ) );
+		}
+	}
+}
+
 /* ── Tab navigation ────────────────────────────────────────────────────────── */
 
 .dtb-modal-tabs {
@@ -160,6 +193,9 @@ body.dtb-drawer-open {
 	gap: 0;
 	overflow-x: auto;
 	padding: 0 1rem;
+	position: sticky;
+	top: 0;
+	z-index: 2;
 	scrollbar-width: none;
 }
 
@@ -209,6 +245,7 @@ body.dtb-drawer-open {
 	display: flex;
 	flex-shrink: 0;
 	gap: 0.625rem;
+	flex-wrap: wrap;
 	justify-content: flex-end;
 	padding: 0.75rem 1.25rem;
 }
@@ -408,6 +445,8 @@ body.dtb-drawer-open {
 	font-size: 0.875rem;
 	line-height: 1.6;
 	max-width: 85%;
+	min-width: 0;
+	overflow-wrap: anywhere;
 	padding: 0.625rem 0.875rem;
 }
 
@@ -433,6 +472,7 @@ body.dtb-drawer-open {
 .dtb-wb-message__meta {
 	color: #64748b;
 	font-size: 0.75rem;
+	overflow-wrap: anywhere;
 	margin-top: 0.25rem;
 }
 
