@@ -560,6 +560,46 @@ function dtb_product_mapping_repo_get_category_related_products( WC_Product $sou
 	return $related;
 }
 
+/** Resolve bounded same-brand discovery peers when no narrower discovery group is populated. */
+function dtb_product_mapping_repo_get_brand_related_products( WC_Product $source ): array {
+	$brand_key = trim( (string) $source->get_meta( '_dtb_brand_key', true ) );
+	$kind      = strtolower( trim( (string) $source->get_meta( '_dtb_product_kind', true ) ) );
+	if ( '' === $brand_key || ! in_array( $kind, [ 'tool', 'toolset', 'stilt', 'accessory' ], true ) ) {
+		return [];
+	}
+	$candidates = wc_get_products( [
+		'status'     => 'publish',
+		'visibility' => 'visible',
+		'limit'      => 50,
+		'return'     => 'objects',
+		'exclude'    => [ $source->get_id() ],
+		'meta_query' => [
+			'relation' => 'AND',
+			[ 'key' => '_dtb_brand_key', 'value' => $brand_key, 'compare' => '=' ],
+			[ 'key' => '_dtb_product_kind', 'value' => $kind, 'compare' => '=' ],
+		],
+	] );
+	usort( $candidates, static fn( $left, $right ): int => strnatcasecmp(
+		$left instanceof WC_Product ? (string) $left->get_sku() : '',
+		$right instanceof WC_Product ? (string) $right->get_sku() : ''
+	) );
+	$related = [];
+	foreach ( $candidates as $candidate ) {
+		if ( ! $candidate instanceof WC_Product || ! in_array( $candidate->get_type(), [ 'simple', 'variable' ], true ) || ! $candidate->is_visible() ) {
+			continue;
+		}
+		if ( trim( (string) $candidate->get_meta( '_dtb_brand_key', true ) ) !== $brand_key
+			|| strtolower( trim( (string) $candidate->get_meta( '_dtb_product_kind', true ) ) ) !== $kind ) {
+			continue;
+		}
+		$related[] = $candidate;
+		if ( count( $related ) >= 10 ) {
+			break;
+		}
+	}
+	return $related;
+}
+
 /**
  * Save cross-sell relationships.
  *

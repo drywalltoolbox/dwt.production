@@ -22,6 +22,9 @@ export default function ProductDetailPlatform({
     product: detailProduct,
     variations,
     relatedProducts,
+    familyRelatedProducts,
+    categoryRelatedProducts,
+    brandRelatedProducts,
     relatedProductsByVariation,
     computed,
     status,
@@ -56,7 +59,20 @@ export default function ProductDetailPlatform({
   const variationRelatedProducts = selectedVariationId
     ? relatedProductsByVariation?.[String(selectedVariationId)]
     : null;
-  const displayedRelatedProducts = Array.isArray(variationRelatedProducts) ? variationRelatedProducts : relatedProducts;
+  const curatedRelatedProducts = Array.isArray(variationRelatedProducts) ? variationRelatedProducts : relatedProducts;
+  const discoveryProducts = categoryRelatedProducts?.length
+    ? categoryRelatedProducts
+    : familyRelatedProducts?.length
+      ? familyRelatedProducts
+      : brandRelatedProducts;
+  const displayedRelatedProducts = curatedRelatedProducts?.length ? curatedRelatedProducts : discoveryProducts;
+  const relatedContext = curatedRelatedProducts?.length
+    ? computed?.relatedProductsContext
+    : categoryRelatedProducts?.length
+      ? 'category_related'
+      : familyRelatedProducts?.length
+        ? 'family_related'
+        : brandRelatedProducts?.length ? 'brand_related' : computed?.relatedProductsContext;
 
   const resolvedSelectedAttrs = Object.keys(initialSelectedAttrs || {}).length > 0
     ? initialSelectedAttrs
@@ -80,7 +96,7 @@ export default function ProductDetailPlatform({
       />
       <ProductRelatedProducts
         products={displayedRelatedProducts}
-        context={computed?.relatedProductsContext}
+        context={relatedContext}
         onAddToCart={onAddToCart}
         onOpenProduct={onOpenProduct}
         id="catalog-quick-view-related"

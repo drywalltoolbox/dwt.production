@@ -13,6 +13,7 @@ export function useCatalogProductDetail(slug) {
         relatedProducts: [],
         familyRelatedProducts: [],
         categoryRelatedProducts: [],
+        brandRelatedProducts: [],
         relatedProductsByVariation: {},
         computed: null,
       };
@@ -24,10 +25,11 @@ export function useCatalogProductDetail(slug) {
       relatedProducts: state.relatedProducts,
       familyRelatedProducts: state.familyRelatedProducts,
       categoryRelatedProducts: state.categoryRelatedProducts,
+      brandRelatedProducts: state.brandRelatedProducts,
       relatedProductsByVariation: state.relatedProductsByVariation,
       computed: state.computed,
     });
-  }, [state.product, state.variations, state.relatedProducts, state.familyRelatedProducts, state.categoryRelatedProducts, state.relatedProductsByVariation, state.computed]);
+  }, [state.product, state.variations, state.relatedProducts, state.familyRelatedProducts, state.categoryRelatedProducts, state.brandRelatedProducts, state.relatedProductsByVariation, state.computed]);
 
   return {
     ...state,

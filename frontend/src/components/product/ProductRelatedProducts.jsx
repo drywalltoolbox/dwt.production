@@ -40,6 +40,13 @@ export function getRelatedProductsCopy(context = 'related') {
       railLabel: 'Products in this category',
     };
   }
+  if (context === 'brand_related') {
+    return {
+      eyebrow: 'More from this brand',
+      title: 'More from this brand',
+      railLabel: 'More products from this brand',
+    };
+  }
   return {
     title: 'Related products',
     railLabel: 'Related products',

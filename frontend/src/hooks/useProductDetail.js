@@ -18,7 +18,7 @@
 import { useReducer, useEffect } from 'react';
 import { apiClient } from '../api/client.js';
 
-const INIT = { product: null, variations: [], relatedProducts: [], familyRelatedProducts: [], categoryRelatedProducts: [], relatedProductsByVariation: {}, computed: null, status: 'idle', error: null };
+const INIT = { product: null, variations: [], relatedProducts: [], familyRelatedProducts: [], categoryRelatedProducts: [], brandRelatedProducts: [], relatedProductsByVariation: {}, computed: null, status: 'idle', error: null };
 const DETAIL_CACHE_TTL = 2 * 60 * 1000;
 const detailCache = new Map();
 const detailInflight = new Map();
@@ -82,6 +82,7 @@ function reducer(_state, action) {
         relatedProducts: action.relatedProducts,
         familyRelatedProducts: action.familyRelatedProducts,
         categoryRelatedProducts: action.categoryRelatedProducts,
+        brandRelatedProducts: action.brandRelatedProducts,
         relatedProductsByVariation: action.relatedProductsByVariation,
         computed: action.computed,
         status: 'ready',
@@ -106,6 +107,7 @@ function initialStateForSlug(slug) {
     relatedProducts: Array.isArray(cached.relatedProducts) ? cached.relatedProducts : [],
     familyRelatedProducts: Array.isArray(cached.familyRelatedProducts) ? cached.familyRelatedProducts : [],
     categoryRelatedProducts: Array.isArray(cached.categoryRelatedProducts) ? cached.categoryRelatedProducts : [],
+    brandRelatedProducts: Array.isArray(cached.brandRelatedProducts) ? cached.brandRelatedProducts : [],
     relatedProductsByVariation: cached.relatedProductsByVariation && typeof cached.relatedProductsByVariation === 'object' ? cached.relatedProductsByVariation : {},
     computed: cached.computed ?? null,
     status: 'ready',
@@ -137,6 +139,7 @@ export function useProductDetail(slug) {
         relatedProducts: Array.isArray(cached.relatedProducts) ? cached.relatedProducts : [],
         familyRelatedProducts: Array.isArray(cached.familyRelatedProducts) ? cached.familyRelatedProducts : [],
         categoryRelatedProducts: Array.isArray(cached.categoryRelatedProducts) ? cached.categoryRelatedProducts : [],
+        brandRelatedProducts: Array.isArray(cached.brandRelatedProducts) ? cached.brandRelatedProducts : [],
         relatedProductsByVariation: cached.relatedProductsByVariation && typeof cached.relatedProductsByVariation === 'object' ? cached.relatedProductsByVariation : {},
         computed: cached.computed ?? null,
       });
@@ -161,6 +164,7 @@ export function useProductDetail(slug) {
           relatedProducts: Array.isArray(data.relatedProducts) ? data.relatedProducts : [],
           familyRelatedProducts: Array.isArray(data.familyRelatedProducts) ? data.familyRelatedProducts : [],
           categoryRelatedProducts: Array.isArray(data.categoryRelatedProducts) ? data.categoryRelatedProducts : [],
+          brandRelatedProducts: Array.isArray(data.brandRelatedProducts) ? data.brandRelatedProducts : [],
           relatedProductsByVariation: data.relatedProductsByVariation && typeof data.relatedProductsByVariation === 'object' ? data.relatedProductsByVariation : {},
           computed: data.computed ?? null,
         });

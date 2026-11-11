@@ -90,6 +90,7 @@ final class DTB_ProductDetailController {
 		$related_products = self::get_related_products( $product['id'], $product );
 		$family_related_products = [];
 		$category_related_products = [];
+		$brand_related_products = [];
 		$family_source = wc_get_product( $product['id'] );
 		if ( $family_source instanceof WC_Product ) {
 			$family_related_products = array_values( array_map(
@@ -106,16 +107,31 @@ final class DTB_ProductDetailController {
 					dtb_product_mapping_repo_get_category_related_products( $family_source )
 				) )
 			) );
+			$brand_related_products = array_values( array_map(
+				'dtb_catalog_normalize_product',
+				dtb_catalog_wc_fetch_products_by_ids( array_map(
+					static fn( WC_Product $related ): int => $related->get_id(),
+					dtb_product_mapping_repo_get_brand_related_products( $family_source )
+				) )
+			) );
 		}
 		$placed_product_ids = array_fill_keys(
 			array_map(
 				static fn( array $related ): int => absint( $related['id'] ?? 0 ),
-				array_merge( $related_products, $family_related_products )
+				array_merge( $related_products, $family_related_products, $category_related_products )
 			),
 			true
 		);
 		$category_related_products = array_values( array_filter(
 			$category_related_products,
+			static fn( array $related ): bool => ! isset( $placed_product_ids[ absint( $related['id'] ?? 0 ) ] )
+		) );
+		$placed_product_ids = array_fill_keys(
+			array_map( static fn( array $related ): int => absint( $related['id'] ?? 0 ), array_merge( $related_products, $family_related_products, $category_related_products ) ),
+			true
+		);
+		$brand_related_products = array_values( array_filter(
+			$brand_related_products,
 			static fn( array $related ): bool => ! isset( $placed_product_ids[ absint( $related['id'] ?? 0 ) ] )
 		) );
 		$is_toolset = self::is_toolset( $product );
@@ -129,6 +145,7 @@ final class DTB_ProductDetailController {
 			'relatedProducts' => $related_products,
 			'familyRelatedProducts' => $family_related_products,
 			'categoryRelatedProducts' => $category_related_products,
+			'brandRelatedProducts' => $brand_related_products,
 			'relatedProductsByVariation' => $related_products_by_variation,
 			'computed'        => [
 				'defaultVariation'      => $default_var,
@@ -137,7 +154,7 @@ final class DTB_ProductDetailController {
 				'inStockVariationCount' => $in_stock_count,
 				'variationMatrix'       => dtb_catalog_build_variation_matrix( $variations ),
 				'variationDiagnostics'  => $variation_diagnostics,
-				'relatedProductsContext' => $is_toolset ? 'included_components' : 'related',
+				'relatedProductsContext' => $is_toolset ? 'included_components' : ( $related_products ? 'related' : ( $category_related_products ? 'category_related' : ( $family_related_products ? 'family_related' : ( $brand_related_products ? 'brand_related' : 'related' ) ) ) ),
 			],
 		], 200 );
 	}

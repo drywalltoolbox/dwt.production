@@ -77,7 +77,7 @@ export default function ProductDetailPage() {
   const [toast, setToast] = useState(null);
   const [locallySelectedVariation, setLocallySelectedVariation] = useState(null);
 
-  const { product, variations, relatedProducts, familyRelatedProducts, categoryRelatedProducts, relatedProductsByVariation, computed, status, error } = useCatalogProductDetail(slug);
+  const { product, variations, relatedProducts, familyRelatedProducts, categoryRelatedProducts, brandRelatedProducts, relatedProductsByVariation, computed, status, error } = useCatalogProductDetail(slug);
 
   const urlVariantId = useMemo(
     () => legacyPathVariantId ?? getVariantParam(location.search),
@@ -294,6 +294,13 @@ export default function ProductDetailPage() {
           products={categoryRelatedProducts}
           context="category_related"
           id="product-category-similar"
+          onAddToCart={handleAddToCart}
+          onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
+        />
+        <ProductRelatedProducts
+          products={brandRelatedProducts}
+          context="brand_related"
+          id="product-brand-similar"
           onAddToCart={handleAddToCart}
           onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
         />
