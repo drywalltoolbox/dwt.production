@@ -300,6 +300,7 @@
 }
 
 .dtb-admin[data-dtb-page="dtb-support"] .dtb-support-modal-tab {
+	min-height: 44px;
 	padding: 10px 16px;
 	font-size: 12px;
 	font-weight: 700;
@@ -516,6 +517,12 @@
 	-webkit-overflow-scrolling: touch;
 	scrollbar-color: #cbd5e1 transparent;
 	scrollbar-width: thin;
+}
+
+.dtb-admin[data-dtb-page="dtb-support"] .dtb-chat-thread:focus-visible,
+.dtb-admin[data-dtb-page="dtb-support"] .dtb-support-ticket-context:focus-visible {
+	outline: 2px solid var(--dtb-primary);
+	outline-offset: -2px;
 }
 
 .dtb-admin[data-dtb-page="dtb-support"] .dtb-chat-thread::-webkit-scrollbar,
@@ -981,6 +988,39 @@
 
 	.dtb-admin[data-dtb-page="dtb-support"] .dtb-support-action-quickforms {
 		grid-template-columns: 1fr;
+	}
+
+	.dtb-admin[data-dtb-page="dtb-support"] :is(
+		.dtb-chat-mode-btn,
+		.dtb-macro-close,
+		.dtb-macro-btn
+	) {
+		min-height: 44px;
+	}
+
+	.dtb-admin[data-dtb-page="dtb-support"] #dtb-support-ticket-modal .dtb-btn {
+		min-height: 44px;
+	}
+}
+
+@media (max-width: 782px) {
+	.dtb-admin[data-dtb-page="dtb-support"] #dtb-support-ticket-modal.dtb-modal-overlay--open {
+		align-items: stretch;
+		padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+	}
+
+	.dtb-admin[data-dtb-page="dtb-support"] #dtb-support-ticket-modal .dtb-modal {
+		width: 100%;
+		height: calc(100vh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
+		max-height: calc(100vh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
+	}
+
+	@supports (height: 100dvh) {
+		.dtb-admin[data-dtb-page="dtb-support"] #dtb-support-ticket-modal .dtb-modal {
+			width: 100%;
+			height: calc(100dvh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
+			max-height: calc(100dvh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
+		}
 	}
 }
 

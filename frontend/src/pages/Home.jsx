@@ -149,7 +149,7 @@ export default function Home() {
                 <StorefrontProductRail
                   brand={brand.brand}
                   sort="popular"
-                  maxItems={4}
+                  maxItems={10}
                   label={`${brand.name} products`}
                 />
               </StorefrontSection>

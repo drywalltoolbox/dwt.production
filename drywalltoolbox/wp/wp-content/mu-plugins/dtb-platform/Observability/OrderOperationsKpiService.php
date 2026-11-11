@@ -502,21 +502,21 @@ function dtb_oo_inline_css(): string {
 .dtb-oo-tab-panel { padding: 16px 0; }
 .dtb-oo-section { background: #fff; border: 1px solid #e0e0e0; border-radius: 4px; padding: 20px; margin: 0 0 20px; }
 .dtb-oo-section h2 { margin-top: 0; font-size: 15px; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
-.dtb-oo-wrap--embedded .dtb-oo-tabs { display: flex; gap: 4px; margin-top: 14px; border-bottom-color: #e2e8f0; max-width: 100%; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: thin; white-space: nowrap; }
-.dtb-oo-wrap--embedded .dtb-oo-tab { flex: 0 0 auto; margin-right: 0; color: #475569; border-color: transparent; border-top-left-radius: 8px; border-top-right-radius: 8px; white-space: nowrap; }
-.dtb-oo-wrap--embedded .dtb-oo-tab.nav-tab-active { color: #1d4ed8; border-color: #c7d2fe #c7d2fe #fff; background: #fff; }
-.dtb-oo-wrap--embedded #dtb-oo-product-orders-table,
-.dtb-oo-wrap--embedded #dtb-oo-repair-orders-table,
-.dtb-oo-wrap--embedded #dtb-oo-queue-table,
-.dtb-oo-wrap--embedded #dtb-oo-audit-log-table { max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-color: #cbd5e1 transparent; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
-.dtb-oo-wrap--embedded #dtb-oo-product-orders-table:focus-visible,
-.dtb-oo-wrap--embedded #dtb-oo-repair-orders-table:focus-visible,
-.dtb-oo-wrap--embedded #dtb-oo-queue-table:focus-visible,
-.dtb-oo-wrap--embedded #dtb-oo-audit-log-table:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
-.dtb-oo-wrap--embedded #dtb-oo-product-orders-table .dtb-oo-table,
-.dtb-oo-wrap--embedded #dtb-oo-repair-orders-table .dtb-oo-table { min-width: 960px; }
-.dtb-oo-wrap--embedded #dtb-oo-queue-table .dtb-oo-table,
-.dtb-oo-wrap--embedded #dtb-oo-audit-log-table .dtb-oo-table { min-width: 760px; }
+.dtb-oo-wrap .dtb-oo-tabs { display: flex; gap: 4px; margin-top: 14px; border-bottom-color: #e2e8f0; max-width: 100%; overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: thin; white-space: nowrap; }
+.dtb-oo-wrap .dtb-oo-tab { flex: 0 0 auto; margin-right: 0; color: #475569; border-color: transparent; border-top-left-radius: 8px; border-top-right-radius: 8px; white-space: nowrap; }
+.dtb-oo-wrap .dtb-oo-tab.nav-tab-active { color: #1d4ed8; border-color: #c7d2fe #c7d2fe #fff; background: #fff; }
+.dtb-oo-wrap #dtb-oo-product-orders-table,
+.dtb-oo-wrap #dtb-oo-repair-orders-table,
+.dtb-oo-wrap #dtb-oo-queue-table,
+.dtb-oo-wrap #dtb-oo-audit-log-table { max-width: 100%; min-width: 0; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-color: #cbd5e1 transparent; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+.dtb-oo-wrap #dtb-oo-product-orders-table:focus-visible,
+.dtb-oo-wrap #dtb-oo-repair-orders-table:focus-visible,
+.dtb-oo-wrap #dtb-oo-queue-table:focus-visible,
+.dtb-oo-wrap #dtb-oo-audit-log-table:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; }
+.dtb-oo-wrap #dtb-oo-product-orders-table .dtb-oo-table,
+.dtb-oo-wrap #dtb-oo-repair-orders-table .dtb-oo-table { min-width: 960px; }
+.dtb-oo-wrap #dtb-oo-queue-table .dtb-oo-table,
+.dtb-oo-wrap #dtb-oo-audit-log-table .dtb-oo-table { min-width: 760px; }
 .dtb-oo-wrap--embedded .dtb-oo-kpi-grid { gap: 16px; margin-bottom: 18px; }
 .dtb-oo-wrap--embedded .dtb-oo-kpi { position: relative; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.05); overflow: hidden; transition: box-shadow .2s ease, transform .2s ease; }
 .dtb-oo-wrap--embedded .dtb-oo-kpi:hover { box-shadow: 0 4px 16px rgba(0,0,0,.1); transform: translateY(-2px); }
@@ -536,7 +536,7 @@ function dtb_oo_inline_css(): string {
 .dtb-oo-wrap--embedded .dtb-oo-kpi__value { font-size: 32px; font-weight: 900; line-height: 1; letter-spacing: -.03em; color: #1e293b; }
 .dtb-oo-wrap--embedded .dtb-oo-kpi__label { margin-top: 8px; font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: .06em; }
 .dtb-oo-wrap--embedded .dtb-oo-filter-bar { border-color: #e2e8f0; border-radius: 8px; background: #f8fafc; }
-.dtb-oo-wrap--embedded .dtb-oo-table th { background: #f8fafc; border-bottom-color: #e2e8f0; }
+.dtb-oo-wrap .dtb-oo-table th { background: #f8fafc; border-bottom-color: #e2e8f0; }
 .dtb-oo-wrap--top-overview { margin-bottom: 18px; }
 
 /* ---- KPI Grid ---- */
@@ -605,6 +605,14 @@ body.dtb-oo-drawer-open { overflow: hidden; }
 .dtb-oo-drawer-close { flex: 0 0 auto; font-size: 16px; line-height: 1; padding: 4px 8px; }
 .dtb-oo-drawer-body { min-height: 0; padding: 16px 18px; flex: 1 1 auto; overflow-y: auto; overscroll-behavior: contain; }
 .dtb-oo-modal-actions { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+
+@media (max-width: 782px) {
+    .dtb-oo-drawer-panel { top: max(10px, env(safe-area-inset-top)); bottom: max(10px, env(safe-area-inset-bottom)); right: max(10px, env(safe-area-inset-right)); width: calc(100vw - max(10px, env(safe-area-inset-left)) - max(10px, env(safe-area-inset-right))); width: calc(100dvw - max(10px, env(safe-area-inset-left)) - max(10px, env(safe-area-inset-right))); height: auto; box-sizing: border-box; }
+    .dtb-oo-action-panel { top: 50%; right: 50%; bottom: auto; width: min(480px, calc(100vw - max(10px, env(safe-area-inset-left)) - max(10px, env(safe-area-inset-right)))); width: min(480px, calc(100dvw - max(10px, env(safe-area-inset-left)) - max(10px, env(safe-area-inset-right)))); max-height: calc(100vh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom))); max-height: calc(100dvh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom))); transform: translate(50%, -50%); }
+    .dtb-oo-drawer-close, .dtb-oo-modal-close { min-width: 44px; min-height: 44px; }
+    #dtb-oo-notices { top: max(60px, env(safe-area-inset-top)); right: max(10px, env(safe-area-inset-right)); width: calc(100vw - max(10px, env(safe-area-inset-left)) - max(10px, env(safe-area-inset-right))); width: calc(100dvw - max(10px, env(safe-area-inset-left)) - max(10px, env(safe-area-inset-right))); }
+    .dtb-oo-notice-dismiss { min-width: 44px; min-height: 44px; }
+}
 
 /* ---- Timeline ---- */
 .dtb-oo-timeline { list-style: none; margin: 0; padding: 0; position: relative; }

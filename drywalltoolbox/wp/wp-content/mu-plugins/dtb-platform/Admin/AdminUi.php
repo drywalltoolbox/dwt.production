@@ -504,7 +504,7 @@ function dtb_admin_ui_drawer( string $id, string $title, string $body_html, stri
 		. '<span class="dashicons dashicons-no-alt" aria-hidden="true"></span>'
 		. '</button>';
 	$html .= '</div>';
-	$html .= '<div class="dtb-drawer__body">' . $body_html . '</div>';
+	$html .= '<div class="dtb-drawer__body" role="region" aria-label="' . esc_attr__( 'Drawer content', 'drywall-toolbox' ) . '" tabindex="0">' . $body_html . '</div>';
 
 	if ( $footer_html ) {
 		$html .= '<div class="dtb-drawer__footer">' . $footer_html . '</div>';

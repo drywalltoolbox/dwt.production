@@ -8,9 +8,27 @@
  */
 
 .dtb-orders-workbench {
-	display: grid;
-	gap: 1rem;
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+	gap: 0;
 	min-width: 0;
+	min-height: 0;
+	overflow: hidden;
+}
+
+#dtb-orders-modal .dtb-orders-workbench > .dtb-modal-tabs {
+	flex: 0 0 auto;
+}
+
+#dtb-orders-modal .dtb-orders-workbench > .dtb-modal-tab-panel {
+	flex: 1 1 auto;
+	min-width: 0;
+	min-height: 0;
+	overflow-x: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	-webkit-overflow-scrolling: touch;
 }
 
 .dtb-orders-type-filter {
@@ -385,6 +403,12 @@
 	font-size: .78rem;
 	line-height: 1.35;
 	padding-top: .35rem;
+}
+
+@media (max-width: 782px) {
+	#dtb-orders-modal .dtb-modal__body :is(button, .button) {
+		min-height: 44px;
+	}
 }
 
 @media (max-width: 1180px) {

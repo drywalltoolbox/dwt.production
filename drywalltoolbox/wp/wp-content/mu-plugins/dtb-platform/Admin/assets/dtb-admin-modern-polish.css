@@ -307,6 +307,14 @@ body.dtb-admin-screen :where(.dtb-orders-overview-grid, .dtb-repair-modal-worksp
 	word-break: break-word;
 }
 
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefing-archive a {
+	align-items: center;
+	display: inline-flex;
+	min-height: 44px;
+	max-width: 100%;
+	overflow-wrap: anywhere;
+}
+
 @media (max-width: 900px) {
 	.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefings-layout {
 		grid-template-columns: minmax(0, 1fr);
@@ -382,14 +390,17 @@ body.dtb-admin-screen :where(
 
 	body.dtb-admin-screen :where(#dtb-orders-modal .dtb-modal, #dtb-support-ticket-modal .dtb-modal, #dtb-returns-modal .dtb-modal, #dtb-repair-modal.dtb-modal) {
 		border-radius: 18px;
+		height: calc(100vh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
 		max-height: calc(100vh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
-		width: calc(100vw - max(10px, env(safe-area-inset-left)) - max(10px, env(safe-area-inset-right)));
+		box-sizing: border-box;
+		width: 100%;
 	}
 
 	@supports ( height: 100dvh ) {
 		body.dtb-admin-screen :where(#dtb-orders-modal .dtb-modal, #dtb-support-ticket-modal .dtb-modal, #dtb-returns-modal .dtb-modal, #dtb-repair-modal.dtb-modal) {
+			height: calc(100dvh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
 			max-height: calc(100dvh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
-			width: calc(100dvw - max(10px, env(safe-area-inset-left)) - max(10px, env(safe-area-inset-right)));
+			width: 100%;
 		}
 	}
 

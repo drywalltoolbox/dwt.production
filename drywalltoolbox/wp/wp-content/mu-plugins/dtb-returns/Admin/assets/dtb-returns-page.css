@@ -44,12 +44,16 @@
 
 @media ( max-width: 782px ) {
 	#dtb-returns-modal .dtb-modal {
-		width: calc( 100vw - 20px );
-		max-height: calc( 100vh - 20px );
-		height: calc( 100vh - 20px );
-		width: calc( 100dvw - 20px );
-		max-height: calc( 100dvh - 20px );
-		height: calc( 100dvh - 20px );
+		width: 100%;
+		max-height: calc( 100vh - max( 10px, env( safe-area-inset-top ) ) - max( 10px, env( safe-area-inset-bottom ) ) );
+		height: calc( 100vh - max( 10px, env( safe-area-inset-top ) ) - max( 10px, env( safe-area-inset-bottom ) ) );
+		width: 100%;
+		max-height: calc( 100dvh - max( 10px, env( safe-area-inset-top ) ) - max( 10px, env( safe-area-inset-bottom ) ) );
+		height: calc( 100dvh - max( 10px, env( safe-area-inset-top ) ) - max( 10px, env( safe-area-inset-bottom ) ) );
+	}
+
+	#dtb-returns-modal :is( button, select ) {
+		min-height: 44px;
 	}
 }
 
@@ -217,6 +221,7 @@
 
 .dtb-returns-modal-tab {
 	position: relative;
+	min-height: 44px;
 	padding: 11px 18px;
 	font-size: 13.5px;
 	font-weight: 500;
@@ -618,11 +623,14 @@
 .dtb-returns-form-actions {
 	display: flex;
 	align-items: center;
+	flex-wrap: wrap;
 	gap: 12px;
 }
 
 .dtb-returns-form-status {
 	font-size: 12.5px;
+	min-width: 0;
+	overflow-wrap: anywhere;
 }
 
 .dtb-returns-form-status.is-success { color: #065f46; }

@@ -299,6 +299,7 @@
 		panel.setAttribute( 'role', tab === 'actions' ? 'group' : 'tabpanel' );
 		if ( tab !== 'actions' ) {
 			panel.setAttribute( 'aria-labelledby', 'dtb-repair-tab-' + tab );
+			panel.setAttribute( 'tabindex', '0' );
 		}
 		panel.setAttribute( 'aria-hidden', tab === state.activeTab ? 'false' : 'true' );
 		if ( tab !== state.activeTab ) {

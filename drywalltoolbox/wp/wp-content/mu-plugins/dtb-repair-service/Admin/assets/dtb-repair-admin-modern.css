@@ -2343,7 +2343,7 @@ body.dtb-repair-admin-screen #dtb-repair-workspace-tabs {
 }
 
 body.dtb-repair-admin-screen .dtb-workspace-tab {
-	min-height: 38px;
+	min-height: 44px;
 	flex: 0 0 auto;
 	padding: 9px 14px;
 	color: var(--dtb-muted);
@@ -2599,6 +2599,7 @@ body.dtb-repair-admin-screen .dtb-sticky-status {
 body.dtb-repair-admin-screen .dtb-sticky-save {
 	border-radius: 10px;
 	font-weight: 800;
+	min-height: 44px;
 }
 
 body.dtb-repair-admin-screen .dtb-sticky-save-icon {

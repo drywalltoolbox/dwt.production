@@ -703,7 +703,7 @@
 			+ '<div id="dtb-support-panel-thread" class="dtb-support-modal-panel is-active dtb-support-chat-panel" data-dtb-modal-panel="thread" role="tabpanel" aria-labelledby="dtb-support-tab-thread" tabindex="0">'
 
 			// Scrollable chat thread
-			+ '<div class="dtb-chat-thread" id="dtb-chat-thread">'
+			+ '<div class="dtb-chat-thread" id="dtb-chat-thread" role="region" aria-label="Ticket conversation" tabindex="0">'
 			+ buildTimeline( events, message, customerName )
 			+ '</div>'
 
@@ -772,7 +772,7 @@
 			+ '</div>' // .dtb-support-ticket-left
 
 			// ── Right sidebar — always-visible context ─────────────────────────
-			+ '<aside class="dtb-support-ticket-context">'
+			+ '<aside class="dtb-support-ticket-context" aria-label="Ticket context and linked records" tabindex="0">'
 			+ renderSupportCanonicalRail( ticket, payload || {}, dueAt, dueRaw, created, updated )
 			+ '</aside>'
 

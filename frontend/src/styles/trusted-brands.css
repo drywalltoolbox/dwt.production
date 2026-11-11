@@ -187,10 +187,6 @@
 }
 
 @media (max-width: 767px) and (prefers-reduced-motion: no-preference) {
-  .dtb-ui-trusted-brands--home:not(.is-static) .dtb-ui-trusted-brands__track {
-    animation-duration: 38s;
-  }
-
   .dtb-ui-trusted-brands--home .dtb-ui-trusted-brands__viewport {
     -webkit-mask-image: none;
     mask-image: none;

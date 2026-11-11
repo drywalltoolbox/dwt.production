@@ -157,6 +157,8 @@
 #dtb-repair-modal.dtb-repair-modal--fullpage .dtb-wb-main {
 	display: block;
 	max-width: none;
+	min-height: 0;
+	overflow: visible;
 	width: 100%;
 }
 
@@ -375,6 +377,11 @@
 #dtb-repair-modal.dtb-repair-modal--fullpage .dtb-modal-tab:focus-visible {
 	outline: 3px solid #93c5fd;
 	outline-offset: 2px;
+}
+
+#dtb-repair-modal .dtb-modal-tab-panel:focus-visible {
+	outline: 2px solid #2563eb;
+	outline-offset: -2px;
 }
 
 #dtb-repair-modal.dtb-repair-modal--fullpage .dtb-modal-tab[aria-selected="true"] {
@@ -647,6 +654,29 @@
 }
 
 @media (max-width: 782px) {
+	#dtb-repair-modal-overlay.dtb-modal-overlay--open {
+		padding: max(10px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(10px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+	}
+
+	#dtb-repair-modal button {
+		min-height: 44px;
+	}
+
+	#dtb-repair-modal.dtb-repair-modal--fullpage {
+		height: calc(100vh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
+		max-height: calc(100vh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
+		box-sizing: border-box;
+		width: 100%;
+	}
+
+	@supports (height: 100dvh) {
+		#dtb-repair-modal.dtb-repair-modal--fullpage {
+			height: calc(100dvh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
+			max-height: calc(100dvh - max(10px, env(safe-area-inset-top)) - max(10px, env(safe-area-inset-bottom)));
+			width: 100%;
+		}
+	}
+
 	.dtb-admin[data-dtb-page="dtb-repairs"] .dtb-grid--kpi {
 		grid-template-columns: 1fr;
 	}
