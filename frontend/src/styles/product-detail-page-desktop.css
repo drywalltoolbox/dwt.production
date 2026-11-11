@@ -108,9 +108,9 @@
   }
 
   .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__title {
-    max-width: 620px;
+    max-width: 100%;
     color: #0b1630;
-    font-size: clamp(29px, 1.85vw, 34px);
+    font-size: clamp(2rem, 1.6rem + 1vw, 2.4rem);
     font-weight: 790;
     letter-spacing: -.035em;
     line-height: 1.08;
@@ -123,7 +123,7 @@
   }
 
   .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__identity-row > * {
-    font-size: 11.5px;
+    font-size: clamp(.8rem, .75rem + .2vw, .88rem);
     line-height: 1.3;
   }
 
@@ -153,24 +153,33 @@
 
   .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__price {
     color: #1457e6;
-    font-size: clamp(31px, 2vw, 35px);
+    font-size: clamp(2.15rem, 1.8rem + 1vw, 2.75rem);
     font-weight: 800;
     letter-spacing: -.038em;
   }
 
   .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__compare-at {
     color: #94a3b8;
-    font-size: 15px;
+    font-size: clamp(1rem, .92rem + .25vw, 1.08rem);
     font-weight: 600;
     line-height: 1.1;
     text-decoration: line-through;
   }
 
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__desktop-reviews-row .dtb-pdp-header__reviews {
+    font-size: clamp(.76rem, .72rem + .2vw, .82rem);
+  }
+
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__review-star {
+    width: 14px;
+    height: 14px;
+  }
+
   .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__summary {
     max-width: 610px;
-    margin: 16px 0 0;
+    margin: clamp(1rem, 1.1vw, 1.4rem) 0 0;
     color: #34435a;
-    font-size: 14px;
+    font-size: clamp(.94rem, .9rem + .2vw, 1rem);
     font-weight: 440;
     line-height: 1.5;
   }
@@ -341,7 +350,7 @@
   background: transparent;
   color: #17243a;
   text-align: left;
-  font-size: clamp(.96rem, .25vw + .91rem, 1.02rem);
+  font-size: clamp(1rem, .9rem + .35vw, 1.1rem);
   font-weight: 740;
   letter-spacing: -.018em;
   cursor: pointer;

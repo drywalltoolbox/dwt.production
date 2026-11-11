@@ -572,3 +572,4 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
     </div>
   );
 }
+
