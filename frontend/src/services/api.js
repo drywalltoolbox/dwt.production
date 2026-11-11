@@ -16,6 +16,7 @@ import {
 } from '../utils/csvSpecificationMapping.js';
 import { buildIncludesMetaFromContent } from '../utils/includesExtraction.js';
 import { decodeHtmlEntities } from '../utils/string.js';
+import { filterSpecificationMetaData } from '../utils/productSpecificationPolicy.js';
 
 function hasStructuredIncludesMeta(metaItems = []) {
   return metaItems.some(({ key }) => /^_includes_\d+_(name|sku)$/.test(String(key || '')));
@@ -394,7 +395,9 @@ export function normalizeProduct(wcProduct) {
   // hasn't been written into WooCommerce yet.
   const apiSpecRows = buildSpecificationsFromApiProduct(wcProduct, { brand });
   const apiSpecsMeta = buildSpecsMetaFromRows(apiSpecRows);
-  const existingMeta = Array.isArray(wcProduct.meta_data) ? wcProduct.meta_data : [];
+  const existingMeta = filterSpecificationMetaData(
+    Array.isArray(wcProduct.meta_data) ? wcProduct.meta_data : []
+  );
   const inferredIncludes = buildIncludesMetaFromContent(wcProduct.description || '', {
     sku: wcProduct.sku,
   });

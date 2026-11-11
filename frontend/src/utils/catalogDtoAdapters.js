@@ -5,6 +5,7 @@ import {
 } from './csvSpecificationMapping.js';
 import { buildIncludesMetaFromContent } from './includesExtraction.js';
 import { canonicalizeAttributeValue, normalizeAttributeKey } from './variationSelection.js';
+import { filterSpecificationMetaData } from './productSpecificationPolicy.js';
 
 function toNumber(value, fallback = 0) {
   const parsed = typeof value === 'number' ? value : parseFloat(String(value ?? ''));
@@ -55,7 +56,7 @@ function hasStructuredIncludesMeta(metaData = []) {
 }
 
 function synthesizeSpecMetaData(productLike = {}, legacyMeta = [], brand = '') {
-  const baseMeta = Array.isArray(legacyMeta) ? legacyMeta : [];
+  const baseMeta = filterSpecificationMetaData(Array.isArray(legacyMeta) ? legacyMeta : []);
   const apiSpecRows = buildSpecificationsFromApiProduct(
     {
       sku: productLike?.sku || '',

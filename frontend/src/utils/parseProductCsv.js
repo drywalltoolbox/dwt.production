@@ -477,6 +477,7 @@ import {
   mergeSpecMeta,
 } from './csvSpecificationMapping.js';
 import { buildIncludesMetaFromContent } from './includesExtraction.js';
+import { filterSpecificationMetaData } from './productSpecificationPolicy.js';
 
 function hasStructuredIncludes(metaItems = []) {
   return metaItems.some(({ key }) => /^_includes_\d+_(name|sku)$/.test(String(key || '')));
@@ -608,10 +609,10 @@ function normalizeRow(row, idx, attrIndexes = []) {
   const csvSpecsMeta = buildSpecsMetaFromRows(csvSpecRows);
   const inferredIncludes = buildIncludesMetaFromContent(rawDescription, { sku });
   const explicitMeta = collectCsvMetaData(row);
-  const explicitCanonicalSpecMeta = explicitMeta.filter(({ key }) =>
+  const explicitCanonicalSpecMeta = filterSpecificationMetaData(explicitMeta.filter(({ key }) =>
     key === '_dtb_specs_json' ||
     key === 'dtb_specs_json'
-  );
+  ));
   const explicitIndexedSpecMeta = explicitMeta.filter(({ key }) =>
     /^_specs_\d+_(label|value)$/.test(String(key || ''))
   );
