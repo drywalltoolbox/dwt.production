@@ -248,6 +248,10 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
   const handleWheel = useCallback((event) => {
     const rect = containerRef.current?.getBoundingClientRect();
     if (!rect) return;
+    // The viewer owns the pointer's wheel interaction. Without cancelling the
+    // native scroll at the viewport boundary, browsers scroll the document
+    // instead of zooming when the canvas is at its minimum or maximum scale.
+    if (event.cancelable) event.preventDefault();
     const point = { x: event.clientX - rect.left - rect.width / 2, y: event.clientY - rect.top - rect.height / 2 };
     const base = wheelTarget.current || cameraRef.current;
     const unitDelta = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaMode === 2 ? event.deltaY * rect.height : event.deltaY;
@@ -258,7 +262,6 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
       y: point.y - ((point.y - base.offset.y) * ratio),
     };
     if (nextScale === base.scale && nextOffset.x === base.offset.x && nextOffset.y === base.offset.y) return;
-    event.preventDefault();
     setFocusTransition(false);
     setIsWheelZooming(true);
     wheelTarget.current = {
@@ -299,8 +302,10 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return undefined;
-    container.addEventListener('wheel', handleWheel, { passive: false });
-    return () => container.removeEventListener('wheel', handleWheel);
+    // Capture before image/hotspot descendants so their own handlers cannot
+    // swallow wheel input. `passive: false` is required for preventDefault.
+    container.addEventListener('wheel', handleWheel, { passive: false, capture: true });
+    return () => container.removeEventListener('wheel', handleWheel, { capture: true });
   }, [handleWheel]);
 
   useEffect(() => () => {
@@ -572,4 +577,5 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
     </div>
   );
 }
+
 
