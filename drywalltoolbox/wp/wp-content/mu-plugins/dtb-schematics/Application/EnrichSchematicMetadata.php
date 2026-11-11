@@ -12,6 +12,22 @@ function dtb_schematic_canonical_metadata( string $canonical_id ): array {
 	$canonical_id = sanitize_key( $canonical_id );
 	$identity     = DTB_SCHEMATIC_BRAND_CATEGORY_MAP[ $canonical_id ] ?? [];
 	$display      = DTB_SCHEMATIC_DISPLAY_MAP[ $canonical_id ] ?? [];
+	$brand_map    = DTB_SCHEMATIC_BRAND_DISPLAY_MAP[ $canonical_id ] ?? DTB_LEVEL5_SCHEMATIC_DISPLAY_MAP[ $canonical_id ] ?? [];
+	$identity     = array_merge( $identity, array_intersect_key( $brand_map, array_flip( [ 'brand_id', 'category_id' ] ) ) );
+	$display      = array_merge( $display, array_intersect_key( $brand_map, array_flip( [ 'brand_name', 'category_name', 'title' ] ) ) );
+	if ( function_exists( 'dtb_asgard_schematic_metadata' ) ) {
+		$asgard = dtb_asgard_schematic_metadata( $canonical_id );
+		if ( ! empty( $asgard ) ) {
+			$identity = [ 'brand_id' => $asgard['brand_id'] ?? '', 'category_id' => $asgard['category_id'] ?? '' ];
+			$display = [ 'brand_name' => $asgard['brand_name'] ?? '', 'category_name' => $asgard['category_name'] ?? '', 'title' => $asgard['title'] ?? '' ];
+		}
+	}
+	if ( 'tape-tech' === ( $identity['brand_id'] ?? '' ) && function_exists( 'dtb_tapetech_schematic_category_name' ) ) {
+		$category_name = dtb_tapetech_schematic_category_name( (string) ( $identity['category_id'] ?? '' ) );
+		if ( '' !== $category_name ) {
+			$display['category_name'] = $category_name;
+		}
+	}
 
 	return [
 		'brand_id'     => sanitize_key( (string) ( $identity['brand_id'] ?? '' ) ),
@@ -25,7 +41,13 @@ function dtb_schematic_canonical_metadata( string $canonical_id ): array {
 /** Machine-derived titles may be replaced by the generated display title. */
 function dtb_schematic_title_is_machine_derived( string $title, string $canonical_id ): bool {
 	$normalize = static fn( string $value ): string => strtolower( preg_replace( '/[^a-z0-9]+/', '', $value ) ?: '' );
-	return '' === trim( $title ) || $normalize( $title ) === $normalize( $canonical_id );
+	$canonical_id = sanitize_key( $canonical_id );
+	$brand_map = DTB_SCHEMATIC_BRAND_DISPLAY_MAP[ $canonical_id ] ?? DTB_LEVEL5_SCHEMATIC_DISPLAY_MAP[ $canonical_id ] ?? [];
+	$legacy_title = (string) ( $brand_map['legacy_title'] ?? DTB_SCHEMATIC_DISPLAY_MAP[ $canonical_id ]['legacy_title'] ?? '' );
+	$generated_title = (string) ( DTB_SCHEMATIC_DISPLAY_MAP[ $canonical_id ]['title'] ?? '' );
+	return '' === trim( $title ) || $normalize( $title ) === $normalize( $canonical_id )
+		|| ( '' !== $legacy_title && $normalize( $title ) === $normalize( $legacy_title ) )
+		|| ( '' !== $generated_title && $normalize( $title ) === $normalize( $generated_title ) );
 }
 
 /** Resolve public display metadata while older records await reconciliation. */

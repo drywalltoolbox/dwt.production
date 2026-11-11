@@ -699,7 +699,10 @@ function dtb_schematic_reconcile_source_requirements( DTB_Schematic_Record_Entit
  * @return DTB_Schematic_Record_Entity|null The updated record, or null if nothing changed.
  */
 function dtb_schematic_reconcile_backfill_family( DTB_Schematic_Record_Entity $record ): ?DTB_Schematic_Record_Entity {
-	$family = DTB_SCHEMATIC_FAMILY_MAP[ $record->canonical_id ] ?? null;
+	$brand_map = DTB_SCHEMATIC_BRAND_DISPLAY_MAP[ $record->canonical_id ] ?? [];
+	$family    = ! empty( $brand_map['family_id'] )
+		? [ 'family_id' => $brand_map['family_id'], 'variant_label' => $brand_map['variant_label'] ?? '' ]
+		: ( DTB_SCHEMATIC_FAMILY_MAP[ $record->canonical_id ] ?? null );
 	if ( ! $family ) {
 		return null; // No family grouping known for this id — not every schematic belongs to a multi-variant family.
 	}
@@ -748,12 +751,15 @@ function dtb_schematic_reconcile_write_row( ?DTB_Schematic_Record_Entity $record
 			'title'             => dtb_schematic_reconcile_default_title( $canonical_id ),
 			'source_provenance' => [ 'source' => 'reconciliation_pipeline', 'created_at' => gmdate( 'c' ) ],
 		];
-		$brand_category = DTB_SCHEMATIC_BRAND_CATEGORY_MAP[ $canonical_id ] ?? null;
+		$canonical_metadata = dtb_schematic_canonical_metadata( $canonical_id );
+		$brand_category = '' !== $canonical_metadata['brand_id'] && '' !== $canonical_metadata['category_id']
+			? [ 'brand_id' => $canonical_metadata['brand_id'], 'category_id' => $canonical_metadata['category_id'] ]
+			: ( DTB_SCHEMATIC_BRAND_CATEGORY_MAP[ $canonical_id ] ?? null );
 		if ( $brand_category ) {
 			$create_data['brand_id']    = $brand_category['brand_id'];
 			$create_data['category_id'] = $brand_category['category_id'];
 		}
-		$family = DTB_SCHEMATIC_FAMILY_MAP[ $canonical_id ] ?? null;
+		$family = DTB_SCHEMATIC_BRAND_DISPLAY_MAP[ $canonical_id ] ?? DTB_SCHEMATIC_FAMILY_MAP[ $canonical_id ] ?? null;
 		if ( $family ) {
 			if ( '' !== trim( (string) $family['family_id'] ) ) {
 				$create_data['family_id'] = $family['family_id'];
@@ -774,7 +780,10 @@ function dtb_schematic_reconcile_write_row( ?DTB_Schematic_Record_Entity $record
 		// (Domain/SchematicPublicationRules.php) and reconciliation is the
 		// only writer of these ids, so a record with neither ever set stays
 		// unpublishable forever without this pass.
-		$brand_category = DTB_SCHEMATIC_BRAND_CATEGORY_MAP[ $canonical_id ] ?? null;
+		$canonical_metadata = dtb_schematic_canonical_metadata( $canonical_id );
+		$brand_category = '' !== $canonical_metadata['brand_id'] && '' !== $canonical_metadata['category_id']
+			? [ 'brand_id' => $canonical_metadata['brand_id'], 'category_id' => $canonical_metadata['category_id'] ]
+			: ( DTB_SCHEMATIC_BRAND_CATEGORY_MAP[ $canonical_id ] ?? null );
 		if ( $brand_category ) {
 			$backfill = [];
 			if ( '' === trim( $record->brand_id ) ) {
@@ -916,6 +925,10 @@ function dtb_schematic_reconcile_associate_hotspot_dataset( DTB_Schematic_Record
  * migration combines them into one normalized record-owned dataset.
  */
 function dtb_schematic_reconcile_hotspot_source_group( string $canonical_id ): array {
+	$brand_map = DTB_SCHEMATIC_BRAND_DISPLAY_MAP[ sanitize_key( $canonical_id ) ] ?? [];
+	if ( ! empty( $brand_map['source_references'] ) && is_array( $brand_map['source_references'] ) ) {
+		return $brand_map['source_references'];
+	}
 	if ( ! defined( 'DTB_SCHEMATIC_HOTSPOT_SOURCE_MAP' ) ) {
 		return [];
 	}

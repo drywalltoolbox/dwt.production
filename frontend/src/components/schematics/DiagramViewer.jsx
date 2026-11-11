@@ -69,6 +69,7 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
   const [fitSize, setFitSize] = useState(null);
   const [anchorRect, setAnchorRect] = useState(null);
   const [focusTransition, setFocusTransition] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const [isMobile, setIsMobile] = useState(
     typeof window !== 'undefined' ? window.innerWidth <= 768 : false,
   );
@@ -77,6 +78,12 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
     const handleResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => setIsFullscreen(document.fullscreenElement === wrapRef.current);
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
   }, []);
 
   const reduceMotion = typeof window !== 'undefined'
@@ -119,7 +126,10 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
     const containerSize = containerRef.current
       ? { width: containerRef.current.clientWidth, height: containerRef.current.clientHeight }
       : null;
-    setOffset((current) => clampOffset(current, scale, containerSize, nextBoundsSize));
+    setOffset((current) => {
+      const nextOffset = clampOffset(current, scale, containerSize, nextBoundsSize);
+      return current.x === nextOffset.x && current.y === nextOffset.y ? current : nextOffset;
+    });
   }, [scale]);
 
   useEffect(() => {
@@ -173,7 +183,8 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
     const size = container ? { width: container.clientWidth, height: container.clientHeight } : null;
     const clampedScale = clampScale(nextScale);
     setScale(clampedScale);
-    setOffset(clampOffset(nextOffset ?? offset, clampedScale, size, boundsSize));
+    const clampedOffset = clampOffset(nextOffset ?? offset, clampedScale, size, boundsSize);
+    setOffset((current) => current.x === clampedOffset.x && current.y === clampedOffset.y ? current : clampedOffset);
   }, [offset, boundsSize]);
 
   const zoomAtPoint = useCallback((nextScale, clientX, clientY, baseScale = scale, baseOffset = offset) => {
@@ -362,6 +373,16 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
   const zoomIn = () => { setFocusTransition(false); applyScale(scale + 0.5); };
   const zoomOut = () => { setFocusTransition(false); applyScale(scale - 0.5); };
   const resetZoom = () => { setFocusTransition(false); applyScale(1, { x: 0, y: 0 }); };
+  const toggleFullscreen = async () => {
+    const target = wrapRef.current;
+    if (!target) return;
+    try {
+      if (document.fullscreenElement) await document.exitFullscreen();
+      else await target.requestFullscreen();
+    } catch {
+      // Fullscreen is an optional browser capability; zoom and pan remain available.
+    }
+  };
 
   if (!page) {
     return (
@@ -397,7 +418,7 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerUp}
         onDoubleClick={(event) => zoomAtPoint(scale > 1 ? 1 : 2, event.clientX, event.clientY)}
-        style={{ touchAction: scale > 1 ? 'none' : 'pan-y', cursor: scale > 1 ? (isGesturing ? 'grabbing' : 'grab') : 'default' }}
+        style={{ touchAction: 'none', cursor: scale > 1 ? (isGesturing ? 'grabbing' : 'grab') : 'default' }}
       >
         {/* Transform wrapper — legacy `.schematic-image-wrapper`. Zoom/pan is a
             single `transform: scale(...) translate(...)` here, center-origin,
@@ -470,6 +491,8 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
         onZoomIn={zoomIn}
         onZoomOut={zoomOut}
         onReset={resetZoom}
+        isFullscreen={isFullscreen}
+        onToggleFullscreen={toggleFullscreen}
       />
 
       {partsTrigger}

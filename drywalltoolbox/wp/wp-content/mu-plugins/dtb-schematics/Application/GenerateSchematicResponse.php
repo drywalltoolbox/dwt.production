@@ -316,6 +316,10 @@ function dtb_schematic_generate_detail_response( DTB_Schematic_Record_Entity $re
  * @return array<int,array{key:string,label:string,sku:string}>
  */
 function dtb_schematic_shared_variant_options( string $canonical_id ): array {
+	$brand_map = DTB_SCHEMATIC_BRAND_DISPLAY_MAP[ sanitize_key( $canonical_id ) ] ?? [];
+	if ( isset( $brand_map['variants'] ) && is_array( $brand_map['variants'] ) ) {
+		return $brand_map['variants'];
+	}
 	if ( ! defined( 'DTB_SCHEMATIC_SHARED_VARIANT_MAP' ) ) {
 		return [];
 	}
