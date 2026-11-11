@@ -21,6 +21,37 @@ const DTB_SCHEMATIC_OPERATION_REGENERATE_OVERSIZED = 'regenerate_oversized';
 const DTB_SCHEMATIC_OPERATION_OPTIMIZE_HOTSPOTS = 'optimize_hotspots';
 const DTB_SCHEMATIC_OPERATION_MAX_SELECTED     = 50;
 
+function dtb_schematic_operation_diagnostic( Throwable $error, array $context = [] ): string {
+	$clean = static function ( $value, int $limit = 240 ): string {
+		$value = sanitize_text_field( (string) $value );
+		return function_exists( 'mb_substr' ) ? mb_substr( $value, 0, $limit ) : substr( $value, 0, $limit );
+	};
+	$frames = [];
+	foreach ( array_slice( $error->getTrace(), 0, 12 ) as $frame ) {
+		$frames[] = [
+			'file' => isset( $frame['file'] ) ? sanitize_file_name( basename( (string) $frame['file'] ) ) : '',
+			'line' => max( 0, (int) ( $frame['line'] ?? 0 ) ),
+			'call' => $clean( ( $frame['class'] ?? '' ) . ( $frame['type'] ?? '' ) . ( $frame['function'] ?? '' ), 120 ),
+		];
+	}
+	$event = [
+		'timestamp' => gmdate( 'c' ),
+		'context'   => array_intersect_key( $context, array_flip( [ 'run_id', 'operation', 'dry_run', 'canonical_id', 'schematic_id', 'phase' ] ) ),
+		'exception' => get_class( $error ),
+		'message'   => $clean( $error->getMessage() ),
+		'file'      => sanitize_file_name( basename( $error->getFile() ) ),
+		'line'      => max( 0, (int) $error->getLine() ),
+		'trace'     => $frames,
+	];
+	$line     = '[DTB Schematics] ' . wp_json_encode( $event );
+	$log_path = defined( 'WP_CONTENT_DIR' ) ? WP_CONTENT_DIR . '/debug.log' : '';
+	$written  = '' !== $log_path && @file_put_contents( $log_path, $line . PHP_EOL, FILE_APPEND | LOCK_EX );
+	if ( false === $written ) {
+		error_log( $line ); // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_error_log
+	}
+	return sprintf( '%s: %s (%s:%d)', get_class( $error ), $clean( $error->getMessage() ), $event['file'], $event['line'] );
+}
+
 function dtb_schematic_run_operation( array $args = [] ) {
 	$kind        = sanitize_key( (string) ( $args['kind'] ?? '' ) );
 	$dry_run     = array_key_exists( 'dry_run', $args ) ? (bool) $args['dry_run'] : true;
@@ -87,7 +118,8 @@ function dtb_schematic_run_operation( array $args = [] ) {
 		dtb_schematic_operation_log_activity( $kind, $run );
 		return $run;
 	} catch ( Throwable $exception ) {
-		$run = dtb_schematic_operation_run_complete( $run, [], $exception->getMessage() );
+		$message = dtb_schematic_operation_diagnostic( $exception, [ 'run_id' => $run['id'], 'operation' => $kind, 'dry_run' => $dry_run, 'phase' => 'execute' ] );
+		$run = dtb_schematic_operation_run_complete( $run, [], $message );
 		dtb_schematic_operation_log_activity( $kind, $run );
 		return $run;
 	} finally {
@@ -170,6 +202,7 @@ function dtb_schematic_operation_execute( string $kind, bool $dry_run, array $re
 				'dry_run'         => $dry_run,
 				'per_page'        => $request['per_page'],
 				'lease_heartbeat' => $heartbeat,
+				'run_id'          => $run_id,
 			]
 		);
 	}

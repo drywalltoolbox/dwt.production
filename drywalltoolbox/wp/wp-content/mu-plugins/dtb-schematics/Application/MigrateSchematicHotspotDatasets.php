@@ -46,6 +46,7 @@ function dtb_schematic_migrate_hotspot_datasets( array $args = [] ): array {
 	$per_page  = max( 1, min( 100, (int) ( $args['per_page'] ?? 50 ) ) );
 	$only_id   = isset( $args['only_canonical_id'] ) ? sanitize_key( (string) $args['only_canonical_id'] ) : '';
 	$heartbeat = isset( $args['lease_heartbeat'] ) && is_callable( $args['lease_heartbeat'] ) ? $args['lease_heartbeat'] : null;
+	$run_id    = sanitize_text_field( (string) ( $args['run_id'] ?? '' ) );
 
 	$report = [
 		'dry_run'   => $dry_run,
@@ -66,7 +67,12 @@ function dtb_schematic_migrate_hotspot_datasets( array $args = [] ): array {
 			$report['failed']++;
 			return $report;
 		}
-		$result = dtb_schematic_migrate_hotspot_dataset_for_record( $record, $dry_run );
+		try {
+			$result = dtb_schematic_migrate_hotspot_dataset_for_record( $record, $dry_run );
+		} catch ( Throwable $error ) {
+			$message = dtb_schematic_operation_diagnostic( $error, [ 'run_id' => $run_id, 'operation' => 'migrate_hotspots', 'dry_run' => $dry_run, 'canonical_id' => $record->canonical_id, 'phase' => 'record_migration' ] );
+			$result = [ 'canonical_id' => $record->canonical_id, 'status' => 'failed', 'detail' => $message, 'source_file' => null, 'parts_resolved' => 0, 'parts_unresolved' => 0 ];
+		}
 		dtb_schematic_migrate_hotspot_tally( $report, $result );
 		$report['changed'] = $report['migrated'];
 		if ( ! $dry_run && $report['changed'] > 0 ) {
@@ -79,6 +85,12 @@ function dtb_schematic_migrate_hotspot_datasets( array $args = [] ): array {
 	do {
 		$query_result = dtb_schematic_record_repo_query( [ 'page' => $page, 'per_page' => $per_page ] );
 		foreach ( $query_result['items'] as $record ) {
+			if ( 'asgard' === sanitize_key( (string) $record->brand_id ) ) {
+				$report['examined']++;
+				$report['skipped']++;
+				$report['results'][] = [ 'canonical_id' => $record->canonical_id, 'status' => 'skipped', 'detail' => 'Asgard synchronization is temporarily disabled.' ];
+				continue;
+			}
 			if ( $heartbeat ) {
 				$renewed = $heartbeat();
 				if ( is_wp_error( $renewed ) ) {
@@ -87,8 +99,17 @@ function dtb_schematic_migrate_hotspot_datasets( array $args = [] ): array {
 					break 2;
 				}
 			}
-			$result = dtb_schematic_migrate_hotspot_dataset_for_record( $record, $dry_run );
+			try {
+				$result = dtb_schematic_migrate_hotspot_dataset_for_record( $record, $dry_run );
+			} catch ( Throwable $error ) {
+				$message = dtb_schematic_operation_diagnostic( $error, [ 'run_id' => $run_id, 'operation' => 'migrate_hotspots', 'dry_run' => $dry_run, 'canonical_id' => $record->canonical_id, 'phase' => 'record_migration' ] );
+				$result = [ 'canonical_id' => $record->canonical_id, 'status' => 'failed', 'detail' => $message, 'source_file' => null, 'parts_resolved' => 0, 'parts_unresolved' => 0 ];
+			}
 			dtb_schematic_migrate_hotspot_tally( $report, $result );
+			if ( 'failed' === $result['status'] ) {
+				$report['fatal_error'] = $result['detail'];
+				break 2;
+			}
 		}
 		$page++;
 	} while ( $page <= $query_result['pages'] && $page <= DTB_SCHEMATIC_HOTSPOT_MIGRATE_MAX_PAGES );
@@ -114,6 +135,7 @@ function dtb_schematic_migrate_hotspot_tally( array &$report, array $result ): v
 			break;
 		case 'no_source_file':
 		case 'source_file_missing':
+		case 'skipped':
 			$report['skipped']++;
 			break;
 		default:
@@ -136,6 +158,10 @@ function dtb_schematic_migrate_hotspot_dataset_for_record( DTB_Schematic_Record_
 		'parts_resolved'   => 0,
 		'parts_unresolved' => 0,
 	];
+	if ( 'asgard' === sanitize_key( (string) $record->brand_id ) ) {
+		$base['detail'] = 'Asgard synchronization is temporarily disabled.';
+		return $base;
+	}
 
 	$source_entries = function_exists( 'dtb_schematic_reconcile_hotspot_source_group' )
 		? dtb_schematic_reconcile_hotspot_source_group( $record->canonical_id )
