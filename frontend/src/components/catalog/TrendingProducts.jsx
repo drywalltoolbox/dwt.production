@@ -11,6 +11,70 @@ import ProductRelatedProducts from '../product/ProductRelatedProducts.jsx';
 import { useCatalogProductDetail } from '../../hooks/useCatalogProductDetail.js';
 import Toast from '../ui/Toast';
 
+const FEATURED_BRANDS = [
+  { label: 'Columbia Tools', key: 'columbia' },
+  { label: 'Platinum Drywall Tools', key: 'platinum' },
+  { label: 'TapeTech', key: 'tapetech' },
+  { label: 'LEVEL5', key: 'level5' },
+];
+const FEATURED_CATEGORIES = ['automatic-tapers', 'toolsets'];
+
+function featuredCategory(product) {
+  const category = String(product?.display_category || '').replaceAll('_', '-').toLowerCase();
+  if (category.includes('taper')) return 'automatic-tapers';
+  if (category.includes('toolset') || category.includes('tool-set')) return 'toolsets';
+  return '';
+}
+
+function selectFeaturedProducts(productsByBrand, limit = 6) {
+  const selected = [];
+  const selectedKeys = new Set();
+  const categoryCounts = Object.fromEntries(FEATURED_CATEGORIES.map((category) => [category, 0]));
+
+  const add = (product, category) => {
+    const key = String(product?.sku || product?.id || product?.slug || '');
+    if (!key || selectedKeys.has(key) || selected.length >= limit) return false;
+    selected.push(product);
+    selectedKeys.add(key);
+    categoryCounts[category] += 1;
+    return true;
+  };
+
+  // First guarantee one product from every requested brand. When a brand has
+  // both categories, prefer the category currently underrepresented in the rail.
+  FEATURED_BRANDS.forEach(({ key }) => {
+    const candidates = productsByBrand[key] || [];
+    const category = FEATURED_CATEGORIES
+      .filter((value) => candidates.some((product) => featuredCategory(product) === value))
+      .sort((a, b) => categoryCounts[a] - categoryCounts[b])[0];
+    if (category) {
+      add(candidates.find((product) => featuredCategory(product) === category), category);
+    }
+  });
+
+  // Fill remaining positions from each brand's sales-ranked category results,
+  // keeping automatic tapers and tool sets balanced where live data permits.
+  while (selected.length < limit) {
+    let added = false;
+    const categories = [...FEATURED_CATEGORIES].sort((a, b) => categoryCounts[a] - categoryCounts[b]);
+    for (const category of categories) {
+      for (const { key } of FEATURED_BRANDS) {
+        const next = (productsByBrand[key] || []).find(
+          (product) => featuredCategory(product) === category && !selectedKeys.has(String(product?.sku || product?.id || product?.slug || ''))
+        );
+        if (next && add(next, category)) {
+          added = true;
+          break;
+        }
+      }
+      if (added) break;
+    }
+    if (!added) break;
+  }
+
+  return selected;
+}
+
 // Product detail and its gallery/variation dependencies are only needed after
 // a shopper explicitly opens Quick View. Keeping them out of the home-route
 // chunk prevents a modal-only feature from delaying first render and LCP.
@@ -109,16 +173,27 @@ export default function TrendingProducts() {
     if (!shouldLoad) return undefined;
     let mounted = true;
 
-    fetchCatalogProducts({ perPage: 6, sort: 'popular', isParts: false }).then((payload) => {
+    Promise.allSettled(FEATURED_BRANDS.map(({ label }) => fetchCatalogProducts({
+      brands: [label],
+      displayCategory: FEATURED_CATEGORIES,
+      perPage: 24,
+      sort: 'popular',
+      isParts: false,
+    }))).then((results) => {
       if (!mounted) return;
-      const items = Array.isArray(payload?.items) ? payload.items : [];
-      setProducts(items
-        .map(toLegacyProductCardDTO)
-        .filter((product) => {
-          if (!product || product.is_parts || product.category === 'parts') return false;
-          return (Number(product.price) || Number(product.min_price) || Number(product.regular_price) || 0) > 0;
-        })
-        .slice(0, 6));
+      const productsByBrand = Object.fromEntries(results.map((result, index) => {
+        const brandKey = FEATURED_BRANDS[index].key;
+        const items = result.status === 'fulfilled' && Array.isArray(result.value?.items)
+          ? result.value.items
+          : [];
+        return [brandKey, items
+          .map(toLegacyProductCardDTO)
+          .filter((product) => {
+            if (!product || product.is_parts || product.category === 'parts' || !featuredCategory(product)) return false;
+            return (Number(product.price) || Number(product.min_price) || Number(product.regular_price) || 0) > 0;
+          })];
+      }));
+      setProducts(selectFeaturedProducts(productsByBrand));
       setLoading(false);
     }).catch((err) => {
       console.error('Error fetching trending products:', err);
@@ -135,7 +210,7 @@ export default function TrendingProducts() {
       className="dtb-home-product-section"
       revealHeading
       title="Featured Products"
-      subtitle="Popular tools trusted by drywall professionals."
+      subtitle="Featured automatic tapers and tool sets from trusted brands."
       viewAllHref="/products?sort=popular"
     >
       <div ref={railRef}>

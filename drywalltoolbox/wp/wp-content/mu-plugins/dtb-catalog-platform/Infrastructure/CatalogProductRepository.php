@@ -705,11 +705,12 @@ final class DTB_CatalogProductRepository {
 			case 'popular':
 			default:
 				return [
+					'meta_key' => 'total_sales',
 					'orderby' => [
+						'meta_value_num' => 'DESC',
 						'menu_order' => 'ASC',
 						'title'      => 'ASC',
 					],
-					'order'   => 'ASC',
 				];
 		}
 	}
