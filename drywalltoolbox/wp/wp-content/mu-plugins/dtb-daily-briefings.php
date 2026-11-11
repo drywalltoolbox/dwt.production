@@ -226,26 +226,26 @@ function dtb_daily_briefings_render(): void {
         'icon' => 'dashicons-analytics',
         'actions' => [ dtb_admin_ui_button( __( 'Command Center', 'drywall-toolbox' ),
             [ 'href' => admin_url( 'admin.php?page=dtb-command-center' ), 'type' => 'secondary', 'size' => 'sm' ] ) ] ] );
-    echo '<div class="dtb-grid dtb-grid--two"><main style="min-width:0">';
+    echo '<div class="dtb-grid dtb-grid--two dtb-briefings-layout"><main class="dtb-briefings-main">';
     if ( ! $row ) {
-        echo '<div class="dtb-card" style="padding:24px"><h2>' . esc_html__( 'Awaiting the first briefing', 'drywall-toolbox' ) . '</h2><p>' .
-            esc_html__( 'The scheduled ChatGPT agent will publish its verified report here when its authenticated MCP connection is available.', 'drywall-toolbox' ) . '</p></div>';
+        echo '<div class="dtb-card dtb-briefing-card"><div class="dtb-card__body"><h2>' . esc_html__( 'Awaiting the first briefing', 'drywall-toolbox' ) . '</h2><p>' .
+            esc_html__( 'The scheduled ChatGPT agent will publish its verified report here when its authenticated MCP connection is available.', 'drywall-toolbox' ) . '</p></div></div>';
     } else {
         $payload = json_decode( $row->payload, true );
-        echo '<div class="dtb-card" style="padding:24px;margin-bottom:16px"><h2 style="margin-top:0">' . esc_html( $row->report_date ) .
+        echo '<div class="dtb-card dtb-briefing-card"><div class="dtb-card__body"><h2>' . esc_html( $row->report_date ) .
             '</h2><p><strong>' . esc_html( strtoupper( $row->report_status ) ) . '</strong> · ' .
-            esc_html( $row->generated_at . ' UTC' ) . '</p><p style="white-space:pre-line;line-height:1.7">' .
+            esc_html( $row->generated_at . ' UTC' ) . '</p><p class="dtb-briefing-summary">' .
             esc_html( $payload['summary'] ?? '' ) . '</p>';
         if ( ! empty( $payload['metrics'] ) ) {
-            echo '<h3>' . esc_html__( 'Verified indicators', 'drywall-toolbox' ) . '</h3><div style="display:flex;gap:10px;flex-wrap:wrap">';
+            echo '<h3>' . esc_html__( 'Verified indicators', 'drywall-toolbox' ) . '</h3><div class="dtb-briefing-metrics">';
             foreach ( $payload['metrics'] as $label => $value ) {
-                echo '<div style="border:1px solid #dce2ea;border-radius:10px;padding:10px 14px"><strong>' .
+                echo '<div class="dtb-briefing-metric"><strong>' .
                     esc_html( null === $value ? 'N/A' : (string) $value ) . '</strong><br><small>' .
                     esc_html( ucwords( str_replace( '_', ' ', $label ) ) ) . '</small></div>';
             }
             echo '</div>';
         }
-        echo '</div><div class="dtb-card" style="padding:24px;margin-bottom:16px"><h3 style="margin-top:0">' .
+        echo '</div></div><div class="dtb-card dtb-briefing-card"><div class="dtb-card__body"><h3>' .
             esc_html__( 'Admin priorities', 'drywall-toolbox' ) . '</h3>';
         $pages = [ 'orders' => 'dtb-orders', 'repairs' => 'dtb-repairs', 'returns' => 'dtb-returns',
             'support' => 'dtb-support', 'refunds' => 'dtb-returns', 'fulfillment' => 'dtb-orders',
@@ -255,28 +255,28 @@ function dtb_daily_briefings_render(): void {
         }
         foreach ( $payload['priorities'] ?? [] as $priority ) {
             $target = admin_url( 'admin.php?page=' . ( $pages[ $priority['module'] ] ?? 'dtb-command-center' ) );
-            echo '<div style="border-top:1px solid #e3e8ef;padding:12px 0"><strong>' .
+            echo '<div class="dtb-briefing-priority"><strong>' .
                 esc_html( strtoupper( $priority['severity'] ) ) . '</strong> · <a href="' . esc_url( $target ) . '">' .
                 esc_html( $priority['title'] ) . '</a> ' .
                 ( ! empty( $priority['reference'] ) ? '<code>' . esc_html( $priority['reference'] ) . '</code>' : '' ) .
-                '<p style="margin:5px 0">' . esc_html( $priority['reason'] ) . '</p></div>';
+                '<p>' . esc_html( $priority['reason'] ) . '</p></div>';
         }
-        echo '</div><div class="dtb-card" style="padding:24px"><h3 style="margin-top:0">' .
+        echo '</div></div><div class="dtb-card dtb-briefing-card"><div class="dtb-card__body"><h3>' .
             esc_html__( 'Source coverage', 'drywall-toolbox' ) . '</h3>';
         foreach ( $payload['coverage'] ?? [] as $source => $detail ) {
             echo '<p><strong>' . esc_html( ucwords( str_replace( '_', ' ', $source ) ) ) . '</strong>: ' .
                 esc_html( $detail['status'] ) .
                 ( ! empty( $detail['note'] ) ? ' — ' . esc_html( $detail['note'] ) : '' ) . '</p>';
         }
-        echo '</div>';
+        echo '</div></div>';
     }
-    echo '</main><aside class="dtb-card" style="padding:22px;align-self:start"><h3 style="margin-top:0">' .
+    echo '</main><aside class="dtb-card dtb-briefing-card dtb-briefing-archive"><div class="dtb-card__body"><h3>' .
         esc_html__( 'Briefing archive', 'drywall-toolbox' ) . '</h3>';
     if ( ! $archive ) { echo '<p>' . esc_html__( 'No reports yet.', 'drywall-toolbox' ) . '</p>'; }
     foreach ( $archive as $entry ) {
         echo '<p><a href="' . esc_url( dtb_daily_briefings_url( $entry->report_date ) ) . '">' .
             esc_html( $entry->report_date ) . '</a> <small>· ' . esc_html( $entry->report_status ) . '</small></p>';
     }
-    echo '</aside></div>';
+    echo '</div></aside></div>';
     dtb_admin_shell_close();
 }

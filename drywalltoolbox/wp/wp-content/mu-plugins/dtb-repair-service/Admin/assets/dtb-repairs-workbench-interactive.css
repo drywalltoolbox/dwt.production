@@ -144,13 +144,14 @@ textarea.dtb-repair-input {
 
 .dtb-repair-summary-metric strong {
 	color: #0f172a;
+	flex: 0 1 auto;
 	font-size: 0.94rem;
 	font-weight: 800;
 	max-width: 65%;
-	overflow: hidden;
+	min-width: 0;
+	overflow-wrap: anywhere;
 	text-align: right;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	white-space: normal;
 }
 
 .dtb-repair-fact-list p {

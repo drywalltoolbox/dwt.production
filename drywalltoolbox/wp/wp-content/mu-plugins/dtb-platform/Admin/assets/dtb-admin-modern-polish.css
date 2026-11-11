@@ -249,6 +249,76 @@ body.dtb-admin-screen :where(.dtb-orders-overview-grid, .dtb-repair-modal-worksp
 	min-width: 0;
 }
 
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefings-layout {
+	align-items: start;
+	grid-template-columns: minmax(0, 1fr) minmax(240px, .38fr);
+}
+
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefings-main {
+	min-width: 0;
+}
+
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefing-card + .dtb-briefing-card {
+	margin-top: 16px;
+}
+
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefing-card .dtb-card__body {
+	min-width: 0;
+	overflow-wrap: anywhere;
+}
+
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-card__body > h2,
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-card__body > h3 {
+	margin: 0 0 12px;
+}
+
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefing-summary {
+	line-height: 1.7;
+	overflow-wrap: anywhere;
+	white-space: pre-line;
+}
+
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefing-metrics {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+}
+
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefing-metric {
+	border: 1px solid var(--dtb-border-soft);
+	border-radius: var(--dtb-radius-base);
+	flex: 1 1 140px;
+	min-width: 0;
+	padding: 10px 14px;
+}
+
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefing-priority {
+	border-top: 1px solid var(--dtb-border-soft);
+	padding: 12px 0;
+	overflow-wrap: anywhere;
+}
+
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefing-priority p {
+	margin: 5px 0 0;
+}
+
+.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefing-priority code {
+	white-space: normal;
+	word-break: break-word;
+}
+
+@media (max-width: 900px) {
+	.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefings-layout {
+		grid-template-columns: minmax(0, 1fr);
+	}
+}
+
+@media (max-width: 600px) {
+	.dtb-admin[data-dtb-page="dtb-daily-briefings"] .dtb-briefing-card .dtb-card__body {
+		padding: 16px;
+	}
+}
+
 body.dtb-admin-screen :where(.dtb-modal-tab--active, .dtb-modal-tab[aria-selected='true']) {
 	background: #fff;
 	border-color: rgba(226, 232, 240, .95);
@@ -271,6 +341,25 @@ body.dtb-admin-screen :where(.dtb-modal-tab--active, .dtb-modal-tab[aria-selecte
 		max-height: calc(100vh - 20px);
 		max-height: calc(100dvh - 20px);
 		width: calc(100vw - 20px);
+	}
+
+	body.dtb-admin-screen :where(#dtb-orders-modal .dtb-modal, #dtb-support-ticket-modal .dtb-modal, #dtb-returns-modal .dtb-modal, #dtb-repair-modal.dtb-modal) {
+		position: relative;
+		inset: auto;
+	}
+
+	body.dtb-admin-screen #dtb-orders-modal .dtb-modal-tabs {
+		scrollbar-width: thin;
+	}
+
+	body.dtb-admin-screen #dtb-orders-modal .dtb-modal-tabs::-webkit-scrollbar {
+		display: block;
+		height: 5px;
+	}
+
+	body.dtb-admin-screen #dtb-orders-modal .dtb-modal-tabs::-webkit-scrollbar-thumb {
+		background: #cbd5e1;
+		border-radius: 999px;
 	}
 
 	body.dtb-admin-screen :where(.dtb-modal__body) {

@@ -164,6 +164,9 @@
 
 .dtb-admin[data-dtb-page="dtb-support"] .dtb-support-context-row strong {
 	color: var(--dtb-text);
+	min-width: 0;
+	overflow-wrap: anywhere;
+	text-align: right;
 }
 
 .dtb-admin[data-dtb-page="dtb-support"] .dtb-support-context-muted {
@@ -654,6 +657,7 @@
 	font-size: 13px;
 	color: var(--dtb-text);
 	line-height: 1.5;
+	overflow-wrap: anywhere;
 	white-space: pre-wrap;
 }
 
@@ -869,7 +873,7 @@
 
 .dtb-admin[data-dtb-page="dtb-support"] .dtb-support-ticket-kv {
 	display: grid;
-	grid-template-columns: 110px 1fr;
+	grid-template-columns: minmax(5.5rem, 0.7fr) minmax(0, 1.3fr);
 	gap: 8px;
 	font-size: 12px;
 	padding: 5px 0;
@@ -887,6 +891,8 @@
 
 .dtb-admin[data-dtb-page="dtb-support"] .dtb-support-ticket-kv strong {
 	color: var(--dtb-text);
+	min-width: 0;
+	overflow-wrap: anywhere;
 }
 
 .dtb-admin[data-dtb-page="dtb-support"] .dtb-support-rail-list {
@@ -1302,6 +1308,7 @@
 	font-size: 14px;
 	color: var(--dtb-text);
 	line-height: 1.2;
+	overflow-wrap: anywhere;
 }
 
 .dtb-admin[data-dtb-page="dtb-support"] .dtb-support-email-from__email {
