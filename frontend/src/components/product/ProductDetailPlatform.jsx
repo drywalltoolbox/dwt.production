@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import ProductDetail from './ProductDetail.jsx';
 import ProductRelatedProducts from './ProductRelatedProducts.jsx';
+import RecentlyViewedProducts from './RecentlyViewedProducts.jsx';
 import { useCatalogProductDetail } from '../../hooks/useCatalogProductDetail.js';
 import {
   toLegacyProductCardDTO,
@@ -97,12 +98,14 @@ export default function ProductDetailPlatform({
       <ProductRelatedProducts
         products={displayedRelatedProducts}
         context={relatedContext}
+        className="product-related--pdp"
         onAddToCart={onAddToCart}
         onOpenProduct={onOpenProduct}
         id="catalog-quick-view-related"
         status={status}
         showStatus
       />
+      <RecentlyViewedProducts product={resolvedProduct} onOpenProduct={onOpenProduct} />
     </>
   );
 }

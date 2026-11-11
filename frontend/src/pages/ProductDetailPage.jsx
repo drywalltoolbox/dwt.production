@@ -36,8 +36,8 @@ import SEOHead from '../components/shared/SEOHead';
 import Breadcrumb from '../components/shared/Breadcrumb.jsx';
 import Toast from '../components/ui/Toast';
 import ProductRelatedProducts from '../components/product/ProductRelatedProducts.jsx';
+import RecentlyViewedProducts from '../components/product/RecentlyViewedProducts.jsx';
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { addRecentlyViewed } from '../utils/recentlyViewed.js';
 import { buildVariantSearch, getVariantParam, resolveInitialVariation } from '../utils/variationUrl.js';
 // Full-page-only calibration intentionally stays out of the Quick View chunk.
 import '../styles/product-detail-page-desktop.css';
@@ -140,18 +140,6 @@ export default function ProductDetailPage() {
       navigate(target, { replace: true });
     }
   }, [legacyPathVariantId, location.pathname, location.search, navigate, product?.slug, slug, variationId]);
-
-  useEffect( () => {
-    if ( ! product ) return;
-    addRecentlyViewed( {
-      id:    product.id,
-      slug:  product.slug || slug,
-      name:  product.name,
-      image: product.media?.images?.[0]?.src || product.media?.image?.src || product.images?.[0]?.src || product.image || '',
-      price: product.price ? `$${ parseFloat( product.price ).toFixed( 2 ) }` : '',
-    } );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ product?.id ] );
 
   const handleAddToCart = async (prod, qty = 1) => {
     try {
@@ -272,6 +260,7 @@ export default function ProductDetailPage() {
         <ProductRelatedProducts
           products={compatibleParts}
           context="compatible_parts"
+          className="product-related--pdp"
           id="product-compatible-parts"
           onAddToCart={handleAddToCart}
           onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
@@ -279,6 +268,7 @@ export default function ProductDetailPage() {
         <ProductRelatedProducts
           products={compatibleTools}
           context="compatible_tools"
+          className="product-related--pdp"
           id="product-compatible-tools"
           onAddToCart={handleAddToCart}
           onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
@@ -286,6 +276,7 @@ export default function ProductDetailPage() {
         <ProductRelatedProducts
           products={familyRelatedProducts}
           context="family_related"
+          className="product-related--pdp"
           id="product-family-similar"
           onAddToCart={handleAddToCart}
           onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
@@ -293,6 +284,7 @@ export default function ProductDetailPage() {
         <ProductRelatedProducts
           products={categoryRelatedProducts}
           context="category_related"
+          className="product-related--pdp"
           id="product-category-similar"
           onAddToCart={handleAddToCart}
           onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
@@ -300,6 +292,7 @@ export default function ProductDetailPage() {
         <ProductRelatedProducts
           products={brandRelatedProducts}
           context="brand_related"
+          className="product-related--pdp"
           id="product-brand-similar"
           onAddToCart={handleAddToCart}
           onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
@@ -307,9 +300,11 @@ export default function ProductDetailPage() {
         <ProductRelatedProducts
           products={displayedRelatedProducts}
           context={computed?.relatedProductsContext}
+          className="product-related--pdp"
           onAddToCart={handleAddToCart}
           onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
         />
+        <RecentlyViewedProducts product={product} />
       </div>
 
       {toast && (

@@ -101,14 +101,13 @@ function MegaMenuHero({ item, onNavigate }) {
         {showEyebrow ? <span className="dtb-mega-menu__eyebrow">{eyebrow}</span> : null}
         <p className="dtb-mega-menu__heading">{heading}</p>
         {item.description ? <p className="dtb-mega-menu__description">{item.description}</p> : null}
-        {item.landingTo ? (
-          <Link to={item.landingTo} className="dtb-mega-menu__hero-cta" onClick={onNavigate}>
-            <span>{ctaLabel}</span>
-            <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
-          </Link>
-        ) : null}
       </div>
-
+      {item.landingTo ? (
+        <Link to={item.landingTo} className="dtb-mega-menu__hero-cta" onClick={onNavigate}>
+          <span>{ctaLabel}</span>
+          <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
+        </Link>
+      ) : null}
     </div>
   );
 }
@@ -231,9 +230,9 @@ function ProductsPanelRenderer({ item, onNavigate }) {
   return (
     <>
       <header className="dtb-shop-menu__header">
-        <span className="dtb-mega-menu__eyebrow">Our Products</span>
-        <h2 className="dtb-shop-menu__title">Shop tools by category</h2>
-        <p className="dtb-shop-menu__description">Browse professional drywall tools, parts, materials, and accessories.</p>
+        <span className="dtb-mega-menu__eyebrow">Explore the Shop</span>
+        <h2 className="dtb-shop-menu__title">Your toolbox starts here.</h2>
+        <p className="dtb-shop-menu__description">Shop professional drywall tools, OEM replacement parts, materials, and accessories—all in one place.</p>
       </header>
       {groups.length > 0 && activeGroup ? (
         <div className="dtb-shop-menu__workspace">

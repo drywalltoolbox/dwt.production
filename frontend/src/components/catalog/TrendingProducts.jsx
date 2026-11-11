@@ -8,6 +8,7 @@ import StorefrontSection from '../storefront/StorefrontSection';
 import StorefrontRail from '../storefront/StorefrontRail';
 import StorefrontSkeletons from '../storefront/StorefrontSkeletons.jsx';
 import ProductRelatedProducts from '../product/ProductRelatedProducts.jsx';
+import RecentlyViewedProducts from '../product/RecentlyViewedProducts.jsx';
 import { useCatalogProductDetail } from '../../hooks/useCatalogProductDetail.js';
 import Toast from '../ui/Toast';
 
@@ -26,7 +27,7 @@ function featuredCategory(product) {
   return '';
 }
 
-function selectFeaturedProducts(productsByBrand, limit = 6) {
+function selectFeaturedProducts(productsByBrand, limit = 10) {
   const selected = [];
   const selectedKeys = new Set();
   const categoryCounts = Object.fromEntries(FEATURED_CATEGORIES.map((category) => [category, 0]));
@@ -89,6 +90,7 @@ function ProductQuickViewRecommendations({ product, onAddToCart, onOpenProduct }
     <ProductRelatedProducts
       products={relatedProducts}
       context={computed?.relatedProductsContext}
+      className="product-related--pdp"
       onAddToCart={onAddToCart}
       onOpenProduct={onOpenProduct}
       id="featured-quick-view-related"
@@ -257,6 +259,10 @@ export default function TrendingProducts() {
               product={modalProduct.product || modalProduct}
               onAddToCart={handleAddToCart}
               onOpenProduct={(relatedProduct) => openModal(relatedProduct)}
+            />
+            <RecentlyViewedProducts
+              product={modalProduct.product || modalProduct}
+              onOpenProduct={(recentProduct) => openModal(recentProduct)}
             />
           </ProductModal>
         </Suspense>

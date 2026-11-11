@@ -7,42 +7,36 @@ const MAX_RELATED_PRODUCTS = 10;
 export function getRelatedProductsCopy(context = 'related') {
   if (context === 'compatible_parts') {
     return {
-      eyebrow: 'Works with this tool',
       title: 'Compatible parts',
       railLabel: 'Compatible parts',
     };
   }
   if (context === 'compatible_tools') {
     return {
-      eyebrow: 'Compatible equipment',
       title: 'Compatible tools',
       railLabel: 'Compatible tools',
     };
   }
   if (context === 'included_components') {
     return {
-      eyebrow: 'Included with this configuration',
       title: 'Included components',
       railLabel: 'Included components',
     };
   }
   if (context === 'family_related') {
     return {
-      eyebrow: 'Same brand and product family',
       title: 'More from this product family',
       railLabel: 'Related products from this family',
     };
   }
   if (context === 'category_related') {
     return {
-      eyebrow: 'Same brand and product category',
       title: 'More in this category',
       railLabel: 'Products in this category',
     };
   }
   if (context === 'brand_related') {
     return {
-      eyebrow: 'More from this brand',
       title: 'More from this brand',
       railLabel: 'More products from this brand',
     };
@@ -61,6 +55,7 @@ export default function ProductRelatedProducts({
   id = 'product-related',
   status = 'ready',
   showStatus = false,
+  className = '',
 }) {
   const navigate = useNavigate();
   const hasProducts = Array.isArray(products) && products.length > 0;
@@ -71,10 +66,9 @@ export default function ProductRelatedProducts({
   const titleId = `${id}-title`;
 
   return (
-    <section className="product-related" aria-labelledby={titleId}>
+    <section className={`product-related${className ? ` ${className}` : ''}`} aria-labelledby={titleId}>
       <div className="product-related__heading">
         <div>
-          {copy.eyebrow ? <span className="product-related__eyebrow">{copy.eyebrow}</span> : null}
           <h2 id={titleId}>{copy.title}</h2>
         </div>
         <Link to="/products" className="product-related__browse">Browse all products</Link>

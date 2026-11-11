@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, ChevronDown, Eye, SlidersHorizontal } from 'lucide-react';
+import { Check, ChevronDown, Eye } from 'lucide-react';
 import { createPortal } from 'react-dom';
 import ProductCardImage from '../product/ProductCardImage';
 import AddToCartButton from '../ui/AddToCartButton.jsx';
@@ -9,6 +9,7 @@ import { preloadRoute } from '../../routing/routeModules.js';
 import { preloadQuickViewModules } from '../../routing/quickViewModules.js';
 import { preloadProductDetail } from '../../hooks/useProductDetail.js';
 import getQuantityMenuPosition from '../../utils/quantityMenuPosition.js';
+import { canonicalBrandLabel } from '../../utils/catalogUrlState.js';
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches);
@@ -50,7 +51,7 @@ function isNestedInteractiveTarget(target) {
   return target instanceof Element && Boolean(target.closest('button, a, input, select, textarea, [data-dtb-card-action]'));
 }
 
-export default function StorefrontProductTile({ product, cardProduct, onOpenModal, onAddToCart, index = 0, variant = 'grid' }) {
+export default function StorefrontProductTile({ product, cardProduct, onOpenModal, onAddToCart, index = 0, variant = 'grid', hideCommerceControls = false }) {
   const isVariable = Boolean(
     product?.is_variable
     || product?.type === 'variable'
@@ -64,9 +65,10 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const stockStatus = commerceProduct.stock_status || displayProduct.stock_status || 'instock';
   const outOfStock = stockStatus === 'outofstock';
   const name = displayProduct.name || commerceProduct.name || displayProduct.part_number || 'Product';
-  const brand = typeof displayProduct.brand === 'string'
+  const brandValue = typeof displayProduct.brand === 'string'
     ? displayProduct.brand
     : (displayProduct.brand?.label || displayProduct.brand?.name || '');
+  const brand = canonicalBrandLabel(brandValue) || brandValue;
 
   // Variable parents are grouping records, not manufacturer sellable identities.
   // Never expose their internal/canonical parent SKU on customer product cards.
@@ -75,7 +77,6 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const [overlayActive, setOverlayActive] = useState(false);
   const [overlayHasFocus, setOverlayHasFocus] = useState(false);
   const [secondaryImageRequested, setSecondaryImageRequested] = useState(false);
-  const [secondaryImageVisible, setSecondaryImageVisible] = useState(false);
   const [secondaryImageReadyState, setSecondaryImageReadyState] = useState({ source: '', ready: false });
   const isMobile = useIsMobile();
   const showDesktopOverlay = !isMobile && variant !== 'list';
@@ -213,9 +214,10 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
     window.clearTimeout(hoverIntentTimerRef.current);
     hoverIntentTimerRef.current = window.setTimeout(() => {
       warmProductRoute();
+      if (secondaryImage) setSecondaryImageRequested(true);
       setOverlayActive(true);
     }, 140);
-  }, [showDesktopOverlay, warmProductRoute]);
+  }, [secondaryImage, showDesktopOverlay, warmProductRoute]);
   const handlePointerEnter = useCallback((event) => {
     if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
     handleMouseEnter();
@@ -228,16 +230,6 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
     hoverCloseTimerRef.current = window.setTimeout(() => setOverlayActive(false), 140);
   }, [showDesktopOverlay]);
 
-  useEffect(() => {
-    if (!showDesktopOverlay || !overlayActive || !secondaryImage) {
-      setSecondaryImageVisible(false);
-      return undefined;
-    }
-
-    setSecondaryImageRequested(true);
-    const frame = window.requestAnimationFrame(() => setSecondaryImageVisible(true));
-    return () => window.cancelAnimationFrame(frame);
-  }, [overlayActive, secondaryImage, showDesktopOverlay]);
   // Do not warm PDP/quick-view modules on touch pointerdown. A finger touching
   // the image is often the beginning of a rail swipe, not purchase intent.
   // Keyboard focus and precise mouse/pen hover retain intent-based preloading.
@@ -271,7 +263,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
           </button>
         </div>
         <div className="dtb-search-result__details">
-          {displayProduct.brand ? <span className="dtb-search-result__brand">{displayProduct.brand}</span> : null}
+          {brand ? <span className="dtb-search-result__brand">{brand}</span> : null}
           <button type="button" className="dtb-search-result__name" onClick={handleTitleClick} onFocus={warmProductRoute} onPointerEnter={handlePointerIntent}>{name}</button>
           {sku ? <span className="dtb-search-result__sku">SKU: {sku}</span> : null}
           <div className="dtb-search-result__bottom">
@@ -280,8 +272,8 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
               {comparePriceStr ? <span className="dtb-search-result__compare">{comparePriceStr}</span> : null}
             </span>
             {isVariable ? (
-              <button type="button" className="dtb-search-result__action dtb-search-result__options" onClick={handleQuickView} onFocus={warmProductRoute} aria-label={`Choose options for ${name}`}>
-                <SlidersHorizontal size={14} aria-hidden="true" /> Options
+              <button type="button" className="dtb-search-result__action dtb-search-result__options" onClick={handleQuickView} onFocus={warmProductRoute} aria-label={`View options for ${name}`}>
+                View Options
               </button>
             ) : outOfStock ? (
               <button type="button" className="dtb-search-result__action" onClick={handleTitleClick} aria-label={`View ${name}`}>View</button>
@@ -309,7 +301,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
             height="400"
             loading="eager"
             decoding="async"
-            className={`dtb-product-card__secondary-image${secondaryImageVisible && secondaryImageReady ? ' is-visible' : ''}`}
+            className={`dtb-product-card__secondary-image${overlayActive && secondaryImageReady ? ' is-visible' : ''}`}
             onLoad={(event) => {
               const source = event.currentTarget.currentSrc || event.currentTarget.src;
               setSecondaryImageReadyState({ source: secondaryImage, ready: Boolean(source) });
@@ -365,7 +357,7 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
             {comparePriceStr ? <span className="dtb-product-card__compare-price">{comparePriceStr}</span> : null}
           </div>
         </div>
-        <div className="dtb-product-card__commerce-controls">
+        {!hideCommerceControls && <div className="dtb-product-card__commerce-controls">
         {!isVariable && !outOfStock && <div className="dtb-product-card__quantity-wrap">
           <button
             ref={quantityTriggerRef}
@@ -394,14 +386,13 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
           >
             <span className="dtb-add-to-cart__surface" aria-hidden="true" />
             <span className="dtb-add-to-cart__content">
-              <SlidersHorizontal size={15} strokeWidth={2} aria-hidden="true" />
-              <span className="dtb-add-to-cart__label"><span className="dtb-card-action__desktop-label">Options</span><span className="dtb-card-action__mobile-label">Options</span></span>
+              <span className="dtb-add-to-cart__label">View Options</span>
             </span>
           </button>
         ) : (
           <AddToCartButton onClick={handleAddButtonClick} disabled={outOfStock} className="dtb-product-card__action dtb-product-card__action--mobile-icon" size="card" label="Add" productId={displayProduct.id} aria-label={`Add ${name} to cart`} data-dtb-card-action="add"><span className="dtb-card-action__desktop-label">Add to Cart</span><span className="dtb-card-action__mobile-label">Add to cart</span></AddToCartButton>
         )}
-        </div>
+        </div>}
         </div>
       </div>
       {quantityOpen && quantityMenuPosition && createPortal(

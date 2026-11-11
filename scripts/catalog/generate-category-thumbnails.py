@@ -46,7 +46,7 @@ SELECTIONS = {
     "corner-rollers": "platinum_pt_cr_04.webp",
     "extendable-handles": "columbia_tools_pc1_handles_01.webp",
     "fixed-handles": "columbia_tools_pc1h_01.webp",
-    "flat-box-handles": "columbia_tools_pmhs_02.webp",
+    "handles": "columbia_tools_pmhs_02.webp",
     "flat-boxes": "columbia_tools_12ffb_01.webp",
     "goosenecks": "tapetech_85t_01.webp",
     "loading-pumps": "columbia_tools_hmp_01.webp",

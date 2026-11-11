@@ -221,6 +221,11 @@ function RedirectToProducts() {
   return <Navigate to={`/products${search || ''}`} replace />;
 }
 
+function RedirectToHandlesCategory() {
+  const { search } = useLocation();
+  return <Navigate to={`/category/handles${search || ''}`} replace />;
+}
+
 function getRouteBackConfig(pathname) {
   if (pathname.startsWith('/repairs/status/')) return { fallbackTo: '/dashboard?tab=repairs', label: 'Back to repairs' };
   if (pathname.startsWith('/order-tracking/')) return null;
@@ -271,6 +276,7 @@ function AppRoutes() {
         <Route path="/product-category/accessories/mud-pan-accessories" element={<Navigate to="/category/mud-pan-accessories" replace />} />
         <Route path="/parts" element={<Parts />} />
         <Route path="/product/:partNumber" element={<Product />} />
+        <Route path="/category/flat-box-handles" element={<RedirectToHandlesCategory />} />
         <Route path="/category/taping-finishing-tools" element={<RedirectToProducts />} />
         <Route path="/category/:categoryPathSlug" element={<CategoryLandingPage />} />
         <Route path="/schematics" element={<Schematics />} />

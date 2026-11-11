@@ -9,6 +9,7 @@ import StorefrontProductTile from './StorefrontProductTile';
 import StorefrontSkeletons from './StorefrontSkeletons';
 import { useCatalogProductDetail } from '../../hooks/useCatalogProductDetail.js';
 import ProductRelatedProducts from '../product/ProductRelatedProducts.jsx';
+import RecentlyViewedProducts from '../product/RecentlyViewedProducts.jsx';
 
 // Do not ship quick-view's PDP implementation until the user opens it.
 const ProductDetail = lazy(() => import('../product/ProductDetail'));
@@ -22,6 +23,7 @@ function ProductQuickViewRecommendations({ product, onAddToCart, onOpenProduct }
     <ProductRelatedProducts
       products={relatedProducts}
       context={computed?.relatedProductsContext}
+      className="product-related--pdp"
       onAddToCart={onAddToCart}
       onOpenProduct={onOpenProduct}
       id="quick-view-related"
@@ -179,6 +181,10 @@ export default function StorefrontProductRail({
               product={modalProduct.product || modalProduct}
               onAddToCart={handleAddToCart}
               onOpenProduct={(relatedProduct) => openModal(relatedProduct)}
+            />
+            <RecentlyViewedProducts
+              product={modalProduct.product || modalProduct}
+              onOpenProduct={(recentProduct) => openModal(recentProduct)}
             />
           </ProductModal>
         </Suspense>

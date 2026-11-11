@@ -1022,12 +1022,17 @@
 /* Shared compact, image-free desktop mega-menu hero and Parts taxonomy. */
 @media (min-width: 1025px) {
   .site-header .dtb-mega-menu__hero {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
     min-height: 0;
     padding: 20px 32px 22px;
     background: linear-gradient(115deg, #fff, #fbfcff 75%, #f6f9ff);
   }
   .site-header .dtb-mega-menu__hero-copy {
-    max-width: 100%;
+    flex: 1 1 auto;
+    max-width: calc(100% - 220px);
     padding-left: 22px;
     gap: 7px;
   }
@@ -1045,7 +1050,12 @@
     max-width: 100%;
     font-size: clamp(1.34rem, 1.6vw, 1.7rem);
   }
-  .site-header .dtb-mega-menu__hero-cta { margin-top: 4px; min-height: 36px; }
+  .site-header .dtb-mega-menu__hero-cta {
+    flex: 0 0 auto;
+    margin: 0 0 0 auto;
+    min-height: 36px;
+    white-space: nowrap;
+  }
   .site-header .dtb-mega-menu__parts-section { padding: 16px 28px 0; }
   .site-header .dtb-mega-menu__parts-section:last-child { padding-bottom: 26px; }
   .site-header .dtb-mega-menu__section-heading {

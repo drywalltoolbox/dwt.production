@@ -20,6 +20,7 @@ const LEGACY_CATEGORY_SLUG_ALIASES = {
   'goosenecks-box-fillers': 'goosenecks-box-fillers-adapters',
   'automatic-handles-extensions': 'handles',
   'handles-extensions': 'handles',
+  'flat-box-handles': 'handles',
 };
 
 export function canonicalCatalogCategorySlug(value) {

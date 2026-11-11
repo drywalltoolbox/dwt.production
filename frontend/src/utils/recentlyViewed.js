@@ -48,5 +48,36 @@ export function addRecentlyViewed( product ) {
     const current = getRecentlyViewed().filter( ( p ) => String( p.id ) !== String( product.id ) );
     const updated = [ entry, ...current ].slice( 0, MAX_ITEMS );
     localStorage.setItem( STORAGE_KEY, JSON.stringify( updated ) );
+    if ( typeof window !== 'undefined' ) {
+      window.dispatchEvent( new CustomEvent( 'dtb:recently-viewed-change' ) );
+    }
   } catch { /* noop — storage unavailable */ }
+}
+
+/** Record the common catalog and WooCommerce product shapes in the same
+ * local history consumed by the account hub. */
+export function recordRecentlyViewedProduct( product ) {
+  if ( ! product?.id || ! product?.slug ) return;
+
+  const imageCandidates = [
+    product?.media?.images?.[0],
+    product?.media?.image,
+    product?.images?.[0],
+    product?.image,
+  ];
+  const image = imageCandidates
+    .map( ( candidate ) => typeof candidate === 'string' ? candidate : candidate?.src || candidate?.url || '' )
+    .find( Boolean ) || '';
+  const rawPrice = typeof product.price === 'object'
+    ? product.price?.value ?? product.price?.min
+    : product.price;
+  const numericPrice = Number( String( rawPrice || '' ).replace( /[^\d.]/g, '' ) );
+
+  addRecentlyViewed( {
+    id: product.id,
+    slug: product.slug,
+    name: product.name || '',
+    image,
+    price: Number.isFinite( numericPrice ) && numericPrice > 0 ? `$${ numericPrice.toFixed( 2 ) }` : '',
+  } );
 }

@@ -58,6 +58,10 @@
   text-wrap: balance;
 }
 
+.dtb-home-page .home-commerce-categories .storefront-section__title {
+  text-transform: none;
+}
+
 .dtb-home-page .dtb-home-section-heading,
 .dtb-home-page .home-commerce-categories .dtb-home-section-heading {
   position: relative;
@@ -91,6 +95,76 @@
   font-size: clamp(.84rem, 1vw, .96rem);
   line-height: 1.45;
   text-wrap: pretty;
+}
+
+/* Keep desktop shopping sections on a shared centered measure while the
+   homepage campaign slider retains its original full-bleed composition. */
+@media (min-width: 1025px) {
+  .dtb-home-page {
+    --dtb-home-content-max: 1640px;
+    --dtb-home-content-gutter: clamp(24px, 3vw, 48px);
+    --dtb-home-divider-gutter: clamp(24px, 2.2vw, 40px);
+  }
+
+  .dtb-home-page > .home-commerce-categories,
+  .dtb-home-page .dtb-home-storefront > .dtb-container--fluid,
+  .dtb-home-page .dtb-home-storefront > .dtb-ui-trusted-brands--home {
+    width: min(
+      calc(100% - (2 * var(--dtb-home-content-gutter))),
+      var(--dtb-home-content-max)
+    );
+    margin-inline: auto;
+  }
+
+  .dtb-home-page > .home-commerce-categories {
+    padding-block: clamp(1.75rem, 2.4vw, 2.4rem);
+  }
+
+  .dtb-home-page .dtb-home-storefront > .dtb-container--fluid {
+    padding-inline: 0;
+  }
+
+  .dtb-home-page .dtb-home-brand-section .storefront-section__head-text {
+    flex: 1 1 auto;
+    flex-direction: row;
+    align-items: center;
+    gap: clamp(16px, 1.8vw, 28px);
+  }
+
+  .dtb-home-page .dtb-home-brand-section .storefront-section__subtitle {
+    margin-top: 0;
+    padding-left: clamp(14px, 1.5vw, 22px);
+    border-left: 1px solid rgba(146, 165, 195, .42);
+  }
+
+  .dtb-home-page .home-commerce-categories .storefront-section__head,
+  .dtb-home-page .dtb-home-product-section .storefront-section__head {
+    position: relative;
+    border-bottom: 0;
+  }
+
+  .dtb-home-page .home-commerce-categories .storefront-section__head::after,
+  .dtb-home-page .dtb-home-product-section .storefront-section__head::after {
+    position: absolute;
+    right: auto;
+    bottom: 0;
+    left: 50%;
+    width: calc(100vw - (2 * var(--dtb-home-divider-gutter)));
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(145, 174, 221, .32) 2%,
+      rgba(166, 191, 229, .52) 9%,
+      rgba(166, 191, 229, .52) 91%,
+      rgba(145, 174, 221, .32) 98%,
+      transparent 100%
+    );
+    content: '';
+    pointer-events: none;
+    transform: translateX(-50%);
+  }
+
 }
 
 @media (max-width: 767px) {

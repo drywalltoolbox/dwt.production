@@ -69,7 +69,7 @@ export function ToolTypeTile({ category, showSelectorChevron = false, showCount 
  * layout stability and fitment; the image element must not assert a legacy
  * 348x128 intrinsic ratio.
  */
-export default function ShopByToolType({ categories = [], onOpenFilters, parentLabel = '', brand = '' }) {
+export default function ShopByToolType({ categories = [], onOpenFilters, parentLabel = '', brand = '', viewAllHref = '', homeVariant = false }) {
   const location = useLocation();
   const items = Array.isArray(categories) ? categories : [];
   const isAllProductsRoute = location.pathname === '/products';
@@ -85,17 +85,24 @@ export default function ShopByToolType({ categories = [], onOpenFilters, parentL
   };
 
   return (
-    <div className={`dtb-tool-type-section mb-6 sm:mb-8${isAllProductsRoute ? ' dtb-tool-type-section--all-products' : ''}`}>
+    <div className={`dtb-tool-type-section mb-6 sm:mb-8${isAllProductsRoute ? ' dtb-tool-type-section--all-products' : ''}${homeVariant ? ' dtb-tool-type-section--home' : ''}`}>
       {!parentLabel && (
         <div className="storefront-section__head">
-          <div className="storefront-section__head-text">
+          <div className={`storefront-section__head-text${homeVariant ? ' dtb-home-section-heading' : ''}`}>
             <h2 className="storefront-section__title">Shop by Tool Type</h2>
             <p className="storefront-section__subtitle">Go directly to the tool family you need, then refine by brand and product attributes.</p>
           </div>
-          <a href="#dtb-category-filters" className="storefront-section__view-all" onClick={handleViewAll}>
-            View all tool types
-            <ArrowRight size={14} aria-hidden="true" />
-          </a>
+          {onOpenFilters ? (
+            <a href="#dtb-category-filters" className="storefront-section__view-all" onClick={handleViewAll}>
+              View all tool types
+              <ArrowRight size={14} aria-hidden="true" />
+            </a>
+          ) : viewAllHref ? (
+            <Link to={viewAllHref} className="storefront-section__view-all">
+              View all tool types
+              <ArrowRight size={14} aria-hidden="true" />
+            </Link>
+          ) : null}
         </div>
       )}
 

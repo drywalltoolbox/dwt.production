@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import TrendingProducts from '../components/catalog/TrendingProducts';
 import HomeHero from '../components/home/HomeHero';
 import HomeHeroBrands from '../components/home/HomeHeroBrands';
@@ -7,17 +8,11 @@ import StorefrontSection from '../components/storefront/StorefrontSection';
 import StorefrontProductRail from '../components/storefront/StorefrontProductRail';
 import { getBrandLogo } from '../utils/brandAssets.js';
 import { brandToSlug } from '../utils/catalogUrlState.js';
-import { ToolTypeTile } from '../components/catalog/ShopByToolType.jsx';
-import StorefrontRail from '../components/storefront/StorefrontRail.jsx';
+import ShopByToolType from '../components/catalog/ShopByToolType.jsx';
+import useCatalogFacets from '../hooks/useCatalogFacets.js';
+import { flattenCatalogNavigationGroups } from '../utils/catalogFacets.js';
 import usgSheetrockToolsLogo from '/brands/USG-Sheetrock-Tools/usg-sheetrock-tools.svg';
 import '../styles/home-commerce-discovery.css';
-
-const HOME_CATEGORIES = [
-  ['Automatic Tapers', 'automatic-tapers'], ['Finishing Boxes', 'flat-boxes'],
-  ['Loading Pumps', 'loading-pumps'], ['Corner Finishers', 'corner-finishers'],
-  ['Corner Rollers', 'corner-rollers'], ['Corner Applicators', 'corner-applicators-angle-boxes'],
-  ['Nail Spotters', 'nail-spotters'], ['Handles', 'flat-box-handles'],
-];
 
 const HOME_BRAND_ORDER = ['TapeTech', 'Columbia Tools', 'Platinum Drywall Tools', 'LEVEL5', 'SurPro', 'Dura-Stilts', 'USG Sheetrock Tools'];
 
@@ -71,6 +66,15 @@ const HOME_BRAND_PRODUCT_SECTIONS = HOME_BRAND_ORDER.map((brandName) => {
   };
 });
 
+function HomeToolTypeCategories() {
+  const { facets } = useCatalogFacets();
+  const categories = useMemo(() => flattenCatalogNavigationGroups(facets?.navigationGroups)
+    .map((category) => ({ ...category, name: category.label }))
+    .filter((category) => category.name && category.slug && category.count > 0), [facets?.navigationGroups]);
+
+  return <ShopByToolType categories={categories} viewAllHref="/products" homeVariant />;
+}
+
 export default function Home() {
   return (
     <>
@@ -86,17 +90,7 @@ export default function Home() {
         <HomeHero />
 
         <section className="home-commerce-categories dtb-container dtb-container--fluid" aria-label="Shop popular tool categories">
-          <div className="storefront-section__head">
-            <div className="storefront-section__head-text dtb-home-section-heading">
-              <h2 className="storefront-section__title">Shop by Tool Type</h2>
-              <p className="storefront-section__subtitle">Browse professional drywall tools by category.</p>
-            </div>
-          </div>
-          <StorefrontRail label="Shop popular tool categories" className="dtb-tool-type-rail">
-            {HOME_CATEGORIES.map(([name, slug]) => (
-              <ToolTypeTile key={slug} category={{ name, slug }} showSelectorChevron />
-            ))}
-          </StorefrontRail>
+          <HomeToolTypeCategories />
         </section>
 
         <div className="dtb-home-storefront">
@@ -142,7 +136,7 @@ export default function Home() {
                   />
                 )}
                 className={`dtb-home-product-section dtb-home-brand-section dtb-home-brand-section--${brandToSlug(brand.brand)}`}
-                subtitle={`Explore ${brand.name} tools and parts.`}
+                subtitle={`Explore tools and parts from ${brand.name}.`}
                 viewAllHref={brand.to}
                 viewAllLabel="View all"
               >

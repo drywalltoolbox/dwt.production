@@ -6,6 +6,7 @@ import { resolveProductBySku } from '../api/products.js';
 import { useCart } from '../context/CartContext';
 import { useWorkflowTransition } from '../context/WorkflowTransitionContext.jsx';
 import ProductDetail from '../components/product/ProductDetail';
+import RecentlyViewedProducts from '../components/product/RecentlyViewedProducts.jsx';
 import Toast from '../components/ui/Toast';
 import LoadingSpinner from '../components/shared/LoadingSpinner';
 import SEOHead from '../components/shared/SEOHead';
@@ -148,6 +149,7 @@ export default function Product() {
           onAddToCart={handleAddToCart}
           onClose={() => navigate(-1)}
         />
+        <RecentlyViewedProducts product={product} />
       </div>
       
       {/* Toast Notification */}
