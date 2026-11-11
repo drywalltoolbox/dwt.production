@@ -143,6 +143,14 @@ final class DTB_CatalogProductNormalizer {
 	 */
 	private static function extract_specs_meta_data( array $meta_data ): array {
 		$filtered = [];
+		$excluded_indexes = [];
+
+		foreach ( $meta_data as $entry ) {
+			$key = isset( $entry['key'] ) ? (string) $entry['key'] : '';
+			if ( preg_match( '/^_specs_(\d+)_label$/', $key, $matches ) && self::is_excluded_spec_label( $entry['value'] ?? '' ) ) {
+				$excluded_indexes[ $matches[1] ] = true;
+			}
+		}
 
 		foreach ( $meta_data as $entry ) {
 			$key = isset( $entry['key'] ) ? (string) $entry['key'] : '';
@@ -158,13 +166,40 @@ final class DTB_CatalogProductNormalizer {
 				continue;
 			}
 
+			$value = $entry['value'] ?? '';
+			if ( '_dtb_specs_json' === $key && is_string( $value ) ) {
+				$specs = json_decode( $value, true );
+				if ( is_array( $specs ) ) {
+					$specs = array_values( array_filter( $specs, static function ( $spec ): bool {
+						return ! is_array( $spec ) || ! isset( $spec['label'] ) || ! self::is_excluded_spec_label( $spec['label'] );
+					} ) );
+					$value = wp_json_encode( $specs );
+				}
+			}
+
+			if ( preg_match( '/^_specs_(\d+)_(label|value)$/', $key, $matches ) && isset( $excluded_indexes[ $matches[1] ] ) ) {
+				continue;
+			}
+			if ( preg_match( '/^_specs_\d+_label$/', $key ) && self::is_excluded_spec_label( $value ) ) {
+				continue;
+			}
+
 			$filtered[] = [
 				'key'   => $key,
-				'value' => $entry['value'] ?? '',
+				'value' => $value,
 			];
 		}
 
 		return $filtered;
+	}
+
+	/** Exclude catalog identity duplicates from customer-facing specification rows. */
+	private static function is_excluded_spec_label( $label ): bool {
+		$label = html_entity_decode( wp_strip_all_tags( (string) $label ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+		$label = strtolower( preg_replace( '/[^a-z0-9]+/i', ' ', $label ) );
+		$label = trim( preg_replace( '/\s+/', ' ', $label ) );
+
+		return in_array( $label, [ 'manufacturer sku', 'official product name', 'display category', 'display category key' ], true );
 	}
 
 	/**

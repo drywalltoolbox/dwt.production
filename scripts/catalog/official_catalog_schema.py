@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 import csv
+import html
 import json
 import os
+import re
 import shutil
 import tempfile
 from collections import Counter
@@ -53,6 +55,17 @@ EXPECTED_COLUMNS = (
 
 ALLOWED_TYPES = {"simple", "variable", "variation"}
 ALLOWED_SCHEMA_CONDITIONS = {"NewCondition"}
+EXCLUDED_PDP_SPEC_LABELS = {
+    "manufacturer sku",
+    "official product name",
+    "display category",
+    "display category key",
+}
+
+
+def normalize_spec_label(value: object) -> str:
+    decoded = html.unescape(re.sub(r"<[^>]*>", " ", str(value or "")))
+    return " ".join(re.sub(r"[^a-z0-9]+", " ", decoded.lower()).split())
 
 
 class CatalogValidationError(RuntimeError):
@@ -300,6 +313,11 @@ def validate_catalog(catalog_path: Path, gap_audit_path: Path) -> dict[str, obje
             specs = json.loads(raw_specs)
             if not isinstance(specs, list):
                 raise ValueError("must be a JSON array")
+            for spec in specs:
+                if isinstance(spec, dict) and normalize_spec_label(spec.get("label")) in EXCLUDED_PDP_SPEC_LABELS:
+                    errors.append(
+                        f"{sku}: prohibited PDP specification label {spec.get('label')!r}"
+                    )
         except (json.JSONDecodeError, ValueError) as exc:
             errors.append(f"{sku}: invalid _dtb_specs_json: {exc}")
 

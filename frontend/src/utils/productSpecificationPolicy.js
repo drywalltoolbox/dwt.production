@@ -1,3 +1,5 @@
+import { decodeHtmlEntities } from './string.js';
+
 const EXCLUDED_CUSTOMER_SPEC_LABELS = new Set([
   'manufacturer sku',
   'official product name',
@@ -6,10 +8,7 @@ const EXCLUDED_CUSTOMER_SPEC_LABELS = new Set([
 ]);
 
 export function normalizeSpecificationLabel(label) {
-  return String(label ?? '')
-    .replace(/<[^>]*>/g, ' ')
-    .replace(/&nbsp;|&#0*160;|&#x0*a0;/gi, ' ')
-    .replace(/&amp;/gi, ' and ')
+  return decodeHtmlEntities(String(label ?? '').replace(/<[^>]*>/g, ' '))
     .normalize('NFKC')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, ' ')
