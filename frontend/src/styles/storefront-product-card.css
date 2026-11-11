@@ -103,10 +103,13 @@
   .dtb-product-card--rail .dtb-product-card__footer { display:flex;grid-row:5;flex-direction:column;align-items:stretch;align-self:stretch;gap:.75rem;min-height:44px;margin-top:0;padding:.25rem 2px 4px; }
   .dtb-product-card__price-group { display:flex;flex-wrap:nowrap;min-width:0;max-width:100%;align-items:baseline;gap:0 .42rem;overflow:visible; }
   .dtb-product-card__price,.dtb-product-card__compare-price { line-height:1.12;white-space:nowrap; }
-  .dtb-product-card__price { font-size:clamp(.94rem,.78vw,1.05rem);letter-spacing:0; }
+  .dtb-product-card--grid .dtb-product-card__price-group,
+  .dtb-product-card--rail .dtb-product-card__price-group { box-sizing:border-box;min-height:36px;padding:4px 0;border:0;border-radius:0;background:transparent; }
+  .dtb-product-card--grid .dtb-product-card__price,
+  .dtb-product-card--rail .dtb-product-card__price { font-size:clamp(1.16rem,1.18vw,1.4rem);font-weight:850;letter-spacing:-.025em; }
   .dtb-product-card--grid .dtb-product-card__price--from,
   .dtb-product-card--rail .dtb-product-card__price--from { display:inline-flex;align-items:baseline;gap:0 .36em;white-space:nowrap; }
-  .dtb-product-card__compare-price { min-width:0;max-width:100%;font-size:clamp(.7rem,.62vw,.78rem);overflow:hidden;text-overflow:ellipsis; }
+  .dtb-product-card__compare-price { min-width:0;max-width:100%;font-size:clamp(.78rem,.78vw,.86rem);overflow:hidden;text-overflow:ellipsis; }
   .dtb-product-card__action { flex:0 0 auto; }
   .dtb-product-card .dtb-product-card__action.dtb-add-to-cart--card { --dtb-atc-height:40px; --dtb-atc-padding:0 12px; --dtb-atc-radius:9px; width:auto; min-width:0; }
   .dtb-product-card--grid .dtb-product-card__action.dtb-add-to-cart--card,
@@ -511,7 +514,7 @@
   .dtb-product-card--grid,
   .dtb-product-card--rail {
     --dtb-card-image-height: clamp(175px, 15vw, 237px);
-    --dtb-card-open-meta-height: 198px;
+    --dtb-card-open-meta-height: 212px;
     display: grid;
     grid-template-rows: var(--dtb-card-image-height) minmax(0, 1fr);
     height: calc(var(--dtb-card-image-height) + var(--dtb-card-open-meta-height));
@@ -526,7 +529,7 @@
   .dtb-product-card--rail .dtb-product-card__meta {
     box-sizing: border-box;
     height: 100%;
-    grid-template-rows: .8em 2.44em 1.2em 8px 5.25rem;
+    grid-template-rows: .8em 2.44em 1.2em 8px 6rem;
   }
 
   .dtb-product-card--grid .dtb-product-card__footer,
