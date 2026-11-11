@@ -167,13 +167,13 @@ final class DTB_CatalogProductNormalizer {
 			}
 
 			$value = $entry['value'] ?? '';
-			if ( '_dtb_specs_json' === $key && is_string( $value ) ) {
-				$specs = json_decode( $value, true );
+			if ( '_dtb_specs_json' === $key && ( is_string( $value ) || is_array( $value ) ) ) {
+				$specs = is_string( $value ) ? json_decode( $value, true ) : $value;
 				if ( is_array( $specs ) ) {
 					$specs = array_values( array_filter( $specs, static function ( $spec ): bool {
 						return ! is_array( $spec ) || ! isset( $spec['label'] ) || ! self::is_excluded_spec_label( $spec['label'] );
 					} ) );
-					$value = wp_json_encode( $specs );
+					$value = is_string( $value ) ? wp_json_encode( $specs ) : $specs;
 				}
 			}
 
@@ -195,6 +195,9 @@ final class DTB_CatalogProductNormalizer {
 
 	/** Exclude catalog identity duplicates from customer-facing specification rows. */
 	private static function is_excluded_spec_label( $label ): bool {
+		if ( ! is_scalar( $label ) ) {
+			return false;
+		}
 		$label = html_entity_decode( wp_strip_all_tags( (string) $label ), ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 		$label = strtolower( preg_replace( '/[^a-z0-9]+/i', ' ', $label ) );
 		$label = trim( preg_replace( '/\s+/', ' ', $label ) );
