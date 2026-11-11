@@ -62,8 +62,9 @@ function dtb_daily_briefings_validate( array $data ) {
     try {
         $timestamp = new DateTimeImmutable( $at );
         $chicago = new DateTimeZone( 'America/Chicago' );
-        if ( $timestamp->setTimezone( $chicago )->format( 'Y-m-d' ) !== $date ||
-            abs( ( strtotime( $date ) - strtotime( ( new DateTimeImmutable( 'now', $chicago ) )->format( 'Y-m-d' ) ) / DAY_IN_SECONDS ) > 2 ) {
+        $today = ( new DateTimeImmutable( 'now', $chicago ) )->format( 'Y-m-d' );
+        $days_apart = abs( strtotime( $date ) - strtotime( $today ) ) / DAY_IN_SECONDS;
+        if ( $timestamp->setTimezone( $chicago )->format( 'Y-m-d' ) !== $date || $days_apart > 2 ) {
             return new WP_Error( 'dtb_briefing_window', 'Report date does not match the generation day or permitted window.', [ 'status' => 400 ] );
         }
     } catch ( Exception $e ) {
