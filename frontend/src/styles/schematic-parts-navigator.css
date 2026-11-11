@@ -577,6 +577,128 @@
   .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__brand-logo { max-width: 82px; }
 }
 
+/* Brand selector identity is a centered stack: logo first, title directly
+   below it. Keep the back affordance in its own reserved grid track. */
+.product-selector--schematics .product-selector-header {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(44px, 1fr) minmax(0, min(100%, 760px)) minmax(44px, 1fr);
+  align-items: start;
+  justify-items: center;
+  gap: 0;
+  min-height: 0;
+  padding: clamp(24px, 4vw, 48px) clamp(16px, 3vw, 36px) 28px;
+}
+.product-selector--schematics .product-selector-header .dtb-product-nav-back {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+  z-index: 1;
+}
+.product-selector--schematics .product-selector-header-content {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  min-width: 0;
+  gap: 12px;
+  text-align: center;
+}
+.product-selector--schematics .product-brand-header-logo {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: min(62vw, 280px);
+  max-height: 76px;
+  margin: 0;
+  object-fit: contain;
+  object-position: center;
+}
+.product-selector--schematics .product-selector-header-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  text-align: center;
+}
+.product-selector--schematics .product-selector-header-copy h1 {
+  max-width: 100%;
+  margin: 0;
+  text-align: center;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+.product-selector--schematics .product-selector-header-copy p {
+  max-width: 42rem;
+  margin: 8px auto 0;
+  text-align: center;
+}
+
+/* Viewer title/logo are stacked and centered independently of the back
+   button, preventing long schematic names from colliding at desktop widths. */
+@media (min-width: 901px) {
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__header {
+    display: grid;
+    grid-template-columns: minmax(44px, 1fr) minmax(0, min(72vw, 760px)) minmax(44px, 1fr);
+    align-items: center;
+    min-height: 100px;
+    padding: 8px clamp(16px, 2.5vw, 34px);
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__back {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    z-index: 1;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__heading {
+    position: static;
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    gap: 5px;
+    margin: 0;
+    transform: none;
+    text-align: center;
+    pointer-events: auto;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__brand-logo {
+    width: auto;
+    height: auto;
+    max-width: min(35vw, 220px);
+    max-height: 38px;
+  }
+  .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar .dtb-schematic-viewer__title {
+    max-width: 100%;
+    margin: 0;
+    font-size: clamp(16px, 1.45vw, 22px);
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+    text-align: center;
+  }
+}
+
+@media (max-width: 900px) {
+  .product-selector--schematics .product-selector-header {
+    grid-template-columns: 40px minmax(0, 1fr) 40px;
+    padding: 20px 12px 24px;
+  }
+  .product-selector--schematics .product-selector-header-content { grid-column: 2; }
+  .product-selector--schematics .product-brand-header-logo {
+    max-width: min(68vw, 240px);
+    max-height: 62px;
+  }
+}
+
 @media (min-width: 901px) {
   .dtb-schematics-page__content--viewer .dtb-schematic-viewer__toolbar {
     position: relative;
@@ -656,3 +778,4 @@
     bottom: calc(max(18px, env(safe-area-inset-bottom)) + 58px);
   }
 }
+
