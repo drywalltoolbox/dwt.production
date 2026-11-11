@@ -6,6 +6,8 @@
  * WooCommerce API product objects.
  */
 
+import { isCustomerFacingSpecificationLabel } from './productSpecificationPolicy.js';
+
 function clean(value) {
   return String(value ?? '').trim();
 }
@@ -43,15 +45,16 @@ function normalizeCondition(value) {
 }
 
 function createRow(label, value) {
+  const normalizedLabel = clean(label);
   const normalizedValue = Array.isArray(value)
     ? value.filter(Boolean)
     : clean(value);
 
-  if (!label) return null;
+  if (!isCustomerFacingSpecificationLabel(normalizedLabel)) return null;
   if (Array.isArray(normalizedValue) && normalizedValue.length === 0) return null;
   if (!Array.isArray(normalizedValue) && !normalizedValue) return null;
 
-  return { label: clean(label), value: normalizedValue };
+  return { label: normalizedLabel, value: normalizedValue };
 }
 
 function collectCsvAttributeRows(row, attrIndexes = []) {
@@ -117,7 +120,7 @@ export function mergeSpecRows(primaryRows = [], fallbackRows = []) {
   const seen = new Set();
 
   const pushRow = (row) => {
-    if (!row?.label) return;
+    if (!isCustomerFacingSpecificationLabel(row?.label)) return;
     const key = normalizeLabel(row.label);
     if (seen.has(key)) return;
     seen.add(key);
@@ -144,7 +147,7 @@ export function extractSpecRowsFromMeta(metaData = []) {
   });
 
   for (const [, row] of byIndex) {
-    if (!row.label || !row.value) continue;
+    if (!isCustomerFacingSpecificationLabel(row.label) || !row.value) continue;
     rows.push({ label: clean(row.label), value: clean(row.value) });
   }
 
@@ -191,7 +194,9 @@ export function buildSpecificationsFromApiProduct(product) {
 }
 
 export function buildSpecsMetaFromRows(rows) {
-  return rows.flatMap((spec, index) => {
+  return (Array.isArray(rows) ? rows : []).filter((spec) => (
+    isCustomerFacingSpecificationLabel(spec?.label)
+  )).flatMap((spec, index) => {
     const value = Array.isArray(spec.value) ? spec.value.join(', ') : spec.value;
     return [
       { key: `_specs_${index}_label`, value: spec.label },

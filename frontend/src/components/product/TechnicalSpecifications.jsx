@@ -11,6 +11,7 @@
 
 import DOMPurify from 'dompurify';
 import { Link } from 'react-router-dom';
+import { isCustomerFacingSpecificationLabel } from '../../utils/productSpecificationPolicy.js';
 
 const MONO_LABELS = new Set([
   'asin',
@@ -63,7 +64,9 @@ function buildSkuSpecFromLegacyIdentifier(spec) {
 }
 
 function normalizeVisibleSpecs(specs = []) {
-  const sourceSpecs = Array.isArray(specs) ? specs.filter((spec) => spec?.label && hasRenderableValue(spec)) : [];
+  const sourceSpecs = Array.isArray(specs)
+    ? specs.filter((spec) => isCustomerFacingSpecificationLabel(spec?.label) && hasRenderableValue(spec))
+    : [];
   const explicitSku = sourceSpecs.find((spec) => normalizeLabel(spec.label) === 'sku');
   const legacyIdentifier = sourceSpecs.find((spec) => LEGACY_IDENTIFIER_LABELS.has(normalizeLabel(spec.label)));
   const skuSpec = explicitSku

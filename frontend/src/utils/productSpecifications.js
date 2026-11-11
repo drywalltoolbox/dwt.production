@@ -21,6 +21,11 @@
  * ]
  */
 
+import {
+  filterSpecificationMetaData,
+  isCustomerFacingSpecificationLabel,
+} from './productSpecificationPolicy.js';
+
 export function extractSpecifications(product) {
   if (!product || !Array.isArray(product.meta_data)) {
     return [];
@@ -29,7 +34,7 @@ export function extractSpecifications(product) {
   const specsMap = {};
   
   // Parse all spec metadata into a map
-  product.meta_data.forEach(({ key, value }) => {
+  filterSpecificationMetaData(product.meta_data).forEach(({ key, value }) => {
     const labelMatch = key.match(/^_specs_(\d+)_label$/);
     const valueMatch = key.match(/^_specs_(\d+)_value$/);
 
@@ -66,15 +71,16 @@ const INTERNAL_SPEC_LABELS = new Set([
 
 function isCustomerFacingSpec(spec) {
   const label = `${spec?.label || ''}`.trim().toLowerCase();
-  return Boolean(label) && !INTERNAL_SPEC_LABELS.has(label);
+  return isCustomerFacingSpecificationLabel(spec?.label) && !INTERNAL_SPEC_LABELS.has(label);
 }
 
 function extractSpecificationsFromCanonicalMeta(meta_data) {
-  if (!Array.isArray(meta_data) || meta_data.length === 0) {
+  const safeMetaData = filterSpecificationMetaData(meta_data);
+  if (safeMetaData.length === 0) {
     return [];
   }
 
-  const canonicalEntry = meta_data.find((entry) => {
+  const canonicalEntry = safeMetaData.find((entry) => {
     const key = `${entry?.key || ''}`.trim();
     return key === '_dtb_specs_json' || key === 'dtb_specs_json';
   });
@@ -365,7 +371,7 @@ function enrichIncludesSpec(specs, meta_data) {
  * `.items` array so the renderer can produce a formatted, linkable list.
  */
 export function getProductSpecifications(product) {
-  const meta_data = Array.isArray(product?.meta_data) ? product.meta_data : [];
+  const meta_data = filterSpecificationMetaData(product?.meta_data);
 
   // Canonical launch workflow format (single JSON meta field from CSV).
   const canonicalSpecs = extractSpecificationsFromCanonicalMeta(meta_data);
