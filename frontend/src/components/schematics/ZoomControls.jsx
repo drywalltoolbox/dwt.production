@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/ZoomControls.jsx
+ * frontend/src/components/schematics/ZoomControls.jsx
  */
 import { Minus, Plus, RotateCcw } from 'lucide-react';
 

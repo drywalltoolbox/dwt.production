@@ -178,6 +178,9 @@ function dtb_schematics_public_api_collection( WP_REST_Request $request ) {
 			if ( ! $record instanceof DTB_Schematic_Record_Entity ) {
 				continue;
 			}
+			if ( 'asgard' === sanitize_key( (string) $record->brand_id ) ) {
+				continue;
+			}
 			if ( ! $record->lifecycle->is_published() ) {
 				continue;
 			}
@@ -210,7 +213,8 @@ function dtb_schematics_public_api_collection( WP_REST_Request $request ) {
 		]
 	);
 
-	if ( dtb_schematics_public_api_apply_cache_headers( $request, $response, 'collection:' . $catalog_version . ':' . count( $items ) ) ) {
+	$membership_fingerprint = hash( 'sha256', (string) wp_json_encode( array_map( static fn( $item ) => [ (string) ( $item['id'] ?? '' ), (int) ( $item['catalog_version'] ?? 0 ) ], $items ) ) );
+	if ( dtb_schematics_public_api_apply_cache_headers( $request, $response, 'collection:' . $catalog_version . ':' . count( $items ) . ':' . $membership_fingerprint ) ) {
 		return new WP_REST_Response( null, 304 );
 	}
 
@@ -221,7 +225,7 @@ function dtb_schematics_public_api_detail( WP_REST_Request $request ) {
 	$schematic_id = sanitize_key( (string) $request->get_param( 'schematic_id' ) );
 	$record       = dtb_schematic_record_repo_find_by_canonical_id( $schematic_id );
 
-	if ( ! $record instanceof DTB_Schematic_Record_Entity || ! $record->lifecycle->is_published() || ! empty( dtb_schematic_runtime_publication_requirements( $record ) ) ) {
+	if ( ! $record instanceof DTB_Schematic_Record_Entity || 'asgard' === sanitize_key( (string) $record->brand_id ) || ! $record->lifecycle->is_published() || ! empty( dtb_schematic_runtime_publication_requirements( $record ) ) ) {
 		return new WP_Error(
 			'dtb_schematic_not_found',
 			__( 'Schematic not found.', 'drywall-toolbox' ),

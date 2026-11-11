@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/DiagramImage.jsx
+ * frontend/src/components/schematics/DiagramImage.jsx
  *
  * Renders the authoritative full schematic page while reserving real layout
  * space via width/height from the API (avoids CLS). Diagram pages deliberately

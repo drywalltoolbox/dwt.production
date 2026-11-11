@@ -41,6 +41,11 @@ function dtb_schematic_runtime_publication_requirements( DTB_Schematic_Record_En
 		$dataset = dtb_schematic_hotspot_dataset_repo_get( $record->id );
 		if ( ! $dataset || '' === trim( (string) ( $dataset['checksum'] ?? '' ) ) ) {
 			$unmet[] = 'normalized_hotspot_dataset_required';
+		} elseif ( empty( $dataset['hotspots'] ) ) {
+			// A checksum-only or parts-only projection cannot render an interactive
+			// schematic. Keep mapped records out of public routes until at least one
+			// valid source occurrence has been normalized and persisted.
+			$unmet[] = 'normalized_hotspot_occurrences_required';
 		}
 	}
 

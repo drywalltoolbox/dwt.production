@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/HotspotLayer.jsx
+ * frontend/src/components/schematics/HotspotLayer.jsx
  *
  * Renders EVERY hotspot occurrence for the active page (never collapsed to
  * one marker per part). Coordinates are normalized percentage-of-page values

@@ -26,11 +26,10 @@ import InteriorPageHero from '../components/shared/InteriorPageHero.jsx';
 import { buildBreadcrumbSchema } from '../utils/schema';
 import { useSchematicRouteState } from '../hooks/useSchematicRouteState';
 import { useSchematicCatalog } from '../hooks/useSchematicCatalog';
-import SchematicsCatalog from '../components/schematics-v2/SchematicsCatalog';
-import SchematicViewerPage from '../components/schematics-v2/SchematicViewerPage';
+import SchematicsCatalog from '../components/schematics/SchematicsCatalog';
+import SchematicViewerPage from '../components/schematics/SchematicViewerPage';
 import '../styles/schematics-page.css';
 import '../styles/selector-cards.css';
-import '../styles/schematics-brand-header.css';
 import '../styles/schematic-hotspot-card.css';
 import '../styles/schematic-linked-hotspot-glow.css';
 import '../styles/schematics-loading.css';
@@ -81,6 +80,7 @@ function SchematicsPageInner() {
   // contract so selecting a tool renders its detail view rather than falling
   // back to the catalog selector.
   const isViewer = routeState.view === 'viewer';
+  const isCatalogLanding = !isViewer && !routeState.brandId;
   // Measure the schematic viewport on resize without taking ownership of
   // document scrolling. Normal iOS page scroll must remain available.
   useLayoutEffect(() => {
@@ -129,7 +129,7 @@ function SchematicsPageInner() {
         ])}
       />
 
-      {!isViewer && (
+      {isCatalogLanding && (
         <InteriorPageHero
           id="dtb-schematics-hero-title"
           breadcrumbs={[{ label: 'Home', path: '/' }, { label: 'Schematics' }]}

@@ -13,8 +13,7 @@ import { fetchSchematicsCollection, SchematicApiError } from '../api/schematicsA
 import { humanizeLabel, humanizeSchematicCategoryLabel } from '../utils/string.js';
 import { canonicalizeSchematicBrandId } from '../data/schematicBrands.js';
 
-// Temporary storefront suppression. Remove `asgard` to restore its catalog
-// entries without changing the authoritative schematic records.
+// Temporary storefront suppression while Asgard schematic data is incomplete.
 const HIDDEN_SCHEMATIC_BRAND_IDS = new Set(['asgard']);
 
 const CATEGORY_PREVIEW_OVERRIDES = new Map([

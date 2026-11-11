@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/SchematicViewerPage.jsx
+ * frontend/src/components/schematics/SchematicViewerPage.jsx
  *
  * Full schematic viewer: fetches detail via useSchematicDetail, derives
  * brand/category/pages/title entirely from the API response (no local
@@ -168,7 +168,7 @@ export default function SchematicViewerPage({
 
   if (!detail) return null;
 
-  // Keep direct/bookmarked URLs aligned with the temporary catalog suppression.
+  // Also guard direct or bookmarked URLs while this brand is suppressed.
   if (canonicalizeSchematicBrandId(detail.brand?.id || '') === 'asgard') {
     return (
       <div className="dtb-schematic-viewer">

@@ -44,7 +44,10 @@ export default function ProductsBrandSelector({ brands, onSelectBrand, showHero 
         skeleton={<SelectorSkeletonGrid mode="brands" />}
         label="Loading product brands"
       >
-        <SelectorGrid variant="brands" className="products-brand-grid">
+        <SelectorGrid
+          variant="brands"
+          className={`products-brand-grid${sortedBrands.length === 1 ? ' products-brand-grid--single-centered' : ''}`}
+        >
           {sortedBrands.map((brand) => {
             const label = brand.label || brand.key || '';
             return (

@@ -324,9 +324,11 @@ body.dtb-repair-admin-screen {
 .dtb-section-nav::-webkit-scrollbar { display: none; }
 
 .dtb-section-nav__tab {
+  flex: 0 0 auto;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  min-height: 44px;
   padding: 7px 13px;
   font-size: 12.5px;
   font-weight: 500;

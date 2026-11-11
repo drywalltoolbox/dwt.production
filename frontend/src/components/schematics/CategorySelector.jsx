@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/CategorySelector.jsx
+ * frontend/src/components/schematics/CategorySelector.jsx
  *
  * Schematics owns category identity/count/preview derivation. The shared
  * selector primitives own the 3:2 media-card presentation used consistently
@@ -20,6 +20,9 @@ export default function CategorySelector({ brandId, brandName, categories, onBac
   return (
     <ProductsCategorySelector
       brand={brandName || brandId}
+      headerTitle={`${brandName || brandId} schematics`}
+      headerDescription="Choose a category to find the diagram for your tool."
+      schematicSelector
       brandLogo={resolveSchematicBrandLogo({ id: brandId, name: brandName })}
       categories={categories.map((category) => ({ ...category, key: category.id, slug: category.id }))}
       onBack={onBack}

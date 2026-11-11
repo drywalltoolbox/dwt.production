@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/SchematicPageTabs.jsx
+ * frontend/src/components/schematics/SchematicPageTabs.jsx
  *
  * Full ARIA tabs pattern for page switching: Left/Right (or Up/Down) moves
  * focus and selection, Home/End jump to the first/last page, Enter/Space

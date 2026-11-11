@@ -37,6 +37,8 @@ function dtb_schematic_log_public_projection_failure( string $schematic_id, stri
 		'schematic_id' => sanitize_key( $schematic_id ),
 		'stage'        => sanitize_key( $stage ),
 		'error_class'  => sanitize_text_field( get_class( $error ) ),
+		'error_file'   => sanitize_file_name( basename( $error->getFile() ) ),
+		'error_line'   => max( 0, (int) $error->getLine() ),
 	];
 	if ( $product_id > 0 ) {
 		$context['product_id'] = $product_id;

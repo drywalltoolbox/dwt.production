@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/SchematicHotspotCard.jsx
+ * frontend/src/components/schematics/SchematicHotspotCard.jsx
  *
  * Ported verbatim (markup, BEM class names, and title auto-fit logic) from
  * the legacy `docs/_working/frontend-legacy/frontend/src/components/schematics/

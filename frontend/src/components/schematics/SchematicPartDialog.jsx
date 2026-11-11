@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/SchematicPartDialog.jsx
+ * frontend/src/components/schematics/SchematicPartDialog.jsx
  *
  * Positioning wrapper ported from the legacy `Schematics.jsx` desktop
  * "detached modal" + mobile overlay behavior:

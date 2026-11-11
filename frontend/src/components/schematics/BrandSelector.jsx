@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/BrandSelector.jsx
+ * frontend/src/components/schematics/BrandSelector.jsx
  *
  * Schematics owns its brand data/count semantics; shared selector primitives
  * own the cross-storefront brand-card presentation and responsive geometry.

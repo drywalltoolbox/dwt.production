@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/SchematicVariantPills.jsx
+ * frontend/src/components/schematics/SchematicVariantPills.jsx
  *
  * Size/variant switcher for both supported domain projections: distinct
  * schematic records in one family, and WooCommerce variations that share a

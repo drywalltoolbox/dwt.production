@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/ToolSelector.jsx
+ * frontend/src/components/schematics/ToolSelector.jsx
  *
  * Renders the schematic cards for a selected brand + category. Preview
  * priority is resolved server-side (`preview.source`); presentation is the
@@ -19,6 +19,9 @@ export default function ToolSelector({ brandName, brandLogo, categoryName, tools
   return (
     <ProductsCategorySelector
       brand={brandName}
+      headerTitle={`${categoryName || 'Tool'} schematics`}
+      headerDescription="Select a diagram to view its parts and callouts."
+      schematicSelector
       brandLogo={brandLogo}
       categories={tools.map((tool) => ({
         ...tool,

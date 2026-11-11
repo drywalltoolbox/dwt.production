@@ -729,7 +729,7 @@
 			return;
 		}
 
-		if ( ! e.defaultPrevented && ( e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowUp' ) && e.target.closest ) {
+		if ( ! e.defaultPrevented && ( e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowUp' || e.key === 'Home' || e.key === 'End' ) && e.target.closest ) {
 			var activeTab = e.target.closest( '[role="tab"]' );
 			var tabList = activeTab && activeTab.closest( '[role="tablist"]' );
 			if ( tabList ) {
@@ -738,8 +738,13 @@
 				} );
 				var tabIndex = tabs.indexOf( activeTab );
 				if ( tabs.length && tabIndex >= 0 ) {
-					var backward = e.key === 'ArrowLeft' || e.key === 'ArrowUp';
-					var nextIndex = ( tabIndex + ( backward ? tabs.length - 1 : 1 ) ) % tabs.length;
+					var isVertical = tabList.getAttribute( 'aria-orientation' ) === 'vertical';
+					var backward = isVertical ? e.key === 'ArrowUp' : e.key === 'ArrowLeft';
+					var forward = isVertical ? e.key === 'ArrowDown' : e.key === 'ArrowRight';
+					if ( /^Arrow/.test( e.key ) && ! backward && ! forward ) { return; }
+					var nextIndex = e.key === 'Home'
+						? 0
+						: ( e.key === 'End' ? tabs.length - 1 : ( tabIndex + ( backward ? tabs.length - 1 : 1 ) ) % tabs.length );
 					e.preventDefault();
 					tabs[ nextIndex ].focus();
 					tabs[ nextIndex ].click();

@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/SchematicsCatalog.jsx
+ * frontend/src/components/schematics/SchematicsCatalog.jsx
  *
  * Brand -> Category -> Tool drill-down for the schematics catalog root.
  * Purely a composition/state-forwarding layer over useSchematicCatalog +

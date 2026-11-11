@@ -337,7 +337,7 @@
 
 	DtbAdmin.initTabs = function () {
 		document.querySelectorAll( '.dtb-section-nav' ).forEach( function ( nav ) {
-			nav.querySelectorAll( '.dtb-section-nav__tab[data-dtb-tab]' ).forEach( function ( tab ) {
+			nav.querySelectorAll( '.dtb-section-nav__tab[role="tab"][data-dtb-tab]' ).forEach( function ( tab ) {
 				tab.addEventListener( 'click', function ( e ) {
 					e.preventDefault();
 					const panelId = tab.dataset.dtbTab;
@@ -345,13 +345,15 @@
 					const wrapper = navEl ? navEl.closest( '.dtb-admin' ) || document : document;
 
 					// Deactivate all tabs in this nav.
-					navEl.querySelectorAll( '.dtb-section-nav__tab' ).forEach( function ( t ) {
+					navEl.querySelectorAll( '.dtb-section-nav__tab[role="tab"]' ).forEach( function ( t ) {
 						t.classList.remove( 'dtb-section-nav__tab--active' );
 						t.setAttribute( 'aria-selected', 'false' );
+						t.tabIndex = -1;
 					} );
 
 					tab.classList.add( 'dtb-section-nav__tab--active' );
 					tab.setAttribute( 'aria-selected', 'true' );
+					tab.tabIndex = 0;
 
 					// Hide all panels associated with this nav.
 					const navGroup = navEl.dataset.dtbTabGroup;
@@ -972,6 +974,24 @@
 				}
 
 				if ( changed ) DtbAdmin.rebind( target );
+
+				// Keep the current-page state in sync when a route-style queue link
+				// updates its live region without a full page navigation.
+				const selectedLiveTab = Object.prototype.hasOwnProperty.call( query, 'tab' )
+					? String( query.tab || 'all' )
+					: ( Object.prototype.hasOwnProperty.call( query, 'status' ) ? String( query.status || 'all' ) : null );
+				if ( selectedLiveTab !== null ) {
+					document.querySelectorAll( '.dtb-section-nav [data-dtb-live-tab]' ).forEach( function ( tab ) {
+						if ( tab.getAttribute( 'data-dtb-live-target' ) !== regionId ) return;
+						const isCurrent = tab.getAttribute( 'data-dtb-live-tab' ) === selectedLiveTab;
+						tab.classList.toggle( 'dtb-section-nav__tab--active', isCurrent );
+						if ( isCurrent ) {
+							tab.setAttribute( 'aria-current', 'page' );
+						} else {
+							tab.removeAttribute( 'aria-current' );
+						}
+					} );
+				}
 
 				if ( pushHistory ) {
 					DtbAdmin.applyHistoryState( state );

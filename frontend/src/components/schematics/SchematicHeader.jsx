@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/SchematicHeader.jsx
+ * frontend/src/components/schematics/SchematicHeader.jsx
  *
  * Title/back-navigation bar for the schematic viewer. Page label text is
  * plain derived React state — no DOM mutation runtime required.

@@ -270,6 +270,9 @@ export default function ProductsCategorySelector({
   itemLabel = 'product',
   logoOnlyHeader = false,
   loading = false,
+  headerTitle,
+  headerDescription,
+  schematicSelector = false,
 }) {
   const [previewState, setPreviewState] = useState({ brand: '', images: [], total: null });
   const [partsPreview, setPartsPreview] = useState({ brand: '', image: '' });
@@ -356,7 +359,7 @@ export default function ProductsCategorySelector({
     : normalizedCategories;
 
   return (
-    <div className={`product-selector${logoOnlyHeader ? ' product-selector--brand-products' : ''}`}>
+    <div className={`product-selector${logoOnlyHeader ? ' product-selector--brand-products' : ''}${schematicSelector ? ' product-selector--schematics' : ''}`}>
       <div className="product-selector-header">
         <BackButton onClick={onBack} className="dtb-product-nav-back" label="Back to brands" iconOnly />
         <div className="product-selector-header-content">
@@ -368,8 +371,8 @@ export default function ProductsCategorySelector({
             />
           )}
           <div className={logoOnlyHeader && brandLogo ? 'sr-only' : 'product-selector-header-copy'}>
-            <h1>Shop {brand} by category</h1>
-            {!logoOnlyHeader && <p>Choose a category to browse this brand’s products.</p>}
+            <h1>{headerTitle || `Shop ${brand} by category`}</h1>
+            {!logoOnlyHeader && <p>{headerDescription || 'Choose a category to browse this brand’s products.'}</p>}
           </div>
         </div>
       </div>
@@ -379,7 +382,7 @@ export default function ProductsCategorySelector({
         skeleton={<SelectorSkeletonGrid mode="categories" />}
         label="Loading product categories"
       >
-        <SelectorGrid variant="categories">
+        <SelectorGrid variant="categories" className={schematicSelector && displayCategories.length === 1 ? 'dtb-selector-grid--single-centered' : ''}>
           {displayCategories.map((category, index) => (
             <ProductCategoryCard
               key={category.key || category.slug || category.name}

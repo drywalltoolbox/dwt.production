@@ -1,5 +1,5 @@
 /**
- * frontend/src/components/schematics-v2/DiagramViewer.jsx
+ * frontend/src/components/schematics/DiagramViewer.jsx
  *
  * Composes DiagramImage + ZoomControls + HotspotLayer and owns desktop
  * (wheel + drag) and touch (pinch + drag) zoom/pan state. Handles explicit

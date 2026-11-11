@@ -3,7 +3,7 @@
  *
  * Presentation authority for the rebuilt /schematics route
  * (frontend/src/pages/SchematicsPage.jsx and
- * frontend/src/components/schematics-v2/*). Mobile-first, fluid via
+ * frontend/src/components/schematics/*). Mobile-first, fluid via
  * clamp(), built on the shared DTB tokens in storefront-tokens.css.
  *
  * Visual language ported from the richer, evolved schematics UI found in
@@ -13,7 +13,7 @@
  * schematic-hotspot-card-polish}.css) — brand-logo cards, full-bleed
  * photography category/tool cards with bottom scrim overlays, and a
  * horizontally-scrollable mobile page pager — re-applied to the current
- * REST-driven schematics-v2 component tree and class names. The data layer
+ * REST-driven schematics component tree and class names. The data layer
  * (useSchematicCatalog / useSchematicRouteState / useSchematicDetail /
  * schematicsApi.js) is untouched by this file; useSchematicCatalog only
  * gained a client-side `category.preview` derivation over already-fetched

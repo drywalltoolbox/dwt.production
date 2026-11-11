@@ -348,6 +348,13 @@ function dtb_schematic_resolve_compatible_part_product_ids( array $linked_produc
 	$ids = [];
 	foreach ( $linked_product_ids as $tool_id ) {
 		$compat = dtb_product_mapping_repo_get_compatibility( (int) $tool_id, 'tool' );
+		// The catalog compatibility repository currently exposes part-owned
+		// relationships only. A tool-mode request returns WP_Error; treat that as
+		// unavailable optional compatibility evidence instead of indexing it and
+		// aborting the entire schematic preview/migration.
+		if ( is_wp_error( $compat ) || ! is_array( $compat ) ) {
+			continue;
+		}
 		foreach ( (array) ( $compat['related'] ?? [] ) as $related ) {
 			if ( ! empty( $related['id'] ) ) {
 				$ids[] = (int) $related['id'];

@@ -113,14 +113,27 @@ function dtb_admin_shell_render_header( array $args ): void {
  * @param array $tabs Each: [ 'id' => string, 'label' => string, 'active' => bool, 'url' => string ]
  */
 function dtb_admin_shell_render_tabs( array $tabs, string $live_target = '' ): void {
-	echo '<nav class="dtb-section-nav" aria-label="Page sections">';
+	$has_panel_tabs = false;
+	foreach ( $tabs as $tab ) {
+		if ( empty( $tab['url'] ) || '#' === $tab['url'] ) {
+			$has_panel_tabs = true;
+			break;
+		}
+	}
+	$nav_label = $has_panel_tabs ? __( 'Page sections', 'drywall-toolbox' ) : __( 'Page navigation', 'drywall-toolbox' );
+	$nav_role  = $has_panel_tabs ? ' role="tablist"' : '';
+	echo '<nav class="dtb-section-nav" aria-label="' . esc_attr( $nav_label ) . '"' . $nav_role . '>';
 	foreach ( $tabs as $tab ) {
 		$active_class = ! empty( $tab['active'] ) ? ' dtb-section-nav__tab--active' : '';
 		$href         = $tab['url'] ?? '#';
 		$is_page_link = ! empty( $tab['url'] ) && '#' !== $tab['url'];
 		$data_tab     = ! $is_page_link && ! empty( $tab['id'] ) ? ' data-dtb-tab="' . esc_attr( $tab['id'] ) . '"' : '';
-		$aria_sel     = ! empty( $tab['active'] ) ? 'true' : 'false';
-		$role         = empty( $tab['url'] ) || $tab['url'] === '#' ? ' role="tab"' : '';
+		$is_panel_tab = ! $is_page_link;
+		$aria_attrs   = $is_panel_tab
+			? ' aria-selected="' . ( ! empty( $tab['active'] ) ? 'true' : 'false' ) . '" tabindex="' . ( ! empty( $tab['active'] ) ? '0' : '-1' ) . '"'
+			: ( ! empty( $tab['active'] ) ? ' aria-current="page"' : '' );
+		$role         = $is_panel_tab ? ' role="tab"' : '';
+		$controls     = $is_panel_tab && ! empty( $tab['id'] ) ? ' aria-controls="' . esc_attr( $tab['id'] ) . '"' : '';
 		// Live navigation attributes — emitted only when a live_target region ID is provided.
 		$live_attrs = '';
 		if ( $live_target && isset( $tab['id'] ) ) {
@@ -134,12 +147,13 @@ function dtb_admin_shell_render_tabs( array $tabs, string $live_target = '' ): v
 		}
 
 		printf(
-			'<a href="%s" class="dtb-section-nav__tab%s" aria-selected="%s"%s%s%s>%s</a>',
+			'<a href="%s" class="dtb-section-nav__tab%s"%s%s%s%s%s>%s</a>',
 			esc_url( $href ),
 			esc_attr( $active_class ),
-			esc_attr( $aria_sel ),
+			$aria_attrs,
 			$data_tab,
 			$role,
+			$controls,
 			$live_attrs,
 			esc_html( $tab['label'] ?? '' )
 		);
