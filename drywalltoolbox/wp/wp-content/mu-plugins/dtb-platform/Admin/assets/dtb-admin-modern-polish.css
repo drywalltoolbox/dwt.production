@@ -192,6 +192,7 @@ body.dtb-admin-screen :where(.dtb-modal, .dtb-pm-modal) {
 	display: flex;
 	flex-direction: column;
 	margin: auto;
+	max-height: calc(100vh - 56px);
 	max-height: calc(100dvh - 56px);
 	min-height: 0;
 	overflow: hidden;
@@ -199,6 +200,7 @@ body.dtb-admin-screen :where(.dtb-modal, .dtb-pm-modal) {
 }
 
 body.dtb-admin-screen :where(.dtb-modal--fullscreen) {
+	max-height: calc(100vh - 32px);
 	max-height: calc(100dvh - 32px);
 	width: min(1480px, calc(100vw - 32px));
 }
@@ -266,6 +268,7 @@ body.dtb-admin-screen :where(.dtb-modal-tab--active, .dtb-modal-tab[aria-selecte
 
 	body.dtb-admin-screen :where(.dtb-modal, .dtb-pm-modal, .dtb-modal--fullscreen) {
 		border-radius: 18px;
+		max-height: calc(100vh - 20px);
 		max-height: calc(100dvh - 20px);
 		width: calc(100vw - 20px);
 	}
