@@ -12,9 +12,8 @@
  * `ResizeObserver`-measured fixed-px stage, and zoom/pan is a single
  * `transform: scale(...) translate(...)` on `.schematic-image-wrapper`
  * with `transform-origin: center center`. The gesture handling itself
- * (ctrl/cmd+scroll to zoom, pointer-based pinch/pan, not hijacking plain
- * wheel scroll) is a prior, intentional UX fix over the legacy version and
- * is preserved as-is — only the rendering/transform target changed.
+ * (pointer-anchored wheel zoom, pointer-based pinch/pan) shares one camera
+ * so desktop and touch interactions preserve the same diagram coordinates.
  */
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { AlertTriangle, ImageOff } from 'lucide-react';
@@ -54,6 +53,10 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
   const gesture = useRef(null);
   const lastTap = useRef({ time: 0, x: 0, y: 0 });
   const suppressHotspotUntil = useRef(0);
+  const wheelFrame = useRef(0);
+  const wheelTarget = useRef(null);
+  const applyScaleRef = useRef(null);
+  const cameraRef = useRef({ scale: 1, offset: { x: 0, y: 0 } });
 
   const imageBoundsRef = useRef(null);
 
@@ -61,6 +64,7 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [imageLoaded, setImageLoaded] = useState(false);
   const [isGesturing, setIsGesturing] = useState(false);
+  const [isWheelZooming, setIsWheelZooming] = useState(false);
   // Measured box of `.schematic-image-bounds` — the aspect-ratio-sized,
   // hotspot coordinate-space div (legacy `schematicImageRef.current.offsetWidth/Height`).
   // Only used for pan-clamp math; the div's on-screen size is owned by CSS
@@ -186,6 +190,10 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
     const clampedOffset = clampOffset(nextOffset ?? offset, clampedScale, size, boundsSize);
     setOffset((current) => current.x === clampedOffset.x && current.y === clampedOffset.y ? current : clampedOffset);
   }, [offset, boundsSize]);
+  useLayoutEffect(() => {
+    cameraRef.current = { scale, offset };
+    applyScaleRef.current = applyScale;
+  }, [scale, offset, applyScale]);
 
   const zoomAtPoint = useCallback((nextScale, clientX, clientY, baseScale = scale, baseOffset = offset) => {
     const container = containerRef.current;
@@ -237,18 +245,67 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focusedHotspotId, focusRequest, imageLoaded, page?.page_id, boundsSize]);
 
-  // Only zoom on ctrl/cmd+wheel (the standard "trackpad pinch sends
-  // ctrl+wheel" convention, matching map-style UX). Plain wheel scroll must
-  // fall through to normal page scrolling instead of hijacking it — this
-  // container previously zoomed on any wheel delta >= 4, which is virtually
-  // every mouse-wheel tick, trapping the page under the diagram.
   const handleWheel = useCallback((event) => {
-    if (!event.ctrlKey && !event.metaKey) return;
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const point = { x: event.clientX - rect.left - rect.width / 2, y: event.clientY - rect.top - rect.height / 2 };
+    const base = wheelTarget.current || cameraRef.current;
+    const unitDelta = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaMode === 2 ? event.deltaY * rect.height : event.deltaY;
+    const nextScale = clampScale(base.scale * Math.exp(-unitDelta * (event.ctrlKey || event.metaKey ? 0.003 : 0.0016)));
+    const ratio = nextScale / base.scale;
+    const nextOffset = {
+      x: point.x - ((point.x - base.offset.x) * ratio),
+      y: point.y - ((point.y - base.offset.y) * ratio),
+    };
+    if (nextScale === base.scale && nextOffset.x === base.offset.x && nextOffset.y === base.offset.y) return;
     event.preventDefault();
     setFocusTransition(false);
-    const delta = -event.deltaY * 0.0015;
-    zoomAtPoint(scale + delta * scale, event.clientX, event.clientY);
-  }, [scale, zoomAtPoint]);
+    setIsWheelZooming(true);
+    wheelTarget.current = {
+      scale: nextScale,
+      offset: clampOffset(nextOffset, nextScale, { width: rect.width, height: rect.height }, boundsSize),
+    };
+    if (reduceMotion) {
+      applyScaleRef.current?.(wheelTarget.current.scale, wheelTarget.current.offset);
+      wheelTarget.current = null;
+      setIsWheelZooming(false);
+      return;
+    }
+    if (wheelFrame.current) return;
+    const tick = () => {
+      const target = wheelTarget.current;
+      if (!target) { wheelFrame.current = 0; return; }
+      const { scale: currentScale, offset: currentOffset } = cameraRef.current;
+      const easedScale = currentScale + (target.scale - currentScale) * 0.28;
+      const easedOffset = {
+        x: currentOffset.x + (target.offset.x - currentOffset.x) * 0.28,
+        y: currentOffset.y + (target.offset.y - currentOffset.y) * 0.28,
+      };
+      if (Math.abs(target.scale - easedScale) < 0.002
+        && Math.abs(target.offset.x - easedOffset.x) < 0.15
+        && Math.abs(target.offset.y - easedOffset.y) < 0.15) {
+        applyScaleRef.current?.(target.scale, target.offset);
+        wheelTarget.current = null;
+        wheelFrame.current = 0;
+        setIsWheelZooming(false);
+        return;
+      }
+      applyScaleRef.current?.(easedScale, easedOffset);
+      wheelFrame.current = requestAnimationFrame(tick);
+    };
+    wheelFrame.current = requestAnimationFrame(tick);
+  }, [boundsSize, reduceMotion]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return undefined;
+    container.addEventListener('wheel', handleWheel, { passive: false });
+    return () => container.removeEventListener('wheel', handleWheel);
+  }, [handleWheel]);
+
+  useEffect(() => () => {
+    if (wheelFrame.current) cancelAnimationFrame(wheelFrame.current);
+  }, []);
 
   const handlePointerDown = useCallback((event) => {
     setFocusTransition(false);
@@ -412,7 +469,6 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
         id={`dtb-schematic-panel-${page.page_id}`}
         role="tabpanel"
         aria-labelledby={`dtb-schematic-tab-${page.page_id}`}
-        onWheel={handleWheel}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
@@ -432,7 +488,7 @@ export default function DiagramViewer({ page, parts, schematicContext, onSelectP
             position: 'relative',
             transform: `scale(${scale}) translate(${scale ? offset.x / scale : 0}px, ${scale ? offset.y / scale : 0}px)`,
             transformOrigin: 'center center',
-            transition: reduceMotion || isGesturing ? 'none' : focusTransition ? 'transform 350ms cubic-bezier(0.22, 1, 0.36, 1)' : 'transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+            transition: reduceMotion || isGesturing || isWheelZooming ? 'none' : focusTransition ? 'transform 350ms cubic-bezier(0.22, 1, 0.36, 1)' : 'transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
             userSelect: 'none',
             WebkitUserSelect: 'none',
             pointerEvents: 'auto',
