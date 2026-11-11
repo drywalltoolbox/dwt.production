@@ -1112,35 +1112,6 @@
   display: none;
 }
 
-/* ── Browse parts row ─────────────────────────────────────────────────────── */
-.dtb-pdp-browse-parts-row {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.25rem 1rem;
-  border-top: 1px solid #f1f5f9;
-}
-
-.dtb-pdp-browse-parts-row__link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.62rem 1.5rem;
-  border-radius: 999px;
-  border: 2px solid #2255ee;
-  color: #2255ee;
-  font-size: 0.88rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: background 160ms ease, color 160ms ease, transform 120ms ease;
-}
-
-.dtb-pdp-browse-parts-row__link:hover {
-  background: #2255ee;
-  color: #fff;
-  transform: translateY(-1px);
-}
-
 /* ── Brand banner ─────────────────────────────────────────────────────────── */
 .dtb-pdp-brand-banner {
   display: flex;
@@ -2454,8 +2425,7 @@
     line-height: 1.2;
   }
 
-  .dtb-pdp-brand-banner,
-  .dtb-pdp-browse-parts-row {
+  .dtb-pdp-brand-banner {
     display: none;
   }
 
@@ -2623,7 +2593,7 @@
   font-size: .88rem;
   line-height: 1.6;
 }
-.dtb-pdp--modal .dtb-pdp-info-accordion__panel a:not(.ts-includes-list__link):not(.dtb-pdp-parts-guide__link) { color: #1557e9; text-decoration: underline; text-underline-offset: 2px; }
+.dtb-pdp--modal .dtb-pdp-info-accordion__panel a:not(.ts-includes-list__link) { color: #1557e9; text-decoration: underline; text-underline-offset: 2px; }
 @media (max-width: 767px) {
   /* On narrow screens, treat the disclosures as one continuous PDP section
      instead of a bordered card. Keep one consistent separator between rows. */

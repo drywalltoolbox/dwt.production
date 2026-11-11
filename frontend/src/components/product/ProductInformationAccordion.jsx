@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, ChevronDown, ClipboardList, FileText, Layers, Ruler, Truck } from 'lucide-react';
+import { ChevronDown, ClipboardList, FileText, Ruler, Truck } from 'lucide-react';
 
 /** Full-page PDP information only; product, variation and cart state stay upstream. */
-export default function ProductInformationAccordion({ description, features, specs, partsUrl, specificationsRequest = 0 }) {
+export default function ProductInformationAccordion({ description, features, specs, specificationsRequest = 0 }) {
   const [openKeys, setOpenKeys] = useState([]);
   const [renderedKeys, setRenderedKeys] = useState([]);
   const [dismissedSpecsRequest, setDismissedSpecsRequest] = useState(0);
@@ -82,17 +82,6 @@ export default function ProductInformationAccordion({ description, features, spe
     { key: 'description', title: 'Description', Icon: FileText, content: description },
     { key: 'features', title: 'Features', Icon: ClipboardList, content: features || <p>Product features are not separately listed.</p> },
     { key: 'specs', title: 'Specifications', Icon: Ruler, content: specs || <p>No additional specifications are listed.</p> },
-    { key: 'parts', title: 'Parts & Schematics', Icon: Layers, content: (
-      <div className="dtb-pdp-parts-guide">
-        <p className="dtb-pdp-parts-guide__copy">
-          <strong>Choose your tool model in our interactive schematic, find the part number, then confirm fit before ordering.</strong>
-        </p>
-        <Link to={partsUrl} className="dtb-pdp-parts-guide__link">
-          Explore schematics &amp; parts
-          <ArrowRight size={16} strokeWidth={2.1} aria-hidden="true" />
-        </Link>
-      </div>
-    ) },
     { key: 'shipping', title: 'Shipping & Returns', Icon: Truck, content: (
       <p>Shipping charges are calculated at checkout. <Link to="/shipping-policy">Shipping policy</Link> · <Link to="/return-policy">Returns policy</Link></p>
     ) },

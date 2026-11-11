@@ -461,12 +461,6 @@
   display: none;
 }
 
-.dtb-product-page-shell .dtb-pdp-browse-parts-row {
-  margin-top: clamp(1.25rem, 2.5vw, 2rem);
-  padding-top: .9rem;
-  border-top: 1px solid var(--dtb-pdp-line-soft);
-}
-
 /* Tablet/narrow desktop ------------------------------------------------ */
 @media (max-width: 64rem) {
   .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__hero {
@@ -714,10 +708,6 @@
     padding: .75rem 0 0;
   }
 
-  .dtb-product-page-shell .dtb-pdp-browse-parts-row {
-    margin-top: 1rem;
-    padding-top: .75rem;
-  }
 }
 
 @media (max-width: 22.5rem) {

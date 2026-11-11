@@ -568,10 +568,3 @@
   font-weight: 650;
   text-underline-offset: 2px;
 }
-
-/* Keep the supporting parts link visually secondary to the product detail. */
-.dtb-product-page-shell .dtb-pdp-browse-parts-row {
-  margin-top: 28px;
-  padding-top: 18px;
-  border-top: 1px solid var(--dtb-pdp-border);
-}

@@ -1,6 +1,5 @@
 import { useMemo, useState, useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
-import { Link } from 'react-router-dom';
 import Reviews from './Reviews';
 import ProductRating from './ProductRating.jsx';
 import { useCart } from '../../context/CartContext';
@@ -22,7 +21,6 @@ import { setCachedVariations } from '../../utils/variationCache';
 import { apiClient } from '../../api/client.js';
 import { getBrandLogo } from '../../utils/brandAssets.js';
 import { toProductDetailDTO } from '../../utils/catalogDtoAdapters.js';
-import { BRAND_TO_SLUG, BRAND_ALIASES } from '../../utils/catalogUrlState.js';
 import { getSchematicLinkForProduct } from '../../data/schematicMappings';
 import { getWooCheckoutUrl } from '../../utils/checkoutUrl.js';
 import { navigateDocument } from '../../utils/documentNavigation.js';
@@ -955,16 +953,7 @@ export default function ProductDetail({
     : parentContextProduct;
   const effectiveName = effectiveProduct.name || product.name || '';
   const schematicLink = getSchematicLinkForProduct(effectiveProduct, { allowLegacyFallback: false });
-  const partsUrl = schematicLink?.url || null;
   const brandLabel = getBrandLabel(product, effectiveProduct);
-
-  const canonicalBrandForParts = BRAND_ALIASES[brandLabel] || brandLabel;
-  const brandSlugForParts = BRAND_TO_SLUG[canonicalBrandForParts] || '';
-  const brandPartsUrl = brandSlugForParts
-    ? `/parts?brand=${encodeURIComponent(brandSlugForParts)}`
-    : partsUrl || '/parts';
-  const browsePartsUrl = partsUrl ||
-    brandPartsUrl;
   const effectiveSku = effectiveProduct.sku || product.sku || '';
   const effectiveStock = effectiveProduct.stock_status || product.stock_status || 'instock';
   const isOutOfStock = effectiveStock === 'outofstock';
@@ -1193,7 +1182,6 @@ export default function ProductDetail({
                   hasCompleteSelection={hasCompleteSelection}
                   isWishlisted={isWishlisted}
                   onToggleWishlist={() => setIsWishlisted((prev) => !prev)}
-                  partsUrl={partsUrl}
                   setSummary={!detailTabs.hidden ? setSummary : null}
                   onViewIncludes={handleViewIncludes}
                   reviewNode={<ProductReviewsButton onClick={handleViewReviews} className="dtb-pdp-header__reviews--mobile-inline" rating={effectiveProduct.average_rating ?? effectiveProduct.rating ?? product.average_rating ?? product.rating} ratingCount={effectiveProduct.rating_count ?? effectiveProduct.reviews ?? product.rating_count ?? product.reviews} />}
@@ -1220,7 +1208,6 @@ export default function ProductDetail({
                     ) : null)
                     : featuresNode}
                   specs={!specTable.hidden ? <ProductSpecTable specs={productSpecifications} /> : null}
-                  partsUrl={brandPartsUrl}
                   specificationsRequest={specificationsRequest}
                 />
               )}
@@ -1238,12 +1225,6 @@ export default function ProductDetail({
             </div>
           ) : null}
 
-
-          <div className="dtb-pdp-browse-parts-row">
-            <Link to={browsePartsUrl} className="dtb-pdp-browse-parts-row__link">
-              {partsUrl ? 'View schematic and part numbers' : 'Browse replacement parts'}
-            </Link>
-          </div>
 
           <Reviews key={effectiveProduct.id || product.id} productId={effectiveProduct.id || product.id} productName={effectiveName} reviewFormOpen={reviewFormOpen} onCloseReviewForm={() => setReviewFormOpen(false)} />
 
