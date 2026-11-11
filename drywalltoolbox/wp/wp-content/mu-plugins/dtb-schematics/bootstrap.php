@@ -9,6 +9,7 @@ defined( 'ABSPATH' ) || exit;
 
 // Data.
 dtb_module_require( 'dtb-schematics/Data/SkuSchematicMap.php' );
+dtb_module_require( 'dtb-schematics/Data/SchematicBrandDisplayMap.php' );
 
 // Domain.
 dtb_module_require( 'dtb-schematics/Domain/Schematic.php' );
@@ -77,3 +78,4 @@ if ( dtb_is_admin_or_ajax_request() ) {
 	dtb_module_require( 'dtb-schematics/Admin/Diagnostics/HotspotWorkflow.php' );
 	dtb_module_require( 'dtb-schematics/Admin/Diagnostics/HotspotResolutionPipeline.php' );
 }
+
