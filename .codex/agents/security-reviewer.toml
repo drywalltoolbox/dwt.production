@@ -1,9 +1,0 @@
-name = "security_reviewer"
-description = "Read-only security reviewer mapped to canonical .agents/roles/security-reviewer.md."
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
-sandbox_mode = "read-only"
-
-developer_instructions = """
-Read AGENTS.md and .agents/roles/security-reviewer.md. Do not edit files.
-"""

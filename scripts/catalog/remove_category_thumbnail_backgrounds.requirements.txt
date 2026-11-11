@@ -1,5 +1,0 @@
-# Runtime dependencies for scripts/catalog/remove_category_thumbnail_backgrounds.py
-# Install into an isolated virtual environment; do not vendor these packages.
-# The cpu extra installs ONNX Runtime for local/CI CPU inference.
-rembg[cpu]>=2.0.67,<3.0
-Pillow>=10.4,<13.0

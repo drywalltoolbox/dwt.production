@@ -1,8 +1,0 @@
-name = "frontend_react"
-description = "React storefront implementation adapter for canonical .agents/roles/frontend-engineer.md."
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
-
-developer_instructions = """
-Read AGENTS.md, .agents/roles/frontend-engineer.md, and its required canonical skills. Primary write ownership is frontend/. Canonical .agents content wins over this adapter.
-"""

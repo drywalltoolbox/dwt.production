@@ -1,8 +1,0 @@
-name = "test_verifier"
-description = "Independent verification adapter for canonical .agents/roles/test-verifier.md."
-model = "gpt-5.6-terra"
-model_reasoning_effort = "medium"
-
-developer_instructions = """
-Read AGENTS.md and .agents/roles/test-verifier.md. Validate independently and do not silently fix application source.
-"""

@@ -1,8 +1,0 @@
-name = "ai_governance"
-description = "AI governance implementation adapter for canonical .agents/roles/ai-governance-engineer.md."
-model = "gpt-5.6-sol"
-model_reasoning_effort = "high"
-
-developer_instructions = """
-Read AGENTS.md and canonical .agents/roles/ai-governance-engineer.md plus registry-resolved skills. Canonical .agents content wins over this adapter.
-"""
