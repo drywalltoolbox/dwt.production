@@ -15,6 +15,40 @@ final class DTB_StorefrontRouteRenderer {
 
 	public static function register(): void {
 		add_action( 'template_redirect', [ self::class, 'maybe_render' ], 0 );
+		add_filter( 'woocommerce_product_data_store_cpt_get_products_query', [ self::class, 'filter_taxonomy_product_query' ], 10, 2 );
+	}
+
+	/**
+	 * Add the requested brand term to a bounded WooCommerce product query.
+	 *
+	 * @param array<string,mixed> $query_args WordPress query arguments.
+	 * @param array<string,mixed> $query_vars WooCommerce product query variables.
+	 * @return array<string,mixed>
+	 */
+	public static function filter_taxonomy_product_query( array $query_args, array $query_vars ): array {
+		$filter = $query_vars['dtb_taxonomy_filter'] ?? null;
+		if ( ! is_array( $filter ) ) {
+			return $query_args;
+		}
+
+		$taxonomy = sanitize_key( (string) ( $filter['taxonomy'] ?? '' ) );
+		$term_id  = absint( $filter['term_id'] ?? 0 );
+		$brand_taxonomy = class_exists( 'DTB_SitemapUrlRepository' ) ? DTB_SitemapUrlRepository::brand_taxonomy() : '';
+		$allowed        = array_filter( [ 'product_cat', $brand_taxonomy ] );
+		if ( '' === $taxonomy || 0 === $term_id || ! in_array( $taxonomy, $allowed, true ) || ! is_object_in_taxonomy( 'product', $taxonomy ) ) {
+			$query_args['post__in'] = [ 0 ];
+			return $query_args;
+		}
+
+		$tax_query   = is_array( $query_args['tax_query'] ?? null ) ? $query_args['tax_query'] : [];
+		$tax_query[] = [
+			'taxonomy' => $taxonomy,
+			'field'    => 'term_id',
+			'terms'    => [ $term_id ],
+			'include_children' => false,
+		];
+		$query_args['tax_query'] = $tax_query;
+		return $query_args;
 	}
 
 	/**
@@ -90,7 +124,8 @@ final class DTB_StorefrontRouteRenderer {
 		if ( ! empty( $product['sku'] ) && is_string( $product['sku'] ) ) {
 			$content .= '<p>SKU: ' . esc_html( $product['sku'] ) . '</p>';
 		}
-		$content .= '<nav aria-label="Related Drywall Toolbox pages"><ul><li><a href="' . esc_url( home_url( '/products' ) ) . '">Browse all products</a></li><li><a href="' . esc_url( home_url( '/parts' ) ) . '">Find replacement parts</a></li><li><a href="' . esc_url( home_url( '/schematics' ) ) . '">Browse tool schematics</a></li></ul></nav></main>';
+		$content .= self::render_product_relationship_links( $product );
+		$content .= '</main>';
 
 		$shell = file_get_contents( $shell_path );
 		if ( ! is_string( $shell ) ) {
@@ -238,32 +273,13 @@ final class DTB_StorefrontRouteRenderer {
 			exit;
 		}
 
-		$products = [];
-		if ( 'product_cat' === $taxonomy ) {
-			if ( ! function_exists( 'wc_get_products' ) ) {
-				self::unavailable();
-			}
-			// Products assigned to descendants still make the parent category a valid route.
-			try {
-				$products = wc_get_products(
-					[
-						'status'     => 'publish',
-						'visibility' => 'visible',
-						'category'   => [ $slug ],
-						'limit'      => 12,
-						'orderby'    => 'menu_order',
-						'order'      => 'ASC',
-						'return'     => 'objects',
-					]
-				);
-			} catch ( Throwable $error ) {
-				self::unavailable();
-			}
-			if ( ! is_array( $products ) ) {
-				self::unavailable();
-			}
-			$products = array_values( array_filter( $products, static fn( $product ): bool => $product instanceof WC_Product ) );
-			if ( empty( $products ) ) {
+		$brand_taxonomy    = class_exists( 'DTB_SitemapUrlRepository' ) ? DTB_SitemapUrlRepository::brand_taxonomy() : '';
+		$is_product_cat    = 'product_cat' === $taxonomy;
+		$is_product_brand  = '' !== $brand_taxonomy && $brand_taxonomy === $taxonomy;
+		$products          = [];
+		if ( $is_product_cat || $is_product_brand ) {
+			$products = self::taxonomy_products( $taxonomy, $term, $is_product_cat );
+			if ( empty( $products ) && 0 === (int) $term->count ) {
 				status_header( 404 );
 				header( 'Cache-Control: public, max-age=60' );
 				exit;
@@ -282,8 +298,9 @@ final class DTB_StorefrontRouteRenderer {
 		$title     = $term->name . ' | Drywall Toolbox';
 		$canonical = home_url( $path );
 		$content   = '<main class="dtb-home-static-fallback dtb-route-static-content"><h1>' . esc_html( $term->name ) . '</h1><p>' . esc_html( $description ) . '</p><p><a href="' . esc_url( home_url( '/products' ) ) . '">Browse all products</a></p>';
-		if ( 'product_cat' === $taxonomy ) {
-			$content .= '<section aria-labelledby="dtb-category-products-heading"><h2 id="dtb-category-products-heading">Products in ' . esc_html( $term->name ) . '</h2><ul>';
+		if ( ( $is_product_cat || $is_product_brand ) && ! empty( $products ) ) {
+			$section_heading = $is_product_cat ? 'Products in ' . $term->name : 'Products from ' . $term->name;
+			$content        .= '<section aria-labelledby="dtb-taxonomy-products-heading"><h2 id="dtb-taxonomy-products-heading">' . esc_html( $section_heading ) . '</h2><ul>';
 			foreach ( $products as $product ) {
 				$product_slug = trim( (string) $product->get_slug() );
 				$product_name = trim( (string) $product->get_name() );
@@ -302,6 +319,85 @@ final class DTB_StorefrontRouteRenderer {
 		}
 		$content .= '</main>';
 		self::render_route_document( $title, $description, $canonical, $content, $method );
+	}
+
+	/**
+	 * Return a bounded list of visible products assigned to a category or brand.
+	 *
+	 * @param string  $taxonomy Taxonomy slug.
+	 * @param WP_Term $term     Resolved taxonomy term.
+	 * @param bool    $category Whether WooCommerce's category query should include descendants.
+	 * @return array<int,WC_Product>
+	 */
+	private static function taxonomy_products( string $taxonomy, WP_Term $term, bool $category ): array {
+		if ( ! function_exists( 'wc_get_products' ) ) {
+			self::unavailable();
+		}
+
+		$args = [
+			'status'     => 'publish',
+			'visibility' => 'visible',
+			'limit'      => 12,
+			'orderby'    => 'menu_order',
+			'order'      => 'ASC',
+			'return'     => 'objects',
+		];
+		if ( $category ) {
+			// Products assigned to descendants still make the parent category a valid route.
+			$args['category'] = [ $term->slug ];
+		} else {
+			$args['dtb_taxonomy_filter'] = [
+				'taxonomy' => $taxonomy,
+				'term_id'  => (int) $term->term_id,
+			];
+		}
+
+		try {
+			$products = wc_get_products( $args );
+		} catch ( Throwable $error ) {
+			self::unavailable();
+		}
+		if ( ! is_array( $products ) ) {
+			self::unavailable();
+		}
+
+		return array_values( array_filter( $products, static fn( $product ): bool => $product instanceof WC_Product ) );
+	}
+
+	/** @param array<string,mixed> $product WooCommerce REST-shaped product. */
+	private static function render_product_relationship_links( array $product ): string {
+		$links = [
+			'/products'  => 'Browse all products',
+			'/parts'     => 'Find replacement parts',
+			'/schematics' => 'Browse tool schematics',
+		];
+		foreach ( array_slice( is_array( $product['categories'] ?? null ) ? $product['categories'] : [], 0, 5 ) as $category ) {
+			if ( ! is_array( $category ) || ! is_string( $category['slug'] ?? null ) || ! is_string( $category['name'] ?? null ) ) {
+				continue;
+			}
+			$slug = sanitize_title( $category['slug'] );
+			$name = html_entity_decode( $category['name'], ENT_QUOTES | ENT_HTML5, get_option( 'blog_charset' ) );
+			if ( '' !== $slug && '' !== trim( $name ) ) {
+				$links[ '/category/' . rawurlencode( $slug ) ] = 'Shop ' . $name;
+			}
+		}
+
+		foreach ( array_slice( is_array( $product['brands'] ?? null ) ? $product['brands'] : [], 0, 3 ) as $brand ) {
+			if ( ! is_array( $brand ) || ! is_string( $brand['slug'] ?? null ) || ! is_string( $brand['name'] ?? null ) ) {
+				continue;
+			}
+			$slug = sanitize_title( $brand['slug'] );
+			$name = html_entity_decode( $brand['name'], ENT_QUOTES | ENT_HTML5, get_option( 'blog_charset' ) );
+			if ( '' !== $slug && '' !== trim( $name ) ) {
+				$links[ '/products/brands/' . rawurlencode( $slug ) ] = 'Shop ' . $name . ' products';
+			}
+		}
+
+		$html = '<nav aria-label="Related Drywall Toolbox pages"><ul>';
+		foreach ( $links as $path => $label ) {
+			$html .= '<li><a href="' . esc_url( home_url( $path ) ) . '">' . esc_html( $label ) . '</a></li>';
+		}
+		return $html . '</ul></nav>';
 	}
 
 	private static function render_route_document( string $title, string $description, string $canonical, string $content, string $method ): void {
@@ -396,6 +492,21 @@ final class DTB_StorefrontRouteRenderer {
 				$html .= '<li><a href="' . esc_url( home_url( $href ) ) . '">' . esc_html( $label ) . '</a></li>';
 			}
 			$html .= '</ul></nav>';
+		}
+		if ( '/products/brands' === $path && class_exists( 'DTB_SitemapUrlRepository' ) ) {
+			$brand_links = DTB_SitemapUrlRepository::brand_links();
+			if ( ! empty( $brand_links ) ) {
+				$html .= '<nav aria-label="Browse drywall tool brands"><h2>Browse manufacturers</h2><ul>';
+				foreach ( $brand_links as $brand_link ) {
+					$href  = wp_parse_url( (string) ( $brand_link['loc'] ?? '' ), PHP_URL_PATH );
+					$label = $brand_link['label'] ?? '';
+					if ( ! is_string( $href ) || ! str_starts_with( $href, '/' ) || ! is_string( $label ) || '' === trim( $label ) ) {
+						continue;
+					}
+					$html .= '<li><a href="' . esc_url( home_url( $href ) ) . '">' . esc_html( $label ) . '</a></li>';
+				}
+				$html .= '</ul></nav>';
+			}
 		}
 		return $html . '</main>';
 	}

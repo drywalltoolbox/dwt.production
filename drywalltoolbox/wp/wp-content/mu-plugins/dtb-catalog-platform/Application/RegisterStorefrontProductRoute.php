@@ -40,7 +40,7 @@ function dtb_catalog_serve_storefront_product_route(): void {
 	$response = dtb_catalog_wc_get_response( 'wc/v3/products', [
 		'slug'    => $slug,
 		'status'  => 'publish',
-		'_fields' => 'id,slug,status,name,short_description,description,sku,images,meta_data',
+		'_fields' => 'id,slug,status,name,short_description,description,sku,images,categories,brands,meta_data',
 	] );
 
 	if ( ! $response instanceof WP_REST_Response || 200 !== $response->get_status() ) {

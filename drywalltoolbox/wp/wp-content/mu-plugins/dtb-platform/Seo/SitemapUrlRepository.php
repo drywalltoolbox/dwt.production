@@ -146,6 +146,38 @@ final class DTB_SitemapUrlRepository {
 		return '';
 	}
 
+	/** @return array<int,array{loc:string,label:string}> */
+	public static function brand_links(): array {
+		$taxonomy = self::brand_taxonomy();
+		if ( '' === $taxonomy ) {
+			return [];
+		}
+
+		$terms = get_terms(
+			[
+				'taxonomy'   => $taxonomy,
+				'hide_empty' => true,
+				'number'     => self::PAGE_SIZE,
+				'orderby'    => 'term_id',
+				'order'      => 'ASC',
+			]
+		);
+		if ( is_wp_error( $terms ) ) {
+			return [];
+		}
+
+		$links = [];
+		foreach ( $terms as $term ) {
+			if ( $term instanceof WP_Term && '' !== $term->slug ) {
+				$links[] = [
+					'loc'   => home_url( '/products/brands/' . rawurlencode( $term->slug ) ),
+					'label' => $term->name,
+				];
+			}
+		}
+		return $links;
+	}
+
 	private static function product_query( int $page, int $page_size, string $fields = 'ids' ): WP_Query {
 		$tax_query = [];
 		$excluded  = get_term_by( 'name', 'exclude-from-search', 'product_visibility' );
