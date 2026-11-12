@@ -87,7 +87,9 @@ jobs:
           rules = (root / ".htaccess").read_text()
           assert "/staging/" not in html, "Staging asset prefix found in production HTML"
           assert "RewriteRule ^$ index.html [L]" in rules, "Root homepage does not resolve to index.html"
-          assert "RewriteRule ^ index.html [QSA,L]" in rules, "SPA fallback missing"
+          assert "RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|terms-of-service|privacy-policy|preview/technical-specifications|cart|contact|settings/woocommerce|login|register|forgot-password|reset-password|dashboard)/?$ index.html [QSA,L]" in rules, "Explicit storefront routes missing"
+          assert "RewriteRule ^ index.html [QSA,L]" not in rules, "Retired storefront catch-all found"
+          assert "RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]" in rules, "Canonical product route missing"
           assert "payment_intent=pi_" in rules, "WooPayments callback route missing"
           assert 'X-Robots-Tag "noindex, nofollow"' not in rules, "Production root is marked noindex"
           print(f"Validated {len(entrypoints)} root-mounted entrypoints")
