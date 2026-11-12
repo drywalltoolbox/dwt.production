@@ -90,6 +90,8 @@ Normal PDPs should use the deterministic runtime canonical. The unified runner c
 .\scripts\catalog\run-official-catalog-enrichment.ps1 -ApplySafeFixes
 ```
 
+The official WooCommerce import CSV does not own the generated product slug. The safe cleanup therefore clears only known legacy `/product/` overrides when no slug is available (or redundant/conflicting overrides when a slug is explicitly supplied). A custom canonical with an unresolved target remains for manual review; the cleanup does not guess a product slug or clear arbitrary routes.
+
 ## Variation policy
 
 Variation packets exist only for context. `generation_eligible` remains false for variations, so product SEO authority stays with the parent.

@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Preview or clear explicit PDP canonical overrides from the official catalog.
+"""Preview or clear known-stale PDP canonical overrides from the official catalog.
 
 The React storefront owns the deterministic canonical PDP route `/products/:slug`.
-For published, indexable, non-variation products an explicit canonical override is
-therefore unnecessary and can become stale. This command clears only
-`Meta: _dtb_seo_canonical`; it never modifies slug, identity, taxonomy, or copy.
+The official import CSV does not own WooCommerce's generated slug, so this command
+clears only redundant overrides when a slug is supplied or known legacy `/product/`
+overrides. Other custom routes remain review-only when their target cannot be
+resolved. It only modifies `Meta: _dtb_seo_canonical`.
 
 Preview is the default. Standalone --apply creates a rollback snapshot. The
 unified catalog runner supplies --no-backup because it owns one run-level
@@ -46,7 +47,6 @@ def eligible(row: dict[str, str]) -> bool:
         value(row, "Type").lower() != "variation"
         and truthy(value(row, "Published"))
         and not truthy(value(row, "Meta: _dtb_seo_noindex"))
-        and bool(value(row, "Slug"))
     )
 
 
@@ -76,16 +76,27 @@ def plan(rows: list[dict[str, str]]) -> list[dict[str, str]]:
         current = value(row, FIELD)
         if not eligible(row) or not current:
             continue
+        slug = value(row, "Slug")
+        expected = expected_path(row) if slug else ""
+        current_path = canonical_path(current)
+        if expected:
+            classification = "redundant" if current_path == expected.rstrip("/") else "conflicting"
+        elif current_path.startswith("/product/"):
+            # The official import CSV does not own WooCommerce's generated
+            # slug. A legacy /product/ override is therefore known to conflict
+            # with the React storefront's /products/:slug route. Other custom
+            # routes remain review-only when their target cannot be resolved.
+            classification = "conflicting"
+        else:
+            classification = "review"
         changes.append(
             {
                 "sku": value(row, "SKU"),
-                "slug": value(row, "Slug"),
+                "slug": slug,
                 "current": current,
-                "current_path": canonical_path(current),
-                "expected_runtime_path": expected_path(row),
-                "classification": (
-                    "redundant" if canonical_path(current) == expected_path(row) else "conflicting"
-                ),
+                "current_path": current_path,
+                "expected_runtime_path": expected or "/products/:slug (resolved by WooCommerce at runtime)",
+                "classification": classification,
             }
         )
     return changes
@@ -119,15 +130,17 @@ def main() -> int:
         "eligible_overrides": len(changes),
         "conflicting": sum(item["classification"] == "conflicting" for item in changes),
         "redundant": sum(item["classification"] == "redundant" for item in changes),
+        "review_required": sum(item["classification"] == "review" for item in changes),
         "applied": bool(args.apply),
-        "backup_created": bool(args.apply and changes and not args.no_backup),
+        "backup_created": bool(args.apply and any(item["classification"] != "review" for item in changes) and not args.no_backup),
         "changes": changes,
     }
 
-    if args.apply and changes:
+    actionable = [item for item in changes if item["classification"] != "review"]
+    if args.apply and actionable:
         if not args.no_backup:
             create_catalog_backup(catalog)
-        change_skus = {item["sku"] for item in changes}
+        change_skus = {item["sku"] for item in actionable}
         for row in rows:
             if value(row, "SKU") in change_skus and eligible(row):
                 row[FIELD] = ""
