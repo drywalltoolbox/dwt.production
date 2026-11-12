@@ -66,6 +66,7 @@ final class DTB_Veeqo_Operations_MCP_Abilities {
 			'operations' => [ 'Read DTB Veeqo operations status', 'operations', self::object(), true ],
 			'operation' => [ 'Read exact DTB Veeqo operation status', 'operation', self::object( [ 'operation_id' => [ 'type' => 'string', 'pattern' => '^[a-z0-9-]+$', 'maxLength' => 100 ] ], [ 'operation_id' ] ), true ],
 			'sku' => [ 'Resolve exact SKU in DTB Veeqo projection', 'sku', self::object( [ 'sku' => [ 'type' => 'string', 'minLength' => 1, 'maxLength' => 100 ] ], [ 'sku' ] ), true ],
+			'mapping-diagnostics' => [ 'Read last inventory mapping exceptions and classify current WooCommerce SKU matches without changing stock', 'mapping_diagnostics', self::object(), true ],
 			'inventory-preview' => [ 'Preview guarded WooCommerce inventory workspace product metadata changes', 'bulk_preview', self::object( [
 				'product_ids' => [ 'type' => 'array', 'minItems' => 1, 'maxItems' => 100, 'items' => self::positive_id() ],
 				'changes' => [ 'type' => 'object', 'properties' => [
@@ -95,6 +96,9 @@ final class DTB_Veeqo_Operations_MCP_Abilities {
 					if ( ! self::allowed() ) {
 						return new WP_Error( 'dtb_veeqo_forbidden', 'Permission denied.', [ 'status' => 403 ] );
 					}
+					if ( 'mapping_diagnostics' === $callback ) {
+						return self::mapping_diagnostics();
+					}
 					$params = is_array( $input ) ? $input : [];
 					$request = new WP_REST_Request( 'GET', '/dtb/v1/veeqo/admin/control-center' );
 					$request->set_header( 'Content-Type', 'application/json' );
@@ -120,5 +124,40 @@ final class DTB_Veeqo_Operations_MCP_Abilities {
 			] );
 		}
 	}
+	/**
+	 * Reclassify the previous sync's unmapped SKUs against today's WooCommerce
+	 * product index. This does not call Veeqo or alter stock/order state.
+	 */
+	public static function mapping_diagnostics(): array {
+		$option = defined( 'DTB_VEEQO_INVENTORY_DIAGNOSTICS' ) ? DTB_VEEQO_INVENTORY_DIAGNOSTICS : 'dtb_veeqo_inventory_reconciliation_diagnostics';
+		$report = (array) get_option( $option, [] );
+		$skus = array_slice( array_values( array_unique( array_filter( array_map( 'strval', (array) ( $report['unmapped_skus'] ?? [] ) ) ) ) ), 0, 250 );
+		$groups = [ 'now_simple_or_variation' => [], 'now_variable_parent' => [], 'still_missing' => [], 'unrecognized_product_type' => [] ];
+		foreach ( $skus as $sku ) {
+			$id = function_exists( 'wc_get_product_id_by_sku' ) ? (int) wc_get_product_id_by_sku( $sku ) : 0;
+			$product = $id && function_exists( 'wc_get_product' ) ? wc_get_product( $id ) : false;
+			if ( ! $product instanceof WC_Product ) {
+				$groups['still_missing'][] = $sku;
+				continue;
+			}
+			$type = $product->get_type();
+			$entry = [ 'sku' => $sku, 'woo_product_id' => $id, 'type' => $type, 'status' => $product->get_status() ];
+			if ( in_array( $type, [ 'simple', 'variation' ], true ) ) {
+				$groups['now_simple_or_variation'][] = $entry;
+			} elseif ( 'variable' === $type ) {
+				$groups['now_variable_parent'][] = $entry;
+			} else {
+				$groups['unrecognized_product_type'][] = $entry;
+			}
+		}
+		return [
+			'last_reconciliation_at' => sanitize_text_field( (string) ( $report['completed_at'] ?? '' ) ),
+			'historical_unmapped_count' => count( (array) ( $report['unmapped_skus'] ?? [] ) ),
+			'checked_count' => count( $skus ),
+			'groups' => $groups,
+			'requires_fresh_provider_reconciliation' => true,
+		];
+	}
+
 }
 DTB_Veeqo_Operations_MCP_Abilities::init();
