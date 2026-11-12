@@ -228,25 +228,39 @@ function dtb_daily_briefings_render(): void {
             [ 'href' => admin_url( 'admin.php?page=dtb-command-center' ), 'type' => 'secondary', 'size' => 'sm' ] ) ] ] );
     echo '<div class="dtb-grid dtb-grid--two dtb-briefings-layout"><main class="dtb-briefings-main">';
     if ( ! $row ) {
-        echo '<div class="dtb-card dtb-briefing-card"><div class="dtb-card__body"><h2>' . esc_html__( 'Awaiting the first briefing', 'drywall-toolbox' ) . '</h2><p>' .
-            esc_html__( 'The scheduled ChatGPT agent will publish its verified report here when its authenticated MCP connection is available.', 'drywall-toolbox' ) . '</p></div></div>';
+        echo '<section class="dtb-card dtb-briefing-card dtb-briefing-empty"><div class="dtb-card__body"><span class="dtb-briefing-kicker">' .
+            esc_html__( 'Daily report', 'drywall-toolbox' ) . '</span><h2>' . esc_html__( 'Awaiting the first briefing', 'drywall-toolbox' ) . '</h2><p>' .
+            esc_html__( 'The scheduled reporting agent will publish its verified report here when its authenticated connection is available.', 'drywall-toolbox' ) . '</p></div></section>';
     } else {
         $payload = json_decode( $row->payload, true );
-        echo '<div class="dtb-card dtb-briefing-card"><div class="dtb-card__body"><h2>' . esc_html( $row->report_date ) .
-            '</h2><p><strong>' . esc_html( strtoupper( $row->report_status ) ) . '</strong> · ' .
-            esc_html( $row->generated_at . ' UTC' ) . '</p><p class="dtb-briefing-summary">' .
-            esc_html( $payload['summary'] ?? '' ) . '</p>';
+        $status_labels = [ 'complete' => __( 'Complete', 'drywall-toolbox' ), 'partial' => __( 'Partial', 'drywall-toolbox' ), 'failed' => __( 'Failed', 'drywall-toolbox' ) ];
+        $status = (string) $row->report_status;
+        $priority_count = is_array( $payload['priorities'] ?? null ) ? count( $payload['priorities'] ) : 0;
+        $coverage_count = is_array( $payload['coverage'] ?? null ) ? count( $payload['coverage'] ) : 0;
+        echo '<article class="dtb-briefing-report">';
+        echo '<header class="dtb-card dtb-briefing-card dtb-briefing-hero"><div class="dtb-card__body">' .
+            '<div class="dtb-briefing-hero-top"><span class="dtb-briefing-kicker">' . esc_html__( 'Daily engineering briefing', 'drywall-toolbox' ) . '</span>' .
+            '<span class="dtb-briefing-status dtb-briefing-status--' . esc_attr( $status ) . '"><span aria-hidden="true"></span>' .
+            esc_html( $status_labels[ $status ] ?? ucfirst( $status ) ) . '</span></div>' .
+            '<h2>' . esc_html( wp_date( get_option( 'date_format' ), strtotime( $row->report_date . ' 12:00:00' ) ) ) . '</h2>' .
+            '<p class="dtb-briefing-generated">' . esc_html__( 'Generated', 'drywall-toolbox' ) . ' · ' . esc_html( $row->generated_at . ' UTC' ) . '</p>' .
+            '<p class="dtb-briefing-summary">' . esc_html( $payload['summary'] ?? '' ) . '</p>' .
+            '<div class="dtb-briefing-overview" aria-label="' . esc_attr__( 'Briefing at a glance', 'drywall-toolbox' ) . '">' .
+            '<div><strong>' . esc_html( (string) $priority_count ) . '</strong><span>' . esc_html__( 'Priority actions', 'drywall-toolbox' ) . '</span></div>' .
+            '<div><strong>' . esc_html( (string) $coverage_count ) . '</strong><span>' . esc_html__( 'Evidence sources', 'drywall-toolbox' ) . '</span></div>' .
+            '<div><strong>' . esc_html( strtoupper( $status ) ) . '</strong><span>' . esc_html__( 'Report status', 'drywall-toolbox' ) . '</span></div>' .
+            '</div></div></header>';
         if ( ! empty( $payload['metrics'] ) ) {
-            echo '<h3>' . esc_html__( 'Verified indicators', 'drywall-toolbox' ) . '</h3><div class="dtb-briefing-metrics">';
+            echo '<section class="dtb-card dtb-briefing-card dtb-briefing-section"><div class="dtb-card__body"><div class="dtb-briefing-section-heading"><span class="dtb-briefing-section-mark" aria-hidden="true">01</span><div><h3>' .
+                esc_html__( 'Verified indicators', 'drywall-toolbox' ) . '</h3><p>' . esc_html__( 'Key counts recorded in this report.', 'drywall-toolbox' ) . '</p></div></div><div class="dtb-briefing-metrics">';
             foreach ( $payload['metrics'] as $label => $value ) {
-                echo '<div class="dtb-briefing-metric"><strong>' .
-                    esc_html( null === $value ? 'N/A' : (string) $value ) . '</strong><br><small>' .
-                    esc_html( ucwords( str_replace( '_', ' ', $label ) ) ) . '</small></div>';
+                echo '<div class="dtb-briefing-metric"><span>' . esc_html( ucwords( str_replace( '_', ' ', $label ) ) ) . '</span><strong>' .
+                    esc_html( null === $value ? 'N/A' : (string) $value ) . '</strong></div>';
             }
-            echo '</div>';
+            echo '</div></div></section>';
         }
-        echo '</div></div><div class="dtb-card dtb-briefing-card"><div class="dtb-card__body"><h3>' .
-            esc_html__( 'Admin priorities', 'drywall-toolbox' ) . '</h3>';
+        echo '<section class="dtb-card dtb-briefing-card dtb-briefing-section"><div class="dtb-card__body"><div class="dtb-briefing-section-heading"><span class="dtb-briefing-section-mark" aria-hidden="true">02</span><div><h3>' .
+            esc_html__( 'Priority actions', 'drywall-toolbox' ) . '</h3><p>' . esc_html__( 'Items that need an operator’s attention, with a direct link to the relevant workspace.', 'drywall-toolbox' ) . '</p></div></div>';
         $pages = [ 'orders' => 'dtb-orders', 'repairs' => 'dtb-repairs', 'returns' => 'dtb-returns',
             'support' => 'dtb-support', 'refunds' => 'dtb-returns', 'fulfillment' => 'dtb-orders',
             'integrations' => 'dtb-system-manager', 'general' => 'dtb-command-center' ];
@@ -255,28 +269,32 @@ function dtb_daily_briefings_render(): void {
         }
         foreach ( $payload['priorities'] ?? [] as $priority ) {
             $target = admin_url( 'admin.php?page=' . ( $pages[ $priority['module'] ] ?? 'dtb-command-center' ) );
-            echo '<div class="dtb-briefing-priority"><strong>' .
-                esc_html( strtoupper( $priority['severity'] ) ) . '</strong> · <a href="' . esc_url( $target ) . '">' .
-                esc_html( $priority['title'] ) . '</a> ' .
+            echo '<article class="dtb-briefing-priority dtb-briefing-priority--' . esc_attr( $priority['severity'] ) . '"><div class="dtb-briefing-priority-main"><span class="dtb-briefing-severity">' .
+                esc_html( ucfirst( $priority['severity'] ) ) . '</span><h4><a href="' . esc_url( $target ) . '">' . esc_html( $priority['title'] ) . '</a></h4>' .
                 ( ! empty( $priority['reference'] ) ? '<code>' . esc_html( $priority['reference'] ) . '</code>' : '' ) .
-                '<p>' . esc_html( $priority['reason'] ) . '</p></div>';
+                '<p>' . esc_html( $priority['reason'] ) . '</p></div></article>';
         }
-        echo '</div></div><div class="dtb-card dtb-briefing-card"><div class="dtb-card__body"><h3>' .
-            esc_html__( 'Source coverage', 'drywall-toolbox' ) . '</h3>';
+        echo '</div></section><section class="dtb-card dtb-briefing-card dtb-briefing-section"><div class="dtb-card__body"><div class="dtb-briefing-section-heading"><span class="dtb-briefing-section-mark" aria-hidden="true">03</span><div><h3>' .
+            esc_html__( 'Evidence coverage', 'drywall-toolbox' ) . '</h3><p>' . esc_html__( 'What was checked and where evidence was limited.', 'drywall-toolbox' ) . '</p></div></div>';
+        if ( empty( $payload['coverage'] ) ) {
+            echo '<p class="dtb-briefing-muted">' . esc_html__( 'No source coverage was provided.', 'drywall-toolbox' ) . '</p>';
+        } else {
+            echo '<div class="dtb-briefing-table-wrap"><table class="dtb-briefing-coverage"><thead><tr><th scope="col">' . esc_html__( 'Source', 'drywall-toolbox' ) . '</th><th scope="col">' . esc_html__( 'Status', 'drywall-toolbox' ) . '</th><th scope="col">' . esc_html__( 'Notes', 'drywall-toolbox' ) . '</th></tr></thead><tbody>';
         foreach ( $payload['coverage'] ?? [] as $source => $detail ) {
-            echo '<p><strong>' . esc_html( ucwords( str_replace( '_', ' ', $source ) ) ) . '</strong>: ' .
-                esc_html( $detail['status'] ) .
-                ( ! empty( $detail['note'] ) ? ' — ' . esc_html( $detail['note'] ) : '' ) . '</p>';
+                echo '<tr><th scope="row">' . esc_html( ucwords( str_replace( '_', ' ', $source ) ) ) . '</th><td><span class="dtb-briefing-coverage-status dtb-briefing-coverage-status--' . esc_attr( $detail['status'] ) . '">' . esc_html( ucwords( str_replace( '_', ' ', $detail['status'] ) ) ) . '</span></td><td>' . esc_html( $detail['note'] ?: '—' ) . '</td></tr>';
+            }
+            echo '</tbody></table></div>';
         }
-        echo '</div></div>';
+        echo '</div></section></article>';
     }
-    echo '</main><aside class="dtb-card dtb-briefing-card dtb-briefing-archive"><div class="dtb-card__body"><h3>' .
-        esc_html__( 'Briefing archive', 'drywall-toolbox' ) . '</h3>';
+    echo '</main><aside class="dtb-card dtb-briefing-card dtb-briefing-archive"><div class="dtb-card__body"><span class="dtb-briefing-kicker">' . esc_html__( 'Past reports', 'drywall-toolbox' ) . '</span><h3>' .
+        esc_html__( 'Briefing archive', 'drywall-toolbox' ) . '</h3><p class="dtb-briefing-archive-intro">' . esc_html__( 'Browse the latest 30 published briefings.', 'drywall-toolbox' ) . '</p><nav aria-label="' . esc_attr__( 'Briefing archive', 'drywall-toolbox' ) . '">';
     if ( ! $archive ) { echo '<p>' . esc_html__( 'No reports yet.', 'drywall-toolbox' ) . '</p>'; }
     foreach ( $archive as $entry ) {
-        echo '<p><a href="' . esc_url( dtb_daily_briefings_url( $entry->report_date ) ) . '">' .
-            esc_html( $entry->report_date ) . '</a> <small>· ' . esc_html( $entry->report_status ) . '</small></p>';
+        $is_current = $row && $row->report_date === $entry->report_date;
+        echo '<a class="dtb-briefing-archive-item' . ( $is_current ? ' is-current' : '' ) . '" href="' . esc_url( dtb_daily_briefings_url( $entry->report_date ) ) . '"' . ( $is_current ? ' aria-current="page"' : '' ) . '><span>' .
+            esc_html( wp_date( get_option( 'date_format' ), strtotime( $entry->report_date . ' 12:00:00' ) ) ) . '</span><small>' . esc_html( ucfirst( $entry->report_status ) ) . '</small></a>';
     }
-    echo '</div></aside></div>';
+    echo '</nav></div></aside></div>';
     dtb_admin_shell_close();
 }
