@@ -12,8 +12,9 @@ Disallow: /notifications
 Disallow: /rewards
 Disallow: /settings/
 
-# WP admin and REST API — already blocked by server, belt-and-suspenders
+# Allow public catalog data needed to render storefront pages; keep other REST routes excluded.
 Disallow: /wp-admin/
+Allow: /wp-json/dtb/v1/catalog/
 Disallow: /wp-json/
 
 __DTB_SITEMAP_RULE__
