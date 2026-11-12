@@ -68,6 +68,31 @@ final class DTB_CatalogProductRepository {
 				)
 			) );
 
+			// Product listings store parent SKU values on product rows. Include the
+			// public parent of matching variation SKUs so one catalog search path
+			// serves both exact and partial variation-SKU discovery. Restrict this
+			// extra lookup to SKU-shaped input; general text search remains on the
+			// normal product title/content path.
+			if ( preg_match( '/^[A-Z0-9._-]{2,100}$/i', $search ) ) {
+				$variation_parent_ids = array_map( 'absint', (array) $wpdb->get_col(
+					$wpdb->prepare(
+						"SELECT DISTINCT variation.post_parent
+						   FROM {$wpdb->posts} variation
+						   INNER JOIN {$wpdb->postmeta} sku_meta
+						     ON sku_meta.post_id = variation.ID AND sku_meta.meta_key = '_sku'
+						   INNER JOIN {$wpdb->posts} parent
+						     ON parent.ID = variation.post_parent
+						  WHERE variation.post_type = 'product_variation'
+						    AND variation.post_status = 'publish'
+						    AND parent.post_type = 'product'
+						    AND parent.post_status = 'publish'
+						    AND sku_meta.meta_value LIKE %s",
+						$like
+					)
+				) );
+				$sku_ids = array_values( array_unique( array_merge( $sku_ids, $variation_parent_ids ) ) );
+			}
+
 			if ( ! empty( $sku_ids ) ) {
 				// Also collect title/excerpt matches so we don't lose non-SKU results.
 				$title_ids = array_map( 'absint', (array) $wpdb->get_col(
@@ -324,6 +349,39 @@ final class DTB_CatalogProductRepository {
 
 		if ( count( $meta_query ) > 1 ) {
 			$args['meta_query'] = $meta_query;
+		}
+
+		// Keep WooCommerce catalog visibility authoritative for all customer
+		// listing/search projections. Search additionally excludes products
+		// explicitly hidden from search while category browsing follows the
+		// exclude-from-catalog term.
+		$visibility_slugs = [ 'exclude-from-catalog' ];
+		if ( '' !== $search ) {
+			$visibility_slugs[] = 'exclude-from-search';
+		}
+		$visibility_term_ids = [];
+		foreach ( $visibility_slugs as $visibility_slug ) {
+			$visibility_term = get_term_by( 'slug', $visibility_slug, 'product_visibility' );
+			if ( $visibility_term instanceof WP_Term ) {
+				$visibility_term_ids[] = (int) $visibility_term->term_taxonomy_id;
+			}
+		}
+		if ( $visibility_term_ids ) {
+			$visibility_clause = [
+				'taxonomy' => 'product_visibility',
+				'field'    => 'term_taxonomy_id',
+				'terms'    => $visibility_term_ids,
+				'operator' => 'NOT IN',
+			];
+			if ( isset( $args['tax_query'] ) && is_array( $args['tax_query'] ) ) {
+				$existing_tax_query = $args['tax_query'];
+				if ( ! isset( $existing_tax_query['relation'] ) ) {
+					$existing_tax_query['relation'] = 'AND';
+				}
+				$args['tax_query'] = array_merge( $existing_tax_query, [ $visibility_clause ] );
+			} else {
+				$args['tax_query'] = [ $visibility_clause ];
+			}
 		}
 
 		global $wpdb;

@@ -8,7 +8,7 @@ import {
 
 const FRESH_CACHE_TTL = 5 * 60 * 1000;
 const STALE_CACHE_TTL = 24 * 60 * 60 * 1000;
-const CACHE_VERSION = 'v15-navigation-taxonomy';
+const CACHE_VERSION = 'v17-card-projection-variation-sku-search';
 export const CATALOG_FACETS_CONTRACT_VERSION = '2.3';
 // Bump the local cache namespace when canonical taxonomy relationships change,
 // even when the response shape (contract) remains the same.
@@ -24,12 +24,20 @@ const PUBLIC_ASSET_BASE = String(process.env.PUBLIC_URL || '').replace(/\/+$/, '
 const CATEGORY_STORAGE_PREFIX = `dtb:catalog-category:${CATEGORY_CACHE_VERSION}:`;
 
 const productCache = new Map();
-const productInflight = new Map();
 const facetsCache = new Map();
 const facetsInflight = new Map();
 const snapshotInflight = new Map();
 const categoryCache = new Map();
 const categoryInflight = new Map();
+const catalogReadInflight = new Map();
+
+function coalesceCatalogRead(key, options, request) {
+  if (options?.signal) return request();
+  if (catalogReadInflight.has(key)) return catalogReadInflight.get(key);
+  const pending = request().finally(() => catalogReadInflight.delete(key));
+  catalogReadInflight.set(key, pending);
+  return pending;
+}
 
 function canUseStorage() {
   return typeof window !== 'undefined' && Boolean(window.localStorage);
@@ -216,7 +224,9 @@ export function fetchCatalogFacets(scope = {}) {
 }
 
 export function buildCatalogProductParams(query = {}) {
-  const params = {};
+  // Collection consumers render cards. Detail content is fetched from the
+  // dedicated detail route, keeping list/search payloads bounded by contract.
+  const params = { projection: 'card' };
   if (query.brands && query.brands.length > 0) {
     params.brand = brandToSlug(query.brands[0]);
   }
@@ -347,23 +357,55 @@ export function fetchCatalogProductSnapshot(query = {}) {
  * A valid live response may be cached for the short storefront TTL, but static
  * snapshots are never returned from this function.
  */
-export function fetchCatalogProducts(query = {}) {
+export function fetchCatalogProducts(query = {}, options = {}) {
   const key = sortedKey(buildCatalogProductParams(query));
   const cached = getCacheEntry(productCache, key, PRODUCT_STORAGE_PREFIX);
   if (cached?.data) return Promise.resolve(cached.data);
 
-  if (!productInflight.has(key)) {
-    productInflight.set(
-      key,
-      apiClient(buildCatalogProductsUrl(query))
-        .then((data) => setCacheEntry(productCache, key, PRODUCT_STORAGE_PREFIX, data))
-        .finally(() => {
-          productInflight.delete(key);
-        }),
-    );
+  // An abortable request must own its network operation; sharing it would let
+  // one caller's cancellation reject another caller's catalog read.
+  if (options.signal) {
+    return apiClient(buildCatalogProductsUrl(query), { signal: options.signal })
+      .then((data) => setCacheEntry(productCache, key, PRODUCT_STORAGE_PREFIX, data));
   }
 
-  return productInflight.get(key);
+  return coalesceCatalogRead(`products:${key}`, options, () => apiClient(buildCatalogProductsUrl(query)))
+    .then((data) => setCacheEntry(productCache, key, PRODUCT_STORAGE_PREFIX, data));
+}
+
+export function fetchCatalogProductDetail(slug, options = {}) {
+  const normalizedSlug = String(slug || '').trim();
+  if (!normalizedSlug) return Promise.reject(new TypeError('A product slug is required.'));
+  return coalesceCatalogRead(`detail:${normalizedSlug.toLowerCase()}`, options, () => apiClient(
+    `/wp-json/dtb/v1/catalog/products/${encodeURIComponent(normalizedSlug)}/detail`, options,
+  ));
+}
+
+export function fetchCatalogProductVariations(productId, options = {}) {
+  const normalizedId = String(productId || '').trim();
+  if (!/^\d+$/.test(normalizedId) || Number(normalizedId) <= 0) {
+    return Promise.reject(new TypeError('A valid product ID is required.'));
+  }
+  return coalesceCatalogRead(`variations:${normalizedId}`, options, () => apiClient(
+    `/wp-json/dtb/v1/catalog/products/${encodeURIComponent(normalizedId)}/variations`, options,
+  ));
+}
+
+/** Return null only for confirmed 404; propagate catalog and transport failures. */
+export async function resolveCatalogProductSku(sku, options = {}) {
+  const exactSku = String(sku || '').trim();
+  if (!exactSku) return null;
+  try {
+    return await coalesceCatalogRead(`sku:${exactSku}`, options, () => apiClient(
+      `/wp-json/dtb/v1/catalog/resolve-sku?sku=${encodeURIComponent(exactSku)}`, options,
+    ));
+  } catch (error) {
+    // Only the canonical API's explicit missing-item envelope is a confirmed
+    // miss. A missing route, proxy/static 404, or unrelated REST 404 is an
+    // integration failure and must remain visible to the caller.
+    if (Number(error?.status || 0) === 404 && error?.code === 'not_found') return null;
+    throw error;
+  }
 }
 
 export function buildCatalogCategoryMetaUrl(slug) {
@@ -394,7 +436,7 @@ export function fetchCatalogCategory(slug) {
 
 export function invalidateCatalogPlatformCache() {
   productCache.clear();
-  productInflight.clear();
+  catalogReadInflight.clear();
   facetsCache.clear();
   facetsInflight.clear();
   snapshotInflight.clear();

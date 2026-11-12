@@ -1,4 +1,4 @@
-import { loadCatalog } from '../services/catalog.js';
+import { resolveCatalogProductSku } from '../services/catalogPlatformCache.js';
 
 export function getOrderItemKey(item = {}) {
   if (!item || typeof item !== 'object') return '';
@@ -34,6 +34,14 @@ export function resolveOrderItemImage(item = {}) {
 export function resolveCatalogProductImage(product = {}) {
   if (!product || typeof product !== 'object') return '';
 
+  const media = product.media && typeof product.media === 'object' ? product.media : {};
+  if (typeof media.image === 'string' && media.image.trim()) return media.image.trim();
+  if (Array.isArray(media.images) && media.images.length > 0) {
+    const first = media.images[0];
+    if (typeof first === 'string' && first.trim()) return first.trim();
+    if (first && typeof first === 'object') return first.src || first.url || first.thumbnail || '';
+  }
+
   if (typeof product.image === 'string' && product.image.trim()) return product.image.trim();
   if (product.image && typeof product.image === 'object') {
     return product.image.src || product.image.url || product.image.thumbnail || '';
@@ -55,55 +63,36 @@ export function getOrderPreviewItem(order = {}) {
   return items[0] || null;
 }
 
-function normalizeLookupValue(value) {
-  return String(value || '').trim().toLowerCase();
-}
-
-function canonicalLookupValue(value) {
-  return normalizeLookupValue(value).replace(/[^a-z0-9]/g, '');
-}
-
-function matchesItem(product, item) {
-  const itemIds = [
-    item.product_id,
-    item.variation_id,
-    item.parent_id,
-  ].map((value) => String(value || '')).filter(Boolean);
-
-  if (itemIds.includes(String(product.id || ''))) return true;
-
-  const itemSku = normalizeLookupValue(item.sku || item.part_number);
-  if (itemSku) {
-    const productSkus = [
-      product.sku,
-      product.part_number,
-      product.parent_sku,
-    ].map(normalizeLookupValue).filter(Boolean);
-    if (productSkus.includes(itemSku)) return true;
-  }
-
-  const itemSlug = normalizeLookupValue(item.slug);
-  if (itemSlug && normalizeLookupValue(product.slug) === itemSlug) return true;
-
-  const itemName = canonicalLookupValue(item.name);
-  return Boolean(itemName && canonicalLookupValue(product.name) === itemName);
-}
-
-export async function resolveMissingOrderItemImages(items = []) {
+export async function resolveMissingOrderItemImages(items = [], { signal } = {}) {
   const missingItems = items.filter((item) => getOrderItemKey(item) && !resolveOrderItemImage(item));
   if (missingItems.length === 0) return {};
 
-  const catalog = await loadCatalog();
-  if (!Array.isArray(catalog) || catalog.length === 0) return {};
-
   const resolved = {};
+  const bySku = new Map();
   for (const item of missingItems) {
-    const match = catalog.find((product) => matchesItem(product, item));
-    const image = match ? resolveCatalogProductImage(match) : '';
-    if (image) {
-      resolved[getOrderItemKey(item)] = image;
-    }
+    const sku = String(item?.sku || '').trim();
+    if (sku && !bySku.has(sku)) bySku.set(sku, []);
+    if (sku) bySku.get(sku).push(item);
   }
+
+  const entries = Array.from(bySku.entries());
+  let cursor = 0;
+  const workerCount = Math.min(4, entries.length);
+  await Promise.all(Array.from({ length: workerCount }, async () => {
+    while (cursor < entries.length && !signal?.aborted) {
+      const [sku, skuItems] = entries[cursor++];
+      try {
+        const result = await resolveCatalogProductSku(sku, { signal });
+        const product = result?.type === 'variation' ? result.variation : result?.product;
+        const image = resolveCatalogProductImage(product);
+        if (!image) continue;
+        for (const item of skuItems) resolved[getOrderItemKey(item)] = image;
+      } catch {
+        // Image fallback is non-critical; a failed catalog read must not turn
+        // into a guessed match or interfere with order rendering.
+      }
+    }
+  }));
 
   return resolved;
 }

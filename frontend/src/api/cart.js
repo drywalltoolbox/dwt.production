@@ -7,19 +7,13 @@
  * genuinely cross-origin headless client where cookie session continuity cannot
  * be used.
  */
-import { PUBLIC_SITE_URL } from '../utils/siteUrl.js';
+import { API_BASE_URL } from './client.js';
 
-const runtimeHost = typeof window !== 'undefined' ? window.location.hostname : '';
 const runtimeOrigin = typeof window !== 'undefined' ? window.location.origin : '';
-const envApiBase = ( process.env.REACT_APP_API_BASE_URL || '' ).replace( /\/+$/, '' );
-const resolvedApiBase = envApiBase || ( /github\.io$/i.test( runtimeHost ) ? PUBLIC_SITE_URL : runtimeOrigin );
 const configuredStorePath = ( process.env.REACT_APP_STORE_API_BASE || '/wp-json/wc/store/v1' ).replace( /\/+$/, '' );
 const CART_TOKEN_STORAGE_KEY = 'dtb:store-api-cart-token:v1';
 
-const STORE_BASE_CANDIDATES = Array.from( new Set( [
-	`${ resolvedApiBase.replace( /\/+$/, '' ) }${ configuredStorePath }`,
-	`${ resolvedApiBase.replace( /\/+$/, '' ) }/wp/wp-json/wc/store/v1`,
-] ) ).filter( Boolean );
+const STORE_API_BASE = `${ API_BASE_URL.replace( /\/+$/, '' ) }${ configuredStorePath }`;
 
 function originOf( value ) {
 	if ( !value ) return '';
@@ -30,10 +24,9 @@ function originOf( value ) {
 	}
 }
 
-const apiOrigin = originOf( resolvedApiBase );
+const apiOrigin = originOf( API_BASE_URL );
 const USE_CART_TOKEN_SESSION = Boolean( runtimeOrigin && apiOrigin && apiOrigin !== runtimeOrigin );
 
-let activeStoreBaseIndex = 0;
 let storeNonce = '';
 let cartToken = '';
 
@@ -68,10 +61,6 @@ export function getCartToken() {
 	return USE_CART_TOKEN_SESSION ? ( cartToken || readPersistedCartToken() ) : '';
 }
 
-function currentStoreBase() {
-	return STORE_BASE_CANDIDATES[ activeStoreBaseIndex ] || STORE_BASE_CANDIDATES[0] || '';
-}
-
 function updateStoreSessionHeaders( response ) {
 	const nonce = response.headers.get( 'Nonce' ) || response.headers.get( 'X-WC-Store-API-Nonce' );
 	if ( nonce ) storeNonce = nonce;
@@ -87,8 +76,8 @@ function mutationSessionHeaders() {
 	return storeNonce ? { Nonce: storeNonce } : {};
 }
 
-async function storeFetch( path, options = {}, isRetry = false ) {
-	const url = `${ currentStoreBase() }${ path }`;
+async function storeFetch( path, options = {}, sessionRetry = false ) {
+	const url = `${ STORE_API_BASE }${ path }`;
 	const response = await fetch( url, {
 		credentials: 'include',
 		cache: 'no-store',
@@ -101,12 +90,8 @@ async function storeFetch( path, options = {}, isRetry = false ) {
 	} );
 
 	updateStoreSessionHeaders( response );
-	if ( response.status === 404 && !isRetry && activeStoreBaseIndex < STORE_BASE_CANDIDATES.length - 1 ) {
-		activeStoreBaseIndex += 1;
-		return storeFetch( path, options, true );
-	}
 	if ( response.status === 401 ) {
-		if ( isRetry ) throw new Error( `Store API 401: ${ url }` );
+		if ( sessionRetry ) throw new Error( `Store API 401: ${ url }` );
 		storeNonce = '';
 		if ( USE_CART_TOKEN_SESSION ) persistCartToken( '' );
 		await initCart();
@@ -134,7 +119,7 @@ export async function storeApiRequest( path, options = {} ) {
 }
 
 export async function initCart() {
-	const url = `${ currentStoreBase() }/cart`;
+	const url = `${ STORE_API_BASE }/cart`;
 	const response = await fetch( url, {
 		credentials: 'include',
 		cache: 'no-store',
@@ -144,10 +129,6 @@ export async function initCart() {
 		},
 	} );
 	updateStoreSessionHeaders( response );
-	if ( response.status === 404 && activeStoreBaseIndex < STORE_BASE_CANDIDATES.length - 1 ) {
-		activeStoreBaseIndex += 1;
-		return initCart();
-	}
 	if ( !response.ok ) throw new Error( `Store API error ${ response.status }: ${ url }` );
 	if ( response.status === 204 ) return null;
 	return response.json();

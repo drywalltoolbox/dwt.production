@@ -106,7 +106,7 @@ final class DTB_VariationReadModelService {
 	 * owns an exact variation relationship and needs the same effective media,
 	 * price, and inventory projection as the PDP.
 	 */
-	public static function get_normalized_by_id( int $variation_id ): ?array {
+	public static function get_normalized_by_id( int $variation_id, bool $include_gallery = true ): ?array {
 		static $parent_cache = [];
 
 		$product = wc_get_product( $variation_id );
@@ -126,7 +126,9 @@ final class DTB_VariationReadModelService {
 		$raw = self::wc_product_to_rest_array( $product, $parent_wc );
 		$dto = dtb_catalog_normalize_product( $raw, $parent_wc );
 
-		return self::enrich_variation_gallery( $dto, (string) ( $parent_wc['sku'] ?? '' ) );
+		return $include_gallery
+			? self::enrich_variation_gallery( $dto, (string) ( $parent_wc['sku'] ?? '' ) )
+			: $dto;
 	}
 
 	/**

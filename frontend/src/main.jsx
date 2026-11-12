@@ -42,7 +42,17 @@ import App from './App.jsx';
 import ErrorBoundary from './components/system/AppErrorBoundary.jsx';
 import GlobalMotionProvider from './components/motion/GlobalMotionProvider.jsx';
 import { installRepairPackageSelectionRuntime } from './utils/repairPackageSelectionRuntime.js';
-import { prewarmCatalog } from './services/catalog.js';
+
+// Remove credential fields left by the retired browser WooCommerce client.
+// WooCommerce authentication and administration now remain server-owned.
+if (typeof window !== 'undefined') {
+  try {
+    window.localStorage.removeItem('woocommerce_config');
+    window.sessionStorage.removeItem('woocommerce_config');
+  } catch {
+    // Browser storage may be unavailable in private or hardened contexts.
+  }
+}
 
 // Note: the legacy schematicPageLabelRuntime / mobileSchematicNavRuntime
 // global DOM/history runtimes were schematics-only compatibility shims for
@@ -51,22 +61,6 @@ import { prewarmCatalog } from './services/catalog.js';
 // labels and navigation directly through React state and React Router.
 installRepairPackageSelectionRuntime();
 void initializeGeminiStorefront();
-
-if (typeof window !== 'undefined') {
-  const pathname = window.location.pathname.replace(/^\/drywall-toolbox(?=\/|$)/, '') || '/';
-  const isCatalogRoute = pathname.startsWith('/products') || pathname.startsWith('/parts');
-  const isHomePage = pathname === '/';
-  const CATALOG_PREWARM_TIMEOUT_MS = 5000;
-
-  // Home owns its first catalog reads through its visible rails. A duplicate
-  // startup prewarm competes with the LCP image and repeats that work before
-  // the user has requested catalog navigation. Keep the prewarm for other
-  // non-catalog routes, after their initial rendering window.
-  if (!isCatalogRoute && !isHomePage) {
-    const scheduleCatalogPrewarm = () => prewarmCatalog();
-    window.setTimeout(scheduleCatalogPrewarm, CATALOG_PREWARM_TIMEOUT_MS);
-  }
-}
 
 function markAppMounted() {
   if (typeof document === 'undefined') return;

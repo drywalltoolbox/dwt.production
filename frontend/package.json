@@ -22,11 +22,9 @@
   "dependencies": {
     "@base-ui/react": "^1.6.0",
     "@fontsource-variable/geist": "^5.3.0",
-    "axios": "^1.7.9",
     "dompurify": "^3.0.6",
     "framer-motion": "^11.18.2",
     "lucide-react": "^0.563.0",
-    "match-sorter": "^8.2.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-helmet-async": "^3.0.0",

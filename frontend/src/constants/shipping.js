@@ -12,7 +12,6 @@
  * These constants are the single source of truth used by:
  *   - Cart.jsx          (order summary panel)
  *   - Checkout.jsx      (shipping rate display)
- *   - veeqo.js          (checkout shipping-rate normalization)
  *
  * The live WooCommerce shipping zone configuration and FAQ copy must also match
  * FREE_SHIP_THRESHOLD.

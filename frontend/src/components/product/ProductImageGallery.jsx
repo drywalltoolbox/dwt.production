@@ -3,7 +3,6 @@ import { createPortal } from 'react-dom';
 import { AnimatePresence, m as Motion, useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { PLACEHOLDER_IMAGE } from '../../constants/images.js';
-import { apiClient } from '../../api/client.js';
 import '../../styles/product-image-gallery.css';
 import { dtbEase, dtbTransition } from '../../motion/dtbMotion.js';
 
@@ -252,17 +251,15 @@ function collectRawWooImageMeta(rawProduct = {}) {
   return out;
 }
 
-async function fetchParentGallery(parentId) {
-  const normalizedParentId = Number(parentId || 0);
+async function fetchParentGallery(parentProduct) {
+  const normalizedParentId = Number(parentProduct?.id || 0);
   if (!normalizedParentId) return [];
 
   if (parentGalleryCache.has(normalizedParentId)) {
     return parentGalleryCache.get(normalizedParentId);
   }
 
-  const request = apiClient(`/wp-json/drywall/v1/products/${encodeURIComponent(normalizedParentId)}`)
-    .then((parentProduct) => collectRawWooImageMeta(parentProduct))
-    .catch(() => []);
+  const request = Promise.resolve(collectRawWooImageMeta(parentProduct));
   parentGalleryCache.set(normalizedParentId, request);
   return request;
 }
@@ -274,7 +271,7 @@ function mergeImageSets(...sets) {
   return out.length > 0 ? out : [{ src: PLACEHOLDER_IMAGE, srcSet: '', sizes: '' }];
 }
 
-export default function ProductImageGallery({ product }) {
+export default function ProductImageGallery({ product, parentProduct = null }) {
   const reduceMotion = useReducedMotion();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -376,12 +373,12 @@ export default function ProductImageGallery({ product }) {
     if (!parentId || baseImageMeta.length > 0) return undefined;
 
     let cancelled = false;
-    fetchParentGallery(parentId).then((parentImages) => {
+    fetchParentGallery(parentProduct).then((parentImages) => {
       if (!cancelled) setParentImageMeta(parentImages);
     });
 
     return () => { cancelled = true; };
-  }, [baseImageMeta.length, parentId]);
+  }, [baseImageMeta.length, parentId, parentProduct]);
 
   // Initialize every new gallery at the featured image. Previously the rail
   // only received a scroll operation after goTo(), which made thumbnails appear

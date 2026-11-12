@@ -39,7 +39,6 @@ import {
   normalizeCatalogNavigationGroups,
   normalizeDisplayCategorySlug,
 } from '../utils/catalogFacets.js';
-import { searchProducts } from '../services/catalog.js';
 import { fetchCatalogProducts } from '../services/catalogPlatformCache.js';
 import { normalizeCatalogDisplayName } from '../utils/catalogDtoAdapters.js';
 
@@ -636,18 +635,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
           setSearchSuggestions(platformItems.map(toCardProduct).filter(Boolean));
         }
       } catch {
-        try {
-          const legacyResults = await searchProducts(search);
-          const canonicalBrand = canonicalBrandLabel(selectedBrand);
-          const scoped = canonicalBrand
-            ? legacyResults.filter((p) => canonicalBrandLabel(p?.brand || '') === canonicalBrand)
-            : legacyResults;
-          if (searchRequestIdRef.current === requestId) {
-            setSearchSuggestions(scoped.slice(0, 6));
-          }
-        } catch {
-          if (searchRequestIdRef.current === requestId) setSearchSuggestions([]);
-        }
+        if (searchRequestIdRef.current === requestId) setSearchSuggestions([]);
       } finally {
         if (searchRequestIdRef.current === requestId) setSearchSuggestionsLoading(false);
       }

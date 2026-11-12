@@ -7,7 +7,7 @@ import { DTB_LOGO_WHITE_URL, DTB_LOGO_WHITE_MOBILE_URL, handleDtbLogoFallback } 
 import StorefrontSearchOverlay from './StorefrontSearchOverlay';
 import StorefrontMobileDrawer from './StorefrontMobileDrawer';
 import StorefrontMobileNavigationPages from './StorefrontMobileNavigationPages.jsx';
-import { searchProducts } from '../../services/catalog';
+import { searchProducts } from '../../services/api.js';
 import StorefrontSearchDock from './StorefrontSearchDock';
 import StorefrontDesktopNavigation from './StorefrontDesktopNavigation.jsx';
 import { useCatalogFacets } from '../../hooks/useCatalogFacets.js';
@@ -562,10 +562,12 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       return () => { cancelled = true; };
     }
 
+    let controller;
     const t = window.setTimeout(async () => {
+      controller = new AbortController();
       setSearchLoading(true);
       try {
-        const products = (await searchProducts(query))
+        const products = (await searchProducts(query, { signal: controller.signal }))
           .slice(0, MAX_SEARCH_PRODUCTS)
           .map(toSearchProduct);
         if (searchOverlayRequestIdRef.current !== requestId) return;
@@ -573,17 +575,18 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
           setMobileSearchResults(products);
         });
       } catch (err) {
-        if (searchOverlayRequestIdRef.current === requestId) {
+        if (!controller.signal.aborted && searchOverlayRequestIdRef.current === requestId) {
           console.error('Mobile catalog search error:', err);
           setMobileSearchResults([]);
         }
       } finally {
-        if (searchOverlayRequestIdRef.current === requestId) setSearchLoading(false);
+        if (!controller.signal.aborted && searchOverlayRequestIdRef.current === requestId) setSearchLoading(false);
       }
     }, MOBILE_SEARCH_DELAY_MS);
 
     return () => {
       window.clearTimeout(t);
+      controller?.abort();
     };
   }, [mobileSearchQuery]);
 

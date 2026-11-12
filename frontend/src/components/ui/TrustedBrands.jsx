@@ -114,7 +114,7 @@ export default function TrustedBrands({
     observer.observe(viewport);
     if (lane.firstElementChild) observer.observe(lane.firstElementChild);
     return () => observer.disconnect();
-  }, [normalizedBrands.length, shouldAnimate, compactViewport]);
+  }, [normalizedBrands.length, shouldAnimate, compactViewport, reducedMotion]);
 
   if (!normalizedBrands.length) return null;
 

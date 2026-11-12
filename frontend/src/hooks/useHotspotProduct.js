@@ -12,11 +12,9 @@
  * flicker), the same 10s timeout guard against a stalled/failing bootstrap,
  * and the same three-state stock resolution.
  *
- * Uses `getHotspotProductBySku` (not the raw `getProductBySku`) so that
- * hotspot parts whose SKU belongs to a WooCommerce VARIATION (not its own
- * top-level product — e.g. size variants like "AH7-2.5") still resolve: it
- * falls back to `resolveProductBySku` + a per-variation fetch when the
- * top-level SKU search finds nothing. See `frontend/src/api/products.js`.
+ * Uses the canonical exact-SKU catalog endpoint so product and variation SKUs
+ * resolve in one request. Temporary failures remain distinct from confirmed
+ * missing catalog identities.
  *
  * @param {string|undefined|null} sku
  * @returns {{ product: object|null, stockStatus: 'instock'|'outofstock'|'unknown'|null, isLoading: boolean }}
@@ -34,7 +32,7 @@ const _hotspotSkuCache = new Map();
 const LOOKUP_TIMEOUT_MS = 10000;
 
 function computeInitialState(sku) {
-  if (!sku) return { product: null, stockStatus: 'unknown' };
+  if (!sku) return { product: null, stockStatus: 'unknown', lookupStatus: 'not_found' };
   const cached = _hotspotSkuCache.get(sku);
   return cached || { product: null, stockStatus: null };
 }
@@ -58,42 +56,48 @@ export function useHotspotProduct(sku) {
     if (!sku || _hotspotSkuCache.has(sku)) return undefined;
 
     let cancelled = false;
+    let timedOut = false;
+    const controller = new AbortController();
 
     const timeoutId = setTimeout(() => {
       if (cancelled) return;
-      const fallback = { product: null, stockStatus: 'unknown' };
-      _hotspotSkuCache.set(sku, fallback);
+      timedOut = true;
+      controller.abort();
+      const fallback = { product: null, stockStatus: 'unknown', lookupStatus: 'unavailable' };
       setState(fallback);
     }, LOOKUP_TIMEOUT_MS);
 
-    getHotspotProductBySku(sku)
+    getHotspotProductBySku(sku, { signal: controller.signal })
       .then((wcProduct) => {
         if (cancelled) return;
         clearTimeout(timeoutId);
         const resolved = {
           product: wcProduct || null,
           stockStatus: wcProduct ? (wcProduct.stock_status || 'instock') : 'unknown',
+          lookupStatus: wcProduct ? 'found' : 'not_found',
         };
         _hotspotSkuCache.set(sku, resolved);
         setState(resolved);
       })
       .catch(() => {
-        if (cancelled) return;
+        if (cancelled || timedOut) return;
         clearTimeout(timeoutId);
-        const fallback = { product: null, stockStatus: 'unknown' };
-        _hotspotSkuCache.set(sku, fallback);
+        // A failed request is not a confirmed missing product; do not cache it.
+        const fallback = { product: null, stockStatus: 'unknown', lookupStatus: 'unavailable' };
         setState(fallback);
       });
 
     return () => {
       cancelled = true;
       clearTimeout(timeoutId);
+      controller.abort();
     };
   }, [sku]);
 
   return {
     product: state.product,
     stockStatus: state.stockStatus,
+    lookupStatus: state.lookupStatus || (state.product ? 'found' : 'not_found'),
     isLoading: state.stockStatus === null,
   };
 }

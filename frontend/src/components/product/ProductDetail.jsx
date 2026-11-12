@@ -18,7 +18,7 @@ import {
   normalizeAttributeKey,
 } from '../../utils/variationSelection';
 import { setCachedVariations } from '../../utils/variationCache';
-import { apiClient } from '../../api/client.js';
+import { fetchCatalogProductDetail } from '../../services/catalogPlatformCache.js';
 import { getBrandLogo } from '../../utils/brandAssets.js';
 import { toProductDetailDTO } from '../../utils/catalogDtoAdapters.js';
 import { getSchematicLinkForProduct } from '../../data/schematicMappings';
@@ -811,30 +811,19 @@ export default function ProductDetail({
 
         if (product.slug) {
           try {
-            const data = await apiClient(`/wp-json/dtb/v1/catalog/products/${encodeURIComponent(product.slug)}/detail`);
+            const data = await fetchCatalogProductDetail(product.slug);
             if (!mounted) return;
             const detail = toProductDetailDTO(data);
             if (detail?.computed) setComputedData(detail.computed);
-            const detailVars = Array.isArray(detail?.variations) && detail.variations.length > 0 ? detail.variations : null;
-            if (detailVars) {
-              setCachedVariations(product.id, detailVars);
-              applyVariations(detailVars);
-              return;
-            }
-          } catch {
-            if (!mounted) return;
-          }
-        }
-
-        if (product.slug && !disableLegacyDetailFetch) {
-          try {
-            const data = await apiClient(`/wp-json/drywall/v1/products/slug/${encodeURIComponent(product.slug)}/detail`);
-            if (!mounted) return;
-            if (data?.computed) setComputedData(data.computed);
-            const detailVars = Array.isArray(data?.variations) && data.variations.length > 0 ? data.variations : null;
-            if (detailVars) {
-              setCachedVariations(product.id, detailVars);
-              applyVariations(detailVars);
+            // A successful detail contract owns its variation list, including
+            // an authoritative empty list. Only a failed/incomplete detail
+            // read falls back to the dedicated variation endpoint.
+            if (Array.isArray(data?.variations)) {
+              const detailVars = Array.isArray(detail?.variations) ? detail.variations : [];
+              if (detailVars.length > 0) {
+                setCachedVariations(product.id, detailVars);
+                applyVariations(detailVars);
+              }
               return;
             }
           } catch {
@@ -1102,7 +1091,7 @@ export default function ProductDetail({
         <div className="dtb-pdp__inner max-w-full">
           <div className="dtb-pdp__hero grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8">
             <div {...gallery.rootProps} className="dtb-pdp-gallery">
-              <ProductImageGallery product={effectiveProduct} />
+              <ProductImageGallery product={effectiveProduct} parentProduct={product} />
             </div>
 
             <div className="dtb-pdp__info-column flex flex-col">

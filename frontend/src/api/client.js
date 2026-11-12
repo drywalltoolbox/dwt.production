@@ -8,7 +8,6 @@
 // - WooCommerce administrative REST calls are performed by server-side DTB
 //   proxy/controllers, never directly from the browser.
 
-import axios from 'axios';
 import { getToken, clearToken } from '../auth/tokenStore.js';
 import { emitGlobalLoadingEnd, emitGlobalLoadingStart } from '../utils/globalLoadingEvents.js';
 import { PUBLIC_SITE_URL } from '../utils/siteUrl.js';
@@ -157,61 +156,6 @@ async function handleUnauthorized() {
   }
 }
 
-function attachSafeAxiosInterceptors(client) {
-  client.interceptors.request.use(
-    (config) => {
-      emitGlobalLoadingStart();
-      config.__dtbGlobalLoadingTracked = true;
-      const token = getToken();
-      if (token) config.headers.Authorization = `Bearer ${token}`;
-      return config;
-    },
-    (error) => Promise.reject(error),
-  );
-
-  client.interceptors.response.use(
-    (response) => {
-      if (response?.config?.__dtbGlobalLoadingTracked) {
-        emitGlobalLoadingEnd();
-        response.config.__dtbGlobalLoadingTracked = false;
-      }
-      return response;
-    },
-    async (error) => {
-      if (error?.config?.__dtbGlobalLoadingTracked) {
-        emitGlobalLoadingEnd();
-        error.config.__dtbGlobalLoadingTracked = false;
-      }
-      if (error?.response?.status === 401) await handleUnauthorized();
-      return Promise.reject(error);
-    },
-  );
-
-  return client;
-}
-
-export const wpClient = attachSafeAxiosInterceptors(axios.create({
-  baseURL: WP_API_BASE,
-  headers: { 'Content-Type': 'application/json' },
-  withCredentials: true,
-}));
-
-/**
- * Deprecated compatibility client. It targets the server-side `drywall/v1`
- * proxy and intentionally has no WooCommerce Basic Authorization header.
- */
-export const wcClient = attachSafeAxiosInterceptors(axios.create({
-  baseURL: `${API_BASE_URL}/wp-json/drywall/v1`,
-  headers: { 'Content-Type': 'application/json' },
-  withCredentials: true,
-}));
-
-/**
- * Deprecated compatibility hook retained for old callers. There are no browser
- * credentials to bootstrap; the server-side proxy owns WooCommerce auth.
- */
-export const credentialsReady = () => Promise.resolve();
-
 /**
  * Fetch wrapper for DTB, WooCommerce Store API, and read-only proxy routes.
  */
@@ -229,6 +173,10 @@ export async function apiClient(endpoint, options = {}) {
   if (token) headers.Authorization = `Bearer ${token}`;
 
   const requestKey = `${method} ${requestUrls[0]} ${headers.Authorization || ''}`;
+  // Cookie identity is HttpOnly and cannot be represented in a cache key.
+  // Coalesce only bearer-scoped reads; public catalog calls are coalesced by
+  // their owning catalog service, which has an explicit public-data contract.
+  const coalesceGet = method === 'GET' && !requestOptions.signal && Boolean(headers.Authorization);
   const now = Date.now();
 
   if (method === 'GET') {
@@ -241,7 +189,7 @@ export async function apiClient(endpoint, options = {}) {
         retryAfter: cooldownUntil - now,
       };
     }
-    if (inflightGetRequests.has(requestKey)) return inflightGetRequests.get(requestKey);
+    if (coalesceGet && inflightGetRequests.has(requestKey)) return inflightGetRequests.get(requestKey);
   }
 
   if (globalLoading) emitGlobalLoadingStart();
@@ -258,7 +206,10 @@ export async function apiClient(endpoint, options = {}) {
           headers,
           credentials: 'include',
         });
-      } catch {
+      } catch (error) {
+        // Preserve caller cancellation so owners can distinguish abort/timeout
+        // from a transport outage and do not retry a cancelled request.
+        if (requestOptions.signal?.aborted || error?.name === 'AbortError') throw error;
         lastError = { code: 'network_error', message: 'Network request failed.', status: 0, url };
         if (IDEMPOTENT_HTTP_METHODS.has(method)) continue;
         throw lastError;
@@ -311,7 +262,7 @@ export async function apiClient(endpoint, options = {}) {
     throw lastError || { code: 'network_error', message: 'Network request failed.', status: 0 };
   };
 
-  if (method !== 'GET') {
+  if (!coalesceGet) {
     return execute().finally(() => {
       if (globalLoading) emitGlobalLoadingEnd();
     });

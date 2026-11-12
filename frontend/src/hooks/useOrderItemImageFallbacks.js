@@ -16,7 +16,8 @@ export function useOrderItemImageFallbacks(items = []) {
     }
 
     let cancelled = false;
-    resolveMissingOrderItemImages(missingItems)
+    const controller = new AbortController();
+    resolveMissingOrderItemImages(missingItems, { signal: controller.signal })
       .then((resolved) => {
         if (!cancelled) setFallbacks(resolved);
       })
@@ -24,7 +25,10 @@ export function useOrderItemImageFallbacks(items = []) {
         if (!cancelled) setFallbacks({});
       });
 
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+      controller.abort();
+    };
   }, [stableItems]);
 
   return fallbacks;

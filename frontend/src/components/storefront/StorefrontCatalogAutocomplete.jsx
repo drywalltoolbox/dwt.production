@@ -1,40 +1,13 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Autocomplete } from '@base-ui/react/autocomplete';
-import { matchSorter } from 'match-sorter';
 import { Search, X } from 'lucide-react';
-import { getProducts } from '../../services/catalog.js';
+import { fetchCatalogProducts } from '../../services/catalogPlatformCache.js';
+import { toLegacyProductCardDTO } from '../../utils/catalogDtoAdapters.js';
 import { useCart } from '../../context/CartContext.jsx';
 import AddToCartButton from '../ui/AddToCartButton.jsx';
 import '../../styles/storefront-catalog-autocomplete.css';
 
 const MAX_RESULTS = 6;
-
-function categoryText(product) {
-  return (Array.isArray(product?.categories) ? product.categories : [])
-    .map((category) => category?.name || category?.slug || '')
-    .filter(Boolean)
-    .join(' ');
-}
-
-function fuzzyMatchProducts(products, query) {
-  if (!query) return products;
-
-  return matchSorter(products, query, {
-    keys: [
-      'name',
-      'brand',
-      'sku',
-      'part_number',
-      'upc',
-      'slug',
-      (item) => categoryText(item),
-      (item) => item?.short_description || '',
-      { key: 'name', threshold: matchSorter.rankings.CONTAINS },
-      { key: 'sku', threshold: matchSorter.rankings.WORD_STARTS_WITH },
-      { key: 'brand', threshold: matchSorter.rankings.WORD_STARTS_WITH },
-    ],
-  });
-}
 
 function highlightText(text, query) {
   const value = String(text || '');
@@ -86,13 +59,13 @@ export default function StorefrontCatalogAutocomplete({
   onViewAll,
 }) {
   const { addToCart } = useCart();
-  const [catalog, setCatalog] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [searchState, setSearchState] = useState({ query: '', results: [], loading: false, failed: false });
   const [addingProductId, setAddingProductId] = useState(null);
-  const fuzzyResults = useMemo(
-    () => fuzzyMatchProducts(catalog, query.trim()),
-    [catalog, query]
-  );
+  const normalizedQuery = String(query || '').trim();
+  const hasSearchQuery = normalizedQuery.length >= 2;
+  const results = hasSearchQuery && searchState.query === normalizedQuery ? searchState.results : [];
+  const loading = hasSearchQuery && (searchState.query !== normalizedQuery || searchState.loading);
+  const searchFailed = hasSearchQuery && searchState.query === normalizedQuery && searchState.failed;
 
   const handlePurchase = async (event, product) => {
     event.preventDefault();
@@ -119,30 +92,46 @@ export default function StorefrontCatalogAutocomplete({
   };
 
   useEffect(() => {
+    const search = normalizedQuery;
     let active = true;
+    const controller = new AbortController();
 
-    getProducts()
-      .then((products) => {
-        if (active) setCatalog(Array.isArray(products) ? products : []);
-      })
-      .catch((error) => {
-        if (active) {
-          console.error('Catalog autocomplete load error:', error);
-          setCatalog([]);
-        }
-      })
-      .finally(() => {
-        if (active) setLoading(false);
-      });
+    if (search.length < 2) {
+      return () => {
+        active = false;
+        controller.abort();
+      };
+    }
+
+    const timer = window.setTimeout(() => {
+      setSearchState({ query: search, results: [], loading: true, failed: false });
+      fetchCatalogProducts({ search, page: 1, perPage: MAX_RESULTS }, { signal: controller.signal })
+        .then((payload) => {
+          if (!active) return;
+          const items = Array.isArray(payload?.items) ? payload.items : [];
+          setSearchState({
+            query: search,
+            results: items.map((item) => toLegacyProductCardDTO(item)).filter(Boolean),
+            loading: false,
+            failed: false,
+          });
+        })
+        .catch((error) => {
+          if (!active || error?.name === 'AbortError') return;
+          setSearchState({ query: search, results: [], loading: false, failed: true });
+        });
+    }, 180);
 
     return () => {
       active = false;
+      window.clearTimeout(timer);
+      controller.abort();
     };
-  }, []);
+  }, [normalizedQuery]);
 
   return (
     <Autocomplete.Root
-      items={fuzzyResults}
+      items={results}
       value={query}
       open={open}
       onOpenChange={(nextOpen) => onOpenChange(nextOpen)}
@@ -201,7 +190,11 @@ export default function StorefrontCatalogAutocomplete({
             {!loading ? (
               <>
                 <Autocomplete.Empty className="dtb-catalog-autocomplete__empty">
-                  No products matched &quot;{query.trim()}&quot;. Try a broader term.
+                  {searchFailed
+                    ? 'Catalog search is temporarily unavailable. Please try again.'
+                    : query.trim().length < 2
+                      ? 'Type at least two characters to search the catalog.'
+                      : <>No products matched &quot;{query.trim()}&quot;. Try a broader term.</>}
                 </Autocomplete.Empty>
                 <Autocomplete.List className="dtb-catalog-autocomplete__list">
                   {(product) => {

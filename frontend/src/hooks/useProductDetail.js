@@ -16,12 +16,11 @@
  */
 
 import { useReducer, useEffect } from 'react';
-import { apiClient } from '../api/client.js';
+import { fetchCatalogProductDetail } from '../services/catalogPlatformCache.js';
 
 const INIT = { product: null, variations: [], relatedProducts: [], familyRelatedProducts: [], categoryRelatedProducts: [], brandRelatedProducts: [], relatedProductsByVariation: {}, computed: null, status: 'idle', error: null };
 const DETAIL_CACHE_TTL = 2 * 60 * 1000;
 const detailCache = new Map();
-const detailInflight = new Map();
 
 function cacheKey(slug) {
   return String(slug || '').trim().toLowerCase();
@@ -49,23 +48,10 @@ export function preloadProductDetail(slug) {
   const cached = getCachedDetail(key);
   if (cached?.product) return Promise.resolve(cached);
 
-  if (!detailInflight.has(key)) {
-    const encodedSlug = encodeURIComponent(slug);
-    const url = `/wp-json/dtb/v1/catalog/products/${encodedSlug}/detail`;
-    detailInflight.set(
-      key,
-      apiClient(url)
-        .then((data) => {
-          if (data?.product) setCachedDetail(key, data);
-          return data;
-        })
-        .finally(() => {
-          detailInflight.delete(key);
-        }),
-    );
-  }
-
-  return detailInflight.get(key);
+  return fetchCatalogProductDetail(slug).then((data) => {
+    if (data?.product) setCachedDetail(key, data);
+    return data;
+  });
 }
 
 function reducer(_state, action) {

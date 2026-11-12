@@ -225,10 +225,10 @@ export default function StorefrontCartSheet({
       return;
     }
 
-    setSummaryOpen(false);
     let cancelled = false;
     window.queueMicrotask(() => {
       if (cancelled) return;
+      setSummaryOpen(false);
       previouslyFocusedRef.current?.focus?.();
     });
     return () => { cancelled = true; };

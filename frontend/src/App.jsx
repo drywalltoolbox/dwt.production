@@ -7,7 +7,6 @@ import RouteIntentPreloader from './components/routing/RouteIntentPreloader.jsx'
 import StorefrontScrollExperience from './components/routing/StorefrontScrollExperience.jsx';
 import { createLazyRoute } from './routing/routeModules.js';
 import { CartProvider } from './context/CartContext';
-import { WooCommerceProvider } from './context/WooCommerceContext';
 import { WorkflowTransitionProvider } from './context/WorkflowTransitionContext.jsx';
 import { AuthProvider, useAuthContext } from './auth/AuthContext.js';
 import { DesignConfigProvider } from './context/DesignConfigContext.jsx';
@@ -319,20 +318,18 @@ function App() {
     <AppErrorBoundary>
       <AuthProvider>
         <DesignConfigProvider>
-          <WooCommerceProvider>
-            <CartProvider>
-              <LazyMotion features={loadMotionFeatures} strict>
-                <WorkflowTransitionProvider>
-                  <Router basename={basename}>
-                    <ScrollToTop />
-                    <RouteIntentPreloader />
-                    <StorefrontScrollExperience />
-                    <AppShell cartOpen={cartOpen} toggleCart={toggleCart} closeCart={closeCart} />
-                  </Router>
-                </WorkflowTransitionProvider>
-              </LazyMotion>
-            </CartProvider>
-          </WooCommerceProvider>
+          <CartProvider>
+            <LazyMotion features={loadMotionFeatures} strict>
+              <WorkflowTransitionProvider>
+                <Router basename={basename}>
+                  <ScrollToTop />
+                  <RouteIntentPreloader />
+                  <StorefrontScrollExperience />
+                  <AppShell cartOpen={cartOpen} toggleCart={toggleCart} closeCart={closeCart} />
+                </Router>
+              </WorkflowTransitionProvider>
+            </LazyMotion>
+          </CartProvider>
         </DesignConfigProvider>
       </AuthProvider>
     </AppErrorBoundary>

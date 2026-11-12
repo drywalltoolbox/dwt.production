@@ -172,7 +172,7 @@ function dtb_catalog_wc_get_response( string $route, array $params = [] ): ?WP_R
  * @param int[] $ids
  * @return WP_REST_Response|null
  */
-function dtb_catalog_wc_get_products_by_ids_response( array $ids ): ?WP_REST_Response {
+function dtb_catalog_wc_get_products_by_ids_response( array $ids, ?string $fields = null ): ?WP_REST_Response {
 	$ids = array_values( array_filter( array_map( 'absint', $ids ) ) );
 	if ( empty( $ids ) ) {
 		return null;
@@ -182,7 +182,7 @@ function dtb_catalog_wc_get_products_by_ids_response( array $ids ): ?WP_REST_Res
 		'include'  => $ids,
 		'orderby'  => 'include',
 		'per_page' => count( $ids ),
-		'_fields'  => DTB_PRODUCT_DETAIL_FIELDS,
+		'_fields'  => $fields ?: DTB_PRODUCT_DETAIL_FIELDS,
 	] );
 }
 

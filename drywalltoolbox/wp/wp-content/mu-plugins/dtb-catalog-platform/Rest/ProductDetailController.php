@@ -20,6 +20,19 @@ final class DTB_ProductDetailController {
 	private const RELATED_PRODUCT_LIMIT = 10;
 
 	public static function register_routes(): void {
+		register_rest_route( 'dtb/v1', '/catalog/resolve-sku', [
+			'methods'             => 'GET',
+			'callback'            => [ self::class, 'handle_resolve_sku' ],
+			'permission_callback' => '__return_true',
+			'args'                => [
+				'sku' => [
+					'required'          => true,
+					'sanitize_callback' => static fn( $value, $request = null, $param = null ): string => trim( sanitize_text_field( (string) $value ) ),
+					'validate_callback' => static fn( $value, $request = null, $param = null ): bool => is_string( $value ) && '' !== trim( $value ) && strlen( $value ) <= 100,
+				],
+			],
+		] );
+
 		register_rest_route( 'dtb/v1', '/catalog/products/(?P<slug>[a-zA-Z0-9_-]+)/detail', [
 			'methods'             => 'GET',
 			'callback'            => [ self::class, 'handle_detail' ],
@@ -37,6 +50,34 @@ final class DTB_ProductDetailController {
 				],
 			],
 		] );
+	}
+
+	/** GET /dtb/v1/catalog/resolve-sku?sku={exact-sku} */
+	public static function handle_resolve_sku( WP_REST_Request $request ): WP_REST_Response {
+		if ( ! dtb_check_origin() ) {
+			return new WP_REST_Response( dtb_error_envelope( 'forbidden_origin', 'Origin not allowed.', 403 ), 403 );
+		}
+
+		$rate_limit = dtb_rate_limit_get( 'dtb/v1/catalog/resolve-sku' );
+		if ( $rate_limit ) {
+			return $rate_limit;
+		}
+
+		$sku = (string) $request->get_param( 'sku' );
+		if ( '' === $sku || ! function_exists( 'wc_get_product_id_by_sku' ) ) {
+			return new WP_REST_Response( dtb_error_envelope( 'catalog_runtime_unavailable', 'Product catalog is temporarily unavailable.', 503 ), 503 );
+		}
+
+		$result = dtb_catalog_lookup_exact_sku_projection( $sku );
+		if ( is_wp_error( $result ) ) {
+			$status = (int) ( $result->get_error_data()['status'] ?? 503 );
+			return new WP_REST_Response( dtb_error_envelope( $result->get_error_code(), $result->get_error_message(), $status ), $status );
+		}
+		if ( null === $result ) {
+			return new WP_REST_Response( dtb_error_envelope( 'not_found', 'Product not found.', 404 ), 404 );
+		}
+
+		return new WP_REST_Response( $result, 200 );
 	}
 
 	/** GET /dtb/v1/catalog/products/:slug/detail */

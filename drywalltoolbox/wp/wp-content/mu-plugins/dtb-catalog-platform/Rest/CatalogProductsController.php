@@ -21,6 +21,7 @@
 defined( 'ABSPATH' ) || exit;
 
 final class DTB_CatalogProductsController {
+	private const CARD_FIELDS = 'id,type,status,sku,slug,name,price,regular_price,sale_price,on_sale,purchasable,manage_stock,stock_quantity,backorders_allowed,stock_status,parent_id,categories,brands,images,attributes,default_attributes,meta_data';
 
 	public static function register_routes(): void {
 		register_rest_route( 'dtb/v1', '/catalog/products', [
@@ -86,7 +87,11 @@ final class DTB_CatalogProductsController {
 			], 200 );
 		}
 
-		$raw_response = dtb_catalog_wc_get_products_by_ids_response( $ids );
+		$projection = (string) ( $request->get_param( 'projection' ) ?? 'full' );
+		$raw_response = dtb_catalog_wc_get_products_by_ids_response(
+			$ids,
+			'card' === $projection ? self::CARD_FIELDS : null
+		);
 		if ( ! is_object( $raw_response ) ) {
 			return new WP_REST_Response(
 				dtb_error_envelope( 'upstream_error', 'Unexpected response from product catalog.', 502 ),
@@ -132,6 +137,9 @@ final class DTB_CatalogProductsController {
 				$default_var = dtb_catalog_resolve_default_variation( $dto, $variations );
 				$dto         = dtb_catalog_apply_default_variation_to_card( $dto, $default_var );
 			}
+			if ( 'card' === $projection ) {
+				$dto = dtb_catalog_product_card_projection( $dto );
+			}
 
 			$items[] = $dto;
 		}
@@ -158,7 +166,17 @@ final class DTB_CatalogProductsController {
 			'builder_slot'     => [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field' ],
 			'workflow_scope'   => [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field' ],
 			'is_parts'         => [ 'type' => 'integer' ],
-			'search'           => [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field' ],
+			'search'           => [
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+				'validate_callback' => static fn( $value, $request = null, $param = null ): bool => is_string( $value ) && strlen( $value ) <= 100,
+			],
+			'projection'       => [
+				'type'              => 'string',
+				'default'           => 'full',
+				'sanitize_callback' => 'sanitize_key',
+				'validate_callback' => static fn( $value, $request = null, $param = null ): bool => in_array( $value, [ 'full', 'card' ], true ),
+			],
 			'page'             => [ 'type' => 'integer', 'default' => 1, 'minimum' => 1 ],
 			'per_page'         => [ 'type' => 'integer', 'default' => 24, 'minimum' => 1, 'maximum' => 100 ],
 			'sort'             => [ 'type' => 'string', 'default' => 'popular', 'sanitize_callback' => 'sanitize_text_field' ],

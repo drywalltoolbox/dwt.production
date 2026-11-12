@@ -17,7 +17,7 @@ import {
   getRepairPackagesForToolFamily,
   getRepairToolFamilyFromCategory,
 } from '../data/repairPackages.js';
-import { uploadRepairMedia } from '../api/repairs.js';
+import { submitRepair, uploadRepairMedia } from '../api/repairs.js';
 import TransactionSuccessSheet from '../components/confirmation/TransactionSuccessSheet.jsx';
 import ResponsivePicture from '../components/media/ResponsivePicture.jsx';
 import { RESPONSIVE_HERO_MEDIA } from '../assets/media/responsiveHeroMedia.js';
@@ -1287,7 +1287,7 @@ export function RepairStartExperience() {
     setSubmitting(true);
 
     try {
-      const result = await veeqoService.submitRepairRequest({
+      const result = await submitRepair({
         fullName:           formData.fullName,
         email:              formData.email,
         phone:              formData.phone,

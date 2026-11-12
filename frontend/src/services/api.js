@@ -17,6 +17,11 @@ import {
 import { buildIncludesMetaFromContent } from '../utils/includesExtraction.js';
 import { decodeHtmlEntities } from '../utils/string.js';
 import { filterSpecificationMetaData } from '../utils/productSpecificationPolicy.js';
+import { toLegacyProductCardDTO, toLegacyVariationDTO } from '../utils/catalogDtoAdapters.js';
+import {
+  fetchCatalogProducts,
+  fetchCatalogProductVariations,
+} from './catalogPlatformCache.js';
 
 function hasStructuredIncludesMeta(metaItems = []) {
   return metaItems.some(({ key }) => /^_includes_\d+_(name|sku)$/.test(String(key || '')));
@@ -489,96 +494,28 @@ export function normalizeProduct(wcProduct) {
 // ─── Products ────────────────────────────────────────────────────────────────
 
 /**
- * Fetch all published products.
- * @param {Object} params  Optional query params (passed to WC API)
- * @returns {Promise<Array>}
- */
-export const getProducts = (params = {}) =>
-  apiClient(`/wp-json/drywall/v1/products?${new URLSearchParams({ per_page: 100, status: 'publish', ...params }).toString()}`)
-    .then((list) => list.map(normalizeProduct));
-
-/**
- * Fetch a single product by WooCommerce ID.
- * @param {number|string} id
- * @returns {Promise<Object>}
- */
-export const getProduct = (id) =>
-  apiClient(`/wp-json/drywall/v1/products/${encodeURIComponent(id)}`)
-    .then(normalizeProduct);
-
-async function fetchVariationsByIds(parentId, variationIds = []) {
-  const ids = Array.isArray(variationIds) && variationIds.length > 0
-    ? variationIds
-    : null;
-  const parent = ids ? null : await getProduct(parentId);
-  const variationsToFetch = ids || (parent && Array.isArray(parent.variations) ? parent.variations : []);
-  if (!variationsToFetch || variationsToFetch.length === 0) {
-    return [];
-  }
-
-  const variations = await Promise.all(
-    variationsToFetch.map(async (variationId) => {
-      try {
-        const variation = await apiClient(
-          `/wp-json/drywall/v1/products/${encodeURIComponent(parentId)}/variations/${encodeURIComponent(variationId)}`,
-        );
-        return normalizeProduct(variation);
-      } catch {
-        return null;
-      }
-    }),
-  );
-
-  return variations.filter(Boolean);
-}
-
-/**
- * Fetch products belonging to a category (by category ID).
- * @param {number|string} categoryId
- * @param {Object} params
- * @returns {Promise<Array>}
- */
-export const getProductsByCategory = (categoryId, params = {}) =>
-  apiClient(`/wp-json/drywall/v1/products?${new URLSearchParams({ category: categoryId, per_page: 100, status: 'publish', ...params }).toString()}`)
-    .then((list) => list.map(normalizeProduct));
-
-/**
  * Full-text search across products.
  * @param {string} searchTerm
+ * @param {{signal?: AbortSignal}} options
  * @returns {Promise<Array>}
  */
-export const searchProducts = (searchTerm) =>
-  apiClient(`/wp-json/drywall/v1/search?q=${encodeURIComponent(searchTerm)}&${new URLSearchParams({ per_page: 50, status: 'publish' }).toString()}`)
-    .then((list) => list.map(normalizeProduct));
+export const searchProducts = (searchTerm, options = {}) =>
+  fetchCatalogProducts(
+    { search: String(searchTerm || '').trim(), page: 1, perPage: 50 },
+    options,
+  )
+    .then((payload) => (Array.isArray(payload?.items) ? payload.items.map((item) => toLegacyProductCardDTO(item)) : []));
 
 /**
  * Fetch all variations for a variable product.
- * Returns each variation normalised through normalizeProduct() so the shape
- * is consistent with parent products.
+ * Returns each variation through the canonical catalog DTO adapter.
  *
  * @param {number|string} parentId  WooCommerce parent product ID
  * @returns {Promise<Array>}        Array of normalised variation objects
  */
 export const getProductVariations = (parentId) =>
-  apiClient(`/wp-json/drywall/v1/products/${encodeURIComponent(parentId)}/variations?${new URLSearchParams({ per_page: 24 }).toString()}`)
-    .then((list) => Array.isArray(list) ? list.map(normalizeProduct) : [])
-    .catch(async (err) => {
-      const status = Number(err?.status || 0);
-      // Variations are a non-critical enhancement on listing pages. If the
-      // upstream proxy is currently failing (5xx/404/429), degrade to an empty
-      // list so product grids and checkout flows remain available.
-      if (status >= 400) {
-        return [];
-      }
-      // Network-level failure (status 0) or unexpected client error:
-      // fall back to fetching each variation ID individually via the parent's
-      // `variations` array (requires one extra product fetch).
-      try {
-        return await fetchVariationsByIds(parentId);
-      } catch {
-        throw err;
-      }
-    });
+  fetchCatalogProductVariations(parentId)
+    .then((payload) => (Array.isArray(payload?.variations) ? payload.variations.map((item) => toLegacyVariationDTO(item)) : []));
 
 // ─── Categories ──────────────────────────────────────────────────────────────
 
