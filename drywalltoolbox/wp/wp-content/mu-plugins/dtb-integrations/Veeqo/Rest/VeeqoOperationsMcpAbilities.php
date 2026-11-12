@@ -78,7 +78,8 @@ final class DTB_Veeqo_Operations_MCP_Abilities {
 			'inventory-apply' => [ 'Apply previewed WooCommerce product metadata; preview hash bound to operator and exact changes', 'bulk_apply', self::object( [
 				'product_ids' => [ 'type' => 'array', 'minItems' => 1, 'maxItems' => 100, 'items' => self::positive_id() ],
 				'changes' => [ 'type' => 'object' ],
-				'preview_hash' => [ 'type' => 'string', 'pattern' => '^[a-f0-9]{64}
+				'preview_hash' => [ 'type' => 'string', 'pattern' => '^[a-f0-9]{64}$' ],
+			], [ 'product_ids', 'changes', 'preview_hash' ] ), false ],
 		];
 
 		foreach ( $specs as $slug => $spec ) {
@@ -114,49 +115,6 @@ final class DTB_Veeqo_Operations_MCP_Abilities {
 						'readonly' => $readonly,
 						'destructive' => ! $readonly,
 						'idempotent' => $readonly,
-					],
-				],
-			] );
-		}
-	}
-}
-DTB_Veeqo_Operations_MCP_Abilities::init();
- ],
-			], [ 'product_ids', 'changes', 'preview_hash' ] ), false ],
-		];
-
-		foreach ( $specs as $slug => $spec ) {
-			[ $label, $callback, $schema, $readonly ] = $spec;
-			wp_register_ability( self::CATEGORY . '/' . $slug, [
-				'label' => $label,
-				'description' => $label . '. DTB-owned scope and provider gates remain authoritative.',
-				'category' => self::CATEGORY,
-				'input_schema' => $schema,
-				'output_schema' => [ 'type' => 'object', 'additionalProperties' => true ],
-				'permission_callback' => [ __CLASS__, 'allowed' ],
-				'execute_callback' => static function ( $input ) use ( $callback ) {
-					if ( ! self::allowed() ) {
-						return new WP_Error( 'dtb_veeqo_forbidden', 'Permission denied.', [ 'status' => 403 ] );
-					}
-					$params = is_array( $input ) ? $input : [];
-					$request = new WP_REST_Request( 'GET', '/dtb/v1/veeqo/admin/control-center' );
-					$request->set_body_params( $params );
-					foreach ( $params as $key => $value ) {
-						$request->set_param( $key, $value );
-					}
-					$result = DTB_Veeqo_Admin_Controller::$callback( $request );
-					if ( is_wp_error( $result ) ) {
-						return $result;
-					}
-					return $result instanceof WP_REST_Response ? $result->get_data() : $result;
-				},
-				'meta' => [
-					'public' => true,
-					'show_in_rest' => true,
-					'annotations' => [
-						'readonly' => $readonly,
-						'destructive' => false,
-						'idempotent' => true,
 					],
 				],
 			] );
