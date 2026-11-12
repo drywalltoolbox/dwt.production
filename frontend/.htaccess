@@ -127,9 +127,6 @@ ErrorDocument 511 /errors/511.html
   RewriteCond %{QUERY_STRING} (^|&)rest_route= [NC]
   RewriteRule ^index\.php$ wp/index.php [QSA,L]
 
-  # Retired legacy Stripe namespace; WooPayments uses its own active routes.
-  RewriteRule ^wc-stripe/v1(?:/|$) - [G,L,NC]
-
   # Root REST aliases -> WordPress in /wp.
   RewriteRule ^wp-json/?$ wp/index.php?rest_route=/ [QSA,L]
   RewriteRule ^wp-json/(.*)$ wp/index.php?rest_route=/$1 [QSA,L]
@@ -237,8 +234,14 @@ ErrorDocument 511 /errors/511.html
   RewriteCond %{REQUEST_URI} ^/\.well-known/ [NC]
   RewriteRule ^ - [R=404,L]
 
-  # Let WordPress preserve 404 status and serve only recognized React routes.
-  RewriteRule ^ wp/index.php [QSA,L]
+  # Serve only registered storefront route shapes from the React shell.
+  RewriteRule ^products/?$ index.html [QSA,L]
+  RewriteRule ^products/brands(/[^/]+(/categories/[^/]+)?)?/?$ index.html [QSA,L]
+  # Resolve only canonical product-detail routes through WooCommerce so missing
+  # products return 404 and catalog failures remain temporary server errors.
+  RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]
+  RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|terms-of-service|privacy-policy|preview/technical-specifications|cart|contact|settings/woocommerce|login|register|forgot-password|reset-password|dashboard)/?$ index.html [QSA,L]
+  RewriteRule ^(category/[^/]+|repairs(/(start|packages|track|status/[^/]+))?|returns/status/[^/]+|checkout/(complete|payment-failed|payment-cancelled)|order/[0-9]+|order-tracking/[^/]+|support/status/[^/]+|dashboard/repairs/[^/]+|error/[^/]+)/?$ index.html [QSA,L]
 </IfModule>
 
 <IfModule mod_headers.c>

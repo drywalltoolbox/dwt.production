@@ -912,7 +912,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                   setSearchSuggestions([]);
                   commitSearch('');
                 }}
-                onSelectSuggestion={(product) => navigate(product?.slug ? `/products/${product.slug}` : `/product/${product?.id}`)}
+                onSelectSuggestion={(product) => navigate(product?.slug ? `/products/${product.slug}` : '/products')}
               />
             </div>
             <div id="dtb-category-filters" className="flex flex-col lg:flex-row gap-8">

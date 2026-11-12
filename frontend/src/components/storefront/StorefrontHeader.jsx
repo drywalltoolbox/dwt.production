@@ -538,7 +538,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
   }, [mobileSearchQuery]);
 
   const handleDesktopResultClick = (product) => {
-    const target = product?.slug ? `/products/${product.slug}` : `/product/${product?.id}`;
+    const target = product?.slug ? `/products/${product.slug}` : '/products';
     navigate(target);
     setDesktopSearchOpen(false);
     setDesktopSearchQuery('');

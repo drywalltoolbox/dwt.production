@@ -198,7 +198,7 @@ export function buildSiteLinksSearchBoxSchema() {
       '@type':       'SearchAction',
       target:        {
         '@type':      'EntryPoint',
-        urlTemplate:  absoluteSiteUrl('/all-products?search={search_term_string}'),
+        urlTemplate:  absoluteSiteUrl('/products?search={search_term_string}'),
       },
       'query-input': 'required name=search_term_string',
     },

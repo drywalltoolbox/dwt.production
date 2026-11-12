@@ -43,7 +43,7 @@ Only published WooCommerce products intended for indexing are included. Products
 - the product is assigned the WooCommerce `exclude-from-search` visibility term;
 - the DTB product SEO flag `_dtb_seo_noindex` is enabled.
 
-Variations are not emitted as independent URLs; the canonical parent product route remains authoritative. Legacy `/product/{partNumber}` routes and variation-specific path/query forms are not sitemap authorities.
+Variations are not emitted as independent URLs; the canonical parent product route remains authoritative. Only `/products/{slug}` is a product-page route. Old `/product/{partNumber}` paths are not storefront aliases or sitemap authorities; variation selection stays on the canonical parent URL as query state.
 
 Product sitemap cache invalidation is already tied to `save_post_product`, so changes to the DTB noindex field advance the sitemap generation with the rest of the product mutation.
 
@@ -148,7 +148,7 @@ The sitemap is an allowlist, not a mirror of every React Router route. The curre
 - `/repairs`
 - `/repairs/start`
 - `/repairs/packages`
-- `/faq`
+- `/help`
 - `/calculators`
 - `/shipping-policy`
 - `/returns`
@@ -160,11 +160,11 @@ The following route families are deliberately outside the sitemap contract even 
 
 - brand/category faceted intersections such as `/products/brands/{brand}/categories/{category}` until they have an explicit canonical/indexability contract;
 - variation routes and `?variant=` states;
-- `/product/{partNumber}` legacy aliases;
+- retired `/product/{partNumber}` paths (these are not served as storefront aliases);
 - repair, return, support, order, and tracking status URLs;
 - cart and checkout routes;
 - login, registration, password reset, dashboard, account, settings, rewards, and redirect aliases;
-- preview, error, and catch-all routes.
+- preview and explicit error routes; unmatched paths return 404 and are not sitemap entries.
 
 ## Deployment validation
 

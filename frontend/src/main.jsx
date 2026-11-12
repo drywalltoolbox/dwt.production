@@ -57,7 +57,7 @@ void initializeGeminiStorefront();
 
 if (typeof window !== 'undefined') {
   const pathname = window.location.pathname.replace(/^\/drywall-toolbox(?=\/|$)/, '') || '/';
-  const isCatalogRoute = pathname.startsWith('/products') || pathname.startsWith('/parts') || pathname.startsWith('/toolset-builder');
+  const isCatalogRoute = pathname.startsWith('/products') || pathname.startsWith('/parts');
   const isHomePage = pathname === '/';
   const CATALOG_PREWARM_TIMEOUT_MS = 5000;
 

@@ -1,30 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Drywall Toolbox</title>
-    <!--
-      GitHub Pages SPA redirect trick.
-      When GH Pages returns a 404 for a deep-link (e.g. /drywall-toolbox/login),
-      this page fires and encodes the full path into the query string, then
-      redirects back to index.html. The index.html then decodes it and passes
-      it to history.replaceState so React Router picks it up correctly.
-
-      segmentCount = 1  →  keep the repo-name segment (/drywall-toolbox)
-      segmentCount = 0  →  use for custom domains served at root
-    -->
-    <script>
-      var segmentCount = 1;
-      var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?/' +
-        l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="noindex, nofollow">
+    <title>Page not found | Drywall Toolbox</title>
+    <style>
+      :root { color-scheme: light; font-family: Arial, sans-serif; background: #f5f7fa; color: #182433; }
+      body { box-sizing: border-box; display: grid; min-height: 100vh; margin: 0; padding: 24px; place-items: center; }
+      main { width: min(100%, 560px); padding: 40px; border: 1px solid #dce2e9; border-radius: 12px; background: #fff; }
+      h1 { margin: 0 0 12px; font-size: clamp(2rem, 6vw, 3rem); }
+      p { color: #526173; line-height: 1.6; }
+      nav { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+      a { color: #0756b8; font-weight: 700; }
+      @media (max-width: 480px) { main { padding: 28px 22px; } }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <main>
+      <h1>Page not found</h1>
+      <p>That address doesn’t match a page on Drywall Toolbox.</p>
+      <nav aria-label="Helpful links">
+        <a href="/">Go to the homepage</a>
+        <a href="/products">Browse products</a>
+      </nav>
+    </main>
+  </body>
 </html>

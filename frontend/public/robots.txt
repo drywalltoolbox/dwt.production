@@ -3,13 +3,8 @@ __DTB_ROBOTS_RULE__
 
 # Private / utility pages — no crawl benefit, can expose account data
 Disallow: /dashboard
-Disallow: /orders
 Disallow: /checkout
 Disallow: /cart
-Disallow: /account-settings
-Disallow: /addresses
-Disallow: /notifications
-Disallow: /rewards
 Disallow: /settings/
 
 # Allow public catalog data needed to render storefront pages; keep other REST routes excluded.

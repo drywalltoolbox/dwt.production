@@ -173,7 +173,7 @@ function renderIncludesValue(spec, onItemClick) {
         <li key={`${item.name}-${item.sku || index}`} className="ts-includes-list__item">
           {item.sku ? (
             <Link
-              to={`/product/${item.sku}`}
+              to={`/products?search=${encodeURIComponent(item.sku)}`}
               onClick={onItemClick}
               className="ts-includes-list__link"
               title={`View ${item.name}`}

@@ -171,5 +171,5 @@ ESSENTIAL_PAGES: list[tuple[str, str]] = [
     ("/return-policy", "Return Policy"),
     ("/shipping-policy", "Shipping Policy"),
     ("/policies", "Store Policies"),
-    ("/faq", "FAQ"),
+    ("/help", "Help"),
 ]

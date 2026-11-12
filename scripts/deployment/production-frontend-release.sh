@@ -161,7 +161,16 @@ fi
 (cd "$incoming" && sha256sum -c .dtb-file-sha256 >/dev/null) ||
   { echo "Production frontend payload checksum failed" >&2; exit 2; }
 grep -Fq 'RewriteRule ^$ index.html [L]' "$incoming/.htaccess" || { echo "Root homepage rewrite missing" >&2; exit 2; }
-grep -Fq 'RewriteRule ^ index.html [QSA,L]' "$incoming/.htaccess" || { echo "SPA fallback missing" >&2; exit 2; }
+grep -Fq 'RewriteRule ^products/?$ index.html [QSA,L]' "$incoming/.htaccess" || { echo "Explicit products route missing" >&2; exit 2; }
+grep -Fq 'RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]' "$incoming/.htaccess" || { echo "Catalog-checked product route missing" >&2; exit 2; }
+if grep -Eq '^[[:space:]]*RewriteRule \^ (index\.html|wp/index\.php) \[QSA,L\]' "$incoming/.htaccess"; then
+  echo "Catch-all storefront route is forbidden" >&2
+  exit 2
+fi
+if grep -Eq '^[[:space:]]*RewriteRule \^wc-stripe/v1' "$incoming/.htaccess"; then
+  echo "Retired wc-stripe/v1 route is forbidden" >&2
+  exit 2
+fi
 grep -Fq 'payment_intent=pi_' "$incoming/.htaccess" || { echo "WooPayments return routing missing" >&2; exit 2; }
 if grep -Fq 'X-Robots-Tag "noindex, nofollow"' "$incoming/.htaccess"; then
   echo "Production payload is marked noindex" >&2

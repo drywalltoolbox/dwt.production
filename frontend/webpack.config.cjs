@@ -48,6 +48,14 @@ const SERVER_ERROR_CODES = [
   421, 422, 423, 424, 426, 428, 429, 431, 451,
   500, 501, 502, 503, 504, 505, 507, 508, 511,
 ];
+const DEV_STOREFRONT_ROUTES = [
+  /^\/$/,
+  /^\/products\/?$/,
+  /^\/products\/brands(?:\/[^/]+(?:\/categories\/[^/]+)?)?\/?$/,
+  /^\/products\/[a-zA-Z0-9_-]+(?:\/variations\/[0-9]+)?\/?$/,
+  /^\/(?:parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|terms-of-service|privacy-policy|preview\/technical-specifications|cart|contact|settings\/woocommerce|login|register|forgot-password|reset-password|dashboard)\/?$/,
+  /^\/(?:category\/[^/]+|repairs(?:\/(?:start|packages|track|status\/[^/]+))?|returns\/status\/[^/]+|checkout\/(?:complete|payment-failed|payment-cancelled|order-received\/[^/]+)|order\/[0-9]+|order-tracking\/[^/]+|support\/status\/[^/]+|dashboard\/repairs\/[^/]+|error\/[^/]+)\/?$/,
+];
 
 // ─── Config factory ──────────────────────────────────────────────────────────
 
@@ -615,7 +623,20 @@ module.exports = (envFlags, argv) => {
     // ─── Dev server ────────────────────────────────────────────────────────
     devServer: {
       port:               5173,
-      historyApiFallback: true,
+      historyApiFallback: false,
+      setupMiddlewares: (middlewares) => {
+        middlewares.unshift((req, res, next) => {
+          if (req.method !== 'GET' && req.method !== 'HEAD') return next();
+          if (!String(req.headers?.accept || '').includes('text/html')) return next();
+
+          const requestUrl = new URL(req.url || '/', 'http://localhost');
+          if (!DEV_STOREFRONT_ROUTES.some((route) => route.test(requestUrl.pathname))) return next();
+
+          req.url = `/index.html${requestUrl.search}`;
+          return next();
+        });
+        return middlewares;
+      },
       hot:                true,
       open:               true,
       compress:           true,

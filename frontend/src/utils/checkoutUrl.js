@@ -17,8 +17,8 @@ export function getWooCheckoutUrl() {
 
 /**
  * Direct shared-WordPress fallback used only when the public checkout rewrite
- * is accidentally unavailable. This bypasses every SPA catch-all without
- * introducing another checkout implementation.
+ * is accidentally unavailable. It remains a direct WordPress handoff and is
+ * never served by a storefront route rule.
  */
 export function getWooCheckoutFallbackUrl() {
   return buildCheckoutUrl('/wp/index.php?pagename=checkout');

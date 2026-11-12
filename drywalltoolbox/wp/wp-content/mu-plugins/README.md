@@ -266,7 +266,7 @@ Checkout capabilities expose only non-secret readiness. Telemetry never stores f
 
 ## 9. Routing/cache contract
 
-Root routing must send these to WordPress before SPA fallback:
+Root routing sends these explicit commerce and API routes to WordPress before the explicit storefront route rules:
 
 ```text
 /checkout/

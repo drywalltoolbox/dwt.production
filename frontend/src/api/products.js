@@ -295,8 +295,8 @@ export async function getHotspotProductBySku( sku ) {
  * For simple products: returns { type: 'simple', id, slug }
  * For variation SKUs:  returns { type: 'variation', id, parentId, parentSlug }
  *
- * Used by the /product/:sku legacy route to redirect variation SKUs to the
- * correct /products/{parentSlug}?variant={id} URL.
+ * Used by catalog discovery flows to map a variation SKU to its canonical
+ * /products/{parentSlug}?variant={id} URL.
  *
  * @param {string} sku
  * @returns {Promise<{ type: string, id: number, slug?: string, parentId?: number, parentSlug?: string } | null>}

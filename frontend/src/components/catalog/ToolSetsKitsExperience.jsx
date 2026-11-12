@@ -69,7 +69,7 @@ export default function ToolSetsKitsExperience({ category, breadcrumbs = [], pro
         {featured.length > 0 && <div className="dtb-toolsets-featured-grid">
           {featured.map((product) => {
             const price = productPrice(product);
-            const productPath = product.slug ? `/products/${product.slug}` : `/product/${product.id}`;
+            const productPath = product.slug ? `/products/${product.slug}` : '/products';
             const canAddDirectly = !product.is_variable && typeof onAddToCart === 'function';
             return <article className="dtb-toolsets-product" key={product.id || product.sku || product.slug}>
               <Link className="dtb-toolsets-product__media" to={productPath} aria-label={`View ${product.name}`}><img src={productImage(product)} alt="" loading="lazy" /></Link>

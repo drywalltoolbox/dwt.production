@@ -66,8 +66,8 @@ function HotspotCardSkeleton({ displayCode, codeLabel }) {
 function resolveHotspotProductUrl(wcProduct, fallbackUrl = '') {
   // Schematic product projections carry identity, while the React storefront
   // owns route construction. Never prioritize a WooCommerce permalink here:
-  // it targets the legacy `/product/:slug` shell and may encode a variation as
-  // attributes instead of the PDP's `?variant=<id>` contract.
+  // it may encode a variation as attributes instead of the PDP's
+  // `?variant=<id>` contract.
   const variationId = Number(wcProduct?.id);
   const parentId = Number(wcProduct?.parent_id ?? wcProduct?.parentId);
   const parentSlug = String(wcProduct?.parent_slug ?? wcProduct?.parentSlug ?? '').trim();
@@ -79,13 +79,10 @@ function resolveHotspotProductUrl(wcProduct, fallbackUrl = '') {
   const slug = String(wcProduct?.slug || '').trim();
   if (slug) return `/products/${encodeURIComponent(slug)}`;
 
-  // Legacy payloads without product identity are handled by the exact-SKU
-  // lookup below. Retain a safe final fallback for schematic-only parts, but
-  // never preserve the old `/product/:slug` route.
+  // Payloads without product identity are handled by the exact-SKU lookup
+  // below. Schematic-only parts return to catalog discovery.
   const fallback = resolveStorefrontUrl(fallbackUrl);
-  const legacyMatch = fallback.match(/^\/product\/([^/?#]+)/);
-  if (legacyMatch) return `/products/${legacyMatch[1]}`;
-  return fallback.startsWith('/products/') ? fallback : '';
+  return fallback.startsWith('/products/') ? fallback : '/products';
 }
 
 export default function SchematicHotspotCard({ part, schematicContext, onClose, onAddToCart, addingToCart }) {

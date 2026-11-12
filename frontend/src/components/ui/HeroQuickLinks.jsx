@@ -9,7 +9,7 @@ import { Wrench, Package, Settings, Ruler, Calculator } from 'lucide-react';
 
 const QUICK_LINKS = [
   { id: 'repairs', label: 'Repairs', sub: 'Expert service', to: '/repairs', Icon: Wrench },
-  { id: 'products', label: 'Products', sub: 'Full catalog', to: '/all-products', Icon: Package },
+  { id: 'products', label: 'Products', sub: 'Full catalog', to: '/products', Icon: Package },
   { id: 'parts', label: 'Parts', sub: 'Replacement parts', to: '/parts', Icon: Settings },
   { id: 'schematics', label: 'Schematics', sub: 'Tool diagrams', to: '/schematics', Icon: Ruler },
   { id: 'calculator', label: 'Calculator', sub: 'Estimate materials', to: '/calculators', Icon: Calculator },

@@ -58,7 +58,7 @@ function dtb_render_launch_announcement_email( string $unsubscribe_url = '' ): s
 	$account_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account' );
 
 	$values = array(
-		'{{shop_url}}'     => esc_url( home_url( '/all-products' ) ),
+		'{{shop_url}}'     => esc_url( home_url( '/products' ) ),
 		'{{parts_url}}'    => esc_url( home_url( '/parts' ) ),
 		'{{schematics_url}}' => esc_url( home_url( '/schematics' ) ),
 		'{{repair_url}}'   => esc_url( home_url( '/repairs/packages' ) ),

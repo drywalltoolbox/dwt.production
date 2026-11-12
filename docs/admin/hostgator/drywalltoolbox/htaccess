@@ -210,8 +210,7 @@ ErrorDocument 511 /errors/511.html
   RewriteCond %{REQUEST_URI} ^/\.well-known/ [NC]
   RewriteRule ^ - [R=404,L]
 
-  # Root React Router SPA catch-all.
-  RewriteRule ^ index.html [QSA,L]
+  # This historical snapshot has no extensionless storefront fallback.
 </IfModule>
 
 <IfModule mod_headers.c>

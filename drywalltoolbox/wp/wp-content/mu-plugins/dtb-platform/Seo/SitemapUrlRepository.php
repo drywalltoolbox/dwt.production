@@ -28,7 +28,7 @@ final class DTB_SitemapUrlRepository {
 			'/repairs'          => 'repairs',
 			'/repairs/start'    => 'repair-start',
 			'/repairs/packages' => 'repair-packages',
-			'/faq'              => 'faq',
+			'/help'             => 'help',
 			'/calculators'      => 'calculators',
 			'/shipping-policy'  => 'shipping-policy',
 			'/returns'          => 'returns',

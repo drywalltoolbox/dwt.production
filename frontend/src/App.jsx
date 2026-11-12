@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation, useNavigationType, Navigate, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigationType, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useLayoutEffect, Suspense, lazy, useCallback, useRef } from 'react';
 import { LazyMotion } from 'framer-motion';
 import loadMotionFeatures from './motion/asyncFeatures.js';
@@ -19,7 +19,6 @@ import Footer from './components/shell/Footer';
 import CartSidebar from './components/shell/CartSidebar';
 import ProtectedRoute from './components/routing/ProtectedRoute';
 import SmartBackButton from './components/navigation/SmartBackButton.jsx';
-import { isRewardsEnabled } from './utils/featureFlags.js';
 import { getSignupOffer } from './api/signupOffer.js';
 import { initializeWebpackPublicPath } from './setWebpackPublicPath.js';
 import Home from './pages/Home.jsx';
@@ -56,7 +55,6 @@ function setLocalStorageFlag(key) {
 // measured 0.217 CLS regression on mobile Lighthouse.
 const Products = createLazyRoute('products');
 const Parts = createLazyRoute('parts');
-const Product = createLazyRoute('productLegacy');
 const ProductDetailPage = createLazyRoute('productDetail');
 const CategoryLandingPage = createLazyRoute('category');
 const Schematics = createLazyRoute('schematics');
@@ -216,16 +214,6 @@ function ScrollToTop() {
   return null;
 }
 
-function RedirectToProducts() {
-  const { search } = useLocation();
-  return <Navigate to={`/products${search || ''}`} replace />;
-}
-
-function RedirectToHandlesCategory() {
-  const { search } = useLocation();
-  return <Navigate to={`/category/handles${search || ''}`} replace />;
-}
-
 function getRouteBackConfig(pathname) {
   if (pathname.startsWith('/repairs/status/')) return { fallbackTo: '/dashboard?tab=repairs', label: 'Back to repairs' };
   if (pathname.startsWith('/order-tracking/')) return null;
@@ -258,7 +246,6 @@ function RouteBackBar() {
 function AppRoutes() {
   const location = useLocation();
   const [initialPathname] = useState(location.pathname);
-  const rewardsEnabled = isRewardsEnabled();
   const productSelectorElement = <Products title="Products" isPartsFilter={0} />;
   const routes = (
     <Suspense fallback={null}>
@@ -270,14 +257,7 @@ function AppRoutes() {
         <Route path="/products/brands/:brandSlug/categories/:categorySlug" element={productSelectorElement} />
         <Route path="/products/:slug/variations/:variationId" element={<ProductDetailPage />} />
         <Route path="/products/:slug" element={<ProductDetailPage />} />
-        <Route path="/all-products" element={<RedirectToProducts />} />
-        <Route path="/product-category/accessories" element={<Navigate to="/products" replace />} />
-        <Route path="/product-category/accessories/tool-cases" element={<Navigate to="/category/tool-cases" replace />} />
-        <Route path="/product-category/accessories/mud-pan-accessories" element={<Navigate to="/category/mud-pan-accessories" replace />} />
         <Route path="/parts" element={<Parts />} />
-        <Route path="/product/:partNumber" element={<Product />} />
-        <Route path="/category/flat-box-handles" element={<RedirectToHandlesCategory />} />
-        <Route path="/category/taping-finishing-tools" element={<RedirectToProducts />} />
         <Route path="/category/:categoryPathSlug" element={<CategoryLandingPage />} />
         <Route path="/schematics" element={<Schematics />} />
         <Route path="/repairs" element={<Repairs />} />
@@ -286,7 +266,6 @@ function AppRoutes() {
         <Route path="/repairs/track" element={<RepairTrack />} />
         <Route path="/repairs/status/:id" element={<RepairStatus />} />
         <Route path="/help" element={<Help />} />
-        <Route path="/faq" element={<Navigate to={`/help${location.search}`} replace />} />
         <Route path="/calculators" element={<Calculators />} />
         <Route path="/shipping-policy" element={<ShippingPolicy />} />
         <Route path="/returns" element={<ReturnPortal />} />
@@ -313,13 +292,7 @@ function AppRoutes() {
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/dashboard/repairs/:id" element={<ProtectedRoute><RepairStatus /></ProtectedRoute>} />
-        <Route path="/orders" element={<Navigate to="/dashboard?tab=orders" replace />} />
-        <Route path="/rewards" element={<Navigate to={rewardsEnabled ? "/dashboard?tab=rewards" : "/dashboard"} replace />} />
-        <Route path="/account-settings" element={<Navigate to="/dashboard?tab=settings" replace />} />
-        <Route path="/addresses" element={<Navigate to="/dashboard?tab=addresses" replace />} />
-        <Route path="/notifications" element={<Navigate to="/dashboard?tab=settings" replace />} />
         <Route path="/error/:code" element={<CustomerErrorPage />} />
-        <Route path="*" element={<CustomerErrorPage code={404} />} />
       </Routes>
     </Suspense>
   );

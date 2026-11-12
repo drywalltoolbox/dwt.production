@@ -22,7 +22,7 @@ stage_release() {
   local release="$1" version="$2" payload="$temporary/artifact-$1"
   mkdir -p "$payload/assets/js" "$payload/assets/css" "$payload/errors" "$payload/brands/Asgard/Schematics/AT01"
   printf 'React storefront %s\n' "$version" > "$payload/index.html"
-  printf 'production rewrite payment_intent=pi_\nRewriteRule ^$ index.html [L]\nRewriteRule ^ index.html [QSA,L]\n' > "$payload/.htaccess"
+  printf 'production rewrite payment_intent=pi_\nRewriteRule ^$ index.html [L]\nRewriteRule ^products/?$ index.html [QSA,L]\nRewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]\n' > "$payload/.htaccess"
   printf '{"files":{}}\n' > "$payload/asset-manifest.json"
   printf '{"start_url":"/"}\n' > "$payload/site.webmanifest"
   printf 'User-agent: *\nAllow: /\n' > "$payload/robots.txt"

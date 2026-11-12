@@ -8,8 +8,7 @@ import '../../styles/product-detail-brand.css';
 function getProductUrl(product) {
   const slug = product?.slug || product?.post_name || '';
   if (slug) return `/products/${slug}`;
-  const id = product?.id || product?.part_number || product?.sku || '';
-  return id ? `/product/${encodeURIComponent(id)}` : '';
+  return '/products';
 }
 
 function toFinitePrice(value) {

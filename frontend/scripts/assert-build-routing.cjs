@@ -27,7 +27,10 @@ const sourcePath = appEnv === 'staging'
   : path.join(frontendRoot, '.htaccess');
 const manifestPath = path.join(outputRoot, 'asset-manifest.json');
 const indexPath = path.join(outputRoot, 'index.html');
+const notFoundPath = path.join(outputRoot, '404.html');
 const robotsPath = path.join(outputRoot, 'robots.txt');
+const appSourcePath = path.join(frontendRoot, 'src', 'App.jsx');
+const devServerSourcePath = path.join(frontendRoot, 'webpack.config.cjs');
 const schematicSourceRoot = path.join(frontendRoot, 'public', 'brands');
 const sharedBrandsOutputRoot = path.join(outputRoot, 'brands');
 const sharedLogosOutputRoot = path.join(outputRoot, 'logos');
@@ -133,6 +136,25 @@ if (appEnv === 'production' && /^\s*RewriteRule\s+\^cart/m.test(emitted)) {
   throw new Error('The emitted .htaccess incorrectly routes the React /cart page to WordPress.');
 }
 
+const appSource = fs.readFileSync(appSourcePath, 'utf8');
+if (/<Route\s+path=["']\*["']/.test(appSource)) {
+  throw new Error('The React router must not contain a wildcard route.');
+}
+const notFoundHtml = fs.readFileSync(notFoundPath, 'utf8');
+if (/location\.replace|segmentCount|github pages spa redirect/i.test(notFoundHtml)) {
+  throw new Error('The static 404 page must not rewrite unknown routes back to the React shell.');
+}
+for (const retiredPath of ['/all-products', '/product-category/', '/product/', '/faq', '/orders', '/rewards', '/account-settings', '/addresses', '/notifications']) {
+  if (appSource.includes(retiredPath)) {
+    throw new Error(`The React router still references retired route ${retiredPath}.`);
+  }
+}
+
+const devServerSource = fs.readFileSync(devServerSourcePath, 'utf8');
+if (/historyApiFallback\s*:\s*true/.test(devServerSource)) {
+  throw new Error('The development server must not enable catch-all history fallback.');
+}
+
 if (appEnv === 'production' && !/^\s*RewriteRule\s+\^checkout\/\?\$\s+wp\/index\.php\?pagename=checkout\s+\[QSA,L\]$/m.test(emitted)) {
   throw new Error('The emitted .htaccess does not route native /checkout/ to WordPress.');
 }
@@ -141,16 +163,25 @@ if (appEnv === 'production') {
   if (!/^\s*RewriteRule \^\$ index\.html \[L\]$/m.test(emitted)) {
     throw new Error('Production / must serve the React storefront from index.html.');
   }
-  const wordpressRouteFallback = 'RewriteRule ^ wp/index.php [QSA,L]';
   const unknownAssetGuard = 'RewriteRule ^ - [R=404,L]';
-  if (!emitted.includes(wordpressRouteFallback)) {
-    throw new Error('Production extensionless routes must reach WordPress for status-aware storefront routing.');
+  if (/^\s*RewriteRule \^ (?:index\.html|wp\/index\.php) \[QSA,L\]$/m.test(emitted)) {
+    throw new Error('Production routing must not contain a catch-all route to the React shell or WordPress.');
   }
-  if (/^\s*RewriteRule \^ index\.html \[QSA,L\]$/m.test(emitted)) {
-    throw new Error('Production routing must not send every extensionless path to the React shell.');
+  if (emitted.indexOf(unknownAssetGuard) < 0) {
+    throw new Error('Missing static assets must return 404 before explicit storefront routes.');
   }
-  if (emitted.indexOf(unknownAssetGuard) < 0 || emitted.indexOf(unknownAssetGuard) > emitted.indexOf(wordpressRouteFallback)) {
-    throw new Error('Missing static assets must return 404 before extensionless routes reach WordPress.');
+  for (const routeRule of [
+    'RewriteRule ^products/?$ index.html [QSA,L]',
+    'RewriteRule ^products/brands(/[^/]+(/categories/[^/]+)?)?/?$ index.html [QSA,L]',
+    'RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]',
+    'RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|terms-of-service|privacy-policy|preview/technical-specifications|cart|contact|settings/woocommerce|login|register|forgot-password|reset-password|dashboard)/?$ index.html [QSA,L]',
+  ]) {
+    if (!emitted.includes(routeRule)) {
+      throw new Error(`Production explicit storefront route is missing: ${routeRule}`);
+    }
+  }
+  if (/^\s*RewriteRule \^wc-stripe\/v1/m.test(emitted)) {
+    throw new Error('The retired wc-stripe/v1 namespace must not have a storefront rewrite.');
   }
   if (fs.existsSync(path.join(outputRoot, 'storefront.html'))) {
     throw new Error('Production output must use one root storefront shell, not a duplicate storefront.html.');
@@ -188,8 +219,17 @@ if (
 }
 
 if (appEnv === 'staging') {
-  if (!/^\s*RewriteRule\s+\^\s+index\.html\s+\[QSA,L\]$/m.test(emitted)) {
-    throw new Error('The staging .htaccess must provide the SiteGround subdirectory SPA fallback.');
+  if (/^\s*RewriteRule\s+\^\s+(?:index\.html|\/wp\/index\.php)\s+\[QSA,L\]$/m.test(emitted)) {
+    throw new Error('The staging .htaccess must not contain a storefront catch-all.');
+  }
+  for (const routeRule of [
+    'RewriteRule ^products/?$ index.html [QSA,L]',
+    'RewriteRule ^products/brands(/[^/]+(/categories/[^/]+)?)?/?$ index.html [QSA,L]',
+    'RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ /wp/index.php [QSA,L]',
+  ]) {
+    if (!emitted.includes(routeRule)) {
+      throw new Error(`Staging explicit storefront route is missing: ${routeRule}`);
+    }
   }
   if (!/^\s*Header\s+always\s+set\s+X-Robots-Tag\s+"noindex, nofollow"\s*$/m.test(emitted)) {
     throw new Error('The staging .htaccess must enforce X-Robots-Tag: noindex, nofollow.');
@@ -216,8 +256,8 @@ if (appEnv === 'staging') {
   if (!emitted.includes('RewriteRule ^checkout/order-received/([0-9]+)/?$ /wp/index.php?pagename=checkout&order-received=$1 [QSA,L]')) {
     throw new Error('Staging order-received routes must stay on the staging mount and execute through shared WordPress.');
   }
-  if (/RewriteRule[^\r\n]+\s+wp\/index\.php/.test(emitted)) {
-    throw new Error('Staging routing must not target a nonexistent local staging wp/index.php.');
+  if (/RewriteRule[^\r\n]+\s+wp\/index\.php(?:\?|\s|$)/.test(emitted)) {
+    throw new Error('Staging routes must use the shared root WordPress runtime, not a local staging wp/index.php.');
   }
 } else {
   const sitemapIndexRule = 'RewriteRule ^sitemap\\.xml$ wp/index.php?dtb_sitemap=index [QSA,L]';

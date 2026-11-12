@@ -44,7 +44,6 @@ const STATIC_ROUTE_TITLES = {
   '/policies': 'Store Policies',
   '/terms-of-service': 'Terms of Service',
   '/privacy-policy': 'Privacy Policy',
-  '/toolset-builder': 'Toolset Builder',
   '/cart': 'Cart',
   '/checkout': 'Checkout',
   '/checkout/complete': 'Order Complete',
@@ -56,9 +55,6 @@ const STATIC_ROUTE_TITLES = {
   '/forgot-password': 'Forgot Password',
   '/reset-password': 'Reset Password',
   '/dashboard': 'Account Dashboard',
-  '/account-settings': 'Account Settings',
-  '/addresses': 'Addresses',
-  '/notifications': 'Notifications',
 };
 
 function normalizedRoutePath(pathname) {

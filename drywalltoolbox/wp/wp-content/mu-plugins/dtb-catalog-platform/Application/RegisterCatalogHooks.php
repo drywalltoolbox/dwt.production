@@ -16,10 +16,9 @@ add_action( 'template_redirect', [ DTB_CatalogTaxonomyMigration::class, 'redirec
 add_action( 'template_redirect', 'dtb_catalog_serve_storefront_route', 2 );
 
 /**
- * Serve the React shell only for registered storefront route shapes.
- * Unknown paths remain WordPress 404s. Canonical PDP paths are checked against
- * WooCommerce before the shell is returned so catalog outages are never turned
- * into false product 404s.
+ * Serve the React shell only for registered storefront route shapes. Unknown
+ * paths remain WordPress 404s. Canonical PDP paths are checked against
+ * WooCommerce so catalog outages are never turned into false product 404s.
  */
 function dtb_catalog_serve_storefront_route(): void {
 	if ( ! is_404() || is_admin() || wp_doing_ajax() || wp_is_json_request() ) {
@@ -28,15 +27,15 @@ function dtb_catalog_serve_storefront_route(): void {
 
 	$path = (string) wp_parse_url( (string) ( $_SERVER['REQUEST_URI'] ?? '/' ), PHP_URL_PATH );
 	$path = '/' . trim( rawurldecode( $path ), '/' );
-	if ( '/' === $path ) {
-		return;
+	$is_staging = str_starts_with( $path, '/staging/' );
+	if ( $is_staging ) {
+		$path = '/' . ltrim( substr( $path, strlen( '/staging' ) ), '/' );
 	}
 
 	$frontend_route = preg_match(
-		'~^/(?:products(?:/brands(?:/[^/]+(?:/categories/[^/]+)?)?|/[^/]+(?:/variations/[^/]+)?)?|all-products|product/[^/]+|product-category/accessories(?:/tool-cases|/mud-pan-accessories)?|parts|category/[^/]+|schematics|repairs(?:/(?:start|packages|track|status/[^/]+))?|help|faq|calculators|shipping-policy|returns(?:/status/[^/]+)?|return-policy|policies|terms-of-service|privacy-policy|preview/technical-specifications|cart|checkout(?:/(?:complete|payment-failed|payment-cancelled|order-received/[^/]+))?|order/[^/]+|order-tracking/[^/]+|contact|support/status/[^/]+|settings/woocommerce|login|register|forgot-password|reset-password|dashboard(?:/repairs/[^/]+)?|orders|rewards|account-settings|addresses|notifications|error/[^/]+)$~D',
+		'~^/(?:products(?:/brands(?:/[^/]+(?:/categories/[^/]+)?)?|/[^/]+(?:/variations/[0-9]+)?)?|parts|category/[^/]+|schematics|repairs(?:/(?:start|packages|track|status/[^/]+))?|help|calculators|shipping-policy|returns(?:/status/[^/]+)?|return-policy|policies|terms-of-service|privacy-policy|preview/technical-specifications|cart|checkout(?:/(?:complete|payment-failed|payment-cancelled|order-received/[^/]+))?|order/[0-9]+|order-tracking/[^/]+|contact|support/status/[^/]+|settings/woocommerce|login|register|forgot-password|reset-password|dashboard(?:/repairs/[^/]+)?|error/[^/]+)$~D',
 		$path
 	);
-
 	if ( ! $frontend_route ) {
 		return;
 	}
@@ -62,7 +61,7 @@ function dtb_catalog_serve_storefront_route(): void {
 		}
 	}
 
-	$shell = dirname( ABSPATH ) . '/index.html';
+	$shell = dirname( ABSPATH ) . ( $is_staging ? '/staging/index.html' : '/index.html' );
 	if ( ! is_readable( $shell ) ) {
 		status_header( 503 );
 		exit;

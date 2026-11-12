@@ -682,8 +682,8 @@ function dtb_proxy_product_by_slug( WP_REST_Request $request ): WP_REST_Response
  * GET /drywall/v1/products/resolve-sku/{sku}
  *
  * Resolves any product SKU — including variation SKUs — to its canonical URL
- * components.  Used by the React /product/:sku legacy route to redirect
- * variation SKUs to the correct /products/{parentSlug}?variant={id} URL.
+ * components. Used by storefront discovery to construct the canonical
+ * /products/{parentSlug}?variant={id} URL for variation SKUs.
  *
  * Returns:
  *   { "type": "simple",    "id": N, "slug": "..." }

@@ -13,7 +13,7 @@ const GROUPS = [
 ];
 
 function productUrl(product) {
-  return product?.slug ? `/products/${product.slug}` : `/product/${product.id}`;
+  return product?.slug ? `/products/${product.slug}` : '/products';
 }
 
 function priceLabel(product) {

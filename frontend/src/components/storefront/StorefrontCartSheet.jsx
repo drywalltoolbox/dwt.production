@@ -59,15 +59,14 @@ function getProductDetailHref(item) {
       const url = new URL(permalink, window.location.origin);
       const segments = url.pathname.split('/').filter(Boolean);
       slug = segments[segments.length - 1] || '';
-    } catch { /* Use the existing product lookup route below. */ }
+    } catch { /* Fall back to catalog discovery below. */ }
   }
   if (slug) {
     const variationId = Number(item?.variation_id || 0);
     return `/products/${encodeURIComponent(slug)}${variationId > 0 ? `?variant=${variationId}` : ''}`;
   }
-  // Existing legacy route resolves SKUs and numeric IDs against WooCommerce.
-  const fallbackKey = item?.parent_id || item?.sku || item?.part_number || item?.id;
-  return fallbackKey ? `/product/${encodeURIComponent(String(fallbackKey))}` : '/products';
+  const fallbackKey = getCartItemSku(item);
+  return fallbackKey ? `/products?search=${encodeURIComponent(fallbackKey)}` : '/products';
 }
 
 export default function StorefrontCartSheet({

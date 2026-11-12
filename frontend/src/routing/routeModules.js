@@ -3,7 +3,6 @@ import { lazy } from 'react';
 const moduleLoaders = {
   products: () => import('../pages/Products.jsx'),
   parts: () => import('../pages/Parts.jsx'),
-  productLegacy: () => import('../pages/Product.jsx'),
   productDetail: () => import('../pages/ProductDetailPage.jsx'),
   category: () => import('../pages/CategoryLandingPage.jsx'),
   schematics: () => import('../pages/SchematicsPage.jsx'),
@@ -76,11 +75,10 @@ function normalizePathname(input) {
 export function resolveRouteModuleKey(input) {
   const pathname = normalizePathname(input);
 
-  if (pathname === '/' || pathname === '/all-products' || pathname === '/orders' || pathname === '/rewards' || pathname === '/account-settings' || pathname === '/addresses' || pathname === '/notifications') return null;
+  if (pathname === '/') return null;
   if (pathname === '/products' || pathname.startsWith('/products/brands')) return 'products';
   if (/^\/products\/[^/]+(?:\/variations\/[^/]+)?$/.test(pathname)) return 'productDetail';
   if (pathname === '/parts') return 'parts';
-  if (pathname.startsWith('/product/')) return 'productLegacy';
   if (pathname.startsWith('/category/')) return 'category';
   if (pathname === '/schematics') return 'schematics';
   if (pathname === '/repairs') return 'repairs';
@@ -108,7 +106,7 @@ export function resolveRouteModuleKey(input) {
   if (pathname === '/reset-password') return 'resetPassword';
   if (pathname === '/dashboard') return 'dashboard';
   if (pathname === '/calculators') return 'calculators';
-  if (pathname === '/help' || pathname === '/faq') return 'help';
+  if (pathname === '/help') return 'help';
   if (pathname === '/shipping-policy') return 'shippingPolicy';
   if (pathname === '/preview/technical-specifications') return 'technicalSpecificationsPreview';
 
