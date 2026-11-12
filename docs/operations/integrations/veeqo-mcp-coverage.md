@@ -1,6 +1,6 @@
 # Veeqo MCP — authority, coverage, and activation
 
-**Status:** Proposed on PR #240, not deployed. **Observed:** 2026-11-12.  
+**Status:** WordPress MU-plugin adapter deployed on production via MCP DTB on 2026-11-12; PR #240 remains a draft and is not merged. **Observed:** 2026-11-12.  
 **Owning source:** `drywalltoolbox/wp/wp-content/mu-plugins/dtb-integrations/Veeqo/`
 
 ## Distinct connectivity surfaces
@@ -66,4 +66,4 @@ Remove only the newly added 12 ability slugs from the Easy MCP enabled list (ret
 
 ## Current verification state
 
-PR source and live settings inspected. New adapter and standalone contract test committed on a draft feature branch. **PHP lint, test execution, staging, deployment and production activation have not been verified**. Do not mark these complete without execution evidence.
+PR source was installed on production via managed MCP DTB writes. New adapter SHA-256: `a3fc61d1f4bbf59517a3f6d1184f2acce387829475b0f4314103bb477914f57e`. Bootstrap SHA-256 after change: `c4c8783b1c3386870b89db2d8f559f994f9d4669b7535b720c27bc672bc24337`; previous bootstrap backup ID: `20261112-160825-QQPQlTnP`. Live WordPress Abilities REST metadata returned 200 for overview, mapping-diagnostics and inventory-apply. Easy MCP enabled-abilities option readback contains all 12 new names plus the existing tools (79 total); no extra option write was necessary. Veeqo control-center overview and operations read endpoints returned HTTP 200. Site Health after installation had zero critical tests and a good loopback result. Easy MCP diagnostic suite: 57 PASS, 2 WARN, 0 FAIL, 1 UNKNOWN. **PHP CLI lint, standalone contract-test execution, negative-path authorization tests, staging tests, and execution of the new ability callbacks are not verified.** Veeqo inventory sync and webhooks remain disabled. Neither merge nor fresh provider reconciliation was performed. Continue to treat these as outstanding verification gates.
