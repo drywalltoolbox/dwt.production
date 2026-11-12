@@ -32,7 +32,7 @@ Product search is intentionally different from identity resolution: text and SKU
 
 Variable product cards resolve only the explicitly configured WooCommerce default variation ID. If it is absent or does not belong to that parent, the card remains in its options state; listing requests do not scan child variations or infer a default from stock order.
 
-PDP and selector variation collections use WooCommerce's declared parent-child variation relationship through a bounded CRUD read. Detached variations inferred from parent-SKU metadata and self-HTTP variation requests are not catalog sources.
+PDP and selector variation collections use the parent product's declared WooCommerce variation IDs through one bounded CRUD read. An explicitly empty child list is a successful empty collection; an unavailable or malformed child read returns a `503` catalog error and is never presented as a product with no options. Detached variations inferred from parent-SKU metadata and self-HTTP variation requests are not catalog sources.
 
 ## Compatibility transition
 

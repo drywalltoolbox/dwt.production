@@ -23,9 +23,9 @@ final class DTB_VariationReadModelService {
 	 *
 	 * @param  int   $parent_id  WC product ID.
 	 * @param  array $parent_wc  Raw parent WC product array (for image/meta fallback).
-	 * @return array[]           Array of DTB variation DTOs.
+	 * @return array[]|WP_Error  Array of DTB variation DTOs or a temporary read failure.
 	 */
-	public static function get_normalized( int $parent_id, array $parent_wc, bool $include_gallery = true ): array {
+	public static function get_normalized( int $parent_id, array $parent_wc, bool $include_gallery = true ): array|WP_Error {
 		self::$last_diagnostics = [
 			'parentId'                => $parent_id,
 			'parentSku'               => (string) ( $parent_wc['sku'] ?? '' ),
@@ -42,6 +42,11 @@ final class DTB_VariationReadModelService {
 		}
 
 		$raw_vars = self::fetch_direct_children( $parent_id, $parent_wc );
+		if ( is_wp_error( $raw_vars ) ) {
+			self::$last_diagnostics['source'] = 'read_error';
+			self::$last_diagnostics['errorCode'] = $raw_vars->get_error_code();
+			return $raw_vars;
+		}
 		self::$last_diagnostics['directChildCount'] = count( $raw_vars );
 		if ( ! empty( $raw_vars ) ) {
 			self::$last_diagnostics['source'] = 'direct_children';
@@ -238,8 +243,11 @@ final class DTB_VariationReadModelService {
 	 * @param array<string,mixed> $parent_wc Raw parent product payload.
 	 * @return array<int,array<string,mixed>>
 	 */
-	public static function get_selector_options( int $parent_id, array $parent_wc ): array {
+	public static function get_selector_options( int $parent_id, array $parent_wc ): array|WP_Error {
 		$variations = self::get_normalized( $parent_id, $parent_wc, false );
+		if ( is_wp_error( $variations ) ) {
+			return $variations;
+		}
 
 		return array_values( array_map(
 			static function ( array $variation ): array {
@@ -287,28 +295,54 @@ final class DTB_VariationReadModelService {
 	 *
 	 * @param int   $parent_id
 	 * @param array $parent_wc
-	 * @return array<int,array<string,mixed>>
+	 * @return array<int,array<string,mixed>>|WP_Error
 	 */
-	private static function fetch_direct_children( int $parent_id, array $parent_wc ): array {
-		$parent = wc_get_product( $parent_id );
-		if ( ! $parent || ! method_exists( $parent, 'get_children' ) ) {
+	private static function fetch_direct_children( int $parent_id, array $parent_wc ): array|WP_Error {
+		if ( 'variable' !== (string) ( $parent_wc['type'] ?? '' ) ) {
 			return [];
 		}
 
-		$children = array_values( array_unique( array_filter( array_map( 'absint', (array) $parent->get_children() ) ) ) );
+		if ( ! isset( $parent_wc['variations'] ) || ! is_array( $parent_wc['variations'] ) ) {
+			return new WP_Error(
+				'catalog_variations_unavailable',
+				'Product variations are temporarily unavailable.',
+				[ 'status' => 503 ]
+			);
+		}
+
+		$children = array_values( array_unique( array_filter( array_map( 'absint', $parent_wc['variations'] ) ) ) );
 		if ( empty( $children ) ) {
 			return [];
 		}
 
-		$products = wc_get_products( [
-			'include' => $children,
-			'parent'  => $parent_id,
-			'type'    => 'variation',
-			'limit'   => count( $children ),
-			'return'  => 'objects',
-		] );
-		if ( ! is_array( $products ) ) {
-			return [];
+		global $wpdb;
+
+		try {
+			$products = wc_get_products( [
+				'include' => $children,
+				'parent'  => $parent_id,
+				'type'    => 'variation',
+				'limit'   => count( $children ),
+				'return'  => 'objects',
+			] );
+		} catch ( Throwable $error ) {
+			return new WP_Error(
+				'catalog_variations_unavailable',
+				'Product variations are temporarily unavailable.',
+				[ 'status' => 503 ]
+			);
+		}
+
+		if (
+			is_wp_error( $products )
+			|| ! is_array( $products )
+			|| '' !== (string) ( $wpdb->last_error ?? '' )
+		) {
+			return new WP_Error(
+				'catalog_variations_unavailable',
+				'Product variations are temporarily unavailable.',
+				[ 'status' => 503 ]
+			);
 		}
 
 		$by_id = [];

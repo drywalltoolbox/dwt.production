@@ -115,7 +115,15 @@ final class DTB_ProductDetailController {
 		$variations = [];
 
 		if ( 'variable' === $product['type'] && $product['id'] > 0 ) {
-			$variations = DTB_VariationReadModelService::get_normalized( $product['id'], $wc_product );
+			$variation_result = DTB_VariationReadModelService::get_normalized( $product['id'], $wc_product );
+			if ( is_wp_error( $variation_result ) ) {
+				$status = (int) ( $variation_result->get_error_data()['status'] ?? 503 );
+				return new WP_REST_Response(
+					dtb_error_envelope( $variation_result->get_error_code(), $variation_result->get_error_message(), $status ),
+					$status
+				);
+			}
+			$variations = $variation_result;
 		}
 
 		$default_var = dtb_catalog_resolve_default_variation( $product, $variations );
@@ -347,6 +355,13 @@ final class DTB_ProductDetailController {
 		}
 
 		$variations = DTB_VariationReadModelService::get_selector_options( $product_id, $wc_parent );
+		if ( is_wp_error( $variations ) ) {
+			$status = (int) ( $variations->get_error_data()['status'] ?? 503 );
+			return new WP_REST_Response(
+				dtb_error_envelope( $variations->get_error_code(), $variations->get_error_message(), $status ),
+				$status
+			);
+		}
 		$variation_diagnostics = method_exists( 'DTB_VariationReadModelService', 'get_last_diagnostics' )
 			? DTB_VariationReadModelService::get_last_diagnostics()
 			: [ 'available' => false ];
