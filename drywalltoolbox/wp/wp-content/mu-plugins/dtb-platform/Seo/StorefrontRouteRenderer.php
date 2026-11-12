@@ -31,8 +31,8 @@ final class DTB_StorefrontRouteRenderer {
 			return $query_args;
 		}
 
-		$taxonomy = sanitize_key( (string) ( $filter['taxonomy'] ?? '' ) );
-		$term_id  = absint( $filter['term_id'] ?? 0 );
+		$taxonomy       = sanitize_key( (string) ( $filter['taxonomy'] ?? '' ) );
+		$term_id        = absint( $filter['term_id'] ?? 0 );
 		$brand_taxonomy = class_exists( 'DTB_SitemapUrlRepository' ) ? DTB_SitemapUrlRepository::brand_taxonomy() : '';
 		$allowed        = array_filter( [ 'product_cat', $brand_taxonomy ] );
 		if ( '' === $taxonomy || 0 === $term_id || ! in_array( $taxonomy, $allowed, true ) || ! is_object_in_taxonomy( 'product', $taxonomy ) ) {
@@ -276,10 +276,20 @@ final class DTB_StorefrontRouteRenderer {
 		$brand_taxonomy    = class_exists( 'DTB_SitemapUrlRepository' ) ? DTB_SitemapUrlRepository::brand_taxonomy() : '';
 		$is_product_cat    = 'product_cat' === $taxonomy;
 		$is_product_brand  = '' !== $brand_taxonomy && $brand_taxonomy === $taxonomy;
+		$page              = isset( $_GET['page'] ) ? absint( wp_unslash( $_GET['page'] ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public, read-only catalog pagination.
+		$page              = max( 1, min( 100, $page ) );
 		$products          = [];
+		$max_pages         = 1;
 		if ( $is_product_cat || $is_product_brand ) {
-			$products = self::taxonomy_products( $taxonomy, $term, $is_product_cat );
+			$product_page = self::taxonomy_products( $taxonomy, $term, $is_product_cat, $page );
+			$products     = $product_page['products'];
+			$max_pages    = $product_page['max_pages'];
 			if ( empty( $products ) && 0 === (int) $term->count ) {
+				status_header( 404 );
+				header( 'Cache-Control: public, max-age=60' );
+				exit;
+			}
+			if ( $page > $max_pages ) {
 				status_header( 404 );
 				header( 'Cache-Control: public, max-age=60' );
 				exit;
@@ -316,9 +326,22 @@ final class DTB_StorefrontRouteRenderer {
 				$content .= '</li>';
 			}
 			$content .= '</ul></section>';
+			if ( $max_pages > 1 ) {
+				$content .= '<nav aria-label="Product list pages"><ul>';
+				if ( $page > 1 ) {
+					$previous_url = add_query_arg( [ 'page' => $page - 1 ], home_url( $path ) );
+					$content .= '<li><a rel="prev" href="' . esc_url( $previous_url ) . '">Previous product page</a></li>';
+				}
+				if ( $page < $max_pages ) {
+					$next_url = add_query_arg( [ 'page' => $page + 1 ], home_url( $path ) );
+					$content .= '<li><a rel="next" href="' . esc_url( $next_url ) . '">Next product page</a></li>';
+				}
+				$content .= '</ul></nav>';
+			}
 		}
 		$content .= '</main>';
-		self::render_route_document( $title, $description, $canonical, $content, $method );
+		$noindex = isset( $_GET['page'] ) || isset( $_GET['per_page'] ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public, read-only catalog pagination.
+		self::render_route_document( $title, $description, $canonical, $content, $method, $noindex );
 	}
 
 	/**
@@ -327,9 +350,9 @@ final class DTB_StorefrontRouteRenderer {
 	 * @param string  $taxonomy Taxonomy slug.
 	 * @param WP_Term $term     Resolved taxonomy term.
 	 * @param bool    $category Whether WooCommerce's category query should include descendants.
-	 * @return array<int,WC_Product>
+	 * @return array{products:array<int,WC_Product>,max_pages:int}
 	 */
-	private static function taxonomy_products( string $taxonomy, WP_Term $term, bool $category ): array {
+	private static function taxonomy_products( string $taxonomy, WP_Term $term, bool $category, int $page ): array {
 		if ( ! function_exists( 'wc_get_products' ) ) {
 			self::unavailable();
 		}
@@ -337,7 +360,9 @@ final class DTB_StorefrontRouteRenderer {
 		$args = [
 			'status'     => 'publish',
 			'visibility' => 'visible',
-			'limit'      => 12,
+			'limit'      => 25,
+			'page'       => $page,
+			'paginate'   => true,
 			'orderby'    => 'menu_order',
 			'order'      => 'ASC',
 			'return'     => 'objects',
@@ -357,18 +382,21 @@ final class DTB_StorefrontRouteRenderer {
 		} catch ( Throwable $error ) {
 			self::unavailable();
 		}
-		if ( ! is_array( $products ) ) {
+		if ( ! is_object( $products ) || ! isset( $products->products, $products->max_num_pages ) || ! is_array( $products->products ) ) {
 			self::unavailable();
 		}
 
-		return array_values( array_filter( $products, static fn( $product ): bool => $product instanceof WC_Product ) );
+		return [
+			'products'  => array_values( array_filter( $products->products, static fn( $product ): bool => $product instanceof WC_Product ) ),
+			'max_pages' => max( 1, (int) $products->max_num_pages ),
+		];
 	}
 
 	/** @param array<string,mixed> $product WooCommerce REST-shaped product. */
 	private static function render_product_relationship_links( array $product ): string {
 		$links = [
-			'/products'  => 'Browse all products',
-			'/parts'     => 'Find replacement parts',
+			'/products'   => 'Browse all products',
+			'/parts'      => 'Find replacement parts',
 			'/schematics' => 'Browse tool schematics',
 		];
 		foreach ( array_slice( is_array( $product['categories'] ?? null ) ? $product['categories'] : [], 0, 5 ) as $category ) {
@@ -400,7 +428,7 @@ final class DTB_StorefrontRouteRenderer {
 		return $html . '</ul></nav>';
 	}
 
-	private static function render_route_document( string $title, string $description, string $canonical, string $content, string $method ): void {
+	private static function render_route_document( string $title, string $description, string $canonical, string $content, string $method, bool $noindex = false ): void {
 		$document_root = dirname( ABSPATH );
 		$shell_path    = $document_root . '/index.html';
 		$shell_size    = is_file( $shell_path ) ? filesize( $shell_path ) : false;
@@ -413,7 +441,7 @@ final class DTB_StorefrontRouteRenderer {
 		}
 		$html = self::replace_seo_tag( $shell, 'title', $title, 'text' );
 		$html = self::replace_seo_tag( $html, 'description', $description, 'content' );
-		$html = self::replace_seo_tag( $html, 'robots', 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1', 'content' );
+		$html = self::replace_seo_tag( $html, 'robots', $noindex ? 'noindex, follow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1', 'content' );
 		$html = self::replace_seo_tag( $html, 'canonical', $canonical, 'href' );
 		$html = self::replace_seo_tag( $html, 'og-title', $title, 'content' );
 		$html = self::replace_seo_tag( $html, 'og-description', $description, 'content' );
@@ -423,6 +451,9 @@ final class DTB_StorefrontRouteRenderer {
 		$html = self::replace_route_content( $html, $content );
 		if ( ! is_string( $html ) ) {
 			self::unavailable();
+		}
+		if ( $noindex ) {
+			header( 'X-Robots-Tag: noindex, follow' );
 		}
 		self::send_response( $html, $method );
 	}
