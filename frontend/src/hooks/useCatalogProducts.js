@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import {
-  fetchCatalogProductSnapshot,
   fetchCatalogProducts,
   getRenderableCatalogProducts,
 } from '../services/catalogPlatformCache.js';
@@ -60,19 +59,6 @@ export function useCatalogProducts(query = {}, options = {}) {
 
     const load = async () => {
       try {
-        if (!cached?.data) {
-          const snapshot = await fetchCatalogProductSnapshot(query);
-          if (!cancelled && snapshot) {
-            setItems(normalizeItems(snapshot));
-            setPagination(normalizePagination(snapshot));
-            setLoading(false);
-            setRefreshing(true);
-            setCacheSource('snapshot');
-            setError(null);
-            hasRenderableItems.current = true;
-          }
-        }
-
         const data = await fetchCatalogProducts(query);
         if (cancelled) return;
         setItems(normalizeItems(data));

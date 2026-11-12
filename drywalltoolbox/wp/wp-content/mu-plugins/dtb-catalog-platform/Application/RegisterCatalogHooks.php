@@ -13,10 +13,6 @@ add_action( 'init', static function (): void {
 
 add_action( 'init', [ DTB_CatalogTaxonomyMigration::class, 'maybe_run' ], 30 );
 add_action( 'template_redirect', [ DTB_CatalogTaxonomyMigration::class, 'redirect_legacy_category_archives' ], 1 );
-add_action( 'dtb_product_cache_invalidated', static function (): void {
-	dtb_catalog_cache_invalidate_facets();
-} );
-
 /**
  * Invalidate all catalog caches affected by product changes.
  *

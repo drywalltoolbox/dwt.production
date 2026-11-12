@@ -78,21 +78,6 @@ final class DTB_ToolsetEligibilityService {
 	private static function query_slot_options( string $slot_id, string $brand_key ): array {
 		// Query WC products where _dtb_builder_slots contains the slot ID
 		// and _dtb_brand_key matches the template brand.
-		$wc_params = [
-			'status'   => 'publish',
-			'per_page' => 100,
-			'meta_query' => [
-				[
-					'key'     => DTB_ProductMeta::BUILDER_SLOTS,
-					'value'   => $slot_id,
-					'compare' => 'LIKE',
-				],
-			],
-		];
-
-		// Note: dtb_cached_wc_get proxies the WC REST API externally and does
-		// not support meta_query params directly.  Use get_posts() instead for
-		// internal queries that need meta filtering.
 		$products = self::query_by_meta( $slot_id, $brand_key );
 
 		if ( empty( $products ) ) {

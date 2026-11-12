@@ -2,15 +2,6 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Invalidate catalog facets cache.
- */
-function dtb_catalog_cache_invalidate_facets(): void {
-	if ( class_exists( 'DTB_CatalogFacetService' ) ) {
-		DTB_CatalogFacetService::invalidate();
-	}
-}
-
-/**
  * Invalidate toolset-eligibility cache.
  */
 function dtb_catalog_cache_invalidate_toolset(): void {
@@ -25,7 +16,7 @@ function dtb_catalog_cache_invalidate_toolset(): void {
  * @param int|WC_Product|object $subject
  */
 function dtb_catalog_cache_invalidate_all( object|int $subject = 0 ): void {
-	dtb_catalog_cache_invalidate_facets();
+	DTB_CatalogFacetsController::invalidate_cache();
 	dtb_catalog_cache_invalidate_toolset();
 	// WooCommerce changes must also invalidate the cached WC REST proxy read model.
 	if ( function_exists( 'dtb_invalidate_product_cache' ) ) {

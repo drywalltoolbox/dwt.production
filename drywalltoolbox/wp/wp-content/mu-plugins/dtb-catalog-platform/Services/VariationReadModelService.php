@@ -6,10 +6,7 @@
  * Returns an array of DTB Catalog Variation DTOs sorted by _dtb_variation_sort,
  * then by variation ID as a stable tie-breaker.
  *
- * Resolution order:
- *   1. Direct WooCommerce children via WC_Product::get_children().
- *   2. WooCommerce REST child variation endpoint.
- *   3. Detached variation candidates by imported _dtb_parent_product_sku.
+ * Variation identity comes only from the WooCommerce parent-child relationship.
  *
  * @package drywall-toolbox
  */
@@ -17,9 +14,6 @@
 defined( 'ABSPATH' ) || exit;
 
 final class DTB_VariationReadModelService {
-
-	/** Fields requested from WC REST API for variations. */
-	const VARIATION_FIELDS = 'id,sku,slug,name,type,status,price,regular_price,sale_price,on_sale,purchasable,stock_status,stock_quantity,manage_stock,image,images,attributes,meta_data,parent_id,description,short_description,backorders_allowed,backordered';
 
 	/** @var array<string,mixed> */
 	private static array $last_diagnostics = [];
@@ -36,8 +30,6 @@ final class DTB_VariationReadModelService {
 			'parentId'                => $parent_id,
 			'parentSku'               => (string) ( $parent_wc['sku'] ?? '' ),
 			'directChildCount'        => 0,
-			'restChildCount'          => 0,
-			'parentSkuMetaMatchCount' => 0,
 			'normalizedCount'         => 0,
 			'explicitGalleryCount'    => 0,
 			'inheritedGalleryCount'   => 0,
@@ -53,22 +45,6 @@ final class DTB_VariationReadModelService {
 		self::$last_diagnostics['directChildCount'] = count( $raw_vars );
 		if ( ! empty( $raw_vars ) ) {
 			self::$last_diagnostics['source'] = 'direct_children';
-		}
-
-		if ( empty( $raw_vars ) ) {
-			$raw_vars = self::fetch_native_variations( $parent_id );
-			self::$last_diagnostics['restChildCount'] = count( $raw_vars );
-			if ( ! empty( $raw_vars ) ) {
-				self::$last_diagnostics['source'] = 'wc_rest_variations';
-			}
-		}
-
-		if ( empty( $raw_vars ) ) {
-			$raw_vars = self::fetch_variations_by_parent_sku_meta( $parent_wc );
-			self::$last_diagnostics['parentSkuMetaMatchCount'] = count( $raw_vars );
-			if ( ! empty( $raw_vars ) ) {
-				self::$last_diagnostics['source'] = 'parent_sku_meta';
-			}
 		}
 
 		$variations = [];
@@ -106,7 +82,11 @@ final class DTB_VariationReadModelService {
 	 * owns an exact variation relationship and needs the same effective media,
 	 * price, and inventory projection as the PDP.
 	 */
-	public static function get_normalized_by_id( int $variation_id, bool $include_gallery = true ): ?array {
+	public static function get_normalized_by_id(
+		int $variation_id,
+		bool $include_gallery = true,
+		?array $parent_wc_override = null
+	): ?array {
 		static $parent_cache = [];
 
 		$product = wc_get_product( $variation_id );
@@ -115,10 +95,17 @@ final class DTB_VariationReadModelService {
 		}
 
 		$parent_id = (int) $product->get_parent_id();
-		if ( ! array_key_exists( $parent_id, $parent_cache ) ) {
-			$parent_cache[ $parent_id ] = dtb_catalog_wc_fetch_product_by_id( $parent_id );
+		if ( is_array( $parent_wc_override ) ) {
+			if ( $parent_id !== absint( $parent_wc_override['id'] ?? 0 ) ) {
+				return null;
+			}
+			$parent_wc = $parent_wc_override;
+		} else {
+			if ( ! array_key_exists( $parent_id, $parent_cache ) ) {
+				$parent_cache[ $parent_id ] = dtb_catalog_wc_fetch_product_by_id( $parent_id );
+			}
+			$parent_wc = $parent_cache[ $parent_id ];
 		}
-		$parent_wc = $parent_cache[ $parent_id ];
 		if ( ! is_array( $parent_wc ) ) {
 			return null;
 		}
@@ -296,7 +283,7 @@ final class DTB_VariationReadModelService {
 	}
 
 	/**
-	 * Fetch native child variations directly from WooCommerce's product graph.
+	 * Fetch exact child IDs from the WooCommerce parent-child relationship in one bounded CRUD read.
 	 *
 	 * @param int   $parent_id
 	 * @param array $parent_wc
@@ -308,86 +295,35 @@ final class DTB_VariationReadModelService {
 			return [];
 		}
 
-		$children = array_map( 'absint', (array) $parent->get_children() );
+		$children = array_values( array_unique( array_filter( array_map( 'absint', (array) $parent->get_children() ) ) ) );
 		if ( empty( $children ) ) {
 			return [];
 		}
 
+		$products = wc_get_products( [
+			'include' => $children,
+			'parent'  => $parent_id,
+			'type'    => 'variation',
+			'limit'   => count( $children ),
+			'return'  => 'objects',
+		] );
+		if ( ! is_array( $products ) ) {
+			return [];
+		}
+
+		$by_id = [];
+		foreach ( $products as $product ) {
+			if ( $product instanceof WC_Product_Variation && $parent_id === absint( $product->get_parent_id() ) ) {
+				$by_id[ absint( $product->get_id() ) ] = $product;
+			}
+		}
+
 		$raw = [];
 		foreach ( $children as $child_id ) {
-			$child = wc_get_product( $child_id );
-			if ( $child ) {
-				$raw[] = self::wc_product_to_rest_array( $child, $parent_wc );
-			}
-		}
-
-		return $raw;
-	}
-
-	/**
-	 * Fetch native child variations from WooCommerce REST.
-	 *
-	 * @param int $parent_id
-	 * @return array<int,array<string,mixed>>
-	 */
-	private static function fetch_native_variations( int $parent_id ): array {
-		$response = dtb_cached_wc_get(
-			'wc/v3/products/' . $parent_id . '/variations',
-			[
-				'per_page' => 100,
-				'_fields'  => self::VARIATION_FIELDS,
-			]
-		);
-
-		if ( ! is_object( $response ) || ! method_exists( $response, 'get_status' ) || $response->get_status() !== 200 ) {
-			return [];
-		}
-
-		$raw_vars = $response->get_data();
-		return is_array( $raw_vars ) ? $raw_vars : [];
-	}
-
-	/**
-	 * Recover detached variation candidates using the imported DTB parent SKU meta.
-	 *
-	 * @param array<string,mixed> $parent_wc
-	 * @return array<int,array<string,mixed>>
-	 */
-	private static function fetch_variations_by_parent_sku_meta( array $parent_wc ): array {
-		$parent_sku = strtoupper( preg_replace( '/[^A-Z0-9]/', '', (string) ( $parent_wc['sku'] ?? '' ) ) );
-		if ( '' === $parent_sku ) {
-			return [];
-		}
-
-		$query = new WP_Query( [
-			'post_type'      => [ 'product_variation', 'product' ],
-			'post_status'    => [ 'publish', 'private', 'draft' ],
-			'posts_per_page' => 100,
-			'fields'         => 'ids',
-			'no_found_rows'  => true,
-			'meta_query'     => [
-				[
-					'key'     => DTB_ProductMeta::PARENT_PRODUCT_SKU,
-					'value'   => $parent_sku,
-					'compare' => '=',
-				],
-			],
-		] );
-
-		if ( empty( $query->posts ) ) {
-			return [];
-		}
-
-		$raw = [];
-		foreach ( $query->posts as $candidate_id ) {
-			$product = wc_get_product( absint( $candidate_id ) );
-			if ( ! $product ) {
+			if ( ! isset( $by_id[ $child_id ] ) ) {
 				continue;
 			}
-			if ( absint( $product->get_id() ) === absint( $parent_wc['id'] ?? 0 ) ) {
-				continue;
-			}
-			$raw[] = self::wc_product_to_rest_array( $product, $parent_wc );
+			$raw[] = self::wc_product_to_rest_array( $by_id[ $child_id ], $parent_wc );
 		}
 
 		return $raw;

@@ -11,6 +11,8 @@
 defined( 'ABSPATH' ) || exit;
 
 final class DTB_CatalogFacetsController {
+	private const CACHE_TTL = 300;
+	private const CACHE_GENERATION_OPTION = 'dtb_catalog_facets_generation_v2';
 
 	public static function register_routes(): void {
 		register_rest_route( 'dtb/v1', '/catalog/facets', [
@@ -119,15 +121,26 @@ final class DTB_CatalogFacetsController {
 		if ( ! dtb_check_origin() ) {
 			return new WP_REST_Response( dtb_error_envelope( 'forbidden_origin', 'Origin not allowed.', 403 ), 403 );
 		}
+		$rate_limit = dtb_rate_limit_get( 'dtb/v1/catalog/facets' );
+		if ( $rate_limit ) {
+			return $rate_limit;
+		}
 
 		$scope = [
-			'brand'            => (string) $request->get_param( 'brand' ),
+			'brand'            => sanitize_text_field( (string) $request->get_param( 'brand' ) ),
 			'search'           => sanitize_text_field( (string) $request->get_param( 'search' ) ),
-			'category'         => (string) $request->get_param( 'category' ),
-			'display_category' => (string) $request->get_param( 'display_category' ),
-			'product_kind'     => (string) $request->get_param( 'product_kind' ),
-			'is_parts'         => $request->get_param( 'is_parts' ),
+			'category'         => sanitize_key( (string) $request->get_param( 'category' ) ),
+			'display_category' => sanitize_text_field( (string) $request->get_param( 'display_category' ) ),
+			'product_kind'     => sanitize_key( (string) $request->get_param( 'product_kind' ) ),
+			'is_parts'         => self::normalize_optional_bool( $request->get_param( 'is_parts' ) ),
 		];
+		$cache_key = '' === $scope['search'] ? self::cache_key( $scope ) : '';
+		if ( '' !== $cache_key ) {
+			$cached = get_transient( $cache_key );
+			if ( is_array( $cached ) ) {
+				return new WP_REST_Response( $cached, 200 );
+			}
+		}
 
 		$facets = self::build_local_facets( $scope );
 		if ( is_wp_error( $facets ) ) {
@@ -137,7 +150,24 @@ final class DTB_CatalogFacetsController {
 				$status
 			);
 		}
+		if ( '' !== $cache_key ) {
+			set_transient( $cache_key, $facets, self::CACHE_TTL );
+		}
 		return new WP_REST_Response( $facets, 200 );
+	}
+
+	/** Invalidate public facet projections after catalog products or terms change. */
+	public static function invalidate_cache(): void {
+		update_option( self::CACHE_GENERATION_OPTION, wp_generate_uuid4(), false );
+	}
+
+	/** @param array<string,mixed> $scope */
+	private static function cache_key( array $scope ): string {
+		unset( $scope['search'] );
+		ksort( $scope );
+		return 'dtb_catalog_facets_v2_' . md5(
+			(string) get_option( self::CACHE_GENERATION_OPTION, '1' ) . '|' . ( wp_json_encode( $scope ) ?: '' )
+		);
 	}
 
 	/** @return array<string,mixed>|WP_Error */

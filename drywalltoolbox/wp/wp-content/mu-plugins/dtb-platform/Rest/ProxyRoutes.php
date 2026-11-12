@@ -277,69 +277,6 @@ function dtb_wc_url( string $path ): string {
 }
 
 /**
- * GET a WC endpoint with transient caching via dtb_cached_proxy().
- *
- * Cache key and TTL are managed by dtb_cached_proxy() in dtb-cache.php.
- *
- * @param string $wc_path  WC REST path, e.g. 'wc/v3/products'
- * @param array  $params   Query parameters forwarded verbatim.
- * @return WP_REST_Response
- */
-function dtb_cached_wc_get( string $wc_path, array $params ): WP_REST_Response {
-	if ( ! dtb_check_origin() ) {
-		return new WP_REST_Response( dtb_error_envelope( 'forbidden_origin', 'Origin not allowed.', 403 ), 403 );
-	}
-
-	$auth_header = dtb_wc_auth_header();
-	if ( '' === $auth_header ) {
-		return new WP_REST_Response(
-			dtb_error_envelope( 'wc_auth_not_configured', 'Store backend credentials are not configured.', 500 ),
-			500
-		);
-	}
-
-	$rl = dtb_rate_limit_get( $wc_path );
-	if ( $rl ) {
-		return $rl;
-	}
-
-	$result = dtb_cached_proxy( $wc_path, $params, function () use ( $wc_path, $params, $auth_header ) {
-		$wc_url = dtb_wc_url( $wc_path );
-		if ( ! empty( $params ) ) {
-			$wc_url = add_query_arg( $params, $wc_url );
-		}
-
-		$raw = wp_remote_get( $wc_url, [
-			'headers' => [ 'Authorization' => $auth_header ],
-			'timeout' => 15,
-		] );
-
-		if ( is_wp_error( $raw ) ) {
-			return new WP_Error( 'upstream_error', 'Could not reach the product catalog.', [ 'status' => 502 ] );
-		}
-
-		$code = wp_remote_retrieve_response_code( $raw );
-		$body = json_decode( wp_remote_retrieve_body( $raw ), true );
-
-		if ( $code < 200 || $code >= 300 ) {
-			return new WP_Error( 'upstream_error', 'Product catalog returned an error.', [ 'status' => (int) $code ] );
-		}
-
-		return $body;
-	} );
-
-	if ( is_wp_error( $result ) ) {
-		$status = (int) ( $result->get_error_data()['status'] ?? 502 );
-		return new WP_REST_Response(
-			dtb_error_envelope( $result->get_error_code(), $result->get_error_message(), $status ),
-			$status
-		);
-	}
-
-	return new WP_REST_Response( $result, 200 );
-}
-
-/**
  * POST to a WC endpoint (no caching — mutating).
  */
 function dtb_wc_post( string $wc_path, array $body ): WP_REST_Response {
@@ -549,8 +486,6 @@ function dtb_app_password_rate_limit(): ?WP_REST_Response {
 // =============================================================================
 
 // Shared WooCommerce projection fields used by the canonical catalog detail API.
-const DTB_PRODUCT_DETAIL_FIELDS = 'id,name,slug,permalink,type,status,featured,catalog_visibility,description,short_description,sku,price,regular_price,sale_price,on_sale,purchasable,manage_stock,stock_quantity,backorders,backorders_allowed,backordered,sold_individually,weight,dimensions,shipping_required,shipping_class,shipping_class_id,reviews_allowed,average_rating,rating_count,cross_sell_ids,parent_id,categories,brands,tags,images,attributes,default_attributes,variations,menu_order,price_html,related_ids,stock_status,has_options,meta_data';
-
 /** GET /drywall/v1/orders/{id}  (JWT-gated) */
 function dtb_proxy_get_order( WP_REST_Request $request ): WP_REST_Response {
 	return dtb_wc_get( 'wc/v3/orders/' . absint( $request->get_param( 'id' ) ) );

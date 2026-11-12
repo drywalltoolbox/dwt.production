@@ -132,9 +132,22 @@ final class DTB_CatalogProductsController {
 
 			// Listing enrichment for variable products: resolve and apply the
 			// default variation directly into cardProduct for storefront cards.
+			// Only the explicitly configured WooCommerce variation ID is resolved
+			// for a card. Missing or stale configuration leaves the parent card in
+			// its options state instead of triggering a legacy child-list fallback.
 			if ( 'variable' === $dto['type'] ) {
-				$variations  = DTB_VariationReadModelService::get_normalized( $dto['id'], $raw_by_id[ $id ], false );
-				$default_var = dtb_catalog_resolve_default_variation( $dto, $variations );
+				$default_var = null;
+				$default_id  = absint( $dto['defaultVariationId'] ?? 0 );
+				if ( $default_id > 0 ) {
+					$default_var = DTB_VariationReadModelService::get_normalized_by_id(
+						$default_id,
+						false,
+						$raw_by_id[ $id ]
+					);
+					if ( absint( $default_var['parentId'] ?? 0 ) !== absint( $dto['id'] ) ) {
+						$default_var = null;
+					}
+				}
 				$dto         = dtb_catalog_apply_default_variation_to_card( $dto, $default_var );
 			}
 			if ( 'card' === $projection ) {

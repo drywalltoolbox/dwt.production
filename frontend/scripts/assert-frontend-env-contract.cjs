@@ -13,7 +13,6 @@ const expectedKeys = new Set([
   'REACT_APP_ENV',
   'REACT_APP_SEARCH_INDEXING',
   'REACT_APP_REWARDS_ENABLED',
-  'REACT_APP_CATALOG_SNAPSHOTS_ENABLED',
   'REACT_APP_DTB_CATALOG_PLATFORM',
 ]);
 
@@ -69,7 +68,7 @@ for (const [filename, environment] of environments) {
   assert(siteUrl.pathname.replace(/\/$/, '') === (environment === 'staging' ? '/staging' : ''), `${filename}: site URL does not match its deployment mount.`);
   assert(values.REACT_APP_SEARCH_INDEXING === (environment === 'production' ? '1' : '0'), `${filename}: search indexing must be enabled only for production.`);
 
-  for (const key of ['REACT_APP_REWARDS_ENABLED', 'REACT_APP_CATALOG_SNAPSHOTS_ENABLED', 'REACT_APP_DTB_CATALOG_PLATFORM']) {
+  for (const key of ['REACT_APP_REWARDS_ENABLED', 'REACT_APP_DTB_CATALOG_PLATFORM']) {
     assert(values[key] === '0' || values[key] === '1', `${filename}: ${key} must be explicitly set to 0 or 1.`);
   }
 }

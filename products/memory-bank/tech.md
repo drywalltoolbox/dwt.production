@@ -67,7 +67,6 @@ All prefixed `REACT_APP_*` (CRA convention, replaced at compile time via DefineP
 - `REACT_APP_SITE_URL` — Canonical site URL
 - `REACT_APP_APP_ENV` — `production` | `development` | `test`
 - `REACT_APP_DTB_CATALOG_PLATFORM` — Feature flag for catalog platform
-- `REACT_APP_CATALOG_SNAPSHOTS_ENABLED` — Catalog snapshot caching flag
 
 ---
 
