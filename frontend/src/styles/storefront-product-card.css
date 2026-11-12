@@ -154,7 +154,9 @@
 
   .dtb-product-card--grid,
   .dtb-product-card--rail {
-    height: 100%;
+    /* Let each card follow its own content. Stretching to the grid row's height
+       makes the flexible metadata area absorb spare space between SKU and price. */
+    height: auto;
     border: 1px solid #d9e1ed;
     border-radius: 14px;
     background: #fff;
@@ -181,11 +183,11 @@
   .dtb-product-card--grid .dtb-product-card__meta,
   .dtb-product-card--rail .dtb-product-card__meta {
     display: grid;
-    grid-template-rows: 18px 3.45em 1.3em 1px minmax(78px, auto);
-    align-content: stretch;
-    flex: 1 1 auto;
+    grid-template-rows: 18px minmax(2.3em, auto) minmax(1.3em, auto) 1px auto;
+    align-content: start;
+    flex: 0 0 auto;
     min-width: 0;
-    gap: 4px;
+    gap: 3px;
     padding: 1px 14px 12px;
     background: #fff;
   }
