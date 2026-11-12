@@ -66,6 +66,8 @@ function markAppMounted() {
   if (typeof document === 'undefined') return;
 
   document.documentElement.setAttribute('data-dtb-app-mounted', 'true');
+  document.getElementById('root')?.setAttribute('aria-busy', 'false');
+  document.getElementById('dtb-preboot')?.setAttribute('aria-hidden', 'true');
 
   // Tell the entry-bundle watchdog that React mounted successfully, then clear
   // any retry marker left by a prior failed entry bundle.
