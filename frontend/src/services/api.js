@@ -516,21 +516,3 @@ export const searchProducts = (searchTerm, options = {}) =>
 export const getProductVariations = (parentId) =>
   fetchCatalogProductVariations(parentId)
     .then((payload) => (Array.isArray(payload?.variations) ? payload.variations.map((item) => toLegacyVariationDTO(item)) : []));
-
-// ─── Categories ──────────────────────────────────────────────────────────────
-
-/**
- * Fetch all product categories.
- * @param {Object} params
- * @returns {Promise<Array>}
- */
-export const getCategories = (params = {}) =>
-  apiClient(`/wp-json/drywall/v1/categories?${new URLSearchParams({ per_page: 100, hide_empty: true, ...params }).toString()}`);
-
-/**
- * Fetch a single category by ID.
- * @param {number|string} id
- * @returns {Promise<Object>}
- */
-export const getCategory = (id) =>
-  apiClient(`/wp-json/drywall/v1/categories/${encodeURIComponent(id)}`);

@@ -49,7 +49,6 @@ function dtb_strip_product_placeholder_images_from_rest_response( $response, $ha
  */
 function dtb_should_strip_product_placeholder_images_for_route( string $route ): bool {
 	return str_contains( $route, '/dtb/v1/catalog' )
-		|| str_contains( $route, '/drywall/v1/products' )
 		|| str_contains( $route, '/wc/store/v1/products' )
 		|| str_contains( $route, '/wc/v3/products' );
 }

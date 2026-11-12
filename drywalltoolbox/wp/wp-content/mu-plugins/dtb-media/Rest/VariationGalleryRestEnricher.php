@@ -50,13 +50,8 @@ function dtb_variation_gallery_enrich_rest_response( $response, $handler, $reque
  * @return bool
  */
 function dtb_variation_gallery_should_enrich_route( string $route ): bool {
-	return (
-		str_contains( $route, '/dtb/v1/catalog/products/' )
-		&& str_contains( $route, '/detail' )
-	) || (
-		str_contains( $route, '/drywall/v1/products/' )
-		&& str_contains( $route, '/detail' )
-	);
+	return str_contains( $route, '/dtb/v1/catalog/products/' )
+		&& str_contains( $route, '/detail' );
 }
 
 /**
