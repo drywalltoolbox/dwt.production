@@ -1,0 +1,242 @@
+*** Gemini Enterprise for CX Changelog ***
+
+2026-11-03 - version 1.2.1
+* Add a collapsible firewall allowlist banner above Step 1 (Authorize WooCommerce API) on the settings page with Cloudflare and Wordfence instructions for allowing Google requests to `/wp-json/gecx/v1/*`, `/wp-json/wc/v3/*`, and `/wp-json/wc/store/v1/*`.
+* Lift floating and fallback launchers above corner widgets that size themselves after load (such as the Google Merchant Center store widget), watching fixed elements with `ResizeObserver` and attribute/removal observers so the offset re-measures when a widget resizes, appears, or is removed, and keeping the bottom-bar lift while the chat panel is open.
+* Require same-origin requests before acting on a shopper's browser across the Store API `Cart-Token` cookie bridge and `POST /wp-json/gecx/v1/session`, gate `POST /wp-json/gecx/v1/refresh-token` with the same method-override, `no-store`, and CORS checks as `/wp-json/gecx/v1/auth-context`, and keep an already-bound session in the linked project over a session annotation from outside it.
+* Support Elementor Theme Builder (`[data-elementor-type="header"]`, `.elementor-location-header`) and Max Mega Menu (`ul.mega-menu`, `ul.max-mega-menu`, `.mega-toggle-animated`) headers, place the mobile header launcher on its own centered row when the hamburger column is too narrow, and lift corner fallback launchers above fixed third-party chat bubbles (Podium, Intercom, Tidio, Crisp, HubSpot, Gorgias, Zendesk).
+* Purge installed page caches (WP Rocket, W3 Total Cache, WP Super Cache, WP Fastest Cache, SiteGround Speed Optimizer, SpinupWP, Pantheon, FlyingPress, WP Engine, Kinsta, Cloudflare, LiteSpeed Cache, Breeze, Cache Enabler, Nginx Helper, and Hummingbird) and fire `gecx_purge_page_caches` after saving a setting that changes storefront pages.
+
+2026-10-22 - version 1.2.0
+* Bind the shopper's browser to the cart the agent is using when the chat opens, so items the agent adds are in the cart the shopper checks out with. Only a guest without a cart of their own is bound: a logged-in shopper, or a guest whose browser already holds items, keeps their own cart. Adds a `gecx/v1/cart-session` REST route, which accepts only a request carrying the store's nonce.
+* Read the cart past page caches after the agent changes it. A page cache such as Batcache can answer a cookieless cart read from a copy it cached by URL, which could load another shopper's cart into the page; the read now goes to a URL no other request uses.
+* Let WooCommerce sign and check the session cookies the plugin sets, so a cart the plugin binds survives the session validation WooCommerce applies to its own cookies.
+* Stop a fallback launcher flashing beside a launcher the widget has not revealed yet. Until the widget knows the agent is enabled every launcher is laid out but hidden, and the placement pass treated them as missing, adding a duplicate that disappeared a moment later.
+* Disclose in the readme that the cart a guest's browser is bound to, and the checkout details they enter while on it, can be read by Gemini Enterprise for CX.
+
+2026-10-08 - version 1.1.0
+* Load the plugin's classes with a Composer autoloader, shipped in `vendor/`, under the `Google\Gemini_Enterprise_For_CX` namespace. The global `GECX_*` classes are removed without aliases, so code that referenced them must use the namespaced classes. No behavior changes.
+* Build the admin, storefront and block editor scripts with the WordPress build tooling. They now load minified from `build/scripts/` instead of `assets/js/` (unminified when `SCRIPT_DEBUG` is on), with dependencies and versions taken from the generated asset files. Script handles are unchanged; if a caching or optimization plugin excludes `assets/js/storefront.js` by path, exclude `build/scripts/storefront/` instead.
+* Make the settings page's error messages and the descriptions of the Launcher and Suggested Prompts blocks translatable, and translate the Suggested Prompts block label as a single string.
+* Load translations for the admin, storefront and block editor scripts from WordPress.org language packs, and drop the bundled `languages/` folder and the `Domain Path` header.
+* Declare compatibility with WooCommerce 11.2.
+
+2026-09-30 - version 1.0.1
+* Admin JWTs now last 60 minutes instead of 5, so a merchant who leaves the Gemini Enterprise for CX console to build an agent can still link it when they return.
+
+2026-09-30 - version 1.0.0
+* First public release.
+* Tighten how cart-token authentication decides that a request is for the WooCommerce Store API, and drop a cart-token login once WordPress has routed the request anywhere else.
+
+2026-09-30 - version 0.3.32
+* Split the `GECX_Rest_API` and `GECX_Admin` classes into one class per job. No behavior changes.
+
+2026-09-29 - version 0.3.31
+* Refresh every cart surface once when the agent changes the cart. `chat-messenger-update-cart` is handled a single time even when it reaches both `document` and `window`, the cart is read from the Store API on every theme, and a stale nonce is replaced and the read retried once after a 401 or 403.
+* Dispatch the WooCommerce Blocks `wc-blocks_added_to_cart` or `wc-blocks_removed_from_cart` event, chosen by whether the item count went up or down, so the block mini-cart refreshes its cart. The jQuery `added_to_cart` event, which many themes answer by opening a side cart, is no longer triggered unless the `gecx_cart_refresh_legacy_events` filter returns true. When it does, `added_to_cart` or `removed_from_cart` is triggered in place of the native event, which the block mini-cart derives from it.
+* Always trigger `wc_fragment_refresh`, and enqueue `wc-cart-fragments` on classic themes (filterable with `gecx_enqueue_cart_fragments`), so classic header cart counts update without a reload.
+* Refresh the browser's `woocommerce_items_in_cart` and `woocommerce_cart_hash` cookies when it reads its own cart, so full-page caches stop serving cached pages with an empty cart and cart fragments stop reusing a stale header.
+* Write the item count into cart badges only when the WooCommerce Blocks cart data store is not on the page, using selectors from the new `gecx_cart_badge_selectors` filter.
+* Refresh classic cart and checkout forms only when they are on the page, and never reload the checkout page.
+* Dispatch a documented `gecx:cart-updated` event on `document.body` after each agent cart change.
+* Decide between the in-menu launcher and the mobile header launcher from whether the theme's hamburger is visible, not from fixed 600px and 768px breakpoints, so themes that switch at 921px or 1024px (Astra, Kadence, Divi, OceanWP) and block navigation with the overlay always on no longer lose the launcher.
+* Recognize more hamburgers (links and ARIA buttons in the header, Flatsome, Avada, OceanWP, Blocksy, Woodmart), and show a floating launcher whenever no other launcher is on screen.
+* Place the launcher in desktop and mobile drawer menus separately, add common theme location names (`main_menu`, `main_navigation`, `menu_1`, `handheld`, `mobile_menu` and others), cover the page list WordPress shows when no menu is assigned, and choose the main header menu over top bar menus when placing from JavaScript.
+* Add a Menu setting to pick a theme location or a menu, which also reaches page builder menus rendered without a location, and a Manual placement with a `[gecx_agent_button]` shortcode and a Gemini Enterprise for CX Launcher block.
+* Add a Gemini Enterprise for CX Suggested Prompts block, the block editor counterpart of `[gecx_suggested_prompts]`, which uses the product it is placed on (the Single Product block or template) or a Product ID set in the block.
+* On the settings page, explain how to place the launcher and prompts yourself in info tooltips (the launcher tip shows when Manual placement is chosen), and drop "(Recommended)" from the Top navigation menu option.
+* Style the menu launcher with zero-specificity rules and no inline styles, so vertical, off-canvas and mega menus keep their own layout; remove launcher items that end up in footers; and insert into a block navigation's own list instead of after its last list.
+* Place product prompts after the main add-to-cart form rather than a sticky add-to-cart bar, quick view or related product, add Bricks, Avada and Oxygen targets, and place them on pages that embed a product with `[product_page]` or the Single Product block.
+* Re-run placement when content is added after load (late headers, page transitions, infinite scroll) and expose `window.gecxInit()` for themes that swap content themselves. After a page transition, prompts no longer carry the first product's prompt overrides.
+* Show prompts for a product named in `[gecx_suggested_prompts]` or the Suggested Prompts block only if the visitor could see that product: it must be a published product without a password, unless the visitor can read it anyway. Before, the prompt overrides of draft, pending, private and password-protected products could be shown to anyone.
+* Load the launcher scripts even when a page request's Accept header mentions `application/json`. WordPress treats such a request as a JSON request, so the page rendered with the launcher markup but without the scripts that define it, and a page cache could then serve that broken copy, with no launcher, to every shopper.
+* Lift floating launchers above bars themes fix to the bottom of the screen and clear the device safe area; merchants can add spacing with the `--gecx-floating-extra-offset` CSS variable. Narrow fixed headers while the chat panel pushes the page aside, leaving the WordPress admin bar full width.
+* Output nothing on AMP pages, and keep the launcher scripts out of WP Rocket, LiteSpeed Cache and Cloudflare Rocket Loader JavaScript delay (filter: `gecx_exclude_from_js_delay`).
+* Fix the Defer widget until interaction setting, which never deferred because WordPress localizes `false` as an empty string.
+* Add browser tests: placement fixtures modeled on theme markup, and a wp-env theme matrix covering Storefront, Astra, Kadence, OceanWP and Twenty Twenty-Five.
+* Pass the launcher and prompts markup to storefront.js nested in its config. `wp_localize_script()` decodes HTML entities in top-level strings, so a double quote in a launcher label or a product's prompt override ended the attribute early and broke the launchers and prompts that storefront.js places.
+* Disclose in the readme that the signed tokens sent to Google contain the store administrator's, or a logged-in shopper's, WordPress user ID and email address.
+* Withhold a password-protected product's prompt overrides until its password is entered. They were added to the page config, and so to cached copies of the page, while the rest of the product stayed hidden.
+* On multisite, also clean up archived, spam and deactivated sites on uninstall. Their webhook, keypair and read/write API keys were left behind and would work again if the site were restored.
+
+2026-09-25 - version 0.3.22
+* Pass `admin_jwt` in the URL fragment (`#admin_jwt=`) instead of the query string when redirecting to the Google Cloud onboarding console, so the token is not sent to the console server, written to its access logs, or leaked via `Referer`.
+* Send `admin_jwt` to the SyncState and UnlinkAgent console endpoints in an `Authorization: Bearer` header instead of the JSON request body, so the token is not captured by anything that logs or persists request bodies.
+
+2026-09-24 - version 0.3.21
+* Revoke the WooCommerce REST API keys issued through `/wc-auth/v1/authorize` on uninstall. Keys are matched on the plugin's wc-auth description and `read_write` permission. Unlinking an agent keeps the keys and store authorization, so the merchant returns to Step 2.
+* Respect merchant intent in SyncState. An explicit unlink sets `gecx_merchant_unlinked`, which stops SyncState from adopting a reported agent until the backend first reports no link, the merchant completes the connect flow, or an agent is linked via `link-agent`. Credential errors are still reported while it is set. Switching the widget off sets `gecx_merchant_disabled`, and an adopted binding then leaves the widget and order webhook off.
+* Send store-signed JWTs, the connect redirect, webhook deliveries and the uninstall notification only to an `https` origin on an allowed console host (`gecx.cloud.google.com`, extendable with the `GECX_CONSOLE_ALLOWED_HOSTS` constant). A refused `gecx_console_base_url` fails closed, and unlink then completes locally. `GECX_Rest_API::ensure_order_webhook()` no longer accepts a delivery URL.
+* Notify Google on uninstall only when the store was connected (linked agent, order webhook, or completed authorization), not merely because activation generated a keypair.
+* Write a `gecx_session_id` session row only for an HMAC-verified WooCommerce session cookie that matches the session, a verified Cart-Token, or a logged-in user.
+
+2026-09-24 - version 0.3.20
+* Accept `omnichannelSessions` resource names alongside `commerceSessions` when saving sessions and gating order webhook delivery.
+* Expose `_gecx_session_id` on WooCommerce HPOS REST order responses via `woocommerce_rest_prepare_shop_order_object`, and read per-product suggested prompts overrides through `WC_Product::get_meta()` with `get_post_meta()` fallback.
+* Parse the numeric timestamp prefix of `gecx_last_sync_attempt` explicitly with `strtok()`, and harden `uninstall.php` session cleanup with table-existence checks and keyset pagination.
+* Require pretty permalinks and the default `/wp-json` REST API prefix on the settings screen before enabling store authorization and Google Cloud connection.
+
+2026-09-23 - version 0.3.19
+* Restrict `/wp-json/gecx/v1/auth-context` to `POST`. `GET` was registered only so widget bundles predating the switch to `POST` kept working; those are no longer deployed, and a `GET` response can be served from a CDN edge configured to cache everything, handing one shopper's nonce and customer JWT to the next.
+* Stop accepting `Sec-Fetch-Site: none` on `/wp-json/gecx/v1/auth-context`. A browser sends `none` only for a user-initiated load with no initiator document, which a `POST`-only route cannot receive, so the only remaining sender is a non-browser client setting the header itself around a stolen cookie. The header must now say `same-origin`.
+* Require a WordPress-resolved `rest_route` (`$GLOBALS['wp']->query_vars['rest_route']`) in `GECX_Auth::is_request_to_route()` instead of inferring the route from unparsed superglobals (`$_POST`, `$_GET`, `$_SERVER['REQUEST_URI']`) before `WP::parse_request()` has run. WooCommerce's `WC_REST_Authentication::authentication_fallback()` re-triggers user determination inside `WP_REST_Server::serve_request()` after `WP::parse_request()` has populated `query_vars['rest_route']` on both pretty and plain permalinks.
+* Document the chat widget client SDK as an externally hosted script in readme.txt, covering its source URL, the fact that it is not bundled, the conditions under which it loads, and why it is not shipped with the plugin.
+
+2026-09-22 - version 0.3.18
+* Support Cart-Token capture and session rebind on plain-permalink WordPress stores by parsing endpoints per configured URL.
+* Soft-ignore invalid or expired cart tokens during session save while strictly blocking privileged endpoints under cart-token authentication.
+* Cache guest JWTs using public key fingerprinting and single-pass keypair retrieval to avoid redundant asymmetric decryption.
+* Improve uninstall cleanup by bounding session table sweeps and ensuring clean termination even with corrupt session data.
+* Update WordPress.org directory assets and screenshot documentation.
+
+2026-09-22 - version 0.3.17
+* Add Bottom Right, Bottom Left, and Middle Left options for the floating launcher position.
+
+2026-09-22 - version 0.3.16
+* Add `gecx_should_load_widget` filter, `gecx_defer_widget_until_interaction` option, and `window.gecxLoadWidget` / `gecx:consent-granted` API so consent plugins or deferred-loading configurations can postpone loading the Google-hosted widget script until consent or keyboard/click interaction.
+* Mint the OAuth state and short-lived `admin_jwt` on demand via a POST form to `admin-post.php?action=gecx_connect_agent` instead of embedding them into `render_settings_page()` on every settings screen GET load.
+* Enforce subsite path isolation on `/wp-json/gecx/v1/auth-context` for subdirectory multisite installs using `get_site_by_path()` and `is_user_member_of_blog()`, downgrade requests whose `Referer` names no subsite path (the root blog homepage under the default `Referrer-Policy`) to a guest identity instead of rejecting them, and withhold widened WooCommerce API key capabilities before `rest_pre_dispatch`.
+* Persist guest `gecx_session_id` bindings in a first-party HttpOnly cookie before a WooCommerce session cookie exists, and only sync Store API cart state on mutating cart/batch requests.
+* Refresh classic and block cart/checkout surfaces via WooCommerce Blocks store dispatch and `wc_update_cart` / `update_checkout` events without a full page reload when jQuery or `wp.data` is present.
+* Schedule version-upgrade SyncState reconciliation asynchronously via Action Scheduler or WP-Cron (falling back to synchronous execution when `DISABLE_WP_CRON` is active without Action Scheduler), and clear the scheduled hook on deactivation and uninstall.
+* Load the plugin text domain, declare `Domain Path: /languages`, and register script translations for the admin and storefront bundles, so bundled catalogues and JavaScript strings can be translated.
+* Write the product prompt override through `woocommerce_admin_process_product_object` and `WC_Product::update_meta_data()` instead of `update_post_meta()`, declare argument schemas on the session, webhook and link REST routes, and honour `prefers-reduced-motion` in the widget stylesheet.
+
+2026-09-21 - version 0.3.15
+* Avoid forcing guest WooCommerce session cookies on non-mutating REST requests and empty guest carts, preventing guest nonce invalidation on account and registration pages.
+* Bridge Store API `Cart-Token` to browser cookie when non-empty guest carts are fetched, and forward `Cart-Token` from storefront fetch calls to `/gecx/v1/session` for order attribution.
+* Restrict the session cookie bridge to WooCommerce guest session keys, so a `Cart-Token` minted before the shopper logged out can no longer write a numeric customer ID that WooCommerce would reject and destroy that user's saved cart over.
+* Persist `gecx_session_id` directly in the session database for uncookied guest carts without forcing a cookie on empty carts.
+* Use core-compatible HMAC MD5 hash and double-pipe delimiter for guest session cookies.
+
+2026-09-20 - version 0.3.14
+* Resolve the Store API cart endpoint from `rest_url()` instead of assuming `/wp-json/`, so the storefront script reaches the cart on subdirectory installs, plain permalinks, and stores with a renamed REST prefix.
+* Decide whether to reload after an agent cart update with `is_cart()` and `is_checkout()` rather than matching `/cart` anywhere in the path, which reloaded product pages such as `/product/cartridge-filter/` and missed localized cart slugs.
+* Validate the agent resource name and token broker reported by SyncState against the same allowlist the link endpoint applies before storing either.
+* Resolve the REST route from the request URI without `sanitize_text_field()`, so a double-encoded separator can no longer be stripped into a route name the plugin would act on.
+* Send the SyncState and unlink requests with `wp_safe_remote_post()` and no redirect following, so the store-signed admin JWT in the body cannot be handed to a redirect target.
+
+2026-09-20 - version 0.3.13
+* Reference the chat widget script by its full URL in the readme, replacing a bare `www.gstatic.com` origin that returned a 404.
+* Localize the "Settings" plugin action link and the suggested-prompts placeholder.
+* Resolve the REST route and the `Origin`, `Referer` and `Sec-Fetch-Site` headers without `sanitize_text_field()`, so the plugin matches the same bytes WordPress dispatches and compares the origin actually sent.
+
+2026-09-19 - version 0.3.12
+* Resolve the logged-in user on `/wp-json/gecx/v1/auth-context` without calling `wp_set_current_user()`, passing the validated cookie user ID directly to `GECX_Auth::generate_customer_jwt()` and to `wp_create_nonce()` via the core `nonce_user_logged_out` filter.
+
+2026-09-19 - version 0.3.11
+* Reconcile store state with the SyncState API on `admin_init` when the installed plugin version changes, so the backend records the new version on the first administrator page load after an upgrade without waiting out the sync throttle window.
+* Keep the recorded plugin version pending when an upgrade sync fails, while rate-limiting retries by the sync throttle window.
+* Queue notices raised by an `admin_init` upgrade sync and display them on `admin_notices` for administrators.
+
+2026-09-19 - version 0.3.10
+* Stop rendering `wp-nonce` and `customer-jwt` attributes into storefront HTML, so full-page caches can no longer serve one shopper's credentials to the next.
+* Serve fresh per-shopper auth context (`nonce` and `customer_jwt`) from `/wp-json/gecx/v1/auth-context` (`POST` and `GET`) with `no-store` cache headers, `Access-Control-Allow-Origin` suppression, and strict same-origin enforcement across `Sec-Fetch-Site`, `Origin`, and `Referer`.
+* Emit `rest-url` on `<gecx-woocommerce-chat-widget>` from `rest_url()` so the widget resolves WordPress REST routes on subdirectory installs, plain permalinks, and custom REST prefixes.
+
+2026-09-19 - version 0.3.9
+* Sign customer and admin JWTs exclusively with the store's RSA private key (RS256). A store that cannot produce a usable keypair now mints no token and logs an error instead of falling back to the retired `gecx_api_secret` shared secret.
+* Remove the legacy `POST /wp-json/gecx/v1/secret` route and the `gecx_api_secret` filter. Order-created webhook registration and credential refresh now run solely through `POST /wp-json/gecx/v1/webhooks/order-created`, and webhook HMAC signatures are derived only from the webhook's own consumer secret.
+* Continue deleting `gecx_api_secret` on unlink and on uninstall so stores upgrading from earlier releases clear the stale option.
+
+2026-09-19 - version 0.3.8
+* Remove the `Cart-Token` from the sub-response `headers` that a `/wc/store/v1/batch` response repeats inside its JSON body. WordPress builds an envelope for each sub-response and puts its headers in the body as data, so the session credential WooCommerce issued for each cart sub-request was still leaving the store in the response payload, after 0.3.6 put it in the response header and 0.3.7 stopped mirroring it as `id`. Only `Cart-Token` is removed; every other sub-response header stays.
+
+2026-09-19 - version 0.3.7
+* Stop mirroring the Store API cart token into the cart response body as `id`. The token is a bearer credential, and both cart and batch responses now return it in the CORS-exposed `Cart-Token` response header, which is the supported way to read it. Mirroring it into the body exposed it to any script on the page through `wp.data`, and to session-replay and error tools that capture response bodies.
+* Stop overwriting the `id` of Store API cart item sub-resources, which is the product ID, as a side effect of that mirroring.
+
+2026-09-19 - version 0.3.6
+* Return the cart token in the `Cart-Token` response header on `/wc/store/v1/batch`, as the Store API already does on `/wc/store/v1/cart`. The batch route is not a cart route, so WooCommerce sets no token on the batch response; it survives only inside the JSON body, in the envelope WordPress builds for each sub-response. A client reading response headers now sees the same thing on both routes.
+* This adds a header and removes nothing. The token still appears in the batch response body, because the envelope WordPress builds for each sub-response repeats that sub-response's headers. Taking it out of the body is a later change, once clients read the header.
+
+2026-09-17 - version 0.3.5
+* Restrict Cart-Token authentication strictly to Store API cart and batch endpoints (`/wc/store/v1/cart` and `/wc/store/v1/batch`), preventing order enumeration or guest order access via `/order/*` and `/checkout/*`.
+* Accept a Cart-Token only on requests WordPress is actually about to dispatch to the WooCommerce Store API. The REST prefix must now sit at the site root rather than anywhere in the path, so a crafted path can no longer present a non-Store-API request as a Store API one.
+* Refuse a Cart-Token on anything that is not the site's front controller, including admin, cron and AJAX requests, and on an `index.php` that is not WordPress's own.
+* Reject tokens carrying a non-numeric or non-integer expiry, and treat the expiry second itself as expired.
+* Report a refused Cart-Token with a stable machine-readable code and the capability that caused it, so a store can alert on refusals.
+* Log an unrecognised token issuer at most once an hour per issuer instead of on every request.
+
+2026-09-16 - version 0.3.4
+* Receive the linked agent from Google Cloud over the store's own WooCommerce API credentials, on a new authenticated `POST /wp-json/gecx/v1/link-agent` route, instead of reading it out of the browser redirect back from the console.
+* Stop persisting anything from the connection callback. The redirect now only consumes its one-time state and reports the outcome; it can no longer create, change, or clear the agent link.
+
+2026-09-16 - version 0.3.3
+* Bundle the storefront chat widget stylesheet (`assets/css/theme.css`) locally with the plugin to comply with WordPress.org Guideline 7, and load it via `plugins_url()`.
+
+2026-09-15 - version 0.3.2
+* Reconcile agent binding with the backend SyncState API when the settings page loads.
+* Adopt the agent Google actually has linked when the locally saved agent differs, and clear the local binding only when Google has no link for the store.
+* Warn the administrator and reopen the store authorization step when Google cannot verify the store identity or use the saved WooCommerce API keys.
+* Keep appearance settings when the agent is unlinked, so re-linking does not lose customization.
+* Throttle the reconciliation call to once every 10 minutes to protect settings page load time.
+
+2026-09-14 - version 0.3.1
+* Maintain relative centering for floating chat widget with page content when chat panel opens.
+* Improve mobile header placement for topnav launcher with automatic candidate detection and floating action button fallback.
+* Add dynamic viewport resize handling to maintain agent button visibility across responsive viewports.
+* Customer JWTs no longer assert `is_admin`. The claim was previously derived from the shopper's own capabilities, so an administrator browsing their own storefront published an admin-flagged token into the page DOM for an hour.
+* Removed the `gecx_customer_jwt_payload` and `gecx_admin_jwt_payload` filters. Any plugin on the store could reach them to have a claim signed with the store's own key. Removing them costs nothing: the agent backend reads a fixed set of claims and discards the rest, so a filter could never attach anything it would act on.
+* Scope WooCommerce API key authentication to the route WordPress will dispatch rather than the request path. A request whose path named `/gecx/v1/secret` but whose `rest_route` named a core route previously authenticated that core route with the key.
+
+2026-09-12 - version 0.3.0
+* Restrict Cart-Token authentication to versioned WooCommerce Store API routes, matching WordPress rest_route dispatch precedence.
+* Refuse to resolve a Cart-Token to any user holding administrative capabilities, and reject Cart-Token authenticated requests on plugin admin routes.
+* Note: this includes `edit_posts`, which contributors and authors hold. On a site that runs a blog alongside the store, those shoppers keep their own cart, but the agent's requests are not authenticated as their account, so an order placed through the agent is not attached to it. Filter `gecx_cart_token_privileged_caps` to change the list.
+* Pin the Store API issuer claim and verify the token signature before evaluating its claims. Both issuers WooCommerce has used are accepted (`wc/store` and `wc/store/v1` on 7.1-9.9, `store-api` on 10.0+). WooCommerce before 7.1 stamps no issuer at all and is no longer supported.
+* Report refusals to `gecx_cart_token_refused`, and a signed token carrying an unrecognised issuer to `gecx_cart_token_unknown_issuer`, so neither can fail silently on a WooCommerce version that stamps something new.
+* Refuse Cart-Token authenticated requests at REST dispatch when the resolved route is not a Store API route, rather than in individual permission callbacks.
+
+2026-09-11 - version 0.2.9
+* Refactor JWT signing to eliminate redundant header and signing input serialization.
+* Add OpenSSL error logging on keypair generation and RS256 signing failures.
+* Normalize REST API route parsing in WooCommerce custom endpoint authentication.
+
+2026-09-10 - version 0.2.8
+* Migrate webhook signing to use WooCommerce consumer_secret without storing shared secret in database.
+* Expose dedicated POST /wp-json/gecx/v1/webhooks/order-created REST route.
+* Validate webhook delivery URLs using wp_http_validate_url.
+* Harden admin redirect parameter handling and REST authentication checks.
+
+2026-09-10 - version 0.2.7
+* Sign shopper customer JWTs and admin session JWTs using RS256 with the store's decrypted RSA private key.
+* Gracefully fall back to HS256 HMAC signature if RSA private key is unavailable or signing fails.
+
+2026-09-10 - version 0.2.6
+* Generate 2048-bit RSA keypair on activation or lazy demand.
+* Encrypt private key using AES-256-GCM derived from WordPress salts via HKDF-SHA256.
+* Expose GET /wp-json/gecx/v1/public-key REST route with WooCommerce authentication.
+
+2026-09-09 - version 0.2.5
+* Fix OAuth return URL encoding by URL-encoding nested callback URLs to prevent query parameter splitting.
+* Add dual-layer transient and persistent options storage for OAuth state tokens to ensure resilience with object caching.
+* Center and widen the admin settings interface layout across screen sizes.
+
+2026-09-09 - version 0.2.4
+* Add support for Full-Site Editing (FSE) block themes via WooCommerce Single Product Gutenberg block filters.
+* Add secondary hook and client-side DOM injection fallback for Page Builders (Elementor, Divi, Bricks, Oxygen).
+* Add duplicate suppression to prevent multiple PDP prompt renders per request.
+* Support queried object ID resolution outside the WordPress loop during asset enqueueing.
+
+2026-09-09 - version 0.2.3
+* Improve admin connection status page layout and eliminate text overflow.
+* Add default placeholder labels for button configuration.
+* Synchronize Suggested Prompts toggle dependency with Storefront Chat Widget state.
+* Update Connection Status indicator and text on chat widget toggle.
+* Fix raw API secret handling in webhook configuration.
+
+2026-09-08 - version 0.2.2
+* Add .gitattributes release packaging rules to exclude developer tools and tests from production archives.
+* Add Changelog section to readme.txt for WordPress.org directory compliance.
+* Add standard Requires at least and Requires PHP plugin header tags.
+
+2026-09-08 - version 0.2.1
+* Add launcher placement options (Navigation Menu vs Floating Bubble) and floating positions to native admin settings.
+* Add launcher button style, custom full label, collapsed mobile short label, and shimmer animation toggles.
+* Add AJAX save endpoint for button configuration with instant visual feedback.
+
+2026-09-08 - version 0.2.0
+* Replace iframe embed with native WordPress admin stepper onboarding flow and management dashboard.
+* Add AJAX actions for manual config, chat widget toggle, PDP prompts toggle, and agent disconnect.
+* Add OAuth linking redirect handler with transient state validation and token broker fallback.

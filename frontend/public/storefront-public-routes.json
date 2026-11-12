@@ -3,7 +3,7 @@
   "routes": {
     "/products": {
       "title": "Products",
-      "description": "Shop professional drywall tools and accessories from leading drywall brands.",
+      "description": "Shop professional drywall tools, taping and finishing equipment, and replacement parts from leading brands.",
       "heading": "Shop Professional Drywall Tools and Parts",
       "intro": "Browse professional drywall tools, finishing equipment, and replacement parts for contractors. Use brand and category filters to narrow the catalog, then review product details and compatibility before ordering.",
       "sections": [
@@ -19,7 +19,7 @@
     },
     "/products/brands": {
       "title": "Brands",
-      "description": "Shop professional drywall tools and accessories from leading drywall brands.",
+      "description": "Browse drywall tool manufacturers and explore their available equipment, replacement parts, schematics, and repair resources.",
       "heading": "Browse Drywall Tool Brands",
       "intro": "Choose a manufacturer to explore its professional drywall tools, replacement parts, schematics, and repair resources. Product and brand details are maintained from the live catalog.",
       "sections": [

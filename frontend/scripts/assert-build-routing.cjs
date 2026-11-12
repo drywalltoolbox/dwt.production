@@ -150,7 +150,7 @@ const staticHtml = fs.readFileSync(indexPath, 'utf8');
 if (!/<meta\b(?=[^>]*name="description")(?=[^>]*data-dtb-seo="description")(?=[^>]*content="Shop professional drywall tools and replacement parts\.)[^>]*>/.test(staticHtml)) {
   throw new Error('The static homepage must provide its description before React loads.');
 }
-if (!/<div id="root">[\s\S]*?<h1[^>]*>The New Standard in Drywall Tools<\/h1>/.test(staticHtml)) {
+if (!/<div id="root"[^>]*>[\s\S]*?<h1[^>]*>The New Standard in Drywall Tools<\/h1>/.test(staticHtml)) {
   throw new Error('The static homepage must provide a semantic H1 before React loads.');
 }
 if (!staticHtml.includes('data-dtb-seo="title"') || !staticHtml.includes('<dtb-route-content data-dtb-route-content style="display:block">') || !staticHtml.includes('</dtb-route-content>')) {

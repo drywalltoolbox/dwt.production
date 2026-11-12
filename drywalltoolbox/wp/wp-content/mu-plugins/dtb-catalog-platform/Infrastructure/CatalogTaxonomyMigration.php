@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) || exit;
 final class DTB_CatalogTaxonomyMigration {
 
 	private const OPTION_VERSION = 'dtb_catalog_taxonomy_migration_version';
+	private const PUBLIC_CATEGORY_COUNT_REPAIR_OPTION = 'dtb_catalog_public_category_counts_repaired';
 	/*
 	 * Version 1 could complete before a later catalog import recreated the
 	 * historical `goosenecks` term. Bump the idempotent migration so existing
@@ -19,7 +20,13 @@ final class DTB_CatalogTaxonomyMigration {
 	private const BATCH_SIZE     = 100;
 
 	public static function maybe_run(): void {
-		if ( (int) get_option( self::OPTION_VERSION, 0 ) >= self::VERSION || ! taxonomy_exists( 'product_cat' ) ) {
+		if ( ! taxonomy_exists( 'product_cat' ) ) {
+			return;
+		}
+
+		self::repair_public_category_counts();
+
+		if ( (int) get_option( self::OPTION_VERSION, 0 ) >= self::VERSION ) {
 			return;
 		}
 
@@ -40,6 +47,58 @@ final class DTB_CatalogTaxonomyMigration {
 
 		update_option( self::OPTION_VERSION, self::VERSION, false );
 		dtb_catalog_cache_invalidate_all();
+	}
+
+	/**
+	 * Recount two published catalog roots whose WooCommerce product queries and
+	 * stored WordPress term counts diverged. This lets route and sitemap
+	 * eligibility use the canonical product_cat count without changing product
+	 * assignments or category identity.
+	 */
+	private static function repair_public_category_counts(): void {
+		if ( 1 === (int) get_option( self::PUBLIC_CATEGORY_COUNT_REPAIR_OPTION, 0 ) ) {
+			return;
+		}
+
+		$slugs = [ 'corner-bead-tools', 'taping-finishing-tools' ];
+		$terms = get_terms(
+			[
+				'taxonomy'   => 'product_cat',
+				'slug'       => $slugs,
+				'hide_empty' => false,
+				'fields'     => 'ids',
+			]
+		);
+		if ( is_wp_error( $terms ) || count( $terms ) !== count( $slugs ) ) {
+			if ( class_exists( 'DTB_Logger' ) ) {
+				DTB_Logger::warning( 'Public catalog category count repair skipped', [ 'reason' => 'expected_terms_missing' ] );
+			}
+			return;
+		}
+
+		$term_ids = array_map( 'absint', $terms );
+		wp_update_term_count_now( $term_ids, 'product_cat' );
+		clean_term_cache( $term_ids, 'product_cat' );
+
+		$counts = [];
+		foreach ( $term_ids as $term_id ) {
+			$term = get_term( $term_id, 'product_cat' );
+			if ( $term instanceof WP_Term ) {
+				$counts[ $term->slug ] = (int) $term->count;
+			}
+		}
+		if ( count( $counts ) !== count( $slugs ) || in_array( 0, $counts, true ) ) {
+			if ( class_exists( 'DTB_Logger' ) ) {
+				DTB_Logger::error( 'Public catalog category count repair did not restore expected counts', [ 'slugs' => $slugs ] );
+			}
+			return;
+		}
+
+		update_option( self::PUBLIC_CATEGORY_COUNT_REPAIR_OPTION, 1, false );
+		dtb_catalog_cache_invalidate_all();
+		if ( class_exists( 'DTB_SitemapService' ) ) {
+			DTB_SitemapService::invalidate( 'catalog_term_count_repair' );
+		}
 	}
 
 	/**
