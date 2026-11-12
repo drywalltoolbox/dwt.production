@@ -1,0 +1,105 @@
+{
+  "schema_version": 1,
+  "purpose": "complete current manufacturer product/variant accounting; review evidence only, not import-ready",
+  "source_products": 1056,
+  "source_variant_rows": 1060,
+  "source_variant_rows_with_sku": 1054,
+  "source_variant_rows_without_sku": 6,
+  "historical_selected_product_count": 1006,
+  "historical_excluded_product_count": 48,
+  "current_dispositions_by_variant": {
+    "exact_existing_identity_correction": 1,
+    "exact_existing_match": 434,
+    "exclude_merchandise_out_of_scope": 6,
+    "include_candidate_pending_taxonomy_and_cost": 48,
+    "new_product_candidate": 461,
+    "unresolved_alternate_identifier": 11,
+    "unresolved_catalog_sku_collision": 2,
+    "unresolved_duplicate_manufacturer_sku": 2,
+    "unresolved_identifier_conflict": 10,
+    "unresolved_possible_match": 85
+  },
+  "current_dispositions_by_product": {
+    "exact_existing_identity_correction": 1,
+    "exact_existing_match": 434,
+    "exclude_merchandise_out_of_scope": 2,
+    "include_candidate_pending_taxonomy_and_cost": 48,
+    "new_product_candidate": 461,
+    "unresolved_alternate_identifier": 11,
+    "unresolved_catalog_sku_collision": 2,
+    "unresolved_duplicate_manufacturer_sku": 2,
+    "unresolved_identifier_conflict": 10,
+    "unresolved_possible_match": 85
+  },
+  "review_exception_variant_rows": 619,
+  "product_type_variant_counts": {
+    "": 3,
+    "Angle Head": 4,
+    "Banjo": 2,
+    "Box Filler": 3,
+    "Bucket Scoop": 3,
+    "Compound Applicator": 9,
+    "Compound Roller": 9,
+    "Compound Tube": 10,
+    "Corner Box": 3,
+    "Corner Flusher": 13,
+    "Corner Roller": 7,
+    "Drywall Hawk": 1,
+    "Flat Box": 20,
+    "Flat Box Handle": 17,
+    "Gooseneck": 2,
+    "Hand Trowel": 13,
+    "Handle": 1,
+    "Joint Knife": 40,
+    "Loading Pump": 3,
+    "Merchandise": 6,
+    "Mud Pan": 4,
+    "Nail Spotter": 4,
+    "Parts": 778,
+    "Parts Kit": 46,
+    "Sander": 3,
+    "Smoothing Blades": 23,
+    "Support Handle": 10,
+    "Taper": 5,
+    "Taper Body": 3,
+    "Taper Head": 1,
+    "Taping Knife": 8,
+    "Tool Cases": 3,
+    "Tool Sets": 3
+  },
+  "duplicate_manufacturer_skus": {
+    "CT45-BLACK": {
+      "occurrences": 2,
+      "product_ids": [
+        "10210666283306",
+        "10364545433898"
+      ],
+      "names": [
+        "Predator Connecting Rod"
+      ],
+      "prices": [
+        "16.95",
+        "29.80"
+      ]
+    }
+  },
+  "input_sha256": {
+    "products_json": "572cd1ffe3061fb00bd1068289d678f6b86fd5fee984fe08bfd3d6123f78456c",
+    "selected_dispositions": "864ea6fdbf40396341ea9ba6cab3638b8d0619d7781f38dd0ea1b29934413ae4",
+    "excluded_kits": "ee3d0393aa46cc52b1916c3f7a8a212e283d03a7b7875ac11be7008d9aaa5338",
+    "excluded_packs": "0e138cd898582af913acfc3bd12d8f7082744ee7ae91b4e73d0452ae5cfa9352",
+    "historical_tsw_cost_snapshot": "4e9e245b2761848144ab50a19cb9989f3a72f5506216ff23ce619ca9a1c3bf89",
+    "canonical_catalog": "ab8b6dbf1756f9df7f389bdd792322de83b3091cab23abe893d7fd738114aa06"
+  },
+  "historical_exact_sku_tsw_cost_snapshot": {
+    "source_file": "products/catalog/source/tsw-costs.csv",
+    "source_last_committed": "2026-09-09",
+    "authority_note": "Historical repository snapshot only; the Columbia cost audit found no live quote, invoice, or current purchase order. Do not use as current cost without reconfirmation.",
+    "unique_source_skus_with_one_exact_cost_row": 244,
+    "rows_with_exact_cost_snapshot": 244,
+    "rows_with_duplicate_cost_snapshot": 0
+  },
+  "output_csv": "docs/catalog/columbia-catalog-audit/review/current-manufacturer-source-accounting.csv",
+  "provenance_csv": "docs/catalog/columbia-catalog-audit/review/current-manufacturer-source-provenance.csv",
+  "exceptions_csv": "docs/catalog/columbia-catalog-audit/review/current-manufacturer-source-exceptions.csv"
+}

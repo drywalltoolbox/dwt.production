@@ -1195,6 +1195,15 @@ export const PRODUCT_SCHEMATIC_LINKS = {
     "variant": null,
     "url": "/schematics?brand=platinum&category=corner-rollers&schematic=platinum-outside-corner-roller"
   },
+  "C1PTAPER": {
+    "schematicId": "columbia-predator-taper",
+    "brand": "Columbia Taping Tools",
+    "category": "Automatic Tapers",
+    "title": "Predator Taper",
+    "page": null,
+    "variant": null,
+    "url": "/schematics?brand=columbia&category=automatic-tapers&schematic=columbia-predator-taper"
+  },
   "PTAPER": {
     "schematicId": "columbia-predator-taper",
     "brand": "Columbia Taping Tools",

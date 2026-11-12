@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "mode": "apply",
+  "created_utc": "2026-11-12T01:49:22.954044+00:00",
+  "catalog": "products/launch/official/dtb_official_catalog.csv",
+  "catalog_sha256_before": "2c3af76f6bdcc9f1863948111f11d5f93791eee29865f7524b9bd770c5f0f41d",
+  "catalog_sha256_after": "ab8b6dbf1756f9df7f389bdd792322de83b3091cab23abe893d7fd738114aa06",
+  "row_count_before": 1133,
+  "row_count_after": 1133,
+  "changes": {
+    "target_row_count": 1,
+    "compatibility_rows_updated": 76,
+    "sku_field": {
+      "from": "PTAPER",
+      "to": "C1PTAPER"
+    },
+    "manufacturer_sku_field": {
+      "from": "PTAPER",
+      "to": "C1PTAPER"
+    },
+    "schema_mpn_field": {
+      "from": "PTAPER",
+      "to": "C1PTAPER"
+    },
+    "dtb_mpn_field": {
+      "from": "PTAPER",
+      "to": "C1PTAPER"
+    },
+    "specification_part_number": {
+      "from": "PTAPER",
+      "to": "C1PTAPER"
+    },
+    "seo_sku_reference": {
+      "from": "PTAPER",
+      "to": "C1PTAPER"
+    }
+  },
+  "preserved_fields": [
+    "price",
+    "cost",
+    "stock",
+    "status",
+    "visibility",
+    "category",
+    "parent",
+    "permalink slug",
+    "images",
+    "model",
+    "Veeqo mapping"
+  ],
+  "live_woocommerce_updated": false,
+  "import_ready": false,
+  "versioned_rollback_snapshot": "docs/catalog/columbia-catalog-audit/archive/rollback-snapshots/dtb_official_catalog-before-ptaper-c1ptaper-20261111.csv",
+  "required_sibling_backup": "products/launch/official/dtb_official_catalog.csv.bak",
+  "preexisting_sibling_backup_archive": "docs/catalog/columbia-catalog-audit/archive/rollback-snapshots/dtb_official_catalog-preexisting-sibling-bak-20261111.csv"
+}

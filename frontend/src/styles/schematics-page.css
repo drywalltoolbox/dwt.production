@@ -31,6 +31,14 @@
   padding: var(--dtb-space-4) var(--dtb-viewport-gutter) var(--dtb-space-7);
 }
 
+/* The catalog landing shares the full-width brand listing frame. Keeping the
+   1400px reading width for drill-down and viewer content made its brand cards
+   appear undersized beside /products/brands on wide screens. */
+.dtb-schematics-page__content--catalog {
+  width: 100%;
+  max-width: none;
+}
+
 .dtb-schematics-heading {
   font-family: var(--dtb-font-display, var(--dtb-font-ui));
   font-size: var(--dtb-text-h3);

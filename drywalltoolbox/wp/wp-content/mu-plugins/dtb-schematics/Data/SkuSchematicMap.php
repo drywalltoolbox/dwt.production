@@ -92,6 +92,7 @@ const DTB_SKU_SCHEMATIC_MAP = [
 	'C1H' => [ 'schematic_id' => 'columbia-one', 'page' => null ],
 	'C1HEXT' => [ 'schematic_id' => 'columbia-one', 'page' => null ],
 	'C1HS' => [ 'schematic_id' => 'columbia-one', 'page' => null ],
+	'C1PTAPER' => [ 'schematic_id' => 'columbia-predator-taper', 'page' => null ],
 	'CA08-AD' => [ 'schematic_id' => 'asgard-ca08-ad-applicator-box-head-sch', 'page' => null ],
 	'CC' => [ 'schematic_id' => 'columbia-corner-cobra', 'page' => null ],
 	'CEXT90' => [ 'schematic_id' => 'columbia-external-corner-applicator', 'page' => null ],
@@ -177,7 +178,7 @@ const DTB_SKU_SCHEMATIC_MAP = [
 	'PT-CRH50' => [ 'schematic_id' => 'platinum-corner-roller-handle', 'page' => null ],
 	'PT-FB' => [ 'schematic_id' => 'platinum-flat-box', 'page' => null ],
 	'PT-OCR' => [ 'schematic_id' => 'platinum-outside-corner-roller', 'page' => null ],
-	'PTAPER' => [ 'schematic_id' => 'columbia-predator-taper', 'page' => null ],
+	'PTAPER' => [ 'schematic_id' => 'columbia-predator-taper', 'page' => null ], // legacy SKU alias; preserve historical lookups
 	'QB06-QSX' => [ 'schematic_id' => 'tapetech-quickbox-qsx', 'page' => 1 ],
 	'QB08-QSX' => [ 'schematic_id' => 'tapetech-quickbox-qsx', 'page' => 2 ],
 	'S1-A-1624' => [ 'schematic_id' => 'surpro-s1', 'page' => null ],

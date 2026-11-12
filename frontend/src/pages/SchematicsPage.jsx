@@ -138,7 +138,7 @@ function SchematicsPageInner() {
         />
       )}
 
-      <main ref={viewerRootRef} className={`dtb-schematics-page__content${isViewer ? ' dtb-schematics-page__content--viewer' : ''}`}>
+      <main ref={viewerRootRef} className={`dtb-schematics-page__content${isViewer ? ' dtb-schematics-page__content--viewer' : ' dtb-schematics-page__content--catalog'}`}>
         {isViewer ? (
           <SchematicViewerPage
             key={routeState.schematicId}
