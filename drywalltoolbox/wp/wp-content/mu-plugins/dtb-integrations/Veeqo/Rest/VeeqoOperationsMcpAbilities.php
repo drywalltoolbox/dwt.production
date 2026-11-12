@@ -66,7 +66,63 @@ final class DTB_Veeqo_Operations_MCP_Abilities {
 			'operations' => [ 'Read DTB Veeqo operations status', 'operations', self::object(), true ],
 			'operation' => [ 'Read exact DTB Veeqo operation status', 'operation', self::object( [ 'operation_id' => [ 'type' => 'string', 'pattern' => '^[a-z0-9-]+$', 'maxLength' => 100 ] ], [ 'operation_id' ] ), true ],
 			'sku' => [ 'Resolve exact SKU in DTB Veeqo projection', 'sku', self::object( [ 'sku' => [ 'type' => 'string', 'minLength' => 1, 'maxLength' => 100 ] ], [ 'sku' ] ), true ],
-			'inventory-preview' => [ 'Preview bounded inventory changes without applying them', 'bulk_preview', self::object( [ 'items' => [ 'type' => 'array', 'minItems' => 1, 'maxItems' => 100, 'items' => [ 'type' => 'object' ] ] ], [ 'items' ] ), true ],
+			'inventory-preview' => [ 'Preview guarded WooCommerce inventory workspace product metadata changes', 'bulk_preview', self::object( [
+				'product_ids' => [ 'type' => 'array', 'minItems' => 1, 'maxItems' => 100, 'items' => self::positive_id() ],
+				'changes' => [ 'type' => 'object', 'properties' => [
+					'status' => [ 'type' => 'string', 'enum' => [ 'publish', 'draft', 'private', 'pending' ] ],
+					'catalog_visibility' => [ 'type' => 'string', 'enum' => [ 'visible', 'catalog', 'search', 'hidden' ] ],
+					'backorders' => [ 'type' => 'string', 'enum' => [ 'no', 'notify', 'yes' ] ],
+					'low_stock_amount' => [ 'type' => 'integer', 'minimum' => 0, 'maximum' => 100000 ],
+				], 'additionalProperties' => false ],
+			], [ 'product_ids', 'changes' ] ), true ],
+			'inventory-apply' => [ 'Apply previewed WooCommerce product metadata; preview hash bound to operator and exact changes', 'bulk_apply', self::object( [
+				'product_ids' => [ 'type' => 'array', 'minItems' => 1, 'maxItems' => 100, 'items' => self::positive_id() ],
+				'changes' => [ 'type' => 'object' ],
+				'preview_hash' => [ 'type' => 'string', 'pattern' => '^[a-f0-9]{64}
+		];
+
+		foreach ( $specs as $slug => $spec ) {
+			[ $label, $callback, $schema, $readonly ] = $spec;
+			wp_register_ability( self::CATEGORY . '/' . $slug, [
+				'label' => $label,
+				'description' => $label . '. DTB-owned scope and provider gates remain authoritative.',
+				'category' => self::CATEGORY,
+				'input_schema' => $schema,
+				'output_schema' => [ 'type' => 'object', 'additionalProperties' => true ],
+				'permission_callback' => [ __CLASS__, 'allowed' ],
+				'execute_callback' => static function ( $input ) use ( $callback ) {
+					if ( ! self::allowed() ) {
+						return new WP_Error( 'dtb_veeqo_forbidden', 'Permission denied.', [ 'status' => 403 ] );
+					}
+					$params = is_array( $input ) ? $input : [];
+					$request = new WP_REST_Request( 'GET', '/dtb/v1/veeqo/admin/control-center' );
+					$request->set_header( 'Content-Type', 'application/json' );
+					$request->set_body( wp_json_encode( $params ) );
+					foreach ( $params as $key => $value ) {
+						$request->set_param( $key, $value );
+					}
+					$result = DTB_Veeqo_Admin_Controller::$callback( $request );
+					if ( is_wp_error( $result ) ) {
+						return $result;
+					}
+					return $result instanceof WP_REST_Response ? $result->get_data() : $result;
+				},
+				'meta' => [
+					'public' => true,
+					'show_in_rest' => true,
+					'annotations' => [
+						'readonly' => $readonly,
+						'destructive' => ! $readonly,
+						'idempotent' => $readonly,
+					],
+				],
+			] );
+		}
+	}
+}
+DTB_Veeqo_Operations_MCP_Abilities::init();
+ ],
+			], [ 'product_ids', 'changes', 'preview_hash' ] ), false ],
 		];
 
 		foreach ( $specs as $slug => $spec ) {
