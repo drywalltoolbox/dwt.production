@@ -74,10 +74,17 @@ final class DTB_StorefrontRouteRenderer {
 		if ( '' !== $image ) {
 			$content .= '<img src="' . $image . '" alt="' . esc_attr( $name ) . '" width="640" height="640" loading="eager" />';
 		}
-		$short_description = wp_kses_post( (string) ( $product['short_description'] ?? '' ) );
-		if ( '' !== trim( wp_strip_all_tags( $short_description ) ) ) {
-			$content .= '<section><h2>Product details</h2>' . $short_description . '</section>';
-		} else {
+		$short_description      = wp_kses_post( (string) ( $product['short_description'] ?? '' ) );
+		$full_description       = wp_kses_post( (string) ( $product['description'] ?? '' ) );
+		$short_description_text = self::plain_text( $short_description );
+		$full_description_text  = self::plain_text( $full_description );
+		if ( '' !== $short_description_text ) {
+			$content .= '<section><h2>Product overview</h2>' . $short_description . '</section>';
+		}
+		if ( '' !== $full_description_text && $full_description_text !== $short_description_text ) {
+			$content .= '<section><h2>Product details</h2>' . $full_description . '</section>';
+		}
+		if ( '' === $short_description_text && '' === $full_description_text ) {
 			$content .= '<p>' . esc_html( $description ) . '</p>';
 		}
 		if ( ! empty( $product['sku'] ) && is_string( $product['sku'] ) ) {
