@@ -74,7 +74,7 @@ final class DTB_Veeqo_Operations_MCP_Abilities {
 					'backorders' => [ 'type' => 'string', 'enum' => [ 'no', 'notify', 'yes' ] ],
 					'low_stock_amount' => [ 'type' => 'integer', 'minimum' => 0, 'maximum' => 100000 ],
 				], 'additionalProperties' => false ],
-			], [ 'product_ids', 'changes' ] ), true ],
+			], [ 'product_ids', 'changes' ] ), false ],
 			'inventory-apply' => [ 'Apply previewed WooCommerce product metadata; preview hash bound to operator and exact changes', 'bulk_apply', self::object( [
 				'product_ids' => [ 'type' => 'array', 'minItems' => 1, 'maxItems' => 100, 'items' => self::positive_id() ],
 				'changes' => [ 'type' => 'object' ],
