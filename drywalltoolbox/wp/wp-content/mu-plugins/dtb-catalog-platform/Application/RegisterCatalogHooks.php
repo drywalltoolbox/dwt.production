@@ -13,6 +13,66 @@ add_action( 'init', static function (): void {
 
 add_action( 'init', [ DTB_CatalogTaxonomyMigration::class, 'maybe_run' ], 30 );
 add_action( 'template_redirect', [ DTB_CatalogTaxonomyMigration::class, 'redirect_legacy_category_archives' ], 1 );
+add_action( 'template_redirect', 'dtb_catalog_serve_storefront_route', 2 );
+
+/**
+ * Serve the React shell only for registered storefront route shapes.
+ * Unknown paths remain WordPress 404s. Canonical PDP paths are checked against
+ * WooCommerce before the shell is returned so catalog outages are never turned
+ * into false product 404s.
+ */
+function dtb_catalog_serve_storefront_route(): void {
+	if ( ! is_404() || is_admin() || wp_doing_ajax() || wp_is_json_request() ) {
+		return;
+	}
+
+	$path = (string) wp_parse_url( (string) ( $_SERVER['REQUEST_URI'] ?? '/' ), PHP_URL_PATH );
+	$path = '/' . trim( rawurldecode( $path ), '/' );
+	if ( '/' === $path ) {
+		return;
+	}
+
+	$frontend_route = preg_match(
+		'~^/(?:products(?:/brands(?:/[^/]+(?:/categories/[^/]+)?)?|/[^/]+(?:/variations/[^/]+)?)?|all-products|product/[^/]+|product-category/accessories(?:/tool-cases|/mud-pan-accessories)?|parts|category/[^/]+|schematics|repairs(?:/(?:start|packages|track|status/[^/]+))?|help|faq|calculators|shipping-policy|returns(?:/status/[^/]+)?|return-policy|policies|terms-of-service|privacy-policy|preview/technical-specifications|cart|checkout(?:/(?:complete|payment-failed|payment-cancelled|order-received/[^/]+))?|order/[^/]+|order-tracking/[^/]+|contact|support/status/[^/]+|settings/woocommerce|login|register|forgot-password|reset-password|dashboard(?:/repairs/[^/]+)?|orders|rewards|account-settings|addresses|notifications|error/[^/]+)$~D',
+		$path
+	);
+
+	if ( ! $frontend_route ) {
+		return;
+	}
+
+	if ( ! preg_match( '~^/products/brands(?:/|$)~D', $path )
+		&& preg_match( '~^/products/([a-zA-Z0-9_-]+)(?:/variations/[0-9]+)?$~D', $path, $matches ) ) {
+		$slug = sanitize_title( $matches[1] );
+		$response = dtb_catalog_wc_get_response( 'wc/v3/products', [
+			'slug'    => $slug,
+			'status'  => 'publish',
+			'_fields' => 'id,slug,status',
+		] );
+
+		if ( ! $response instanceof WP_REST_Response || 200 !== $response->get_status() ) {
+			status_header( 503 );
+			exit;
+		}
+
+		$products = $response->get_data();
+		if ( ! is_array( $products ) || empty( $products[0]['id'] ) || $slug !== (string) ( $products[0]['slug'] ?? '' ) ) {
+			status_header( 404 );
+			exit;
+		}
+	}
+
+	$shell = dirname( ABSPATH ) . '/index.html';
+	if ( ! is_readable( $shell ) ) {
+		status_header( 503 );
+		exit;
+	}
+
+	status_header( 200 );
+	header( 'Content-Type: text/html; charset=' . get_option( 'blog_charset' ) );
+	readfile( $shell );
+	exit;
+}
 
 add_action( 'dtb_product_cache_invalidated', static function (): void {
 	dtb_catalog_cache_invalidate_facets();

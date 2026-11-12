@@ -11,7 +11,7 @@
  *   'idle'      — no slug provided
  *   'loading'   — fetch in progress
  *   'ready'     — data loaded successfully
- *   'not_found' — server returned 404 or no product envelope
+ *   'not_found' — server confirmed the product does not exist
  *   'error'     — network or server error
  */
 
@@ -152,7 +152,9 @@ export function useProductDetail(slug) {
         if (cancelled) return;
         if (!data || !data.product) {
           if (cached?.product) return;
-          dispatch({ type: 'not_found', routeSlug: cacheKey(slug), error: 'Product not found.' });
+          // A successful but malformed/empty response does not establish that
+          // WooCommerce has no matching product. Keep this distinct from 404.
+          dispatch({ type: 'error', routeSlug: cacheKey(slug), error: 'The product catalog returned an incomplete response.' });
           return;
         }
         setCachedDetail(slug, data);
@@ -172,7 +174,7 @@ export function useProductDetail(slug) {
       .catch((err) => {
         if (cancelled) return;
         if (cached?.product) return;
-        const is404 = err?.status === 404 || /404/.test(err?.message || '');
+        const is404 = err?.status === 404;
         dispatch({ type: is404 ? 'not_found' : 'error', routeSlug: cacheKey(slug), error: err?.message || 'Failed to load product.' });
       });
 

@@ -237,8 +237,8 @@ ErrorDocument 511 /errors/511.html
   RewriteCond %{REQUEST_URI} ^/\.well-known/ [NC]
   RewriteRule ^ - [R=404,L]
 
-  # Root React Router SPA catch-all.
-  RewriteRule ^ index.html [QSA,L]
+  # Let WordPress preserve 404 status and serve only recognized React routes.
+  RewriteRule ^ wp/index.php [QSA,L]
 </IfModule>
 
 <IfModule mod_headers.c>

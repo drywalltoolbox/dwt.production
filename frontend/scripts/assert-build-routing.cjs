@@ -141,8 +141,16 @@ if (appEnv === 'production') {
   if (!/^\s*RewriteRule \^\$ index\.html \[L\]$/m.test(emitted)) {
     throw new Error('Production / must serve the React storefront from index.html.');
   }
-  if (!/^\s*RewriteRule \^ index\.html \[QSA,L\]$/m.test(emitted)) {
-    throw new Error('Production React routes must fall back to index.html.');
+  const wordpressRouteFallback = 'RewriteRule ^ wp/index.php [QSA,L]';
+  const unknownAssetGuard = 'RewriteRule ^ - [R=404,L]';
+  if (!emitted.includes(wordpressRouteFallback)) {
+    throw new Error('Production extensionless routes must reach WordPress for status-aware storefront routing.');
+  }
+  if (/^\s*RewriteRule \^ index\.html \[QSA,L\]$/m.test(emitted)) {
+    throw new Error('Production routing must not send every extensionless path to the React shell.');
+  }
+  if (emitted.indexOf(unknownAssetGuard) < 0 || emitted.indexOf(unknownAssetGuard) > emitted.indexOf(wordpressRouteFallback)) {
+    throw new Error('Missing static assets must return 404 before extensionless routes reach WordPress.');
   }
   if (fs.existsSync(path.join(outputRoot, 'storefront.html'))) {
     throw new Error('Production output must use one root storefront shell, not a duplicate storefront.html.');
