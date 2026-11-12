@@ -43,6 +43,7 @@ The frontend catalog callers use the canonical routes. Legacy `drywall/v1` produ
 - Search page size is capped at 100; SKU and search inputs are bounded.
 - Cold catalog reads use the live catalog endpoint; the disabled static snapshot bootstrap path has been retired.
 - Facet responses for non-search scopes use a five-minute server transient and are invalidated by product and category changes. Search-scoped facets bypass the server cache; failed builds are never cached.
+- Browser catalog caches have bounded in-memory and persistent entry counts (24 product queries, 16 facet scopes, 64 categories); obsolete versioned catalog keys are removed on the next catalog storage read.
 - The frontend coalesces concurrent catalog reads only when no caller-owned abort signal is supplied. Aborted consumers do not cancel another consumer's request.
 - Exact-SKU results are coalesced in flight only. Misses and runtime failures are not persisted by the adapter.
 - Public product responses may be cached by the catalog query cache. Cart, checkout, account, and other session-bound responses do not belong in that cache.

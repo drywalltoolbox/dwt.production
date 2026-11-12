@@ -8,6 +8,9 @@ import {
 
 const FRESH_CACHE_TTL = 5 * 60 * 1000;
 const STALE_CACHE_TTL = 24 * 60 * 60 * 1000;
+const PRODUCT_CACHE_LIMIT = 24;
+const FACETS_CACHE_LIMIT = 16;
+const CATEGORY_CACHE_LIMIT = 64;
 const CACHE_VERSION = 'v18-explicit-default-variation';
 export const CATALOG_FACETS_CONTRACT_VERSION = '2.3';
 // Bump the local cache namespace when canonical taxonomy relationships change,
@@ -17,6 +20,9 @@ const CATEGORY_CACHE_VERSION = 'v18-contract-2-3-taxonomy';
 const PRODUCT_STORAGE_PREFIX = `dtb:catalog-products:${CACHE_VERSION}:`;
 const FACETS_STORAGE_PREFIX = `dtb:catalog-facets:${FACETS_CACHE_VERSION}:`;
 const CATEGORY_STORAGE_PREFIX = `dtb:catalog-category:${CATEGORY_CACHE_VERSION}:`;
+const PRODUCT_STORAGE_ROOT = 'dtb:catalog-products:';
+const FACETS_STORAGE_ROOT = 'dtb:catalog-facets:';
+const CATEGORY_STORAGE_ROOT = 'dtb:catalog-category:';
 
 const productCache = new Map();
 const facetsCache = new Map();
@@ -24,6 +30,7 @@ const facetsInflight = new Map();
 const categoryCache = new Map();
 const categoryInflight = new Map();
 const catalogReadInflight = new Map();
+let obsoleteCatalogStoragePruned = false;
 
 function coalesceCatalogRead(key, options, request) {
   if (options?.signal) return request();
@@ -37,10 +44,78 @@ function canUseStorage() {
   return typeof window !== 'undefined' && Boolean(window.localStorage);
 }
 
+function cacheLimitForPrefix(prefix) {
+  if (prefix === PRODUCT_STORAGE_PREFIX) return PRODUCT_CACHE_LIMIT;
+  if (prefix === FACETS_STORAGE_PREFIX) return FACETS_CACHE_LIMIT;
+  return CATEGORY_CACHE_LIMIT;
+}
+
+function touchCacheEntry(cache, key, entry, limit) {
+  cache.delete(key);
+  cache.set(key, entry);
+  while (cache.size > limit) {
+    cache.delete(cache.keys().next().value);
+  }
+}
+
+function pruneObsoleteCatalogStorage() {
+  if (obsoleteCatalogStoragePruned || !canUseStorage()) return;
+  obsoleteCatalogStoragePruned = true;
+
+  const currentPrefixes = new Set([
+    PRODUCT_STORAGE_PREFIX,
+    FACETS_STORAGE_PREFIX,
+    CATEGORY_STORAGE_PREFIX,
+  ]);
+  const roots = [PRODUCT_STORAGE_ROOT, FACETS_STORAGE_ROOT, CATEGORY_STORAGE_ROOT];
+
+  try {
+    for (let index = window.localStorage.length - 1; index >= 0; index -= 1) {
+      const storageKey = window.localStorage.key(index);
+      if (!storageKey || !roots.some((root) => storageKey.startsWith(root))) continue;
+      if (!Array.from(currentPrefixes).some((prefix) => storageKey.startsWith(prefix))) {
+        window.localStorage.removeItem(storageKey);
+      }
+    }
+  } catch {
+    // Persistent caching remains opportunistic if storage is restricted.
+  }
+}
+
+function prunePersistentEntries(prefix, limit) {
+  const entries = [];
+  const invalidKeys = [];
+  const now = Date.now();
+
+  for (let index = 0; index < window.localStorage.length; index += 1) {
+    const storageKey = window.localStorage.key(index);
+    if (!storageKey?.startsWith(prefix)) continue;
+
+    try {
+      const parsed = JSON.parse(window.localStorage.getItem(storageKey) || 'null');
+      const cachedAt = Number(parsed?.cachedAt) || 0;
+      if (!cachedAt || now - cachedAt >= STALE_CACHE_TTL) {
+        invalidKeys.push(storageKey);
+        continue;
+      }
+      entries.push({ key: storageKey, cachedAt });
+    } catch {
+      invalidKeys.push(storageKey);
+    }
+  }
+
+  invalidKeys.forEach((storageKey) => window.localStorage.removeItem(storageKey));
+  entries.sort((a, b) => a.cachedAt - b.cachedAt);
+  while (entries.length > limit) {
+    window.localStorage.removeItem(entries.shift().key);
+  }
+}
+
 function readPersistent(prefix, key) {
   if (!canUseStorage()) return null;
 
   try {
+    pruneObsoleteCatalogStorage();
     const raw = window.localStorage.getItem(`${prefix}${key}`);
     if (!raw) return null;
     const parsed = JSON.parse(raw);
@@ -55,7 +130,9 @@ function writePersistent(prefix, key, data) {
   if (!canUseStorage() || !data) return;
 
   try {
+    pruneObsoleteCatalogStorage();
     window.localStorage.setItem(`${prefix}${key}`, JSON.stringify({ data, cachedAt: Date.now() }));
+    prunePersistentEntries(prefix, cacheLimitForPrefix(prefix));
   } catch {
     // Persistent cache is opportunistic. Storage quota/private mode failures are non-fatal.
   }
@@ -76,6 +153,7 @@ function getCacheEntry(cache, key, prefix, { allowStale = false } = {}) {
   const memoryEntry = cache.get(key);
 
   if (memoryEntry?.data) {
+    touchCacheEntry(cache, key, memoryEntry, cacheLimitForPrefix(prefix));
     const age = now - memoryEntry.cachedAt;
     if (age < FRESH_CACHE_TTL) {
       return { data: memoryEntry.data, isStale: false, source: 'memory' };
@@ -94,7 +172,7 @@ function getCacheEntry(cache, key, prefix, { allowStale = false } = {}) {
     return null;
   }
 
-  cache.set(key, persistentEntry);
+  touchCacheEntry(cache, key, persistentEntry, cacheLimitForPrefix(prefix));
   if (persistentAge < FRESH_CACHE_TTL) {
     return { data: persistentEntry.data, isStale: false, source: 'persistent' };
   }
@@ -108,21 +186,13 @@ function setCacheEntry(cache, key, prefix, data) {
   if (!data) return data;
 
   const entry = { data, cachedAt: Date.now() };
-  cache.set(key, entry);
+  touchCacheEntry(cache, key, entry, cacheLimitForPrefix(prefix));
   writePersistent(prefix, key, data);
   return data;
 }
 
 function sortedKey(value = {}) {
   return JSON.stringify(Object.entries(value).sort(([a], [b]) => a.localeCompare(b)));
-}
-
-function normalizeCategoryAlias(value = '') {
-  return String(value || '')
-    .trim()
-    .toLowerCase()
-    .replace(/[\s_]+/g, '-')
-    .replace(/^-+|-+$/g, '');
 }
 
 /**
