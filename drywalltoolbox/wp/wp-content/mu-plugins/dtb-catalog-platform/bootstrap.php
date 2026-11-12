@@ -19,6 +19,11 @@ if (
 	&& ! ( defined( 'WP_CLI' ) && WP_CLI )
 	&& ! ( defined( 'DOING_CRON' ) && DOING_CRON )
 ) {
+	$_dtb_request_path = (string) wp_parse_url( (string) ( $_SERVER['REQUEST_URI'] ?? '/' ), PHP_URL_PATH );
+	if ( preg_match( '~^/(?:staging/)?products/(?!brands(?:/|$))[a-zA-Z0-9_-]+(?:/variations/[0-9]+)?/?$~D', $_dtb_request_path ) ) {
+		require_once __DIR__ . '/Application/RegisterStorefrontProductRoute.php';
+	}
+	unset( $_dtb_request_path );
 	return;
 }
 
