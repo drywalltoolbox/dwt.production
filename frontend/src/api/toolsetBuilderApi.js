@@ -1,5 +1,7 @@
-import { apiClient } from './client.js';
-import { fetchCatalogProducts } from '../services/catalogPlatformCache.js';
+import {
+  fetchCatalogProducts,
+  fetchCatalogProductVariations,
+} from '../services/catalogPlatformCache.js';
 
 const TOOLSET_CATALOG_PAGE_SIZE = 48;
 
@@ -51,7 +53,7 @@ export function fetchToolsetVariations(productId) {
     return Promise.resolve({ productId: 0, variations: [], count: 0 });
   }
 
-  return apiClient('/wp-json/dtb/v1/catalog/products/' + encodeURIComponent(String(id)) + '/variations');
+  return fetchCatalogProductVariations(id);
 }
 
 export function normalizeToolsetSelection(product, variation = null) {

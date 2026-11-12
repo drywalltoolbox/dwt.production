@@ -7,13 +7,13 @@ defined( 'ABSPATH' ) || exit;
  * Single authoritative source for ALL custom REST routes registered by the
  * Drywall Toolbox suite.  Consolidates what was previously spread across:
  *
- *   • drywall-api-proxy.php   (drywall/v1 namespace — product proxy, orders, etc.)
+ *   • drywall-api-proxy.php   (drywall/v1 namespace — commerce and webhook routes)
  *   • dtb-woocommerce.php     (dtb/v1 config, catalog, products-csv, import-catalog)
  *   • dtb-app-passwords.php   (dtb/v1 create-app-password)
  *
  * Namespaces
  * ──────────
- *   drywall/v1   Server-side WC REST proxy (products, categories, orders, …)
+ *   drywall/v1   Server-side WC REST proxy (orders, customers, coupons, webhooks)
  *   dtb/v1       Site-management endpoints  (config, catalog, import, auth, …)
  *
  * Depends on (loaded before this file via 00-dtb-loader.php)
@@ -547,6 +547,9 @@ function dtb_app_password_rate_limit(): ?WP_REST_Response {
 // =============================================================================
 // ROUTE CALLBACKS — drywall/v1 proxy
 // =============================================================================
+
+// Shared WooCommerce projection fields used by the canonical catalog detail API.
+const DTB_PRODUCT_DETAIL_FIELDS = 'id,name,slug,permalink,type,status,featured,catalog_visibility,description,short_description,sku,price,regular_price,sale_price,on_sale,purchasable,manage_stock,stock_quantity,backorders,backorders_allowed,backordered,sold_individually,weight,dimensions,shipping_required,shipping_class,shipping_class_id,reviews_allowed,average_rating,rating_count,cross_sell_ids,parent_id,categories,brands,tags,images,attributes,default_attributes,variations,menu_order,price_html,related_ids,stock_status,has_options,meta_data';
 
 /** GET /drywall/v1/orders/{id}  (JWT-gated) */
 function dtb_proxy_get_order( WP_REST_Request $request ): WP_REST_Response {

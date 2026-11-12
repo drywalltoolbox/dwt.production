@@ -32,7 +32,7 @@ Product search is intentionally different from identity resolution: text and SKU
 
 ## Compatibility transition
 
-The frontend catalog callers use the canonical routes. Existing `drywall/v1` product lookup routes remain available during the frontend rollout so the currently deployed application is not broken. Remove an individual compatibility route only after its canonical replacement has been deployed and read-back/consumer checks show parity. Keep unrelated `drywall/v1` routes, including commerce and operational integrations.
+The frontend catalog callers use the canonical routes. The legacy `drywall/v1` product, variation, search, and category lookup routes have been retired after runtime parity checks. The `drywall/v1` namespace remains for its separate order, customer, coupon, and product-webhook responsibilities; those routes are not catalog compatibility routes.
 
 ## Failure and cache rules
 

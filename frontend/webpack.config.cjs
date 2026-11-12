@@ -158,7 +158,7 @@ module.exports = (envFlags, argv) => {
     // Headless WP + WooCommerce architecture
     'process.env.REACT_APP_WP_BASE_URL':                JSON.stringify(env('REACT_APP_WP_BASE_URL')),
     'process.env.REACT_APP_SITE_URL':                   JSON.stringify(env('REACT_APP_SITE_URL')),
-    // ─── Headless WooCommerce proxy (drywall/v1) ──────────────────────────────
+    // WordPress REST and WooCommerce Store API base URLs.
     // Read from the environment-specific .env file loaded above.
     'process.env.REACT_APP_API_BASE_URL':               JSON.stringify(env('REACT_APP_API_BASE_URL')),
     'process.env.REACT_APP_STORE_API_BASE':             JSON.stringify(env('REACT_APP_STORE_API_BASE')),

@@ -9,6 +9,4 @@ export * from './client.js';
 export * from './products.js';
 export * from './cart.js';
 export * from './orders.js';
-export * from './customers.js';
-export * from './coupons.js';
 export * from './designConfig.js';
