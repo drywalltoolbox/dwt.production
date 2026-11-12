@@ -62,8 +62,20 @@
     <!-- Search Console ownership verification; retain this tag. -->
     <meta name="google-site-verification" content="Pl8kkhzGhgzxCc5RbB3zZEwvKXtvRzRhpR8AFwTDJUk" />
 
-    <!-- ── Runtime SEO authority: SEOHead / react-helmet-async ── -->
+    <!-- Static homepage metadata; SEOHead updates these defaults per React route. -->
     <title>Drywall Toolbox</title>
+    <meta name="description" content="Shop professional drywall tools and replacement parts. Browse tool schematics and explore repair services from Drywall Toolbox." />
+    <link rel="canonical" href="<%= htmlWebpackPlugin.options.siteUrl %>/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Drywall Toolbox" />
+    <meta property="og:description" content="Shop professional drywall tools and replacement parts. Browse tool schematics and explore repair services from Drywall Toolbox." />
+    <meta property="og:url" content="<%= htmlWebpackPlugin.options.siteUrl %>/" />
+    <meta property="og:site_name" content="Drywall Toolbox" />
+    <meta property="og:image" content="https://drywalltoolbox.com/logos/logo-black.svg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Drywall Toolbox" />
+    <meta name="twitter:description" content="Shop professional drywall tools and replacement parts. Browse tool schematics and explore repair services from Drywall Toolbox." />
+    <meta name="twitter:image" content="https://drywalltoolbox.com/logos/logo-black.svg" />
     <meta name="keywords" content="drywall tools, taping tools, finishing tools, construction equipment, TapeTech, Level5">
     <meta name="theme-color" content="#0f172a">
     <meta name="mobile-web-app-capable" content="yes">
@@ -97,7 +109,44 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <main class="dtb-home-static-fallback">
+        <h1>The New Standard in Drywall Tools</h1>
+        <p>Drywall Toolbox brings professional drywall tools and support resources together for contractors. Browse finishing and taping equipment, find replacement parts, review tool schematics, or explore repair services.</p>
+        <nav aria-label="Shop and support">
+          <a href="/products">Shop drywall tools</a>
+          <a href="/products/brands">Browse brands</a>
+          <a href="/parts">Find replacement parts</a>
+          <a href="/schematics">View tool schematics</a>
+          <a href="/repairs/packages">Explore repair services</a>
+          <a href="/help">Visit the help center</a>
+        </nav>
+        <section aria-labelledby="dtb-home-fallback-tools">
+          <h2 id="dtb-home-fallback-tools">Shop tools by brand and type</h2>
+          <p>Browse the product catalog for professional drywall tools and equipment. Brand pages help narrow the catalog to products from a selected manufacturer, and category pages group tools by their use.</p>
+          <p><a href="/products">Explore all products</a> or <a href="/products/brands">choose a brand</a>.</p>
+        </section>
+        <section aria-labelledby="dtb-home-fallback-parts">
+          <h2 id="dtb-home-fallback-parts">Find the right replacement part</h2>
+          <p>Search the parts catalog by product information, or open a schematic to review tool diagrams and linked parts. These resources help identify the component you need before you place an order.</p>
+          <p><a href="/parts">Search replacement parts</a> and <a href="/schematics">browse schematics</a>.</p>
+        </section>
+        <section aria-labelledby="dtb-home-fallback-repairs">
+          <h2 id="dtb-home-fallback-repairs">Repair and store support</h2>
+          <p>Explore repair packages and service options for drywall tools. For help with products, orders, returns, or store policies, visit the support pages below.</p>
+          <p><a href="/repairs/packages">View repair services</a>, <a href="/returns">review returns</a>, or <a href="/contact">contact Drywall Toolbox</a>.</p>
+        </section>
+      </main>
+    </div>
+    <style>
+      .dtb-home-static-fallback{box-sizing:border-box;width:min(100% - 32px,960px);margin:0 auto;padding:48px 0;color:#172337;font:16px/1.65 Arial,sans-serif}
+      .dtb-home-static-fallback h1,.dtb-home-static-fallback h2{line-height:1.15}
+      .dtb-home-static-fallback h1{max-width:18ch;margin:0 0 16px;font-size:clamp(2.25rem,6vw,4.5rem)}
+      .dtb-home-static-fallback h2{margin:32px 0 10px;font-size:1.5rem}
+      .dtb-home-static-fallback p{max-width:72ch;color:#4b596c}
+      .dtb-home-static-fallback nav{display:flex;flex-wrap:wrap;gap:12px;margin:24px 0}
+      .dtb-home-static-fallback a{color:#0756b8;font-weight:700}
+    </style>
 
     <!--
       Boot watchdog. React's ErrorBoundary (main.jsx) only catches errors

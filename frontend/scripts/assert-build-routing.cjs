@@ -29,6 +29,7 @@ const manifestPath = path.join(outputRoot, 'asset-manifest.json');
 const indexPath = path.join(outputRoot, 'index.html');
 const notFoundPath = path.join(outputRoot, '404.html');
 const robotsPath = path.join(outputRoot, 'robots.txt');
+const llmsPath = path.join(outputRoot, 'llms.txt');
 const appSourcePath = path.join(frontendRoot, 'src', 'App.jsx');
 const devServerSourcePath = path.join(frontendRoot, 'webpack.config.cjs');
 const schematicSourceRoot = path.join(frontendRoot, 'public', 'brands');
@@ -144,6 +145,22 @@ const notFoundHtml = fs.readFileSync(notFoundPath, 'utf8');
 if (/location\.replace|segmentCount|github pages spa redirect/i.test(notFoundHtml)) {
   throw new Error('The static 404 page must not rewrite unknown routes back to the React shell.');
 }
+const staticHtml = fs.readFileSync(indexPath, 'utf8');
+if (!staticHtml.includes('name="description" content="Shop professional drywall tools and replacement parts.')) {
+  throw new Error('The static homepage must provide its description before React loads.');
+}
+if (!/<div id="root">[\s\S]*?<h1[^>]*>The New Standard in Drywall Tools<\/h1>/.test(staticHtml)) {
+  throw new Error('The static homepage must provide a semantic H1 before React loads.');
+}
+for (const href of ['/products', '/products/brands', '/parts', '/schematics', '/repairs/packages', '/help']) {
+  if (!staticHtml.includes(`href="${href}"`)) {
+    throw new Error(`The static homepage is missing its internal link to ${href}.`);
+  }
+}
+const llmsText = fs.readFileSync(llmsPath, 'utf8');
+if (!llmsText.startsWith('# Drywall Toolbox') || !llmsText.includes('https://drywalltoolbox.com/sitemap.xml')) {
+  throw new Error('The production artifact must include the public llms.txt discovery file.');
+}
 for (const retiredPath of ['/all-products', '/product-category/', '/product/', '/faq', '/orders', '/rewards', '/account-settings', '/addresses', '/notifications']) {
   if (appSource.includes(retiredPath)) {
     throw new Error(`The React router still references retired route ${retiredPath}.`);
@@ -160,6 +177,9 @@ if (appEnv === 'production' && !/^\s*RewriteRule\s+\^checkout\/\?\$\s+wp\/index\
 }
 
 if (appEnv === 'production') {
+  if (!emitted.includes('Header always set Strict-Transport-Security "max-age=31536000"')) {
+    throw new Error('Production routing must emit the configured HSTS response header.');
+  }
   if (!/^\s*RewriteRule \^\$ index\.html \[L\]$/m.test(emitted)) {
     throw new Error('Production / must serve the React storefront from index.html.');
   }

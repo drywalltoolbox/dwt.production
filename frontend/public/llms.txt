@@ -1,0 +1,25 @@
+# Drywall Toolbox
+
+> Drywall Toolbox is an ecommerce and service platform for professional drywall contractors. Browse tools and replacement parts, view tool schematics, and explore repair services.
+
+## Storefront
+
+- [Products](https://drywalltoolbox.com/products): Browse professional drywall tools and equipment.
+- [Brands](https://drywalltoolbox.com/products/brands): Browse products by brand.
+- [Replacement parts](https://drywalltoolbox.com/parts): Find parts for drywall tools.
+- [Schematics](https://drywalltoolbox.com/schematics): View tool diagrams and linked catalog parts.
+
+## Services and support
+
+- [Repair services](https://drywalltoolbox.com/repairs/packages): Review repair service options.
+- [Help center](https://drywalltoolbox.com/help): Find store and product support information.
+- [Returns](https://drywalltoolbox.com/returns): Review the returns information and workflow.
+- [Shipping policy](https://drywalltoolbox.com/shipping-policy): Read shipping information.
+- [Contact](https://drywalltoolbox.com/contact): Contact Drywall Toolbox.
+
+## Site discovery
+
+- [XML sitemap](https://drywalltoolbox.com/sitemap.xml)
+- [Robots policy](https://drywalltoolbox.com/robots.txt)
+
+Product names, identifiers, prices, availability, compatibility, and order status are maintained by the live catalog and commerce systems. Refer to product pages and official catalog APIs for current product details.

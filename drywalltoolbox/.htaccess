@@ -250,6 +250,9 @@ ErrorDocument 511 /errors/511.html
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set X-Frame-Options "SAMEORIGIN"
   Header always set X-Permitted-Cross-Domain-Policies "none"
+  # Browsers accept HSTS only from HTTPS responses; do not apply this policy
+  # to subdomains until every subdomain has an independently verified HTTPS contract.
+  Header always set Strict-Transport-Security "max-age=31536000"
   # Keep processor-hosted payment SDK origins and Google Pay allowed here.
   # WooPayments currently loads its secure payment surface from these origins.
   # Keep this synchronized with dtb_frontend_security_permissions_policy().

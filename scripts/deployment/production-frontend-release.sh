@@ -39,7 +39,7 @@ record="$release_records/$release"
 
 is_release_file() {
   case "$1" in
-    .htaccess|index.html|asset-manifest.json|robots.txt|site.webmanifest|404.html|favicon.ico|favicon.png|favicon-16x16.png|favicon-32x32.png|favicon-48x48.png|apple-touch-icon.png|android-chrome-192x192.png|android-chrome-512x512.png|android-chrome-maskable-192x192.png|android-chrome-maskable-512x512.png) return 0 ;;
+    .htaccess|index.html|asset-manifest.json|robots.txt|llms.txt|site.webmanifest|404.html|favicon.ico|favicon.png|favicon-16x16.png|favicon-32x32.png|favicon-48x48.png|apple-touch-icon.png|android-chrome-192x192.png|android-chrome-512x512.png|android-chrome-maskable-192x192.png|android-chrome-maskable-512x512.png) return 0 ;;
     assets/css/*|assets/fonts/*|assets/images/*|assets/js/*|errors/[0-9][0-9][0-9].html|errors/error.css|errors/error-page.js|errors/dtb-logo-black.webp|brands/*/schematic_data*.json) return 0 ;;
     *) return 1 ;;
   esac
@@ -47,7 +47,7 @@ is_release_file() {
 
 collect_current_managed_files() {
   local path
-  for path in .htaccess index.html asset-manifest.json robots.txt site.webmanifest 404.html \
+  for path in .htaccess index.html asset-manifest.json robots.txt llms.txt site.webmanifest 404.html \
     favicon.ico favicon.png favicon-16x16.png favicon-32x32.png favicon-48x48.png \
     apple-touch-icon.png android-chrome-192x192.png android-chrome-512x512.png \
     android-chrome-maskable-192x192.png android-chrome-maskable-512x512.png; do
@@ -150,7 +150,7 @@ fi
 [[ "$current" != "$release" ]] || { echo "Already published: $release"; exit 0; }
 [[ -d "$incoming" && -s "$incoming/index.html" && -s "$incoming/.htaccess" &&
    -s "$incoming/asset-manifest.json" && -s "$incoming/site.webmanifest" &&
-   -s "$incoming/robots.txt" && -s "$incoming/.dtb-file-sha256" ]] ||
+   -s "$incoming/robots.txt" && -s "$incoming/llms.txt" && -s "$incoming/.dtb-file-sha256" ]] ||
   { echo "Incomplete production frontend payload" >&2; exit 2; }
 [[ ! -e "$snapshot" && ! -e "$record" ]] || { echo "Release snapshot/record already exists; refusing ambiguous retry" >&2; exit 2; }
 [[ ! -L "$incoming" ]] || { echo "Incoming release may not be a symlink" >&2; exit 2; }
@@ -172,6 +172,7 @@ if grep -Eq '^[[:space:]]*RewriteRule \^wc-stripe/v1' "$incoming/.htaccess"; the
   exit 2
 fi
 grep -Fq 'payment_intent=pi_' "$incoming/.htaccess" || { echo "WooPayments return routing missing" >&2; exit 2; }
+grep -Fq 'Header always set Strict-Transport-Security "max-age=31536000"' "$incoming/.htaccess" || { echo "HSTS header missing" >&2; exit 2; }
 if grep -Fq 'X-Robots-Tag "noindex, nofollow"' "$incoming/.htaccess"; then
   echo "Production payload is marked noindex" >&2
   exit 2

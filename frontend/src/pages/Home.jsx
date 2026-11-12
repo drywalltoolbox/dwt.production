@@ -81,7 +81,7 @@ export default function Home() {
       <SEOHead
         title="Drywall Toolbox"
         noSuffix
-        description="Top trusted one-stop shop for professional drywall tools. Get production-grade tools and parts at unbeatable prices with lightning-fast shipping."
+        description="Shop professional drywall tools and replacement parts. Browse tool schematics and explore repair services from Drywall Toolbox."
         canonical="/"
         schema={[buildOrganizationSchema(), buildSiteLinksSearchBoxSchema()]}
       />
