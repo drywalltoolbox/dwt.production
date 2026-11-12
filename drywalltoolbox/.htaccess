@@ -127,6 +127,9 @@ ErrorDocument 511 /errors/511.html
   RewriteCond %{QUERY_STRING} (^|&)rest_route= [NC]
   RewriteRule ^index\.php$ wp/index.php [QSA,L]
 
+  # Retired legacy Stripe namespace; WooPayments uses its own active routes.
+  RewriteRule ^wc-stripe/v1(?:/|$) - [G,L,NC]
+
   # Root REST aliases -> WordPress in /wp.
   RewriteRule ^wp-json/?$ wp/index.php?rest_route=/ [QSA,L]
   RewriteRule ^wp-json/(.*)$ wp/index.php?rest_route=/$1 [QSA,L]
