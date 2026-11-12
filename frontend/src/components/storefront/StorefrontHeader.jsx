@@ -2,16 +2,14 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { startTransition, useState, useEffect, useRef, useMemo, useCallback } from 'react';
 import { useCart } from '../../context/CartContext';
 import { useAuthContext } from '../../auth/AuthContext.js';
-import { ShoppingCart, X, User } from 'lucide-react';
+import { Search, ShoppingCart, X, User } from 'lucide-react';
 import { DTB_LOGO_WHITE_URL, DTB_LOGO_WHITE_MOBILE_URL, handleDtbLogoFallback } from '../../utils/dtbLogoAssets.js';
 import StorefrontSearchOverlay from './StorefrontSearchOverlay';
 import StorefrontMobileDrawer from './StorefrontMobileDrawer';
 import StorefrontMobileNavigationPages from './StorefrontMobileNavigationPages.jsx';
-import AccountHubSheet from '../account/AccountHubSheet.jsx';
 import { searchProducts } from '../../services/catalog';
 import StorefrontSearchDock from './StorefrontSearchDock';
 import StorefrontDesktopNavigation from './StorefrontDesktopNavigation.jsx';
-import StorefrontCatalogAutocomplete from './StorefrontCatalogAutocomplete.jsx';
 import { useCatalogFacets } from '../../hooks/useCatalogFacets.js';
 import { getRepairPackageGroups } from '../../data/repairPackages.js';
 import { SCHEMATIC_BRANDS } from '../../data/schematicBrands.js';
@@ -35,6 +33,8 @@ import {
 const SEARCH_OVERLAY_EXIT_MS = 360;
 const MOBILE_SEARCH_DELAY_MS = 220;
 const MAX_SEARCH_PRODUCTS = 6;
+const loadDesktopCatalogAutocomplete = () => import('./StorefrontCatalogAutocomplete.jsx');
+const loadAccountHubSheet = () => import('../account/AccountHubSheet.jsx');
 // Restore calculator navigation after launch without removing the calculator routes.
 const SHOW_CALCULATORS_NAV = false;
 
@@ -120,9 +120,13 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
   const [desktopNavOpen, setDesktopNavOpen] = useState(null);
   const [, setAccountDropdownOpen] = useState(false);
   const [accountHubOpen, setAccountHubOpen] = useState(false);
+  const [AccountHubSheetComponent, setAccountHubSheetComponent] = useState(null);
   const [accountUnreadCount, setAccountUnreadCount] = useState(0);
   const [desktopSearchOpen, setDesktopSearchOpen] = useState(false);
   const [desktopSearchQuery, setDesktopSearchQuery] = useState('');
+  const [DesktopCatalogAutocomplete, setDesktopCatalogAutocomplete] = useState(null);
+  const desktopAutocompleteLoadRef = useRef(null);
+  const accountHubLoadRef = useRef(null);
   const [searchOverlayOpen, setSearchOverlayOpen] = useState(false);
 
   useEffect(() => {
@@ -146,6 +150,52 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     try { return typeof window !== 'undefined' && window.matchMedia('(min-width: 641px) and (max-width: 1024px)').matches; }
     catch { return false; }
   });
+
+  const loadDesktopAutocomplete = useCallback(() => {
+    if (desktopAutocompleteLoadRef.current) return desktopAutocompleteLoadRef.current;
+
+    desktopAutocompleteLoadRef.current = loadDesktopCatalogAutocomplete()
+      .then((module) => {
+        setDesktopCatalogAutocomplete(() => module.default);
+        return module.default;
+      })
+      .catch((error) => {
+        // The native search field remains usable if this optional enhancement fails to load.
+        desktopAutocompleteLoadRef.current = null;
+        console.error('Desktop catalog search enhancement failed to load.', error);
+        return null;
+      });
+
+    return desktopAutocompleteLoadRef.current;
+  }, []);
+
+  const preloadAccountHub = useCallback(() => {
+    if (accountHubLoadRef.current) return accountHubLoadRef.current;
+
+    accountHubLoadRef.current = loadAccountHubSheet()
+      .then((module) => {
+        setAccountHubSheetComponent(() => module.default);
+        return module.default;
+      })
+      .catch((error) => {
+        accountHubLoadRef.current = null;
+        console.error('Account workspace failed to load.', error);
+        return null;
+      });
+
+    return accountHubLoadRef.current;
+  }, []);
+
+  const openAccountHub = useCallback(async () => {
+    if (!AccountHubSheetComponent && !await preloadAccountHub()) return;
+    setAccountDropdownOpen(false);
+    setAccountHubOpen(true);
+  }, [AccountHubSheetComponent, preloadAccountHub]);
+
+  useEffect(() => {
+    if (!DesktopCatalogAutocomplete || !desktopSearchOpen) return;
+    desktopSearchInputRef.current?.focus({ preventScroll: true });
+  }, [DesktopCatalogAutocomplete, desktopSearchOpen]);
 
   const drawerBrands = useMemo(() => mapCatalogBrands(facets?.brands), [facets]);
   const partsBrands = useMemo(() => mapCatalogBrands(partsFacets?.brands), [partsFacets]);
@@ -704,22 +754,56 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
             </div>
             <div className="header-center header-center--desktop-search">
               <div ref={desktopSearchRef} className="dtb-desktop-search dtb-desktop-search--header" data-results-open={desktopSearchVisible ? 'true' : 'false'}>
-                <StorefrontCatalogAutocomplete
-                  inputRef={desktopSearchInputRef}
-                  query={desktopSearchQuery}
-                  open={desktopSearchVisible}
-                  onOpenChange={(nextOpen) => setDesktopSearchOpen(nextOpen)}
-                  onQueryChange={(nextQuery) => {
-                    setDesktopSearchQuery(nextQuery);
-                    setDesktopSearchOpen(true);
-                  }}
-                  onFocus={() => {
-                    setDesktopNavOpen(null);
-                    setDesktopSearchOpen(true);
-                  }}
-                  onProductSelect={handleDesktopResultClick}
-                  onViewAll={handleDesktopViewAll}
-                />
+                {DesktopCatalogAutocomplete ? (
+                  <DesktopCatalogAutocomplete
+                    inputRef={desktopSearchInputRef}
+                    query={desktopSearchQuery}
+                    open={desktopSearchVisible}
+                    onOpenChange={(nextOpen) => setDesktopSearchOpen(nextOpen)}
+                    onQueryChange={(nextQuery) => {
+                      setDesktopSearchQuery(nextQuery);
+                      setDesktopSearchOpen(true);
+                    }}
+                    onFocus={() => {
+                      setDesktopNavOpen(null);
+                      setDesktopSearchOpen(true);
+                    }}
+                    onProductSelect={handleDesktopResultClick}
+                    onViewAll={handleDesktopViewAll}
+                  />
+                ) : (
+                  <form
+                    className="dtb-desktop-search-pill"
+                    role="search"
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      if (desktopSearchQuery.trim()) handleDesktopViewAll();
+                    }}
+                  >
+                    <span className="dtb-desktop-search-icon-wrap" aria-hidden="true"><Search className="dtb-desktop-search-icon" /></span>
+                    <input
+                      ref={desktopSearchInputRef}
+                      type="search"
+                      value={desktopSearchQuery}
+                      onChange={(event) => {
+                        setDesktopSearchQuery(event.target.value);
+                        setDesktopSearchOpen(true);
+                      }}
+                      onFocus={() => {
+                        setDesktopNavOpen(null);
+                        setDesktopSearchOpen(true);
+                        loadDesktopAutocomplete();
+                      }}
+                      placeholder="Search products, brands, or SKU..."
+                      className="dtb-desktop-search-input"
+                      aria-label="Search products"
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="none"
+                      spellCheck={false}
+                    />
+                  </form>
+                )}
               </div>
             </div>
             <div className="header-right header-desktop-actions">
@@ -727,10 +811,10 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
                 <button
                   type="button"
                   onClick={() => {
-                    if (isLoading) return;
-                    setAccountDropdownOpen(false);
-                    setAccountHubOpen(true);
+                    if (!isLoading) openAccountHub();
                   }}
+                  onPointerEnter={preloadAccountHub}
+                  onFocus={preloadAccountHub}
                   aria-label={isLoading ? 'Loading account' : `Open account hub${accountUnreadCount ? `, ${accountUnreadCount} unread notifications` : ''}`}
                   aria-expanded={accountHubOpen}
                   aria-busy={isLoading}
@@ -836,16 +920,18 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
         onViewAll={handleMobileViewAll}
       />
 
-      <AccountHubSheet
-        isOpen={accountHubOpen}
-        onClose={() => setAccountHubOpen(false)}
-        user={user}
-        onLogin={login}
-        onRegister={register}
-        authLoading={isLoading}
-        onLogout={logout}
-        onUnreadCountChange={setAccountUnreadCount}
-      />
+      {AccountHubSheetComponent ? (
+        <AccountHubSheetComponent
+          isOpen={accountHubOpen}
+          onClose={() => setAccountHubOpen(false)}
+          user={user}
+          onLogin={login}
+          onRegister={register}
+          authLoading={isLoading}
+          onLogout={logout}
+          onUnreadCountChange={setAccountUnreadCount}
+        />
+      ) : null}
     </>
   );
 }

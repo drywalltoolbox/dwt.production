@@ -5,6 +5,9 @@ import { getAccountWorkspaceHistory } from '../../api/accountWorkspace.js';
 import { getRecentlyViewed } from '../../utils/recentlyViewed.js';
 import { buildAccountActivity } from '../../utils/accountActivity.js';
 import AccountActivityList from './AccountActivityList.jsx';
+import '../../styles/account-hub.css';
+import '../../styles/account-hub-motion.css';
+import '../../styles/account-hub-cta.css';
 
 const TABS = [
   { id: 'home',    label: 'Home',    Icon: Home },
