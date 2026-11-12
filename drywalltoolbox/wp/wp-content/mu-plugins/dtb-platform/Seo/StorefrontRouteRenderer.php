@@ -244,7 +244,47 @@ final class DTB_StorefrontRouteRenderer {
 		$description = self::truncate( $description, 160 );
 		$title     = $term->name . ' | Drywall Toolbox';
 		$canonical = home_url( $path );
-		$content   = '<main class="dtb-home-static-fallback dtb-route-static-content"><h1>' . esc_html( $term->name ) . '</h1><p>' . esc_html( $description ) . '</p><p><a href="' . esc_url( home_url( '/products' ) ) . '">Browse all products</a></p></main>';
+		$content   = '<main class="dtb-home-static-fallback dtb-route-static-content"><h1>' . esc_html( $term->name ) . '</h1><p>' . esc_html( $description ) . '</p><p><a href="' . esc_url( home_url( '/products' ) ) . '">Browse all products</a></p>';
+		if ( 'product_cat' === $taxonomy && function_exists( 'wc_get_products' ) ) {
+			try {
+				$products = wc_get_products(
+					[
+						'status'     => 'publish',
+						'visibility' => 'visible',
+						'category'   => [ $slug ],
+						'limit'      => 12,
+						'orderby'    => 'menu_order',
+						'order'      => 'ASC',
+						'return'     => 'objects',
+					]
+				);
+			} catch ( Throwable $error ) {
+				$products = [];
+			}
+
+			if ( is_array( $products ) && ! empty( $products ) ) {
+				$content .= '<section aria-labelledby="dtb-category-products-heading"><h2 id="dtb-category-products-heading">Products in ' . esc_html( $term->name ) . '</h2><ul>';
+				foreach ( $products as $product ) {
+					if ( ! $product instanceof WC_Product ) {
+						continue;
+					}
+					$product_slug = trim( (string) $product->get_slug() );
+					$product_name = trim( (string) $product->get_name() );
+					if ( '' === $product_slug || '' === $product_name ) {
+						continue;
+					}
+
+					$content .= '<li><a href="' . esc_url( home_url( '/products/' . rawurlencode( $product_slug ) ) ) . '">' . esc_html( $product_name ) . '</a>';
+					$product_summary = self::plain_text( (string) $product->get_short_description() );
+					if ( '' !== $product_summary ) {
+						$content .= '<p>' . esc_html( self::truncate( $product_summary, 180 ) ) . '</p>';
+					}
+					$content .= '</li>';
+				}
+				$content .= '</ul></section>';
+			}
+		}
+		$content .= '</main>';
 		self::render_route_document( $title, $description, $canonical, $content, $method );
 	}
 
