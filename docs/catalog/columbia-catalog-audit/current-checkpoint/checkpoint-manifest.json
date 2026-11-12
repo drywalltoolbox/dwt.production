@@ -1,11 +1,11 @@
 {
   "schema_version": 1,
-  "created_utc": "2026-10-27T02:35:46.512861+00:00",
+  "created_utc": "2026-11-12T03:35:21.434452+00:00",
   "checkpoint_file": "docs/catalog/columbia-catalog-audit/current-checkpoint/dtb_columbia_catalog_official.csv",
   "source_file": "docs/catalog/columbia-catalog-audit/temporary-reference/columbia-manufacturer-first-WORKING-NOT-FOR-IMPORT.csv",
   "source_sha256": "b2f7efabf06a4140d04c033b78da6359d60d825160a260e3d9e57229fa361531",
   "checkpoint_sha256": "b2f7efabf06a4140d04c033b78da6359d60d825160a260e3d9e57229fa361531",
   "rows": 1006,
-  "official_catalog_sha256": "b43573f88f6f1c33b4862fff7a1363f9fb3c64e7c5506ba6d0565c56ed3ba4c0",
+  "official_catalog_sha256": "ab8b6dbf1756f9df7f389bdd792322de83b3091cab23abe893d7fd738114aa06",
   "purpose": "Review checkpoint of an unfinished working catalog; not an approved import."
 }

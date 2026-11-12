@@ -208,11 +208,12 @@
     },
     "match_dispositions": {
       "exact_existing_match": 434,
-      "unresolved_possible_match": 90,
-      "new_product_candidate": 457,
+      "unresolved_possible_match": 85,
+      "new_product_candidate": 461,
       "unresolved_identifier_conflict": 10,
       "unresolved_catalog_sku_collision": 2,
       "unresolved_alternate_identifier": 11,
+      "exact_existing_identity_correction": 1,
       "unresolved_source_identity": 2
     },
     "field_review_products": 445,
@@ -228,6 +229,7 @@
     "matching_review_evidence": "stale",
     "matching_review_changed_inputs": [
       "columbia-manufacturer-first-WORKING-NOT-FOR-IMPORT.csv",
+      "manufacturer-rebuild-dispositions.csv",
       "dtb_official_catalog.csv"
     ],
     "images_populated": 642,
@@ -57474,8 +57476,8 @@
       },
       "shipping_evidence": [],
       "matching": {
-        "disposition": "unresolved_possible_match",
-        "dtb_sku": "",
+        "disposition": "exact_existing_identity_correction",
+        "dtb_sku": "C1PTAPER",
         "basis": "unique_sku"
       },
       "category_review": {
@@ -57491,6 +57493,7 @@
         "price_pair_matches_convention": true,
         "review_flags": [
           "title_similarity_not_identity",
+          "canonical_identity_corrected; live_woocommerce_and_veeqo_mapping_pending",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -57548,7 +57551,7 @@
       },
       "shipping_evidence": [],
       "matching": {
-        "disposition": "unresolved_possible_match",
+        "disposition": "new_product_candidate",
         "dtb_sku": "",
         "basis": "unique_sku"
       },
@@ -57562,7 +57565,7 @@
         "sale_below_recorded_cost": null,
         "price_pair_matches_convention": true,
         "review_flags": [
-          "title_similarity_not_identity",
+          "official_2026_modular_item_distinct; no_exact_canonical_identity; current_cost_and_taxonomy_required",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -57620,7 +57623,7 @@
       },
       "shipping_evidence": [],
       "matching": {
-        "disposition": "unresolved_possible_match",
+        "disposition": "new_product_candidate",
         "dtb_sku": "",
         "basis": "unique_sku"
       },
@@ -57634,7 +57637,7 @@
         "sale_below_recorded_cost": null,
         "price_pair_matches_convention": true,
         "review_flags": [
-          "title_similarity_not_identity",
+          "official_2026_modular_item_distinct; no_exact_canonical_identity; current_cost_and_taxonomy_required",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -57692,7 +57695,7 @@
       },
       "shipping_evidence": [],
       "matching": {
-        "disposition": "unresolved_possible_match",
+        "disposition": "new_product_candidate",
         "dtb_sku": "",
         "basis": "unique_sku"
       },
@@ -57708,7 +57711,7 @@
         "sale_below_recorded_cost": null,
         "price_pair_matches_convention": true,
         "review_flags": [
-          "title_similarity_not_identity",
+          "official_2026_modular_item_distinct; no_exact_canonical_identity; current_cost_and_taxonomy_required",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -57780,7 +57783,7 @@
         "sale_below_recorded_cost": null,
         "price_pair_matches_convention": true,
         "review_flags": [
-          "requires_full_identity_taxonomy_media_and_stock_review",
+          "official_2026_modular_item_distinct; no_exact_canonical_identity; current_cost_and_taxonomy_required",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -57838,7 +57841,7 @@
       },
       "shipping_evidence": [],
       "matching": {
-        "disposition": "unresolved_possible_match",
+        "disposition": "new_product_candidate",
         "dtb_sku": "",
         "basis": "unique_sku"
       },
@@ -57854,7 +57857,7 @@
         "sale_below_recorded_cost": null,
         "price_pair_matches_convention": true,
         "review_flags": [
-          "title_similarity_not_identity",
+          "official_2026_modular_item_distinct; no_exact_canonical_identity; current_cost_and_taxonomy_required",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]
@@ -57926,7 +57929,7 @@
         "sale_below_recorded_cost": null,
         "price_pair_matches_convention": true,
         "review_flags": [
-          "requires_full_identity_taxonomy_media_and_stock_review",
+          "official_2026_modular_item_distinct; no_exact_canonical_identity; current_cost_and_taxonomy_required",
           "no_weight_in_csv",
           "incomplete_dimensions_in_csv"
         ]

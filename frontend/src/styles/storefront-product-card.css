@@ -603,3 +603,90 @@
   .dtb-quantity-menu,
   .dtb-quantity-menu__option { animation:none;transition:none; }
 }
+
+/* Homepage shopping rails use the page canvas as their shared surface. Keep
+   the product identity and commerce controls intact while removing the nested
+   tile treatment that made each item read like a floating panel on mobile. */
+@media (max-width: 767px) {
+  .dtb-home-product-section .dtb-product-card--rail {
+    height: auto;
+    align-self: start;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__image {
+    aspect-ratio: 1.12 / 1;
+    border-radius: var(--dtb-radius-md, 12px);
+    background: #f7f9fc;
+  }
+
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__meta {
+    grid-template-rows: auto minmax(2.3em, 2.7em) auto minmax(78px, auto);
+    gap: 5px;
+    padding: 9px 2px 2px;
+    background: transparent;
+  }
+
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__brand {
+    width: fit-content;
+    max-width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    color: var(--dtb-muted, #64748b);
+    font-size: clamp(.64rem, 2.2vw, .7rem);
+    font-weight: 750;
+    letter-spacing: .08em;
+  }
+
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__name {
+    max-width: 100%;
+    height: auto;
+    max-height: 2.7em;
+    margin: 0;
+    font-size: clamp(.88rem, 3.35vw, 1rem);
+    font-weight: 700;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__sku {
+    margin-top: 0;
+    color: #64748b;
+    font-size: .72rem;
+  }
+
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__divider {
+    display: none;
+  }
+
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__footer {
+    gap: 8px;
+    padding-top: 2px;
+  }
+
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__quantity {
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: none;
+  }
+
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__footer .dtb-product-card__action--mobile-icon {
+    border-radius: 10px;
+    box-shadow: none;
+    --dtb-atc-radius: 10px;
+  }
+
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__footer .dtb-product-card__action--mobile-icon .dtb-add-to-cart__surface {
+    background: var(--dtb-primary, #2255ee);
+  }
+}

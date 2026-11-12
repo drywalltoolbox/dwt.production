@@ -1,0 +1,13 @@
+{
+  "purpose": "Latest read-only Veeqo sellable identity probe before configuring reopened Columbia kit/pack candidates",
+  "readback_utc": "2026-11-12 04:29:19 UTC",
+  "query": {
+    "sku_code": "FFBR-9-10",
+    "page": 1,
+    "page_size": 10
+  },
+  "result": "UNAUTHORIZED",
+  "message": "This app connection requires reauthentication. Reconnect the app and try again.",
+  "scope_note": "The connection-level authorization failure prevents verification of current Veeqo sellable and kit identities for all reopened SKUs.",
+  "mutations": 0
+}

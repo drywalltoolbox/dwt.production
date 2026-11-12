@@ -9,29 +9,40 @@
   "historical_excluded_product_count": 48,
   "current_dispositions_by_variant": {
     "exact_existing_identity_correction": 1,
-    "exact_existing_match": 434,
+    "exact_existing_match": 435,
     "exclude_merchandise_out_of_scope": 6,
     "include_candidate_pending_taxonomy_and_cost": 48,
-    "new_product_candidate": 461,
-    "unresolved_alternate_identifier": 11,
-    "unresolved_catalog_sku_collision": 2,
+    "new_product_candidate": 529,
+    "resolved_alternate_identifier_match_pending_commercial_review": 15,
+    "resolved_alternate_identifier_match_pending_taxonomy_and_commercial_review": 1,
+    "unresolved_catalog_sku_collision": 1,
     "unresolved_duplicate_manufacturer_sku": 2,
-    "unresolved_identifier_conflict": 10,
-    "unresolved_possible_match": 85
+    "unresolved_identifier_conflict": 3,
+    "unresolved_possible_match": 19
   },
   "current_dispositions_by_product": {
     "exact_existing_identity_correction": 1,
-    "exact_existing_match": 434,
+    "exact_existing_match": 435,
     "exclude_merchandise_out_of_scope": 2,
     "include_candidate_pending_taxonomy_and_cost": 48,
-    "new_product_candidate": 461,
-    "unresolved_alternate_identifier": 11,
-    "unresolved_catalog_sku_collision": 2,
+    "new_product_candidate": 529,
+    "resolved_alternate_identifier_match_pending_commercial_review": 15,
+    "resolved_alternate_identifier_match_pending_taxonomy_and_commercial_review": 1,
+    "unresolved_catalog_sku_collision": 1,
     "unresolved_duplicate_manufacturer_sku": 2,
-    "unresolved_identifier_conflict": 10,
-    "unresolved_possible_match": 85
+    "unresolved_identifier_conflict": 3,
+    "unresolved_possible_match": 19
   },
-  "review_exception_variant_rows": 619,
+  "review_exception_variant_rows": 602,
+  "live_kit_pack_identity_review": {
+    "source_sku_rows": 48,
+    "exact_sku_matches": 0,
+    "exact_sku_absent": 48,
+    "query_errors": 0,
+    "provider_identity_status": "UNAUTHORIZED",
+    "provider_auth_readback_utc": "2026-11-12 04:29:19 UTC",
+    "authority_note": "WooCommerce exact-SKU absence does not prove a new product identity or establish Veeqo kit configuration."
+  },
   "product_type_variant_counts": {
     "": 3,
     "Angle Head": 4,
@@ -67,6 +78,24 @@
     "Tool Cases": 3,
     "Tool Sets": 3
   },
+  "new_candidate_media_provenance": {
+    "candidate_skus_reviewed": 529,
+    "candidate_skus_with_manufacturer_images": 243,
+    "candidate_skus_without_manufacturer_images": 286,
+    "manufacturer_image_assets_in_exact_order": 640,
+    "rows_with_exact_source_to_manifest_order_and_existing_local_assets": 243,
+    "rows_with_repo_filename_convention": 243,
+    "rows_requiring_media_mapping_reconciliation": 0,
+    "unique_official_manufacturer_image_urls_checked": 615,
+    "source_image_placements_returning_2xx": 640,
+    "source_image_placements_returning_404": 0,
+    "source_image_placements_other_or_network_error": 0,
+    "public_target_urls_checked": 640,
+    "public_target_urls_returning_2xx": 0,
+    "public_target_urls_returning_404": 640,
+    "public_target_urls_other_or_network_error": 0,
+    "public_target_url_verification": "bounded per-URL HTTP HEAD readback recorded; no candidate media attached"
+  },
   "duplicate_manufacturer_skus": {
     "CT45-BLACK": {
       "occurrences": 2,
@@ -86,6 +115,28 @@
   "input_sha256": {
     "products_json": "572cd1ffe3061fb00bd1068289d678f6b86fd5fee984fe08bfd3d6123f78456c",
     "selected_dispositions": "864ea6fdbf40396341ea9ba6cab3638b8d0619d7781f38dd0ea1b29934413ae4",
+    "identifier_candidate_review": "b95e48a6fa3419ccbc80a703a0eee1df03d823339184f2371e57a459501c7a4a",
+    "schematic_identity_readback": "bd13a47ea4868e5949a7991856390fcedfe34f7852d371830d6b41be48e6c386",
+    "live_identifier_collision_readback": "abc79a64437eb735d64751c0106bdf57353aa0443ce3ddba85a7d088be94f796",
+    "manufacturer_page_live_readback": "c85b4746f5f348210e961170b5e61f6f358de0419a27eb5ef59a0454186e67f9",
+    "unresolved_exact_sku_live_readback": "90516ac3cb8b4b74c0867cc546855b283c171332c7f012cc6e9d95a0e9e10dac",
+    "hffb5_ffb5_variation_family_live_readback": "ae455b94a9d3af67e0680beb84025f891bcae88caae0a3ef72f694c6e4f35b79",
+    "unresolved_manufacturer_page_live_readback": "d05b336cda6d278467f9f8ca7fc755ed6e3bec63842c1e08a05267228c0e0f9c",
+    "bbh9_bh9_variation_family_live_readback": "c176f0736971708693b7120308d8900ee04a2958c47d74f453652f2014f8ed75",
+    "variation_sku_endpoint_probe": "435110a426fdf1b0c80b0c823be499a02212dafc2e71e7aaa72bc6384ca1d3fe",
+    "all_candidate_exact_sku_live_readback": "c8e28fe02322b9d8b4a4630c674238c4749b2e49331a02505402c44c556b5960",
+    "schematic_alternate_candidate_live_readback": "030a7ac164599735be7522566fbec3d2c15880fca93eebb4d7d7a429796cf85a",
+    "reopened_kit_pack_live_readback": "a10c5779462b7dbaeb9d60225f739cf0635e45f8e083c1a0b4852a5bf50bb0ef",
+    "reopened_kit_pack_veeqo_auth_readback": "c641c03c103deb1984839c66e17a2bd8fc7483ebe8f7b746c169382c99d8aa9c",
+    "reopened_kit_pack_taxonomy_review": "d46a89039fd947c0bfd855a60cd6a1c0b08d4d2548da11f2df9b2bbdc28b97da",
+    "quickbooks_product_service_list_cost_check": "722c7af9b79ab7a729cade6d73f64f7535b86371e38b365d23a8d646650a54d6",
+    "tsw_email_cost_search": "d733164f8e3435d1c869686adb5d8cd276b8322bb145d19aafd23861d32853cb",
+    "veeqo_native_kit_workflow_readiness": "7343c609b1b066068fb9cf0f6533497c1c01f2e0abf011f0b9caec4dee419d3f",
+    "manufacturer_kit_bom_evidence": "760e8c8bd2ceee453f8e2b6a58dd089f0f839a90a12c1b75f62fdcc7eb44253f",
+    "manufacturer_image_audit": "914889f3a4774865d305f5c30d59cac73ec840e94a719b70a1cf91abb239c967",
+    "manufacturer_image_manifest": "80547700ac0469f63854093e37f7738a1fd1fd5d627082a04754ad9fc984cc11",
+    "candidate_media_public_reachability": "233d3a13512a905b183ee1459f47c103e6fc5dd35429c29f6d0be9a4cfb6708a",
+    "candidate_media_source_reachability": "f406817fe08f9eb4b2f4651ef0885e24a25426c59cbf93be5d431c169d881bdb",
     "excluded_kits": "ee3d0393aa46cc52b1916c3f7a8a212e283d03a7b7875ac11be7008d9aaa5338",
     "excluded_packs": "0e138cd898582af913acfc3bd12d8f7082744ee7ae91b4e73d0452ae5cfa9352",
     "historical_tsw_cost_snapshot": "4e9e245b2761848144ab50a19cb9989f3a72f5506216ff23ce619ca9a1c3bf89",
@@ -99,7 +150,102 @@
     "rows_with_exact_cost_snapshot": 244,
     "rows_with_duplicate_cost_snapshot": 0
   },
+  "quickbooks_current_item_cost_review": {
+    "schema_version": 1,
+    "purpose": "Read-only check for current Columbia item purchase costs in QuickBooks",
+    "readback_utc": "2026-11-12 04:26:33 UTC",
+    "company": "DW Toolbox",
+    "queries": [
+      {
+        "scope": "active product/service list filtered by names Columbia and TSW",
+        "items_returned": 0
+      },
+      {
+        "scope": "complete active product/service list",
+        "items_returned": 2,
+        "items": [
+          {
+            "name": "Services",
+            "type": "SERVICE",
+            "purchase_price": null
+          },
+          {
+            "name": "Hours",
+            "type": "SERVICE",
+            "purchase_price": null
+          }
+        ]
+      }
+    ],
+    "result": "No active QuickBooks product/inventory records were returned. The complete active list contains two service records only; neither has a purchase price. This source does not substantiate current Columbia unit costs.",
+    "mutations": 0
+  },
+  "current_tsw_email_cost_search": {
+    "schema_version": 1,
+    "purpose": "Read-only follow-up search for current TSW quote, invoice, purchase order, or Columbia cost information",
+    "readback_utc": "2026-11-12 04:29:19 UTC",
+    "query": "after:2026/11/10 (TSW OR \"Columbia Tools\") -in:spam -in:trash",
+    "accounts_searched": [
+      "Gmail",
+      "Primary"
+    ],
+    "results_by_account": {
+      "Gmail": 0,
+      "Primary": 0
+    },
+    "result": "No new matching messages in either connected account. The search provides no current supplier cost evidence.",
+    "mutations": 0
+  },
+  "veeqo_native_kit_workflow_readiness": {
+    "schema_version": 1,
+    "purpose": "Current production status of the DTB Veeqo native-kit workflow relevant to reopened Columbia kits",
+    "readback_utc": "2026-11-12 04:34:13 UTC",
+    "production_site": "https://drywalltoolbox.com",
+    "integration_health": {
+      "result_ok": false,
+      "veeqo_integration_enabled": false,
+      "production_credentials_configured": true,
+      "production_readiness": true,
+      "inventory_readiness": true,
+      "inventory_initialized": true,
+      "inventory_stale": true,
+      "last_completed_sync_utc": "2026-10-23T12:49:07+00:00",
+      "last_run_updated": 0,
+      "last_run_unmapped_count": 108,
+      "last_run_duplicate_count": 0,
+      "last_run_missing_stock_count": 0,
+      "webhooks_enabled": false,
+      "registered_request_and_kit_ability_components": true
+    },
+    "native_kit_workflow": {
+      "live_abilities": "import-preview, import-convert, read, integration-health",
+      "preview_contract": "Requires exact existing parent sellable ID/SKU and component sellable IDs/SKUs/quantities; verifies each ID and exact SKU against Veeqo and returns a BOM fingerprint.",
+      "conversion_contract": "One-shot conversion of an existing ProductVariant to a Veeqo Kit; separately feature-gated, fingerprint-bound, parent-reserved, explicit confirmation required, and no retry after uncertain outcome.",
+      "catalog_import_scope": "This kit conversion ability does not create WooCommerce products and is not a general CSV/catalog importer."
+    },
+    "live_tracked_source_comparison": [
+      {
+        "path": "dtb-integrations/Veeqo/Services/VeeqoKitImportService.php",
+        "live_bytes": 7883,
+        "live_sha256": "df101cd184cf227dedcb1e634198b3099f18930e6aa61497eb4a5691f91deae0",
+        "tracked_sha256": "91fd4f67d2e6c6ae53f57c3635e526196a4e00a56462ba554c00302796ce1b8e",
+        "content_matches_after_line_ending_normalization": true
+      },
+      {
+        "path": "dtb-integrations/Veeqo/Rest/VeeqoKitMcpAbilities.php",
+        "live_bytes": 6258,
+        "live_sha256": "5b155a38e67f80db16e419a2074ca10f4bb45bb557da76e6821ad59c354aa372",
+        "tracked_sha256": "d8053a01756e4b0a9c1b6b6273f8140f34ed9e6a5f33ea01358a8c5201079fe0",
+        "content_matches_after_line_ending_normalization": true
+      }
+    ],
+    "candidate_readiness": "No verified Veeqo sellable IDs or bill-of-materials are available for the 48 reopened source SKUs. Exact-SKU lookups through the separate Veeqo connector returned UNAUTHORIZED. No preview or conversion was attempted with inferred IDs or quantities.",
+    "mutations": 0
+  },
   "output_csv": "docs/catalog/columbia-catalog-audit/review/current-manufacturer-source-accounting.csv",
   "provenance_csv": "docs/catalog/columbia-catalog-audit/review/current-manufacturer-source-provenance.csv",
-  "exceptions_csv": "docs/catalog/columbia-catalog-audit/review/current-manufacturer-source-exceptions.csv"
+  "exceptions_csv": "docs/catalog/columbia-catalog-audit/review/current-manufacturer-source-exceptions.csv",
+  "candidate_media_review_csv": "docs/catalog/columbia-catalog-audit/review/current-candidate-media-provenance-review.csv",
+  "reopened_kit_pack_taxonomy_review_csv": "docs/catalog/columbia-catalog-audit/review/current-reopened-kit-pack-taxonomy-review.csv",
+  "reopened_kit_pack_bom_evidence_csv": "docs/catalog/columbia-catalog-audit/review/current-reopened-kit-pack-bom-evidence.csv"
 }

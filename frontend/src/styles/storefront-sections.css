@@ -135,6 +135,26 @@
   }
 }
 
+@media (max-width: 767px) {
+  .dtb-home-product-section .storefront-section__view-all {
+    min-height: 40px;
+    padding-inline: 0.25rem;
+    border-color: transparent;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    font-size: 0.78rem;
+    letter-spacing: 0;
+  }
+
+  .dtb-home-product-section .storefront-section__view-all:hover {
+    border-color: transparent;
+    background: transparent;
+    box-shadow: none;
+    transform: none;
+  }
+}
+
 
 .dtb-home-brand-section .storefront-section__title {
   display: flex;

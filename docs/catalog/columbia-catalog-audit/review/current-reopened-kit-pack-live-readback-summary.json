@@ -1,0 +1,10 @@
+{
+  "purpose": "Exact WooCommerce SKU readback for all reopened Columbia kits and packs",
+  "readback_utc": "2026-11-12 04:14:55 UTC",
+  "source_rows": 48,
+  "sku_queries_succeeded": 48,
+  "exact_sku_matches": 0,
+  "exact_sku_absent": 48,
+  "query_errors": 0,
+  "filter": "SKU exact; status=any; variation-inclusive endpoint positive control was previously confirmed"
+}

@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "purpose": "Current production status of the DTB Veeqo native-kit workflow relevant to reopened Columbia kits",
+  "readback_utc": "2026-11-12 04:34:13 UTC",
+  "production_site": "https://drywalltoolbox.com",
+  "integration_health": {
+    "result_ok": false,
+    "veeqo_integration_enabled": false,
+    "production_credentials_configured": true,
+    "production_readiness": true,
+    "inventory_readiness": true,
+    "inventory_initialized": true,
+    "inventory_stale": true,
+    "last_completed_sync_utc": "2026-10-23T12:49:07+00:00",
+    "last_run_updated": 0,
+    "last_run_unmapped_count": 108,
+    "last_run_duplicate_count": 0,
+    "last_run_missing_stock_count": 0,
+    "webhooks_enabled": false,
+    "registered_request_and_kit_ability_components": true
+  },
+  "native_kit_workflow": {
+    "live_abilities": "import-preview, import-convert, read, integration-health",
+    "preview_contract": "Requires exact existing parent sellable ID/SKU and component sellable IDs/SKUs/quantities; verifies each ID and exact SKU against Veeqo and returns a BOM fingerprint.",
+    "conversion_contract": "One-shot conversion of an existing ProductVariant to a Veeqo Kit; separately feature-gated, fingerprint-bound, parent-reserved, explicit confirmation required, and no retry after uncertain outcome.",
+    "catalog_import_scope": "This kit conversion ability does not create WooCommerce products and is not a general CSV/catalog importer."
+  },
+  "live_tracked_source_comparison": [
+    {
+      "path": "dtb-integrations/Veeqo/Services/VeeqoKitImportService.php",
+      "live_bytes": 7883,
+      "live_sha256": "df101cd184cf227dedcb1e634198b3099f18930e6aa61497eb4a5691f91deae0",
+      "tracked_sha256": "91fd4f67d2e6c6ae53f57c3635e526196a4e00a56462ba554c00302796ce1b8e",
+      "content_matches_after_line_ending_normalization": true
+    },
+    {
+      "path": "dtb-integrations/Veeqo/Rest/VeeqoKitMcpAbilities.php",
+      "live_bytes": 6258,
+      "live_sha256": "5b155a38e67f80db16e419a2074ca10f4bb45bb557da76e6821ad59c354aa372",
+      "tracked_sha256": "d8053a01756e4b0a9c1b6b6273f8140f34ed9e6a5f33ea01358a8c5201079fe0",
+      "content_matches_after_line_ending_normalization": true
+    }
+  ],
+  "candidate_readiness": "No verified Veeqo sellable IDs or bill-of-materials are available for the 48 reopened source SKUs. Exact-SKU lookups through the separate Veeqo connector returned UNAUTHORIZED. No preview or conversion was attempted with inferred IDs or quantities.",
+  "mutations": 0
+}

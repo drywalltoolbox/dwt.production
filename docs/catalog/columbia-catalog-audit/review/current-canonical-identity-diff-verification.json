@@ -1,0 +1,971 @@
+{
+  "schema_version": 1,
+  "generated_utc": "2026-11-12T02:58:00Z",
+  "before_file": "docs/catalog/columbia-catalog-audit/archive/rollback-snapshots/dtb_official_catalog-before-ptaper-c1ptaper-20261111.csv",
+  "after_file": "products/launch/official/dtb_official_catalog.csv",
+  "before_sha256": "2c3af76f6bdcc9f1863948111f11d5f93791eee29865f7524b9bd770c5f0f41d",
+  "after_sha256": "ab8b6dbf1756f9df7f389bdd792322de83b3091cab23abe893d7fd738114aa06",
+  "rows_before": 1133,
+  "rows_after": 1133,
+  "csv_schema_unchanged": true,
+  "changed_rows": 77,
+  "ptaper_to_c1ptaper_target_rows": 1,
+  "compatibility_reference_rows_changed": 76,
+  "non_columbia_rows_changed": 0,
+  "column_change_counts": {
+    "Meta: _dtb_compatible_tool_skus": 76,
+    "Meta: _dtb_manufacturer_sku": 1,
+    "Meta: _dtb_mpn": 1,
+    "Meta: _dtb_seo_description": 1,
+    "Meta: _dtb_specs_json": 1,
+    "Meta: schema_mpn": 1,
+    "SKU": 1
+  },
+  "change_evidence": [
+    {
+      "csv_row": 9,
+      "before_sku": "FA280",
+      "after_sku": "FA280",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"10FBBA\",\"10FFB\",\"12FBBA\",\"12FFB\",\"14FFB\",\"3NS\",\"5.5FFB\",\"7CFB\",\"7FFB\",\"8CFB\",\"8FBBA\",\"8FFB\",\"PTAPER\"]",
+          "[\"10FBBA\",\"10FFB\",\"12FBBA\",\"12FFB\",\"14FFB\",\"3NS\",\"5.5FFB\",\"7CFB\",\"7FFB\",\"8CFB\",\"8FBBA\",\"8FFB\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 12,
+      "before_sku": "FA228",
+      "after_sku": "FA228",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"10FFB\",\"12FFB\",\"14FFB\",\"2.5AH\",\"2AH\",\"3.5AH\",\"3AH\",\"3NS\",\"5.5FFB\",\"7CFB\",\"7FFB\",\"8CFB\",\"8FFB\",\"PTAPER\"]",
+          "[\"10FFB\",\"12FFB\",\"14FFB\",\"2.5AH\",\"2AH\",\"3.5AH\",\"3AH\",\"3NS\",\"5.5FFB\",\"7CFB\",\"7FFB\",\"8CFB\",\"8FFB\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 17,
+      "before_sku": "FA202",
+      "after_sku": "FA202",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"3BH\",\"42BH\",\"4BH\",\"5BH\",\"6BH\",\"PTAPER\"]",
+          "[\"3BH\",\"42BH\",\"4BH\",\"5BH\",\"6BH\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 18,
+      "before_sku": "FA200",
+      "after_sku": "FA200",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 21,
+      "before_sku": "CT109",
+      "after_sku": "CT109",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 23,
+      "before_sku": "FA295",
+      "after_sku": "FA295",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 25,
+      "before_sku": "FA286",
+      "after_sku": "FA286",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"2.5DF\",\"3.5DF\",\"3DF\",\"3WTDF\",\"4DF\",\"CLT24\",\"CLT32\",\"CLT42\",\"CLT55\",\"CMT24\",\"CMT32\",\"CMT42\",\"CMT55\",\"PTAPER\"]",
+          "[\"2.5DF\",\"3.5DF\",\"3DF\",\"3WTDF\",\"4DF\",\"CLT24\",\"CLT32\",\"CLT42\",\"CLT55\",\"CMT24\",\"CMT32\",\"CMT42\",\"CMT55\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 27,
+      "before_sku": "FA291",
+      "after_sku": "FA291",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 34,
+      "before_sku": "FA298",
+      "after_sku": "FA298",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 39,
+      "before_sku": "FA224",
+      "after_sku": "FA224",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\",\"SAT\"]",
+          "[\"C1PTAPER\",\"SAT\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 49,
+      "before_sku": "FA199",
+      "after_sku": "FA199",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 52,
+      "before_sku": "FA207",
+      "after_sku": "FA207",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"10FFBA\",\"12FFBA\",\"14FFBA\",\"8FFBA\",\"PTAPER\"]",
+          "[\"10FFBA\",\"12FFBA\",\"14FFBA\",\"8FFBA\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 53,
+      "before_sku": "FA219",
+      "after_sku": "FA219",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"7CFB\",\"8CFB\",\"CMT24\",\"CMT32\",\"CMT42\",\"CMT55\",\"PTAPER\"]",
+          "[\"7CFB\",\"8CFB\",\"CMT24\",\"CMT32\",\"CMT42\",\"CMT55\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 55,
+      "before_sku": "FA214",
+      "after_sku": "FA214",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"3NS\",\"PTAPER\"]",
+          "[\"3NS\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 57,
+      "before_sku": "FA210",
+      "after_sku": "FA210",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"2.5AH\",\"2AH\",\"3.5AH\",\"3AH\",\"PTAPER\",\"TBMP\"]",
+          "[\"2.5AH\",\"2AH\",\"3.5AH\",\"3AH\",\"C1PTAPER\",\"TBMP\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 59,
+      "before_sku": "FA220",
+      "after_sku": "FA220",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 60,
+      "before_sku": "FA218",
+      "after_sku": "FA218",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"3NS\",\"PTAPER\"]",
+          "[\"3NS\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 70,
+      "before_sku": "FA234",
+      "after_sku": "FA234",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"10FFB\",\"12FFB\",\"14FFB\",\"3NS\",\"5.5FFB\",\"7CFB\",\"7FFB\",\"8CFB\",\"8FFB\",\"PTAPER\",\"SAT\"]",
+          "[\"10FFB\",\"12FFB\",\"14FFB\",\"3NS\",\"5.5FFB\",\"7CFB\",\"7FFB\",\"8CFB\",\"8FFB\",\"C1PTAPER\",\"SAT\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 73,
+      "before_sku": "FA244",
+      "after_sku": "FA244",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"10FFBA\",\"12FFBA\",\"14FFBA\",\"8FFBA\",\"PTAPER\"]",
+          "[\"10FFBA\",\"12FFBA\",\"14FFBA\",\"8FFBA\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 74,
+      "before_sku": "FA239",
+      "after_sku": "FA239",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"2.5AH\",\"2AH\",\"3.5AH\",\"3AH\",\"CLT24\",\"CLT32\",\"CLT42\",\"CLT55\",\"CMT24\",\"CMT32\",\"CMT42\",\"CMT55\",\"PTAPER\",\"SAT\"]",
+          "[\"2.5AH\",\"2AH\",\"3.5AH\",\"3AH\",\"CLT24\",\"CLT32\",\"CLT42\",\"CLT55\",\"CMT24\",\"CMT32\",\"CMT42\",\"CMT55\",\"C1PTAPER\",\"SAT\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 75,
+      "before_sku": "FA227",
+      "after_sku": "FA227",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 78,
+      "before_sku": "FA237",
+      "after_sku": "FA237",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"2.5CSF\",\"2.5DF\",\"2.5SF\",\"3.5CSF\",\"3.5DF\",\"3.5SF\",\"3CSF\",\"3DF\",\"3SF\",\"3WTCSF\",\"3WTDF\",\"3WTSF\",\"4DF\",\"4SF\",\"CHXL\",\"PMH\",\"PMHL\",\"PMHS\",\"PTAPER\"]",
+          "[\"2.5CSF\",\"2.5DF\",\"2.5SF\",\"3.5CSF\",\"3.5DF\",\"3.5SF\",\"3CSF\",\"3DF\",\"3SF\",\"3WTCSF\",\"3WTDF\",\"3WTSF\",\"4DF\",\"4SF\",\"CHXL\",\"PMH\",\"PMHL\",\"PMHS\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 79,
+      "before_sku": "FA238",
+      "after_sku": "FA238",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"10FBBA\",\"10FFB\",\"10FFBA\",\"12FBBA\",\"12FFB\",\"12FFBA\",\"14FFB\",\"14FFBA\",\"5.5FFB\",\"7CFB\",\"7FFB\",\"8CFB\",\"8FBBA\",\"8FFB\",\"8FFBA\",\"PTAPER\",\"SAT\"]",
+          "[\"10FBBA\",\"10FFB\",\"10FFBA\",\"12FBBA\",\"12FFB\",\"12FFBA\",\"14FFB\",\"14FFBA\",\"5.5FFB\",\"7CFB\",\"7FFB\",\"8CFB\",\"8FBBA\",\"8FFB\",\"8FFBA\",\"C1PTAPER\",\"SAT\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 80,
+      "before_sku": "FA241",
+      "after_sku": "FA241",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"10FBBA\",\"10FFB\",\"10FFBA\",\"12FBBA\",\"12FFB\",\"12FFBA\",\"14FFB\",\"14FFBA\",\"3NS\",\"5.5FFB\",\"7CFB\",\"7FFB\",\"8CFB\",\"8FBBA\",\"8FFB\",\"8FFBA\",\"PTAPER\"]",
+          "[\"10FBBA\",\"10FFB\",\"10FFBA\",\"12FBBA\",\"12FFB\",\"12FFBA\",\"14FFB\",\"14FFBA\",\"3NS\",\"5.5FFB\",\"7CFB\",\"7FFB\",\"8CFB\",\"8FBBA\",\"8FFB\",\"8FFBA\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 81,
+      "before_sku": "FA243",
+      "after_sku": "FA243",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"10FFBA\",\"12FFBA\",\"14FFBA\",\"8FFBA\",\"PTAPER\"]",
+          "[\"10FFBA\",\"12FFBA\",\"14FFBA\",\"8FFBA\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 84,
+      "before_sku": "FA254",
+      "after_sku": "FA254",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"3NS\",\"PTAPER\"]",
+          "[\"3NS\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 94,
+      "before_sku": "FA258",
+      "after_sku": "FA258",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"10FBBA\",\"10FFB\",\"10FFBA\",\"12FBBA\",\"12FFB\",\"12FFBA\",\"14FFB\",\"14FFBA\",\"2.5AH\",\"2AH\",\"3.5AH\",\"3AH\",\"5.5FFB\",\"7CFB\",\"7FFB\",\"8CFB\",\"8FBBA\",\"8FFB\",\"8FFBA\",\"PMH\",\"PMHL\",\"PMHS\",\"PTAPER\",\"SAT\"]",
+          "[\"10FBBA\",\"10FFB\",\"10FFBA\",\"12FBBA\",\"12FFB\",\"12FFBA\",\"14FFB\",\"14FFBA\",\"2.5AH\",\"2AH\",\"3.5AH\",\"3AH\",\"5.5FFB\",\"7CFB\",\"7FFB\",\"8CFB\",\"8FBBA\",\"8FFB\",\"8FFBA\",\"PMH\",\"PMHL\",\"PMHS\",\"C1PTAPER\",\"SAT\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 95,
+      "before_sku": "FA249",
+      "after_sku": "FA249",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"CMH\",\"PTAPER\"]",
+          "[\"CMH\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 110,
+      "before_sku": "CT103",
+      "after_sku": "CT103",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 152,
+      "before_sku": "CT72",
+      "after_sku": "CT72",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 158,
+      "before_sku": "CT55",
+      "after_sku": "CT55",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 159,
+      "before_sku": "CT56",
+      "after_sku": "CT56",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 160,
+      "before_sku": "CT31",
+      "after_sku": "CT31",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 161,
+      "before_sku": "CT83",
+      "after_sku": "CT83",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 224,
+      "before_sku": "CT132",
+      "after_sku": "CT132",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 227,
+      "before_sku": "CT45",
+      "after_sku": "CT45",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 229,
+      "before_sku": "CT112",
+      "after_sku": "CT112",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 230,
+      "before_sku": "CT104",
+      "after_sku": "CT104",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 231,
+      "before_sku": "CT105",
+      "after_sku": "CT105",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 232,
+      "before_sku": "CT10A",
+      "after_sku": "CT10A",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 233,
+      "before_sku": "CT47",
+      "after_sku": "CT47",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 260,
+      "before_sku": "CT78",
+      "after_sku": "CT78",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 261,
+      "before_sku": "CT70",
+      "after_sku": "CT70",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 262,
+      "before_sku": "CT-SPROCKET",
+      "after_sku": "CT-SPROCKET",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 263,
+      "before_sku": "CT71",
+      "after_sku": "CT71",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 264,
+      "before_sku": "CT77",
+      "after_sku": "CT77",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 265,
+      "before_sku": "CT87",
+      "after_sku": "CT87",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 268,
+      "before_sku": "CT130",
+      "after_sku": "CT130",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 269,
+      "before_sku": "CT127",
+      "after_sku": "CT127",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 271,
+      "before_sku": "FA292",
+      "after_sku": "FA292",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"CC\",\"HMP\",\"PTAPER\",\"TBMP\"]",
+          "[\"CC\",\"HMP\",\"C1PTAPER\",\"TBMP\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 294,
+      "before_sku": "CT115",
+      "after_sku": "CT115",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"CLT24\",\"CLT32\",\"CLT42\",\"CLT55\",\"PTAPER\"]",
+          "[\"CLT24\",\"CLT32\",\"CLT42\",\"CLT55\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 295,
+      "before_sku": "CT58",
+      "after_sku": "CT58",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 317,
+      "before_sku": "CT20",
+      "after_sku": "CT20",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 324,
+      "before_sku": "CT79",
+      "after_sku": "CT79",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 326,
+      "before_sku": "CT-INSERT-BUSHING",
+      "after_sku": "CT-INSERT-BUSHING",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 327,
+      "before_sku": "CT3",
+      "after_sku": "CT3",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 329,
+      "before_sku": "CT2",
+      "after_sku": "CT2",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 340,
+      "before_sku": "CT43",
+      "after_sku": "CT43",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 344,
+      "before_sku": "MP23",
+      "after_sku": "MP23",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"BF\",\"GN\",\"HMP\",\"PTAPER\",\"TBBF\",\"TBGN\",\"TBMP\"]",
+          "[\"BF\",\"GN\",\"HMP\",\"C1PTAPER\",\"TBBF\",\"TBGN\",\"TBMP\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 347,
+      "before_sku": "CT98",
+      "after_sku": "CT98",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"7CFB\",\"8CFB\",\"PTAPER\"]",
+          "[\"7CFB\",\"8CFB\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 353,
+      "before_sku": "CT64",
+      "after_sku": "CT64",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 354,
+      "before_sku": "CT65",
+      "after_sku": "CT65",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 360,
+      "before_sku": "CT76",
+      "after_sku": "CT76",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 366,
+      "before_sku": "CT19",
+      "after_sku": "CT19",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 377,
+      "before_sku": "CT107",
+      "after_sku": "CT107",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 378,
+      "before_sku": "CT111",
+      "after_sku": "CT111",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"CLT24\",\"CLT32\",\"CLT42\",\"CLT55\",\"CMT24\",\"CMT32\",\"CMT42\",\"CMT55\",\"PTAPER\"]",
+          "[\"CLT24\",\"CLT32\",\"CLT42\",\"CLT55\",\"CMT24\",\"CMT32\",\"CMT42\",\"CMT55\",\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 388,
+      "before_sku": "CT67",
+      "after_sku": "CT67",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 396,
+      "before_sku": "CT54",
+      "after_sku": "CT54",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 397,
+      "before_sku": "CT40",
+      "after_sku": "CT40",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"HMP\",\"PTAPER\",\"TBMP\"]",
+          "[\"HMP\",\"C1PTAPER\",\"TBMP\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 398,
+      "before_sku": "CT36",
+      "after_sku": "CT36",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 410,
+      "before_sku": "CT87-CS",
+      "after_sku": "CT87-CS",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 422,
+      "before_sku": "CT119",
+      "after_sku": "CT119",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 427,
+      "before_sku": "CT116A",
+      "after_sku": "CT116A",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 431,
+      "before_sku": "CT120",
+      "after_sku": "CT120",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\",\"SAT\"]",
+          "[\"C1PTAPER\",\"SAT\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 434,
+      "before_sku": "CT53",
+      "after_sku": "CT53",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 448,
+      "before_sku": "CT4",
+      "after_sku": "CT4",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "Meta: _dtb_compatible_tool_skus": [
+          "[\"PTAPER\"]",
+          "[\"C1PTAPER\"]"
+        ]
+      }
+    },
+    {
+      "csv_row": 465,
+      "before_sku": "PTAPER",
+      "after_sku": "C1PTAPER",
+      "brand": "Columbia Tools",
+      "changed_fields": {
+        "SKU": [
+          "PTAPER",
+          "C1PTAPER"
+        ],
+        "Meta: schema_mpn": [
+          "PTAPER",
+          "C1PTAPER"
+        ],
+        "Meta: _dtb_manufacturer_sku": [
+          "PTAPER",
+          "C1PTAPER"
+        ],
+        "Meta: _dtb_mpn": [
+          "PTAPER",
+          "C1PTAPER"
+        ],
+        "Meta: _dtb_specs_json": [
+          "[{\"label\":\"Brand\",\"value\":\"Columbia Tools\"},{\"label\":\"Part Number\",\"value\":\"PTAPER\"},{\"label\":\"Length\",\"value\":\"53 in.\"},{\"label\":\"Material\",\"value\":\"Carbon Fiber and steel components\"},{\"label\":\"Family\",\"value\":\"Predator Family\"}]",
+          "[{\"label\":\"Brand\",\"value\":\"Columbia Tools\"},{\"label\":\"Part Number\",\"value\":\"C1PTAPER\"},{\"label\":\"Length\",\"value\":\"53 in.\"},{\"label\":\"Material\",\"value\":\"Carbon Fiber and steel components\"},{\"label\":\"Family\",\"value\":\"Predator Family\"}]"
+        ],
+        "Meta: _dtb_seo_description": [
+          "Shop the Columbia One Predator Taper PTAPER, the carbon fiber automatic taper with reduced drag, pump action cutting, and 53 in. length.",
+          "Shop the Columbia One Predator Taper C1PTAPER, the carbon fiber automatic taper with reduced drag, pump action cutting, and 53 in. length."
+        ]
+      }
+    }
+  ],
+  "result": "PASS; full canonical diff contains only the documented C1PTAPER identity change and 76 Columbia compatibility references; non-Columbia rows unchanged."
+}

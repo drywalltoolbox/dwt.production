@@ -1,0 +1,13 @@
+{
+  "purpose": "bounded public HTTP HEAD readback for exact-source-verified kit/pack media targets",
+  "source_report_sha256": "d7856b791678c88bd5ed2d64f7de1384fef24a23b909697219e58f656c49c453",
+  "targets_checked": 165,
+  "status_counts": {
+    "404": 165
+  },
+  "max_workers": 8,
+  "timeout_seconds": 20,
+  "http_method": "HEAD",
+  "uploads_or_media_mutations": 0,
+  "report_csv": "docs/catalog/columbia-catalog-audit/review/current-reopened-kit-pack-media-public-reachability.csv"
+}

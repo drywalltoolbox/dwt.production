@@ -66,7 +66,17 @@ def refresh() -> dict:
     fields, rows = inspect_csv(SOURCE)
     official_fields, _ = inspect_csv(OFFICIAL)
     if fields != official_fields:
-        raise ValueError('Working reference header differs from the official catalog.')
+        # The review-only WooCommerce export shape has one additional importer
+        # column. Permit it only when it is named Upsells, the canonical fields
+        # retain their exact order, and every value is blank. The checkpoint is
+        # still a review snapshot, never an import artifact.
+        extra_fields = [field for field in fields if field not in official_fields]
+        canonical_order = [field for field in fields if field in official_fields]
+        if extra_fields != ['Upsells'] or canonical_order != official_fields:
+            raise ValueError('Working reference header differs from the official catalog beyond the permitted blank Upsells field.')
+        with SOURCE.open(encoding='utf-8-sig', newline='') as handle:
+            if any((row.get('Upsells') or '').strip() for row in csv.DictReader(handle)):
+                raise ValueError('The extra Upsells column contains data and cannot be omitted from canonical-schema review.')
     if digest(SOURCE) != source_hash or digest(OFFICIAL) != official_hash:
         raise RuntimeError('Input changed while inspecting the source.')
     TARGET.parent.mkdir(parents=True, exist_ok=True)

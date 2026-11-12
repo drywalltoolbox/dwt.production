@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "purpose": "Read-only follow-up search for current TSW quote, invoice, purchase order, or Columbia cost information",
+  "readback_utc": "2026-11-12 04:29:19 UTC",
+  "query": "after:2026/11/10 (TSW OR \"Columbia Tools\") -in:spam -in:trash",
+  "accounts_searched": [
+    "Gmail",
+    "Primary"
+  ],
+  "results_by_account": {
+    "Gmail": 0,
+    "Primary": 0
+  },
+  "result": "No new matching messages in either connected account. The search provides no current supplier cost evidence.",
+  "mutations": 0
+}

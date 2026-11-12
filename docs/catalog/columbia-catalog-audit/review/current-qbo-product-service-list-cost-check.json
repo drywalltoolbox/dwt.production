@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "purpose": "Read-only check for current Columbia item purchase costs in QuickBooks",
+  "readback_utc": "2026-11-12 04:26:33 UTC",
+  "company": "DW Toolbox",
+  "queries": [
+    {
+      "scope": "active product/service list filtered by names Columbia and TSW",
+      "items_returned": 0
+    },
+    {
+      "scope": "complete active product/service list",
+      "items_returned": 2,
+      "items": [
+        {
+          "name": "Services",
+          "type": "SERVICE",
+          "purchase_price": null
+        },
+        {
+          "name": "Hours",
+          "type": "SERVICE",
+          "purchase_price": null
+        }
+      ]
+    }
+  ],
+  "result": "No active QuickBooks product/inventory records were returned. The complete active list contains two service records only; neither has a purchase price. This source does not substantiate current Columbia unit costs.",
+  "mutations": 0
+}

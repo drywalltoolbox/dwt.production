@@ -1,0 +1,26 @@
+{
+  "purpose": "read-only manufacturer-image identity audit for the 46 reopened parts kits and two packs",
+  "source_accounting_sha256": "35825972e0f4b062d45f42fbb66835977e109f228a6a4a444f8f4d5f5194fecd",
+  "manufacturer_products_json_sha256": "572cd1ffe3061fb00bd1068289d678f6b86fd5fee984fe08bfd3d6123f78456c",
+  "source_products_reviewed": 48,
+  "source_images_reviewed": 165,
+  "image_rows": 171,
+  "unique_source_urls_fetched": 165,
+  "status_counts": {
+    "exact_manufacturer_source_and_local_asset_pixel_match": 165,
+    "manufacturer_source_has_no_image": 6
+  },
+  "pipeline": {
+    "max_edge": 1600,
+    "webp_quality": 100,
+    "lossless": true,
+    "encoder_method": 1
+  },
+  "network_limits": {
+    "max_workers": 8,
+    "timeout_seconds": 25,
+    "max_source_bytes": 20971520
+  },
+  "media_mutations": 0,
+  "report_csv": "docs/catalog/columbia-catalog-audit/review/current-reopened-kit-pack-media-review.csv"
+}

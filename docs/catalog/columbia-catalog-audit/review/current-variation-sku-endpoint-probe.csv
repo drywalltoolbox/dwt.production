@@ -1,0 +1,5 @@
+﻿source_sku_query,http_status,result_count,note
+FFB5-10,500,,Route error. Response body redacted; this probe is not used to establish presence or absence.
+BH9-3,500,,Route error. Response body redacted; this probe is not used to establish presence or absence.
+HFFB5-10,200,0,Read-only variation-SKU route control probe.
+BBH9-3,200,0,Read-only variation-SKU route control probe.
