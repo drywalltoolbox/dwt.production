@@ -103,7 +103,6 @@
   .dtb-home-page {
     --dtb-home-content-max: 1640px;
     --dtb-home-content-gutter: clamp(24px, 3vw, 48px);
-    --dtb-home-divider-gutter: clamp(24px, 2.2vw, 40px);
   }
 
   .dtb-home-page > .home-commerce-categories,
@@ -131,6 +130,18 @@
     gap: clamp(16px, 1.8vw, 28px);
   }
 
+  .dtb-home-page .dtb-home-brand-section .storefront-section__title {
+    flex: 0 0 clamp(10rem, 18vw, 14rem);
+    width: clamp(10rem, 18vw, 14rem);
+    height: clamp(2.1rem, 3.3vw, 3rem);
+  }
+
+  .dtb-home-page .dtb-home-brand-section .dtb-home-brand-section__logo {
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+  }
+
   .dtb-home-page .dtb-home-brand-section .storefront-section__subtitle {
     margin-top: 0;
     padding-left: clamp(14px, 1.5vw, 22px);
@@ -149,7 +160,10 @@
     right: auto;
     bottom: 0;
     left: 50%;
-    width: calc(100vw - (2 * var(--dtb-home-divider-gutter)));
+    width: min(
+      calc(100vw - (2 * var(--dtb-home-content-gutter))),
+      var(--dtb-home-content-max)
+    );
     height: 1px;
     background: linear-gradient(
       90deg,

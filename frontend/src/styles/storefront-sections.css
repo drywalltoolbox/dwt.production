@@ -173,23 +173,6 @@
   }
 }
 
-.dtb-home-brand-section--columbia-taping-tools .dtb-home-brand-section__logo,
-.dtb-home-brand-section--platinum .dtb-home-brand-section__logo {
-  width: min(100%, clamp(10rem, 18vw, 14rem));
-  max-width: 100%;
-  height: clamp(3.2rem, 4vw, 3.5rem);
-  max-height: clamp(3.2rem, 4vw, 3.5rem);
-}
-
-@media (max-width: 600px) {
-  .dtb-home-brand-section--columbia-taping-tools .dtb-home-brand-section__logo,
-  .dtb-home-brand-section--platinum .dtb-home-brand-section__logo {
-    width: min(100%, clamp(9rem, 42vw, 11.5rem));
-    height: 3.1rem;
-    max-height: 3.1rem;
-  }
-}
-
 /* Horizontal storefront rails must stay inside the owning page/container
    gutter. Previous negative inline margins plus desktop edge fades caused the
    first/last card to render beneath an artificial mask and visually fall off

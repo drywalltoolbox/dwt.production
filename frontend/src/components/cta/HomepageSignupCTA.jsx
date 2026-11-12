@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { ArrowRight, X } from 'lucide-react';
 import { DTB_LOGO_WHITE_URL as dtbLogo, handleDtbLogoFallback } from '../../utils/dtbLogoAssets.js';
 import './homepage-signup-cta.css';
@@ -6,8 +7,12 @@ import './homepage-signup-cta.css';
 export default function HomepageSignupCTA({ offer, onClose, onSignup }) {
   const dialogRef = useRef(null);
   const closeRef = useRef(null);
+  const discount = Number(offer?.discount);
+  const hasValidDiscount = Number.isFinite(discount) && discount > 0 && discount <= 100;
 
   useEffect(() => {
+    if (!hasValidDiscount) return undefined;
+
     const previousFocus = document.activeElement;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -40,9 +45,9 @@ export default function HomepageSignupCTA({ offer, onClose, onSignup }) {
       document.removeEventListener('keydown', handleKeyDown);
       if (previousFocus instanceof HTMLElement) previousFocus.focus();
     };
-  }, [onClose]);
+  }, [hasValidDiscount, onClose]);
 
-  const discount = 10;
+  if (!hasValidDiscount) return null;
   const terms = offer?.terms || {};
   const minimumSpend = Number(terms.minimum_amount) > 0
     ? new Intl.NumberFormat(undefined, { style: 'currency', currency: offer?.currency || 'USD' }).format(Number(terms.minimum_amount))
@@ -55,13 +60,13 @@ export default function HomepageSignupCTA({ offer, onClose, onSignup }) {
     Number(terms.expiry_days) > 0 ? `Code expires ${Number(terms.expiry_days)} days after signup.` : '',
   ].filter(Boolean);
 
-  return (
+  return createPortal((
     <div className="homepage-signup-cta">
       <button
         type="button"
         className="homepage-signup-cta__backdrop"
         onClick={onClose}
-          aria-label="Close welcome message"
+        aria-label="Close welcome message"
       />
       <section
         ref={dialogRef}
@@ -77,7 +82,7 @@ export default function HomepageSignupCTA({ offer, onClose, onSignup }) {
           type="button"
           className="homepage-signup-cta__close"
           onClick={onClose}
-        aria-label="Close welcome message"
+          aria-label="Close welcome message"
         >
           <X size={21} strokeWidth={2.2} />
         </button>
@@ -96,7 +101,7 @@ export default function HomepageSignupCTA({ offer, onClose, onSignup }) {
             Get <span>{discount}% off</span> your first order.
           </h2>
           <p id="homepage-signup-cta-description" className="homepage-signup-cta__body">
-            Create your free account. Your personal coupon code will be included in your new-account email.
+            Create a free account and we’ll email you a personal coupon code to use on your first order.
           </p>
           <button type="button" className="homepage-signup-cta__button" onClick={onSignup}>
             Create account &amp; save {discount}% <ArrowRight size={20} strokeWidth={2.2} aria-hidden="true" />
@@ -108,5 +113,5 @@ export default function HomepageSignupCTA({ offer, onClose, onSignup }) {
         </div>
       </section>
     </div>
-  );
+  ), document.body);
 }
