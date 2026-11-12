@@ -39,7 +39,7 @@ record="$release_records/$release"
 
 is_release_file() {
   case "$1" in
-    .htaccess|index.html|asset-manifest.json|robots.txt|llms.txt|site.webmanifest|404.html|favicon.ico|favicon.png|favicon-16x16.png|favicon-32x32.png|favicon-48x48.png|apple-touch-icon.png|android-chrome-192x192.png|android-chrome-512x512.png|android-chrome-maskable-192x192.png|android-chrome-maskable-512x512.png) return 0 ;;
+    .htaccess|index.html|asset-manifest.json|storefront-public-routes.json|robots.txt|llms.txt|site.webmanifest|404.html|favicon.ico|favicon.png|favicon-16x16.png|favicon-32x32.png|favicon-48x48.png|apple-touch-icon.png|android-chrome-192x192.png|android-chrome-512x512.png|android-chrome-maskable-192x192.png|android-chrome-maskable-512x512.png) return 0 ;;
     assets/css/*|assets/fonts/*|assets/images/*|assets/js/*|errors/[0-9][0-9][0-9].html|errors/error.css|errors/error-page.js|errors/dtb-logo-black.webp|brands/*/schematic_data*.json) return 0 ;;
     *) return 1 ;;
   esac
@@ -47,7 +47,7 @@ is_release_file() {
 
 collect_current_managed_files() {
   local path
-  for path in .htaccess index.html asset-manifest.json robots.txt llms.txt site.webmanifest 404.html \
+  for path in .htaccess index.html asset-manifest.json storefront-public-routes.json robots.txt llms.txt site.webmanifest 404.html \
     favicon.ico favicon.png favicon-16x16.png favicon-32x32.png favicon-48x48.png \
     apple-touch-icon.png android-chrome-192x192.png android-chrome-512x512.png \
     android-chrome-maskable-192x192.png android-chrome-maskable-512x512.png; do
@@ -81,21 +81,25 @@ restore_snapshot() {
     return 1
   }
   prior_release="$(cat "$snapshot/previous-release.txt")"
-  # Restore prior public files except index.html; visitors keep using the current
-  # shell until its matching assets, manifest, and rewrite rules are back.
+  # Switch to the prior routing contract first. Its referenced assets are still
+  # present until the prior shell is restored and introduced files are removed.
+  if grep -Fqx '.htaccess' "$previous_list"; then
+    write_atomically "$snapshot/files/.htaccess" .htaccess
+  fi
   while IFS= read -r prior_file; do
-    [[ -n "$prior_file" && "$prior_file" != index.html ]] || continue
+    [[ -n "$prior_file" && "$prior_file" != index.html && "$prior_file" != .htaccess ]] || continue
     write_atomically "$snapshot/files/$prior_file" "$prior_file"
   done < "$previous_list"
-  # Remove only files introduced by this release and absent from the snapshot.
+  [[ -f "$snapshot/files/index.html" ]] || { echo "Snapshot has no previous index.html" >&2; return 1; }
+  write_atomically "$snapshot/files/index.html" index.html
+  # The old shell is active before removing content-addressed assets and route
+  # data that only the newer release referenced.
   while IFS= read -r current_file; do
     [[ -n "$current_file" ]] || continue
     if ! grep -Fqx -- "$current_file" "$previous_list"; then
       rm -f -- "$target/$current_file"
     fi
   done < "$release_list"
-  [[ -f "$snapshot/files/index.html" ]] || { echo "Snapshot has no previous index.html" >&2; return 1; }
-  write_atomically "$snapshot/files/index.html" index.html
   printf '%s\n' "$prior_release" > "$private/.next-current-release"
   mv -f "$private/.next-current-release" "$state"
 }
@@ -150,7 +154,7 @@ fi
 [[ "$current" != "$release" ]] || { echo "Already published: $release"; exit 0; }
 [[ -d "$incoming" && -s "$incoming/index.html" && -s "$incoming/.htaccess" &&
    -s "$incoming/asset-manifest.json" && -s "$incoming/site.webmanifest" &&
-   -s "$incoming/robots.txt" && -s "$incoming/llms.txt" && -s "$incoming/.dtb-file-sha256" ]] ||
+   -s "$incoming/storefront-public-routes.json" && -s "$incoming/robots.txt" && -s "$incoming/llms.txt" && -s "$incoming/.dtb-file-sha256" ]] ||
   { echo "Incomplete production frontend payload" >&2; exit 2; }
 [[ ! -e "$snapshot" && ! -e "$record" ]] || { echo "Release snapshot/record already exists; refusing ambiguous retry" >&2; exit 2; }
 [[ ! -L "$incoming" ]] || { echo "Incoming release may not be a symlink" >&2; exit 2; }
@@ -161,7 +165,7 @@ fi
 (cd "$incoming" && sha256sum -c .dtb-file-sha256 >/dev/null) ||
   { echo "Production frontend payload checksum failed" >&2; exit 2; }
 grep -Fq 'RewriteRule ^$ index.html [L]' "$incoming/.htaccess" || { echo "Root homepage rewrite missing" >&2; exit 2; }
-grep -Fq 'RewriteRule ^products/?$ index.html [QSA,L]' "$incoming/.htaccess" || { echo "Explicit products route missing" >&2; exit 2; }
+grep -Fq 'RewriteRule ^products/?$ wp/index.php?dtb_storefront=1 [QSA,L]' "$incoming/.htaccess" || { echo "Server-rendered products route missing" >&2; exit 2; }
 grep -Fq 'RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]' "$incoming/.htaccess" || { echo "Catalog-checked product route missing" >&2; exit 2; }
 if grep -Eq '^[[:space:]]*RewriteRule \^ (index\.html|wp/index\.php) \[QSA,L\]' "$incoming/.htaccess"; then
   echo "Catch-all storefront route is forbidden" >&2
@@ -215,13 +219,15 @@ while IFS= read -r path; do
   write_atomically "$incoming/$path" "$path"
 done < "$record/files.txt"
 
-# Switch the root routing/cache contract and metadata after assets are present.
-for path in .htaccess site.webmanifest asset-manifest.json robots.txt; do
+# Update metadata after assets and the route manifest are present.
+for path in site.webmanifest asset-manifest.json robots.txt; do
   write_atomically "$incoming/$path" "$path"
 done
 
-# index.html is the storefront activation point and is replaced last.
+# Publish the shell after all resources it references. Activate new path routing
+# last so each explicit rule always has its matching HTML shell and manifest.
 write_atomically "$incoming/index.html" index.html
+write_atomically "$incoming/.htaccess" .htaccess
 printf '%s\n' "$release" > "$private/.next-current-release"
 mv -f "$private/.next-current-release" "$state"
 trap 'rmdir "$lock" 2>/dev/null || true' ERR

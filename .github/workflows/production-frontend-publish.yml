@@ -59,7 +59,7 @@ jobs:
         run: |
           set -euo pipefail
           root=dist
-          for file in index.html .htaccess asset-manifest.json robots.txt site.webmanifest; do
+          for file in index.html .htaccess asset-manifest.json storefront-public-routes.json robots.txt site.webmanifest; do
             test -s "$root/$file" || { echo "::error::Missing or empty $file"; exit 2; }
           done
           test ! -e "$root/storefront.html" || { echo "::error::Duplicate storefront shell emitted"; exit 2; }
@@ -83,11 +83,19 @@ jobs:
           for uri in entrypoints:
               assert isinstance(uri, str) and uri.startswith("/assets/"), f"Not a root asset URL: {uri}"
               assert (root / uri.lstrip("/")).is_file(), f"Missing entrypoint: {uri}"
+          route_manifest = json.loads((root / "storefront-public-routes.json").read_text())
+          assert route_manifest.get("version") == 1, "Unsupported storefront route manifest version"
+          expected_routes = {"/products", "/products/brands", "/parts", "/schematics", "/repairs", "/repairs/start", "/repairs/packages", "/help", "/calculators", "/shipping-policy", "/returns", "/return-policy", "/policies", "/contact"}
+          assert expected_routes <= set(route_manifest.get("routes", {})), "Missing public route content"
           html = (root / "index.html").read_text()
           rules = (root / ".htaccess").read_text()
           assert "/staging/" not in html, "Staging asset prefix found in production HTML"
           assert "RewriteRule ^$ index.html [L]" in rules, "Root homepage does not resolve to index.html"
-          assert "RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|terms-of-service|privacy-policy|preview/technical-specifications|cart|contact|settings/woocommerce|login|register|forgot-password|reset-password|dashboard)/?$ index.html [QSA,L]" in rules, "Explicit storefront routes missing"
+          assert "RewriteRule ^products/?$ wp/index.php?dtb_storefront=1 [QSA,L]" in rules, "Products route does not use server rendering"
+          assert "RewriteRule ^products/brands/?$ wp/index.php?dtb_storefront=1 [QSA,L]" in rules, "Brand index route does not use server rendering"
+          assert "RewriteRule ^products/brands/([^/]+)/?$ wp/index.php?dtb_storefront=1 [QSA,L]" in rules, "Brand detail routes do not use server rendering"
+          assert "RewriteRule ^category/([^/]+)/?$ wp/index.php?dtb_storefront=1 [QSA,L]" in rules, "Product category routes do not use server rendering"
+          assert "RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|contact|repairs|repairs/start|repairs/packages)/?$ wp/index.php?dtb_storefront=1 [QSA,L]" in rules, "Public content routes do not use server rendering"
           assert "RewriteRule ^ index.html [QSA,L]" not in rules, "Retired storefront catch-all found"
           assert "RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]" in rules, "Canonical product route missing"
           assert "payment_intent=pi_" in rules, "WooPayments callback route missing"

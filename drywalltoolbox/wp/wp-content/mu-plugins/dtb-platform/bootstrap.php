@@ -69,6 +69,7 @@ require_once $_dtb_platform . '/Cache/CacheAdminPage.php';
 require_once $_dtb_platform . '/Seo/SitemapXmlRenderer.php';
 require_once $_dtb_platform . '/Seo/SitemapUrlRepository.php';
 require_once $_dtb_platform . '/Seo/SitemapService.php';
+require_once $_dtb_platform . '/Seo/StorefrontRouteRenderer.php';
 
 // 6. Health.
 require_once $_dtb_platform . '/Health/HealthRegistry.php';

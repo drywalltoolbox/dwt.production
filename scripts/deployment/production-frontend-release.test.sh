@@ -23,8 +23,9 @@ stage_release() {
   local release="$1" version="$2" payload="$temporary/artifact-$1"
   mkdir -p "$payload/assets/js" "$payload/assets/css" "$payload/errors" "$payload/brands/Asgard/Schematics/AT01"
   printf 'React storefront %s\n' "$version" > "$payload/index.html"
-  printf 'production rewrite payment_intent=pi_\nHeader always set Strict-Transport-Security "max-age=31536000"\nRewriteRule ^$ index.html [L]\nRewriteRule ^products/?$ index.html [QSA,L]\nRewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]\n' > "$payload/.htaccess"
+  printf 'production rewrite payment_intent=pi_\nHeader always set Strict-Transport-Security "max-age=31536000"\nRewriteRule ^$ index.html [L]\nRewriteRule ^products/?$ wp/index.php?dtb_storefront=1 [QSA,L]\nRewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]\n' > "$payload/.htaccess"
   printf '{"files":{}}\n' > "$payload/asset-manifest.json"
+  printf '{"version":1,"routes":{}}\n' > "$payload/storefront-public-routes.json"
   printf '# Drywall Toolbox %s\n' "$version" > "$payload/llms.txt"
   printf '{"start_url":"/"}\n' > "$payload/site.webmanifest"
   printf 'User-agent: *\nAllow: /\n' > "$payload/robots.txt"
@@ -57,6 +58,7 @@ bash "$script" publish "$target" "$private" "$first"
 [[ "$(cat "$target/brands/Columbia/Logos/columbia.svg")" == 'unmanaged brand logo' ]]
 [[ "$(cat "$target/assets/email/logo.png")" == 'old email asset' ]]
 [[ -f "$target/assets/js/main.v1.js" && -f "$target/assets/css/main.v1.css" ]]
+[[ -f "$target/storefront-public-routes.json" ]]
 [[ -f "$target/errors/error.css" && -f "$target/errors/error-page.js" && -f "$target/errors/dtb-logo-black.webp" ]]
 bash "$script" verify "$target" "$private" "$first" >/dev/null
 
@@ -67,6 +69,7 @@ bash "$script" publish "$target" "$private" "$second"
 [[ "$(cat "$target/brands/Asgard/Schematics/AT01/schematic_data.json")" == 'schematic data v2' ]]
 [[ -f "$target/brands/Columbia/Schematics/CT01/schematic_data.json" ]]
 [[ -f "$target/assets/js/main.v1.js" && -f "$target/assets/js/main.v2.js" ]]
+[[ -f "$target/storefront-public-routes.json" ]]
 [[ -f "$target/errors/dtb-logo-black.webp" ]]
 
 bash "$script" rollback "$target" "$private" "$second"
@@ -75,6 +78,7 @@ bash "$script" rollback "$target" "$private" "$second"
 [[ "$(cat "$target/brands/Asgard/Schematics/AT01/schematic_data.json")" == 'schematic data v1' ]]
 [[ ! -e "$target/brands/Columbia/Schematics/CT01/schematic_data.json" ]]
 [[ -f "$target/assets/js/main.v1.js" && ! -f "$target/assets/js/main.v2.js" ]]
+[[ -f "$target/storefront-public-routes.json" ]]
 [[ -f "$target/errors/error.css" && -f "$target/errors/error-page.js" && -f "$target/errors/dtb-logo-black.webp" ]]
 [[ "$(cat "$target/assets/email/logo.png")" == 'old email asset' ]]
 [[ "$(cat "$target/brands/Columbia/Logos/columbia.svg")" == 'unmanaged brand logo' ]]
@@ -86,6 +90,7 @@ bash "$script" rollback "$target" "$private" "$first"
 [[ "$(cat "$target/index.html")" == 'signup shell' ]]
 [[ "$(cat "$target/llms.txt")" == 'old llms file' ]]
 [[ "$(cat "$target/.htaccess")" == 'old rewrite contract' ]]
+[[ ! -e "$target/storefront-public-routes.json" ]]
 [[ "$(cat "$target/brands/Asgard/Schematics/AT01/schematic_data.json")" == 'original schematic data' ]]
 [[ "$(cat "$target/assets/email/logo.png")" == 'old email asset' ]]
 [[ "$(cat "$target/wp/index.php")" == 'wordpress runtime' ]]

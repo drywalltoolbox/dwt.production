@@ -34,6 +34,23 @@ The service maps records to the active React route contract:
 - Brands: `/products/brands/{term-slug}`
 - Static routes: the explicit public allowlist in `DTB_SitemapUrlRepository::static_routes()`
 
+Production Apache routes the indexable public content paths through the
+WordPress front controller before serving the React shell. The platform route
+renderer supplies route-specific title, description, canonical, and useful
+initial HTML from the versioned `storefront-public-routes.json` build artifact.
+That artifact contains editorial copy only; it does not own catalog records.
+Product and taxonomy detail pages are rendered from published WooCommerce
+products and active product taxonomies. `/products` includes a bounded catalog
+directory generated from the same eligible products and taxonomies used by the
+sitemap, so those canonical URLs have crawlable internal links without adding
+a second sitemap or catalog authority. React hydrates the same route for
+interactive filtering and commerce behavior.
+
+If the public manifest or shell is unavailable, the renderer returns a
+temporary server error instead of serving a misleading homepage response. A
+confirmed missing or empty product/taxonomy route returns 404; an upstream
+catalog request failure remains temporary and is not reclassified as missing.
+
 Customer, checkout, cart, order, account, tracking, preview, operator, redirect-alias, and variation-specific routes are intentionally excluded.
 
 ## Product eligibility
@@ -175,6 +192,8 @@ After deploying staging or production:
 3. Confirm every sitemap URL remains on `https://drywalltoolbox.com/` and never uses the staging mount.
 4. Confirm private and utility routes are absent.
 5. Confirm product URLs use `/products/{slug}` and resolve through the storefront.
+5a. Inspect raw HTML before JavaScript for route-specific metadata and useful content on static, product, brand, and category pages.
+5b. Confirm `/products` contains internal links to eligible product and taxonomy URLs from the canonical catalog source.
 6. Confirm products carrying `_dtb_seo_noindex = 1` are absent from product sitemaps.
 7. Confirm WooCommerce `exclude-from-search` products are absent.
 8. Confirm variation URLs and legacy `/product/{partNumber}` aliases are absent.

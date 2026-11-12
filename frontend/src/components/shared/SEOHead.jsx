@@ -19,6 +19,7 @@
 import { Helmet } from 'react-helmet-async';
 import { absoluteSiteUrl, canonicalSiteUrl } from '../../utils/siteUrl.js';
 import { DTB_LOGO_BLACK_URL } from '../../utils/dtbLogoAssets.js';
+import storefrontPublicRoutes from '../../../public/storefront-public-routes.json';
 
 const SITE_NAME      = 'Drywall Toolbox';
 const DEFAULT_OG_IMG = DTB_LOGO_BLACK_URL;
@@ -28,20 +29,7 @@ const SEARCH_INDEXING_ENABLED =
 
 const STATIC_ROUTE_TITLES = {
   '/': '',
-  '/products': 'Products',
-  '/products/brands': 'Brands',
-  '/parts': 'Parts',
-  '/schematics': 'Schematics',
-  '/repairs': 'Repairs',
-  '/repairs/start': 'Start a Repair',
-  '/repairs/packages': 'Repair Packages',
   '/repairs/track': 'Track a Repair',
-  '/help': 'Help Center',
-  '/calculators': 'Calculators',
-  '/shipping-policy': 'Shipping Policy',
-  '/returns': 'Returns',
-  '/return-policy': 'Return Policy',
-  '/policies': 'Store Policies',
   '/terms-of-service': 'Terms of Service',
   '/privacy-policy': 'Privacy Policy',
   '/cart': 'Cart',
@@ -49,12 +37,14 @@ const STATIC_ROUTE_TITLES = {
   '/checkout/complete': 'Order Complete',
   '/checkout/payment-failed': 'Payment Failed',
   '/checkout/payment-cancelled': 'Payment Cancelled',
-  '/contact': 'Contact',
   '/login': 'Sign In',
   '/register': 'Create Account',
   '/forgot-password': 'Forgot Password',
   '/reset-password': 'Reset Password',
   '/dashboard': 'Account Dashboard',
+  ...Object.fromEntries(
+    Object.entries(storefrontPublicRoutes.routes || {}).map(([path, route]) => [path, route.title]),
+  ),
 };
 
 function normalizedRoutePath(pathname) {
@@ -94,15 +84,20 @@ export default function SEOHead({
   links       = [],
 }) {
   const pathname = currentPathname();
+  const publicRoute = storefrontPublicRoutes.routes?.[pathname];
+  const hasCatalogSearch = ['/products', '/products/brands'].includes(pathname)
+    && typeof window !== 'undefined'
+    && new URLSearchParams(window.location.search).has('search');
+  const routeDescription = publicRoute && !hasCatalogSearch ? publicRoute.description : description;
   const browserTitle = normalizeBrowserTitle(title, pathname, noSuffix);
   const fullTitle = browserTitle
     ? (noSuffix ? browserTitle : `${browserTitle} | ${SITE_NAME}`)
     : SITE_NAME;
 
   // Truncate description
-  const safeDesc = description.length > MAX_DESC_LEN
-    ? `${description.slice(0, MAX_DESC_LEN - 1)}…`
-    : description;
+  const safeDesc = routeDescription.length > MAX_DESC_LEN
+    ? `${routeDescription.slice(0, MAX_DESC_LEN - 1)}…`
+    : routeDescription;
 
   // Canonical URL
   const canonicalPath = canonical || (typeof window !== 'undefined' ? window.location.pathname : '/');

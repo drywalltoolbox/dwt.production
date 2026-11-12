@@ -26,6 +26,7 @@ const sourcePath = appEnv === 'staging'
   ? path.join(repositoryRoot, 'drywalltoolbox', 'staging', '.htaccess')
   : path.join(frontendRoot, '.htaccess');
 const manifestPath = path.join(outputRoot, 'asset-manifest.json');
+const storefrontRoutesPath = path.join(outputRoot, 'storefront-public-routes.json');
 const indexPath = path.join(outputRoot, 'index.html');
 const notFoundPath = path.join(outputRoot, '404.html');
 const robotsPath = path.join(outputRoot, 'robots.txt');
@@ -146,11 +147,42 @@ if (/location\.replace|segmentCount|github pages spa redirect/i.test(notFoundHtm
   throw new Error('The static 404 page must not rewrite unknown routes back to the React shell.');
 }
 const staticHtml = fs.readFileSync(indexPath, 'utf8');
-if (!staticHtml.includes('name="description" content="Shop professional drywall tools and replacement parts.')) {
+if (!/<meta\b(?=[^>]*name="description")(?=[^>]*data-dtb-seo="description")(?=[^>]*content="Shop professional drywall tools and replacement parts\.)[^>]*>/.test(staticHtml)) {
   throw new Error('The static homepage must provide its description before React loads.');
 }
 if (!/<div id="root">[\s\S]*?<h1[^>]*>The New Standard in Drywall Tools<\/h1>/.test(staticHtml)) {
   throw new Error('The static homepage must provide a semantic H1 before React loads.');
+}
+if (!staticHtml.includes('data-dtb-seo="title"') || !staticHtml.includes('<dtb-route-content data-dtb-route-content style="display:block">') || !staticHtml.includes('</dtb-route-content>')) {
+  throw new Error('The storefront shell must expose the bounded server-rendering markers.');
+}
+const storefrontRoutes = JSON.parse(fs.readFileSync(storefrontRoutesPath, 'utf8'));
+if (storefrontRoutes.version !== 1 || !storefrontRoutes.routes || typeof storefrontRoutes.routes !== 'object') {
+  throw new Error('The public storefront route manifest has an unsupported shape.');
+}
+if (Object.keys(storefrontRoutes.routes).length !== 14) {
+  throw new Error('The public storefront route manifest must match the explicit static route allowlist.');
+}
+for (const routePath of [
+  '/products', '/products/brands', '/parts', '/schematics', '/repairs', '/repairs/start',
+  '/repairs/packages', '/help', '/calculators', '/shipping-policy', '/returns',
+  '/return-policy', '/policies', '/contact',
+]) {
+  const route = storefrontRoutes.routes[routePath];
+  if (!route || !route.title || !route.description || !route.heading || !route.intro) {
+    throw new Error(`Server-rendered route content is missing required fields: ${routePath}`);
+  }
+  if (route.description.length > 160 || route.title.length > 100 || route.heading.length > 200 || route.intro.length > 1000) {
+    throw new Error(`Server-rendered route content exceeds its bounded field lengths: ${routePath}`);
+  }
+  if (!Array.isArray(route.sections) || route.sections.length > 12 || !Array.isArray(route.links) || route.links.length > 24) {
+    throw new Error(`Server-rendered route content exceeds its bounded section/link counts: ${routePath}`);
+  }
+  for (const link of route.links) {
+    if (!link || typeof link.label !== 'string' || !/^\/(?!\/)[a-zA-Z0-9/_-]*$/.test(link.href) || link.href.includes('..')) {
+      throw new Error(`Server-rendered route contains an unsafe internal link: ${routePath}`);
+    }
+  }
 }
 for (const href of ['/products', '/products/brands', '/parts', '/schematics', '/repairs/packages', '/help']) {
   if (!staticHtml.includes(`href="${href}"`)) {
@@ -191,10 +223,13 @@ if (appEnv === 'production') {
     throw new Error('Missing static assets must return 404 before explicit storefront routes.');
   }
   for (const routeRule of [
-    'RewriteRule ^products/?$ index.html [QSA,L]',
-    'RewriteRule ^products/brands(/[^/]+(/categories/[^/]+)?)?/?$ index.html [QSA,L]',
+    'RewriteRule ^products/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
+    'RewriteRule ^products/brands/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
+    'RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|contact|repairs|repairs/start|repairs/packages)/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
+    'RewriteRule ^products/brands/([^/]+)/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
+    'RewriteRule ^products/brands/([^/]+)/categories/([^/]+)/?$ index.html [QSA,L]',
+    'RewriteRule ^category/([^/]+)/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
     'RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]',
-    'RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|terms-of-service|privacy-policy|preview/technical-specifications|cart|contact|settings/woocommerce|login|register|forgot-password|reset-password|dashboard)/?$ index.html [QSA,L]',
   ]) {
     if (!emitted.includes(routeRule)) {
       throw new Error(`Production explicit storefront route is missing: ${routeRule}`);
@@ -244,7 +279,9 @@ if (appEnv === 'staging') {
   }
   for (const routeRule of [
     'RewriteRule ^products/?$ index.html [QSA,L]',
-    'RewriteRule ^products/brands(/[^/]+(/categories/[^/]+)?)?/?$ index.html [QSA,L]',
+    'RewriteRule ^products/brands/([^/]+)/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
+    'RewriteRule ^products/brands/([^/]+)/categories/([^/]+)/?$ index.html [QSA,L]',
+    'RewriteRule ^category/([^/]+)/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
     'RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ /wp/index.php [QSA,L]',
   ]) {
     if (!emitted.includes(routeRule)) {

@@ -71,6 +71,36 @@ final class DTB_SitemapUrlRepository {
 		return $urls;
 	}
 
+	/** @return array<int,array{loc:string,label:string}> */
+	public static function catalog_links(): array {
+		$query = self::product_query( 1, self::PAGE_SIZE, 'all' );
+		$links = [];
+		foreach ( $query->posts as $post ) {
+			if ( ! $post instanceof WP_Post || '' === $post->post_name ) {
+				continue;
+			}
+			$links[] = [
+				'loc'   => home_url( '/products/' . rawurlencode( $post->post_name ) ),
+				'label' => get_the_title( $post ),
+			];
+		}
+		foreach ( [ 'product_cat' => '/category', self::brand_taxonomy() => '/products/brands' ] as $taxonomy => $prefix ) {
+			if ( '' === $taxonomy || ! taxonomy_exists( $taxonomy ) ) {
+				continue;
+			}
+			$terms = get_terms( [ 'taxonomy' => $taxonomy, 'hide_empty' => true, 'number' => self::PAGE_SIZE, 'orderby' => 'term_id', 'order' => 'ASC' ] );
+			if ( is_wp_error( $terms ) ) {
+				continue;
+			}
+			foreach ( $terms as $term ) {
+				if ( $term instanceof WP_Term && '' !== $term->slug ) {
+					$links[] = [ 'loc' => home_url( trailingslashit( $prefix ) . rawurlencode( $term->slug ) ), 'label' => $term->name ];
+				}
+			}
+		}
+		return $links;
+	}
+
 	public static function taxonomy_pages( string $taxonomy ): int {
 		if ( ! taxonomy_exists( $taxonomy ) ) {
 			return 0;
@@ -116,7 +146,7 @@ final class DTB_SitemapUrlRepository {
 		return '';
 	}
 
-	private static function product_query( int $page, int $page_size ): WP_Query {
+	private static function product_query( int $page, int $page_size, string $fields = 'ids' ): WP_Query {
 		$tax_query = [];
 		$excluded  = get_term_by( 'name', 'exclude-from-search', 'product_visibility' );
 		if ( $excluded instanceof WP_Term ) {
@@ -131,7 +161,7 @@ final class DTB_SitemapUrlRepository {
 		$args = [
 			'post_type'              => 'product',
 			'post_status'            => 'publish',
-			'fields'                 => 'ids',
+			'fields'                 => $fields,
 			'posts_per_page'         => max( 1, min( self::PAGE_SIZE, $page_size ) ),
 			'paged'                  => max( 1, $page ),
 			'orderby'                => 'ID',

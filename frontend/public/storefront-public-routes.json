@@ -1,0 +1,217 @@
+{
+  "version": 1,
+  "routes": {
+    "/products": {
+      "title": "Products",
+      "description": "Shop professional drywall tools and accessories from leading drywall brands.",
+      "heading": "Shop Professional Drywall Tools and Parts",
+      "intro": "Browse professional drywall tools, finishing equipment, and replacement parts for contractors. Use brand and category filters to narrow the catalog, then review product details and compatibility before ordering.",
+      "sections": [
+        { "heading": "Find tools by brand or category", "text": "Compare equipment for taping, applying joint compound, finishing corners, and completing drywall work. Brand and category pages help narrow the catalog to the tools and supplies that fit your work." },
+        { "heading": "Identify replacement parts", "text": "For repairs and maintenance, search the parts catalog or use a tool schematic to identify a callout. Confirm the part number and tool model before placing an order." }
+      ],
+      "links": [
+        { "label": "Browse brands", "href": "/products/brands" },
+        { "label": "Find replacement parts", "href": "/parts" },
+        { "label": "View tool schematics", "href": "/schematics" },
+        { "label": "Explore repair services", "href": "/repairs/packages" }
+      ]
+    },
+    "/products/brands": {
+      "title": "Brands",
+      "description": "Shop professional drywall tools and accessories from leading drywall brands.",
+      "heading": "Browse Drywall Tool Brands",
+      "intro": "Choose a manufacturer to explore its professional drywall tools, replacement parts, schematics, and repair resources. Product and brand details are maintained from the live catalog.",
+      "sections": [
+        { "heading": "Choose a manufacturer", "text": "Browse the available brands, then narrow products by tool category. Product availability and specifications are shown from the current catalog." },
+        { "heading": "Find brand-specific parts and support", "text": "Open a tool schematic to identify replacement parts, or review repair services for your tool family before starting a service request." }
+      ],
+      "links": [
+        { "label": "Shop all products", "href": "/products" },
+        { "label": "Search replacement parts", "href": "/parts" },
+        { "label": "Browse schematics", "href": "/schematics" }
+      ]
+    },
+    "/parts": {
+      "title": "Parts",
+      "description": "Shop professional drywall replacement parts, service kits, and repair components from leading brands.",
+      "heading": "Find Drywall Tool Replacement Parts",
+      "intro": "Search replacement parts by manufacturer and category, or open a schematic to identify a diagram callout. Check the part number and tool model against your equipment before ordering.",
+      "sections": [
+        { "heading": "Identify the correct part", "text": "Use product details and tool diagrams to confirm the part you need. A shared name or appearance alone does not establish fit; verify the model and part number." },
+        { "heading": "Need help with a repair?", "text": "Review repair packages and service options if your tool needs more than a replacement part." }
+      ],
+      "links": [
+        { "label": "Browse tool schematics", "href": "/schematics" },
+        { "label": "Shop tools and supplies", "href": "/products" },
+        { "label": "Compare repair packages", "href": "/repairs/packages" }
+      ]
+    },
+    "/schematics": {
+      "title": "Schematics",
+      "description": "Browse parts schematics by brand, category, and tool.",
+      "heading": "Drywall Tool Parts Schematics",
+      "intro": "Find a diagram for your drywall tool by brand and model. Schematics help identify part callouts and connect them with replacement parts in the catalog.",
+      "sections": [
+        { "heading": "Use a schematic to identify a part", "text": "Select a tool diagram and review its numbered callouts. Confirm the tool model and part number before ordering; a diagram supports identification but does not replace checking your equipment." },
+        { "heading": "Continue to parts or service", "text": "Open a linked replacement part or compare repair services when the tool needs inspection or repair." }
+      ],
+      "links": [
+        { "label": "Search replacement parts", "href": "/parts" },
+        { "label": "Shop drywall tools", "href": "/products" },
+        { "label": "Compare repair services", "href": "/repairs/packages" }
+      ]
+    },
+    "/repairs": {
+      "title": "Repairs",
+      "description": "Package-driven drywall tool repair services for TapeTech, Columbia, Asgard, and other professional finishing tools.",
+      "heading": "Drywall Tool Repair Services",
+      "intro": "Explore repair and service options for professional drywall tools. Review the available package paths and how inspection, estimates, and customer approval work before sending a tool in.",
+      "sections": [
+        { "heading": "Choose a service path", "text": "Compare standard repair packages with diagnostic, quote-first service. The appropriate path depends on the tool and the work it needs." },
+        { "heading": "Track the repair process", "text": "Start a request with the tool and issue details. Repair status and next steps are provided through the repair workflow." }
+      ],
+      "links": [
+        { "label": "Compare repair packages", "href": "/repairs/packages" },
+        { "label": "Start a repair request", "href": "/repairs/start" },
+        { "label": "Find replacement parts", "href": "/parts" }
+      ]
+    },
+    "/repairs/start": {
+      "title": "Start a Repair",
+      "description": "Start the package-driven repair intake for one drywall tool, with photos, shipping, warranty, and approval rules.",
+      "heading": "Start a Drywall Tool Repair",
+      "intro": "Begin a repair request by identifying the tool and describing the issue. Review the available service options and approval steps before arranging shipment or drop-off.",
+      "sections": [
+        { "heading": "Prepare the tool details", "text": "Have the brand, model, symptoms, and service goal available. Photos can help document the tool condition during intake." },
+        { "heading": "Review packages first", "text": "Compare standard repair packages and diagnostic quote-first service before choosing the request path." }
+      ],
+      "links": [
+        { "label": "Compare repair packages", "href": "/repairs/packages" },
+        { "label": "Read repair help", "href": "/help" },
+        { "label": "Contact support", "href": "/contact" }
+      ]
+    },
+    "/repairs/packages": {
+      "title": "Repair Packages",
+      "description": "Compare DTB standard repair packages and diagnostic quote-first paths.",
+      "heading": "Compare Drywall Tool Repair Packages",
+      "intro": "Review standard rebuilds, tune-ups, and diagnostic quote-first service paths for professional drywall tools. Compare the available options before starting a repair request.",
+      "sections": [
+        { "heading": "Choose the service that fits the tool", "text": "Package availability depends on tool category and service needs. Diagnostic work follows a quote-first path where approval is required before additional work begins." },
+        { "heading": "Start with clear next steps", "text": "After selecting a service path, provide the tool and issue details and review shipping, inspection, estimate, and approval information in the intake flow." }
+      ],
+      "links": [
+        { "label": "Start a repair request", "href": "/repairs/start" },
+        { "label": "Read repair help", "href": "/help" },
+        { "label": "Contact Drywall Toolbox", "href": "/contact" }
+      ]
+    },
+    "/help": {
+      "title": "Help Center",
+      "description": "Answers about tool sets, shipping, orders, repair services, warranties, maintenance, parts, and accounts.",
+      "heading": "Drywall Toolbox Help Center",
+      "intro": "Find guidance for product selection, replacement parts, shipping, orders, returns, repairs, and customer accounts. Use the help topics to find the right next step for your question.",
+      "sections": [
+        { "heading": "Product and parts questions", "text": "Review product details and schematics to identify tools and replacement parts. Confirm model and fitment details before ordering." },
+        { "heading": "Orders, returns, and repairs", "text": "Use the relevant order, return, or repair workflow for status and next steps. Contact the support team when you need help with a specific request." }
+      ],
+      "links": [
+        { "label": "Browse products", "href": "/products" },
+        { "label": "Review return information", "href": "/returns" },
+        { "label": "Compare repair packages", "href": "/repairs/packages" },
+        { "label": "Contact support", "href": "/contact" }
+      ]
+    },
+    "/calculators": {
+      "title": "Calculators",
+      "description": "Free professional drywall calculators. Instantly estimate sheets, joint tape, corner bead sections, and screw boxes for any room. Trade-accurate, mobile-first.",
+      "heading": "Drywall Project Calculators",
+      "intro": "Estimate common drywall materials for a project, including sheets, joint tape, corner bead, and screws. Enter project measurements to review planning estimates before purchasing supplies.",
+      "sections": [
+        { "heading": "Plan material quantities", "text": "Calculator results are estimates based on the measurements and assumptions entered. Review job conditions, product packaging, and local requirements before ordering." },
+        { "heading": "Browse tools and supplies", "text": "Explore professional drywall tools and supplies after preparing a project material list." }
+      ],
+      "links": [
+        { "label": "Shop drywall tools and supplies", "href": "/products" },
+        { "label": "Find replacement parts", "href": "/parts" }
+      ]
+    },
+    "/shipping-policy": {
+      "title": "Shipping Policy",
+      "description": "Drywall Toolbox shipping information: qualifying standard shipping, checkout shipping options, delivery handling, and tracking.",
+      "heading": "Shipping Information",
+      "intro": "Review shipping and delivery information for Drywall Toolbox orders. Delivery timing and available methods can depend on the items, destination, and checkout options shown for your order.",
+      "sections": [
+        { "heading": "Check order-specific details", "text": "Use your order confirmation and tracking information for the latest status. Contact support if an order needs attention." },
+        { "heading": "Need help with an order?", "text": "The help center and support team can assist with order questions and next steps." }
+      ],
+      "links": [
+        { "label": "Visit the help center", "href": "/help" },
+        { "label": "Contact support", "href": "/contact" },
+        { "label": "Review store policies", "href": "/policies" }
+      ]
+    },
+    "/returns": {
+      "title": "Returns",
+      "description": "Verify your Drywall Toolbox order, select eligible items, and start a secure return request online.",
+      "heading": "Returns",
+      "intro": "Review the return information for your order and follow the appropriate request steps. Keep the order details available so the support team can identify the items and advise on next steps.",
+      "sections": [
+        { "heading": "Before submitting a request", "text": "Check the applicable return policy and order details. Return authorization and refund status are handled through the store's order workflow." },
+        { "heading": "Need assistance?", "text": "Visit the help center or contact Drywall Toolbox support for questions about an existing order." }
+      ],
+      "links": [
+        { "label": "Read the return policy", "href": "/return-policy" },
+        { "label": "Visit the help center", "href": "/help" },
+        { "label": "Contact support", "href": "/contact" }
+      ]
+    },
+    "/return-policy": {
+      "title": "Return Policy",
+      "description": "Drywall Toolbox return policy: 45-day standard returns, item-level eligibility, approval before shipping, inspection, refund handling, damaged-order support, a…",
+      "heading": "Return Policy",
+      "intro": "Review the return policy before submitting a request. The order, item condition, and applicable policy terms determine the available next steps.",
+      "sections": [
+        { "heading": "Use the order return workflow", "text": "Start from the order details and provide the information requested for review. A submitted request does not itself create or guarantee a refund." },
+        { "heading": "Get help with a return", "text": "Contact support if you need assistance identifying the correct process for an existing order." }
+      ],
+      "links": [
+        { "label": "Start a return request", "href": "/returns" },
+        { "label": "Visit the help center", "href": "/help" },
+        { "label": "Contact support", "href": "/contact" }
+      ]
+    },
+    "/policies": {
+      "title": "Store Policies",
+      "description": "Drywall Toolbox store policies for returns, shipping, warranty support, order changes, payments, and customer support.",
+      "heading": "Store Policies",
+      "intro": "Review the policies and service information that apply to shopping with Drywall Toolbox, including shipping, returns, repairs, privacy, and customer terms.",
+      "sections": [
+        { "heading": "Order and service information", "text": "Check the policy for the specific order or service question. Checkout displays the authoritative totals and available delivery options for an order." },
+        { "heading": "Need help interpreting a policy?", "text": "Contact support with your order or service details so the team can point you to the appropriate next step." }
+      ],
+      "links": [
+        { "label": "Shipping information", "href": "/shipping-policy" },
+        { "label": "Return policy", "href": "/return-policy" },
+        { "label": "Contact support", "href": "/contact" }
+      ]
+    },
+    "/contact": {
+      "title": "Contact",
+      "description": "Get in touch with the Drywall Toolbox team. Expert support from real people who know drywall tools.",
+      "heading": "Contact Drywall Toolbox Support",
+      "intro": "Reach the Drywall Toolbox team for help with tools, replacement parts, orders, returns, or repairs. Include the product, model, or order details that will help the team understand your question.",
+      "sections": [
+        { "heading": "Contact by phone or email", "text": "Call 612-978-1007 or email dtb@drywalltoolbox.com for customer support." },
+        { "heading": "Find the right self-service page", "text": "Browse product details, identify parts with schematics, review repair packages, or visit the help center for common questions." }
+      ],
+      "links": [
+        { "label": "Visit the help center", "href": "/help" },
+        { "label": "Browse products", "href": "/products" },
+        { "label": "Find replacement parts", "href": "/parts" },
+        { "label": "Compare repair packages", "href": "/repairs/packages" }
+      ]
+    }
+  }
+}

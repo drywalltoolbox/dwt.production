@@ -235,13 +235,20 @@ ErrorDocument 511 /errors/511.html
   RewriteRule ^ - [R=404,L]
 
   # Serve only registered storefront route shapes from the React shell.
-  RewriteRule ^products/?$ index.html [QSA,L]
-  RewriteRule ^products/brands(/[^/]+(/categories/[^/]+)?)?/?$ index.html [QSA,L]
+  # Public SEO landing pages use the WordPress renderer so their route-specific
+  # HTML is present in the initial response. The renderer accepts only paths in
+  # the deployed storefront-public-routes.json manifest.
+  RewriteRule ^products/?$ wp/index.php?dtb_storefront=1 [QSA,L]
+  RewriteRule ^products/brands/?$ wp/index.php?dtb_storefront=1 [QSA,L]
+  RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|contact|repairs|repairs/start|repairs/packages)/?$ wp/index.php?dtb_storefront=1 [QSA,L]
+  RewriteRule ^products/brands/([^/]+)/?$ wp/index.php?dtb_storefront=1 [QSA,L]
+  RewriteRule ^products/brands/([^/]+)/categories/([^/]+)/?$ index.html [QSA,L]
+  RewriteRule ^category/([^/]+)/?$ wp/index.php?dtb_storefront=1 [QSA,L]
   # Resolve only canonical product-detail routes through WooCommerce so missing
   # products return 404 and catalog failures remain temporary server errors.
   RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]
-  RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|terms-of-service|privacy-policy|preview/technical-specifications|cart|contact|settings/woocommerce|login|register|forgot-password|reset-password|dashboard)/?$ index.html [QSA,L]
-  RewriteRule ^(category/[^/]+|repairs(/(start|packages|track|status/[^/]+))?|returns/status/[^/]+|checkout/(complete|payment-failed|payment-cancelled)|order/[0-9]+|order-tracking/[^/]+|support/status/[^/]+|dashboard/repairs/[^/]+|error/[^/]+)/?$ index.html [QSA,L]
+  RewriteRule ^(terms-of-service|privacy-policy|preview/technical-specifications|cart|settings/woocommerce|login|register|forgot-password|reset-password|dashboard)/?$ index.html [QSA,L]
+  RewriteRule ^(repairs/(track|status/[^/]+)|returns/status/[^/]+|checkout/(complete|payment-failed|payment-cancelled)|order/[0-9]+|order-tracking/[^/]+|support/status/[^/]+|dashboard/repairs/[^/]+|error/[^/]+)/?$ index.html [QSA,L]
 </IfModule>
 
 <IfModule mod_headers.c>

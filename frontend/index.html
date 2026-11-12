@@ -63,18 +63,19 @@
     <meta name="google-site-verification" content="Pl8kkhzGhgzxCc5RbB3zZEwvKXtvRzRhpR8AFwTDJUk" />
 
     <!-- Static homepage metadata; SEOHead updates these defaults per React route. -->
-    <title>Drywall Toolbox</title>
-    <meta name="description" content="Shop professional drywall tools and replacement parts. Browse tool schematics and explore repair services from Drywall Toolbox." />
-    <link rel="canonical" href="<%= htmlWebpackPlugin.options.siteUrl %>/" />
+    <title data-dtb-seo="title">Drywall Toolbox</title>
+    <meta name="description" data-dtb-seo="description" content="Shop professional drywall tools and replacement parts. Browse tool schematics and explore repair services from Drywall Toolbox." />
+    <meta name="robots" data-dtb-seo="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+    <link rel="canonical" data-dtb-seo="canonical" href="<%= htmlWebpackPlugin.options.siteUrl %>/" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Drywall Toolbox" />
-    <meta property="og:description" content="Shop professional drywall tools and replacement parts. Browse tool schematics and explore repair services from Drywall Toolbox." />
-    <meta property="og:url" content="<%= htmlWebpackPlugin.options.siteUrl %>/" />
+    <meta property="og:title" data-dtb-seo="og-title" content="Drywall Toolbox" />
+    <meta property="og:description" data-dtb-seo="og-description" content="Shop professional drywall tools and replacement parts. Browse tool schematics and explore repair services from Drywall Toolbox." />
+    <meta property="og:url" data-dtb-seo="og-url" content="<%= htmlWebpackPlugin.options.siteUrl %>/" />
     <meta property="og:site_name" content="Drywall Toolbox" />
     <meta property="og:image" content="https://drywalltoolbox.com/logos/logo-black.svg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Drywall Toolbox" />
-    <meta name="twitter:description" content="Shop professional drywall tools and replacement parts. Browse tool schematics and explore repair services from Drywall Toolbox." />
+    <meta name="twitter:title" data-dtb-seo="twitter-title" content="Drywall Toolbox" />
+    <meta name="twitter:description" data-dtb-seo="twitter-description" content="Shop professional drywall tools and replacement parts. Browse tool schematics and explore repair services from Drywall Toolbox." />
     <meta name="twitter:image" content="https://drywalltoolbox.com/logos/logo-black.svg" />
     <meta name="keywords" content="drywall tools, taping tools, finishing tools, construction equipment, TapeTech, Level5">
     <meta name="theme-color" content="#0f172a">
@@ -110,6 +111,7 @@
   </head>
   <body>
     <div id="root">
+      <dtb-route-content data-dtb-route-content style="display:block">
       <main class="dtb-home-static-fallback">
         <h1>The New Standard in Drywall Tools</h1>
         <p>Drywall Toolbox brings professional drywall tools and support resources together for contractors. Browse finishing and taping equipment, find replacement parts, review tool schematics, or explore repair services.</p>
@@ -137,6 +139,7 @@
           <p><a href="/repairs/packages">View repair services</a>, <a href="/returns">review returns</a>, or <a href="/contact">contact Drywall Toolbox</a>.</p>
         </section>
       </main>
+      </dtb-route-content>
     </div>
     <style>
       .dtb-home-static-fallback{box-sizing:border-box;width:min(100% - 32px,960px);margin:0 auto;padding:48px 0;color:#172337;font:16px/1.65 Arial,sans-serif}

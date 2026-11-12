@@ -512,9 +512,13 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
       ? `${categoryScopeLabel || 'All brands'}${total > 0 ? ` · ${total.toLocaleString()} product${total === 1 ? '' : 's'}` : ''}`
       : `${isPartsPage ? 'Replacement parts and service components' : 'All brands and categories'}${total > 0 ? ` · ${total.toLocaleString()} product${total === 1 ? '' : 's'}` : ''}`;
   const canonicalCategorySlug = categoryPathSlug || query.category || '';
-  const canonicalUrl = canonicalCategorySlug
-    ? buildCategoryPageUrl(canonicalCategorySlug, selectedBrand)
-    : (isPartsPage ? '/parts' : '/products');
+  const canonicalUrl = isBrandSelectorRoute
+    ? '/products/brands'
+    : isBrandCategorySelectorRoute
+      ? `/products/brands/${brandSlug}`
+      : canonicalCategorySlug
+        ? buildCategoryPageUrl(canonicalCategorySlug, selectedBrand)
+        : (isPartsPage ? '/parts' : '/products');
   const seoDescription = searchQuery
     ? `Products matching “${searchQuery}” in the Drywall Toolbox catalog.`
     : isPartsPage
@@ -774,7 +778,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
 
   return (
     <div className="min-h-screen page-wrapper dtb-catalog-listing-page" data-route-readiness={itemsLoading || (isCategoryPageRoute && categoryMetaLoading) ? 'pending' : 'ready'}>
-      <SEOHead title={categorySeoTitle} description={categorySeoDescription} canonical={canonicalUrl} schema={categorySeoSchema} noindex={Boolean(searchQuery) || (isCategoryPageRoute && (categoryMetaLoading || itemsLoading || Boolean(categoryMetaError)))} />
+      <SEOHead title={categorySeoTitle} description={categorySeoDescription} canonical={canonicalUrl} schema={categorySeoSchema} noindex={Boolean(searchQuery) || isBrandCategorySelectorRoute || (isCategoryPageRoute && (categoryMetaLoading || itemsLoading || Boolean(categoryMetaError)))} />
       <div className={`dtb-container dtb-container--fluid py-4 pt-6${isCategoryPageRoute ? ' dtb-catalog-category-layout' : ''}${showBrandLanding ? ' dtb-catalog-brand-layout' : ''}`}>
         {isCategoryPageRoute && (
           categoryMeta ? (

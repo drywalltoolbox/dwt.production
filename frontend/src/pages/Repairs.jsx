@@ -1363,9 +1363,9 @@ export function RepairStartExperience() {
   return (
     <div style={{ minHeight: '100vh' }} className="page-wrapper">
       <SEOHead
-        title="Tool Repair Services"
-        description="Professional drywall tool repair services and guides. Find repair solutions for TapeTech, Columbia, Asgard, and other professional drywall finishing tools."
-        canonical="/repairs"
+        title="Start a Repair"
+        description="Start the package-driven repair intake for one drywall tool, with photos, shipping, warranty, and approval rules."
+        canonical="/repairs/start"
       />
 
       {/* ── Repair Request Form ──────────────────────────────────────────── */}

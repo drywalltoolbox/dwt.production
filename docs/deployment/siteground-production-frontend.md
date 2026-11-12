@@ -69,7 +69,10 @@ the WordPress Git deployment key or a staging-only account.
 
 The deployment script snapshots the existing frontend-owned files outside the
 webroot, verifies the release checksums, writes static assets first, and swaps
-`.htaccess`, manifests, and `index.html` atomically. It keeps a bounded
+the public route manifest and `index.html` before activating `.htaccess` as the
+routing cutover. The manifest contains only static-route editorial content;
+WordPress reads it for initial HTML while WooCommerce remains catalog truth.
+It keeps a bounded
 three-release snapshot history after successful publication. The separate
 rollback workflow requires `ROLLBACK_PRODUCTION` and the current source SHA.
 
