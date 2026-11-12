@@ -222,7 +222,7 @@ if (appEnv === 'staging') {
 } else {
   const sitemapIndexRule = 'RewriteRule ^sitemap\\.xml$ wp/index.php?dtb_sitemap=index [QSA,L]';
   const sitemapChildRule = 'RewriteRule ^sitemaps/([a-z0-9-]+)-([1-9][0-9]*)\\.xml$ wp/index.php?dtb_sitemap=$1&dtb_sitemap_page=$2 [QSA,L]';
-  const xmlGuardMarker = 'RewriteCond %{REQUEST_URI} \\.(?:css|js|mjs|map|json|webmanifest';
+  const xmlGuardMarker = 'RewriteCond %{REQUEST_URI} \\.(?:php|css|js|mjs|map|json|webmanifest';
   const sitemapIndexPosition = emitted.indexOf(sitemapIndexRule);
   const sitemapChildPosition = emitted.indexOf(sitemapChildRule);
   const xmlGuardPosition = emitted.indexOf(xmlGuardMarker);
