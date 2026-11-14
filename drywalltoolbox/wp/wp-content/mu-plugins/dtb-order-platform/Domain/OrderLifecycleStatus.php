@@ -88,7 +88,9 @@ function dtb_order_get_allowed_transitions( string $status ): array {
 			'on-hold'    => [ 'processing', 'cancelled' ],
 			'processing' => [ 'shipped', 'completed', 'on-hold', 'cancelled' ],
 			'shipped'    => [ 'completed' ],
-			'completed'  => [],
+			// Operators may reopen a mistakenly completed / not-yet-fulfilled order
+			// into a reviewable hold state after the same explicit confirmation UI.
+			'completed'  => [ 'on-hold' ],
 			'cancelled'  => [],
 			'refunded'   => [],
 			'failed'     => [ 'pending', 'on-hold', 'cancelled' ],

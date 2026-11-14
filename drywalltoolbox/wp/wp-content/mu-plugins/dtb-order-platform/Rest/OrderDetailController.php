@@ -67,7 +67,9 @@ function dtb_order_rest_build_admin_actions( WC_Order $order, string $workflow_k
 				'action_type'   => 'transition',
 				'target_status' => $to_status,
 				'group'         => 'Workflow',
-				'label'         => sprintf(
+				'label'         => 'completed' === $status && 'on-hold' === $to_status
+					? __( 'Reopen to On Hold', 'drywall-toolbox' )
+					: sprintf(
 					/* translators: %s: destination status label. */
 					__( 'Move to %s', 'drywall-toolbox' ),
 					(string) ( $labels[ $to_status ] ?? ucwords( str_replace( [ '_', '-' ], ' ', $to_status ) ) )
@@ -91,8 +93,8 @@ function dtb_order_rest_build_admin_actions( WC_Order $order, string $workflow_k
 			'type'        => 'server_action',
 			'action_type' => 'resend_shipped',
 			'group'       => 'Customer Communication',
-			'label'       => __( 'Resend Shipping Email', 'drywall-toolbox' ),
-			'description' => __( 'Queue a shipping notification using the current tracking state.', 'drywall-toolbox' ),
+			'label'       => __( 'Send Shipping Email', 'drywall-toolbox' ),
+			'description' => __( 'Send a customer shipment update using the current tracking state after you approve it.', 'drywall-toolbox' ),
 			'confirm'     => true,
 		];
 
@@ -503,7 +505,7 @@ function dtb_order_rest_admin_action( WP_REST_Request $request ): WP_REST_Respon
 			break;
 
 		case 'resend_shipped':
-			dtb_order_enqueue_job( 'dtb_order_send_notification', $order_id, [ 'template' => 'order-shipped' ] );
+			dtb_order_enqueue_job( 'dtb_order_send_notification', $order_id, [ 'template' => 'order-shipped', 'admin_approved' => true ] );
 			if ( function_exists( 'dtb_order_append_event' ) ) {
 				dtb_order_append_event( $order_id, 'notification.order_shipped_queued', [
 					'source'     => 'admin',
@@ -512,7 +514,7 @@ function dtb_order_rest_admin_action( WP_REST_Request $request ): WP_REST_Respon
 					'visibility' => 'operator',
 				] );
 			}
-			$message = __( 'Shipping email re-queued.', 'drywall-toolbox' );
+			$message = __( 'Shipping email queued after your approval.', 'drywall-toolbox' );
 			break;
 
 		case 'recalc_rewards':

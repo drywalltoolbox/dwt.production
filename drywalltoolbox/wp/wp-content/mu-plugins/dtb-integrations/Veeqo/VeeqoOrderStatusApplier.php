@@ -122,6 +122,9 @@ function dtb_veeqo_order_status_to_wc_status( string $status ): string {
  * @return array{applied:bool,result:string,wc_status:string,rank:int,veeqo_status:string}
  */
 function dtb_veeqo_apply_order_fulfillment_status( WC_Order $order, string $veeqo_status, array $context = [] ): array {
+	if ( function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) {
+		return [ 'applied' => false, 'result' => 'temporarily_paused', 'wc_status' => '', 'rank' => 0, 'veeqo_status' => sanitize_key( $veeqo_status ) ];
+	}
 	$veeqo_status = sanitize_key( $veeqo_status );
 	$rank         = dtb_veeqo_order_status_rank( $veeqo_status );
 	$wc_status    = dtb_veeqo_order_status_to_wc_status( $veeqo_status );
@@ -319,6 +322,6 @@ function dtb_veeqo_dispatch_shipped_notification( WC_Order $order, array $contex
 	}
 
 	if ( function_exists( 'dtb_order_enqueue_job' ) ) {
-		dtb_order_enqueue_job( 'dtb_order_send_notification', (int) $order->get_id(), [ 'template' => 'order-shipped' ] );
+		// Customer shipment emails require an explicit operator action from DTB Orders.
 	}
 }

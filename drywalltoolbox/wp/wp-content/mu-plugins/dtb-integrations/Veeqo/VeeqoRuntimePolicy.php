@@ -12,6 +12,18 @@
 
 defined( 'ABSPATH' ) || exit;
 
+const DTB_VEEQO_ORDER_AUTOMATION_PAUSED_OPTION = 'dtb_veeqo_order_automation_paused';
+
+/** Keep Veeqo order-state workflows paused until the operator workflow is re-integrated. */
+function dtb_veeqo_order_automation_is_paused(): bool {
+	$value = get_option( DTB_VEEQO_ORDER_AUTOMATION_PAUSED_OPTION, null );
+	if ( null === $value ) {
+		add_option( DTB_VEEQO_ORDER_AUTOMATION_PAUSED_OPTION, 'yes', '', false );
+		$value = get_option( DTB_VEEQO_ORDER_AUTOMATION_PAUSED_OPTION, 'yes' );
+	}
+	return in_array( strtolower( (string) $value ), [ '1', 'yes', 'true', 'paused' ], true );
+}
+
 require_once __DIR__ . '/VeeqoInventorySchedulePolicy.php';
 require_once __DIR__ . '/VeeqoInventoryCoverageService.php';
 

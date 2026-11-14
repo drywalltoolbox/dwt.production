@@ -564,7 +564,7 @@
 			'<p class="dtb-orders-transition-review__eyebrow">Review order update</p>' +
 			'<h2 id="dtb-orders-transition-title">Move order to ' + WB.escapeHtml( label ) + '?</h2>' +
 			'<p class="description">Choose whether to send the matching WooCommerce status email. The store email setting still applies.</p>' +
-			'<label class="dtb-orders-transition-review__check"><input type="checkbox" name="send_email" checked> Send the customer status email</label>' +
+			'<label class="dtb-orders-transition-review__check"><input type="checkbox" name="send_email"> Send the customer status email (optional)</label>' +
 			'<label for="dtb-orders-transition-message">Message for the customer <span>(optional)</span></label>' +
 			'<textarea id="dtb-orders-transition-message" name="customer_message" rows="5" maxlength="2000" placeholder="Add context or next steps for this order"></textarea>' +
 			'<p class="description">Your message appears in the matching email. Internal order notes remain private.</p>' +

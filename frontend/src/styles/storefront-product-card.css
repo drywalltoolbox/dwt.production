@@ -77,9 +77,17 @@
 .dtb-product-card--rail .dtb-product-card__sku { display:block;font-size:.7rem; }
 
 @media (min-width:768px) {
-  .dtb-product-grid,.product-skeleton-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));justify-content:stretch;gap:clamp(16px,1.25vw,22px); }
+  .dtb-product-grid,.product-skeleton-grid {
+    box-sizing:border-box;
+    grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));
+    justify-content:start;
+    justify-items:start;
+    gap:clamp(16px,1.25vw,22px);
+    padding-inline:clamp(6px,.8vw,14px);
+  }
   .dtb-product-grid--list { grid-template-columns:1fr; }
   .dtb-product-card { position:relative;height:100%; }
+  .dtb-product-card--grid { max-width:clamp(280px,22vw,340px); }
   .dtb-product-card--rail { width:var(--dtb-rail-tile-w-desktop); }
   /* Fixed content tracks keep short and long product names from pushing the
      divider and commerce rail to different vertical positions. Card height is

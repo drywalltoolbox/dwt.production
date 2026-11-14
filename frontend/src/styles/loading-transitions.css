@@ -333,9 +333,12 @@
 
 @media (min-width: 768px) {
   .dtb-product-skeleton-grid {
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
-    justify-content: stretch;
+    box-sizing: border-box;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    justify-content: start;
+    justify-items: start;
     gap: var(--dtb-space-4);
+    padding-inline: clamp(6px, .8vw, 14px);
   }
 
   .dtb-product-skeleton-grid--list {
@@ -344,6 +347,7 @@
 
   .dtb-product-card-skeleton--grid {
     display: grid;
+    max-width: clamp(280px, 22vw, 340px);
     grid-template-rows: clamp(175px, 15vw, 237px) auto;
     height: 100%;
     min-height: 0;

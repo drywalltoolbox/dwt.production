@@ -72,7 +72,7 @@ function dtb_order_admin_ajax_operator_action(): void {
 			break;
 
 		case 'resend_shipped':
-			dtb_order_enqueue_job( 'dtb_order_send_notification', $order_id, [ 'template' => 'order-shipped' ] );
+			dtb_order_enqueue_job( 'dtb_order_send_notification', $order_id, [ 'template' => 'order-shipped', 'admin_approved' => true ] );
 			wp_send_json_success( [ 'message' => __( 'Shipping email re-queued.', 'drywall-toolbox' ) ] );
 			break;
 

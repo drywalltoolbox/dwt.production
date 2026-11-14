@@ -228,7 +228,7 @@ function dtb_order_job_sync_veeqo( int $order_id, array $args = [] ): void {
 
 		if ( ! empty( $tracking_number ) ) {
 			dtb_order_set_fulfillment_substate( $order_id, 'shipped', [ 'tracking_number' => $tracking_number, 'carrier' => $result['carrier'] ?? null ] );
-			dtb_order_enqueue_job( 'dtb_order_send_notification', $order_id, [ 'template' => 'order-shipped' ] );
+			// Shipment notification is operator-approved from the order workbench.
 		} elseif ( ! empty( $result['inventory_reserved'] ) ) {
 			dtb_order_set_fulfillment_substate( $order_id, 'inventory_reserved' );
 		}
@@ -366,6 +366,11 @@ add_action( 'dtb_order_send_notification', 'dtb_order_job_send_notification', 10
 function dtb_order_job_send_notification( int $order_id, array $args = [] ): void {
 	$template = sanitize_key( $args['template'] ?? '' );
 	if ( '' === $template ) {
+		return;
+	}
+	if ( 'order-shipped' === $template && empty( $args['admin_approved'] ) ) {
+		// Older Veeqo jobs may still be queued. Shipment mail now requires a
+		// deliberate operator action in the order workbench.
 		return;
 	}
 	$order = wc_get_order( $order_id );

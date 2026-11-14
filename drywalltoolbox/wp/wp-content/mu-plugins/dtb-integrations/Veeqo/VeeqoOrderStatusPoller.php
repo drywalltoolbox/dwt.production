@@ -102,6 +102,13 @@ add_action( 'init', 'dtb_veeqo_order_status_poll_recover_scheduler', 50 );
  * @param bool|null $known_has_candidates Optional already-computed candidate state.
  */
 function dtb_veeqo_order_status_poll_schedule_if_needed( int $delay = 0, ?bool $known_has_candidates = null ): bool {
+	if ( function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) {
+		if ( function_exists( 'as_unschedule_all_actions' ) ) {
+			as_unschedule_all_actions( DTB_VEEQO_ORDER_STATUS_POLL_HOOK, [], DTB_VEEQO_ORDER_STATUS_POLL_ACTION_GROUP );
+		}
+		dtb_veeqo_order_status_poll_update_state( 'paused', [ 'next_run_at' => null ] );
+		return false;
+	}
 	if ( ! function_exists( 'as_schedule_single_action' )
 		|| ! function_exists( 'dtb_veeqo_production_readiness' )
 		|| empty( dtb_veeqo_production_readiness()['ready'] ) ) {
@@ -384,6 +391,10 @@ function dtb_veeqo_order_status_poll_extract_tracking( array $data ): array {
  * Veeqo: every Veeqo call is a GET, this never writes back to Veeqo.
  */
 function dtb_veeqo_order_status_poll_run(): void {
+	if ( function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) {
+		dtb_veeqo_order_status_poll_update_state( 'paused', [ 'next_run_at' => null ] );
+		return;
+	}
 	if ( ! function_exists( 'dtb_veeqo_production_readiness' ) || empty( dtb_veeqo_production_readiness()['ready'] ) || ! function_exists( 'dtb_veeqo_request' ) ) {
 		// Veeqo not configured (or the request client isn't loaded): skip the
 		// run entirely, same defensive posture as the inventory pull job.
