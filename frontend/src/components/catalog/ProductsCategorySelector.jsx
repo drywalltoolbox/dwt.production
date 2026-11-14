@@ -1,6 +1,5 @@
 import BackButton from '../shared/BackButton.jsx';
 import { useEffect, useMemo, useState } from 'react';
-import { fetchCatalogProducts } from '../../services/catalogPlatformCache.js';
 import { brandToSlug } from '../../utils/catalogUrlState.js';
 import { resolveCategoryThumbnail } from '../../utils/categoryThumbnailImages.js';
 import { MediaSelectorCard, SelectorGrid } from '../selectors/SelectorCards.jsx';
@@ -15,7 +14,6 @@ const ALL_PRODUCTS_CATEGORY = {
   isAllProducts: true,
 };
 
-const ALL_PRODUCTS_PREVIEW_LIMIT = 8;
 const ALL_PRODUCTS_SLIDE_INTERVAL_MS = 3800;
 
 /*
@@ -114,7 +112,11 @@ function resolveCategoryImage(brand, category) {
   const normalizedCatKey = catKey.replace(/_/g, '-');
   const underscoredCatKey = catKey.replace(/-/g, '_');
   const overrides = CATEGORY_IMAGE_OVERRIDES[slug] || {};
-  return overrides[catKey] || overrides[normalizedCatKey] || overrides[underscoredCatKey] || resolveCategoryThumbnail(category);
+  const isParts = ['parts', 'replacement_parts', 'replacement-parts'].includes(catKey);
+  const fallbackCategory = isParts && !category?.image
+    ? { ...category, slug: 'replacement-parts' }
+    : category;
+  return overrides[catKey] || overrides[normalizedCatKey] || overrides[underscoredCatKey] || resolveCategoryThumbnail(fallbackCategory);
 }
 
 const WORDPRESS_RESIZED_IMAGE_RE = /-\d+x\d+(?=\.(?:avif|jpe?g|png|webp)(?:[?#]|$))/i;
@@ -156,13 +158,6 @@ function resolvePreviewImageMeta(src = '') {
     srcSet: `${normalizedSrc} 1x, ${normalizedSrc} 2x`,
     sizes: SELECTOR_IMAGE_SIZES,
   };
-}
-
-function primaryProductImage(product = {}) {
-  return product?.media?.image
-    || product?.cardProduct?.image
-    || product?.image
-    || '';
 }
 
 function AllProductsSlideshow({ images }) {
@@ -217,7 +212,7 @@ function AllProductsSlideshow({ images }) {
   );
 }
 
-function ProductCategoryCard({ brand, category, index, onSelectCategory, allProductsImages = [], itemLabel = 'product' }) {
+function ProductCategoryCard({ brand, category, index, onSelectCategory, allProductsImages = [] }) {
   const isAllProducts = Boolean(category?.isAllProducts);
   const resolvedImage = isAllProducts ? '' : (category?.preview?.url || resolveCategoryImage(brand, category));
   const [failedImage, setFailedImage] = useState({ key: '', src: '' });
@@ -251,7 +246,6 @@ function ProductCategoryCard({ brand, category, index, onSelectCategory, allProd
   return (
     <MediaSelectorCard
       title={category.name}
-      meta={`${category.count} ${itemLabel}${category.count === 1 ? '' : 's'}`}
       media={media}
       className={isAllProducts ? 'dtb-selector-card--all-products' : ''}
       onClick={() => onSelectCategory(category)}
@@ -266,89 +260,22 @@ export default function ProductsCategorySelector({
   onSelectCategory,
   onBack,
   includeAllProducts = true,
-  loadAllProductsPreview = true,
-  itemLabel = 'product',
   logoOnlyHeader = false,
   loading = false,
   headerTitle,
   headerDescription,
   schematicSelector = false,
 }) {
-  const [previewState, setPreviewState] = useState({ brand: '', images: [], total: null });
-  const [partsPreview, setPartsPreview] = useState({ brand: '', image: '' });
-  const normalizedCategories = Array.isArray(categories) ? categories : [];
-  const categoryCountFallback = normalizedCategories.reduce((sum, category) => (
-    sum + Number(category?.count || category?.productCount || 0)
-  ), 0);
-  const hasAuthoritativePreview = previewState.brand === brand;
-  const allProductsImages = hasAuthoritativePreview ? previewState.images : [];
-  const allProductsCount = hasAuthoritativePreview && Number.isFinite(previewState.total)
-    ? previewState.total
-    : categoryCountFallback;
-
-  useEffect(() => {
-    if (!brand || !includeAllProducts || !loadAllProductsPreview) return undefined;
-
-    let cancelled = false;
-    const loadPreviews = async () => {
-      try {
-        const response = await fetchCatalogProducts({
-          brands: [brand],
-          page: 1,
-          perPage: ALL_PRODUCTS_PREVIEW_LIMIT,
-          sort: 'popular',
-        });
-        if (cancelled) return;
-        const images = Array.from(new Set(
-          (Array.isArray(response?.items) ? response.items : [])
-            .map(primaryProductImage)
-            .map(normalizePreviewImageUrl)
-            .filter((src) => src && !src.endsWith('.svg')),
-        )).slice(0, ALL_PRODUCTS_PREVIEW_LIMIT);
-        const total = Number(response?.pagination?.total);
-        setPreviewState({
-          brand,
-          images,
-          total: Number.isFinite(total) ? total : null,
-        });
-      } catch {
-        if (!cancelled) setPreviewState({ brand, images: [], total: null });
-      }
-    };
-
-    loadPreviews();
-    return () => { cancelled = true; };
-  }, [brand, includeAllProducts, loadAllProductsPreview]);
-
-  // A brand's Parts category has no curated thumbnail mapping. Resolve a
-  // real, published part image from the existing catalog API instead of
-  // showing the missing-image placeholder on an otherwise populated card.
-  const hasPartsCategory = normalizedCategories.some((category) =>
-    ['parts', 'replacement_parts', 'replacement-parts'].includes(
-      String(category?.key || category?.slug || '').toLowerCase()
-    ) && Number(category?.count || category?.productCount || 0) > 0
-  );
-
-  useEffect(() => {
-    if (!brand || !hasPartsCategory) return undefined;
-    let cancelled = false;
-    fetchCatalogProducts({ brands: [brand], isParts: 1, page: 1, perPage: 8 })
-      .then((response) => {
-        if (cancelled) return;
-        const image = (Array.isArray(response?.items) ? response.items : [])
-          .map(primaryProductImage)
-          .find(Boolean) || '';
-        setPartsPreview({ brand, image });
-      })
-      .catch(() => {
-        if (!cancelled) setPartsPreview({ brand, image: '' });
-      });
-    return () => { cancelled = true; };
-  }, [brand, hasPartsCategory]);
+  const normalizedCategories = useMemo(() => (Array.isArray(categories) ? categories : []), [categories]);
+  const allProductsImages = useMemo(() => Array.from(new Set(
+    normalizedCategories
+      .map((category) => category?.preview?.url || category?.image || resolveCategoryImage(brand, category))
+      .map(normalizePreviewImageUrl)
+      .filter((src) => src && !src.endsWith('.svg')),
+  )).slice(0, 8), [brand, normalizedCategories]);
 
   const allProductsCard = {
     ...ALL_PRODUCTS_CATEGORY,
-    count: allProductsCount,
     image: '',
   };
   const displayCategories = includeAllProducts
@@ -387,13 +314,10 @@ export default function ProductsCategorySelector({
             <ProductCategoryCard
               key={category.key || category.slug || category.name}
               brand={brand}
-              category={['parts', 'replacement_parts', 'replacement-parts'].includes(String(category.key || category.slug || '').toLowerCase()) && !category.preview?.url && partsPreview.brand === brand && partsPreview.image
-                ? { ...category, preview: { url: partsPreview.image } }
-                : category}
+              category={category}
               index={index}
               onSelectCategory={onSelectCategory}
               allProductsImages={category.isAllProducts ? allProductsImages : []}
-              itemLabel={itemLabel}
             />
           ))}
         </SelectorGrid>

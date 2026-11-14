@@ -8,9 +8,11 @@ import {
 
 const FRESH_CACHE_TTL = 5 * 60 * 1000;
 const STALE_CACHE_TTL = 24 * 60 * 60 * 1000;
+const NAVIGATION_STALE_CACHE_TTL = 10 * 60 * 1000;
 const PRODUCT_CACHE_LIMIT = 24;
 const FACETS_CACHE_LIMIT = 16;
 const CATEGORY_CACHE_LIMIT = 64;
+const NAVIGATION_CACHE_LIMIT = 1;
 const CACHE_VERSION = 'v18-explicit-default-variation';
 export const CATALOG_FACETS_CONTRACT_VERSION = '2.3';
 // Bump the local cache namespace when canonical taxonomy relationships change,
@@ -20,15 +22,18 @@ const CATEGORY_CACHE_VERSION = 'v18-contract-2-3-taxonomy';
 const PRODUCT_STORAGE_PREFIX = `dtb:catalog-products:${CACHE_VERSION}:`;
 const FACETS_STORAGE_PREFIX = `dtb:catalog-facets:${FACETS_CACHE_VERSION}:`;
 const CATEGORY_STORAGE_PREFIX = `dtb:catalog-category:${CATEGORY_CACHE_VERSION}:`;
+const NAVIGATION_STORAGE_PREFIX = 'dtb:storefront-navigation:v1:';
 const PRODUCT_STORAGE_ROOT = 'dtb:catalog-products:';
 const FACETS_STORAGE_ROOT = 'dtb:catalog-facets:';
 const CATEGORY_STORAGE_ROOT = 'dtb:catalog-category:';
+const NAVIGATION_STORAGE_ROOT = 'dtb:storefront-navigation:';
 
 const productCache = new Map();
 const facetsCache = new Map();
 const facetsInflight = new Map();
 const categoryCache = new Map();
 const categoryInflight = new Map();
+const navigationCache = new Map();
 const catalogReadInflight = new Map();
 let obsoleteCatalogStoragePruned = false;
 
@@ -47,6 +52,7 @@ function canUseStorage() {
 function cacheLimitForPrefix(prefix) {
   if (prefix === PRODUCT_STORAGE_PREFIX) return PRODUCT_CACHE_LIMIT;
   if (prefix === FACETS_STORAGE_PREFIX) return FACETS_CACHE_LIMIT;
+  if (prefix === NAVIGATION_STORAGE_PREFIX) return NAVIGATION_CACHE_LIMIT;
   return CATEGORY_CACHE_LIMIT;
 }
 
@@ -66,8 +72,9 @@ function pruneObsoleteCatalogStorage() {
     PRODUCT_STORAGE_PREFIX,
     FACETS_STORAGE_PREFIX,
     CATEGORY_STORAGE_PREFIX,
+    NAVIGATION_STORAGE_PREFIX,
   ]);
-  const roots = [PRODUCT_STORAGE_ROOT, FACETS_STORAGE_ROOT, CATEGORY_STORAGE_ROOT];
+  const roots = [PRODUCT_STORAGE_ROOT, FACETS_STORAGE_ROOT, CATEGORY_STORAGE_ROOT, NAVIGATION_STORAGE_ROOT];
 
   try {
     for (let index = window.localStorage.length - 1; index >= 0; index -= 1) {
@@ -156,10 +163,10 @@ function getCacheEntry(cache, key, prefix, { allowStale = false } = {}) {
     touchCacheEntry(cache, key, memoryEntry, cacheLimitForPrefix(prefix));
     const age = now - memoryEntry.cachedAt;
     if (age < FRESH_CACHE_TTL) {
-      return { data: memoryEntry.data, isStale: false, source: 'memory' };
+      return { data: memoryEntry.data, cachedAt: memoryEntry.cachedAt, isStale: false, source: 'memory' };
     }
     if (allowStale && age < STALE_CACHE_TTL) {
-      return { data: memoryEntry.data, isStale: true, source: 'memory' };
+      return { data: memoryEntry.data, cachedAt: memoryEntry.cachedAt, isStale: true, source: 'memory' };
     }
   }
 
@@ -174,11 +181,11 @@ function getCacheEntry(cache, key, prefix, { allowStale = false } = {}) {
 
   touchCacheEntry(cache, key, persistentEntry, cacheLimitForPrefix(prefix));
   if (persistentAge < FRESH_CACHE_TTL) {
-    return { data: persistentEntry.data, isStale: false, source: 'persistent' };
+    return { data: persistentEntry.data, cachedAt: persistentEntry.cachedAt, isStale: false, source: 'persistent' };
   }
 
   return allowStale
-    ? { data: persistentEntry.data, isStale: true, source: 'persistent' }
+    ? { data: persistentEntry.data, cachedAt: persistentEntry.cachedAt, isStale: true, source: 'persistent' }
     : null;
 }
 
@@ -273,6 +280,96 @@ export function fetchCatalogFacets(scope = {}) {
   return facetsInflight.get(key);
 }
 
+function normalizeNavigationBrands(value) {
+  if (!Array.isArray(value)) return [];
+  return value.map((brand) => {
+    const label = String(brand?.label || brand?.name || '').trim();
+    const slug = String(brand?.slug || '').trim();
+    if (!label || !slug) return null;
+    return { label, slug };
+  }).filter(Boolean);
+}
+
+function normalizeStorefrontNavigation(value) {
+  if (value?.contractVersion !== 1 || !Array.isArray(value?.shop) || !Array.isArray(value?.brands)) {
+    throw new Error('Storefront navigation API contract mismatch.');
+  }
+
+  const normalizeGroup = (group) => {
+    const label = String(group?.label || '').trim();
+    const slug = String(group?.slug || '').trim();
+    if (!label || !slug) return null;
+    const children = (Array.isArray(group?.children) ? group.children : []).map((child) => {
+      const childLabel = String(child?.label || '').trim();
+      const childSlug = String(child?.slug || '').trim();
+      if (!childLabel || !childSlug) return null;
+      return {
+        key: String(child?.key || childSlug),
+        label: childLabel,
+        slug: childSlug,
+        sort: Number(child?.sort) || 0,
+        description: String(child?.description || ''),
+        image: String(child?.image || ''),
+      };
+    }).filter(Boolean);
+    return {
+      key: String(group?.key || slug),
+      label,
+      slug,
+      sort: Number(group?.sort) || 0,
+      description: String(group?.description || ''),
+      image: String(group?.image || ''),
+      children,
+    };
+  };
+
+  const shop = value.shop.map(normalizeGroup).filter(Boolean);
+  if (shop.length === 0) throw new Error('Storefront navigation did not include any shop categories.');
+
+  return {
+    contractVersion: 1,
+    shop,
+    brands: normalizeNavigationBrands(value.brands),
+    parts: {
+      landing: {
+        label: String(value?.parts?.landing?.label || 'Browse all replacement parts'),
+        href: String(value?.parts?.landing?.href || '/parts'),
+      },
+      brands: normalizeNavigationBrands(value?.parts?.brands),
+    },
+  };
+}
+
+/** Return the bounded public header navigation cache, including brief stale data. */
+export function getCachedStorefrontNavigation({ allowStale = true } = {}) {
+  const key = 'public';
+  const entry = getCacheEntry(navigationCache, key, NAVIGATION_STORAGE_PREFIX, { allowStale });
+  if (!entry) return null;
+
+  if (Date.now() - entry.cachedAt >= NAVIGATION_STALE_CACHE_TTL) {
+    navigationCache.delete(key);
+    removePersistent(NAVIGATION_STORAGE_PREFIX, key);
+    return null;
+  }
+
+  return entry;
+}
+
+/** Fetch the count-free header navigation once and coalesce concurrent reads. */
+export function fetchStorefrontNavigation() {
+  const key = 'public';
+  const cached = getCachedStorefrontNavigation({ allowStale: false });
+  if (cached?.data) return Promise.resolve(cached.data);
+
+  return coalesceCatalogRead(`navigation:${key}`, {}, () => apiClient('/wp-json/dtb/v1/catalog/navigation'))
+    .then((payload) => setCacheEntry(
+      navigationCache,
+      key,
+      NAVIGATION_STORAGE_PREFIX,
+      normalizeStorefrontNavigation(payload),
+    ));
+}
+
 export function buildCatalogProductParams(query = {}) {
   // Collection consumers render cards. Detail content is fetched from the
   // dedicated detail route, keeping list/search payloads bounded by contract.
@@ -300,6 +397,7 @@ export function buildCatalogProductParams(query = {}) {
   if (query.search) params.search = query.search;
   if (query.page && query.page > 1) params.page = query.page;
   if (query.perPage) params.per_page = query.perPage;
+  if (query.includeTotal === false) params.include_total = 0;
   if (query.sort && query.sort !== 'popular') params.sort = query.sort;
   return params;
 }
@@ -319,8 +417,10 @@ export function getCachedCatalogProducts(query = {}, options = {}) {
   return options.returnEntry ? entry : entry?.data || null;
 }
 
-export function getRenderableCatalogProducts(query = {}) {
-  return getCachedCatalogProducts(query, { allowStale: true, returnEntry: true });
+export function getRenderableCatalogProducts(query = {}, { maxStaleAge = STALE_CACHE_TTL } = {}) {
+  const entry = getCachedCatalogProducts(query, { allowStale: true, returnEntry: true });
+  if (entry?.isStale && Date.now() - entry.cachedAt > maxStaleAge) return null;
+  return entry;
 }
 
 /**
@@ -412,12 +512,13 @@ export function invalidateCatalogPlatformCache() {
   facetsInflight.clear();
   categoryCache.clear();
   categoryInflight.clear();
+  navigationCache.clear();
 
   if (!canUseStorage()) return;
 
   try {
     Object.keys(window.localStorage)
-      .filter((key) => key.startsWith(PRODUCT_STORAGE_PREFIX) || key.startsWith('dtb:catalog-facets:') || key.startsWith('dtb:catalog-category:'))
+      .filter((key) => key.startsWith(PRODUCT_STORAGE_PREFIX) || key.startsWith('dtb:catalog-facets:') || key.startsWith('dtb:catalog-category:') || key.startsWith(NAVIGATION_STORAGE_ROOT))
       .forEach((key) => window.localStorage.removeItem(key));
   } catch {
     // Non-critical cleanup.

@@ -15,9 +15,7 @@ function normalizeFilterBrands(brands = []) {
   return brands
     .map((brand) => {
       const label = String(typeof brand === 'string' ? brand : (brand?.label || brand?.name || '')).trim();
-      const rawCount = typeof brand === 'string' ? null : (brand?.productCount ?? brand?.count);
-      const count = rawCount === null || rawCount === undefined ? undefined : Number(rawCount);
-      return { id: label, label, count: Number.isFinite(count) ? count : undefined };
+      return { id: label, label };
     })
     .filter((brand) => {
       if (!brand.label) return false;
@@ -41,7 +39,6 @@ export default function FilterPanel({
   onCategoryChange,
   onPriceChange,
   onClearFilters,
-  resultsCount,
 }) {
   const [expandedSections, setExpandedSections] = useState({
     categories: true,
@@ -146,7 +143,6 @@ export default function FilterPanel({
             expandedSections={expandedSections}
             toggleSection={toggleSection}
             hasActiveFilters={hasActiveFilters}
-            resultsCount={resultsCount}
           />
         </div>
       </aside>
@@ -215,7 +211,6 @@ export default function FilterPanel({
                   expandedSections={expandedSections}
                   toggleSection={toggleSection}
                   hasActiveFilters={hasActiveFilters}
-                  resultsCount={resultsCount}
                   isMobile
                 />
               </div>
@@ -235,7 +230,7 @@ export default function FilterPanel({
                     onClick={onClose}
                     className="dtb-filter-drawer__apply"
                   >
-                    Show {resultsCount ?? ''}{resultsCount !== undefined ? ' products' : 'products'}
+                    View products
                   </button>
                 </div>
               </div>
@@ -262,7 +257,6 @@ function FilterContent({
   expandedSections,
   toggleSection,
   hasActiveFilters,
-  resultsCount,
   isMobile,
 }) {
   return (
@@ -272,9 +266,7 @@ function FilterContent({
       }`}
     >
       <div className={`dtb-filter-content__summary flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3.5 ${isMobile ? 'dtb-filter-content__summary--mobile' : ''}`}>
-        {isMobile ? (
-          <p className="text-sm text-slate-600"><strong className="text-primary-700">{resultsCount ?? 0}</strong> products match</p>
-        ) : <h3 className="text-xs font-bold tracking-wider text-slate-900 uppercase">Filters</h3>}
+        <h3 className="text-xs font-bold tracking-wider text-slate-900 uppercase">Filters</h3>
         {!isMobile && hasActiveFilters && (
           <button
             type="button"
@@ -286,18 +278,12 @@ function FilterContent({
         )}
       </div>
 
-      {resultsCount !== undefined && (
-        <p className="px-4 pt-3 text-xs text-slate-600">
-          <span className="font-semibold text-primary-700">{resultsCount}</span> products found
-        </p>
-      )}
-
       <div className="space-y-4 px-4 py-3">
         {/* Categories Section - only shown when categories are provided */}
         {categories && categories.length > 0 && (
           <FilterCheckboxGroup
             title="Category"
-            items={categories.map((category) => ({ id: category.id, label: category.name, count: category.count }))}
+            items={categories.map((category) => ({ id: category.id, label: category.name }))}
             selectedIds={selectedCategories}
             onToggle={onCategoryChange}
           />
@@ -421,9 +407,6 @@ function FilterCheckboxGroup({ title, items, selectedIds, onToggle }) {
                 />
                 <span className="flex min-w-0 flex-1 items-center justify-between gap-2 text-sm text-slate-700">
                   <span className={`truncate ${isSelected ? 'font-semibold text-slate-900' : ''}`}>{item.label}</span>
-                  {typeof item.count === 'number' && item.count > 0 && (
-                    <span className="shrink-0 text-xs text-slate-400">{item.count}</span>
-                  )}
                 </span>
               </label>
             </li>

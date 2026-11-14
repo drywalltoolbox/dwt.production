@@ -465,12 +465,10 @@
   color: #ffffff;
 }
 
-.product-category-card--all-products .product-category-card__count,
 .product-category-card--all-products .product-category-card__chevron {
   color: rgba(255, 255, 255, 0.65);
 }
 
-.product-category-card--all-products:hover .product-category-card__count,
 .product-category-card--all-products:hover .product-category-card__chevron {
   color: rgba(255, 255, 255, 0.85);
 }
@@ -502,19 +500,6 @@
   margin: 0;
   line-height: 1.25;
   letter-spacing: -0.01em;
-}
-
-.product-category-card__count {
-  font-size: clamp(0.63rem, 1.5vw, 0.72rem);
-  color: rgba(255, 255, 255, 0.65);
-  font-weight: 500;
-  margin: 0;
-  letter-spacing: 0.01em;
-  transition: color 0.2s ease;
-}
-
-.product-category-card:hover .product-category-card__count {
-  color: rgba(255, 255, 255, 0.85);
 }
 
 .product-category-card__chevron {

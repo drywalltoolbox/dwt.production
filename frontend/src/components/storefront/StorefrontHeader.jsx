@@ -10,24 +10,20 @@ import StorefrontMobileNavigationPages from './StorefrontMobileNavigationPages.j
 import { searchProducts } from '../../services/api.js';
 import StorefrontSearchDock from './StorefrontSearchDock';
 import StorefrontDesktopNavigation from './StorefrontDesktopNavigation.jsx';
-import { useCatalogFacets } from '../../hooks/useCatalogFacets.js';
+import { useStorefrontNavigation } from '../../hooks/useStorefrontNavigation.js';
 import { getRepairPackageGroups } from '../../data/repairPackages.js';
 import { SCHEMATIC_BRANDS } from '../../data/schematicBrands.js';
 import { getBrandLogo } from '../../utils/brandAssets.js';
 import { resolveCategoryThumbnail } from '../../utils/categoryThumbnailImages.js';
 import HEADER_BACKGROUND_DESKTOP_URL from '../../assets/brand/dtb-header-background-desktop.jpg';
 import HEADER_BACKGROUND_MOBILE_URL from '../../assets/brand/dtb-header-background-mobile.jpg';
-import { buildCatalogUrl } from '../../utils/catalogUrlState.js';
+import { brandToSlug } from '../../utils/catalogUrlState.js';
 import '../../styles/mobile-hamburger.css';
 import '../../styles/mobile-header-actions.css';
 import '../../styles/storefront-header-utility-bar.css';
 import {
   buildCategoryPageUrl,
-  buildDisplayCategoryUrl,
-  mapCatalogBrands,
-  mergeCatalogDisplayCategories,
   normalizeCatalogNavigationGroups,
-  normalizeDisplayCategorySlug,
 } from '../../utils/catalogFacets.js';
 
 const SEARCH_OVERLAY_EXIT_MS = 360;
@@ -109,6 +105,14 @@ function toSearchProduct(product) {
   };
 }
 
+function mapNavigationBrands(brands = []) {
+  return (Array.isArray(brands) ? brands : []).map((brand) => {
+    const name = String(brand?.label || brand?.name || '').trim();
+    const slug = brandToSlug(name) || String(brand?.slug || '').trim();
+    return name && slug ? { name, slug } : null;
+  }).filter(Boolean);
+}
+
 export default function Header({ onCartToggle, onMobileMenuOpen }) {
   const location = useLocation();
   const navigate = useNavigate();
@@ -137,8 +141,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
   const [mobileSearchQuery, setMobileSearchQuery] = useState('');
   const [mobileSearchResults, setMobileSearchResults] = useState([]);
   const [searchLoading, setSearchLoading] = useState(false);
-  const { facets, loading: catalogFacetsLoading, refreshing: catalogFacetsRefreshing } = useCatalogFacets();
-  const { facets: partsFacets } = useCatalogFacets({ isParts: 1 });
+  const { navigation, loading: navigationLoading } = useStorefrontNavigation();
   const accountDropdownRef = useRef(null);
   const desktopSearchRef = useRef(null);
   const desktopSearchInputRef = useRef(null);
@@ -197,61 +200,19 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     desktopSearchInputRef.current?.focus({ preventScroll: true });
   }, [DesktopCatalogAutocomplete, desktopSearchOpen]);
 
-  const drawerBrands = useMemo(() => mapCatalogBrands(facets?.brands), [facets]);
-  const partsBrands = useMemo(() => mapCatalogBrands(partsFacets?.brands), [partsFacets]);
-  const partsCategories = useMemo(() => (Array.isArray(partsFacets?.categories) ? partsFacets.categories : [])
-    .map((category) => {
-      const label = category?.label || category?.name || '';
-      const slug = category?.slug || category?.key || normalizeDisplayCategorySlug(label);
-      const count = Number(category?.productCount || category?.count || 0);
-      return { label, slug, count, thumbnail: resolveCategoryThumbnail(category), to: buildCatalogUrl({ displayCategory: [slug] }, { basePath: '/parts' }) };
-    })
-    .filter((category) => category.slug && category.label && category.count > 0)
-    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label))
-    .slice(0, 8), [partsFacets]);
+  const drawerBrands = useMemo(() => mapNavigationBrands(navigation?.brands), [navigation]);
+  const partsBrands = useMemo(() => mapNavigationBrands(navigation?.parts?.brands), [navigation]);
   const repairPackageGroups = useMemo(() => getRepairPackageGroups().filter(({ id }) => id !== 'diagnostic'), []);
   const drawerRepairPackages = useMemo(() => repairPackageGroups.map(({ id, label }) => ({
     id,
     label,
     to: `/repairs/packages?tool=${encodeURIComponent(id)}`,
   })), [repairPackageGroups]);
-  const drawerCategoryLinks = useMemo(() => {
-    const displayCategories = mergeCatalogDisplayCategories(facets?.displayCategoriesByBrand || {})
-      .filter((category) => category?.slug)
-      .map((category) => ({
-        ...category,
-        to: buildDisplayCategoryUrl(category.slug),
-      }))
-      .sort((a, b) => String(a.label || '').localeCompare(String(b.label || '')));
-
-    if (displayCategories.length > 0) {
-      return displayCategories;
-    }
-
-    return (Array.isArray(facets?.categories) ? facets.categories : [])
-      .map((category) => {
-        const label = category?.label || category?.name || category?.key || '';
-        const slug = category?.slug || category?.key || normalizeDisplayCategorySlug(label);
-        return {
-          slug,
-          label,
-          count: Number(category?.productCount || category?.count || 0),
-          to: buildDisplayCategoryUrl(slug),
-        };
-      })
-      .filter((category) => category.slug && category.label && category.count > 0)
-      .sort((a, b) => String(a.label).localeCompare(String(b.label)));
-  }, [facets]);
-
   const canonicalProductNavigation = useMemo(
-    () => normalizeCatalogNavigationGroups(facets?.navigationGroups),
-    [facets],
+    () => normalizeCatalogNavigationGroups(navigation?.shop),
+    [navigation],
   );
-
-  const drawerProductNavigation = useMemo(
-    () => canonicalProductNavigation.length > 0 ? canonicalProductNavigation : drawerCategoryLinks,
-    [canonicalProductNavigation, drawerCategoryLinks],
-  );
+  const drawerProductNavigation = canonicalProductNavigation;
 
   const desktopProductNavigation = useMemo(() => canonicalProductNavigation.map((group) => ({
     ...group,
@@ -262,6 +223,10 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       thumbnail: resolveCategoryThumbnail(child),
     })),
   })), [canonicalProductNavigation]);
+  const partsLandingHref = navigation?.parts?.landing?.href === '/parts'
+    ? navigation.parts.landing.href
+    : '/parts';
+  const partsLandingLabel = navigation?.parts?.landing?.label || 'Browse all replacement parts';
 
   const desktopNavItems = useMemo(() => [
     {
@@ -299,13 +264,12 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
     {
       id: 'parts',
       label: 'Parts',
-      landingTo: '/parts',
-      landingLabel: 'View all replacement parts',
+      landingTo: partsLandingHref,
+      landingLabel: partsLandingLabel,
       landingDescription: 'Browse our complete collection of replacement parts.',
       eyebrow: 'Explore replacement parts',
       description: 'Discover manufacturer-specific replacement parts and find exactly what your equipment needs.',
       heading: 'From the smallest part to the biggest fix.',
-      partCategories: partsCategories,
       size: 'wide',
       columns: 2,
       activePrefixes: ['/parts'],
@@ -366,7 +330,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       activePrefixes: ['/contact'],
       items: [],
     },
-  ], [desktopProductNavigation, drawerBrands, partsBrands, partsCategories, repairPackageGroups]);
+  ], [desktopProductNavigation, drawerBrands, partsBrands, partsLandingHref, partsLandingLabel, repairPackageGroups]);
 
   const closeMobileMenu = useCallback(() => {
     setMobileMenuOpen(false);
@@ -889,7 +853,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
       <StorefrontMobileDrawer isOpen={mobileMenuOpen} onClose={closeMobileMenu}>
         <StorefrontMobileNavigationPages
           onStackDepthChange={handleMobileNavigationStackChange}
-          loadingCategories={catalogFacetsLoading || catalogFacetsRefreshing}
+          loadingCategories={navigationLoading}
           onNavigate={closeDrawerAndNavigate}
           links={DRAWER_NAV_ROWS}
           sections={[
@@ -903,7 +867,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
             })) },
             { id: 'brands', label: 'Shop by Brand', to: '/products/brands',
               items: drawerBrands.map(({ name, slug }) => ({ label: name, to: buildProductsBrandRoute(slug) })) },
-            { id: 'parts', label: 'Replacement Parts', to: '/parts',
+            { id: 'parts', label: 'Replacement Parts', to: partsLandingHref,
               items: partsBrands.map(({ name, slug }) => ({ label: name, to: buildPartsBrandRoute(slug) })) },
             { id: 'repairs', label: 'Repair Services', to: '/repairs',
               items: drawerRepairPackages.map(({ label, to }) => ({ label, to })) },

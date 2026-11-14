@@ -12,19 +12,11 @@ export default function Pagination({
   currentPage,
   totalPages,
   onPageChange,
-  totalItems = null,
-  startItem = null,
-  endItem = null,
-  itemLabel = 'products',
   className = '',
 }) {
-  const hasItemCount = Number.isFinite(totalItems)
-    && Number.isFinite(startItem)
-    && Number.isFinite(endItem)
-    && totalItems > 0;
   const hasMultiplePages = totalPages > 1;
 
-  if (!hasMultiplePages && !hasItemCount) return null;
+  if (!hasMultiplePages) return null;
 
   const buildPageTokens = () => {
     const pages = new Set([1, totalPages]);
@@ -55,13 +47,6 @@ export default function Pagination({
   return (
     <section className={`pgn-11 ${className}`.trim()} aria-label="Catalog pagination">
       <div className="pgn-11__stage">
-        {hasItemCount && (
-          <p className="pgn-11__count" aria-live="polite">
-            Showing <b>{startItem.toLocaleString()}–{endItem.toLocaleString()}</b> of{' '}
-            <b>{totalItems.toLocaleString()}</b> {itemLabel}
-          </p>
-        )}
-
         {hasMultiplePages && (
           <nav className="pgn-11__nav" aria-label="Product pagination">
             <button

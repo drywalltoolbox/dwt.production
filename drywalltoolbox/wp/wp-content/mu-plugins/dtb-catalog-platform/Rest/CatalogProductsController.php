@@ -49,6 +49,8 @@ final class DTB_CatalogProductsController {
 		$is_parts = $request->has_param( 'is_parts' )
 			? absint( $request->get_param( 'is_parts' ) )
 			: null;
+		$include_total = ! $request->has_param( 'include_total' )
+			|| 1 === absint( $request->get_param( 'include_total' ) );
 
 		if ( null !== $builder_eligible && ! in_array( $builder_eligible, [ 0, 1 ], true ) ) {
 			$builder_eligible = null;
@@ -58,7 +60,7 @@ final class DTB_CatalogProductsController {
 			$is_parts = null;
 		}
 
-		$query = DTB_CatalogProductRepository::find_ids( [
+		$filters = [
 			'brand'            => (string) ( $request->get_param( 'brand' ) ?? '' ),
 			'category'         => (string) ( $request->get_param( 'category' ) ?? '' ),
 			'display_category' => (string) ( $request->get_param( 'display_category' ) ?? '' ),
@@ -68,11 +70,81 @@ final class DTB_CatalogProductsController {
 			'builder_slot'     => (string) ( $request->get_param( 'builder_slot' ) ?? '' ),
 			'workflow_scope'   => (string) ( $request->get_param( 'workflow_scope' ) ?? '' ),
 			'is_parts'         => $is_parts,
+			'include_total'    => $include_total,
 			'search'           => (string) ( $request->get_param( 'search' ) ?? '' ),
 			'page'             => max( 1, absint( $request->get_param( 'page' ) ?? 1 ) ),
 			'per_page'         => min( 100, max( 1, absint( $request->get_param( 'per_page' ) ?? 24 ) ) ),
 			'sort'             => (string) ( $request->get_param( 'sort' ) ?? 'popular' ),
-		] );
+		];
+		$projection = (string) ( $request->get_param( 'projection' ) ?? 'full' );
+
+		if ( 'card' === $projection && self::is_cacheable_public_card_read( $request, $filters ) && function_exists( 'dtb_cached_proxy' ) ) {
+			$cached = dtb_cached_proxy(
+				'catalog/products',
+				[ 'filters' => $filters, 'projection' => $projection ],
+				static function () use ( $filters, $projection ) {
+					$response = self::build_response( $filters, $projection );
+					if ( 200 !== $response->get_status() ) {
+						return new WP_Error(
+							'dtb_catalog_response_passthrough',
+							__( 'Catalog response must not be cached.', 'drywall-toolbox' ),
+							[ 'response' => $response ]
+						);
+					}
+
+					return $response->get_data();
+				}
+			);
+
+			if ( is_wp_error( $cached ) ) {
+				$passthrough = $cached->get_error_data()['response'] ?? null;
+				if ( $passthrough instanceof WP_REST_Response ) {
+					return $passthrough;
+				}
+
+				return new WP_REST_Response(
+					dtb_error_envelope( 'catalog_unavailable', __( 'The product catalog is temporarily unavailable.', 'drywall-toolbox' ), 503 ),
+					503
+				);
+			}
+
+			return new WP_REST_Response( $cached, 200 );
+		}
+
+		return self::build_response( $filters, $projection );
+	}
+
+	/**
+	 * Restrict server-side response caching to anonymous, bounded card reads.
+	 * Session-bound and search results always use the live catalog path.
+	 *
+	 * @param WP_REST_Request $request
+	 * @param array           $filters
+	 */
+	private static function is_cacheable_public_card_read( WP_REST_Request $request, array $filters ): bool {
+		if ( is_user_logged_in() || '' !== (string) $request->get_header( 'authorization' ) ) {
+			return false;
+		}
+
+		if ( '' !== (string) ( $filters['search'] ?? '' )
+			|| 1 !== (int) ( $filters['page'] ?? 1 )
+			|| (int) ( $filters['per_page'] ?? 24 ) > 24 ) {
+			return false;
+		}
+
+		foreach ( array_keys( $_COOKIE ) as $cookie_name ) {
+			if ( 0 === strpos( $cookie_name, 'wp_woocommerce_session_' )
+				|| in_array( $cookie_name, [ 'woocommerce_items_in_cart', 'woocommerce_cart_hash' ], true ) ) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	/** Build an uncached canonical catalog response from WooCommerce data. */
+	private static function build_response( array $filters, string $projection ): WP_REST_Response {
+		$query = DTB_CatalogProductRepository::find_ids( $filters );
 
 		$ids = $query['ids'];
 		if ( empty( $ids ) ) {
@@ -87,7 +159,6 @@ final class DTB_CatalogProductsController {
 			], 200 );
 		}
 
-		$projection = (string) ( $request->get_param( 'projection' ) ?? 'full' );
 		$raw_response = dtb_catalog_wc_get_products_by_ids_response(
 			$ids,
 			'card' === $projection ? self::CARD_FIELDS : null
@@ -179,6 +250,7 @@ final class DTB_CatalogProductsController {
 			'builder_slot'     => [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field' ],
 			'workflow_scope'   => [ 'type' => 'string', 'sanitize_callback' => 'sanitize_text_field' ],
 			'is_parts'         => [ 'type' => 'integer' ],
+			'include_total'    => [ 'type' => 'integer', 'default' => 1 ],
 			'search'           => [
 				'type'              => 'string',
 				'sanitize_callback' => 'sanitize_text_field',

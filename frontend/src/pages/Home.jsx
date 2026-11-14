@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import TrendingProducts from '../components/catalog/TrendingProducts';
 import HomeHero from '../components/home/HomeHero';
 import HomeHeroBrands from '../components/home/HomeHeroBrands';
@@ -9,12 +8,25 @@ import StorefrontProductRail from '../components/storefront/StorefrontProductRai
 import { getBrandLogo } from '../utils/brandAssets.js';
 import { brandToSlug } from '../utils/catalogUrlState.js';
 import ShopByToolType from '../components/catalog/ShopByToolType.jsx';
-import useCatalogFacets from '../hooks/useCatalogFacets.js';
-import { flattenCatalogNavigationGroups } from '../utils/catalogFacets.js';
+import { buildCategoryPageUrl } from '../utils/catalogFacets.js';
 import usgSheetrockToolsLogo from '/brands/USG-Sheetrock-Tools/usg-sheetrock-tools.svg';
 import '../styles/home-commerce-discovery.css';
 
 const HOME_BRAND_ORDER = ['TapeTech', 'Columbia Tools', 'Platinum Drywall Tools', 'LEVEL5', 'SurPro', 'Dura-Stilts', 'USG Sheetrock Tools'];
+
+// Curated home merchandising uses stable canonical category slugs and does not
+// wait on catalog facets or a network request before showing these links.
+const HOME_TOOL_TYPES = [
+  { name: 'Automatic Tapers', slug: 'automatic-tapers' },
+  { name: 'Flat Boxes', slug: 'flat-boxes' },
+  { name: 'Automatic Tool Sets & Kits', slug: 'automatic-tool-sets-kits' },
+  { name: 'Corner Finishers', slug: 'corner-finishers' },
+  { name: 'Compound Tubes', slug: 'compound-tubes' },
+  { name: 'Applicator Heads', slug: 'applicator-heads' },
+  { name: 'Corner Rollers', slug: 'corner-rollers' },
+  { name: 'Loading Pumps', slug: 'loading-pumps' },
+  { name: 'Handles', slug: 'handles' },
+];
 
 function normalizeHomeBrandName(value = '') {
   return String(value).toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -67,11 +79,7 @@ const HOME_BRAND_PRODUCT_SECTIONS = HOME_BRAND_ORDER.map((brandName) => {
 });
 
 function HomeToolTypeCategories() {
-  const { facets } = useCatalogFacets();
-  const categories = useMemo(() => flattenCatalogNavigationGroups(facets?.navigationGroups)
-    .map((category) => ({ ...category, name: category.label }))
-    .filter((category) => category.name && category.slug && category.count > 0), [facets?.navigationGroups]);
-
+  const categories = HOME_TOOL_TYPES.map((category) => ({ ...category, to: buildCategoryPageUrl(category.slug) }));
   return <ShopByToolType categories={categories} viewAllHref="/products" homeVariant />;
 }
 

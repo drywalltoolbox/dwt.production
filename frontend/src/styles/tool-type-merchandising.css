@@ -16,10 +16,6 @@
   -webkit-line-clamp: 2;
 }
 
-.dtb-tool-type-tile__description + .dtb-tool-type-tile__count {
-  margin-top: 0.45rem;
-}
-
 @media (max-width: 767px) {
   .storefront-section__subtitle {
     max-width: 34rem;

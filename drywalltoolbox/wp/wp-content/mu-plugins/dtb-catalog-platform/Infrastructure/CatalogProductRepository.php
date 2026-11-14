@@ -29,13 +29,14 @@ final class DTB_CatalogProductRepository {
 	 * Return a paginated set of product IDs and totals for the current filter set.
 	 *
 	 * @param  array $filters
-	 * @return array{ ids: int[], page: int, perPage: int, total: int, totalPages: int }
+	 * @return array{ ids: int[], page: int, perPage: int, total: int|null, totalPages: int|null }
 	 */
 	public static function find_ids( array $filters ): array {
 		$page     = max( 1, absint( $filters['page'] ?? 1 ) );
 		$per_page = min( 100, max( 1, absint( $filters['per_page'] ?? 24 ) ) );
 		$sort     = (string) ( $filters['sort'] ?? 'popular' );
 		$search   = (string) ( $filters['search'] ?? '' );
+		$include_total = ! array_key_exists( 'include_total', $filters ) || (bool) $filters['include_total'];
 
 		$args = [
 			'post_type'           => 'product',
@@ -44,7 +45,7 @@ final class DTB_CatalogProductRepository {
 			'fields'              => 'ids',
 			'posts_per_page'      => $per_page,
 			'paged'               => $page,
-			'no_found_rows'       => false,
+			'no_found_rows'       => ! $include_total,
 		];
 
 		if ( '' !== $search ) {
@@ -403,8 +404,8 @@ final class DTB_CatalogProductRepository {
 		}
 
 		$ids         = array_values( array_map( 'absint', $query->posts ?? [] ) );
-		$total       = absint( $query->found_posts );
-		$total_pages = max( 1, absint( $query->max_num_pages ) );
+		$total       = $include_total ? absint( $query->found_posts ) : null;
+		$total_pages = $include_total ? max( 1, absint( $query->max_num_pages ) ) : null;
 
 		return [
 			'ids'        => $ids,

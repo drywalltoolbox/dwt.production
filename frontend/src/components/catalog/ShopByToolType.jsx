@@ -9,19 +9,17 @@ import '../../styles/category-hero.css';
 import '../../styles/tool-type-merchandising.css';
 import '../../styles/selector-cards.css';
 
-export function ToolTypeTile({ category, showSelectorChevron = false, showCount = true, brand = '' }) {
+export function ToolTypeTile({ category, showSelectorChevron = false, brand = '', imageLoading = 'lazy' }) {
   const [imageFailed, setImageFailed] = useState(false);
   const image = resolveCategoryThumbnail(category);
   const hasImage = Boolean(image) && !imageFailed;
   const description = String(category?.description || '').replace(/<[^>]*>/g, '').trim();
 
   if (brand && !showSelectorChevron) {
-    const count = Number(category.count || 0);
     return (
       <MediaSelectorCard
         to={buildCategoryPageUrl(category.slug, brand)}
         title={category.name}
-        meta={count > 0 ? `${count.toLocaleString()} ${count === 1 ? 'product' : 'products'}` : ''}
         media={hasImage ? <img src={image} alt="" className="dtb-selector-card__image" loading="lazy" decoding="async" onError={() => setImageFailed(true)} /> : undefined}
       />
     );
@@ -38,7 +36,7 @@ export function ToolTypeTile({ category, showSelectorChevron = false, showCount 
             src={image}
             alt=""
             className="dtb-tool-type-tile__image"
-            loading="lazy"
+            loading={imageLoading}
             decoding="async"
             onError={() => setImageFailed(true)}
           />
@@ -47,7 +45,6 @@ export function ToolTypeTile({ category, showSelectorChevron = false, showCount 
         )}
       </span>
       <span className="dtb-tool-type-tile__label">{category.name}</span>
-      {showCount && Number(category.count) > 0 && <span className="dtb-tool-type-tile__count">{Number(category.count).toLocaleString()} products</span>}
       {description && !showSelectorChevron && <span className="dtb-tool-type-tile__description">{description}</span>}
       {showSelectorChevron && <ChevronRight size={15} strokeWidth={2} className="dtb-tool-type-tile__chevron" aria-hidden="true" />}
     </Link>
@@ -84,6 +81,33 @@ export default function ShopByToolType({ categories = [], onOpenFilters, parentL
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const categoryRail = (
+    <StorefrontRail label={parentLabel ? `Shop ${parentLabel} by category` : 'Shop by tool type'} className="dtb-tool-type-rail">
+      {items.map((category, index) => (
+        <ToolTypeTile
+          key={category.slug}
+          category={category}
+          showSelectorChevron
+          brand={brand}
+          imageLoading={homeVariant && index < 4 ? 'eager' : 'lazy'}
+        />
+      ))}
+      {isAllProductsRoute && (
+        <a
+          href="#dtb-category-filters"
+          className="dtb-tool-type-view-all"
+          onClick={handleViewAll}
+          aria-label="View all product categories in filters"
+        >
+          <span className="dtb-tool-type-view-all__icon" aria-hidden="true">
+            <ArrowRight size={20} strokeWidth={2} />
+          </span>
+          <span>View All<br />Categories</span>
+        </a>
+      )}
+    </StorefrontRail>
+  );
+
   return (
     <div className={`dtb-tool-type-section mb-6 sm:mb-8${isAllProductsRoute ? ' dtb-tool-type-section--all-products' : ''}${homeVariant ? ' dtb-tool-type-section--home' : ''}`}>
       {!parentLabel && (
@@ -106,24 +130,7 @@ export default function ShopByToolType({ categories = [], onOpenFilters, parentL
         </div>
       )}
 
-      <StorefrontRail label={parentLabel ? `Shop ${parentLabel} by category` : 'Shop by tool type'} className="dtb-tool-type-rail">
-        {items.map((category) => (
-          <ToolTypeTile key={category.slug} category={category} showSelectorChevron showCount={false} brand={brand} />
-        ))}
-        {isAllProductsRoute && (
-          <a
-            href="#dtb-category-filters"
-            className="dtb-tool-type-view-all"
-            onClick={handleViewAll}
-            aria-label="View all product categories in filters"
-          >
-            <span className="dtb-tool-type-view-all__icon" aria-hidden="true">
-              <ArrowRight size={20} strokeWidth={2} />
-            </span>
-            <span>View All<br />Categories</span>
-          </a>
-        )}
-      </StorefrontRail>
+      {categoryRail}
     </div>
   );
 }

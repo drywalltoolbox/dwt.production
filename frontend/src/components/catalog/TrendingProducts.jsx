@@ -1,5 +1,8 @@
 import { lazy, Suspense, useState, useEffect, useCallback, useRef } from 'react';
-import { fetchCatalogProducts } from '../../services/catalogPlatformCache.js';
+import {
+  fetchCatalogProducts,
+  getRenderableCatalogProducts,
+} from '../../services/catalogPlatformCache.js';
 import { toLegacyProductCardDTO } from '../../utils/catalogDtoAdapters.js';
 import { useCart } from '../../context/CartContext';
 import LoadingCardTransition from '../shared/LoadingCardTransition.jsx';
@@ -175,31 +178,55 @@ export default function TrendingProducts() {
     if (!shouldLoad) return undefined;
     let mounted = true;
 
-    Promise.allSettled(FEATURED_BRANDS.map(({ label }) => fetchCatalogProducts({
+    const queries = FEATURED_BRANDS.map(({ label }) => ({
       brands: [label],
       displayCategory: FEATURED_CATEGORIES,
       perPage: 24,
+      includeTotal: false,
       sort: 'popular',
       isParts: false,
-    }))).then((results) => {
+    }));
+    const cachedPayloads = queries.map((query) => (
+      getRenderableCatalogProducts(query, { maxStaleAge: 10 * 60 * 1000 })
+    ));
+    const hasCachedProducts = cachedPayloads.some((entry) => Array.isArray(entry?.data?.items));
+
+    const toProductsByBrand = (payloads) => Object.fromEntries(payloads.map((payload, index) => {
+      const brandKey = FEATURED_BRANDS[index].key;
+      const items = Array.isArray(payload?.items) ? payload.items : [];
+      return [brandKey, items
+        .map(toLegacyProductCardDTO)
+        .filter((product) => {
+          if (!product || product.is_parts || product.category === 'parts' || !featuredCategory(product)) return false;
+          return (Number(product.price) || Number(product.min_price) || Number(product.regular_price) || 0) > 0;
+        })];
+    }));
+
+    if (hasCachedProducts) {
+      Promise.resolve().then(() => {
+        if (!mounted) return;
+        setProducts(selectFeaturedProducts(toProductsByBrand(
+          cachedPayloads.map((entry) => entry?.data || null),
+        )));
+        setLoading(false);
+      });
+    }
+
+    Promise.allSettled(queries.map((query) => fetchCatalogProducts(query))).then((results) => {
       if (!mounted) return;
-      const productsByBrand = Object.fromEntries(results.map((result, index) => {
-        const brandKey = FEATURED_BRANDS[index].key;
-        const items = result.status === 'fulfilled' && Array.isArray(result.value?.items)
-          ? result.value.items
-          : [];
-        return [brandKey, items
-          .map(toLegacyProductCardDTO)
-          .filter((product) => {
-            if (!product || product.is_parts || product.category === 'parts' || !featuredCategory(product)) return false;
-            return (Number(product.price) || Number(product.min_price) || Number(product.regular_price) || 0) > 0;
-          })];
-      }));
+      const refreshedPayloads = results.map((result, index) => {
+        if (result.status === 'fulfilled') return result.value;
+        const cached = cachedPayloads[index];
+        return cached?.isStale ? null : cached?.data || null;
+      });
+      results.forEach((result, index) => {
+        if (result.status === 'rejected' && (!cachedPayloads[index]?.data || cachedPayloads[index]?.isStale)) {
+          console.error(`Featured product catalog request failed for ${FEATURED_BRANDS[index].label}:`, result.reason);
+        }
+      });
+      const productsByBrand = toProductsByBrand(refreshedPayloads);
       setProducts(selectFeaturedProducts(productsByBrand));
       setLoading(false);
-    }).catch((err) => {
-      console.error('Error fetching trending products:', err);
-      if (mounted) setLoading(false);
     });
 
     return () => { mounted = false; };
@@ -218,7 +245,7 @@ export default function TrendingProducts() {
       <div ref={railRef}>
         <LoadingCardTransition
           loading={loading}
-          skeleton={<StorefrontSkeletons count={4} variant="rail" />}
+          skeleton={<StorefrontSkeletons count={6} variant="rail" />}
           label="Loading trending products"
         >
           <StorefrontRail label="Trending products" className="storefront-rail--fixed-tiles storefront-rail--equal-height">

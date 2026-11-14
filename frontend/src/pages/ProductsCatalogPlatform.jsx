@@ -501,15 +501,13 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   const page = Number(pagination?.page || query.page || 1);
   const totalPages = Math.max(1, Number(pagination?.totalPages || 1));
   const total = Number(pagination?.total || mappedProducts.length || 0);
-  const perPage = Number(pagination?.perPage || query.perPage || 25);
-  const pageStart = (page - 1) * perPage;
   const desktopHeading = isCategoryProductRoute ? pageHeading : title;
   const unifiedHeadingTitle = isCategoryProductRoute ? selectedCategoryLabel : desktopHeading;
   const unifiedHeadingMeta = searchQuery
-    ? (itemsLoading ? `Searching the catalog for “${searchQuery}”…` : `Showing ${total.toLocaleString()} result${total === 1 ? '' : 's'} for “${searchQuery}”.`)
+    ? (itemsLoading ? `Searching the catalog for “${searchQuery}”…` : `Search results for “${searchQuery}”.`)
     : isCategoryProductRoute
-      ? `${categoryScopeLabel || 'All brands'}${total > 0 ? ` · ${total.toLocaleString()} product${total === 1 ? '' : 's'}` : ''}`
-      : `${isPartsPage ? 'Replacement parts and service components' : 'All brands and categories'}${total > 0 ? ` · ${total.toLocaleString()} product${total === 1 ? '' : 's'}` : ''}`;
+      ? `${categoryScopeLabel || 'All brands'}`
+      : `${isPartsPage ? 'Replacement parts and service components' : 'All brands and categories'}`;
   const canonicalCategorySlug = categoryPathSlug || query.category || '';
   const canonicalUrl = isBrandSelectorRoute
     ? '/products/brands'
@@ -738,10 +736,6 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
         <Pagination
           currentPage={page}
           totalPages={totalPages}
-          totalItems={total}
-          startItem={pageStart + 1}
-          endItem={Math.min(pageStart + mappedProducts.length, total)}
-          itemLabel="products"
           onPageChange={(next) => {
             setQuery({ page: next }, { resetPage: false });
             if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -779,7 +773,6 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                 brandLogo={selectedBrandLogo}
                 brandLabel={categoryScopeLabel}
                 onRemoveFilter={removeBreadcrumbFilter}
-                productCount={total}
                 products={mappedProducts}
                 brands={brandFacets}
                 onAddToCart={handleAddToCart}
@@ -806,7 +799,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
             <Breadcrumb items={[{ label: 'Home', path: '/' }, { label: 'Search' }]} />
             <div className="dtb-search-results-intro__copy">
               <h1 id="dtb-search-results-title">Search results</h1>
-              <p>{itemsLoading ? `Searching the catalog for “${searchQuery}”…` : <>Showing <strong>{total.toLocaleString()}</strong> result{total === 1 ? '' : 's'} for <strong>“{searchQuery}”</strong>.</>}</p>
+              <p>{itemsLoading ? `Searching the catalog for “${searchQuery}”…` : <>Search results for <strong>“{searchQuery}”</strong>.</>}</p>
             </div>
           </section>
         )}
@@ -921,7 +914,6 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                 onCategoryChange={toggleDisplayCategory}
                 onPriceChange={() => {}}
                 onClearFilters={() => setQuery({ brands: [], category: '', displayCategory: [], search: query.search || '', sort: 'popular' })}
-                resultsCount={total}
               />
 
               <div className="flex-1">
@@ -956,11 +948,6 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                       <span>Grid</span>
                     </button>
                   </div>
-                  {!itemsLoading && (
-                    <div className="dtb-listing-toolbar__count" aria-live="polite">
-                      {`${total.toLocaleString()} result${total === 1 ? '' : 's'}`}
-                    </div>
-                  )}
                 </div>
 
                 <LoadingCardTransition

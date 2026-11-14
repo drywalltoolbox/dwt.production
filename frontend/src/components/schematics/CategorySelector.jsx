@@ -28,8 +28,6 @@ export default function CategorySelector({ brandId, brandName, categories, onBac
       onBack={onBack}
       onSelectCategory={(category) => onSelectCategory(category.id)}
       includeAllProducts={false}
-      loadAllProductsPreview={false}
-      itemLabel="tool"
     />
   );
 }

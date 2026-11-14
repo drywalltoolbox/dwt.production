@@ -27,19 +27,6 @@
   gap: 1rem;
 }
 
-.pgn-11__count {
-  margin: 0;
-  color: var(--pgn-11-muted);
-  font-size: 0.8125rem;
-  font-variant-numeric: tabular-nums;
-  text-align: center;
-}
-
-.pgn-11__count b {
-  color: var(--pgn-11-text);
-  font-weight: 650;
-}
-
 .pgn-11__nav {
   width: 100%;
   display: flex;

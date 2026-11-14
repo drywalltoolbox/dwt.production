@@ -199,18 +199,11 @@ function MegaMenuDeferredState({ item }) {
 }
 
 function ProductCard({ entry, onNavigate }) {
-  const productCount = Number(entry.count || entry.productCount || 0);
-
   return (
     <Link to={entry.to} className="dtb-mega-menu__product-card" onClick={onNavigate}>
       <MegaMenuThumb label={entry.label} thumbnail={entry.thumbnail} />
       <span className="dtb-desktop-nav-row-text dtb-mega-menu__product-card-copy">
         <span className="dtb-desktop-nav-row-title">{entry.label}</span>
-        {productCount > 0 ? (
-          <span className="dtb-mega-menu__product-card-meta">
-            {productCount} {productCount === 1 ? 'product' : 'products'}
-          </span>
-        ) : null}
       </span>
       <span className="dtb-mega-menu__product-card-action" aria-hidden="true">
         <ChevronRight size={17} strokeWidth={2.35} />

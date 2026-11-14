@@ -1,5 +1,8 @@
 import { lazy, Suspense, useState, useEffect, useCallback, useRef } from 'react';
-import { fetchCatalogProducts } from '../../services/catalogPlatformCache.js';
+import {
+  fetchCatalogProducts,
+  getRenderableCatalogProducts,
+} from '../../services/catalogPlatformCache.js';
 import { toLegacyProductCardDTO } from '../../utils/catalogDtoAdapters.js';
 import { useCart } from '../../context/CartContext';
 import Toast from '../ui/Toast';
@@ -97,10 +100,24 @@ export default function StorefrontProductRail({
 
     const query = {
       perPage: maxItems,
+      includeTotal: false,
       sort: sort || 'popular',
       ...(brand ? { brands: [brand] } : {}),
       ...(category ? { displayCategory: [category] } : {}),
     };
+
+    const cached = getRenderableCatalogProducts(query, { maxStaleAge: 10 * 60 * 1000 });
+    Promise.resolve().then(() => {
+      if (!mounted) return;
+      if (cached?.data) {
+        const cachedItems = Array.isArray(cached.data.items) ? cached.data.items : [];
+        setProducts(cachedItems.map(toLegacyProductCardDTO).filter(Boolean).slice(0, maxItems));
+        setLoading(false);
+        return;
+      }
+      setProducts([]);
+      setLoading(true);
+    });
 
     fetchCatalogProducts(query).then((payload) => {
       if (!mounted) return;
@@ -109,7 +126,10 @@ export default function StorefrontProductRail({
       setLoading(false);
     }).catch((err) => {
       console.error('StorefrontProductRail fetch error:', err);
-      if (mounted) setLoading(false);
+      if (mounted) {
+        if (cached?.isStale) setProducts([]);
+        setLoading(false);
+      }
     });
 
     return () => { mounted = false; };
@@ -140,7 +160,7 @@ export default function StorefrontProductRail({
       <div ref={railRef}>
         <LoadingCardTransition
           loading={loading}
-          skeleton={<StorefrontSkeletons count={4} variant="rail" />}
+          skeleton={<StorefrontSkeletons count={6} variant="rail" />}
           label={`Loading ${label.toLowerCase()}`}
         >
           <StorefrontRail label={label} className="storefront-rail--fixed-tiles storefront-rail--equal-height">

@@ -13,8 +13,22 @@ defined( 'ABSPATH' ) || exit;
 final class DTB_CatalogFacetsController {
 	private const CACHE_TTL = 300;
 	private const CACHE_GENERATION_OPTION = 'dtb_catalog_facets_generation_v2';
+	private const NAVIGATION_CONTRACT_VERSION = 1;
+	private const PARTS_NAVIGATION_VERSION = 1;
+	private const PARTS_BRAND_SLUGS = [
+		'columbia-tools',
+		'platinum-drywall-tools',
+		'tapetech',
+		'usg-sheetrock-tools',
+	];
 
 	public static function register_routes(): void {
+		register_rest_route( 'dtb/v1', '/catalog/navigation', [
+			'methods'             => 'GET',
+			'callback'            => [ self::class, 'handle_navigation' ],
+			'permission_callback' => '__return_true',
+		] );
+
 		register_rest_route( 'dtb/v1', '/catalog/facets', [
 			'methods'             => 'GET',
 			'callback'            => [ self::class, 'handle' ],
@@ -37,6 +51,123 @@ final class DTB_CatalogFacetsController {
 				'slug' => [ 'sanitize_callback' => 'sanitize_title' ],
 			],
 		] );
+	}
+
+	/** Return the compact, public header navigation without product projection work. */
+	public static function handle_navigation(): WP_REST_Response {
+		if ( ! dtb_check_origin() ) {
+			return new WP_REST_Response( dtb_error_envelope( 'forbidden_origin', 'Origin not allowed.', 403 ), 403 );
+		}
+
+		$rate_limit = dtb_rate_limit_get( 'dtb/v1/catalog/navigation' );
+		if ( $rate_limit ) {
+			return $rate_limit;
+		}
+
+		$registry = DTB_CatalogNavigationService::registry();
+		$cache_params = [
+			'contract_version'  => self::NAVIGATION_CONTRACT_VERSION,
+			'taxonomy_version'  => absint( $registry['schema_version'] ?? 0 ),
+			'parts_menu_version' => self::PARTS_NAVIGATION_VERSION,
+		];
+		$data = function_exists( 'dtb_cached_proxy' )
+			? dtb_cached_proxy( 'catalog/navigation', $cache_params, [ self::class, 'build_navigation' ] )
+			: self::build_navigation();
+
+		if ( is_wp_error( $data ) ) {
+			$status = (int) ( $data->get_error_data()['status'] ?? 503 );
+			return new WP_REST_Response(
+				dtb_error_envelope( $data->get_error_code(), $data->get_error_message(), $status ),
+				$status
+			);
+		}
+
+		return new WP_REST_Response( $data, 200 );
+	}
+
+	/** Build bounded navigation from canonical taxonomy and brand terms only. */
+	public static function build_navigation() {
+		$shop_groups = DTB_CatalogNavigationService::get_groups();
+		if ( [] === $shop_groups ) {
+			return new WP_Error( 'catalog_navigation_unavailable', 'Catalog navigation is temporarily unavailable.', [ 'status' => 503 ] );
+		}
+
+		$brand_terms = [];
+		if ( taxonomy_exists( 'product_brand' ) ) {
+			$brand_terms = get_terms( [
+				'taxonomy'   => 'product_brand',
+				'hide_empty' => true,
+				'number'     => 100,
+				'orderby'    => 'name',
+				'order'      => 'ASC',
+			] );
+			if ( is_wp_error( $brand_terms ) ) {
+				return new WP_Error( 'catalog_brands_unavailable', 'Brand navigation is temporarily unavailable.', [ 'status' => 503 ] );
+			}
+		}
+
+		$brands = [];
+		foreach ( (array) $brand_terms as $term ) {
+			if ( $term instanceof WP_Term ) {
+				$brands[] = self::brand_navigation_dto( $term );
+			}
+		}
+
+		$brands_by_slug = [];
+		foreach ( $brands as $brand ) {
+			$brands_by_slug[ $brand['slug'] ] = $brand;
+		}
+		$parts_brands = [];
+		foreach ( self::PARTS_BRAND_SLUGS as $slug ) {
+			if ( isset( $brands_by_slug[ $slug ] ) ) {
+				$parts_brands[] = $brands_by_slug[ $slug ];
+			}
+		}
+
+		return [
+			'contractVersion' => self::NAVIGATION_CONTRACT_VERSION,
+			'shop'            => array_map( [ self::class, 'shop_group_navigation_dto' ], $shop_groups ),
+			'brands'          => $brands,
+			'parts'           => [
+				'landing' => [ 'label' => 'Browse all replacement parts', 'href' => '/parts' ],
+				'brands'  => $parts_brands,
+			],
+		];
+	}
+
+	/** @param array<string,mixed> $group @return array<string,mixed> */
+	private static function shop_group_navigation_dto( array $group ): array {
+		$children = array_map(
+			static function ( array $child ): array {
+				return [
+					'key'         => sanitize_key( (string) ( $child['key'] ?? '' ) ),
+					'label'       => sanitize_text_field( (string) ( $child['label'] ?? '' ) ),
+					'slug'        => sanitize_title( (string) ( $child['slug'] ?? '' ) ),
+					'sort'        => (int) ( $child['sort'] ?? 0 ),
+					'description' => sanitize_text_field( (string) ( $child['description'] ?? '' ) ),
+					'image'       => esc_url_raw( (string) ( $child['image'] ?? '' ) ),
+				];
+			},
+			(array) ( $group['children'] ?? [] )
+		);
+
+		return [
+			'key'         => sanitize_key( (string) ( $group['key'] ?? '' ) ),
+			'label'       => sanitize_text_field( (string) ( $group['label'] ?? '' ) ),
+			'slug'        => sanitize_title( (string) ( $group['slug'] ?? '' ) ),
+			'sort'        => (int) ( $group['sort'] ?? 0 ),
+			'description' => sanitize_text_field( (string) ( $group['description'] ?? '' ) ),
+			'image'       => esc_url_raw( (string) ( $group['image'] ?? '' ) ),
+			'children'    => $children,
+		];
+	}
+
+	/** @return array{label:string,slug:string} */
+	private static function brand_navigation_dto( WP_Term $term ): array {
+		return [
+			'label' => sanitize_text_field( wp_specialchars_decode( (string) $term->name, ENT_QUOTES ) ),
+			'slug'  => sanitize_title( (string) $term->slug ),
+		];
 	}
 
 	public static function handle_category( WP_REST_Request $request ): WP_REST_Response {

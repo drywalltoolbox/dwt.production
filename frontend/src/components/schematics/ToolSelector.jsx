@@ -33,8 +33,6 @@ export default function ToolSelector({ brandName, brandLogo, categoryName, tools
       onBack={onBack}
       onSelectCategory={(tool) => onSelectTool(tool.id)}
       includeAllProducts={false}
-      loadAllProductsPreview={false}
-      itemLabel="page"
     />
   );
 }
