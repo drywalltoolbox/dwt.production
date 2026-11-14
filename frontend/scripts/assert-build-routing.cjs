@@ -150,11 +150,14 @@ const staticHtml = fs.readFileSync(indexPath, 'utf8');
 if (!/<meta\b(?=[^>]*name="description")(?=[^>]*data-dtb-seo="description")(?=[^>]*content="Shop professional drywall tools and replacement parts\.)[^>]*>/.test(staticHtml)) {
   throw new Error('The static homepage must provide its description before React loads.');
 }
-if (!/<div id="root"[^>]*>[\s\S]*?<h1[^>]*>The New Standard in Drywall Tools<\/h1>/.test(staticHtml)) {
-  throw new Error('The static homepage must provide a semantic H1 before React loads.');
+if (!/<div id="root"[^>]*>\s*<\/div>/.test(staticHtml)) {
+  throw new Error('The React mount point must not contain a static fallback page before React loads.');
 }
-if (!staticHtml.includes('data-dtb-seo="title"') || !staticHtml.includes('<dtb-route-content data-dtb-route-content style="display:block">') || !staticHtml.includes('</dtb-route-content>')) {
-  throw new Error('The storefront shell must expose the bounded server-rendering markers.');
+if ((staticHtml.match(/id="dtb-global-preloader"/g) || []).length !== 1) {
+  throw new Error('The document must contain exactly one shared global preloader.');
+}
+if (!staticHtml.includes('data-dtb-seo="title"') || staticHtml.includes('dtb-route-content')) {
+  throw new Error('The storefront shell must retain SEO metadata without static route fallback content.');
 }
 const storefrontRoutes = JSON.parse(fs.readFileSync(storefrontRoutesPath, 'utf8'));
 if (storefrontRoutes.version !== 1 || !storefrontRoutes.routes || typeof storefrontRoutes.routes !== 'object') {
@@ -182,11 +185,6 @@ for (const routePath of [
     if (!link || typeof link.label !== 'string' || !/^\/(?!\/)[a-zA-Z0-9/_-]*$/.test(link.href) || link.href.includes('..')) {
       throw new Error(`Server-rendered route contains an unsafe internal link: ${routePath}`);
     }
-  }
-}
-for (const href of ['/products', '/products/brands', '/parts', '/schematics', '/repairs/packages', '/help']) {
-  if (!staticHtml.includes(`href="${href}"`)) {
-    throw new Error(`The static homepage is missing its internal link to ${href}.`);
   }
 }
 const llmsText = fs.readFileSync(llmsPath, 'utf8');
