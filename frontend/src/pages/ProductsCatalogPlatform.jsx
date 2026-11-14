@@ -413,6 +413,19 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
     return mergeDisplayCategories(facets.displayCategoriesByBrand);
   }, [brandSlug, facets, selectedBrand, selectedBrandFacet]);
 
+  // Category landing routes encode the active product category in the path,
+  // while the filter panel's category controls use display-category slugs.
+  // Match the shared canonical identity so the current route is visibly
+  // selected even when no display_category query parameter is present.
+  const routeCategoryFilter = useMemo(
+    () => isCategoryPageRoute
+      ? filterCategories.find((category) => (
+        canonicalDisplayCategoryId(category.slug) === canonicalDisplayCategoryId(categoryPathSlug)
+      )) || null
+      : null,
+    [categoryPathSlug, filterCategories, isCategoryPageRoute],
+  );
+
   const brandCategoryCards = useMemo(() => {
     if (!selectedBrand) return [];
     const brandDisplayCategories = mergeCategoryEntries(
@@ -459,6 +472,10 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
     () => query.displayCategory || [],
     [query.displayCategory],
   );
+  const selectedPanelCategories = useMemo(() => {
+    if (!routeCategoryFilter) return selectedDisplayCategories;
+    return Array.from(new Set([...selectedDisplayCategories, routeCategoryFilter.id]));
+  }, [routeCategoryFilter, selectedDisplayCategories]);
 
   const selectedCategoryLabel = useMemo(() => {
     if (selectedDisplayCategories.length === 0) return '';
@@ -471,33 +488,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
     return `${labels[0]} +${labels.length - 1} more`;
   }, [brandCategoryCards, filterCategories, selectedDisplayCategories]);
 
-  const activeBreadcrumbFilters = useMemo(() => {
-    const filters = [];
-
-    if (selectedBrand) {
-      filters.push({
-        id: `brand:${brandToSlug(selectedBrand)}`,
-        type: 'brand',
-        value: selectedBrand,
-        label: selectedBrandFacet?.label || canonicalBrandLabel(selectedBrand),
-      });
-    }
-
-    selectedDisplayCategories.forEach((slug) => {
-      const match = [...filterCategories, ...brandCategoryCards]
-        .find((category) => category.slug === slug || category.key === slug || category.id === slug);
-      filters.push({
-        id: `display-category:${slug}`,
-        type: 'displayCategory',
-        value: slug,
-        label: match?.name || formatCategoryLabel(slug),
-      });
-    });
-
-    return filters;
-  }, [brandCategoryCards, filterCategories, selectedBrand, selectedBrandFacet, selectedDisplayCategories]);
-
-  const activeFilterCount = (selectedBrand ? 1 : 0) + selectedDisplayCategories.length;
+  const activeFilterCount = (selectedBrand ? 1 : 0) + selectedPanelCategories.length;
   const categoryScopeLabel = selectedBrandFacet?.label || selectedBrand;
   const selectedBrandLogo = selectedBrandFacet?.logo || getBrandLogo(categoryScopeLabel) || getBrandLogo(brandSlug);
   const searchQuery = query.search.trim();
@@ -567,11 +558,6 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
       .filter((category) => category.name && category.slug),
     [storefrontNavigation?.shop],
   );
-
-  const allProductsBreadcrumbs = useMemo(() => [
-    { label: 'Home', path: '/' },
-    { label: 'All Products', path: '/products' },
-  ], []);
 
   const categorySeoTitle = searchQuery
     ? `Search: ${searchQuery}`
@@ -690,6 +676,20 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   };
 
   const toggleDisplayCategory = (displayCategory) => {
+    if (routeCategoryFilter && canonicalDisplayCategoryId(displayCategory) === canonicalDisplayCategoryId(routeCategoryFilter.id)) {
+      const remainingDisplayCategories = (query.displayCategory || [])
+        .filter((slug) => canonicalDisplayCategoryId(slug) !== canonicalDisplayCategoryId(displayCategory));
+      const parentSlug = categoryMeta?.parent?.slug || '';
+      const nextPathParams = { ...pathParams, categoryPathSlug: parentSlug || undefined };
+      navigate(buildCatalogUrl({
+        ...query,
+        category: parentSlug,
+        displayCategory: remainingDisplayCategories,
+        page: 1,
+      }, nextPathParams));
+      return;
+    }
+
     const current = query.displayCategory || [];
     const next = current.includes(displayCategory)
       ? current.filter((slug) => slug !== displayCategory)
@@ -697,24 +697,25 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
     setQuery({ displayCategory: next, category: '', search: query.search || '' });
   };
 
-  const removeBreadcrumbFilter = useCallback((filter) => {
-    if (!filter) return;
-    if (filter.type === 'brand') {
-      setQuery({
-        brands: [],
-        displayCategory: [],
-        category: '',
-        search: query.search || '',
-        sort: query.sort || 'popular',
-        perPage: query.perPage || 25,
-      });
+  const clearCatalogFilters = () => {
+    const clearedQuery = {
+      ...query,
+      brands: [],
+      category: '',
+      displayCategory: [],
+      search: query.search || '',
+      sort: query.sort || 'popular',
+      page: 1,
+    };
+
+    if (isCategoryPageRoute) {
+      navigate(buildCatalogUrl(clearedQuery, { ...pathParams, categoryPathSlug: undefined }));
       return;
     }
-    if (filter.type === 'displayCategory') {
-      const next = (query.displayCategory || []).filter((slug) => slug !== filter.value);
-      setQuery({ displayCategory: next, category: '', search: query.search || '' });
-    }
-  }, [query, setQuery]);
+
+    setQuery(clearedQuery);
+  };
+
   const resetToBrandList = () => navigate('/products/brands');
   const resetToCategoryCards = () => navigate(`/products/brands/${brandToSlug(selectedBrand)}`);
   const getCardDisplayProduct = useCallback((product) => product?.cardProduct || null, []);
@@ -775,11 +776,9 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
               <CategoryHero
                 category={categoryMeta}
                 breadcrumbs={categoryBreadcrumbs}
-                activeFilters={activeBreadcrumbFilters}
                 brand={selectedBrandFacet?.slug || selectedBrand}
                 brandLogo={selectedBrandLogo}
                 brandLabel={categoryScopeLabel}
-                onRemoveFilter={removeBreadcrumbFilter}
                 products={mappedProducts}
                 brands={brandFacets}
                 onAddToCart={handleAddToCart}
@@ -813,7 +812,6 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
 
         {isAllProductsRoute && !showCategoryLanding && !showBrandLanding && (
           <>
-            <Breadcrumb items={allProductsBreadcrumbs} activeFilters={activeBreadcrumbFilters} onRemoveFilter={removeBreadcrumbFilter} />
             {allProductsToolTypes.length > 0 && (
               <ShopByToolType categories={allProductsToolTypes} onOpenFilters={() => setShowFilters(true)} />
             )}
@@ -913,14 +911,12 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                 onClose={() => setShowFilters(false)}
                 categories={filterCategories}
                 brands={brandFacets}
-                maxPrice={0}
                 selectedBrands={selectedBrand ? [canonicalBrandLabel(selectedBrand)] : []}
-                selectedCategories={selectedDisplayCategories}
-                priceRange={[0, 0]}
+                selectedCategories={selectedPanelCategories}
                 onBrandChange={toggleBrand}
                 onCategoryChange={toggleDisplayCategory}
-                onPriceChange={() => {}}
-                onClearFilters={() => setQuery({ brands: [], category: '', displayCategory: [], search: query.search || '', sort: 'popular' })}
+                onClearFilters={clearCatalogFilters}
+                resultCount={itemsLoading ? undefined : total}
               />
 
               <div className="flex-1">

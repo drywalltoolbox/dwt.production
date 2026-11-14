@@ -10,8 +10,6 @@ export default function InteriorPageHero({
   title,
   description,
   breadcrumbs = [],
-  activeFilters = [],
-  onRemoveFilter = null,
   brandLogo = '',
   brandLabel = '',
   titleVisuallyHidden = false,
@@ -24,8 +22,6 @@ export default function InteriorPageHero({
         {breadcrumbs.length > 0 && (
           <Breadcrumb
             items={breadcrumbs}
-            activeFilters={activeFilters}
-            onRemoveFilter={onRemoveFilter}
             className="dtb-breadcrumb-bar--compact dtb-breadcrumb-bar--interior-hero"
           />
         )}

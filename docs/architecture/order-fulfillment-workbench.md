@@ -78,3 +78,19 @@ New orders also snapshot stable fulfillment-facing catalog identity including or
 Legacy line items whose WooCommerce product ID is missing may be read-enriched only when the current catalog contains exactly one product with the exact historical order-item name. The order itself is never rewritten. The admin UI labels this as a **Legacy catalog match** so operators can distinguish recovered present-day catalog identity from historical order provenance.
 
 Current catalog schematic groups shown for a legacy recovered item are compatibility context only. They must never be represented as proof that the customer purchased from a particular schematic.
+# Operator-reviewed status changes
+
+DTB Orders presents eligible lifecycle choices from the server-owned order
+workflow registry. The shared `on-hold` status is labeled **On Hold**; it is
+not a refund or payment decision. A status transition opens a review dialog
+before mutation. The operator can elect to send the matching WooCommerce
+customer status email and add a sanitized message of up to 2,000 characters.
+The store's configured email enablement remains authoritative. A private
+operator order note is not substituted for customer-visible email content.
+
+The message is stored on the WooCommerce order before status hooks run and is
+rendered only in the matching customer email. WooCommerce continues to own the
+order transition and email lifecycle. Refunds must be created in WooCommerce's
+native refund controls; DTB does not create a refund by setting `refunded`
+status. Email layout and global copy continue to be authored in DTB Email
+Studio, while the workbench provides per-order communication review.

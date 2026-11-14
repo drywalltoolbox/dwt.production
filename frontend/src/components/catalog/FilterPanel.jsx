@@ -1,72 +1,70 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { m as Motion, useReducedMotion } from 'framer-motion';
 import MotionPresence from '../motion/MotionPresence.jsx';
 import { dtbSpring, dtbTransition, reducedTransition } from '../../motion/dtbMotion.js';
-import { X, ChevronDown, Sliders } from 'lucide-react';
+import { Check, ChevronDown, Search, Sliders, X } from 'lucide-react';
 import '../../styles/filter-panel.css';
 
 const VISIBLE_ITEM_LIMIT = 8;
 const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-function normalizeFilterBrands(brands = []) {
-  if (!Array.isArray(brands) || brands.length === 0) return [];
+function normalizeFilterItems(items = [], { category = false } = {}) {
+  if (!Array.isArray(items)) return [];
   const seen = new Set();
 
-  return brands
-    .map((brand) => {
-      const label = String(typeof brand === 'string' ? brand : (brand?.label || brand?.name || '')).trim();
-      return { id: label, label };
-    })
-    .filter((brand) => {
-      if (!brand.label) return false;
-      const key = brand.label.toLowerCase();
-      if (seen.has(key)) return false;
-      seen.add(key);
-      return true;
-    });
+  return items.map((item) => {
+    const label = String(typeof item === 'string' ? item : (item?.label || item?.name || '')).trim();
+    const id = String(typeof item === 'string'
+      ? item
+      : (category ? (item?.id || item?.slug || item?.key || label) : label)).trim();
+    return {
+      id,
+      label,
+      count: Number(item?.count ?? item?.productCount ?? 0),
+    };
+  }).filter((item) => {
+    if (!item.id || !item.label || seen.has(item.id)) return false;
+    seen.add(item.id);
+    return true;
+  });
 }
 
 export default function FilterPanel({
   isOpen,
   onClose,
-  categories,
-  brands,
-  maxPrice,
-  selectedBrands,
-  selectedCategories,
-  priceRange,
+  categories = [],
+  brands = [],
+  selectedBrands = [],
+  selectedCategories = [],
   onBrandChange,
   onCategoryChange,
-  onPriceChange,
   onClearFilters,
+  resultCount,
 }) {
-  const [expandedSections, setExpandedSections] = useState({
-    categories: true,
-    brands: true,
-    price: true,
-  });
-
-  const filterBrands = useMemo(() => normalizeFilterBrands(brands), [brands]);
+  const [expandedSections, setExpandedSections] = useState({ categories: true, brands: true });
   const reduceMotion = useReducedMotion();
   const panelRef = useRef(null);
   const closeButtonRef = useRef(null);
   const onCloseRef = useRef(onClose);
 
+  const filterCategories = useMemo(() => normalizeFilterItems(categories, { category: true }), [categories]);
+  const filterBrands = useMemo(() => normalizeFilterItems(brands), [brands]);
+  const selectedBrandIds = Array.isArray(selectedBrands) ? selectedBrands : [];
+  const selectedCategoryIds = Array.isArray(selectedCategories) ? selectedCategories : [];
+  const activeFilterCount = selectedBrandIds.length + selectedCategoryIds.length;
+  const hasActiveFilters = activeFilterCount > 0;
+
   useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
 
   // The mobile filter sheet is modal. Keep focus inside while it is open and
-  // restore the actual opener after dismissal rather than trapping tab focus in
-  // the document behind the backdrop.
+  // restore the actual opener after dismissal rather than trapping focus behind it.
   useEffect(() => {
     if (!isOpen) return undefined;
 
     const opener = document.activeElement;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
-
-    const focusFrame = window.requestAnimationFrame(() => {
-      closeButtonRef.current?.focus({ preventScroll: true });
-    });
+    const focusFrame = window.requestAnimationFrame(() => closeButtonRef.current?.focus({ preventScroll: true }));
 
     const onKeyDown = (event) => {
       if (event.key === 'Escape') {
@@ -102,141 +100,99 @@ export default function FilterPanel({
       window.cancelAnimationFrame(focusFrame);
       document.removeEventListener('keydown', onKeyDown, true);
       document.body.style.overflow = previousOverflow;
-      if (opener instanceof HTMLElement && opener.isConnected
-        && activePanel?.contains(document.activeElement)) {
+      if (opener instanceof HTMLElement && opener.isConnected && activePanel?.contains(document.activeElement)) {
         opener.focus({ preventScroll: true });
       }
     };
   }, [isOpen]);
 
-  const toggleSection = (section) => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
-  };
+  const toggleSection = (section) => setExpandedSections((previous) => ({
+    ...previous,
+    [section]: !previous[section],
+  }));
 
-  const hasActiveFilters =
-    selectedBrands.length > 0 ||
-    selectedCategories.length > 0 ||
-    priceRange[0] !== 0 ||
-    priceRange[1] !== maxPrice;
-  const activeFilterCount = selectedBrands.length + selectedCategories.length
-    + (priceRange[0] !== 0 || priceRange[1] !== maxPrice ? 1 : 0);
+  const contentProps = {
+    categories: filterCategories,
+    brands: filterBrands,
+    selectedBrands: selectedBrandIds,
+    selectedCategories: selectedCategoryIds,
+    onBrandChange,
+    onCategoryChange,
+    onClearFilters,
+    expandedSections,
+    toggleSection,
+    hasActiveFilters,
+    resultCount,
+  };
 
   return (
     <>
-      {/* Desktop Sidebar - Always Visible */}
-      <aside className="hidden lg:block lg:w-80 shrink-0">
-        <div className="lg:sticky lg:top-24 h-full">
-          <FilterContent
-            categories={categories}
-            brands={filterBrands}
-            maxPrice={maxPrice}
-            selectedBrands={selectedBrands}
-            selectedCategories={selectedCategories}
-            priceRange={priceRange}
-            onBrandChange={onBrandChange}
-            onCategoryChange={onCategoryChange}
-            onPriceChange={onPriceChange}
-            onClearFilters={onClearFilters}
-            expandedSections={expandedSections}
-            toggleSection={toggleSection}
-            hasActiveFilters={hasActiveFilters}
-          />
+      <aside className="dtb-filter-sidebar hidden lg:block">
+        <div className="dtb-filter-sidebar__sticky">
+          <FilterContent {...contentProps} showTitle />
         </div>
       </aside>
 
-      {/* Mobile Sidebar - Slide In */}
       <MotionPresence initial={false}>
         {isOpen ? (
-        <Motion.div
-          key="mobile-filters"
-          className="dtb-filter-drawer__overlay fixed inset-0 lg:hidden"
-          inert={!isOpen ? true : undefined}
-          aria-hidden={!isOpen ? 'true' : undefined}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={reduceMotion ? reducedTransition : dtbTransition.fast}
-        >
           <Motion.div
-            className="absolute inset-0 dtb-filter-drawer"
-            initial={{ y: reduceMotion ? 0 : '100%' }}
-            animate={{ y: 0 }}
-            exit={{ y: reduceMotion ? 0 : '100%' }}
-            transition={reduceMotion ? reducedTransition : dtbSpring.gentle}
+            key="mobile-filters"
+            className="dtb-filter-drawer__overlay fixed inset-0 lg:hidden"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={reduceMotion ? reducedTransition : dtbTransition.fast}
           >
-            <div
-              ref={panelRef}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="dtb-mobile-filter-title"
-              tabIndex={-1}
-              className="dtb-filter-drawer__panel w-full overflow-hidden flex flex-col filter-mobile-sheet-enter"
+            <Motion.div
+              className="dtb-filter-drawer"
+              initial={{ y: reduceMotion ? 0 : '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: reduceMotion ? 0 : '100%' }}
+              transition={reduceMotion ? reducedTransition : dtbSpring.gentle}
             >
-              <div className="dtb-filter-drawer__header flex items-center justify-between shrink-0">
-                <div className="dtb-filter-drawer__heading">
-                  <span className="dtb-filter-drawer__icon" aria-hidden="true"><Sliders size={19} /></span>
-                  <div>
-                    <h2 id="dtb-mobile-filter-title">Filters</h2>
-                    <p>Refine your product results</p>
+              <div
+                ref={panelRef}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="dtb-mobile-filter-title"
+                tabIndex={-1}
+                className="dtb-filter-drawer__panel"
+              >
+                <header className="dtb-filter-drawer__header">
+                  <div className="dtb-filter-drawer__heading">
+                    <span className="dtb-filter-drawer__icon" aria-hidden="true"><Sliders size={19} /></span>
+                    <div>
+                      <h2 id="dtb-mobile-filter-title">Filters</h2>
+                      <p>{typeof resultCount === 'number' ? `${resultCount.toLocaleString()} products` : 'Refine your products'}</p>
+                    </div>
+                    {hasActiveFilters && <span className="dtb-filter-drawer__active-count">{activeFilterCount} active</span>}
                   </div>
-                  {activeFilterCount > 0 && <span className="dtb-filter-drawer__active-count">{activeFilterCount} active</span>}
-                </div>
-                <button
-                  ref={closeButtonRef}
-                  type="button"
-                  onClick={onClose}
-                  className="dtb-filter-drawer__close touch-target"
-                  aria-label="Close filters"
-                  title="Close filters (ESC)"
-                >
-                  <X size={22} />
-                </button>
-              </div>
-
-              <div className="dtb-filter-drawer__body flex-1 min-h-0 overflow-y-auto overscroll-contain">
-                <FilterContent
-                  categories={categories}
-                  brands={filterBrands}
-                  maxPrice={maxPrice}
-                  selectedBrands={selectedBrands}
-                  selectedCategories={selectedCategories}
-                  priceRange={priceRange}
-                  onBrandChange={onBrandChange}
-                  onCategoryChange={onCategoryChange}
-                  onPriceChange={onPriceChange}
-                  onClearFilters={onClearFilters}
-                  expandedSections={expandedSections}
-                  toggleSection={toggleSection}
-                  hasActiveFilters={hasActiveFilters}
-                  isMobile
-                />
-              </div>
-
-              <div className="dtb-filter-drawer__footer shrink-0">
-                <div className="dtb-filter-drawer__actions">
                   <button
-                    type="button"
-                    onClick={onClearFilters}
-                    className="dtb-filter-drawer__clear"
-                    disabled={!hasActiveFilters}
-                  >
-                    Clear filters
-                  </button>
-                  <button
+                    ref={closeButtonRef}
                     type="button"
                     onClick={onClose}
-                    className="dtb-filter-drawer__apply"
+                    className="dtb-filter-drawer__close"
+                    aria-label="Close filters"
                   >
-                    View products
+                    <X size={21} />
                   </button>
+                </header>
+
+                <div className="dtb-filter-drawer__body">
+                  <FilterContent {...contentProps} />
                 </div>
+
+                <footer className="dtb-filter-drawer__footer">
+                  <button type="button" onClick={onClearFilters} className="dtb-filter-drawer__clear" disabled={!hasActiveFilters}>
+                    Clear all
+                  </button>
+                  <button type="button" onClick={onClose} className="dtb-filter-drawer__apply">
+                    View {typeof resultCount === 'number' ? `${resultCount.toLocaleString()} products` : 'products'}
+                  </button>
+                </footer>
               </div>
-            </div>
+            </Motion.div>
           </Motion.div>
-        </Motion.div>
         ) : null}
       </MotionPresence>
     </>
@@ -246,230 +202,146 @@ export default function FilterPanel({
 function FilterContent({
   categories,
   brands,
-  maxPrice,
   selectedBrands,
   selectedCategories,
-  priceRange,
   onBrandChange,
   onCategoryChange,
-  onPriceChange,
   onClearFilters,
   expandedSections,
   toggleSection,
   hasActiveFilters,
-  isMobile,
+  resultCount,
+  showTitle = false,
 }) {
   return (
-    <div
-      className={`${isMobile ? 'dtb-filter-content--mobile' : ''} overflow-hidden border border-slate-200 bg-white ${
-        isMobile ? 'rounded-2xl' : 'rounded-2xl shadow-sm'
-      }`}
-    >
-      <div className={`dtb-filter-content__summary flex items-center justify-between gap-3 border-b border-slate-200 px-4 py-3.5 ${isMobile ? 'dtb-filter-content__summary--mobile' : ''}`}>
-        <h3 className="text-xs font-bold tracking-wider text-slate-900 uppercase">Filters</h3>
-        {!isMobile && hasActiveFilters && (
-          <button
-            type="button"
-            onClick={onClearFilters}
-            className="text-xs font-semibold text-primary-600 hover:text-primary-700 hover:underline"
-          >
-            Clear all
-          </button>
-        )}
-      </div>
+    <section className="dtb-filter-content" aria-label="Product filters">
+      {showTitle && (
+        <header className="dtb-filter-content__header">
+          <div>
+            <h2>Filters</h2>
+            {typeof resultCount === 'number' && <p>{resultCount.toLocaleString()} products</p>}
+          </div>
+          {hasActiveFilters && (
+            <button type="button" className="dtb-filter-content__reset" onClick={onClearFilters}>Clear all</button>
+          )}
+        </header>
+      )}
 
-      <div className="space-y-4 px-4 py-3">
-        {/* Categories Section - only shown when categories are provided */}
-        {categories && categories.length > 0 && (
-          <FilterCheckboxGroup
-            title="Category"
-            items={categories.map((category) => ({ id: category.id, label: category.name }))}
-            selectedIds={selectedCategories}
-            onToggle={onCategoryChange}
-          />
-        )}
+      {(selectedBrands.length > 0 || selectedCategories.length > 0) && (
+        <div className="dtb-filter-content__active" aria-label="Active filters">
+          {[...selectedCategories.map((id) => ({ id, label: findFilterLabel(categories, id), remove: onCategoryChange, type: 'category' })),
+            ...selectedBrands.map((id) => ({ id, label: findFilterLabel(brands, id), remove: onBrandChange, type: 'brand' }))]
+            .map((filter) => (
+              <button key={`${filter.type}:${filter.id}`} type="button" onClick={() => filter.remove(filter.id)}>
+                <span>{filter.label}</span><X size={13} aria-hidden="true" />
+              </button>
+            ))}
+        </div>
+      )}
 
-        {/* Brands Section */}
+      <div className="dtb-filter-content__groups">
+        <FilterCheckboxGroup
+          title="Category"
+          section="categories"
+          items={categories}
+          selectedIds={selectedCategories}
+          onToggle={onCategoryChange}
+          isExpanded={expandedSections.categories}
+          onSectionToggle={toggleSection}
+        />
         <FilterCheckboxGroup
           title="Brand"
+          section="brands"
           items={brands}
           selectedIds={selectedBrands}
           onToggle={onBrandChange}
+          isExpanded={expandedSections.brands}
+          onSectionToggle={toggleSection}
         />
-
-        {/* Price Range Section - only shown when maxPrice is set */}
-        {maxPrice > 0 && (
-        <FilterSection
-          title="Price Range"
-          isExpanded={expandedSections.price}
-          onToggle={() => toggleSection('price')}
-          isMobile={isMobile}
-        >
-          <div className="space-y-3 p-1">
-            {/* Price Display */}
-            <div className="flex items-center justify-between bg-primary-50 px-3 py-2 rounded-lg border border-primary-200">
-              <div className="flex items-baseline gap-1">
-                <span className="text-base font-bold text-primary-600">
-                  ${priceRange[0].toFixed(0)}
-                </span>
-                <span className="text-xs text-gray-500">to</span>
-                <span className="text-base font-bold text-primary-600">
-                  ${priceRange[1].toFixed(0)}
-                </span>
-              </div>
-            </div>
-
-            {/* Range Slider */}
-            <div className="space-y-3">
-              {/* Min Price Input */}
-              <div>
-                <label className="text-xs font-semibold text-slate-600 block mb-2">
-                  Min Price
-                </label>
-                <input
-                  type="range"
-                  min="0"
-                  max={maxPrice}
-                  step="50"
-                  value={priceRange[0]}
-                  onChange={(e) => {
-                    const newMin = parseInt(e.target.value, 10);
-                    if (newMin <= priceRange[1]) {
-                      onPriceChange([newMin, priceRange[1]]);
-                    }
-                  }}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb"
-                />
-                <div className="flex justify-between text-xs text-slate-500 mt-1">
-                  <span>$0</span>
-                  <span>${maxPrice}</span>
-                </div>
-              </div>
-
-              {/* Max Price Input */}
-              <div>
-                <label className="text-xs font-semibold text-slate-600 block mb-2">
-                  Max Price
-                </label>
-                <input
-                  type="range"
-                  min="0"
-                  max={maxPrice}
-                  step="50"
-                  value={priceRange[1]}
-                  onChange={(e) => {
-                    const newMax = parseInt(e.target.value, 10);
-                    if (newMax >= priceRange[0]) {
-                      onPriceChange([priceRange[0], newMax]);
-                    }
-                  }}
-                  className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer slider-thumb"
-                />
-              </div>
-            </div>
-          </div>
-        </FilterSection>
-        )}
       </div>
-    </div>
+    </section>
   );
 }
 
-/**
- * Inline checkbox-style list for a filter group (Category / Brand), with a
- * "Show more" expander once the list exceeds `VISIBLE_ITEM_LIMIT` — keeps
- * long category/brand lists from dominating the sidebar by default while
- * staying reachable in one click. Selection/toggle logic is unchanged from
- * the previous button-list implementation; this only restyles it as an
- * inline checkbox row instead of a bordered pill.
- */
-function FilterCheckboxGroup({ title, items, selectedIds, onToggle }) {
+function findFilterLabel(items, id) {
+  return items.find((item) => item.id === id)?.label || String(id).replace(/[_-]+/g, ' ');
+}
+
+function FilterCheckboxGroup({ title, section, items, selectedIds, onToggle, isExpanded, onSectionToggle }) {
+  const [search, setSearch] = useState('');
   const [showAll, setShowAll] = useState(false);
-  const visibleItems = showAll ? items : items.slice(0, VISIBLE_ITEM_LIMIT);
-  const hiddenCount = items.length - visibleItems.length;
+  const searchable = items.length > VISIBLE_ITEM_LIMIT;
+  const filteredItems = useMemo(() => {
+    const term = search.trim().toLocaleLowerCase();
+    return term ? items.filter((item) => item.label.toLocaleLowerCase().includes(term)) : items;
+  }, [items, search]);
+  const visibleItems = showAll || search.trim()
+    ? filteredItems
+    : filteredItems.slice(0, VISIBLE_ITEM_LIMIT);
+  const hiddenCount = filteredItems.length - visibleItems.length;
 
-  if (!items || items.length === 0) return null;
+  if (items.length === 0) return null;
 
   return (
-    <div>
-      <h4 className="mb-2 text-xs font-bold tracking-wider text-slate-500 uppercase">{title}</h4>
-      <ul className="space-y-1">
-        {visibleItems.map((item) => {
-          const isSelected = selectedIds.includes(item.id);
-          return (
-            <li key={item.id}>
-              <label className="flex min-h-11 w-full cursor-pointer items-center gap-2.5 rounded-lg px-2 py-1.5 hover:bg-slate-50">
-                <input
-                  type="checkbox"
-                  checked={isSelected}
-                  onChange={() => onToggle(item.id)}
-                  className="h-4 w-4 shrink-0 rounded border-slate-300 text-primary-600 accent-primary-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-500"
-                />
-                <span className="flex min-w-0 flex-1 items-center justify-between gap-2 text-sm text-slate-700">
-                  <span className={`truncate ${isSelected ? 'font-semibold text-slate-900' : ''}`}>{item.label}</span>
-                </span>
-              </label>
-            </li>
-          );
-        })}
-      </ul>
-
-      {items.length > VISIBLE_ITEM_LIMIT && (
-        <button
-          type="button"
-          onClick={() => setShowAll((current) => !current)}
-          className="group mt-0.5 flex h-6 w-full items-center justify-center gap-0.5 rounded text-[10px] font-medium leading-none text-primary-600 transition-colors hover:text-primary-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500 focus-visible:ring-offset-1"
-          aria-expanded={showAll}
-        >
-          <span>{showAll ? 'Show fewer' : `Show ${hiddenCount} more`}</span>
-          <ChevronDown
-            size={10}
-            className={`shrink-0 text-primary-500 transition-transform duration-200 group-hover:text-primary-700 ${showAll ? 'rotate-180' : ''}`}
-            aria-hidden="true"
-          />
-        </button>
-      )}
-    </div>
-  );
-}
-
-function FilterSection({
-  title,
-  isExpanded,
-  onToggle,
-  itemCount,
-  children,
-  isMobile,
-}) {
-  return (
-    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+    <section className="dtb-filter-group">
       <button
-        onClick={onToggle}
-        className={`w-full flex items-center justify-between gap-2 transition-colors hover:bg-slate-50 ${
-          isMobile ? 'px-3 py-3' : 'px-4 py-3.5'
-        }`}
+        type="button"
+        className="dtb-filter-group__heading"
+        aria-expanded={isExpanded}
+        onClick={() => onSectionToggle(section)}
       >
-        <span className="flex items-center gap-2">
-          <span className="text-sm font-semibold text-slate-900">{title}</span>
-          {itemCount > 0 && (
-            <span className="inline-flex items-center rounded-full bg-primary-100 px-2 py-0.5 text-xs font-semibold text-primary-700">
-              {itemCount}
-            </span>
-          )}
-        </span>
-        <ChevronDown
-          size={18}
-          className={`text-slate-500 transition-transform duration-200 shrink-0 ${
-            isExpanded ? 'rotate-180' : ''
-          }`}
-        />
+        <span>{title}<span className="dtb-filter-group__total">{items.length}</span></span>
+        <ChevronDown size={17} aria-hidden="true" />
       </button>
 
       {isExpanded && (
-        <div className={`${isMobile ? 'px-3 pb-3' : 'px-4 pb-4'} border-t border-slate-100 bg-slate-50/60`}>
-          {children}
+        <div className="dtb-filter-group__body">
+          {searchable && (
+            <div className="dtb-filter-group__search">
+              <Search size={15} aria-hidden="true" />
+              <input
+                type="search"
+                aria-label={`Search ${title.toLowerCase()}`}
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                placeholder={`Search ${title.toLowerCase()}`}
+              />
+              {search && <button type="button" onClick={() => setSearch('')} aria-label={`Clear ${title.toLowerCase()} search`}><X size={14} /></button>}
+            </div>
+          )}
+
+          {visibleItems.length > 0 ? (
+            <ul className="dtb-filter-group__options">
+              {visibleItems.map((item) => {
+                const checked = selectedIds.includes(item.id);
+                return (
+                  <li key={item.id}>
+                    <label className={`dtb-filter-option${checked ? ' is-selected' : ''}`}>
+                      <input type="checkbox" checked={checked} onChange={() => onToggle(item.id)} />
+                      <span className="dtb-filter-option__box" aria-hidden="true">{checked && <Check size={12} strokeWidth={3} />}</span>
+                      <span className="dtb-filter-option__label">{item.label}</span>
+                      {item.count > 0 && <span className="dtb-filter-option__count">{item.count.toLocaleString()}</span>}
+                    </label>
+                  </li>
+                );
+              })}
+            </ul>
+          ) : (
+            <p className="dtb-filter-group__empty">No matching {title.toLowerCase()}.</p>
+          )}
+
+          {!search.trim() && hiddenCount > 0 && (
+            <button type="button" className="dtb-filter-group__more" onClick={() => setShowAll(true)}>
+              Show {hiddenCount} more <ChevronDown size={13} aria-hidden="true" />
+            </button>
+          )}
+          {!search.trim() && showAll && items.length > VISIBLE_ITEM_LIMIT && (
+            <button type="button" className="dtb-filter-group__more" onClick={() => setShowAll(false)}>
+              Show fewer <ChevronDown size={13} aria-hidden="true" className="is-flipped" />
+            </button>
+          )}
         </div>
       )}
-    </div>
+    </section>
   );
 }

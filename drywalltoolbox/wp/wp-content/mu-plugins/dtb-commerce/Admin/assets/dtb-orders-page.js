@@ -527,7 +527,7 @@
 		fetchOrder( orderId );
 	}
 
-	function runTransition( toStatus, button, cancellationNote ) {
+	function runTransition( toStatus, button, customerMessage, sendCustomerEmail ) {
 		if ( ! state.orderId || ! toStatus ) { return; }
 		var orderId = state.orderId;
 		WB.lockAction( button, 'Working…' );
@@ -537,8 +537,9 @@
 			body: {
 				action_type: 'transition',
 				to_status:   toStatus,
-				cancellation_note: 'cancelled' === toStatus ? ( cancellationNote || '' ) : '',
-				idempotency_key: 'orders-' + state.orderId + '-transition-' + toStatus,
+				customer_message: customerMessage || '',
+				send_customer_email: !! sendCustomerEmail,
+				idempotency_key: 'orders-' + orderId + '-transition-' + toStatus + '-' + opNonce,
 			},
 		} ).then( function ( data ) {
 			WB.showToast( data.message || 'Order status updated.', 'success' );
@@ -548,6 +549,43 @@
 		} ).finally( function () {
 			WB.unlockAction( button );
 		} );
+	}
+
+	function openTransitionReview( toStatus, button ) {
+		var existing = document.getElementById( 'dtb-orders-transition-review' );
+		if ( existing ) { existing.remove(); }
+		var labels = ( state.payload && state.payload.workflow && state.payload.workflow.labels ) || {};
+		var label = labels[ toStatus ] || toStatus.replace( /[-_]/g, ' ' );
+		var dialog = document.createElement( 'dialog' );
+		dialog.id = 'dtb-orders-transition-review';
+		dialog.className = 'dtb-orders-transition-review';
+		dialog.setAttribute( 'aria-labelledby', 'dtb-orders-transition-title' );
+		dialog.innerHTML = '<form method="dialog" class="dtb-orders-transition-review__form">' +
+			'<p class="dtb-orders-transition-review__eyebrow">Review order update</p>' +
+			'<h2 id="dtb-orders-transition-title">Move order to ' + WB.escapeHtml( label ) + '?</h2>' +
+			'<p class="description">Choose whether to send the matching WooCommerce status email. The store email setting still applies.</p>' +
+			'<label class="dtb-orders-transition-review__check"><input type="checkbox" name="send_email" checked> Send the customer status email</label>' +
+			'<label for="dtb-orders-transition-message">Message for the customer <span>(optional)</span></label>' +
+			'<textarea id="dtb-orders-transition-message" name="customer_message" rows="5" maxlength="2000" placeholder="Add context or next steps for this order"></textarea>' +
+			'<p class="description">Your message appears in the matching email. Internal order notes remain private.</p>' +
+			'<div class="dtb-orders-transition-review__actions"><button type="button" class="button" data-review-cancel>Review later</button><button type="submit" class="button button-primary">Confirm update</button></div>' +
+			'</form>';
+		document.body.appendChild( dialog );
+		dialog.addEventListener( 'click', function ( event ) {
+			if ( event.target === dialog || event.target.closest( '[data-review-cancel]' ) ) {
+				event.preventDefault(); dialog.close(); dialog.remove(); button.focus();
+			}
+		} );
+		dialog.querySelector( 'form' ).addEventListener( 'submit', function ( event ) {
+			event.preventDefault();
+			var sendEmail = dialog.querySelector( '[name="send_email"]' ).checked;
+			var message = dialog.querySelector( '[name="customer_message"]' ).value;
+			dialog.close(); dialog.remove();
+			runTransition( toStatus, button, message, sendEmail );
+		} );
+		dialog.addEventListener( 'close', function () { if ( dialog.isConnected ) { dialog.remove(); } } );
+		dialog.showModal();
+		dialog.querySelector( '[name="customer_message"]' ).focus();
 	}
 
 	function runAction( action, button ) {
@@ -594,23 +632,7 @@
 		if ( transBtn ) {
 			event.preventDefault();
 			var toStatus = transBtn.getAttribute( 'data-status' );
-			var run = function () {
-				var cancellationNote = '';
-				if ( 'cancelled' === toStatus ) {
-					cancellationNote = window.prompt( 'Optional note to include in the customer cancellation email (2,000 characters max):', '' );
-					if ( null === cancellationNote ) { return; }
-					if ( cancellationNote.length > 2000 ) {
-						WB.showToast( 'Cancellation note must be 2,000 characters or fewer.', 'error' );
-						return;
-					}
-				}
-				runTransition( toStatus, transBtn, cancellationNote );
-			};
-			if ( transBtn.getAttribute( 'data-confirm' ) === '0' ) {
-				run();
-			} else {
-				WB.confirmDanger( 'Transition order to "' + toStatus.replace( /_/g, ' ' ) + '"?', run );
-			}
+			openTransitionReview( toStatus, transBtn );
 			return;
 		}
 

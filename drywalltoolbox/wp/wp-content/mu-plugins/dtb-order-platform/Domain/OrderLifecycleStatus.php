@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 function dtb_order_get_status_map(): array {
 return [
 'pending'    => [ 'label' => __( 'Order Received',       'drywall-toolbox' ), 'description' => __( 'Order started, payment not confirmed', 'drywall-toolbox' ), 'is_terminal' => false ],
-'on-hold'    => [ 'label' => __( 'Payment Under Review',  'drywall-toolbox' ), 'description' => __( 'Awaiting confirmation or manual review', 'drywall-toolbox' ), 'is_terminal' => false ],
+'on-hold'    => [ 'label' => __( 'On Hold',                'drywall-toolbox' ), 'description' => __( 'Paused while the customer or team confirms next steps', 'drywall-toolbox' ), 'is_terminal' => false ],
 'processing' => [ 'label' => __( 'Processing',            'drywall-toolbox' ), 'description' => __( 'Paid and preparing for fulfillment', 'drywall-toolbox' ), 'is_terminal' => false ],
 'shipped'    => [ 'label' => __( 'Shipped',               'drywall-toolbox' ), 'description' => __( 'Package shipped, in transit to customer', 'drywall-toolbox' ), 'is_terminal' => false ],
 'completed'  => [ 'label' => __( 'Delivered / Completed', 'drywall-toolbox' ), 'description' => __( 'Fulfillment complete', 'drywall-toolbox' ), 'is_terminal' => true ],
@@ -86,9 +86,9 @@ function dtb_order_get_allowed_transitions( string $status ): array {
 		$map = [
 			'pending'    => [ 'on-hold', 'processing', 'cancelled', 'failed' ],
 			'on-hold'    => [ 'processing', 'cancelled' ],
-			'processing' => [ 'shipped', 'completed', 'on-hold', 'cancelled', 'refunded' ],
-			'shipped'    => [ 'completed', 'refunded' ],
-			'completed'  => [ 'refunded' ],
+			'processing' => [ 'shipped', 'completed', 'on-hold', 'cancelled' ],
+			'shipped'    => [ 'completed' ],
+			'completed'  => [],
 			'cancelled'  => [],
 			'refunded'   => [],
 			'failed'     => [ 'pending', 'on-hold', 'cancelled' ],

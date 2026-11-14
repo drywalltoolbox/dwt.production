@@ -17,6 +17,31 @@
 	overflow: hidden;
 }
 
+.dtb-orders-transition-review {
+	width: min(560px, calc(100vw - 32px));
+	max-width: none;
+	padding: 0;
+	border: 1px solid #dbe3ef;
+	border-radius: 14px;
+	color: #10213a;
+	box-shadow: 0 24px 70px rgba(15, 35, 65, .28);
+}
+.dtb-orders-transition-review::backdrop { background: rgba(13, 28, 49, .58); }
+.dtb-orders-transition-review__form { padding: 26px; }
+.dtb-orders-transition-review__eyebrow { margin: 0 0 6px; color: #2255ee; font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.dtb-orders-transition-review h2 { margin: 0 0 8px; font-size: 21px; }
+.dtb-orders-transition-review .description { margin: 0 0 16px; color: #52627e; }
+.dtb-orders-transition-review label { display: block; margin: 16px 0 7px; font-weight: 600; }
+.dtb-orders-transition-review label span { color: #64748b; font-weight: 400; }
+.dtb-orders-transition-review__check { display: flex !important; align-items: center; gap: 9px; }
+.dtb-orders-transition-review textarea { display: block; width: 100%; min-height: 120px; resize: vertical; }
+.dtb-orders-transition-review__actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 22px; }
+@media (max-width: 520px) {
+	.dtb-orders-transition-review__form { padding: 20px; }
+	.dtb-orders-transition-review__actions { flex-direction: column-reverse; }
+	.dtb-orders-transition-review__actions .button { justify-content: center; min-height: 42px; }
+}
+
 #dtb-orders-modal .dtb-orders-workbench > .dtb-modal-tabs {
 	flex: 0 0 auto;
 }

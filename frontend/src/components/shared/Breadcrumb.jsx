@@ -1,24 +1,10 @@
 import { Link } from 'react-router-dom';
 import '../../styles/breadcrumb.css';
 
-/**
- * Shared breadcrumb + active-filter trail.
- *
- * `items` is an ordered array of `{ label, path? , onClick? }`; the last entry renders
- * as the current page. `activeFilters` is an optional array of
- * `{ id, label, type?, value? }` tokens. When `onRemoveFilter` is supplied,
- * each token becomes independently removable without owning filter state here.
- */
-export default function Breadcrumb({
-  items = [],
-  activeFilters = [],
-  onRemoveFilter = null,
-  tone = 'default',
-  className = '',
-}) {
+/** Render the route hierarchy; filter state and removal belong to the catalog panel. */
+export default function Breadcrumb({ items = [], tone = 'default', className = '' }) {
   const hasPath = items.length > 0;
-  const hasFilters = activeFilters.length > 0;
-  if (!hasPath && !hasFilters) return null;
+  if (!hasPath) return null;
 
   const classes = [
     'dtb-breadcrumb-bar',
@@ -51,22 +37,6 @@ export default function Breadcrumb({
         </nav>
       ) : null}
 
-      {hasFilters ? (
-        <ul className="dtb-breadcrumb-filters" aria-label="Active filters">
-          {activeFilters.map((filter) => (
-            <li className="dtb-breadcrumb-filter-chip" key={filter.id || `${filter.type || 'filter'}:${filter.value || filter.label}`}>
-              <span>{filter.label}</span>
-              {typeof onRemoveFilter === 'function' ? (
-                <button
-                  type="button"
-                  aria-label={`Remove filter: ${filter.label}`}
-                  onClick={() => onRemoveFilter(filter)}
-                />
-              ) : null}
-            </li>
-          ))}
-        </ul>
-      ) : null}
     </div>
   );
 }

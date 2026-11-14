@@ -19,11 +19,9 @@ export function CategoryHeroSkeleton() {
 export default function CategoryHero({
   category,
   breadcrumbs = [],
-  activeFilters = [],
   brand = '',
   brandLogo = '',
   brandLabel = '',
-  onRemoveFilter = null,
   products = [],
   brands = [],
   onAddToCart,
@@ -51,8 +49,6 @@ export default function CategoryHero({
         title={label}
         description={description || `Browse our full selection of ${label} for professional drywall work.`}
         breadcrumbs={breadcrumbs}
-        activeFilters={activeFilters}
-        onRemoveFilter={onRemoveFilter}
         brandLogo={brandLogo}
         brandLabel={brandLabel || brand}
       />
