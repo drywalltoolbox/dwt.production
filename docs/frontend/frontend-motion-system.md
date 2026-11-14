@@ -46,7 +46,7 @@ Preloading is an optimization only. Routing correctness must never depend on a s
 
 ## Route loading and document entry
 
-`frontend/index.html` owns the single full-screen branded preloader so it can display before React and its assets are ready. `globalPreloader.js`, `PageTransition`, and the route `Suspense` signal only control that shared surface; none creates a second loading screen. The preloader is shown for the initial document boot and while a route changes or a lazy route module is unresolved. It is hidden after the app mounts and the route transition settles. Page data and media continue to use scoped loading states instead of holding the entire route behind the preloader.
+`frontend/index.html` owns the single full-screen branded preloader so it can display before React and its assets are ready. It uses the actual Drywall Toolbox logo and a restrained progress indicator; it must not imitate the storefront with placeholder navigation, hero, categories, or product cards. `globalPreloader.js`, `PageTransition`, and the route `Suspense` signal only control that shared surface; none creates a second loading screen. The preloader is shown for the initial document boot and while a route changes or a lazy route module is unresolved. It is hidden after the app mounts and the route transition settles. Page data and media continue to use scoped loading states instead of holding the entire route behind the preloader.
 
 Protected routes render no placeholder while authentication is being validated. They still wait for the authoritative session result before rendering protected content or redirecting.
 

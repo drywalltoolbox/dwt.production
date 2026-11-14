@@ -156,6 +156,9 @@ if (!/<div id="root"[^>]*>\s*<\/div>/.test(staticHtml)) {
 if ((staticHtml.match(/id="dtb-global-preloader"/g) || []).length !== 1) {
   throw new Error('The document must contain exactly one shared global preloader.');
 }
+if (!staticHtml.includes('errors/dtb-logo-black.webp') || /dtb-global-preloader__(?:hero|categories|products)/.test(staticHtml)) {
+  throw new Error('The shared preloader must use the DTB brand mark without rendering mock storefront content.');
+}
 if (!staticHtml.includes('data-dtb-seo="title"') || staticHtml.includes('dtb-route-content')) {
   throw new Error('The storefront shell must retain SEO metadata without static route fallback content.');
 }

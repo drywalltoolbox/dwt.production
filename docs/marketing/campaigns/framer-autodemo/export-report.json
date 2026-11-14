@@ -1,0 +1,13 @@
+{
+  "source": "https://autodemo.framer.website/",
+  "platform": "framer",
+  "captureMode": "html-with-runtime",
+  "generatedAt": "2026-11-14T13:46:24.340Z",
+  "assets": 47,
+  "failedAssets": [],
+  "subpages": 1,
+  "visualValidation": "not-run",
+  "limitations": [
+    "Server-side accounts, payments, search and form processing are not exported."
+  ]
+}
