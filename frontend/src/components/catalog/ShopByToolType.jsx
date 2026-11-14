@@ -114,7 +114,7 @@ export default function ShopByToolType({ categories = [], onOpenFilters, parentL
         <div className="storefront-section__head">
           <div className={`storefront-section__head-text${homeVariant ? ' dtb-home-section-heading' : ''}`}>
             <h2 className="storefront-section__title">Shop by Tool Type</h2>
-            <p className="storefront-section__subtitle">Go directly to the tool family you need, then refine by brand and product attributes.</p>
+            <p className="storefront-section__subtitle">Explore drywall tools by type and find the right fit for your next project.</p>
           </div>
           {onOpenFilters ? (
             <a href="#dtb-category-filters" className="storefront-section__view-all" onClick={handleViewAll}>

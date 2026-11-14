@@ -239,7 +239,7 @@ export default function TrendingProducts() {
       className="dtb-home-product-section"
       revealHeading
       title="Featured Products"
-      subtitle="Featured automatic tapers and tool sets from trusted brands."
+      subtitle="Discover featured tools, parts, and jobsite essentials from brands pros trust."
       viewAllHref="/products?sort=popular"
     >
       <div ref={railRef}>

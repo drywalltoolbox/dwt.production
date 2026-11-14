@@ -51,6 +51,30 @@ function getVariationDisplayName(product, selectedVariation, effectiveVariationN
   return [parentName, effectiveVariationName].filter(Boolean).join(' — ');
 }
 
+function mergeRelatedProductSources(sources, currentSlug) {
+  const current = String(currentSlug || '').trim().toLowerCase();
+  const seen = new Set(current ? [`slug:${current}`] : []);
+  const merged = [];
+
+  for (const source of sources) {
+    if (!Array.isArray(source)) continue;
+    for (const item of source) {
+      if (!item || typeof item !== 'object') continue;
+      const card = item.cardProduct && typeof item.cardProduct === 'object' ? item.cardProduct : item;
+      const slug = String(item.slug || card.slug || '').trim().toLowerCase();
+      const sku = String(item.sku || card.sku || '').trim().toLowerCase();
+      const id = String(item.id ?? card.id ?? '').trim();
+      const key = slug ? `slug:${slug}` : (sku ? `sku:${sku}` : (id ? `id:${id}` : ''));
+      if (!key || seen.has(key)) continue;
+      seen.add(key);
+      merged.push(item);
+      if (merged.length >= 10) return merged;
+    }
+  }
+
+  return merged;
+}
+
 function replaceVariantInAddressBar(location, variationId) {
   if (typeof window === 'undefined' || !window.history?.replaceState) return;
 
@@ -117,6 +141,13 @@ export default function ProductDetailPage() {
   const displayedRelatedProducts = Array.isArray(selectedVariationRelatedProducts)
     ? selectedVariationRelatedProducts
     : relatedProducts;
+  const recommendedProducts = useMemo(
+    () => mergeRelatedProductSources(
+      [displayedRelatedProducts, familyRelatedProducts, categoryRelatedProducts, brandRelatedProducts],
+      product?.slug,
+    ),
+    [brandRelatedProducts, categoryRelatedProducts, displayedRelatedProducts, familyRelatedProducts, product?.slug],
+  );
   const compatiblePartsSku = product?.product_kind === 'part'
     ? ''
     : (selectedVariation?.sku || product?.sku || '');
@@ -274,33 +305,10 @@ export default function ProductDetailPage() {
           onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
         />
         <ProductRelatedProducts
-          products={familyRelatedProducts}
-          context="family_related"
+          products={recommendedProducts}
+          context="recommendations"
           className="product-related--pdp"
-          id="product-family-similar"
-          onAddToCart={handleAddToCart}
-          onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
-        />
-        <ProductRelatedProducts
-          products={categoryRelatedProducts}
-          context="category_related"
-          className="product-related--pdp"
-          id="product-category-similar"
-          onAddToCart={handleAddToCart}
-          onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
-        />
-        <ProductRelatedProducts
-          products={brandRelatedProducts}
-          context="brand_related"
-          className="product-related--pdp"
-          id="product-brand-similar"
-          onAddToCart={handleAddToCart}
-          onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
-        />
-        <ProductRelatedProducts
-          products={displayedRelatedProducts}
-          context={computed?.relatedProductsContext}
-          className="product-related--pdp"
+          id="product-recommendations"
           onAddToCart={handleAddToCart}
           onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
         />

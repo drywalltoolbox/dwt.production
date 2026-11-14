@@ -52,7 +52,7 @@ These are feature-specific or data-aware and should remain outside `ui/`:
 - Catalog helpers: `catalog/FilterPanel.jsx`, `catalog/SearchBar.jsx`, `catalog/Pagination.jsx`, `catalog/ProductShoppingCardSkeleton.jsx`, `catalog/TrendingProducts.jsx`
 - Schematics flow: `schematics/BrandSelector.jsx`, `schematics/ToolSelector.jsx`
 - Routing helpers: `routing/PageTransition.jsx`, `routing/ProtectedRoute.jsx`
-- Shared utilities: `shared/BackButton.jsx`, `shared/LoadingSpinner.jsx`, `shared/SEOHead.jsx`
+- Shared utilities: `shared/BackButton.jsx`, `shared/SEOHead.jsx`
 - Error handling: `errors/ErrorBoundary.jsx`
 
 ## Removed legacy duplicates
@@ -75,7 +75,8 @@ These unused legacy components were also removed because they had no active impo
 - `product/ProductAvailabilityNotice.jsx`, `product/ProductDescriptionAccordion.jsx`, `product/ProductMediaGallery.jsx`, `product/ProductPrice.jsx`, `product/ProductQuantityStepper.jsx`, `product/ProductSkuBlock.jsx`, `product/ProductVariantSelector.jsx`
 - `repairs/RepairCommentBox.jsx`, `repairs/RepairRequestForm.jsx`, `repairs/RepairTimeline.jsx`
 - `storefront/StorefrontAnnouncementBar.jsx`, `storefront/StorefrontCTA.jsx`, `storefront/StorefrontCategoryTile.jsx`, `storefront/StorefrontHero.jsx`, `storefront/StorefrontShopMegaMenu.jsx`
-- `shared/GlobalLoadingOverlay.jsx` (and its unused `context/GlobalLoadingContext.jsx`/`GlobalLoadingProvider`, which was never mounted)
+- `shared/GlobalLoadingOverlay.jsx` (and its unused `context/GlobalLoadingContext.jsx`/`GlobalLoadingProvider`, which was never mounted). The sole active full-screen preloader is the early HTML shell in `frontend/index.html`; route transitions signal that same surface through `components/routing/globalPreloader.js`.
+- `shared/LoadingSpinner.jsx` and the unreferenced `styles/global-loading.css` route-pending skeleton.
 
 ## Safe refactor rules
 

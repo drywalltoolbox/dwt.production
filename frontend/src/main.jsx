@@ -23,7 +23,6 @@ import './styles/storefront-drawer.css';
 import './styles/storefront-cart-sheet.css';
 import './styles/storefront-search-product-cards.css';
 import './styles/storefront-visibility.css';
-import './styles/global-loading.css';
 import './styles/cart-interaction-feedback.css';
 import './styles/add-to-cart-button.css';
 import './styles/loading-transitions.css';
@@ -65,9 +64,16 @@ void initializeGeminiStorefront();
 function markAppMounted() {
   if (typeof document === 'undefined') return;
 
+  document.documentElement.removeAttribute('data-dtb-booting');
   document.documentElement.setAttribute('data-dtb-app-mounted', 'true');
   document.getElementById('root')?.setAttribute('aria-busy', 'false');
-  document.getElementById('dtb-preboot')?.setAttribute('aria-hidden', 'true');
+  document.getElementById('dtb-global-preloader')?.setAttribute('aria-hidden', 'true');
+
+  const bootUrl = new URL(window.location.href);
+  if (bootUrl.searchParams.has('_boot')) {
+    bootUrl.searchParams.delete('_boot');
+    window.history.replaceState(window.history.state, '', bootUrl.pathname + bootUrl.search + bootUrl.hash);
+  }
 
   // Tell the entry-bundle watchdog that React mounted successfully, then clear
   // any retry marker left by a prior failed entry bundle.

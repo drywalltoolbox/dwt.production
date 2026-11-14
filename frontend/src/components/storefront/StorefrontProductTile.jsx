@@ -351,10 +351,10 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
         <div className="dtb-product-card__footer">
         <div className="dtb-product-card__price-col">
           <div className="dtb-product-card__price-group">
+            {comparePriceStr ? <span className="dtb-product-card__compare-price" aria-label={`Regular price ${comparePriceStr}`}>{comparePriceStr}</span> : null}
             <strong className={`dtb-product-card__price${hasVariableMinPrice ? ' dtb-product-card__price--from' : ''}`} style={{ color: outOfStock ? 'var(--dtb-muted)' : 'var(--dtb-text)' }} aria-label={hasVariableMinPrice ? `From ${money(variableMinPrice)}` : undefined}>
               {hasVariableMinPrice ? <><span className="dtb-product-card__price-prefix">From</span><span>${money(variableMinPrice)}</span></> : priceStr}
             </strong>
-            {comparePriceStr ? <span className="dtb-product-card__compare-price">{comparePriceStr}</span> : null}
           </div>
         </div>
         {!hideCommerceControls && <div className="dtb-product-card__commerce-controls">

@@ -13,7 +13,7 @@
   --dtb-document-fade-duration: var(--dtb-motion-duration-normal);
 }
 
-/* Route content enters without a full-screen loading overlay or fallback. */
+/* Route content motion stays independent from the shared document preloader. */
 .dtb-page-transition {
   position: relative;
   width: 100%;

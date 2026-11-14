@@ -20,7 +20,7 @@ Route loading is not page animation. Data loading is not route loading. Image lo
 The customer-facing contract is:
 
 1. Persistent content stays persistent.
-2. Unresolved lazy route modules render no placeholder or pre-loader.
+2. Unresolved lazy route modules use the single shared branded document preloader; they never render a second route-specific loading screen.
 3. Once mounted, route components own any scoped data or media loading treatment they need.
 4. Page roots never animate from `opacity: 0`.
 5. Likely route code is requested from navigation intent before the click completes.
@@ -40,19 +40,19 @@ The persistent header, footer, cart shell, navigation surfaces, and other applic
 
 Do not define a second independent dynamic import for a route that already exists in this registry. A preload that downloads different code than the corresponding `React.lazy` boundary defeats the continuity contract.
 
-`frontend/src/components/routing/RouteIntentPreloader.jsx` observes same-origin internal links and preloads recognized route modules on pointer intent, keyboard focus, and touch intent. Imperative navigation surfaces that are not anchors should call `preloadRoute()` before navigation when practical. Product cards do this explicitly for PDP navigation.
+`frontend/src/components/routing/RouteIntentPrefetcher.jsx` observes same-origin internal links and preloads recognized route modules on pointer intent, keyboard focus, and touch intent. This prefetcher does not render a loading screen. Imperative navigation surfaces that are not anchors should call `preloadRoute()` before navigation when practical. Product cards do this explicitly for PDP navigation.
 
 Preloading is an optimization only. Routing correctness must never depend on a successful preload.
 
 ## Route loading and document entry
 
-The application `Suspense` boundary uses `fallback={null}`. Lazy route modules do not display a full-screen fallback surface while loading. `PageTransition` applies only the brief route-content entrance motion after a pathname change; it does not hold the route behind an overlay or wait for fonts, data, or images.
+`frontend/index.html` owns the single full-screen branded preloader so it can display before React and its assets are ready. `globalPreloader.js`, `PageTransition`, and the route `Suspense` signal only control that shared surface; none creates a second loading screen. The preloader is shown for the initial document boot and while a route changes or a lazy route module is unresolved. It is hidden after the app mounts and the route transition settles. Page data and media continue to use scoped loading states instead of holding the entire route behind the preloader.
 
 Protected routes render no placeholder while authentication is being validated. They still wait for the authoritative session result before rendering protected content or redirecting.
 
-`frontend/index.html` contains no static pre-loader or checkout pre-loader. Checkout remains a full-document WooCommerce handoff, with its existing session convergence, navigation, and error handling; it adds no branded or spinner overlay. Local cart button progress feedback remains in the checkout control.
+Checkout remains a full-document WooCommerce handoff, with its existing session convergence, navigation, and error handling. It does not add a second checkout-specific preloader. Local cart button progress feedback remains in the checkout control.
 
-The entry-bundle watchdog remains the failure recovery authority. Its recovery UI appears only after the React entry bundle fails to mount; it is an error state, not a loading/pre-loader surface.
+The entry-bundle watchdog performs one bounded reload attempt if the React entry bundle does not mount. It does not inject a second recovery page; the shared branded preloader remains the only pre-mount surface.
 
 ## Shared native scroll experience (October 2026)
 
@@ -143,12 +143,12 @@ Springs do not receive CSS easing functions.
 
 Use the narrowest valid loading boundary:
 
-- **Route module unresolved:** render no fallback surface.
+- **Route module unresolved:** show the shared branded preloader; do not add another route loading screen.
 - **Authentication unresolved:** render no placeholder and wait for validation.
 - **Page data unresolved:** a skeleton local to that page region.
 - **Image unresolved:** image placeholder/skeleton inside its existing media geometry.
 - **Mutation pending:** preserve existing content and disable/annotate the affected control; do not replace the complete page.
-- **Document navigation/checkout handoff:** keep the current document visible until the browser commits the destination; do not add a pre-loader overlay.
+- **Document navigation/checkout handoff:** keep the current document visible until the browser commits the destination; do not add a route-specific preloader.
 
 Avoid sequential replacement chains such as route spinner → page spinner → skeleton → content.
 

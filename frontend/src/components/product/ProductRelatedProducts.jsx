@@ -5,6 +5,12 @@ import ProductShoppingCard from '../ui/ProductShoppingCard.jsx';
 const MAX_RELATED_PRODUCTS = 10;
 
 export function getRelatedProductsCopy(context = 'related') {
+  if (context === 'recommendations') {
+    return {
+      title: 'Related products',
+      railLabel: 'Products related to this item',
+    };
+  }
   if (context === 'compatible_parts') {
     return {
       title: 'Compatible parts',
@@ -25,19 +31,19 @@ export function getRelatedProductsCopy(context = 'related') {
   }
   if (context === 'family_related') {
     return {
-      title: 'More from this product family',
+      title: 'Related products',
       railLabel: 'Related products from this family',
     };
   }
   if (context === 'category_related') {
     return {
-      title: 'More in this category',
+      title: 'Related products',
       railLabel: 'Products in this category',
     };
   }
   if (context === 'brand_related') {
     return {
-      title: 'More from this brand',
+      title: 'Related products',
       railLabel: 'More products from this brand',
     };
   }

@@ -41,7 +41,7 @@ function shouldDeferSpeculation() {
   return Boolean(connection?.saveData);
 }
 
-export default function RouteIntentPreloader() {
+export default function RouteIntentPrefetcher() {
   useEffect(() => {
     if (typeof document === 'undefined') return undefined;
 

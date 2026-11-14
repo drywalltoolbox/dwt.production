@@ -3,7 +3,8 @@ import { useState, useEffect, useLayoutEffect, Suspense, lazy, useCallback, useR
 import { LazyMotion } from 'framer-motion';
 import loadMotionFeatures from './motion/asyncFeatures.js';
 import PageTransition from './components/routing/PageTransition';
-import RouteIntentPreloader from './components/routing/RouteIntentPreloader.jsx';
+import RouteIntentPrefetcher from './components/routing/RouteIntentPrefetcher.jsx';
+import RoutePreloaderSignal from './components/routing/RoutePreloaderSignal.jsx';
 import StorefrontScrollExperience from './components/routing/StorefrontScrollExperience.jsx';
 import { createLazyRoute } from './routing/routeModules.js';
 import { CartProvider } from './context/CartContext';
@@ -49,9 +50,8 @@ function setLocalStorageFlag(key) {
 }
 
 // The homepage contains the LCP element. It is intentionally part of the
-// entry route rather than a lazy boundary: a fallback-to-home swap moves the
-// shared footer by the full page height and was the direct source of the
-// measured 0.217 CLS regression on mobile Lighthouse.
+// entry route rather than a lazy boundary: suspending the homepage shifts the
+// shared footer by the full page height and caused a measured mobile CLS issue.
 const Products = createLazyRoute('products');
 const Parts = createLazyRoute('parts');
 const ProductDetailPage = createLazyRoute('productDetail');
@@ -247,7 +247,7 @@ function AppRoutes() {
   const [initialPathname] = useState(location.pathname);
   const productSelectorElement = <Products title="Products" isPartsFilter={0} />;
   const routes = (
-    <Suspense fallback={null}>
+    <Suspense fallback={<RoutePreloaderSignal />}>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products forceProductGrid title="Products" isPartsFilter={0} />} />
@@ -323,7 +323,7 @@ function App() {
               <WorkflowTransitionProvider>
                 <Router basename={basename}>
                   <ScrollToTop />
-                  <RouteIntentPreloader />
+                  <RouteIntentPrefetcher />
                   <StorefrontScrollExperience />
                   <AppShell cartOpen={cartOpen} toggleCart={toggleCart} closeCart={closeCart} />
                 </Router>
