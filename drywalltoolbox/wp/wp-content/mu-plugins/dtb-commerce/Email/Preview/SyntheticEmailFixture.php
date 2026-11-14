@@ -72,14 +72,24 @@ final class SyntheticEmailFixture {
 		$order->set_shipping_postcode( '00000' );
 		$order->set_shipping_country( 'US' );
 		$order->set_payment_method_title( 'Sample payment method' );
+		if ( in_array( $email_id, [ 'customer_cancelled_order', 'cancelled_order' ], true ) ) {
+			$order->update_meta_data( '_dtb_cancellation_email_note', 'We were unable to verify the shipping address. Please contact our team so we can help.' );
+		}
 		$item = new \WC_Order_Item_Product();
 		$item->set_name( 'Professional drywall finishing tool — sample' );
 		$item->set_quantity( 2 );
 		$item->set_subtotal( '129.00' );
 		$item->set_total( '129.00' );
 		$order->add_item( $item );
+		$shipping = new \WC_Order_Item_Shipping();
+		$shipping->set_method_title( 'Sample ground shipping' );
+		$shipping->set_method_id( 'flat_rate' );
+		$shipping->set_total( '12.00' );
+		$order->add_item( $shipping );
+		$order->set_cart_tax( '9.36' );
+		$order->set_shipping_tax( '0.96' );
 		$order->set_shipping_total( '12.00' );
-		$order->set_total( '141.00' );
+		$order->set_total( '151.32' );
 		return $order;
 	}
 

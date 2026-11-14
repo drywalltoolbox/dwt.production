@@ -22,6 +22,7 @@ import { SORT_OPTIONS } from '../constants/sortOptions';
 import { useCatalogFacets } from '../hooks/useCatalogFacets';
 import { useCatalogProducts } from '../hooks/useCatalogProducts';
 import { useCatalogCategory } from '../hooks/useCatalogCategory';
+import { useStorefrontNavigation } from '../hooks/useStorefrontNavigation.js';
 import { useCart } from '../context/CartContext';
 import { useWorkflowTransition } from '../context/WorkflowTransitionContext.jsx';
 import { buildBreadcrumbSchema, buildCategorySchema, buildSiteLinksSearchBoxSchema } from '../utils/schema';
@@ -370,20 +371,28 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   // the dedicated Parts catalog. Products is intentionally unconstrained and
   // may contain both tools and parts; Parts alone applies is_parts=1.
   const effectivePartsFilter = isPartsPage ? 1 : null;
-  const scopedFacets = effectivePartsFilter === null
-    ? { brand: selectedBrand, category: query.category, search: query.search }
-    : { isParts: effectivePartsFilter, brand: selectedBrand, category: query.category, search: query.search };
+  // Filter choices are a catalog-wide projection, not a second product query.
+  // Keep the facet cache stable while customers search or toggle filters; the
+  // endpoint scans catalog products and search-scoped facet requests bypass its
+  // server cache. Parts remains a separate facet universe.
+  const scopedFacets = effectivePartsFilter === null ? {} : { isParts: effectivePartsFilter };
   const productQuery = effectivePartsFilter === null ? query : { ...query, isParts: effectivePartsFilter };
 
   const { facets, loading: facetsLoading, error: facetsError } = useCatalogFacets(scopedFacets);
   const { items, pagination, loading: itemsLoading, error: productsError } = useCatalogProducts(productQuery, { enabled: productsEnabled });
   const { category: categoryMeta, loading: categoryMetaLoading, error: categoryMetaError } = useCatalogCategory(isCategoryPageRoute ? categoryPathSlug : null);
+  const { navigation: storefrontNavigation } = useStorefrontNavigation();
+  const navigationBrands = effectivePartsFilter === 1
+    ? storefrontNavigation?.parts?.brands
+    : storefrontNavigation?.brands;
 
   const brandFacets = useMemo(
     () => dedupeCatalogBrandEntries(
-      Array.isArray(facets?.brands) ? facets.brands.map(toBrandFacet).filter((brand) => brand.label) : []
+      (facets && Array.isArray(facets.brands) ? facets.brands : (navigationBrands || []))
+        .map(toBrandFacet)
+        .filter((brand) => brand.label)
     ),
-    [facets]
+    [facets, navigationBrands]
   );
   const selectedBrandFacet = useMemo(() => {
     if (!selectedBrand) return null;
@@ -535,30 +544,28 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
 
   const categoryToolTypes = useMemo(
     () => {
-      const navGroup = normalizeCatalogNavigationGroups(facets?.navigationGroups)
+      const navGroup = normalizeCatalogNavigationGroups(storefrontNavigation?.shop)
         .find((group) => group.slug === categoryPathSlug);
-      const children = selectedBrand
-        ? (navGroup?.children || [])
-        : (navGroup ? navGroup.children : (Array.isArray(categoryMeta?.children) ? categoryMeta.children : []));
+      const children = navGroup?.children || categoryMeta?.children || [];
       return children
         .map((child) => ({
           ...child,
           name: child?.label || child?.name || '',
-          count: Number(child?.productCount || child?.count || 0),
         }))
-        .filter((child) => child.name && child.slug && child.count > 0);
+        .filter((child) => child.name && child.slug);
     },
-    [categoryMeta, categoryPathSlug, facets?.navigationGroups, selectedBrand],
+    [categoryMeta?.children, categoryPathSlug, storefrontNavigation?.shop],
   );
 
   const allProductsToolTypes = useMemo(
-    () => flattenCatalogNavigationGroups(facets?.navigationGroups)
+    () => flattenCatalogNavigationGroups(storefrontNavigation?.shop)
       .map((category) => ({
         ...category,
-        name: category.label,
+        name: category.label || category.name,
+        to: buildCategoryPageUrl(category.slug),
       }))
-      .filter((category) => category.name && category.slug && category.count > 0),
-    [facets?.navigationGroups],
+      .filter((category) => category.name && category.slug),
+    [storefrontNavigation?.shop],
   );
 
   const allProductsBreadcrumbs = useMemo(() => [

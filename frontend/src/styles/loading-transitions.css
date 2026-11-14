@@ -333,8 +333,8 @@
 
 @media (min-width: 768px) {
   .dtb-product-skeleton-grid {
-    grid-template-columns: repeat(auto-fill, minmax(210px, 240px));
-    justify-content: start;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    justify-content: stretch;
     gap: var(--dtb-space-4);
   }
 

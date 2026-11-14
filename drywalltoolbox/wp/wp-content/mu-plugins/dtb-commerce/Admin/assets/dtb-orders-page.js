@@ -527,7 +527,7 @@
 		fetchOrder( orderId );
 	}
 
-	function runTransition( toStatus, button ) {
+	function runTransition( toStatus, button, cancellationNote ) {
 		if ( ! state.orderId || ! toStatus ) { return; }
 		var orderId = state.orderId;
 		WB.lockAction( button, 'Working…' );
@@ -537,6 +537,7 @@
 			body: {
 				action_type: 'transition',
 				to_status:   toStatus,
+				cancellation_note: 'cancelled' === toStatus ? ( cancellationNote || '' ) : '',
 				idempotency_key: 'orders-' + state.orderId + '-transition-' + toStatus,
 			},
 		} ).then( function ( data ) {
@@ -594,7 +595,16 @@
 			event.preventDefault();
 			var toStatus = transBtn.getAttribute( 'data-status' );
 			var run = function () {
-				runTransition( toStatus, transBtn );
+				var cancellationNote = '';
+				if ( 'cancelled' === toStatus ) {
+					cancellationNote = window.prompt( 'Optional note to include in the customer cancellation email (2,000 characters max):', '' );
+					if ( null === cancellationNote ) { return; }
+					if ( cancellationNote.length > 2000 ) {
+						WB.showToast( 'Cancellation note must be 2,000 characters or fewer.', 'error' );
+						return;
+					}
+				}
+				runTransition( toStatus, transBtn, cancellationNote );
 			};
 			if ( transBtn.getAttribute( 'data-confirm' ) === '0' ) {
 				run();

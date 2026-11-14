@@ -77,7 +77,7 @@
 .dtb-product-card--rail .dtb-product-card__sku { display:block;font-size:.7rem; }
 
 @media (min-width:768px) {
-  .dtb-product-grid,.product-skeleton-grid { grid-template-columns:repeat(auto-fill,minmax(210px,240px));justify-content:start;gap:20px; }
+  .dtb-product-grid,.product-skeleton-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));justify-content:stretch;gap:clamp(16px,1.25vw,22px); }
   .dtb-product-grid--list { grid-template-columns:1fr; }
   .dtb-product-card { position:relative;height:100%; }
   .dtb-product-card--rail { width:var(--dtb-rail-tile-w-desktop); }

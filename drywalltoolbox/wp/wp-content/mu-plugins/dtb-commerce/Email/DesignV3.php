@@ -203,10 +203,10 @@ function dtb_email_v3_primary_button(string $url,string $label):string{
 		. '<a href="'.esc_url($url).'" style="display:block;padding:15px 22px;font-family:'.esc_attr($font).';font-size:15px;font-weight:700;line-height:21px;text-align:center;color:#ffffff!important;text-decoration:none;">'.esc_html($label).'</a>'
 		. '</td></tr></table>';
 }
-function dtb_email_v3_support_panel(string $heading='',string $copy=''):string{
+function dtb_email_v3_support_panel(string $heading='',string $copy='',string $cta_label=''):string{
 	$font=dtb_email_v3_font();$url=function_exists('dtb_email_support_url')?\dtb_email_support_url():home_url('/contact/');
-	$heading=''!==$heading?$heading:__('Questions about your order?','drywall-toolbox');$copy=''!==$copy?$copy:__('Our support team is here to help.','drywall-toolbox');
-	return '<table class="dtb-v4-support" role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" style="width:87%;max-width:592px;margin:18px auto 22px;"><tr><td align="center" style="padding:0 22px;color:#10213a;font-family:'.esc_attr($font).';"><strong style="display:block;margin:0 0 6px;font-size:17px;font-weight:750;line-height:24px;letter-spacing:-.2px;">'.esc_html($heading).'</strong><span style="display:block;color:#52627e;font-size:14px;font-weight:400;line-height:22px;">'.esc_html($copy).' <a href="'.esc_url($url).'" style="color:#2255EE;font-weight:650;text-decoration:none;">'.esc_html__('Contact support','drywall-toolbox').'</a>.</span></td></tr></table>';
+	$heading=''!==$heading?$heading:__('Questions about your order?','drywall-toolbox');$copy=''!==$copy?$copy:__('Our support team is here to help.','drywall-toolbox');$cta_label=''!==$cta_label?$cta_label:__('Contact support','drywall-toolbox');
+	return '<table class="dtb-v4-support" role="presentation" border="0" cellpadding="0" cellspacing="0" width="87%" align="center" style="width:87%;max-width:592px;margin:18px auto 22px;"><tr><td align="center" style="padding:0 22px;color:#10213a;font-family:'.esc_attr($font).';"><strong style="display:block;margin:0 0 6px;font-size:17px;font-weight:750;line-height:24px;letter-spacing:-.2px;">'.esc_html($heading).'</strong><span style="display:block;color:#52627e;font-size:14px;font-weight:400;line-height:22px;">'.esc_html($copy).' <a href="'.esc_url($url).'" style="color:#2255EE;font-weight:650;text-decoration:none;">'.esc_html($cta_label).'</a>.</span></td></tr></table>';
 }
 
 

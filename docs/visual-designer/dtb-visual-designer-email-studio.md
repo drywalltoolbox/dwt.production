@@ -48,6 +48,8 @@ Refund, native Fulfillment, account, password-reset, and other lifecycle-specifi
 - Order lookup is read-only and bounded to a 30-order selector.
 - Rendered HTML is capped at 750,000 bytes.
 - The iframe is sandboxed and receives only the rendered HTML document.
+- The preview frame permits its own origin so the self-hosted Geist font loads;
+  scripts, forms, and top-level navigation remain blocked by the sandbox.
 - No credentials, payment data, raw exceptions, or executable editor input are exposed.
 
 ## Operator workflow

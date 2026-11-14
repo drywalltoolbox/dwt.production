@@ -143,7 +143,7 @@ function dtb_order_rest_build_admin_actions( WC_Order $order, string $workflow_k
  * @param string   $to_status    Destination WC status slug.
  * @return bool|WP_Error
  */
-function dtb_order_rest_transition_order_status( WC_Order $order, string $workflow_key, string $to_status ): bool|WP_Error {
+function dtb_order_rest_transition_order_status( WC_Order $order, string $workflow_key, string $to_status, string $cancellation_note = '' ): bool|WP_Error {
 	$to_status      = sanitize_key( $to_status );
 	$current_status = sanitize_key( (string) $order->get_status() );
 	$order_id       = absint( $order->get_id() );
@@ -178,6 +178,15 @@ function dtb_order_rest_transition_order_status( WC_Order $order, string $workfl
 		if ( ! isset( $wc_statuses[ 'wc-' . $to_status ] ) ) {
 			return new WP_Error( 'dtb_invalid_status', __( 'Destination order status is not registered in WooCommerce.', 'drywall-toolbox' ), [ 'status' => 400 ] );
 		}
+	}
+	if ( 'cancelled' === $to_status ) {
+		$cancellation_note = sanitize_textarea_field( $cancellation_note );
+		if ( strlen( $cancellation_note ) > 2000 ) {
+			return new WP_Error( 'dtb_invalid_cancellation_note', __( 'Cancellation note must be 2,000 characters or fewer.', 'drywall-toolbox' ), [ 'status' => 400 ] );
+		}
+		// Persist before update_status fires WooCommerce's customer cancellation email.
+		$order->update_meta_data( '_dtb_cancellation_email_note', $cancellation_note );
+		$order->save();
 	}
 
 	try {
@@ -478,7 +487,8 @@ function dtb_order_rest_admin_action( WP_REST_Request $request ): WP_REST_Respon
 			}
 			$order_type   = function_exists( 'dtb_order_resolve_type' ) ? dtb_order_resolve_type( $order ) : 'product';
 			$workflow_key = 'repair' === $order_type ? 'repair_order' : 'product_order';
-			$result       = dtb_order_rest_transition_order_status( $order, $workflow_key, $to_status );
+			$cancellation_note = (string) $request->get_param( 'cancellation_note' );
+			$result       = dtb_order_rest_transition_order_status( $order, $workflow_key, $to_status, $cancellation_note );
 			if ( is_wp_error( $result ) ) {
 				return $result;
 			}

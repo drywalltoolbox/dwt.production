@@ -157,6 +157,31 @@ recipients, CC/BCC, email type, and any subject/heading/additional-content an
 administrator has explicitly configured. DTB supplies default copy and visual
 presentation without bypassing WooCommerce's email settings system.
 
+## Customer cancellation email
+
+The order workbench's **Move to Cancelled** action accepts an optional
+operator-entered note, limited to 2,000 characters. The note is stored on the
+WooCommerce order before the status transition fires the native customer
+cancellation email, then rendered as escaped text in that email. Orders
+cancelled through other paths have no note unless one was explicitly saved by
+the workbench. The customer cancellation template intentionally omits
+`woocommerce_email_customer_details`, so it does not render billing or shipping
+address details. Email Studio's synthetic cancellation fixture includes a
+sample note for layout review; it does not represent a real order.
+The shared order-details projection serves customer and operator order emails.
+It preserves WooCommerce's shipping and tax breakdowns and adds an explicit
+shipping and tax total if WooCommerce omits either row, including zero-value
+rows. Tax-inclusive orders label the tax as included. The synthetic preview
+includes sample shipping and tax amounts so both rows are visible during review.
+The cancellation note uses an email-safe, inset brand-accented panel with an
+“A message about your order” heading and the same Geist/system font stack as
+the rest of the message.
+The customer cancellation hero uses the heading “We’ve cancelled your order”
+and explains that support can help with questions or next steps, without
+assuming or disclosing a cancellation reason.
+Its support callout reads “Need a hand?” and gives customers a direct “Contact
+us” link with a short, reassuring message.
+
 ## Fulfillment authority
 
 Veeqo remains authoritative for shipment/tracking facts. Native WooCommerce
