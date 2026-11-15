@@ -39,6 +39,9 @@ function dtb_order_admin_ajax_operator_action(): void {
 
 	switch ( $dtb_action ) {
 		case 'retry_veeqo':
+			if ( function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) {
+				wp_send_json_error( [ 'message' => __( 'Veeqo order workflows are temporarily paused.', 'drywall-toolbox' ) ], 409 );
+			}
 			dtb_order_enqueue_job( 'dtb_order_sync_veeqo', $order_id );
 			dtb_order_append_event( $order_id, 'integration.veeqo.queued', [
 				'source'     => 'wp_admin',
@@ -72,6 +75,9 @@ function dtb_order_admin_ajax_operator_action(): void {
 			break;
 
 		case 'resend_shipped':
+			if ( function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) {
+				wp_send_json_error( [ 'message' => __( 'Veeqo shipment emails are paused while the fulfillment workflow is being integrated.', 'drywall-toolbox' ) ], 409 );
+			}
 			dtb_order_enqueue_job( 'dtb_order_send_notification', $order_id, [ 'template' => 'order-shipped', 'admin_approved' => true ] );
 			wp_send_json_success( [ 'message' => __( 'Shipping email re-queued.', 'drywall-toolbox' ) ] );
 			break;

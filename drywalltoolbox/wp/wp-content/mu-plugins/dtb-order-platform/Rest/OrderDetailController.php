@@ -88,15 +88,20 @@ function dtb_order_rest_build_admin_actions( WC_Order $order, string $workflow_k
 			'description' => __( 'Queue a fresh order confirmation email for the customer.', 'drywall-toolbox' ),
 			'confirm'     => true,
 		];
-		$actions[] = [
-			'id'          => 'resend_shipped',
-			'type'        => 'server_action',
-			'action_type' => 'resend_shipped',
-			'group'       => 'Customer Communication',
-			'label'       => __( 'Send Shipping Email', 'drywall-toolbox' ),
-			'description' => __( 'Send a customer shipment update using the current tracking state after you approve it.', 'drywall-toolbox' ),
-			'confirm'     => true,
-		];
+		$veeqo_automation_paused = function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused();
+		$actions[] = $veeqo_automation_paused
+			? [
+				'id' => 'shipping_email_paused', 'type' => 'notice', 'group' => 'Customer Communication',
+				'label' => __( 'Shipping email paused', 'drywall-toolbox' ),
+				'description' => __( 'Veeqo shipment emails are paused while the fulfillment workflow is being integrated. Status emails can still be reviewed per order.', 'drywall-toolbox' ),
+			]
+			: [
+				'id' => 'resend_shipped', 'type' => 'server_action', 'action_type' => 'resend_shipped',
+				'group' => 'Customer Communication',
+				'label' => __( 'Send Shipping Email', 'drywall-toolbox' ),
+				'description' => __( 'Send a customer shipment update using the current tracking state after you approve it.', 'drywall-toolbox' ),
+				'confirm' => true,
+			];
 
 		if ( 'product' === $order_type ) {
 			$actions[] = [
@@ -465,6 +470,9 @@ function dtb_order_rest_admin_action( WP_REST_Request $request ): WP_REST_Respon
 			break;
 
 		case 'retry_veeqo':
+			if ( function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) {
+				return new WP_Error( 'veeqo_order_workflows_paused', __( 'Veeqo order workflows are temporarily paused.', 'drywall-toolbox' ), [ 'status' => 409 ] );
+			}
 			dtb_order_enqueue_job( 'dtb_order_sync_veeqo', $order_id );
 			if ( function_exists( 'dtb_order_append_event' ) ) {
 				dtb_order_append_event( $order_id, 'integration.veeqo.queued', [
@@ -505,6 +513,9 @@ function dtb_order_rest_admin_action( WP_REST_Request $request ): WP_REST_Respon
 			break;
 
 		case 'resend_shipped':
+			if ( function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) {
+				return new WP_Error( 'dtb_shipment_email_paused', __( 'Veeqo shipment emails are paused while the fulfillment workflow is being integrated.', 'drywall-toolbox' ), [ 'status' => 409 ] );
+			}
 			dtb_order_enqueue_job( 'dtb_order_send_notification', $order_id, [ 'template' => 'order-shipped', 'admin_approved' => true ] );
 			if ( function_exists( 'dtb_order_append_event' ) ) {
 				dtb_order_append_event( $order_id, 'notification.order_shipped_queued', [

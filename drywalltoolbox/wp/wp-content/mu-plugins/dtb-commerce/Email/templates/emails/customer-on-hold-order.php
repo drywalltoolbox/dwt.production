@@ -3,9 +3,8 @@
  * DTB branded customer on-hold order email.
  *
  * Traced against WooCommerce core emails/customer-on-hold-order.php v10.4.0.
- * DTB customization: hero + progress tracker (first stage shown as
- * "pending"/warning tone, not "done" — payment isn't confirmed yet, so the
- * step must not claim it is). Hook sequence preserved.
+ * DTB customization: status-specific branded introduction and three-stage
+ * email-safe order progress component. WooCommerce hook sequence preserved.
  *
  * @package DrywalltoolboxCommerce
  */
@@ -14,20 +13,9 @@ defined( 'ABSPATH' ) || exit;
 
 do_action( 'woocommerce_email_header', $email_heading, $email );
 
-echo function_exists( 'dtb_email_hero' ) ? dtb_email_hero( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	$email_heading,
-	'',
-	/* translators: %s: order number. */
-	sprintf( __( 'Order #%s', 'drywall-toolbox' ), $order->get_order_number() )
-) : '';
-
-echo function_exists( 'dtb_email_progress_steps' ) ? dtb_email_progress_steps( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-	[
-		[ 'label' => __( 'Payment pending', 'drywall-toolbox' ), 'state' => 'warning' ],
-		[ 'label' => __( 'Being prepared', 'drywall-toolbox' ), 'state' => 'upcoming' ],
-		[ 'label' => __( 'Shipping update', 'drywall-toolbox' ), 'state' => 'upcoming' ],
-	]
-) : '';
+echo function_exists( '\\DTB\\Commerce\\Email\\dtb_email_on_hold_order_intro' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	? \DTB\Commerce\Email\dtb_email_on_hold_order_intro( $order )
+	: '';
 ?>
 
 <?php

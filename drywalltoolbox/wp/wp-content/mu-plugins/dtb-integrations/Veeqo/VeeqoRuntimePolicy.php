@@ -14,6 +14,11 @@ defined( 'ABSPATH' ) || exit;
 
 const DTB_VEEQO_ORDER_AUTOMATION_PAUSED_OPTION = 'dtb_veeqo_order_automation_paused';
 
+// Fail closed from the first runtime load; this is a reversible operator flag.
+if ( false === get_option( DTB_VEEQO_ORDER_AUTOMATION_PAUSED_OPTION, false ) ) {
+	add_option( DTB_VEEQO_ORDER_AUTOMATION_PAUSED_OPTION, 'yes', '', false );
+}
+
 /** Keep Veeqo order-state workflows paused until the operator workflow is re-integrated. */
 function dtb_veeqo_order_automation_is_paused(): bool {
 	$value = get_option( DTB_VEEQO_ORDER_AUTOMATION_PAUSED_OPTION, null );

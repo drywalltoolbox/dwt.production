@@ -94,3 +94,10 @@ order transition and email lifecycle. Refunds must be created in WooCommerce's
 native refund controls; DTB does not create a refund by setting `refunded`
 status. Email layout and global copy continue to be authored in DTB Email
 Studio, while the workbench provides per-order communication review.
+
+Veeqo order-state polling/application and Veeqo-triggered customer shipment
+emails are temporarily paused by the `dtb_veeqo_order_automation_paused`
+WordPress option (`yes` = paused, `no` = enabled). A missing option is created
+paused. This pause does not disable Veeqo inventory projections or WooCommerce
+shipping-rate calculation. Re-enable only after the operator workflow and
+shipment email template have been integrated and verified.

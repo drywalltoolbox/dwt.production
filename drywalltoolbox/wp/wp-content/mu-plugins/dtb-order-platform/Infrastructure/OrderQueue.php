@@ -18,6 +18,7 @@ function dtb_order_enqueue_job( string $job_type, int $order_id, array $args = [
 	if ( '' === $job_type || $order_id <= 0 ) {
 		return false;
 	}
+	if ( 'dtb_order_sync_veeqo' === $job_type && function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) { return false; }
 	if ( 'dtb_order_sync_quickbooks' === $job_type && dtb_qbo_exports_paused() ) { return false; }
 	if ( 'dtb_order_issue_rewards' === $job_type ) {
 		return false;
@@ -48,6 +49,7 @@ function dtb_order_enqueue_job( string $job_type, int $order_id, array $args = [
 }
 
 function dtb_order_retry_job( string $job_type, int $order_id, array $args = [] ): bool {
+	if ( 'dtb_order_sync_veeqo' === $job_type && function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) { return false; }
 	if ( 'dtb_order_sync_quickbooks' === $job_type && dtb_qbo_exports_paused() ) { return false; }
 	if ( 'dtb_order_issue_rewards' === $job_type ) {
 		return false;
@@ -129,6 +131,11 @@ function dtb_order_veeqo_order_sync_enabled(): bool {
 add_action( 'dtb_order_sync_veeqo', 'dtb_order_job_sync_veeqo', 10, 2 );
 function dtb_order_job_sync_veeqo( int $order_id, array $args = [] ): void {
 	$attempt = isset( $args['attempt'] ) ? max( 1, (int) $args['attempt'] ) : 1;
+	if ( function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) {
+		dtb_order_update_integration_state( $order_id, 'veeqo', [ 'status' => 'disabled', 'error' => 'Veeqo order automation is temporarily paused.' ] );
+		dtb_order_append_event( $order_id, 'integration.veeqo.skipped', [ 'source' => 'cron', 'actor_type' => 'system', 'visibility' => 'operator', 'payload' => [ 'reason' => 'veeqo_order_automation_paused' ] ] );
+		return;
+	}
 	dtb_order_append_event( $order_id, 'integration.veeqo.queued', [
 		'source'     => 'cron',
 		'actor_type' => 'system',
@@ -366,6 +373,9 @@ add_action( 'dtb_order_send_notification', 'dtb_order_job_send_notification', 10
 function dtb_order_job_send_notification( int $order_id, array $args = [] ): void {
 	$template = sanitize_key( $args['template'] ?? '' );
 	if ( '' === $template ) {
+		return;
+	}
+	if ( 'order-shipped' === $template && function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) {
 		return;
 	}
 	if ( 'order-shipped' === $template && empty( $args['admin_approved'] ) ) {

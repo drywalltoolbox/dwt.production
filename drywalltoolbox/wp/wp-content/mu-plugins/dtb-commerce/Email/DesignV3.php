@@ -128,6 +128,44 @@ function dtb_email_v4_order_hero( $order, $email, array $options = [] ): string 
 		.'</td></tr>'.$progress_row.'</table>';
 }
 
+/** Premium, on-hold specific order introduction and milestone stepper. */
+function dtb_email_on_hold_order_intro( $order ): string {
+	if ( ! $order instanceof \WC_Order ) { return ''; }
+	$font = dtb_email_v3_font();
+	$steps = [
+		[ 'number' => '01', 'title' => __( 'Order received', 'drywall-toolbox' ), 'detail' => __( 'We’ll follow up if we need anything.', 'drywall-toolbox' ), 'current' => true ],
+		[ 'number' => '02', 'title' => __( 'Getting ready', 'drywall-toolbox' ), 'detail' => __( 'We’ll move ahead as soon as we can.', 'drywall-toolbox' ), 'current' => false ],
+		[ 'number' => '03', 'title' => __( 'Shipping update', 'drywall-toolbox' ), 'detail' => __( 'We’ll share tracking when it ships.', 'drywall-toolbox' ), 'current' => false ],
+	];
+	$track = '';
+	$copy = '';
+	foreach ( $steps as $index => $step ) {
+		$is_current = $step['current'];
+		$circle_bg = $is_current ? '#382810' : '#24384c';
+		$circle_border = $is_current ? '#e5a638' : '#52677c';
+		$circle_text = $is_current ? '#ffe0a5' : '#c6d2df';
+		$node = '<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="border-collapse:separate;"><tr><td class="dtb-onhold-step-marker'.( $is_current ? ' dtb-onhold-step-marker-current' : '' ).'" width="58" height="58" align="center" valign="middle" bgcolor="'.esc_attr( $circle_bg ).'" style="width:58px;height:58px;border:2px solid '.esc_attr( $circle_border ).';border-radius:50%;background-color:'.esc_attr( $circle_bg ).';color:'.esc_attr( $circle_text ).';font-family:'.esc_attr( $font ).';font-size:17px;font-weight:750;line-height:54px;box-sizing:border-box;">'.esc_html( $step['number'] ).'</td></tr></table>';
+		$left_rail = $index > 0 ? '<td width="25%" valign="middle" style="width:25%;padding:0;"><table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td height="2" bgcolor="#53677a" style="height:2px;background-color:#53677a;font-size:1px;line-height:1px;">&nbsp;</td></tr></table></td>' : '<td width="25%" style="width:25%;padding:0;"></td>';
+		$right_rail = $index < 2 ? '<td width="25%" valign="middle" style="width:25%;padding:0;"><table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td height="2" bgcolor="#53677a" style="height:2px;background-color:#53677a;font-size:1px;line-height:1px;">&nbsp;</td></tr></table></td>' : '<td width="25%" style="width:25%;padding:0;"></td>';
+		$track .= '<td class="dtb-onhold-step-track-cell" width="33.33%" align="center" valign="middle" style="width:33.33%;padding:0;"><table class="dtb-onhold-step-track-inner" role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="width:100%;table-layout:fixed;border-collapse:collapse;"><tr>'.$left_rail.'<td width="58" align="center" valign="middle" style="width:58px;padding:0;">'.$node.'</td>'.$right_rail.'</tr></table></td>';
+		$copy .= '<td class="dtb-onhold-step-copy" width="33.33%" align="center" valign="top" style="width:33.33%;padding:15px 8px 0;font-family:'.esc_attr( $font ).';">'
+			. '<p class="dtb-onhold-step-title" style="margin:0;color:#f4f7fb;font-size:14px;font-weight:700;line-height:19px;">'.esc_html( $step['title'] ).'</p>'
+			. '<p class="dtb-onhold-step-detail" style="margin:7px 0 0;color:#bdc9d6;font-size:11px;font-weight:400;line-height:16px;">'.esc_html( $step['detail'] ).'</p></td>';
+	}
+	$number = sprintf( __( 'Order #%s', 'drywall-toolbox' ), $order->get_order_number() );
+	return '<table class="dtb-onhold-intro" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff" style="width:100%;border-collapse:collapse;background-color:#ffffff;">'
+		. '<tr><td class="dtb-onhold-hero-copy" style="padding:35px 40px 29px;font-family:'.esc_attr( $font ).';">'
+		. '<p style="margin:0 0 12px;color:#2255ee;font-size:11px;font-weight:800;line-height:16px;letter-spacing:1.5px;text-transform:uppercase;">'.esc_html( $number ).'</p>'
+		. '<h1 class="dtb-onhold-title" style="margin:0 0 12px;color:#10213a;font-family:'.esc_attr( $font ).';font-size:32px;font-weight:750;line-height:39px;letter-spacing:-.75px;">'.esc_html__( 'Your order is on hold.', 'drywall-toolbox' ).'</h1>'
+		. '<p class="dtb-onhold-body" style="margin:0;color:#34445e;font-size:16px;font-weight:400;line-height:25px;">'.esc_html__( 'We’ve received your order and will be in touch if we need anything. Thanks for your patience!', 'drywall-toolbox' ).'</p>'
+		. '</td></tr>'
+		. '<tr><td class="dtb-onhold-panel" bgcolor="#0b1c2d" style="padding:25px 28px 27px;background-color:#0b1c2d;">'
+		. '<p style="margin:0 0 24px;color:#94b5ff;font-family:'.esc_attr( $font ).';font-size:10px;font-weight:800;line-height:15px;letter-spacing:1.55px;text-align:center;text-transform:uppercase;">'.esc_html__( 'What happens next', 'drywall-toolbox' ).'</p>'
+		. '<table class="dtb-onhold-track" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%;table-layout:fixed;border-collapse:collapse;"><tr>'.$track.'</tr></table>'
+		. '<table class="dtb-onhold-copy" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%;table-layout:fixed;border-collapse:collapse;"><tr>'.$copy.'</tr></table>'
+		. '</td></tr></table>';
+}
+
 /**
  * Order confirmation masthead and compact identity/shipping overview.
  * Visual grouping only: WC_Order remains the source of all displayed values.

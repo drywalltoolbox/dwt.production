@@ -110,6 +110,9 @@ function dtb_order_dispatch_processing_jobs( int $order_id ): void {
 		if ( 'dtb_order_sync_quickbooks' === $hook && function_exists( 'dtb_qbo_exports_paused' ) && dtb_qbo_exports_paused() ) {
 			continue;
 		}
+		if ( 'dtb_order_sync_veeqo' === $hook && function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) {
+			continue;
+		}
 		if ( function_exists( 'dtb_order_write_boundary_should_block_job' ) && dtb_order_write_boundary_should_block_job( $hook, $order_id, $args ) ) {
 			continue;
 		}

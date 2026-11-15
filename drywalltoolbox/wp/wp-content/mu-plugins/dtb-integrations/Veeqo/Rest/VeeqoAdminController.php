@@ -49,6 +49,7 @@ final class DTB_Veeqo_Admin_Controller {
 	public static function operation(WP_REST_Request $r){$o=class_exists('DTB_Veeqo_Operation_Store')?DTB_Veeqo_Operation_Store::get((string)$r['operation_id']):[];return empty($o)?new WP_Error('operation_not_found','Veeqo operation not found.',['status'=>404]):rest_ensure_response($o);}
 	public static function sku(WP_REST_Request $r){$x=DTB_Veeqo_Admin_Read_Model::exact_sku((string)$r->get_param('sku'));return is_wp_error($x)?$x:rest_ensure_response($x);}
 	public static function retry_order(WP_REST_Request $r): WP_REST_Response {
+		if(function_exists('dtb_veeqo_order_automation_is_paused')&&dtb_veeqo_order_automation_is_paused())return new WP_REST_Response(['success'=>false,'code'=>'veeqo_order_workflows_paused','message'=>'Veeqo order workflows are temporarily paused.'],409);
 		$id=absint($r['order_id']);$order=function_exists('wc_get_order')?wc_get_order($id):null;
 		if(!$order instanceof WC_Order)return new WP_REST_Response(['success'=>false,'code'=>'order_not_found','message'=>'WooCommerce order not found.'],404);
 		if(!function_exists('dtb_order_enqueue_job'))return new WP_REST_Response(['success'=>false,'code'=>'queue_unavailable','message'=>'The canonical DTB order queue is unavailable.'],503);

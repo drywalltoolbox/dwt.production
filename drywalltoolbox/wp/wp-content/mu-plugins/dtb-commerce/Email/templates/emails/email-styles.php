@@ -44,6 +44,11 @@ body,table,td,th,p,a,span,div,h1,h2,h3,address{font-family:<?php echo $font; ?>}
 }
 
 
+/* On-hold order email stepper. */
+.dtb-onhold-intro{width:100%!important;border-collapse:collapse!important}.dtb-onhold-track,.dtb-onhold-copy{width:100%!important;table-layout:fixed!important}.dtb-onhold-step-track-cell,.dtb-onhold-step-copy{width:33.333%!important}.dtb-onhold-step-track-inner{width:100%!important;table-layout:fixed!important}.dtb-onhold-panel{background-color:#0b1c2d!important}.dtb-onhold-step-copy{overflow-wrap:anywhere;word-break:normal}
+@media only screen and (max-width:600px){.dtb-onhold-hero-copy{padding:27px 25px 24px!important}.dtb-onhold-panel{padding:22px 15px 24px!important}.dtb-onhold-step-marker{width:50px!important;height:50px!important;line-height:46px!important;font-size:15px!important}.dtb-onhold-step-track-inner>tbody>tr>td:nth-child(2){width:50px!important}.dtb-onhold-step-copy{padding:13px 4px 0!important}.dtb-onhold-step-title{font-size:12px!important;line-height:16px!important}.dtb-onhold-step-detail{font-size:10px!important;line-height:14px!important}}
+@media only screen and (max-width:420px){.dtb-onhold-hero-copy{padding:25px 20px 22px!important}.dtb-onhold-panel{padding:20px 10px 22px!important}.dtb-onhold-step-marker{width:42px!important;height:42px!important;line-height:38px!important;font-size:13px!important}.dtb-onhold-step-track-inner>tbody>tr>td:nth-child(2){width:42px!important}.dtb-onhold-step-copy{padding:11px 2px 0!important}.dtb-onhold-step-title{font-size:11px!important;line-height:14px!important}.dtb-onhold-step-detail{font-size:9px!important;line-height:12px!important}}
+
 /* Confirmation composition: stable in email clients; no visual effects required. */
 .dtb-confirm-intro{width:100%!important;border-collapse:collapse!important}
 .dtb-confirm-intro a{text-decoration:none}
