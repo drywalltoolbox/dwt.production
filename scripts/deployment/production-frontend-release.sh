@@ -38,6 +38,7 @@ snapshot="$snapshots/$release"
 record="$release_records/$release"
 
 is_release_file() {
+  [[ "$1" =~ ^catalogues/(columbia|tapetech)/page-[0-9]{2,3}\.jpg$ ]] && return 0
   case "$1" in
     .htaccess|index.html|asset-manifest.json|storefront-public-routes.json|robots.txt|llms.txt|site.webmanifest|404.html|favicon.ico|favicon.png|favicon-16x16.png|favicon-32x32.png|favicon-48x48.png|apple-touch-icon.png|android-chrome-192x192.png|android-chrome-512x512.png|android-chrome-maskable-192x192.png|android-chrome-maskable-512x512.png) return 0 ;;
     assets/css/*|assets/fonts/*|assets/images/*|assets/js/*|errors/[0-9][0-9][0-9].html|errors/error.css|errors/error-page.js|errors/dtb-logo-black.webp|brands/*/schematic_data*.json) return 0 ;;
@@ -53,7 +54,7 @@ collect_current_managed_files() {
     android-chrome-maskable-192x192.png android-chrome-maskable-512x512.png; do
     [[ ! -f "$target/$path" ]] || printf '%s\n' "$path"
   done
-  for path in assets/css assets/fonts assets/images assets/js errors; do
+  for path in assets/css assets/fonts assets/images assets/js errors catalogues; do
     [[ ! -d "$target/$path" ]] || find "$target/$path" -type f -printf '%P\n' | sed "s#^#$path/#"
   done
   if [[ -d "$target/brands" ]]; then
