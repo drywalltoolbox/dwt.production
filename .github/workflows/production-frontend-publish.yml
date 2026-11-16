@@ -95,7 +95,7 @@ jobs:
           assert "RewriteRule ^products/brands/?$ wp/index.php?dtb_storefront=1 [QSA,L]" in rules, "Brand index route does not use server rendering"
           assert "RewriteRule ^products/brands/([^/]+)/?$ wp/index.php?dtb_storefront=1 [QSA,L]" in rules, "Brand detail routes do not use server rendering"
           assert "RewriteRule ^category/([^/]+)/?$ wp/index.php?dtb_storefront=1 [QSA,L]" in rules, "Product category routes do not use server rendering"
-          assert "RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|contact|repairs|repairs/start|repairs/packages)/?$ wp/index.php?dtb_storefront=1 [QSA,L]" in rules, "Public content routes do not use server rendering"
+          assert "RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|contact|catalogues|repairs|repairs/start|repairs/packages)/?$ wp/index.php?dtb_storefront=1 [QSA,L]" in rules, "Public content routes do not use server rendering"
           assert "RewriteRule ^ index.html [QSA,L]" not in rules, "Retired storefront catch-all found"
           assert "RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]" in rules, "Canonical product route missing"
           assert "payment_intent=pi_" in rules, "WooPayments callback route missing"
