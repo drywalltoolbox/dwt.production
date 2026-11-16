@@ -348,6 +348,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   const [toast, setToast] = useState(null);
 
   const isPartsPage = isPartsFilter === 1;
+  const isCategoryContextRoute = Boolean(categoryPathSlug || categorySlug);
   const pathParams = useMemo(
     () => ({ brandSlug, categorySlug, categoryPathSlug, basePath: isPartsPage ? '/parts' : '/products' }),
     [brandSlug, categorySlug, categoryPathSlug, isPartsPage],
@@ -672,28 +673,49 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   const toggleBrand = (brand) => {
     const canonical = canonicalBrandLabel(brand);
     const nextBrand = canonicalBrandLabel(selectedBrand) === canonical ? '' : canonical;
-    setQuery({ brands: nextBrand ? [nextBrand] : [], displayCategory: [], category: '', search: query.search || '', sort: query.sort || 'popular', perPage: query.perPage || 25 });
+    const nextQuery = {
+      ...query,
+      brands: nextBrand ? [nextBrand] : [],
+      displayCategory: [],
+      category: '',
+      search: query.search || '',
+      sort: query.sort || 'popular',
+      perPage: query.perPage || 25,
+      page: 1,
+    };
+    if (categorySlug) {
+      navigate(buildCatalogUrl(nextQuery, { basePath: '/products' }));
+      return;
+    }
+    setQuery(nextQuery);
   };
 
   const toggleDisplayCategory = (displayCategory) => {
-    if (routeCategoryFilter && canonicalDisplayCategoryId(displayCategory) === canonicalDisplayCategoryId(routeCategoryFilter.id)) {
-      const remainingDisplayCategories = (query.displayCategory || [])
-        .filter((slug) => canonicalDisplayCategoryId(slug) !== canonicalDisplayCategoryId(displayCategory));
-      const parentSlug = categoryMeta?.parent?.slug || '';
-      const nextPathParams = { ...pathParams, categoryPathSlug: parentSlug || undefined };
+    // On a product-category landing page the route contributes a WooCommerce
+    // product_cat constraint. Display-category facets are a separate catalog
+    // dimension and are OR-combined, so keep the active route category as a
+    // selected facet, then move to the general Products listing when the
+    // customer changes that category selection. Keeping both constraints on
+    // /category/:slug silently intersects unrelated scopes and often returns 0.
+    const current = isCategoryContextRoute ? selectedPanelCategories : selectedDisplayCategories;
+    const isSelected = current.some((slug) => (
+      canonicalDisplayCategoryId(slug) === canonicalDisplayCategoryId(displayCategory)
+    ));
+    const toggled = isSelected
+      ? current.filter((slug) => canonicalDisplayCategoryId(slug) !== canonicalDisplayCategoryId(displayCategory))
+      : [...current, displayCategory];
+    const next = Array.from(new Map(toggled.map((slug) => [canonicalDisplayCategoryId(slug), slug])).values());
+
+    if (isCategoryContextRoute) {
       navigate(buildCatalogUrl({
         ...query,
-        category: parentSlug,
-        displayCategory: remainingDisplayCategories,
+        category: '',
+        displayCategory: next,
         page: 1,
-      }, nextPathParams));
+      }, { basePath: '/products' }));
       return;
     }
 
-    const current = query.displayCategory || [];
-    const next = current.includes(displayCategory)
-      ? current.filter((slug) => slug !== displayCategory)
-      : [...current, displayCategory];
     setQuery({ displayCategory: next, category: '', search: query.search || '' });
   };
 
@@ -708,8 +730,8 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
       page: 1,
     };
 
-    if (isCategoryPageRoute) {
-      navigate(buildCatalogUrl(clearedQuery, { ...pathParams, categoryPathSlug: undefined }));
+    if (isCategoryContextRoute) {
+      navigate(buildCatalogUrl(clearedQuery, { basePath: '/products' }));
       return;
     }
 

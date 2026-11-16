@@ -28,7 +28,7 @@ The catalog has two customer-facing listing scopes:
 - `/products` is the general catalog and is intentionally not constrained by `is_parts`; brand-level **All Products** views include every product for the selected brand, including replacement parts.
 - `/parts` is the dedicated parts catalog and is the only storefront scope that applies `is_parts=1`.
 
-`ProductsCatalogPlatform.jsx` owns catalog route state and passes the owning surface to `buildCatalogUrl()`. Query mutations such as pagination, sorting, search, brand filters, and category filters must preserve that surface instead of defaulting to `/products`.
+`ProductsCatalogPlatform.jsx` owns catalog route state and passes the owning surface to `buildCatalogUrl()`. Pagination, sorting, search, and ordinary filters preserve their current product or parts surface. `/category/:slug` and brand-category paths begin with a route-level category constraint; changing category facets converts that route category into the selected `display_category` set and moves to `/products`, where display-category selections use the catalog endpoint's any-match semantics. Parts filters remain on `/parts` and retain `is_parts=1`.
 
 `catalog/Pagination.jsx` owns pagination presentation only. Product totals and route mutation remain owned by the catalog page. Static catalog snapshots are bootstrap-only presentation data; the live `/dtb/v1/catalog/products` response remains authoritative for items, totals, page counts, and filter truth.
 
