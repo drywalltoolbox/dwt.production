@@ -126,6 +126,23 @@ if (emitted !== expected) {
   );
 }
 
+const catalogueRouteRules = appEnv === 'production'
+  ? [
+    'RewriteRule ^catalogues/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
+    'RewriteRule ^catalogues/[^/]+/?$ index.html [QSA,L]',
+  ]
+  : [
+    'RewriteRule ^catalogues/?$ index.html [QSA,L]',
+    'RewriteRule ^catalogues/[^/]+/?$ index.html [QSA,L]',
+  ];
+const existingDirectoryGuardPosition = emitted.indexOf('RewriteCond %{REQUEST_FILENAME} -f [OR]');
+if (existingDirectoryGuardPosition < 0 || catalogueRouteRules.some((rule) => {
+  const rulePosition = emitted.indexOf(rule);
+  return rulePosition < 0 || rulePosition > existingDirectoryGuardPosition;
+})) {
+  throw new Error('Catalogue index and viewer routes must precede the existing-file/directory short circuit.');
+}
+
 if (appEnv === 'production') {
   const sharedRootRoutingPath = path.join(repositoryRoot, 'drywalltoolbox', '.htaccess');
   const sharedRootRouting = fs.readFileSync(sharedRootRoutingPath, 'utf8');

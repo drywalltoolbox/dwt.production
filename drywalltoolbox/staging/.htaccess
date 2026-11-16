@@ -108,6 +108,11 @@ ErrorDocument 504 /staging/errors/504.html
   RewriteRule ^wp-content/(.*)$ /wp/wp-content/$1 [L,QSA]
   RewriteRule ^wp-includes/(.*)$ /wp/wp-includes/$1 [L,QSA]
 
+  # Catalogue page assets create a physical /catalogues/ directory. Route the
+  # catalogue index and viewer before the existing-directory short circuit.
+  RewriteRule ^catalogues/?$ index.html [QSA,L]
+  RewriteRule ^catalogues/[^/]+/?$ index.html [QSA,L]
+
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
@@ -122,7 +127,7 @@ ErrorDocument 504 /staging/errors/504.html
   # catalog before serving the staging shell.
   RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ /wp/index.php [QSA,L]
   RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|terms-of-service|privacy-policy|preview/technical-specifications|cart|contact|catalogues|settings/woocommerce|login|register|forgot-password|reset-password|dashboard)/?$ index.html [QSA,L]
-  RewriteRule ^(category/[^/]+|catalogues/[^/]+|repairs(/(start|packages|track|status/[^/]+))?|returns/status/[^/]+|checkout/(complete|payment-failed|payment-cancelled)|order/[0-9]+|order-tracking/[^/]+|support/status/[^/]+|dashboard/repairs/[^/]+|error/[^/]+)/?$ index.html [QSA,L]
+  RewriteRule ^(category/[^/]+|repairs(/(start|packages|track|status/[^/]+))?|returns/status/[^/]+|checkout/(complete|payment-failed|payment-cancelled)|order/[0-9]+|order-tracking/[^/]+|support/status/[^/]+|dashboard/repairs/[^/]+|error/[^/]+)/?$ index.html [QSA,L]
 </IfModule>
 
 <IfModule mod_headers.c>

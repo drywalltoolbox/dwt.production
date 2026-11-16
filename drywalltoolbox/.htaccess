@@ -220,6 +220,11 @@ ErrorDocument 511 /errors/511.html
   RewriteRule ^wp-cron\.php$ wp/wp-cron.php [L,QSA]
   RewriteRule ^xmlrpc\.php$ wp/xmlrpc.php [L,QSA]
 
+  # Catalogue page assets create a physical /catalogues/ directory. Route the
+  # catalogue index and viewer before the existing-directory short circuit.
+  RewriteRule ^catalogues/?$ wp/index.php?dtb_storefront=1 [QSA,L]
+  RewriteRule ^catalogues/[^/]+/?$ index.html [QSA,L]
+
   # Serve existing files/directories directly.
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
@@ -248,7 +253,6 @@ ErrorDocument 511 /errors/511.html
   # products return 404 and catalog failures remain temporary server errors.
   RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]
   RewriteRule ^(terms-of-service|privacy-policy|preview/technical-specifications|cart|settings/woocommerce|login|register|forgot-password|reset-password|dashboard)/?$ index.html [QSA,L]
-  RewriteRule ^catalogues/[^/]+/?$ index.html [QSA,L]
   RewriteRule ^(repairs/(track|status/[^/]+)|returns/status/[^/]+|checkout/(complete|payment-failed|payment-cancelled)|order/[0-9]+|order-tracking/[^/]+|support/status/[^/]+|dashboard/repairs/[^/]+|error/[^/]+)/?$ index.html [QSA,L]
 </IfModule>
 
