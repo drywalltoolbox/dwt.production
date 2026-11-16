@@ -1,0 +1,161 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - generic [ref=e5]: Free shipping on orders $50+
+      - generic [ref=e9]:
+        - link "Expert Support" [ref=e10] [cursor=pointer]:
+          - /url: /contact
+        - link "612-978-1007 Mon–Fri 8AM–5PM EST" [ref=e15] [cursor=pointer]:
+          - /url: tel:+16129781007
+          - generic [ref=e19]:
+            - strong [ref=e20]: 612-978-1007
+            - generic [ref=e21]: Mon–Fri 8AM–5PM EST
+    - generic [ref=e23]:
+      - link "Drywall Toolbox home" [ref=e25] [cursor=pointer]:
+        - /url: /
+        - img "Drywall Toolbox Logo" [ref=e26]
+      - navigation "Primary navigation" [ref=e28]:
+        - link "Shop" [ref=e30] [cursor=pointer]:
+          - /url: /products
+        - link "Brands" [ref=e35] [cursor=pointer]:
+          - /url: /products/brands
+        - link "Parts" [ref=e40] [cursor=pointer]:
+          - /url: /parts
+        - link "Repair Services" [ref=e45] [cursor=pointer]:
+          - /url: /repairs
+        - link "Schematics" [ref=e50] [cursor=pointer]:
+          - /url: /schematics
+      - search [ref=e56]:
+        - searchbox "Search products" [ref=e57]
+      - generic [ref=e58]:
+        - button "Open account hub" [ref=e60] [cursor=pointer]
+        - button "Toggle cart" [ref=e66] [cursor=pointer]
+  - main [ref=e72]:
+    - main [ref=e75]:
+      - paragraph [ref=e76]:
+        - link "Catalogues" [ref=e77] [cursor=pointer]:
+          - /url: /catalogues
+        - text: / TapeTech
+      - heading "TapeTech Product Catalog" [level=1] [ref=e78]
+      - paragraph [ref=e79]:
+        - text: 110 pages. Turn the pages with a drag, swipe, tap, or the arrow keys.
+        - link "Shop TapeTech" [ref=e80] [cursor=pointer]:
+          - /url: /products/brands/tapetech
+      - region "TapeTech Product Catalog flipbook" [ref=e81]:
+        - toolbar "Flipbook controls" [ref=e82]:
+          - generic [ref=e83]:
+            - button "First page" [disabled] [ref=e84]
+            - button "Previous page" [disabled] [ref=e88]
+            - paragraph [ref=e91]: Page 1 of 110
+            - button "Next page" [ref=e92] [cursor=pointer]
+            - button "Last page" [ref=e95] [cursor=pointer]
+          - generic [ref=e99]:
+            - button "Pages" [ref=e100] [cursor=pointer]
+            - button "Zoom out" [disabled] [ref=e103]
+            - generic "100% zoom" [ref=e107]: 100%
+            - button "Zoom in" [ref=e108] [cursor=pointer]
+            - button "Enter fullscreen" [ref=e112] [cursor=pointer]:
+              - generic [ref=e118]: Fullscreen
+        - generic [ref=e119]:
+          - generic [ref=e120]: Go to page
+          - spinbutton "Go to page" [ref=e121]
+          - button "Go" [ref=e122] [cursor=pointer]
+          - generic [ref=e123]: Use ← → arrow keys to turn pages.
+        - region "Catalogue pages. Drag, swipe, or tap the left or right side to turn pages." [ref=e125]:
+          - img "TapeTech Product Catalog, page 1 of 110" [ref=e126]
+        - paragraph [ref=e127]:
+          - text: Drag or swipe to turn pages, tap the left or right side of the book, or use the arrow keys.
+          - link "Shop TapeTech" [ref=e128] [cursor=pointer]:
+            - /url: /products/brands/tapetech
+        - generic [ref=e129]:
+          - button "Back to cover" [ref=e130] [cursor=pointer]
+          - link "All catalogues" [ref=e134] [cursor=pointer]:
+            - /url: /catalogues
+          - link "Shop TapeTech" [ref=e135] [cursor=pointer]:
+            - /url: /products/brands/tapetech
+  - contentinfo [ref=e145]:
+    - generic [ref=e146]:
+      - generic [ref=e147]:
+        - region "Drywall Toolbox" [ref=e148]:
+          - generic [ref=e149]:
+            - link "Drywall Toolbox home" [ref=e150] [cursor=pointer]:
+              - /url: /
+              - img "Drywall Toolbox" [ref=e151]
+            - navigation "Social media" [ref=e152]:
+              - link "Instagram" [ref=e153] [cursor=pointer]:
+                - /url: https://www.instagram.com/drywalltoolbox
+              - link "Facebook" [ref=e157] [cursor=pointer]:
+                - /url: https://www.facebook.com/Drywalltoolbox/
+              - link "X" [ref=e160] [cursor=pointer]:
+                - /url: https://twitter.com
+        - region "Shop" [ref=e163]:
+          - heading "Shop" [level=2] [ref=e164]
+          - list [ref=e165]:
+            - listitem [ref=e166]:
+              - link "All Products" [ref=e167] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=e168]:
+              - link "Shop by Brand" [ref=e169] [cursor=pointer]:
+                - /url: /products/brands
+            - listitem [ref=e170]:
+              - link "Parts" [ref=e171] [cursor=pointer]:
+                - /url: /parts
+        - region "Tools & Services" [ref=e172]:
+          - heading "Tools & Services" [level=2] [ref=e173]
+          - list [ref=e174]:
+            - listitem [ref=e175]:
+              - link "Schematics" [ref=e176] [cursor=pointer]:
+                - /url: /schematics
+            - listitem [ref=e177]:
+              - link "Repair Services" [ref=e178] [cursor=pointer]:
+                - /url: /repairs
+            - listitem [ref=e179]:
+              - link "Repair Packages" [ref=e180] [cursor=pointer]:
+                - /url: /repairs/packages
+        - region "Customer Support" [ref=e181]:
+          - heading "Customer Support" [level=2] [ref=e182]
+          - list [ref=e183]:
+            - listitem [ref=e184]:
+              - link "Help" [ref=e185] [cursor=pointer]:
+                - /url: /help
+            - listitem [ref=e186]:
+              - link "Contact Us" [ref=e187] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=e188]:
+              - link "Shipping & Returns" [ref=e189] [cursor=pointer]:
+                - /url: /policies
+        - region "My Account" [ref=e190]:
+          - heading "My Account" [level=2] [ref=e191]
+          - list [ref=e192]:
+            - listitem [ref=e193]:
+              - link "Sign In" [ref=e194] [cursor=pointer]:
+                - /url: /login
+            - listitem [ref=e195]:
+              - link "Account Dashboard" [ref=e196] [cursor=pointer]:
+                - /url: /dashboard
+            - listitem [ref=e197]:
+              - link "Track My Order" [ref=e198] [cursor=pointer]:
+                - /url: /dashboard?tab=orders
+      - generic [ref=e200]:
+        - paragraph [ref=e201]: © 2026 Drywall Toolbox. All rights reserved.
+        - navigation "Legal" [ref=e202]:
+          - link "Privacy" [ref=e203] [cursor=pointer]:
+            - /url: /privacy-policy/
+          - link "Terms" [ref=e204] [cursor=pointer]:
+            - /url: /terms-of-service/
+  - generic [aria-hidden]:
+    - dialog:
+      - banner:
+        - generic:
+          - heading [level=3]: Your cart
+        - generic:
+          - button
+      - generic:
+        - generic:
+          - generic:
+            - strong: Your cart is empty
+            - paragraph: Add products to get started.
+            - link:
+              - /url: /products
+              - text: Browse Products
+  - status [ref=e205]

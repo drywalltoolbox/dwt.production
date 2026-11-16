@@ -1,0 +1,431 @@
+- generic [ref=f1e2]:
+  - banner [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - generic [ref=f1e5]: Free shipping on orders $50+
+      - generic [ref=f1e9]:
+        - link "Expert Support" [ref=f1e10] [cursor=pointer]:
+          - /url: /contact
+        - link "612-978-1007 Mon–Fri 8AM–5PM EST" [ref=f1e15] [cursor=pointer]:
+          - /url: tel:+16129781007
+          - generic [ref=f1e19]:
+            - strong [ref=f1e20]: 612-978-1007
+            - generic [ref=f1e21]: Mon–Fri 8AM–5PM EST
+    - generic [ref=f1e23]:
+      - link "Drywall Toolbox home" [ref=f1e25] [cursor=pointer]:
+        - /url: /
+        - img "Drywall Toolbox Logo" [ref=f1e26]
+      - navigation "Primary navigation" [ref=f1e28]:
+        - link "Shop" [ref=f1e30] [cursor=pointer]:
+          - /url: /products
+        - link "Brands" [ref=f1e35] [cursor=pointer]:
+          - /url: /products/brands
+        - link "Parts" [ref=f1e40] [cursor=pointer]:
+          - /url: /parts
+        - link "Repair Services" [ref=f1e45] [cursor=pointer]:
+          - /url: /repairs
+        - link "Schematics" [ref=f1e50] [cursor=pointer]:
+          - /url: /schematics
+      - search [ref=f1e56]:
+        - searchbox "Search products" [ref=f1e57]
+      - generic [ref=f1e58]:
+        - button "Loading account" [disabled] [ref=f1e60]
+        - button "Toggle cart" [ref=f1e66] [cursor=pointer]
+  - main [ref=f1e72]:
+    - generic [ref=f1e75]:
+      - region "The New Standard In Drywall Tools" [ref=f1e76]:
+        - generic [ref=f1e77]:
+          - region "The New Standard In Drywall Tools" [ref=f1e80]:
+            - generic [ref=f1e84]:
+              - heading "The New Standard In Drywall Tools" [level=1] [ref=f1e85]:
+                - generic [ref=f1e86]: The New
+                - generic [ref=f1e87]: Standard In
+                - generic [ref=f1e88]: Drywall Tools
+              - paragraph [ref=f1e89]: Professional drywall tools, replacement parts, and repair services—all in one place.
+              - generic "Tools actions" [ref=f1e90]:
+                - link "Shop All Tools" [ref=f1e91] [cursor=pointer]:
+                  - /url: /products
+                - link "Shop by Brand" [ref=f1e97] [cursor=pointer]:
+                  - /url: /products/brands
+          - navigation "Homepage slides" [ref=f1e102]:
+            - group "Choose homepage slide" [ref=f1e103]:
+              - button "Show Tools slide (1 of 3)" [ref=f1e104] [cursor=pointer]
+              - button "Show Parts slide (2 of 3)" [ref=f1e105] [cursor=pointer]
+              - button "Show Repairs slide (3 of 3)" [ref=f1e106] [cursor=pointer]
+      - region "Shop popular tool categories" [ref=f1e107]:
+        - generic [ref=f1e108]:
+          - generic [ref=f1e109]:
+            - generic [ref=f1e110]:
+              - heading "Shop by Tool Type" [level=2] [ref=f1e111]
+              - paragraph [ref=f1e112]: Explore drywall tools by type and find the right fit for your next project.
+            - link "View all tool types" [ref=f1e113] [cursor=pointer]:
+              - /url: /products
+          - generic [ref=f1e116]:
+            - button "Scroll Shop by tool type left" [disabled]:
+              - generic [aria-hidden]: ‹
+            - region "Shop by tool type" [ref=f1e117]:
+              - link "Automatic Tapers" [ref=f1e118] [cursor=pointer]:
+                - /url: /category/automatic-tapers
+              - link "Flat Boxes" [ref=f1e123] [cursor=pointer]:
+                - /url: /category/flat-boxes
+              - link "Automatic Tool Sets & Kits" [ref=f1e128] [cursor=pointer]:
+                - /url: /category/automatic-tool-sets-kits
+              - link "Corner Finishers" [ref=f1e133] [cursor=pointer]:
+                - /url: /category/corner-finishers
+              - link "Compound Tubes" [ref=f1e138] [cursor=pointer]:
+                - /url: /category/compound-tubes
+              - link "Applicator Heads" [ref=f1e143] [cursor=pointer]:
+                - /url: /category/applicator-heads
+              - link "Corner Rollers" [ref=f1e148] [cursor=pointer]:
+                - /url: /category/corner-rollers
+              - link "Loading Pumps" [ref=f1e153] [cursor=pointer]:
+                - /url: /category/loading-pumps
+              - link "Handles" [ref=f1e158] [cursor=pointer]:
+                - /url: /category/handles
+            - button "Scroll Shop by tool type right" [ref=f1e163] [cursor=pointer]:
+              - generic [aria-hidden] [ref=f1e164]: ›
+      - generic [ref=f1e165]:
+        - generic [ref=f1e166]:
+          - generic [ref=f1e167]:
+            - generic [ref=f1e168]:
+              - generic [ref=f1e169]:
+                - heading "Featured Products" [level=2] [ref=f1e170]
+                - paragraph [ref=f1e171]: Discover featured tools, parts, and jobsite essentials from brands pros trust.
+              - link "View all" [ref=f1e172] [cursor=pointer]:
+                - /url: /products?sort=popular
+            - generic [ref=f1e176]:
+              - generic [aria-hidden] [ref=f1e178]:
+                - article [aria-hidden] [ref=f1e179]
+                - article [aria-hidden] [ref=f1e194]
+                - article [aria-hidden] [ref=f1e209]
+                - article [aria-hidden] [ref=f1e224]
+                - article [aria-hidden] [ref=f1e239]
+                - article [aria-hidden] [ref=f1e254]
+              - generic [aria-hidden]:
+                - generic:
+                  - button [disabled]:
+                    - generic [aria-hidden]: ‹
+                  - region
+                  - button [disabled]:
+                    - generic [aria-hidden]: ›
+              - status [ref=f1e269]: Loading trending products
+          - generic [ref=f1e270]:
+            - generic [ref=f1e271]:
+              - generic [ref=f1e272]:
+                - heading "New Arrivals" [level=2] [ref=f1e273]
+                - paragraph [ref=f1e274]: Explore the latest additions to our tool lineup.
+              - link "View all" [ref=f1e275] [cursor=pointer]:
+                - /url: /products?sort=newest
+            - generic [ref=f1e279]:
+              - generic [aria-hidden] [ref=f1e281]:
+                - article [aria-hidden] [ref=f1e282]
+                - article [aria-hidden] [ref=f1e297]
+                - article [aria-hidden] [ref=f1e312]
+                - article [aria-hidden] [ref=f1e327]
+                - article [aria-hidden] [ref=f1e342]
+                - article [aria-hidden] [ref=f1e357]
+              - generic [aria-hidden]:
+                - generic:
+                  - button [disabled]:
+                    - generic [aria-hidden]: ‹
+                  - region
+                  - button [disabled]:
+                    - generic [aria-hidden]: ›
+              - status [ref=f1e372]: Loading new arrivals
+        - region "SHOP BY BRANDS. TRUSTED BY PROFESSIONALS." [ref=f1e373]:
+          - heading "SHOP BY BRANDS. TRUSTED BY PROFESSIONALS." [level=2] [ref=f1e375]
+          - generic [ref=f1e377]:
+            - generic [ref=f1e378]:
+              - link "Shop TapeTech" [ref=f1e379] [cursor=pointer]:
+                - /url: /products/brands/tapetech
+                - img "TapeTech" [ref=f1e380]
+              - link "Shop Columbia Tools" [ref=f1e381] [cursor=pointer]:
+                - /url: /products/brands/columbia-taping-tools
+                - img "Columbia Tools" [ref=f1e382]
+              - link "Shop Platinum Drywall Tools" [ref=f1e383] [cursor=pointer]:
+                - /url: /products/brands/platinum
+                - img "Platinum Drywall Tools" [ref=f1e384]
+              - link "Shop LEVEL5" [ref=f1e385] [cursor=pointer]:
+                - /url: /products/brands/level5
+                - img "LEVEL5" [ref=f1e386]
+              - link "Shop SurPro" [ref=f1e387] [cursor=pointer]:
+                - /url: /products/brands/surpro
+                - img "SurPro" [ref=f1e388]
+              - link "Shop Dura-Stilts" [ref=f1e389] [cursor=pointer]:
+                - /url: /products/brands/dura-stilts
+                - img "Dura-Stilts" [ref=f1e390]
+              - link "Shop USG Sheetrock Tools" [ref=f1e391] [cursor=pointer]:
+                - /url: /products/brands/usg-sheetrock-tools
+                - img "USG Sheetrock Tools" [ref=f1e392]
+            - generic [aria-hidden] [ref=f1e393]:
+              - link [aria-hidden] [ref=f1e394] [cursor=pointer]:
+                - /url: /products/brands/tapetech
+              - link [aria-hidden] [ref=f1e395] [cursor=pointer]:
+                - /url: /products/brands/columbia-taping-tools
+              - link [aria-hidden] [ref=f1e396] [cursor=pointer]:
+                - /url: /products/brands/platinum
+              - link [aria-hidden] [ref=f1e397] [cursor=pointer]:
+                - /url: /products/brands/level5
+              - link [aria-hidden] [ref=f1e398] [cursor=pointer]:
+                - /url: /products/brands/surpro
+              - link [aria-hidden] [ref=f1e399] [cursor=pointer]:
+                - /url: /products/brands/dura-stilts
+              - link [aria-hidden] [ref=f1e400] [cursor=pointer]:
+                - /url: /products/brands/usg-sheetrock-tools
+        - generic [ref=f1e401]:
+          - generic [ref=f1e404]:
+            - heading "Shop by Brand" [level=2] [ref=f1e405]
+            - paragraph [ref=f1e406]: Shop professional tools and parts from leading brands.
+          - generic [ref=f1e407]:
+            - generic [ref=f1e408]:
+              - generic [ref=f1e409]:
+                - heading "TapeTech" [level=2] [ref=f1e410]:
+                  - img "TapeTech"
+                - paragraph [ref=f1e411]: Explore tools and parts from TapeTech.
+              - link "View all" [ref=f1e412] [cursor=pointer]:
+                - /url: /products/brands/tapetech
+            - generic [ref=f1e416]:
+              - generic [aria-hidden] [ref=f1e418]:
+                - article [aria-hidden] [ref=f1e419]
+                - article [aria-hidden] [ref=f1e434]
+                - article [aria-hidden] [ref=f1e449]
+                - article [aria-hidden] [ref=f1e464]
+                - article [aria-hidden] [ref=f1e479]
+                - article [aria-hidden] [ref=f1e494]
+              - generic [aria-hidden]:
+                - generic:
+                  - button [disabled]:
+                    - generic [aria-hidden]: ‹
+                  - region
+                  - button [disabled]:
+                    - generic [aria-hidden]: ›
+              - status [ref=f1e509]: Loading tapetech products
+          - generic [ref=f1e510]:
+            - generic [ref=f1e511]:
+              - generic [ref=f1e512]:
+                - heading "Columbia Tools" [level=2] [ref=f1e513]:
+                  - img "Columbia Tools"
+                - paragraph [ref=f1e514]: Explore tools and parts from Columbia Tools.
+              - link "View all" [ref=f1e515] [cursor=pointer]:
+                - /url: /products/brands/columbia-taping-tools
+            - generic [ref=f1e519]:
+              - generic [aria-hidden] [ref=f1e521]:
+                - article [aria-hidden] [ref=f1e522]
+                - article [aria-hidden] [ref=f1e537]
+                - article [aria-hidden] [ref=f1e552]
+                - article [aria-hidden] [ref=f1e567]
+                - article [aria-hidden] [ref=f1e582]
+                - article [aria-hidden] [ref=f1e597]
+              - generic [aria-hidden]:
+                - generic:
+                  - button [disabled]:
+                    - generic [aria-hidden]: ‹
+                  - region
+                  - button [disabled]:
+                    - generic [aria-hidden]: ›
+              - status [ref=f1e612]: Loading columbia tools products
+          - generic [ref=f1e613]:
+            - generic [ref=f1e614]:
+              - generic [ref=f1e615]:
+                - heading "Platinum Drywall Tools" [level=2] [ref=f1e616]:
+                  - img "Platinum Drywall Tools"
+                - paragraph [ref=f1e617]: Explore tools and parts from Platinum Drywall Tools.
+              - link "View all" [ref=f1e618] [cursor=pointer]:
+                - /url: /products/brands/platinum
+            - generic [ref=f1e622]:
+              - generic [aria-hidden] [ref=f1e624]:
+                - article [aria-hidden] [ref=f1e625]
+                - article [aria-hidden] [ref=f1e640]
+                - article [aria-hidden] [ref=f1e655]
+                - article [aria-hidden] [ref=f1e670]
+                - article [aria-hidden] [ref=f1e685]
+                - article [aria-hidden] [ref=f1e700]
+              - generic [aria-hidden]:
+                - generic:
+                  - button [disabled]:
+                    - generic [aria-hidden]: ‹
+                  - region
+                  - button [disabled]:
+                    - generic [aria-hidden]: ›
+              - status [ref=f1e715]: Loading platinum drywall tools products
+          - generic [ref=f1e716]:
+            - generic [ref=f1e717]:
+              - generic [ref=f1e718]:
+                - heading "LEVEL5" [level=2] [ref=f1e719]:
+                  - img "LEVEL5"
+                - paragraph [ref=f1e720]: Explore tools and parts from LEVEL5.
+              - link "View all" [ref=f1e721] [cursor=pointer]:
+                - /url: /products/brands/level5
+            - generic [ref=f1e725]:
+              - generic [aria-hidden] [ref=f1e727]:
+                - article [aria-hidden] [ref=f1e728]
+                - article [aria-hidden] [ref=f1e743]
+                - article [aria-hidden] [ref=f1e758]
+                - article [aria-hidden] [ref=f1e773]
+                - article [aria-hidden] [ref=f1e788]
+                - article [aria-hidden] [ref=f1e803]
+              - generic [aria-hidden]:
+                - generic:
+                  - button [disabled]:
+                    - generic [aria-hidden]: ‹
+                  - region
+                  - button [disabled]:
+                    - generic [aria-hidden]: ›
+              - status [ref=f1e818]: Loading level5 products
+          - generic [ref=f1e819]:
+            - generic [ref=f1e820]:
+              - generic [ref=f1e821]:
+                - heading "SurPro" [level=2] [ref=f1e822]:
+                  - img "SurPro"
+                - paragraph [ref=f1e823]: Explore tools and parts from SurPro.
+              - link "View all" [ref=f1e824] [cursor=pointer]:
+                - /url: /products/brands/surpro
+            - generic [ref=f1e828]:
+              - generic [aria-hidden] [ref=f1e830]:
+                - article [aria-hidden] [ref=f1e831]
+                - article [aria-hidden] [ref=f1e846]
+                - article [aria-hidden] [ref=f1e861]
+                - article [aria-hidden] [ref=f1e876]
+                - article [aria-hidden] [ref=f1e891]
+                - article [aria-hidden] [ref=f1e906]
+              - generic [aria-hidden]:
+                - generic:
+                  - button [disabled]:
+                    - generic [aria-hidden]: ‹
+                  - region
+                  - button [disabled]:
+                    - generic [aria-hidden]: ›
+              - status [ref=f1e921]: Loading surpro products
+          - generic [ref=f1e922]:
+            - generic [ref=f1e923]:
+              - generic [ref=f1e924]:
+                - heading "Dura-Stilts" [level=2] [ref=f1e925]:
+                  - img "Dura-Stilts"
+                - paragraph [ref=f1e926]: Explore tools and parts from Dura-Stilts.
+              - link "View all" [ref=f1e927] [cursor=pointer]:
+                - /url: /products/brands/dura-stilts
+            - generic [ref=f1e931]:
+              - generic [aria-hidden] [ref=f1e933]:
+                - article [aria-hidden] [ref=f1e934]
+                - article [aria-hidden] [ref=f1e949]
+                - article [aria-hidden] [ref=f1e964]
+                - article [aria-hidden] [ref=f1e979]
+                - article [aria-hidden] [ref=f1e994]
+                - article [aria-hidden] [ref=f1e1009]
+              - generic [aria-hidden]:
+                - generic:
+                  - button [disabled]:
+                    - generic [aria-hidden]: ‹
+                  - region
+                  - button [disabled]:
+                    - generic [aria-hidden]: ›
+              - status [ref=f1e1024]: Loading dura-stilts products
+          - generic [ref=f1e1025]:
+            - generic [ref=f1e1026]:
+              - generic [ref=f1e1027]:
+                - heading [level=2] [ref=f1e1028]:
+                  - img "USG Sheetrock Tools" [ref=f1e1029]
+                - paragraph [ref=f1e1030]: Explore tools and parts from USG Sheetrock Tools.
+              - link "View all" [ref=f1e1031] [cursor=pointer]:
+                - /url: /products/brands/usg-sheetrock-tools
+            - generic [ref=f1e1035]:
+              - generic [aria-hidden] [ref=f1e1037]:
+                - article [aria-hidden] [ref=f1e1038]
+                - article [aria-hidden] [ref=f1e1053]
+                - article [aria-hidden] [ref=f1e1068]
+                - article [aria-hidden] [ref=f1e1083]
+                - article [aria-hidden] [ref=f1e1098]
+                - article [aria-hidden] [ref=f1e1113]
+              - generic [aria-hidden]:
+                - generic:
+                  - button [disabled]:
+                    - generic [aria-hidden]: ‹
+                  - region
+                  - button [disabled]:
+                    - generic [aria-hidden]: ›
+              - status [ref=f1e1128]: Loading usg sheetrock tools products
+  - contentinfo [ref=f1e1129]:
+    - generic [ref=f1e1130]:
+      - generic [ref=f1e1131]:
+        - region "Drywall Toolbox" [ref=f1e1132]:
+          - generic [ref=f1e1133]:
+            - link "Drywall Toolbox home" [ref=f1e1134] [cursor=pointer]:
+              - /url: /
+              - img "Drywall Toolbox" [ref=f1e1135]
+            - navigation "Social media" [ref=f1e1136]:
+              - link "Instagram" [ref=f1e1137] [cursor=pointer]:
+                - /url: https://www.instagram.com/drywalltoolbox
+              - link "Facebook" [ref=f1e1141] [cursor=pointer]:
+                - /url: https://www.facebook.com/Drywalltoolbox/
+              - link "X" [ref=f1e1144] [cursor=pointer]:
+                - /url: https://twitter.com
+        - region "Shop" [ref=f1e1147]:
+          - heading "Shop" [level=2] [ref=f1e1148]
+          - list [ref=f1e1149]:
+            - listitem [ref=f1e1150]:
+              - link "All Products" [ref=f1e1151] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f1e1152]:
+              - link "Shop by Brand" [ref=f1e1153] [cursor=pointer]:
+                - /url: /products/brands
+            - listitem [ref=f1e1154]:
+              - link "Parts" [ref=f1e1155] [cursor=pointer]:
+                - /url: /parts
+        - region "Tools & Services" [ref=f1e1156]:
+          - heading "Tools & Services" [level=2] [ref=f1e1157]
+          - list [ref=f1e1158]:
+            - listitem [ref=f1e1159]:
+              - link "Schematics" [ref=f1e1160] [cursor=pointer]:
+                - /url: /schematics
+            - listitem [ref=f1e1161]:
+              - link "Repair Services" [ref=f1e1162] [cursor=pointer]:
+                - /url: /repairs
+            - listitem [ref=f1e1163]:
+              - link "Repair Packages" [ref=f1e1164] [cursor=pointer]:
+                - /url: /repairs/packages
+        - region "Customer Support" [ref=f1e1165]:
+          - heading "Customer Support" [level=2] [ref=f1e1166]
+          - list [ref=f1e1167]:
+            - listitem [ref=f1e1168]:
+              - link "Help" [ref=f1e1169] [cursor=pointer]:
+                - /url: /help
+            - listitem [ref=f1e1170]:
+              - link "Contact Us" [ref=f1e1171] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=f1e1172]:
+              - link "Shipping & Returns" [ref=f1e1173] [cursor=pointer]:
+                - /url: /policies
+        - region "My Account" [ref=f1e1174]:
+          - heading "My Account" [level=2] [ref=f1e1175]
+          - list [ref=f1e1176]:
+            - listitem [ref=f1e1177]:
+              - link "Sign In" [ref=f1e1178] [cursor=pointer]:
+                - /url: /login
+            - listitem [ref=f1e1179]:
+              - link "Account Dashboard" [ref=f1e1180] [cursor=pointer]:
+                - /url: /dashboard
+            - listitem [ref=f1e1181]:
+              - link "Track My Order" [ref=f1e1182] [cursor=pointer]:
+                - /url: /dashboard?tab=orders
+      - generic [ref=f1e1184]:
+        - paragraph [ref=f1e1185]: © 2026 Drywall Toolbox. All rights reserved.
+        - navigation "Legal" [ref=f1e1186]:
+          - link "Privacy" [ref=f1e1187] [cursor=pointer]:
+            - /url: /privacy-policy/
+          - link "Terms" [ref=f1e1188] [cursor=pointer]:
+            - /url: /terms-of-service/
+  - generic [aria-hidden]:
+    - dialog:
+      - banner:
+        - generic:
+          - heading [level=3]: Your cart
+        - generic:
+          - button
+      - generic:
+        - generic:
+          - generic:
+            - strong: Your cart is empty
+            - paragraph: Add products to get started.
+            - link:
+              - /url: /products
+              - text: Browse Products
+  - status [ref=f1e1189]
