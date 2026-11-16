@@ -176,8 +176,16 @@ if ((staticHtml.match(/id="dtb-global-preloader"/g) || []).length !== 1) {
 if (!staticHtml.includes('errors/dtb-logo-black.webp') || /dtb-global-preloader__(?:hero|categories|products)/.test(staticHtml)) {
   throw new Error('The shared preloader must use the DTB brand mark without rendering mock storefront content.');
 }
-if (!staticHtml.includes('data-dtb-seo="title"') || staticHtml.includes('dtb-route-content')) {
-  throw new Error('The storefront shell must retain SEO metadata without static route fallback content.');
+const routeContentMarker = '<dtb-route-content data-dtb-route-content style="display:block">';
+if (
+  !staticHtml.includes('data-dtb-seo="title"') ||
+  staticHtml.split(routeContentMarker).length !== 2 ||
+  staticHtml.split('</dtb-route-content>').length !== 2 ||
+  !staticHtml.includes(`${routeContentMarker}</dtb-route-content>`) ||
+  !/html:not\(\[data-dtb-app-mounted="?true"?\]\)\s*dtb-route-content\[data-dtb-route-content\]\s*\{\s*display:\s*block!important;?\s*\}/i.test(staticHtml) ||
+  !/dtb-route-content\[data-dtb-route-content\]\s*\{\s*display:\s*none!important;?\s*\}/i.test(staticHtml)
+) {
+  throw new Error('The shell must expose one empty server-rendered route slot until React mounts, then hide it.');
 }
 const storefrontRoutes = JSON.parse(fs.readFileSync(storefrontRoutesPath, 'utf8'));
 if (storefrontRoutes.version !== 1 || !storefrontRoutes.routes || typeof storefrontRoutes.routes !== 'object') {

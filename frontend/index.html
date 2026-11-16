@@ -12,6 +12,12 @@
         visibility: visible;
         transition: opacity 180ms ease-out;
       }
+      dtb-route-content[data-dtb-route-content] {
+        display: none !important;
+      }
+      html:not([data-dtb-app-mounted="true"]) dtb-route-content[data-dtb-route-content] {
+        display: block !important;
+      }
       #dtb-global-preloader {
         display: none;
       }
@@ -211,6 +217,7 @@
       </div>
     </div>
     <div id="root" aria-busy="true"></div>
+    <dtb-route-content data-dtb-route-content style="display:block"></dtb-route-content>
 
     <!-- One bounded recovery retry; failed boots keep the single shared branded preloader. -->
     <script>
