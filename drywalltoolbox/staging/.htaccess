@@ -121,8 +121,8 @@ ErrorDocument 504 /staging/errors/504.html
   # Resolve canonical product-detail routes through the shared WooCommerce
   # catalog before serving the staging shell.
   RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ /wp/index.php [QSA,L]
-  RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|terms-of-service|privacy-policy|preview/technical-specifications|cart|contact|settings/woocommerce|login|register|forgot-password|reset-password|dashboard)/?$ index.html [QSA,L]
-  RewriteRule ^(category/[^/]+|repairs(/(start|packages|track|status/[^/]+))?|returns/status/[^/]+|checkout/(complete|payment-failed|payment-cancelled)|order/[0-9]+|order-tracking/[^/]+|support/status/[^/]+|dashboard/repairs/[^/]+|error/[^/]+)/?$ index.html [QSA,L]
+  RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|terms-of-service|privacy-policy|preview/technical-specifications|cart|contact|catalogues|settings/woocommerce|login|register|forgot-password|reset-password|dashboard)/?$ index.html [QSA,L]
+  RewriteRule ^(category/[^/]+|catalogues/[^/]+|repairs(/(start|packages|track|status/[^/]+))?|returns/status/[^/]+|checkout/(complete|payment-failed|payment-cancelled)|order/[0-9]+|order-tracking/[^/]+|support/status/[^/]+|dashboard/repairs/[^/]+|error/[^/]+)/?$ index.html [QSA,L]
 </IfModule>
 
 <IfModule mod_headers.c>

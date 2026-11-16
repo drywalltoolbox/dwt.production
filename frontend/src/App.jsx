@@ -57,6 +57,8 @@ const Parts = createLazyRoute('parts');
 const ProductDetailPage = createLazyRoute('productDetail');
 const CategoryLandingPage = createLazyRoute('category');
 const Schematics = createLazyRoute('schematics');
+const Catalogues = createLazyRoute('catalogues');
+const CatalogueViewer = createLazyRoute('catalogueViewer');
 const Repairs = createLazyRoute('repairs');
 const RepairStart = createLazyRoute('repairStart');
 const RepairPackages = createLazyRoute('repairPackages');
@@ -259,6 +261,8 @@ function AppRoutes() {
         <Route path="/parts" element={<Parts />} />
         <Route path="/category/:categoryPathSlug" element={<CategoryLandingPage />} />
         <Route path="/schematics" element={<Schematics />} />
+        <Route path="/catalogues" element={<Catalogues />} />
+        <Route path="/catalogues/:slug" element={<CatalogueViewer />} />
         <Route path="/repairs" element={<Repairs />} />
         <Route path="/repairs/start" element={<RepairStart />} />
         <Route path="/repairs/packages" element={<RepairPackages />} />

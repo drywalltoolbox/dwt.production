@@ -62,6 +62,22 @@
         { "label": "Compare repair services", "href": "/repairs/packages" }
       ]
     },
+    "/catalogues": {
+      "title": "Product Catalogues",
+      "description": "Browse the Columbia Tools and TapeTech product catalogues as interactive flipbooks, then shop the tools on Drywall Toolbox.",
+      "heading": "Product Catalogues",
+      "intro": "Browse the full manufacturer catalogues as interactive flipbooks. Turn the pages, jump to a section, or zoom in on a tool, then shop the range.",
+      "sections": [
+        { "heading": "Columbia Tools catalogue", "text": "The Columbia Tools Product Catalogue 2024 covers tool sets, automatic tapers, corner rollers, angle heads, throttle boxes, flat boxes, nail spotters, mud pumps, Tomahawk smoothing blades, handles, compound tubes, corner flushers, sanders, tool cases and maintenance kits." },
+        { "heading": "TapeTech catalogue", "text": "The TapeTech Product Catalog covers automatic taping and finishing tools, tool sets, boxes, handles and accessories across 110 pages." }
+      ],
+      "links": [
+        { "label": "Open the Columbia catalogue", "href": "/catalogues/columbia" },
+        { "label": "Open the TapeTech catalogue", "href": "/catalogues/tapetech" },
+        { "label": "Shop Columbia Tools", "href": "/products/brands/columbia-taping-tools" },
+        { "label": "Shop TapeTech", "href": "/products/brands/tapetech" }
+      ]
+    },
     "/repairs": {
       "title": "Repairs",
       "description": "Package-driven drywall tool repair services for TapeTech, Columbia, Asgard, and other professional finishing tools.",

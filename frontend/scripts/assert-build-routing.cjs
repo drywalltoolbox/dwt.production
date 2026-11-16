@@ -166,11 +166,11 @@ const storefrontRoutes = JSON.parse(fs.readFileSync(storefrontRoutesPath, 'utf8'
 if (storefrontRoutes.version !== 1 || !storefrontRoutes.routes || typeof storefrontRoutes.routes !== 'object') {
   throw new Error('The public storefront route manifest has an unsupported shape.');
 }
-if (Object.keys(storefrontRoutes.routes).length !== 14) {
+if (Object.keys(storefrontRoutes.routes).length !== 15) {
   throw new Error('The public storefront route manifest must match the explicit static route allowlist.');
 }
 for (const routePath of [
-  '/products', '/products/brands', '/parts', '/schematics', '/repairs', '/repairs/start',
+  '/products', '/products/brands', '/parts', '/schematics', '/catalogues', '/repairs', '/repairs/start',
   '/repairs/packages', '/help', '/calculators', '/shipping-policy', '/returns',
   '/return-policy', '/policies', '/contact',
 ]) {
@@ -226,7 +226,8 @@ if (appEnv === 'production') {
   for (const routeRule of [
     'RewriteRule ^products/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
     'RewriteRule ^products/brands/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
-    'RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|contact|repairs|repairs/start|repairs/packages)/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
+    'RewriteRule ^(parts|schematics|help|calculators|shipping-policy|returns|return-policy|policies|contact|catalogues|repairs|repairs/start|repairs/packages)/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
+    'RewriteRule ^catalogues/[^/]+/?$ index.html [QSA,L]',
     'RewriteRule ^products/brands/([^/]+)/?$ wp/index.php?dtb_storefront=1 [QSA,L]',
     'RewriteRule ^products/brands/([^/]+)/categories/([^/]+)/?$ index.html [QSA,L]',
     'RewriteRule ^category/([^/]+)/?$ wp/index.php?dtb_storefront=1 [QSA,L]',

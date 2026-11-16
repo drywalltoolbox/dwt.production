@@ -6,6 +6,8 @@ const moduleLoaders = {
   productDetail: () => import('../pages/ProductDetailPage.jsx'),
   category: () => import('../pages/CategoryLandingPage.jsx'),
   schematics: () => import('../pages/SchematicsPage.jsx'),
+  catalogues: () => import('../pages/Catalogues.jsx'),
+  catalogueViewer: () => import('../pages/CatalogueViewer.jsx'),
   repairs: () => import('../pages/RepairLanding.jsx'),
   repairStart: () => import('../pages/RepairStart.jsx'),
   repairPackages: () => import('../pages/RepairPackages.jsx'),
@@ -81,6 +83,8 @@ export function resolveRouteModuleKey(input) {
   if (pathname === '/parts') return 'parts';
   if (pathname.startsWith('/category/')) return 'category';
   if (pathname === '/schematics') return 'schematics';
+  if (pathname === '/catalogues') return 'catalogues';
+  if (pathname.startsWith('/catalogues/')) return 'catalogueViewer';
   if (pathname === '/repairs') return 'repairs';
   if (pathname === '/repairs/start') return 'repairStart';
   if (pathname === '/repairs/packages') return 'repairPackages';
