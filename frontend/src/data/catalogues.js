@@ -39,6 +39,7 @@ export const CATALOGUES = [
       'The Columbia Tools Product Catalogue 2024 — tool sets, automatic tapers, corner rollers, angle heads, throttle boxes, flat boxes, nail spotters, mud pumps, Tomahawk smoothing blades, handles, compound tubes, corner flushers, sanders, tool cases and maintenance kits.',
     pageCount: 28,
     orientation: 'landscape',
+    pageAspectRatio: 1.2678571428571428,
     shopLink: '/products/brands/columbia-taping-tools',
     shopLabel: 'Shop Columbia Tools',
     contents: [
@@ -69,6 +70,7 @@ export const CATALOGUES = [
       'The TapeTech Product Catalog — automatic taping and finishing tools, tool sets, boxes, handles and accessories. Browse all 110 pages in the flipbook, then shop the TapeTech range.',
     pageCount: 110,
     orientation: 'portrait',
+    pageAspectRatio: 0.7727272727272727,
     shopLink: '/products/brands/tapetech',
     shopLabel: 'Shop TapeTech',
     // No verified contents index exists for this catalogue (see header).
