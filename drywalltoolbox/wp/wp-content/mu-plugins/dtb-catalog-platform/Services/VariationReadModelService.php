@@ -135,20 +135,25 @@ final class DTB_VariationReadModelService {
 	 */
 	private static function enrich_variation_gallery( array $variation, string $parent_sku ): array {
 		$inherits_parent = true === ( $variation['variation']['inheritParentImage'] ?? false );
-		$gallery_sku     = $inherits_parent ? $parent_sku : (string) ( $variation['sku'] ?? '' );
-		$gallery         = self::get_variation_gallery_images( $gallery_sku );
+		$sku             = (string) ( $variation['sku'] ?? '' );
+		$media           = is_array( $variation['media'] ?? null ) ? $variation['media'] : [];
+		$variation_media = self::normalize_variation_gallery( (array) ( $media['images'] ?? [] ) );
+		$has_sku_media   = self::gallery_has_sku_image( $variation_media, $sku );
+		$gallery_sku     = $inherits_parent && ! $has_sku_media ? $parent_sku : $sku;
+		$gallery         = $has_sku_media
+			? $variation_media
+			: self::normalize_variation_gallery( self::get_variation_gallery_images( $gallery_sku ) );
 
 		if ( empty( $gallery ) ) {
 			return $variation;
 		}
 
-		$diagnostic_key = $inherits_parent ? 'inheritedGalleryCount' : 'explicitGalleryCount';
+		$diagnostic_key = $has_sku_media || ! $inherits_parent ? 'explicitGalleryCount' : 'inheritedGalleryCount';
 		self::$last_diagnostics[ $diagnostic_key ] = (int) ( self::$last_diagnostics[ $diagnostic_key ] ?? 0 ) + 1;
 
-		$media = is_array( $variation['media'] ?? null ) ? $variation['media'] : [];
 		$media['variationImages'] = $gallery;
 
-		if ( $inherits_parent || count( $gallery ) > count( (array) ( $media['images'] ?? [] ) ) ) {
+		if ( $has_sku_media || $inherits_parent || count( $gallery ) > count( (array) ( $media['images'] ?? [] ) ) ) {
 			$media['images'] = $gallery;
 			$media['image']  = (string) ( $gallery[0]['src'] ?? $media['image'] ?? '' );
 		}
@@ -157,6 +162,74 @@ final class DTB_VariationReadModelService {
 		$variation['variationGalleryImages'] = $gallery;
 
 		return $variation;
+	}
+
+	/**
+	 * Normalize gallery URLs and collapse WordPress `-scaled` copies by their
+	 * original image path. When both files exist, retain the unscaled original.
+	 *
+	 * @param array<int,mixed> $images
+	 * @return array<int,array<string,mixed>>
+	 */
+	private static function normalize_variation_gallery( array $images ): array {
+		$gallery = [];
+		$indexes = [];
+
+		foreach ( $images as $image ) {
+			if ( is_string( $image ) ) {
+				$image = [ 'src' => $image ];
+			}
+			if ( ! is_array( $image ) ) {
+				continue;
+			}
+
+			$src = trim( (string) ( $image['src'] ?? $image['url'] ?? '' ) );
+			if ( '' === $src ) {
+				continue;
+			}
+
+			$identity_src = preg_replace( '/[?#].*$/', '', $src );
+			$key          = strtolower( preg_replace( '/-scaled(?=\\.[a-z0-9]+$)/i', '', (string) $identity_src ) );
+			if ( isset( $indexes[ $key ] ) ) {
+				$existing = (string) ( $gallery[ $indexes[ $key ] ]['src'] ?? '' );
+				$existing_is_scaled = (bool) preg_match( '/-scaled\\.[a-z0-9]+(?:\\?.*)?$/i', $existing );
+				$source_is_scaled   = (bool) preg_match( '/-scaled\\.[a-z0-9]+(?:\\?.*)?$/i', $src );
+				if ( $existing_is_scaled && ! $source_is_scaled ) {
+					$image['src'] = $src;
+					$gallery[ $indexes[ $key ] ] = $image;
+				}
+				continue;
+			}
+
+			$image['src'] = $src;
+			$indexes[ $key ] = count( $gallery );
+			$gallery[] = $image;
+		}
+
+		return $gallery;
+	}
+
+	/**
+	 * Detect a variation's own gallery from filenames carrying its exact SKU.
+	 * This prevents stale inheritance metadata from hiding already configured
+	 * SKU-specific WooCommerce media.
+	 *
+	 * @param array<int,array<string,mixed>> $gallery
+	 */
+	private static function gallery_has_sku_image( array $gallery, string $sku ): bool {
+		$sku = strtolower( trim( $sku ) );
+		if ( '' === $sku ) {
+			return false;
+		}
+
+		foreach ( $gallery as $image ) {
+			$path = (string) ( wp_parse_url( (string) ( $image['src'] ?? '' ), PHP_URL_PATH ) ?: '' );
+			if ( preg_match( '/(?:^|[^a-z0-9])' . preg_quote( $sku, '/' ) . '(?:[^a-z0-9]|$)/i', basename( $path ) ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
