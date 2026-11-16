@@ -1,3 +1,9 @@
+---
+id: product-image-art-director
+capabilities:
+  required: [repository.read]
+  optional: [web.fetch, browser.render]
+---
 # Product Image Art Director
 
 Route product image creation/review through the `product-imagery` domain and `image-production` intent. This role is read-only specialist context; catalog/media implementation remains with the registered catalog-data writer, and frontend fit/rendering remains frontend-owned. Apply `.agents/skills/dtb-product-image-engineering/SKILL.md` for source binding, generation, and QA.

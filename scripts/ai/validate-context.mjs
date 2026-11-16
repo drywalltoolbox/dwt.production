@@ -24,7 +24,7 @@ function walk(dir) {
 }
 
 function frontmatter(text) {
-  const match = text.match(/^---\n([\s\S]*?)\n---\n/);
+  const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
   return match ? match[1] : '';
 }
 
@@ -32,6 +32,47 @@ function frontmatterValue(text, key) {
   const fm = frontmatter(text);
   const match = fm.match(new RegExp(`^${key}:\\s*([^\\n]+)$`, 'm'));
   return match ? match[1].trim().replace(/^['"]|['"]$/g, '') : null;
+}
+
+function skillMetadataScalar(text, key, file) {
+  const fm = frontmatter(text);
+  const entries = fm.split(/\r?\n/).filter((line) => new RegExp(`^${key}\\s*:`).test(line));
+  if (entries.length !== 1) {
+    fail(`${file}: expected exactly one ${key} frontmatter field`);
+    return null;
+  }
+  const match = entries[0].match(new RegExp(`^${key}\\s*:\\s*(.*)$`));
+  if (!match) {
+    fail(`${file}: malformed ${key} frontmatter field`);
+    return null;
+  }
+  let value = match[1].trim();
+  if (!value || value.startsWith('|') || value.startsWith('>')) {
+    fail(`${file}: ${key} must be a nonempty single-line scalar`);
+    return null;
+  }
+  if (value.startsWith('"')) {
+    try {
+      const parsed = JSON.parse(value);
+      if (typeof parsed !== 'string') throw new Error('expected string');
+      value = parsed;
+    } catch {
+      fail(`${file}: ${key} has malformed double-quoted scalar`);
+      return null;
+    }
+  } else if (value.startsWith("'")) {
+    if (!value.endsWith("'")) {
+      fail(`${file}: ${key} has malformed single-quoted scalar`);
+      return null;
+    }
+    const inner = value.slice(1, -1);
+    if (inner.replace(/''/g, '').includes("'")) {
+      fail(`${file}: ${key} has malformed single-quoted scalar`);
+      return null;
+    }
+    value = inner.replace(/''/g, "'");
+  }
+  return value;
 }
 
 const required = [
@@ -59,12 +100,41 @@ for (const file of canonicalFiles) {
   if (/(show your chain[- ]of[- ]thought|reveal your chain[- ]of[- ]thought|show your private reasoning)/i.test(text)) fail(`${file}: canonical instructions must not require private reasoning disclosure`);
 }
 
+const seenSkillNames = new Map();
+for (const file of walk('.agents/skills').filter((p) => p.endsWith('/SKILL.md'))) {
+  const text = read(file);
+  if (file.split('/').length !== 4) fail(`${file}: nested SKILL.md files are not registry-routed; store reference material under a non-SKILL filename`);
+  const directoryName = path.posix.basename(path.posix.dirname(file));
+  const name = skillMetadataScalar(text, 'name', file);
+  const description = skillMetadataScalar(text, 'description', file);
+  if (!name) fail(`${file}: missing skill frontmatter name`);
+  else {
+    if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(name)) fail(`${file}: skill name must be lowercase kebab-case`);
+    if (name !== directoryName) fail(`${file}: skill name ${name} must match directory ${directoryName}`);
+    if (seenSkillNames.has(name)) fail(`${file}: duplicate skill name also declared by ${seenSkillNames.get(name)}`);
+    else seenSkillNames.set(name, file);
+  }
+  if (!description) fail(`${file}: missing skill frontmatter description`);
+  else if (description.length > 1024) fail(`${file}: skill description exceeds 1024 characters`);
+}
+
 let registry;
 try { registry = loadRegistry(); } catch (error) { fail(`.agents/registry.json: invalid JSON: ${error.message}`); }
 
 if (registry) {
   if (registry.version !== 2) fail(`.agents/registry.json: unsupported registry version ${registry.version}`);
   if (JSON.stringify(registry.riskOrder) !== JSON.stringify(['low', 'medium', 'high', 'critical'])) fail('.agents/registry.json: riskOrder must be low, medium, high, critical');
+
+  const skillRoot = path.join(ROOT, '.agents/skills');
+  const localSkillIds = fs.readdirSync(skillRoot, { withFileTypes: true })
+    .filter((entry) => entry.isDirectory() && fs.existsSync(path.join(skillRoot, entry.name, 'SKILL.md')))
+    .map((entry) => entry.name);
+  for (const skillId of localSkillIds) if (!registry.skills?.[skillId]) fail(`unregistered canonical skill directory: ${skillId}`);
+  for (const [skillId, skillPath] of Object.entries(registry.skills || {})) {
+    if (!localSkillIds.includes(skillId)) fail(`registry skill ${skillId} has no top-level skill directory`);
+    const expectedPath = `.agents/skills/${skillId}/SKILL.md`;
+    if (path.posix.normalize(skillPath.replaceAll('\\', '/')) !== expectedPath) fail(`registry skill ${skillId} must resolve to ${expectedPath}, got ${skillPath}`);
+  }
 
   for (const [workflowId, workflowPath] of Object.entries(registry.workflows || {})) if (!exists(workflowPath)) fail(`workflow ${workflowId} references missing ${workflowPath}`);
   for (const [skillId, skillPath] of Object.entries(registry.skills || {})) if (!exists(skillPath)) fail(`skill ${skillId} references missing ${skillPath}`);
@@ -182,4 +252,4 @@ if (failures.length) {
   for (const item of failures) console.error(`- ${item}`);
   process.exit(1);
 }
-console.log(`DTB AI context validation passed (${canonicalFiles.length} canonical files, ${adapterFiles.length} adapters checked).`);
+console.log(`DTB AI context validation passed (${canonicalFiles.length} canonical files, ${seenSkillNames.size} SKILL.md files checked, ${adapterFiles.length} adapters checked).`);

@@ -8,7 +8,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/ab-testing/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/ab-testing/SKILL.md",
-    "local_path": "references/upstream-marketingskills/ab-testing/SKILL.md"
+    "local_path": "references/upstream-marketingskills/ab-testing/METHOD.md"
   },
   {
     "slug": "ad-creative",
@@ -19,7 +19,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/ad-creative/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/ad-creative/SKILL.md",
-    "local_path": "references/upstream-marketingskills/ad-creative/SKILL.md"
+    "local_path": "references/upstream-marketingskills/ad-creative/METHOD.md"
   },
   {
     "slug": "ads",
@@ -30,7 +30,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/ads/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/ads/SKILL.md",
-    "local_path": "references/upstream-marketingskills/ads/SKILL.md"
+    "local_path": "references/upstream-marketingskills/ads/METHOD.md"
   },
   {
     "slug": "ai-seo",
@@ -41,7 +41,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/ai-seo/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/ai-seo/SKILL.md",
-    "local_path": "references/upstream-marketingskills/ai-seo/SKILL.md"
+    "local_path": "references/upstream-marketingskills/ai-seo/METHOD.md"
   },
   {
     "slug": "analytics",
@@ -52,7 +52,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/analytics/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/analytics/SKILL.md",
-    "local_path": "references/upstream-marketingskills/analytics/SKILL.md"
+    "local_path": "references/upstream-marketingskills/analytics/METHOD.md"
   },
   {
     "slug": "aso",
@@ -63,7 +63,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/aso/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/aso/SKILL.md",
-    "local_path": "references/upstream-marketingskills/aso/SKILL.md"
+    "local_path": "references/upstream-marketingskills/aso/METHOD.md"
   },
   {
     "slug": "attribution",
@@ -74,7 +74,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/attribution/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/attribution/SKILL.md",
-    "local_path": "references/upstream-marketingskills/attribution/SKILL.md"
+    "local_path": "references/upstream-marketingskills/attribution/METHOD.md"
   },
   {
     "slug": "churn-prevention",
@@ -85,7 +85,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/churn-prevention/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/churn-prevention/SKILL.md",
-    "local_path": "references/upstream-marketingskills/churn-prevention/SKILL.md"
+    "local_path": "references/upstream-marketingskills/churn-prevention/METHOD.md"
   },
   {
     "slug": "co-marketing",
@@ -96,7 +96,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/co-marketing/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/co-marketing/SKILL.md",
-    "local_path": "references/upstream-marketingskills/co-marketing/SKILL.md"
+    "local_path": "references/upstream-marketingskills/co-marketing/METHOD.md"
   },
   {
     "slug": "cold-email",
@@ -107,7 +107,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/cold-email/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/cold-email/SKILL.md",
-    "local_path": "references/upstream-marketingskills/cold-email/SKILL.md"
+    "local_path": "references/upstream-marketingskills/cold-email/METHOD.md"
   },
   {
     "slug": "community-marketing",
@@ -118,7 +118,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/community-marketing/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/community-marketing/SKILL.md",
-    "local_path": "references/upstream-marketingskills/community-marketing/SKILL.md"
+    "local_path": "references/upstream-marketingskills/community-marketing/METHOD.md"
   },
   {
     "slug": "competitor-profiling",
@@ -129,7 +129,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/competitor-profiling/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/competitor-profiling/SKILL.md",
-    "local_path": "references/upstream-marketingskills/competitor-profiling/SKILL.md"
+    "local_path": "references/upstream-marketingskills/competitor-profiling/METHOD.md"
   },
   {
     "slug": "competitors",
@@ -140,7 +140,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/competitors/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/competitors/SKILL.md",
-    "local_path": "references/upstream-marketingskills/competitors/SKILL.md"
+    "local_path": "references/upstream-marketingskills/competitors/METHOD.md"
   },
   {
     "slug": "content-strategy",
@@ -151,7 +151,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/content-strategy/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/content-strategy/SKILL.md",
-    "local_path": "references/upstream-marketingskills/content-strategy/SKILL.md"
+    "local_path": "references/upstream-marketingskills/content-strategy/METHOD.md"
   },
   {
     "slug": "conversion-tracking",
@@ -162,7 +162,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/conversion-tracking/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/conversion-tracking/SKILL.md",
-    "local_path": "references/upstream-marketingskills/conversion-tracking/SKILL.md"
+    "local_path": "references/upstream-marketingskills/conversion-tracking/METHOD.md"
   },
   {
     "slug": "copy-editing",
@@ -173,7 +173,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/copy-editing/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/copy-editing/SKILL.md",
-    "local_path": "references/upstream-marketingskills/copy-editing/SKILL.md"
+    "local_path": "references/upstream-marketingskills/copy-editing/METHOD.md"
   },
   {
     "slug": "copywriting",
@@ -184,7 +184,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/copywriting/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/copywriting/SKILL.md",
-    "local_path": "references/upstream-marketingskills/copywriting/SKILL.md"
+    "local_path": "references/upstream-marketingskills/copywriting/METHOD.md"
   },
   {
     "slug": "cro",
@@ -195,7 +195,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/cro/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/cro/SKILL.md",
-    "local_path": "references/upstream-marketingskills/cro/SKILL.md"
+    "local_path": "references/upstream-marketingskills/cro/METHOD.md"
   },
   {
     "slug": "customer-research",
@@ -206,7 +206,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/customer-research/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/customer-research/SKILL.md",
-    "local_path": "references/upstream-marketingskills/customer-research/SKILL.md"
+    "local_path": "references/upstream-marketingskills/customer-research/METHOD.md"
   },
   {
     "slug": "directory-submissions",
@@ -217,7 +217,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/directory-submissions/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/directory-submissions/SKILL.md",
-    "local_path": "references/upstream-marketingskills/directory-submissions/SKILL.md"
+    "local_path": "references/upstream-marketingskills/directory-submissions/METHOD.md"
   },
   {
     "slug": "emails",
@@ -228,7 +228,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/emails/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/emails/SKILL.md",
-    "local_path": "references/upstream-marketingskills/emails/SKILL.md"
+    "local_path": "references/upstream-marketingskills/emails/METHOD.md"
   },
   {
     "slug": "events",
@@ -239,7 +239,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/events/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/events/SKILL.md",
-    "local_path": "references/upstream-marketingskills/events/SKILL.md"
+    "local_path": "references/upstream-marketingskills/events/METHOD.md"
   },
   {
     "slug": "free-tools",
@@ -250,7 +250,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/free-tools/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/free-tools/SKILL.md",
-    "local_path": "references/upstream-marketingskills/free-tools/SKILL.md"
+    "local_path": "references/upstream-marketingskills/free-tools/METHOD.md"
   },
   {
     "slug": "image",
@@ -261,7 +261,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/image/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/image/SKILL.md",
-    "local_path": "references/upstream-marketingskills/image/SKILL.md"
+    "local_path": "references/upstream-marketingskills/image/METHOD.md"
   },
   {
     "slug": "influencer-marketing",
@@ -272,7 +272,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/influencer-marketing/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/influencer-marketing/SKILL.md",
-    "local_path": "references/upstream-marketingskills/influencer-marketing/SKILL.md"
+    "local_path": "references/upstream-marketingskills/influencer-marketing/METHOD.md"
   },
   {
     "slug": "launch",
@@ -283,7 +283,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/launch/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/launch/SKILL.md",
-    "local_path": "references/upstream-marketingskills/launch/SKILL.md"
+    "local_path": "references/upstream-marketingskills/launch/METHOD.md"
   },
   {
     "slug": "lead-magnets",
@@ -294,7 +294,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/lead-magnets/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/lead-magnets/SKILL.md",
-    "local_path": "references/upstream-marketingskills/lead-magnets/SKILL.md"
+    "local_path": "references/upstream-marketingskills/lead-magnets/METHOD.md"
   },
   {
     "slug": "link-building",
@@ -305,7 +305,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/link-building/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/link-building/SKILL.md",
-    "local_path": "references/upstream-marketingskills/link-building/SKILL.md"
+    "local_path": "references/upstream-marketingskills/link-building/METHOD.md"
   },
   {
     "slug": "marketing-council",
@@ -316,7 +316,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/marketing-council/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/marketing-council/SKILL.md",
-    "local_path": "references/upstream-marketingskills/marketing-council/SKILL.md"
+    "local_path": "references/upstream-marketingskills/marketing-council/METHOD.md"
   },
   {
     "slug": "marketing-ideas",
@@ -327,7 +327,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/marketing-ideas/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/marketing-ideas/SKILL.md",
-    "local_path": "references/upstream-marketingskills/marketing-ideas/SKILL.md"
+    "local_path": "references/upstream-marketingskills/marketing-ideas/METHOD.md"
   },
   {
     "slug": "marketing-loops",
@@ -338,7 +338,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/marketing-loops/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/marketing-loops/SKILL.md",
-    "local_path": "references/upstream-marketingskills/marketing-loops/SKILL.md"
+    "local_path": "references/upstream-marketingskills/marketing-loops/METHOD.md"
   },
   {
     "slug": "marketing-plan",
@@ -349,7 +349,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/marketing-plan/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/marketing-plan/SKILL.md",
-    "local_path": "references/upstream-marketingskills/marketing-plan/SKILL.md"
+    "local_path": "references/upstream-marketingskills/marketing-plan/METHOD.md"
   },
   {
     "slug": "marketing-psychology",
@@ -360,7 +360,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/marketing-psychology/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/marketing-psychology/SKILL.md",
-    "local_path": "references/upstream-marketingskills/marketing-psychology/SKILL.md"
+    "local_path": "references/upstream-marketingskills/marketing-psychology/METHOD.md"
   },
   {
     "slug": "offers",
@@ -371,7 +371,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/offers/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/offers/SKILL.md",
-    "local_path": "references/upstream-marketingskills/offers/SKILL.md"
+    "local_path": "references/upstream-marketingskills/offers/METHOD.md"
   },
   {
     "slug": "onboarding",
@@ -382,7 +382,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/onboarding/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/onboarding/SKILL.md",
-    "local_path": "references/upstream-marketingskills/onboarding/SKILL.md"
+    "local_path": "references/upstream-marketingskills/onboarding/METHOD.md"
   },
   {
     "slug": "paywalls",
@@ -393,7 +393,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/paywalls/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/paywalls/SKILL.md",
-    "local_path": "references/upstream-marketingskills/paywalls/SKILL.md"
+    "local_path": "references/upstream-marketingskills/paywalls/METHOD.md"
   },
   {
     "slug": "popups",
@@ -404,7 +404,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/popups/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/popups/SKILL.md",
-    "local_path": "references/upstream-marketingskills/popups/SKILL.md"
+    "local_path": "references/upstream-marketingskills/popups/METHOD.md"
   },
   {
     "slug": "pricing",
@@ -415,7 +415,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/pricing/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/pricing/SKILL.md",
-    "local_path": "references/upstream-marketingskills/pricing/SKILL.md"
+    "local_path": "references/upstream-marketingskills/pricing/METHOD.md"
   },
   {
     "slug": "product-marketing",
@@ -426,7 +426,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/product-marketing/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/product-marketing/SKILL.md",
-    "local_path": "references/upstream-marketingskills/product-marketing/SKILL.md"
+    "local_path": "references/upstream-marketingskills/product-marketing/METHOD.md"
   },
   {
     "slug": "programmatic-seo",
@@ -437,7 +437,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/programmatic-seo/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/programmatic-seo/SKILL.md",
-    "local_path": "references/upstream-marketingskills/programmatic-seo/SKILL.md"
+    "local_path": "references/upstream-marketingskills/programmatic-seo/METHOD.md"
   },
   {
     "slug": "prospecting",
@@ -448,7 +448,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/prospecting/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/prospecting/SKILL.md",
-    "local_path": "references/upstream-marketingskills/prospecting/SKILL.md"
+    "local_path": "references/upstream-marketingskills/prospecting/METHOD.md"
   },
   {
     "slug": "public-relations",
@@ -459,7 +459,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/public-relations/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/public-relations/SKILL.md",
-    "local_path": "references/upstream-marketingskills/public-relations/SKILL.md"
+    "local_path": "references/upstream-marketingskills/public-relations/METHOD.md"
   },
   {
     "slug": "referrals",
@@ -470,7 +470,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/referrals/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/referrals/SKILL.md",
-    "local_path": "references/upstream-marketingskills/referrals/SKILL.md"
+    "local_path": "references/upstream-marketingskills/referrals/METHOD.md"
   },
   {
     "slug": "revops",
@@ -481,7 +481,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/revops/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/revops/SKILL.md",
-    "local_path": "references/upstream-marketingskills/revops/SKILL.md"
+    "local_path": "references/upstream-marketingskills/revops/METHOD.md"
   },
   {
     "slug": "sales-enablement",
@@ -492,7 +492,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/sales-enablement/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/sales-enablement/SKILL.md",
-    "local_path": "references/upstream-marketingskills/sales-enablement/SKILL.md"
+    "local_path": "references/upstream-marketingskills/sales-enablement/METHOD.md"
   },
   {
     "slug": "schema",
@@ -503,7 +503,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/schema/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/schema/SKILL.md",
-    "local_path": "references/upstream-marketingskills/schema/SKILL.md"
+    "local_path": "references/upstream-marketingskills/schema/METHOD.md"
   },
   {
     "slug": "seo-audit",
@@ -514,7 +514,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/seo-audit/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/seo-audit/SKILL.md",
-    "local_path": "references/upstream-marketingskills/seo-audit/SKILL.md"
+    "local_path": "references/upstream-marketingskills/seo-audit/METHOD.md"
   },
   {
     "slug": "signup",
@@ -525,7 +525,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/signup/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/signup/SKILL.md",
-    "local_path": "references/upstream-marketingskills/signup/SKILL.md"
+    "local_path": "references/upstream-marketingskills/signup/METHOD.md"
   },
   {
     "slug": "site-architecture",
@@ -536,7 +536,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/site-architecture/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/site-architecture/SKILL.md",
-    "local_path": "references/upstream-marketingskills/site-architecture/SKILL.md"
+    "local_path": "references/upstream-marketingskills/site-architecture/METHOD.md"
   },
   {
     "slug": "sms",
@@ -547,7 +547,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/sms/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/sms/SKILL.md",
-    "local_path": "references/upstream-marketingskills/sms/SKILL.md"
+    "local_path": "references/upstream-marketingskills/sms/METHOD.md"
   },
   {
     "slug": "social",
@@ -558,7 +558,7 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/social/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/social/SKILL.md",
-    "local_path": "references/upstream-marketingskills/social/SKILL.md"
+    "local_path": "references/upstream-marketingskills/social/METHOD.md"
   },
   {
     "slug": "video",
@@ -569,6 +569,6 @@
     "source_commit": "820ad2c1c0ac4cc350158bd7912c753681a7d173",
     "source_path": "skills/video/SKILL.md",
     "source_url": "https://github.com/coreyhaines31/marketingskills/blob/820ad2c1c0ac4cc350158bd7912c753681a7d173/skills/video/SKILL.md",
-    "local_path": "references/upstream-marketingskills/video/SKILL.md"
+    "local_path": "references/upstream-marketingskills/video/METHOD.md"
   }
 ]

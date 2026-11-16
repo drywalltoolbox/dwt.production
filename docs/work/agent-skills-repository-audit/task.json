@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "taskId": "agent-skills-repository-audit",
+  "title": "Audit upstream agent-skills and improve DTB skill governance",
+  "intent": "context-maintenance",
+  "domain": "ai-governance",
+  "flags": [
+    "external-skill",
+    "ai-governance"
+  ],
+  "risk": "high",
+  "routing": {
+    "registryVersion": 2,
+    "workflow": "context",
+    "role": "ai-governance-engineer",
+    "subjectRole": "ai-governance-engineer",
+    "effectiveRisk": "high",
+    "skills": [
+      "dtb-ai-context-engineering",
+      "dtb-ai-workspace-governance",
+      "dtb-external-skill-security"
+    ],
+    "reviewers": [
+      "test-verifier",
+      "security-reviewer",
+      "code-reviewer"
+    ]
+  }
+}

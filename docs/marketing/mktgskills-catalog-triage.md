@@ -13,9 +13,11 @@
 
 The source checkout was cloned from the canonical GitHub repository. Its current source at the pinned commit identifies Corey Haines as maintainer, documents MIT licensing, describes Agent Skills installation and versioning, and contains 52 skill directories. The source checkout also has CLIs, integrations, scripts, and other materials. The DTB plugin snapshot contains only the 52 skills/<slug>/SKILL.md files and the MIT license; it does not package or execute the upstream CLIs, MCP guides, or scripts.
 
-The source files are preserved verbatim with source commit, versions, exact paths, and commit-pinned links in:
+The source bodies are preserved verbatim with source commit, versions, exact upstream paths, local paths, and commit-pinned links in:
 
 .agents/skills/dtb-marketing-live-intelligence/references/upstream-marketingskills/
+
+For `.agents` discovery, the 52 files use `METHOD.md` names so only registered top-level skills are independently discoverable. The private plugin copy keeps the upstream `SKILL.md` filenames under `references/`; its manifest points skill discovery at the separate curated `skills/` directory. Supporting files linked from upstream methods are not included; `PROVENANCE.md` gives the pinned path for resolving one when necessary.
 
 This is a source acquisition and routing review, not a line-by-line validation of all marketing assertions or a formal security audit of every method, link, platform recommendation, or third-party statistic. The actual methods remain untrusted reference material. The index and corpus should be refreshed only from a reviewed upstream revision.
 

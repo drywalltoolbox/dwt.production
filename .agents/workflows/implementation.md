@@ -8,6 +8,8 @@ Extract observable acceptance criteria, constraints, non-goals, and user scope. 
 ## 2. Establish current behavior
 Read `AGENTS.md`, resolve routing, and inspect active implementation. Trace only the entry points, persistence/events/queues/providers, consumers, tests, and docs required to understand the change. Reuse established evidence and stop expanding when evidence is sufficient.
 
+For a reported defect, separate the observed symptom from its suspected cause. Reproduce or inspect the dated failure evidence when available, establish the affected path and relevant last-known-good/configuration change, and test the leading explanation against source or runtime evidence before patching. Fix the owning cause and verify the same failure path; do not broaden the task into speculative cleanup.
+
 When the task depends on live or external state, identify its system of record
 and use the current session's verified connected interface from
 `.agents/context/connected-systems.md`. Check the target environment and
