@@ -13,7 +13,7 @@ This design package was derived from active source on 2026-08-21. It does not re
 | Route and shell behavior | `frontend/src/App.jsx` | Screen inventory and checkout minimal-chrome boundary |
 | Shared components | `frontend/src/components/ui/`, `frontend/src/components/shared/` | Buttons, accordions, dropdowns, toasts, breadcrumbs, loading, hero patterns |
 | Domain components | `frontend/src/components/` and `frontend/src/styles/` feature owners | Product, navigation, account, repair, schematic, cart, and order patterns |
-| Official logos | `frontend/public/logo-black.svg`, `frontend/public/logo-white.svg` | Upload assets copied into `assets/` |
+| Official DTB brand mark | `frontend/src/assets/brand/dtb-logo-white.webp`, `dtb-logo-white-mobile.webp` | Primary white mark for the global header; static fallback is `/logos/dtb-logo-white.webp`; shared email chrome uses a pixel-identical PNG export |
 | Commerce/payment boundary | Root `AGENTS.md` | Stitch generation guardrails |
 
 ## Known documentation drift

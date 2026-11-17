@@ -22,8 +22,9 @@ Avoid generic dashboard styling, oversized decorative cards, excessive gradients
 
 Use the supplied Drywall Toolbox logo assets without redrawing, recoloring, stretching, cropping, or reconstructing them.
 
-- `assets/logo-black.svg`: use on white and very light surfaces.
-- `assets/logo-white.svg`: use on the deep navy shell or dark imagery.
+- `frontend/src/assets/brand/dtb-logo-white.webp`: canonical desktop brand mark for the deep navy shell or dark imagery.
+- `frontend/src/assets/brand/dtb-logo-white-mobile.webp`: matching mobile header variant.
+- `frontend/public/logos/email-logo-white.png`: transparent PNG export of the same desktop mark for email clients.
 - Preserve the source aspect ratio and clear space equal to at least the height of the outer logo frame.
 - Do not use brand or payment-provider marks as decorative patterns.
 

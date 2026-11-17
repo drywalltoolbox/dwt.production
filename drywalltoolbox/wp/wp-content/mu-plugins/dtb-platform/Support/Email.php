@@ -44,12 +44,12 @@ add_filter( 'wp_mail_from_name', static fn( string $original ): string => dtb_pl
 
 if ( ! function_exists( 'dtb_email_logo_url' ) ) {
 	/**
-	 * Return the hosted transparent white-and-blue brand logo used by email clients.
+	 * Return the hosted transparent storefront brand logo used by email clients.
 	 *
 	 * @return string
 	 */
 	function dtb_email_logo_url(): string {
-		$url = esc_url_raw( (string) apply_filters( 'dtb_email_logo_url', home_url( '/logos/email-logo-white.png' ) ) );
+		$url = esc_url_raw( (string) apply_filters( 'dtb_email_logo_url', home_url( '/logos/email-logo-white.png?v=ae3339b31a36' ) ) );
 		return '' !== $url ? $url : home_url( '/' );
 	}
 }

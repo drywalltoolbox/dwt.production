@@ -109,9 +109,15 @@ WooCommerce My Account URL. The offer block appears only
 for a user-owned welcome campaign coupon verified as a 10% percentage
 discount; preview mode uses a clearly marked `PREVIEW10` code and does not
 create a coupon. The header, footer, and account hero artwork assets are
-source-controlled under `frontend/public/assets/email/`; the shared email logo
-is `frontend/public/logos/email-logo-white.png`. These assets must be released with the MU-plugin
-template changes. The classic header uses the compact, logo-height band with
+source-controlled under `frontend/public/assets/email/`. The canonical white
+storefront brand mark is `frontend/src/assets/brand/dtb-logo-white.webp`, with
+the same WebP bytes at `frontend/public/logos/dtb-logo-white.webp` and
+`drywalltoolbox/logos/dtb-logo-white.webp`. The shared email logo is a
+pixel-identical transparent PNG export at `frontend/public/logos/email-logo-white.png`
+and `drywalltoolbox/logos/email-logo-white.png`. WooCommerce email chrome and
+the branded DTB email shell resolve that PNG through `dtb_email_logo_url()`.
+These assets must be released with the MU-plugin template changes. The classic
+header uses the compact, logo-height band with
 10px vertical padding; the footer uses its separate, taller artwork and
 remains tall enough for navigation and legal links.
 

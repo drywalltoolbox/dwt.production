@@ -1,9 +1,13 @@
 # Asset manifest
 
-## Included upload assets
+## Canonical storefront brand asset
 
-- `assets/logo-black.svg` — official logo for white/light surfaces; source: `frontend/public/logo-black.svg`.
-- `assets/logo-white.svg` — official logo for navy/dark surfaces; source: `frontend/public/logo-white.svg`.
+- `frontend/src/assets/brand/dtb-logo-white.webp` — canonical desktop mark used by the global storefront header and native checkout.
+- `frontend/src/assets/brand/dtb-logo-white-mobile.webp` — matching mobile header variant.
+- `frontend/public/logos/email-logo-white.png` — transparent PNG export with pixel-identical artwork for shared email chrome.
+- `frontend/public/logos/dtb-logo-white.webp` — static fallback for the global header and checkout.
+
+The SVG files in this reference package are legacy assets; do not use them for new DTB brand compositions.
 
 ## Optional visual references already in the repository
 
