@@ -119,11 +119,6 @@
 .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__meta,
 .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__meta { padding-inline: 0; background: transparent; }
 
-.dtb-product-card-skeleton__brand {
-  width: 42%;
-  height: 8px;
-}
-
 .dtb-product-card-skeleton__name-lines {
   display: flex;
   min-width: 0;
@@ -362,7 +357,7 @@
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__meta,
   .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__meta {
     display: grid;
-    grid-template-rows: .8em 2.44em 1.2em 14px minmax(44px, auto);
+    grid-template-rows: 2.44em 1.2em 14px minmax(44px, auto);
     align-content: start;
     min-height: 0;
     gap: .16rem;
@@ -371,17 +366,15 @@
     border-top: 0;
   }
 
-  .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__brand,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__brand { grid-row: 1; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__name-lines,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__name-lines { grid-row: 2; }
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__name-lines { grid-row: 1; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__sku,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__sku { grid-row: 3; }
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__sku { grid-row: 2; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__divider,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__divider { grid-row: 4; }
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__divider { grid-row: 3; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__footer {
     display: flex;
-    grid-row: 5;
+    grid-row: 4;
     flex-direction: column;
     align-items: stretch;
     align-self: stretch;
@@ -393,7 +386,7 @@
   }
   .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__footer {
     display: flex;
-    grid-row: 5;
+    grid-row: 4;
     flex-direction: column;
     align-items: stretch;
     align-self: stretch;
@@ -459,7 +452,7 @@
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__meta,
   .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__meta {
     display: grid;
-    grid-template-rows: 18px auto 1.3em auto auto;
+    grid-template-rows: auto 1.3em auto auto;
     align-content: stretch;
     flex: 1;
     gap: 4px;
@@ -467,27 +460,18 @@
     background: #fff;
   }
 
-  .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__brand,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__brand { grid-row: 1; }
-  .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__brand,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__brand {
-    margin-left: 0;
-    width: 64%;
-    height: 18px;
-    border-radius: 999px;
-  }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__name-lines,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__name-lines { grid-row: 2; gap: 6px; justify-content: flex-start; margin: 4px 0 0; }
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__name-lines { grid-row: 1; gap: 6px; justify-content: flex-start; margin: 0; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__name,
   .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__name { height: 10px; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__sku,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__sku { grid-row: 3; margin-top: 6px; }
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__sku { grid-row: 2; margin-top: 6px; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__divider,
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__divider,
-  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__divider { position: relative; left: -6px; grid-row: 4; width: calc(100% + 12px); min-height: 1px; margin-top: 2px; }
+  .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__divider { position: relative; left: -6px; grid-row: 3; width: calc(100% + 12px); min-height: 1px; margin-top: 2px; }
   .dtb-product-card-skeleton--grid .dtb-product-card-skeleton__footer,
   .dtb-product-card-skeleton--rail .dtb-product-card-skeleton__footer {
-    grid-row: 5;
+    grid-row: 4;
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-end;

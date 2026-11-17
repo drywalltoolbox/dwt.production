@@ -66,18 +66,6 @@
   padding: 10px 11px 10px 12px;
 }
 
-.dtb-search-result__brand {
-  color: #80b6ff;
-  font-size: 0.62rem;
-  line-height: 1.15;
-  font-weight: 750;
-  letter-spacing: 0.065em;
-  text-transform: uppercase;
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-}
-
 .dtb-search-result__name {
   display: -webkit-box;
   width: 100%;

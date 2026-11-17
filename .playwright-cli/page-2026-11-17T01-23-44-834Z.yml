@@ -1,0 +1,40 @@
+- generic [active] [ref=f1e1]:
+  - link [ref=f1e2] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/
+    - img "Drywall Toolbox" [ref=f1e3]
+  - img "We’re live. The new Drywall Toolbox website is now open for professional tools, replacement parts, schematics, and repair service. New account members receive 10% off their first order." [ref=f1e4]
+  - link [ref=f1e5] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/
+    - paragraph [ref=f1e6]: ShopTools
+  - link [ref=f1e7] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/parts
+    - paragraph [ref=f1e8]: ReplacementParts
+  - link [ref=f1e9] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/schematics
+    - paragraph [ref=f1e10]: InteractiveSchematics
+  - link [ref=f1e11] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/repairs/packages
+    - paragraph [ref=f1e12]: RepairServices
+  - text: Same trade.
+  - heading "A smarter way to shop it." [level=2] [ref=f1e13]
+  - paragraph [ref=f1e14]: Whether you're gearing up with a complete toolset, picking up a single tool, tracking down that one hard-to-find replacement part, or looking for expert repair services, you've come to the right place.
+  - paragraph [ref=f1e15]: We've brought it all together, right down to the schematics that help you find exactly what you're after.
+  - link [ref=f1e16] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/
+    - img "Drywall Toolbox" [ref=f1e17]
+  - link "Instagram" [ref=f1e18] [cursor=pointer]:
+    - /url: https://www.instagram.com/drywalltoolbox
+    - img "Instagram" [ref=f1e19]
+  - link "Facebook" [ref=f1e20] [cursor=pointer]:
+    - /url: https://www.facebook.com/Drywalltoolbox/
+    - img "Facebook" [ref=f1e21]
+  - link "X" [ref=f1e22] [cursor=pointer]:
+    - /url: https://twitter.com
+    - img "X" [ref=f1e23]
+  - link "My Account" [ref=f1e24] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/my-account/
+  - link "Shop" [ref=f1e25] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/shop/
+  - link "Contact Us" [ref=f1e26] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/contact/
+  - text: © 2026 Drywall Toolbox. All rights reserved.

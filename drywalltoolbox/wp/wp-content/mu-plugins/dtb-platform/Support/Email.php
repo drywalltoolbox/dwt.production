@@ -975,8 +975,10 @@ if ( ! function_exists( 'dtb_render_branded_email' ) ) {
 		$signoff     = dtb_email_clean_text( $args['signoff'] ?? 'Drywall Toolbox Team' );
 		$footer_note = dtb_email_clean_html( (string) ( $args['footer_note'] ?? 'You can reply directly to this email if you need help.' ) );
 		$theme       = sanitize_key( (string) ( $args['theme'] ?? 'dark' ) );
+		$color_scheme = 'dark' === $theme ? 'dark' : 'light';
 		$hide_heading = ! empty( $args['hide_heading'] );
 		$flush_body   = ! empty( $args['flush_body'] );
+		$full_bleed   = ! empty( $args['full_bleed'] );
 		$hide_signoff = ! empty( $args['hide_signoff'] );
 		$logo_url    = esc_url( dtb_email_logo_url() );
 		$home_url    = esc_url( home_url( '/' ) );
@@ -986,6 +988,11 @@ if ( ! function_exists( 'dtb_render_branded_email' ) ) {
 		$support_url = esc_url( dtb_email_support_url() );
 		$palette     = dtb_email_palette( $theme );
 		$template_id = 'dtb-email-template-v20260708-table-inline';
+		$shell_pad_class = $full_bleed ? 'dtb-shell-pad--bleed' : '';
+		$shell_pad_style = $full_bleed ? 'padding:0;' : 'padding:28px 16px 36px;';
+		$content_frame_style = $full_bleed
+			? 'width:100%;max-width:620px;border:0;border-radius:0;box-shadow:none;'
+			: '';
 
 		$details_html = dtb_email_details_table(
 			$details,
@@ -1036,6 +1043,10 @@ if ( ! function_exists( 'dtb_render_branded_email' ) ) {
 
 			$replacements = [
 				'{{template_id}}'       => esc_html( $template_id ),
+				'{{color_scheme}}'      => esc_attr( $color_scheme ),
+				'{{shell_pad_class}}'   => esc_attr( $shell_pad_class ),
+				'{{shell_pad_style}}'   => esc_attr( $shell_pad_style ),
+				'{{content_frame_style}}' => esc_attr( $content_frame_style ),
 				'{{title}}'             => esc_html( $title ),
 				'{{heading}}'           => esc_html( $title ),
 				'{{heading_block}}'     => $heading_block,

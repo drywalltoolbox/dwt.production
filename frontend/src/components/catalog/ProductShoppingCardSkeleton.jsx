@@ -13,7 +13,6 @@ export default function ProductShoppingCardSkeleton({ variant = 'grid' }) {
       </span>
 
       <span className="dtb-product-card-skeleton__meta">
-        <SkeletonBar className="dtb-product-card-skeleton__brand" />
         <span className="dtb-product-card-skeleton__name-lines">
           <SkeletonBar className="dtb-product-card-skeleton__name" />
           <SkeletonBar className="dtb-product-card-skeleton__name dtb-product-card-skeleton__name--short" />

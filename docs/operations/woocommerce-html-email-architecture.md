@@ -74,10 +74,13 @@ corner radius, and focus behavior. The email icon helper serves raster PNGs so
 mail clients do not depend on inline SVG. The launch icon exports are based on
 the supplied `products/launch/media/email/micons.ai` source sheet.
 The shared renderer also accepts opt-in `theme`, `hide_heading`, `flush_body`,
-and `hide_signoff` arguments for campaign layouts that need to use this same
-header/footer shell around a custom, edge-to-edge body. Defaults preserve the
+`full_bleed`, and `hide_signoff` arguments for campaign layouts that need to
+use this same header/footer shell around a custom body. `full_bleed` removes
+the outer shell gutters, card border, radius, and shadow while retaining the
+620px desktop measure and responsive mobile width. The shell's color-scheme
+metadata follows its selected light or dark palette. Defaults preserve the
 existing transactional-email layout; the coming-soon launch email uses the
-light palette and flush body mode.
+dark palette, flush body mode, and full-bleed frame.
 Email typography uses the self-hosted Geist Variable font from the storefront's
 Fontsource package, with Apple system, Segoe UI, Roboto, Helvetica, and Arial
 fallbacks. The same-origin WOFF2 asset is

@@ -9,7 +9,6 @@ import { preloadRoute } from '../../routing/routeModules.js';
 import { preloadQuickViewModules } from '../../routing/quickViewModules.js';
 import { preloadProductDetail } from '../../hooks/useProductDetail.js';
 import getQuantityMenuPosition from '../../utils/quantityMenuPosition.js';
-import { canonicalBrandLabel } from '../../utils/catalogUrlState.js';
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.matchMedia('(max-width: 767px)').matches);
@@ -65,10 +64,6 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
   const stockStatus = commerceProduct.stock_status || displayProduct.stock_status || 'instock';
   const outOfStock = stockStatus === 'outofstock';
   const name = displayProduct.name || commerceProduct.name || displayProduct.part_number || 'Product';
-  const brandValue = typeof displayProduct.brand === 'string'
-    ? displayProduct.brand
-    : (displayProduct.brand?.label || displayProduct.brand?.name || '');
-  const brand = canonicalBrandLabel(brandValue) || brandValue;
 
   // Variable parents are grouping records, not manufacturer sellable identities.
   // Never expose their internal/canonical parent SKU on customer product cards.
@@ -263,7 +258,6 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
           </button>
         </div>
         <div className="dtb-search-result__details">
-          {brand ? <span className="dtb-search-result__brand">{brand}</span> : null}
           <button type="button" className="dtb-search-result__name" onClick={handleTitleClick} onFocus={warmProductRoute} onPointerEnter={handlePointerIntent}>{name}</button>
           {sku ? <span className="dtb-search-result__sku">SKU: {sku}</span> : null}
           <div className="dtb-search-result__bottom">
@@ -340,9 +334,6 @@ export default function StorefrontProductTile({ product, cardProduct, onOpenModa
         )}
       </div>
       <div className="dtb-product-card__meta">
-        <span className={`dtb-product-card__brand${brand ? '' : ' dtb-product-card__brand--empty'}`} aria-hidden={!brand || undefined}>
-          {brand ? <span className="dtb-product-card__brand-label">{brand}</span> : '\u00a0'}
-        </span>
         <button type="button" onClick={handleTitleClick} className="dtb-product-card__name" onFocus={warmProductRoute} onPointerEnter={handlePointerIntent} data-dtb-card-action="title" aria-label={isMobile ? `Open full page for ${name}` : `View product details for ${name}`}>{name}</button>
         <span className={`dtb-product-card__sku${isVariable ? ' dtb-product-card__sku--options' : sku ? '' : ' dtb-product-card__sku--empty'}`} aria-hidden={!isVariable && !sku ? true : undefined}>
           {isVariable ? 'Multiple options available' : sku ? `SKU: ${sku}` : '\u00a0'}
