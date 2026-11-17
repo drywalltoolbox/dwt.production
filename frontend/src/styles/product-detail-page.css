@@ -1027,6 +1027,8 @@
     margin: 0;
   }
 
+  /* The shared <=1024px rules flatten this wrapper; keep it as a grid item on
+     phones so its purchase controls and cutoff badge stay in the purchase row. */
   .dtb-product-page-shell .dtb-pdp__purchase-region {
     grid-area: purchase;
     display: flex;
