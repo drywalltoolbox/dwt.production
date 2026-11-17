@@ -833,7 +833,7 @@
 }
 
 /* Mobile PDP composition follows the supplied DTB phone reference. */
-@media (max-width: 47.99rem) {
+@media (max-width: 48rem) {
   .product-detail-page {
     background: #fff;
   }
@@ -1029,6 +1029,10 @@
 
   .dtb-product-page-shell .dtb-pdp__purchase-region {
     grid-area: purchase;
+    display: flex;
+    flex-direction: column;
+    gap: .65rem;
+    min-width: 0;
     position: static !important;
     margin: 0;
   }
@@ -1187,7 +1191,7 @@
   animation: dtb-shipping-cutoff-pulse 2s ease-out infinite;
 }
 
-@media (max-width: 47.99rem) {
+@media (max-width: 48rem) {
   .dtb-product-page-shell .dtb-shipping-cutoff__copy {
     font-size: .84rem;
   }

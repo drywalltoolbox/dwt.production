@@ -1153,7 +1153,7 @@ export default function ProductDetail({
               <div
                 {...purchasePanel.rootProps}
                 className="dtb-pdp__purchase-region"
-                style={purchasePanel.getValue('sticky', true) ? { position: 'sticky', top: 'var(--dtb-header-height, 72px)' } : undefined}
+                style={!onClose && purchasePanel.getValue('sticky', true) ? { position: 'sticky', top: 'var(--dtb-header-height, 72px)' } : undefined}
               >
                 <ProductPurchasePanel
                   expressCheckout={typeof renderExpressCheckout === 'function' ? renderExpressCheckout({

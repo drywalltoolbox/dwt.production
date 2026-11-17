@@ -569,7 +569,7 @@ export default function Header({ onCartToggle, onMobileMenuOpen }) {
 
   const handleMobileAccountClick = () => {
     closeMobileMenu();
-    setAccountHubOpen(true);
+    void openAccountHub();
   };
 
   const navigateShopDestination = useCallback((to, { closeMobile = false } = {}) => {

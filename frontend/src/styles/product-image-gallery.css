@@ -163,7 +163,7 @@
 
 /* The editorial PDP uses a vertical image index beside its large media stage.
    Keep the same gallery controls and active-image state across both layouts. */
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .dtb-product-page-shell .dtb-pdp-gallery > div {
     display: grid;
     grid-template-columns: clamp(64px, 6vw, 88px) minmax(0, 1fr);
@@ -243,7 +243,7 @@
   display: none;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .dtb-product-page-shell .product-image-gallery__thumb-nav {
     display: flex;
   }
@@ -409,13 +409,13 @@
   background: #efeae2;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 769px) {
   .dtb-product-page-shell .dtb-pdp-gallery .product-image-gallery__thumb-nav svg {
     transform: rotate(90deg);
   }
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__main,
   .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__main:hover,
   .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__image {
