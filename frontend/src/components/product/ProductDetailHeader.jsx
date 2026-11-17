@@ -100,9 +100,14 @@ export default function ProductDetailHeader({
             {pricePrefix}{primaryPrice}
           </span>
           {shouldShowCompareAtPrice(rawPriceValue, resolvedRegularPrice) ? (
-            <span className="dtb-pdp-header__compare-at">
-              ${money(resolvedRegularPrice)}
-            </span>
+            <>
+              <span className="dtb-pdp-header__compare-at">
+                ${money(resolvedRegularPrice)}
+              </span>
+              <span className="dtb-pdp-header__savings">
+                You save ${money(resolvedRegularPrice - rawPriceValue)}
+              </span>
+            </>
           ) : null}
         </div>
       </div>

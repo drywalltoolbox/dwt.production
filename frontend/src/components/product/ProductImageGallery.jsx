@@ -353,10 +353,14 @@ export default function ProductImageGallery({ product, parentProduct = null }) {
     const rail = thumbsRef.current;
     if (!rail) return;
 
-    const maxScrollLeft = Math.max(0, rail.scrollWidth - rail.clientWidth);
+    const isVertical = window.getComputedStyle(rail).flexDirection === 'column';
+    const currentScroll = isVertical ? rail.scrollTop : rail.scrollLeft;
+    const maxScroll = isVertical
+      ? Math.max(0, rail.scrollHeight - rail.clientHeight)
+      : Math.max(0, rail.scrollWidth - rail.clientWidth);
     const nextState = {
-      canScrollBack: rail.scrollLeft > 2,
-      canScrollForward: rail.scrollLeft < maxScrollLeft - 2,
+      canScrollBack: currentScroll > 2,
+      canScrollForward: currentScroll < maxScroll - 2,
     };
     setThumbRailState((state) => (
       state.canScrollBack === nextState.canScrollBack
@@ -419,12 +423,13 @@ export default function ProductImageGallery({ product, parentProduct = null }) {
     const rail = thumbsRef.current;
     if (!rail) return;
 
-    const visibleWidth = rail.clientWidth;
-    if (visibleWidth <= 0) return;
+    const isVertical = window.getComputedStyle(rail).flexDirection === 'column';
+    const visibleSize = isVertical ? rail.clientHeight : rail.clientWidth;
+    if (visibleSize <= 0) return;
 
-    const step = Math.max(160, Math.round(visibleWidth * 0.72));
+    const step = Math.max(160, Math.round(visibleSize * 0.72));
     rail.scrollBy({
-      left: railDirection * step,
+      [isVertical ? 'top' : 'left']: railDirection * step,
       behavior: 'smooth',
     });
   }, []);

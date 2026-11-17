@@ -6,7 +6,9 @@ import { useCart } from '../../context/CartContext';
 import ProductImageGallery from './ProductImageGallery';
 import ProductVariationRail from './ProductVariationRail';
 import ProductDetailHeader from './ProductDetailHeader';
+import Breadcrumb from '../shared/Breadcrumb.jsx';
 import ProductPurchasePanel from './ProductPurchasePanel';
+import ShippingCutoffBanner from './ShippingCutoffBanner.jsx';
 import ProductInformationAccordion from './ProductInformationAccordion.jsx';
 import ProductSpecTable from './ProductSpecTable';
 import { getProductSpecifications } from '../../utils/productSpecifications';
@@ -701,6 +703,7 @@ function ProductReviewsButton({ onClick, className = '', rating = 0, ratingCount
 
 export default function ProductDetail({
   product,
+  breadcrumbItems = null,
   onAddToCart,
   onClose,
   onVariationChange,
@@ -943,6 +946,9 @@ export default function ProductDetail({
   const effectiveName = effectiveProduct.name || product.name || '';
   const schematicLink = getSchematicLinkForProduct(effectiveProduct, { allowLegacyFallback: false });
   const brandLabel = getBrandLabel(product, effectiveProduct);
+  const productSummary = htmlToPlainText(
+    effectiveProduct.short_description || product.short_description || '',
+  ).trim();
   const effectiveSku = effectiveProduct.sku || product.sku || '';
   const effectiveStock = effectiveProduct.stock_status || product.stock_status || 'instock';
   const isOutOfStock = effectiveStock === 'outofstock';
@@ -1096,6 +1102,12 @@ export default function ProductDetail({
 
             <div className="dtb-pdp__info-column flex flex-col">
               <div className="dtb-pdp__summary-region">
+                {Array.isArray(breadcrumbItems) && breadcrumbItems.length ? (
+                  <Breadcrumb
+                    items={breadcrumbItems}
+                    className="dtb-pdp__breadcrumb dtb-breadcrumb-bar--compact"
+                  />
+                ) : null}
                 <ProductDetailHeader
                   product={product}
                   productUrl={detailProductUrl}
@@ -1117,6 +1129,10 @@ export default function ProductDetail({
                   ratingCount={effectiveProduct.rating_count ?? effectiveProduct.reviews ?? product.rating_count ?? product.reviews}
                   money={money}
                 />
+
+                {productSummary ? (
+                  <p className="dtb-pdp-header__summary">{productSummary}</p>
+                ) : null}
 
                 {needsVariation ? (
                   <ProductVariationRail
@@ -1179,6 +1195,8 @@ export default function ProductDetail({
                 {addToCartError ? (
                   <p className="text-sm text-red-600 mt-2" role="alert" aria-live="assertive">{addToCartError}</p>
                 ) : null}
+
+                <ShippingCutoffBanner stockStatus={effectiveStock} />
               </div>
 
               {!detailTabs.hidden && (

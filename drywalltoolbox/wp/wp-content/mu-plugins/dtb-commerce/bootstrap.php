@@ -42,6 +42,10 @@ if ( is_admin() ) {
 }
 
 require_once __DIR__ . '/Rest/OrderRestController.php';
+$shipping_cutoff_controller_file = __DIR__ . '/Rest/StorefrontShippingCutoffController.php';
+if ( file_exists( $shipping_cutoff_controller_file ) ) {
+	require_once $shipping_cutoff_controller_file;
+}
 $product_review_controller_file = __DIR__ . '/Rest/ProductReviewController.php';
 if ( file_exists( $product_review_controller_file ) ) {
 	require_once $product_review_controller_file;

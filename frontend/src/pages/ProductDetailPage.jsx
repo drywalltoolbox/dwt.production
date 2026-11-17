@@ -33,7 +33,6 @@ import { getVariationSelectionMap } from '../utils/variationSelection';
 import { buildBreadcrumbSchema, buildProductSchema, stripHtml } from '../utils/schema';
 import ProductDetail from '../components/product/ProductDetail';
 import SEOHead from '../components/shared/SEOHead';
-import Breadcrumb from '../components/shared/Breadcrumb.jsx';
 import Toast from '../components/ui/Toast';
 import ProductRelatedProducts from '../components/product/ProductRelatedProducts.jsx';
 import RecentlyViewedProducts from '../components/product/RecentlyViewedProducts.jsx';
@@ -257,7 +256,7 @@ export default function ProductDetailPage() {
   const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbItems);
 
   return (
-    <div className="min-h-screen page-wrapper">
+    <div className="min-h-screen page-wrapper product-detail-page">
       <SEOHead
         title={seoTitle}
         description={seoDesc}
@@ -270,9 +269,9 @@ export default function ProductDetailPage() {
       />
 
       <div className="dtb-product-page-shell dtb-container dtb-container--wide py-6 sm:py-8">
-        <Breadcrumb items={breadcrumbItems} />
         <ProductDetail
           product={product}
+          breadcrumbItems={breadcrumbItems}
           onAddToCart={handleAddToCart}
           onVariationChange={handleVariationChange}
           initialVariations={variations}
