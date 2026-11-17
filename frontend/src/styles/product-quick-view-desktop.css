@@ -66,7 +66,7 @@
   overflow: hidden;
 }
 
-@media (min-width: 48rem) {
+@media (min-width: 48.0625rem) {
   .product-modal-scroll-shell {
     top: 0;
     scrollbar-width: thin;
@@ -562,7 +562,7 @@
   line-height: 1.5;
 }
 
-@media (min-width: 48rem) {
+@media (min-width: 48.0625rem) {
   .product-modal-card-shell.dtb-product-page-shell > .product-modal-content {
     border-radius: 26px;
   }
