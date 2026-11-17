@@ -419,16 +419,29 @@
   .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__main,
   .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__main:hover,
   .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__image {
-    border-color: transparent;
+    border-color: #e5eaf2;
     border-radius: 15px;
-    background: #f0f1f5;
+    background: #fff;
     box-shadow: none;
   }
 
   .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__main {
-    min-height: min(92vw, 25rem);
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
     aspect-ratio: 1 / 1;
     overflow: hidden;
+  }
+
+  .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__image {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    padding: 0 !important;
+    object-fit: contain;
+    object-position: center;
+    background: #fff;
   }
 
   .dtb-product-page-shell .dtb-pdp-gallery .product-image-gallery__thumbs {
@@ -443,10 +456,10 @@
     min-width: clamp(4.35rem, 18vw, 5.35rem);
     flex-basis: clamp(4.35rem, 18vw, 5.35rem);
     border-radius: 10px;
-    background: #f7f8fa;
+    background: #fff;
   }
 
   .dtb-product-page-shell .dtb-pdp-gallery .product-image-gallery__thumb img {
-    background: #f7f8fa;
+    background: #fff;
   }
 }

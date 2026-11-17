@@ -25,6 +25,31 @@
   background: #fff;
 }
 
+@media (max-width: 768px) {
+  .product-modal-scroll-shell {
+    max-height: 100vh;
+    max-height: 100dvh;
+    overscroll-behavior-y: contain;
+  }
+
+  .product-modal-scroll-inner {
+    box-sizing: border-box;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding-block: env(safe-area-inset-top, 0px) env(safe-area-inset-bottom, 0px);
+  }
+
+  .product-modal-card-shell.dtb-product-page-shell {
+    min-height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    min-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  }
+
+  .product-modal-card-shell.dtb-product-page-shell > .product-modal-content {
+    min-height: calc(100vh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    min-height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  }
+}
+
 .product-modal-card-shell.dtb-product-page-shell {
   width: 100%;
   max-width: none;
@@ -412,6 +437,14 @@
   }
 }
 
+@media (max-width: 768px) {
+  /* Keep the close control in a dedicated top area on the mobile sheet so it
+     never covers the first product image or its gallery controls. */
+  .product-modal-content > .dtb-pdp.dtb-pdp--modal .dtb-pdp__inner {
+    padding-top: clamp(3.25rem, 8vw, 3.75rem) !important;
+  }
+}
+
 @media (min-width: 1024px) and (max-width: 1280px) {
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp {
     padding-inline: 42px !important;
@@ -466,7 +499,7 @@
 /* Keep composed Quick View content, including related products, on one surface. */
 .product-modal-content {
   width: 100%;
-  background: #f6f3ee;
+  background: #fff;
 }
 
 
@@ -483,7 +516,7 @@
   box-sizing: border-box;
   width: 100%;
   min-width: 0;
-  background: #f6f3ee;
+  background: #fff;
   border-radius: 0;
   overflow: hidden;
 }
@@ -543,5 +576,64 @@
 
   .product-modal-content > .dtb-pdp.dtb-pdp--modal .dtb-pdp__inner {
     padding-bottom: 1.5rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .product-modal-card-shell.dtb-product-page-shell {
+    width: min(1360px, calc(100vw - 64px)) !important;
+    max-width: 1360px !important;
+  }
+
+  .product-modal-card-shell.dtb-product-page-shell .dtb-pdp,
+  .product-modal-card-shell.dtb-product-page-shell .product-modal-content,
+  .product-modal-card-shell.dtb-product-page-shell .product-modal-content > .product-related {
+    background: #fff !important;
+  }
+
+  .product-modal-card-shell.dtb-product-page-shell .dtb-pdp {
+    padding: clamp(28px, 3vw, 44px) clamp(28px, 3.3vw, 48px) 36px !important;
+  }
+
+  .product-modal-card-shell.dtb-product-page-shell .dtb-pdp__hero {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 0 !important;
+  }
+
+  .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-gallery {
+    min-width: 0;
+    padding-right: clamp(18px, 2vw, 28px);
+  }
+
+  .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-gallery > div {
+    grid-template-columns: clamp(68px, 6vw, 84px) minmax(0, 1fr) !important;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .product-modal-card-shell.dtb-product-page-shell .product-image-gallery__thumb-shell,
+  .product-modal-card-shell.dtb-product-page-shell .product-image-gallery__thumbs {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0;
+  }
+
+  .product-modal-card-shell.dtb-product-page-shell .product-image-gallery__main {
+    background: #fff !important;
+    border-color: #e4e8ef;
+    border-radius: 12px;
+  }
+
+  .product-modal-card-shell.dtb-product-page-shell .product-image-gallery__image {
+    padding: 0 !important;
+    background: #fff !important;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .product-modal-card-shell.dtb-product-page-shell .dtb-pdp__info-column {
+    min-width: 0;
+    max-width: 100%;
+    border-color: #e3e8ef !important;
   }
 }

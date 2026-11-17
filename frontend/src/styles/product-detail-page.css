@@ -21,11 +21,11 @@
   --dtb-pdp-radius: 8px;
   --dtb-pdp-compact-gap: clamp(.55rem, 1.6vw, .8rem);
   color: var(--dtb-pdp-copy);
-  background: #f6f3ee;
+  background: #fff;
 }
 
 .product-detail-page {
-  background: #f6f3ee;
+  background: #fff;
 }
 
 .dtb-product-page-shell > nav,
@@ -801,18 +801,6 @@
 
 }
 
-@media (max-width: 22.5rem) {
-  .dtb-product-page-shell .dtb-pdp-purchase-row {
-    grid-template-columns: minmax(5.25rem, min(30vw, 7.25rem)) minmax(0, 1fr);
-    gap: clamp(.4rem, 2.2vw, .58rem);
-  }
-
-  .dtb-product-page-shell .dtb-pdp-qty-root,
-  .dtb-product-page-shell .dtb-pdp-mobile-quantity__trigger {
-    width: 100%;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .dtb-product-page-shell .dtb-pdp-mobile-quantity__trigger,
   .dtb-product-page-shell .dtb-pdp-mobile-quantity__trigger svg {
@@ -1113,6 +1101,24 @@
   .dtb-product-page-shell .dtb-pdp-info-accordion__heading svg,
   .dtb-product-page-shell .dtb-pdp-info-accordion__heading button > svg {
     color: #102047;
+  }
+}
+
+@media (max-width: 22.5rem) {
+  .dtb-product-page-shell .dtb-pdp-purchase-row {
+    grid-template-columns: minmax(5.25rem, min(30vw, 6rem)) minmax(0, 1fr);
+    gap: clamp(.35rem, 2.2vw, .58rem);
+  }
+
+  .dtb-product-page-shell .dtb-pdp-qty-root,
+  .dtb-product-page-shell .dtb-pdp-mobile-quantity__trigger {
+    width: 100%;
+  }
+
+  .dtb-product-page-shell .dtb-pdp-add-to-cart {
+    min-width: 0;
+    padding-inline: .55rem;
+    font-size: .84rem;
   }
 }
 
