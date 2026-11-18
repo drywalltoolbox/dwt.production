@@ -1,6 +1,0 @@
-# Runtime dependencies for the complete catalog tooling suite.
-# Install into an isolated virtual environment; do not vendor these packages.
-beautifulsoup4>=4.12,<5.0
-cloudscraper>=1.2.71,<2.0
-Pillow>=10.0,<12.0
-rapidfuzz>=3.9,<4.0

@@ -1,9 +1,0 @@
-node_modules/
-
-playwright-report/
-
-output/
-.cache/
-.env
-.env.*
-!.env.example

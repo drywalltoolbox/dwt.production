@@ -1,8 +1,0 @@
-name = "pdp_conversion"
-description = "PDP merchandising/content adapter for canonical .agents/roles/pdp-conversion-specialist.md."
-model = "gpt-5.6-sol"
-model_reasoning_effort = "medium"
-
-developer_instructions = """
-Read AGENTS.md and .agents/roles/pdp-conversion-specialist.md. Ground claims in canonical catalog/source evidence.
-"""
