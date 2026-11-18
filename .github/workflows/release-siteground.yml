@@ -388,6 +388,34 @@ jobs:
           curl --fail --silent --show-error --retry 4 --retry-delay 5 --max-time 30 "$DTB_PRODUCTION_BASE_URL/" > /dev/null
           curl --fail --silent --show-error --retry 4 --retry-delay 5 --max-time 30 "$DTB_PRODUCTION_BASE_URL/wp-json/dtb/v1/health" \
             | php -r '$data=json_decode(stream_get_contents(STDIN), true); exit(is_array($data) && ($data["status"] ?? null) === "ok" ? 0 : 1);'
+          cutoff_headers="$(mktemp)"
+          trap 'rm -f "$cutoff_headers"' EXIT
+          cutoff_response="$(curl --fail --silent --show-error --retry 4 --retry-delay 5 --max-time 30 \
+            --dump-header "$cutoff_headers" \
+            "$DTB_PRODUCTION_BASE_URL/wp-json/dtb/v1/storefront/shipping-cutoff")"
+          grep -Eiq '^Cache-Control:.*no-store' "$cutoff_headers"
+          printf '%s' "$cutoff_response" | php -r '
+            $data = json_decode( stream_get_contents( STDIN ), true );
+            if ( ! is_array( $data ) || ! is_bool( $data["same_day_cutoff_open"] ?? null ) ) {
+              exit( 1 );
+            }
+            try {
+              $timezone = new DateTimeZone( (string) ( $data["timezone"] ?? "" ) );
+              $server_now = new DateTimeImmutable( (string) ( $data["server_now_utc"] ?? "" ) );
+              $cutoff = new DateTimeImmutable( (string) ( $data["cutoff_at_utc"] ?? "" ) );
+            } catch ( Throwable $error ) {
+              exit( 1 );
+            }
+            $local_cutoff = $cutoff->setTimezone( $timezone );
+            if (
+              $cutoff <= $server_now ||
+              "14:00" !== ( $data["cutoff_local"] ?? null ) ||
+              "14:00" !== $local_cutoff->format( "H:i" ) ||
+              ! in_array( (int) $local_cutoff->format( "N" ), [ 1, 2, 3, 4, 5 ], true )
+            ) {
+              exit( 1 );
+            }
+          '
           curl --fail --silent --show-error --retry 4 --retry-delay 5 --max-time 30 "$DTB_PRODUCTION_BASE_URL/checkout/" > /dev/null
 
           trap - ERR
