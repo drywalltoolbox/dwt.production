@@ -648,3 +648,91 @@
     background: var(--dtb-primary, #2255ee);
   }
 }
+
+/* Mobile catalog cards share the homepage rails' open, unified canvas. Keep
+   the image surface and commerce hierarchy, but remove the nested card shell. */
+@media (max-width: 767px) {
+  .dtb-catalog-listing-page .dtb-product-card--grid {
+    height: auto;
+    align-self: start;
+    overflow: visible;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .dtb-catalog-listing-page .dtb-product-card--grid .dtb-product-card__image {
+    aspect-ratio: 1.12 / 1;
+    overflow: hidden;
+    border-radius: var(--dtb-radius-md, 12px);
+    background: #f7f9fc;
+  }
+
+  .dtb-catalog-listing-page .dtb-product-card--grid .dtb-product-card__meta {
+    grid-template-rows: minmax(2.3em, 2.7em) auto auto;
+    gap: 5px;
+    padding: 9px 2px 2px;
+    background: transparent;
+  }
+
+  .dtb-catalog-listing-page .dtb-product-card--grid .dtb-product-card__name {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 2.7em;
+    margin: 0;
+    font-size: clamp(.88rem, 3.35vw, 1rem);
+    font-weight: 700;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+  }
+
+  .dtb-catalog-listing-page .dtb-product-card--grid .dtb-product-card__sku {
+    margin-top: 0;
+    font-size: .72rem;
+  }
+
+  .dtb-catalog-listing-page .dtb-product-card--grid .dtb-product-card__divider {
+    display: none;
+  }
+
+  .dtb-catalog-listing-page .dtb-product-card--grid .dtb-product-card__footer {
+    grid-row: 4;
+    align-self: start;
+    min-height: 0;
+    gap: 8px;
+    padding-top: 2px;
+  }
+
+  .dtb-catalog-listing-page .dtb-product-card--grid .dtb-product-card__commerce-controls,
+  .dtb-product-card--rail .dtb-product-card__commerce-controls {
+    left: auto;
+    box-sizing: border-box;
+    width: 100%;
+    min-width: 0;
+    gap: 8px;
+  }
+
+  .dtb-catalog-listing-page .dtb-product-card--grid .dtb-product-card__quantity,
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__quantity {
+    background: #fff;
+    box-shadow: none;
+    filter: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .dtb-catalog-listing-page .dtb-product-card--grid .dtb-product-card__footer .dtb-product-card__action--mobile-icon,
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__footer .dtb-product-card__action--mobile-icon {
+    border-radius: 10px;
+    box-shadow: none;
+    --dtb-atc-radius: 10px;
+  }
+
+  .dtb-catalog-listing-page .dtb-product-card--grid .dtb-product-card__footer .dtb-product-card__action--mobile-icon .dtb-add-to-cart__surface,
+  .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__footer .dtb-product-card__action--mobile-icon .dtb-add-to-cart__surface {
+    background: var(--dtb-primary, #2255ee);
+  }
+}

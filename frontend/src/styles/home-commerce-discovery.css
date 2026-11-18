@@ -234,8 +234,14 @@
 
   .dtb-home-page .home-hero .home-hero__repair-surface .repair-hero.repair-hero--home-slide .repair-hero__scrim::before {
     position: absolute;
-    inset: 20% 0 18%;
+    inset: 8% 0 6%;
     background: linear-gradient(90deg, rgba(2, 10, 25, .3), rgba(2, 10, 25, .18) 58%, transparent 100%);
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 17%, #000 80%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, #000 17%, #000 80%, transparent 100%);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
     content: '';
     pointer-events: none;
   }
