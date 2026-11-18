@@ -284,32 +284,6 @@ body,
   min-height: var(--dtb-touch-target, 44px);
 }
 
-/* "+N" overflow badge appended after the visible thumbnails — previously
-   unstyled, so it rendered as a bare default <button> (no size/shape
-   matching the 64px thumbnail tiles beside it), which visually broke the
-   rhythm of the thumbnail row. Match the thumbnail tile treatment. */
-.product-image-gallery__mobile-more {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 0.75rem;
-  border: 2px solid var(--dtb-border, #dbe3f1);
-  background: var(--dtb-surface-subtle, #f8fafc);
-  color: var(--dtb-text-soft, #334155);
-  font-size: 0.8rem;
-  font-weight: 700;
-  white-space: nowrap;
-  transition: border-color 140ms ease, background 140ms ease;
-}
-
-.product-image-gallery__mobile-more:hover,
-.product-image-gallery__mobile-more:focus-visible {
-  border-color: var(--dtb-primary, #2255ee);
-  background: var(--dtb-primary-soft, #eef3ff);
-}
-
 .product-related {
   min-width: 0;
   margin-top: clamp(2rem, 5vw, 4rem);

@@ -194,8 +194,8 @@
    Design pass: everything below is built from the shared token scale in
    storefront-tokens.css (radius/spacing/color/elevation/motion) so the
    gallery reads as part of the same system as the rest of the storefront
-   (see .product-image-gallery__mobile-more / dtb-product-buy-now for the
-   same token vocabulary) rather than one-off Tailwind gray/blue values.
+   and purchase controls use the same token vocabulary rather than one-off
+   Tailwind gray/blue values.
    The modal uses a square frame while the full desktop page may use a wider,
    height-bounded frame. The active image therefore owns an explicit full-frame
    box in every context; object-fit: contain guarantees nothing is cropped

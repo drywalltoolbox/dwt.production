@@ -778,16 +778,6 @@ export default function ProductImageGallery({ product, parentProduct = null }) {
                   />
                 </button>
               ))}
-              {stableImages.length > 4 ? (
-                <button
-                  type="button"
-                  className="product-image-gallery__mobile-more"
-                  onClick={() => openLightbox(4)}
-                  aria-label={`View ${stableImages.length - 4} more product ${stableImages.length - 4 === 1 ? 'image' : 'images'}`}
-                >
-                  +{stableImages.length - 4}
-                </button>
-              ) : null}
             </div>
 
             <button
