@@ -231,7 +231,7 @@
   }
 
   .product-modal-card-shell.dtb-product-page-shell .product-image-gallery__thumb--active {
-    border: 2px solid #1f1c18;
+    border: 2px solid var(--dtb-pdp-blue, #2255EE);
     box-shadow: none;
   }
 
@@ -244,13 +244,13 @@
     min-width: 0;
     align-self: stretch;
     margin: 0;
-    padding: 16px 14px 10px 42px !important;
-    border-left: 1px solid #ddd6cb;
+    padding: 12px 14px 8px clamp(24px, 2vw, 34px) !important;
+    border-left: 1px solid var(--dtb-pdp-line, #dbe3f1);
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__brand-logo-wrap {
-    min-height: 50px;
-    margin: 0 0 10px;
+    min-height: 44px;
+    margin: 0 0 3px;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__brand-logo,
@@ -262,17 +262,17 @@
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__title {
     max-width: 100%;
     margin: 0;
-    color: #1f1c18;
-    font-size: clamp(2.1rem, 2.6vw, 2.8rem);
-    font-weight: 470;
-    letter-spacing: -.04em;
-    line-height: 1.04;
+    color: var(--dtb-pdp-ink, #102047);
+    font-size: clamp(1.8rem, 1.6rem + .8vw, 2.45rem);
+    font-weight: 760;
+    letter-spacing: -.035em;
+    line-height: 1.08;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__identity-row {
     min-height: 21px;
     gap: 0;
-    margin-top: 13px;
+    margin-top: 8px;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__identity-row > * {
@@ -297,7 +297,7 @@
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__price-block {
-    margin-top: clamp(1rem, 1.1vw, 1.4rem);
+    margin-top: 9px;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__price-row {
@@ -305,10 +305,10 @@
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__price {
-    color: #1f1c18;
-    font-size: clamp(1.8rem, 2vw, 2.2rem);
-    font-weight: 560;
-    letter-spacing: -.04em;
+    color: var(--dtb-pdp-blue, #2255EE);
+    font-size: clamp(1.8rem, 1.55rem + .75vw, 2.35rem);
+    font-weight: 800;
+    letter-spacing: -.035em;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__compare-at {
@@ -330,8 +330,8 @@
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-header__summary {
     max-width: 100%;
-    margin: clamp(1rem, 1.1vw, 1.4rem) 0 0;
-    color: #34435a;
+    margin: 9px 0 0;
+    color: #465773;
     font-size: clamp(.94rem, .9rem + .2vw, 1rem);
     font-weight: 440;
     line-height: 1.5;
@@ -342,7 +342,7 @@
   }
 
   .product-modal-card-shell.dtb-product-page-shell .product-variation-rail {
-    margin-top: 18px !important;
+    margin-top: 10px !important;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .product-variation-rail :is(button, [role='button']) {
@@ -353,7 +353,7 @@
 
   /* Purchase controls ------------------------------------------------- */
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp__purchase-region {
-    margin-top: 20px !important;
+    margin-top: 12px !important;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-purchase-panel {
@@ -378,12 +378,12 @@
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-add-to-cart {
     font-size: 15px;
     font-weight: 720;
-    background: #1f1c18;
-    border-radius: 2px !important;
+    background: var(--dtb-pdp-blue, #2255EE);
+    border-radius: 7px !important;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-add-to-cart:hover:not(:disabled) {
-    background: #3c3731;
+    background: #1747cf;
   }
 
   .product-modal-card-shell.dtb-product-page-shell .dtb-pdp-qty-root {
