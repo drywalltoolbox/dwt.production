@@ -3,6 +3,7 @@ import StorefrontRail from '../storefront/StorefrontRail';
 import ProductShoppingCard from '../ui/ProductShoppingCard.jsx';
 
 const MAX_RELATED_PRODUCTS = 10;
+const MAX_INCLUDED_COMPONENTS = 20;
 
 export function getRelatedProductsCopy(context = 'related') {
   if (context === 'recommendations') {
@@ -67,7 +68,8 @@ export default function ProductRelatedProducts({
   const hasProducts = Array.isArray(products) && products.length > 0;
   if (!hasProducts && !showStatus) return null;
 
-  const visibleProducts = hasProducts ? products.slice(0, MAX_RELATED_PRODUCTS) : [];
+  const productLimit = context === 'included_components' ? MAX_INCLUDED_COMPONENTS : MAX_RELATED_PRODUCTS;
+  const visibleProducts = hasProducts ? products.slice(0, productLimit) : [];
   const copy = getRelatedProductsCopy(context);
   const titleId = `${id}-title`;
 

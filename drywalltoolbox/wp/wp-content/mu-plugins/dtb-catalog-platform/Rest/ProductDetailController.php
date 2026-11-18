@@ -18,6 +18,7 @@ defined( 'ABSPATH' ) || exit;
 final class DTB_ProductDetailController {
 
 	private const RELATED_PRODUCT_LIMIT = 10;
+	private const INCLUDED_COMPONENT_LIMIT = 20;
 
 	public static function register_routes(): void {
 		register_rest_route( 'dtb/v1', '/catalog/resolve-sku', [
@@ -303,7 +304,7 @@ final class DTB_ProductDetailController {
 					$included_cards[$included_id] = dtb_catalog_normalize_product( $raw );
 				}
 			}
-			if ( count( $included_cards ) >= self::RELATED_PRODUCT_LIMIT ) {
+			if ( count( $included_cards ) >= self::INCLUDED_COMPONENT_LIMIT ) {
 				break;
 			}
 		}

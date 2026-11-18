@@ -140,12 +140,14 @@ export default function ProductDetailPage() {
   const displayedRelatedProducts = Array.isArray(selectedVariationRelatedProducts)
     ? selectedVariationRelatedProducts
     : relatedProducts;
+  const hasIncludedComponents = computed?.relatedProductsContext === 'included_components';
+  const includedComponents = hasIncludedComponents ? displayedRelatedProducts : [];
   const recommendedProducts = useMemo(
     () => mergeRelatedProductSources(
-      [displayedRelatedProducts, familyRelatedProducts, categoryRelatedProducts, brandRelatedProducts],
+      [hasIncludedComponents ? [] : displayedRelatedProducts, familyRelatedProducts, categoryRelatedProducts, brandRelatedProducts],
       product?.slug,
     ),
-    [brandRelatedProducts, categoryRelatedProducts, displayedRelatedProducts, familyRelatedProducts, product?.slug],
+    [brandRelatedProducts, categoryRelatedProducts, displayedRelatedProducts, familyRelatedProducts, hasIncludedComponents, product?.slug],
   );
   const compatiblePartsSku = product?.product_kind === 'part'
     ? ''
@@ -285,6 +287,15 @@ export default function ProductDetailPage() {
           initialComputedData={computed}
           disableLegacyDetailFetch
           autoSelectDefaultVariation={false}
+        />
+
+        <ProductRelatedProducts
+          products={includedComponents}
+          context="included_components"
+          className="product-related--pdp"
+          id="product-included-components"
+          onAddToCart={handleAddToCart}
+          onOpenProduct={(relatedProduct) => navigate(`/products/${relatedProduct.slug}`)}
         />
 
         <ProductRelatedProducts

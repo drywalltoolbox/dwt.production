@@ -409,12 +409,6 @@
   background: transparent;
 }
 
-/* The full PDP presents product media directly on the page surface. Avoid a
-   hover lens/card overlay that can look like an empty outlined image tile. */
-.dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__magnifier {
-  display: none;
-}
-
 @media (min-width: 769px) {
   .dtb-product-page-shell .dtb-pdp-gallery .product-image-gallery__thumb-nav svg {
     transform: rotate(90deg);
