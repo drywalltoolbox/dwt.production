@@ -2485,20 +2485,6 @@
   line-height: 1.1;
 }
 
-.product-related__browse {
-  flex: 0 0 auto;
-  color: #2255ee;
-  font-size: 0.9rem;
-  font-weight: 750;
-  text-decoration: none;
-}
-
-.product-related__browse:hover,
-.product-related__browse:focus-visible {
-  text-decoration: underline;
-  text-underline-offset: 0.25rem;
-}
-
 /* Related products now render through the shared StorefrontRail horizontal
    scroller (see storefront-sections.css .storefront-rail-shell/.storefront-rail)
    to match the homepage product carousel pattern — no wrapping grid here. */

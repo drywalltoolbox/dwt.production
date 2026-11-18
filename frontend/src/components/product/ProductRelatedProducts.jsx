@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import StorefrontRail from '../storefront/StorefrontRail';
 import ProductShoppingCard from '../ui/ProductShoppingCard.jsx';
 
@@ -79,7 +79,6 @@ export default function ProductRelatedProducts({
         <div>
           <h2 id={titleId}>{copy.title}</h2>
         </div>
-        <Link to="/products" className="product-related__browse">Browse all products</Link>
       </div>
       {visibleProducts.length > 0 ? <StorefrontRail label={copy.railLabel} className="storefront-rail--fixed-tiles storefront-rail--equal-height storefront-rail--two-up-mobile">
         {visibleProducts.map((relatedProduct, index) => {

@@ -182,18 +182,26 @@
     grid-column: 1;
     grid-row: 1;
     align-self: stretch;
+    box-sizing: border-box;
+    height: 100%;
+    max-height: 100%;
     min-height: 0;
     padding: 0;
+    overflow: hidden;
   }
 
   .dtb-product-page-shell .dtb-pdp-gallery .product-image-gallery__thumbs {
     flex-direction: column;
     align-items: stretch;
     gap: 9px;
-    max-height: min(62vw, 720px);
+    box-sizing: border-box;
+    height: 100%;
+    max-height: 100%;
+    min-height: 0;
     padding: 0 2px 2px;
     overflow-x: hidden;
     overflow-y: auto;
+    overscroll-behavior-y: contain;
     scroll-padding-block: 2px;
     scroll-snap-type: y proximity;
     touch-action: pan-y;

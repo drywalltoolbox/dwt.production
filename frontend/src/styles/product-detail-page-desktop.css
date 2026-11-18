@@ -660,13 +660,6 @@
     line-height: 1.2;
   }
 
-  .dtb-product-page-shell:not(.product-modal-card-shell) .product-related--pdp .product-related__browse {
-    display: inline-flex;
-    min-height: 44px;
-    align-items: center;
-    font-size: .8rem;
-  }
-
   /* Keep mobile PDP details visually continuous with the page, not boxed in
      by the desktop accordion card treatment. */
   .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion {

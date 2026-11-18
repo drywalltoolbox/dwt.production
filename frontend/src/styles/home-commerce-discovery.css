@@ -266,6 +266,27 @@
     padding-left: 1rem;
   }
 
+  .dtb-home-page .home-commerce-categories .storefront-section__head {
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  .dtb-home-page .home-commerce-categories .storefront-section__head-text {
+    flex: 1 1 0%;
+    min-width: 0;
+  }
+
+  .dtb-home-page .home-commerce-categories .storefront-section__view-all {
+    flex: 0 0 auto;
+    min-height: 36px;
+    gap: .25rem;
+    margin-left: auto;
+    padding: 0 0 0 .35rem;
+    font-size: .76rem;
+    letter-spacing: 0;
+  }
+
   .dtb-home-page .storefront-section__subtitle {
     font-size: .84rem;
   }

@@ -8,8 +8,9 @@ import StorefrontProductRail from '../components/storefront/StorefrontProductRai
 import { getBrandLogo } from '../utils/brandAssets.js';
 import { brandToSlug } from '../utils/catalogUrlState.js';
 import ShopByToolType from '../components/catalog/ShopByToolType.jsx';
-import { buildCategoryPageUrl } from '../utils/catalogFacets.js';
+import { buildCategoryPageUrl, flattenCatalogNavigationGroups } from '../utils/catalogFacets.js';
 import { HOME_TOOL_TYPES } from '../constants/homeToolTypes.js';
+import { useStorefrontNavigation } from '../hooks/useStorefrontNavigation.js';
 import usgSheetrockToolsLogo from '/brands/USG-Sheetrock-Tools/usg-sheetrock-tools.svg';
 import '../styles/home-commerce-discovery.css';
 
@@ -68,7 +69,14 @@ const HOME_BRAND_PRODUCT_SECTIONS = HOME_BRAND_ORDER.map((brandName) => {
 });
 
 function HomeToolTypeCategories() {
-  const categories = HOME_TOOL_TYPES.map((category) => ({ ...category, to: buildCategoryPageUrl(category.slug) }));
+  const { navigation } = useStorefrontNavigation();
+  const catalogCategories = flattenCatalogNavigationGroups(navigation?.shop);
+  const categories = (catalogCategories.length > 0 ? catalogCategories : HOME_TOOL_TYPES)
+    .map((category) => ({
+      ...category,
+      name: category.label || category.name,
+      to: buildCategoryPageUrl(category.slug),
+    }));
   return <ShopByToolType categories={categories} viewAllHref="/products" homeVariant />;
 }
 
