@@ -249,8 +249,23 @@ jobs:
           ssh -i "$HOME/.ssh/siteground_frontend" -p "$SITEGROUND_PORT" -o BatchMode=yes -o IdentitiesOnly=yes \
             -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
             "$SITEGROUND_USER@$SITEGROUND_HOST" "$remote" < scripts/deployment/production-frontend-release.sh
-          curl --fail --silent --show-error --max-time 30 https://drywalltoolbox.com/ -o live-index.html
-          cmp payload/index.html live-index.html
+          public_root_verified=false
+          for attempt in 1 2 3 4 5 6; do
+            if curl --fail --silent --show-error --max-time 15 https://drywalltoolbox.com/ -o live-index.html \
+              && cmp -s payload/index.html live-index.html; then
+              public_root_verified=true
+              break
+            fi
+            if [[ "$attempt" -lt 6 ]]; then
+              echo "Public root has not converged to the published index yet (attempt $attempt/6); retrying in 5 seconds."
+              sleep 5
+            fi
+          done
+          if [[ "$public_root_verified" != true ]]; then
+            echo "::error::Public root index did not match the published artifact after bounded retries."
+            sha256sum payload/index.html live-index.html
+            exit 1
+          fi
           for uri in $(python3 -c 'import json; print(" ".join(json.load(open("payload/asset-manifest.json"))["entrypoints"]))'); do
             curl --fail --silent --show-error --head --max-time 30 "https://drywalltoolbox.com$uri" >/dev/null
           done
