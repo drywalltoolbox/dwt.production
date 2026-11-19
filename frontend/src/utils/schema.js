@@ -59,7 +59,9 @@ export function buildProductSchema(product, reviews = []) {
     ...(brand     && { brand: { '@type': 'Brand', name: brand } }),
     offers: {
       '@type':            'Offer',
-      url:                canonicalSiteUrl(product.permalink || (product.slug ? `/products/${product.slug}` : `/products/${product.id}`)),
+      // WooCommerce's permalink may still use the legacy /product/ route.
+      // Structured data must identify the same public URL as the page canonical.
+      url:                canonicalSiteUrl(product.slug ? `/products/${product.slug}` : `/products/${product.id}`),
       priceCurrency:      'USD',
       price:              salePrice || price,
       ...(price && salePrice && { priceValidUntil: new Date(Date.now() + 30 * 86400000).toISOString().slice(0, 10) }),

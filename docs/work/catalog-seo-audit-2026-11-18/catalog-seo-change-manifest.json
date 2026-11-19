@@ -1,0 +1,263 @@
+{
+  "catalog_path": "products\\launch\\official\\dtb_official_catalog.csv",
+  "backup_path": null,
+  "before_sha256": "002a6f284f88546d73bae5a2fda850badda62393acffbe052f7462cec125c3f5",
+  "after_sha256": "cc7c1aca4d04885dd9227ea99ce8817fbe22662ef1a606736738242cec6d0d36",
+  "changed_skus": 34,
+  "changed_fields": 42,
+  "changes": [
+    {
+      "sku": "FA237",
+      "field": "Meta: _dtb_seo_title",
+      "before": "Columbia 6-32 x 3/16\" Binder Slot | Matrix Handle Part FA237",
+      "after": "Columbia 6-32 x 3/16\" Binder Slot | Matrix Handle"
+    },
+    {
+      "sku": "CT72",
+      "field": "Meta: _dtb_seo_title",
+      "before": "Columbia Tools CT72 Cable | Automatic Taper Replacement Part",
+      "after": "Columbia CT72 Cable | Automatic Taper Replacement"
+    },
+    {
+      "sku": "CT56",
+      "field": "Meta: _dtb_seo_title",
+      "before": "Columbia CT56 Carriage Guide Rod Stop | Automatic Taper Part",
+      "after": "Columbia CT56 Carriage Guide Rod Stop | Automatic Taper"
+    },
+    {
+      "sku": "CT83",
+      "field": "Meta: _dtb_seo_title",
+      "before": "Columbia Tools CT83 Clutch Dog | Taper Head Replacement Part",
+      "after": "Columbia CT83 Clutch Dog | Taper Head Replacement"
+    },
+    {
+      "sku": "HH9",
+      "field": "Meta: _dtb_seo_title",
+      "before": "Columbia Tools Coiled Hydraulic Line (HH9) | OEM Replacement",
+      "after": "Columbia HH9 Coiled Hydraulic Line | OEM Replacement"
+    },
+    {
+      "sku": "HH30",
+      "field": "Meta: _dtb_seo_title",
+      "before": "Columbia HH30 Extension Release Trigger | Matrix Handle Part",
+      "after": "Columbia HH30 Extension Release Trigger | Matrix Handle"
+    },
+    {
+      "sku": "MH10",
+      "field": "Meta: _dtb_seo_title",
+      "before": "Columbia Tools Octagon MH10 | Matrix Handle Replacement Part",
+      "after": "Columbia MH10 Octagon | Matrix Handle Replacement"
+    },
+    {
+      "sku": "MP3",
+      "field": "Meta: _dtb_seo_title",
+      "before": "Columbia Tools Pump Flapper Valve | OEM Replacement Part MP3",
+      "after": "Columbia MP3 Pump Flapper Valve | OEM Replacement"
+    },
+    {
+      "sku": "HH32",
+      "field": "Meta: _dtb_seo_title",
+      "before": "Columbia Tools HH32 Release Clip Washer | Matrix Handle Part",
+      "after": "Columbia HH32 Release Clip Washer | Matrix Handle"
+    },
+    {
+      "sku": "BH5",
+      "field": "Meta: _dtb_seo_title",
+      "before": "Columbia BH5 Upper Mounting Bracket | 180 Grip & Hydra-Reach",
+      "after": "Columbia BH5 Mounting Bracket | 180 Grip & Hydra-Reach"
+    },
+    {
+      "sku": "COL-AUTOMATIC-TAPER",
+      "field": "Meta: _dtb_seo_title",
+      "before": "Columbia Automatic Taper | Professional Drywall Taping Tools",
+      "after": "Columbia Automatic Taper | Professional Drywall Taping Tool"
+    },
+    {
+      "sku": "COL-MATRIX-FLAT-BOX-HANDLE",
+      "field": "Meta: _dtb_seo_title",
+      "before": "Columbia Matrix Flat Box Handle | Ergonomic Telescoping Grip",
+      "after": "Columbia Matrix Flat Box Handle | Telescoping Grip"
+    },
+    {
+      "sku": "LV5-ENTRY-FINISHING-SET",
+      "field": "Meta: _dtb_seo_title",
+      "before": "LEVEL5 Entry to Automatic Finishing Set | Tools & Taper Kits",
+      "after": "LEVEL5 Entry to Automatic Finishing Set | Taper Kit Options"
+    },
+    {
+      "sku": "SP-S1X-M",
+      "field": "Meta: _dtb_seo_title",
+      "before": "SurPro S1X Magnesium Drywall Stilts | Lightweight Pro Stilts",
+      "after": "SurPro S1X Magnesium Drywall Stilts | Lightweight"
+    },
+    {
+      "sku": "SP-S2-A",
+      "field": "Meta: _dtb_seo_title",
+      "before": "SurPro S2 Aluminum Drywall Stilts | Professional Double Pole",
+      "after": "SurPro S2 Aluminum Drywall Stilts | Double-Pole"
+    },
+    {
+      "sku": "TT-QUICKBOX-QSX-FINISHING-BOX",
+      "field": "Meta: _dtb_seo_title",
+      "before": "TapeTech QuickBox® QSX Finishing Box | Fast-Set Drywall Tool",
+      "after": "TapeTech QuickBox QSX Finishing Box | Fast-Set Tool"
+    },
+    {
+      "sku": "TT-NAIL-SPOTTER",
+      "field": "Meta: _dtb_seo_title",
+      "before": "TapeTech Nail Spotter | Professional Fastener Finishing Tool",
+      "after": "TapeTech Nail Spotter | Drywall Fastener Finishing Tool"
+    },
+    {
+      "sku": "3CDWS5",
+      "field": "Meta: _dtb_seo_title",
+      "before": "USG Sheetrock 8x3\" Textured Head Coarse Thread Screw w/ TENZ",
+      "after": "USG Sheetrock 8 x 3 in. Coarse-Thread TENZ Screw"
+    },
+    {
+      "sku": "1CDWS5",
+      "field": "Meta: _dtb_seo_title",
+      "before": "USG Sheetrock Tools #6 x 1\" Coarse Thread Screws w/ TENZ 5lb",
+      "after": "USG Sheetrock #6 x 1 in. TENZ Coarse-Thread Screws | 5lb"
+    },
+    {
+      "sku": "158CDWS5M",
+      "field": "Meta: _dtb_seo_title",
+      "before": "USG Sheetrock Tools #6 X 1-5/8\" Coarse Thread Screws w/ TENZ",
+      "after": "USG Sheetrock #6 x 1-5/8 in. TENZ Coarse-Thread Bulk Screws"
+    },
+    {
+      "sku": "CT72",
+      "field": "Meta: _dtb_seo_description",
+      "before": "Maintain your Columbia Automatic Taper with the genuine CT72 cable. This replacement part ensures consistent mechanical performance for professional finishers.",
+      "after": "The Columbia Tools CT72 Cable is a genuine replacement for Columbia automatic taper equipment. Confirm the part number and schematic location before ordering."
+    },
+    {
+      "sku": "COL-MATRIX-FLAT-BOX-HANDLE",
+      "field": "Meta: _dtb_seo_description",
+      "before": "Reduce fatigue with the Columbia Matrix Flat Box Handle. Features a patented ergonomic grip and lightweight aluminum design for professional drywall finishing.",
+      "after": "The Columbia Matrix Flat Box Handle supports control during drywall finishing work with lightweight aluminum construction and an ergonomic grip."
+    },
+    {
+      "sku": "LV5-ENTRY-FINISHING-SET",
+      "field": "Meta: _dtb_seo_description",
+      "before": "Transition to automatic drywall finishing with the LEVEL5 Entry to Automatic Finishing Set. Choose Tools Only or the complete Taper kit for professional speed.",
+      "after": "Transition to automatic drywall finishing with the LEVEL5 Entry to Automatic Finishing Set. Choose Tools Only or the complete Taper kit for your setup."
+    },
+    {
+      "sku": "PT-TP",
+      "field": "Meta: _dtb_seo_description",
+      "before": "The Platinum Semi Automatic Drywall Taper (PT-TP) simplifies joint taping by integrating mud application and tape dispensing for efficient, consistent results.",
+      "after": "The Platinum Semi Automatic Drywall Taper (PT-TP) mounts to a standard 5-gallon joint compound bucket and applies mud to tape as it is pulled through."
+    },
+    {
+      "sku": "804003F",
+      "field": "Meta: _dtb_seo_description",
+      "before": "Restore your flat box handle with the TapeTech Grip Assembly For Box Handle 804003F. This genuine OEM part restores control and comfort to your finishing tool.",
+      "after": "Restore your flat box handle with the TapeTech Grip Assembly For Box Handle 804003F. This OEM replacement restores control and comfort to your finishing tool."
+    },
+    {
+      "sku": "3CDWS5",
+      "field": "Meta: _dtb_seo_description",
+      "before": "USG Sheetrock 8 X 3\" Textured Head, Coarse Thread Drywall Screw w/ TENZ [5lbs] feature TENZ technology for faster driving and a textured head for mud adhesion.",
+      "after": "USG Sheetrock 8 X 3-inch textured-head, coarse-thread drywall screws with TENZ feature a textured head for improved mud adhesion. Package weight: 5 lb."
+    },
+    {
+      "sku": "158CDWS5M",
+      "field": "Meta: _dtb_seo_description",
+      "before": "USG Sheetrock Tools #6 X 1-5/8\" Textured Head, Coarse Thread Drywall Screw w/ TENZ [Bulk] feature TENZ technology for reduced torque and improved mud adhesion.",
+      "after": "USG Sheetrock #6 x 1-5/8-inch coarse-thread drywall screws with TENZ have a textured head for mud adhesion. Bulk package; shipping weight: 22.8 lb."
+    },
+    {
+      "sku": "4-746",
+      "field": "Meta: _dtb_seo_description",
+      "before": "The LEVEL5 Outside Corner Tool (4-746) applies compound to 90° outside corners for bead installation. Compatible with MiniShot, Compound Tubes, and Applicators.",
+      "after": "LEVEL5 Outside Corner Tool (4-746) applies compound to 90-degree outside corners to prepare bead. Works with MiniShot, compound tubes and applicators."
+    },
+    {
+      "sku": "CFB7",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "Columbia Tools Door Gasket",
+      "after": "Columbia CFB7 door gasket"
+    },
+    {
+      "sku": "HNS15",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "Columbia Tools Door Gasket",
+      "after": "Columbia hinged nail spotter door gasket"
+    },
+    {
+      "sku": "340416",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "USG Sheetrock Tools T-Square",
+      "after": "USG Sheetrock 48-inch heavy-duty T-square"
+    },
+    {
+      "sku": "340417",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "USG Sheetrock Tools T-Square",
+      "after": "USG Sheetrock 54-inch heavy-duty T-square"
+    },
+    {
+      "sku": "212CDWS5",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "USG Sheetrock drywall screws",
+      "after": "USG Sheetrock 8 x 2-1/2-inch coarse-thread drywall screws"
+    },
+    {
+      "sku": "3CDWS5",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "USG Sheetrock drywall screws",
+      "after": "USG Sheetrock 8 x 3-inch coarse-thread drywall screws"
+    },
+    {
+      "sku": "158CDWS5",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "USG Sheetrock drywall screws",
+      "after": "USG Sheetrock #6 x 1-5/8-inch coarse-thread drywall screws"
+    },
+    {
+      "sku": "212CDWS25M",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "USG Sheetrock drywall screws",
+      "after": "USG Sheetrock 8 x 2-1/2-inch bulk drywall screws"
+    },
+    {
+      "sku": "1CDWS5",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "USG Sheetrock Tools drywall screws",
+      "after": "USG Sheetrock #6 x 1-inch TENZ drywall screws"
+    },
+    {
+      "sku": "114CDWS5",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "USG Sheetrock Tools drywall screws",
+      "after": "USG Sheetrock #6 x 1-1/4-inch TENZ drywall screws"
+    },
+    {
+      "sku": "114CDWS8M",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "USG Sheetrock Tools drywall screws",
+      "after": "USG Sheetrock #6 x 1-1/4-inch bulk TENZ drywall screws"
+    },
+    {
+      "sku": "158CDWS5M",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "USG Sheetrock Tools drywall screws",
+      "after": "USG Sheetrock #6 x 1-5/8-inch bulk TENZ drywall screws"
+    },
+    {
+      "sku": "340318",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "USG Sheetrock Tools hopper gate",
+      "after": "USG Sheetrock outside 90-degree hopper gate"
+    },
+    {
+      "sku": "340316",
+      "field": "Meta: _dtb_seo_focus_kw",
+      "before": "USG Sheetrock Tools hopper gate",
+      "after": "USG Sheetrock outside bullnose hopper gate"
+    }
+  ],
+  "backup_note": "A temporary pre-edit backup was created for the mutation and removed after the row-level manifest was retained; Git provides the durable rollback source."
+}
