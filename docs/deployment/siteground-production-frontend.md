@@ -72,8 +72,12 @@ webroot, verifies the release checksums, writes static assets first, and swaps
 the public route manifest and `index.html` before activating `.htaccess` as the
 routing cutover. The manifest contains only static-route editorial content;
 WordPress reads it for initial HTML while WooCommerce remains catalog truth.
-It keeps a bounded
-three-release snapshot history after successful publication. The separate
+It keeps one rollback snapshot, representing the immediately previous
+production release, after successful publication. Older valid incoming
+release directories left by interrupted uploads are removed only after a
+successful publish while the deployment workflow is serialized. The GitHub
+artifact is retained for one day; it is transferred and consumed within the
+same workflow run. The separate
 rollback workflow requires `ROLLBACK_PRODUCTION` and the current source SHA.
 
 These workflow snapshots cover the managed frontend surface. The Updraft
@@ -84,3 +88,9 @@ frontend directory; never use `rsync --delete` against it.
 After deployment the workflow verifies the root document, emitted asset URLs,
 WordPress REST, native checkout, and remote file checksums. Browser-level
 payment acceptance remains a separate WooPayments production-readiness check.
+
+GitHub Actions run logs follow the repository or organization Actions
+retention setting; workflow YAML cannot set a separate log-retention period.
+Choose the shortest retention that still meets operational and audit needs in
+GitHub repository Settings → Actions → General. Artifact retention is set on
+each upload step and is independent of run-log retention.

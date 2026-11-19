@@ -117,7 +117,7 @@ jobs:
             production-frontend-payload.tar.gz
             production-artifact-sha256.txt
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 1
 
       - name: Summarize production build
         if: always()

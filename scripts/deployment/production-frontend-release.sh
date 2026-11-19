@@ -112,12 +112,24 @@ prune_old_snapshots() {
     name="${candidate##*/}"
     [[ "$name" =~ ^[a-f0-9]{40}$ && ! -L "$candidate" ]] || continue
     rank=$((rank + 1))
-    if (( rank > 3 )); then
+    if (( rank > 1 )); then
       rm -rf -- "$candidate"
       rm -rf -- "$release_records/$name"
     fi
   done < <(find "$snapshots" -mindepth 1 -maxdepth 1 -type d \
     -name '????????????????????????????????????????' -printf '%T@ %p\n' | sort -rn)
+}
+
+cleanup_stale_incoming() {
+  local candidate name
+  for candidate in "$incoming_root"/*; do
+    [[ -e "$candidate" || -L "$candidate" ]] || continue
+    name="${candidate##*/}"
+    [[ "$name" =~ ^[a-f0-9]{40}$ && ! -L "$candidate" && -d "$candidate" ]] || continue
+    if ! rm -rf -- "$candidate"; then
+      echo "Warning: unable to remove stale incoming release: $name" >&2
+    fi
+  done
 }
 
 if [[ "$action" == "prepare" ]]; then
@@ -235,4 +247,5 @@ trap 'rmdir "$lock" 2>/dev/null || true' ERR
 
 prune_old_snapshots || echo "Warning: unable to prune older frontend snapshots" >&2
 rm -rf -- "$incoming"
+cleanup_stale_incoming
 echo "Published production storefront release: $release"

@@ -259,7 +259,7 @@ jobs:
           name: dtb-release-payload-${{ needs.guard.outputs.release_id }}
           path: release-payload/
           if-no-files-found: error
-          retention-days: 30
+          retention-days: 1
 
   deploy:
     name: Backup, deploy, and verify SiteGround
