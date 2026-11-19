@@ -136,7 +136,10 @@ final class DTB_CatalogProductNormalizer {
 	 * Extract only specification-related metadata for frontend product detail.
 	 *
 	 * Keeps payloads lean while preserving compatibility with both the new
-	 * canonical specs JSON workflow and legacy _specs/_includes keys.
+	 * canonical specs JSON workflow and legacy _specs/_includes keys. The five
+	 * _dtb_seo_* keys are also passed through: the product detail page reads
+	 * them from metaData (title, description, canonical, noindex) and falls
+	 * back to the product name when they are absent.
 	 *
 	 * @param  array<int,array<string,mixed>> $meta_data
 	 * @return array<int,array<string,mixed>>
@@ -160,7 +163,18 @@ final class DTB_CatalogProductNormalizer {
 
 			$include = '_dtb_specs_json' === $key
 				|| preg_match( '/^_specs_\d+_(label|value)$/', $key )
-				|| preg_match( '/^_includes_\d+_(name|sku)$/', $key );
+				|| preg_match( '/^_includes_\d+_(name|sku)$/', $key )
+				|| in_array(
+					$key,
+					[
+						'_dtb_seo_title',
+						'_dtb_seo_description',
+						'_dtb_seo_focus_kw',
+						'_dtb_seo_canonical',
+						'_dtb_seo_noindex',
+					],
+					true
+				);
 
 			if ( ! $include ) {
 				continue;
