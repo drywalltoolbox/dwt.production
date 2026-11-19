@@ -35,6 +35,7 @@ function dtb_vd_rest_get_published_config( WP_REST_Request $request ) {
 		$response->set_status( 304 );
 		$response->header( 'ETag', $etag );
 		$response->header( 'Cache-Control', 'public, max-age=60' );
+		$response->header( 'X-Robots-Tag', 'noindex, follow' );
 		return $response;
 	}
 
@@ -48,6 +49,7 @@ function dtb_vd_rest_get_published_config( WP_REST_Request $request ) {
 	] );
 	$response->header( 'ETag', $etag );
 	$response->header( 'Cache-Control', 'public, max-age=60' );
+	$response->header( 'X-Robots-Tag', 'noindex, follow' );
 
 	return $response;
 }

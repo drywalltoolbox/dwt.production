@@ -120,6 +120,13 @@ The full Cache Tools workflow clears WordPress transient storage and therefore r
 
 The WordPress virtual `robots.txt` filter removes duplicate `Sitemap:` declarations and appends the environment-derived `/sitemap.xml` URL.
 
+The production React robots source permits the exact public, read-only
+`/wp-json/dtb/v1/design/config` resource used to render published storefront
+tokens. Its response is marked `X-Robots-Tag: noindex, follow`; the broader
+`/wp-json/` disallow remains in place for cart, account, session, and operator
+routes. Other public REST resources are not opened to crawlers without a
+rendering need and an explicit review of their response data.
+
 The React build also contains `frontend/public/robots.txt`. Index-enabled
 production builds emit the root sitemap declaration. Staging builds emit
 `Allow: /` so authorized tools such as Semrush can crawl the staging surface,

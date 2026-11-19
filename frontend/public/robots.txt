@@ -10,6 +10,9 @@ Disallow: /settings/
 # Allow public catalog data needed to render storefront pages; keep other REST routes excluded.
 Disallow: /wp-admin/
 Allow: /wp-json/dtb/v1/catalog/
+# Googlebot needs the published, read-only design tokens to render storefront pages.
+# The endpoint returns public configuration only; its response also carries noindex.
+Allow: /wp-json/dtb/v1/design/config$
 Disallow: /wp-json/
 
 __DTB_SITEMAP_RULE__
