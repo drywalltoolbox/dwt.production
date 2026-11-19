@@ -13,7 +13,7 @@
  *   og          {object}          — Open Graph overrides: { type, image, imageAlt }
  *   schema      {object|object[]} — JSON-LD schema block(s) to inject
  *   noSuffix    {boolean}         — skip "| Drywall Toolbox" suffix (use for product pages with full custom titles)
- *   noindex     {boolean}         — emit noindex, nofollow when true
+ *   noindex     {boolean}         — emit noindex, follow when true
  *   links       {object[]}        — extra <link> tag objects: [{ rel, href, as, type, crossOrigin }]
  */
 import { Helmet } from 'react-helmet-async';
@@ -120,7 +120,7 @@ export default function SEOHead({
 
       {/* Robots */}
       {noindex || !SEARCH_INDEXING_ENABLED
-        ? <meta name="robots" content="noindex, nofollow" />
+        ? <meta name="robots" content="noindex, follow" />
         : <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
       }
 

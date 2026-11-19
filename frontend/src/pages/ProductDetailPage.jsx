@@ -242,7 +242,12 @@ export default function ProductDetailPage() {
   const seoDesc    = metaMap['_dtb_seo_description'] || stripHtml(
     selectedVariation?.short_description || selectedVariation?.description_full || product.short_description || product.description || ''
   );
-  const seoCanon   = metaMap['_dtb_seo_canonical'] || '';
+  // Variations canonical to the parent product: without this, the
+  // /variations/<id> path would self-canonicalize through
+  // window.location.pathname, while the server-rendered document
+  // canonicalizes to the parent product URL.
+  const seoCanon   = metaMap['_dtb_seo_canonical']
+    || (selectedVariation ? `/products/${product.slug || slug}` : '');
   const seoNoindex = !!metaMap['_dtb_seo_noindex'];
 
   const heroImage = selectedVariation?.images?.[0] || selectedVariation?.image || selectedVariation?.media?.image

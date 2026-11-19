@@ -146,6 +146,13 @@ final class DTB_StorefrontRouteRenderer {
 		$html = self::replace_seo_tag( $html, 'og-title', $title, 'content' );
 		$html = self::replace_seo_tag( $html, 'og-description', $description, 'content' );
 		$html = self::replace_seo_tag( $html, 'og-url', $canonical, 'content' );
+		if ( '' !== $image ) {
+			// Product image for social previews. The markers are optional:
+			// shells built before they exist simply keep the default logo,
+			// so this stays safe across separate frontend/backend deploys.
+			$html = self::replace_seo_tag( $html, 'og-image', $image, 'content' );
+			$html = self::replace_seo_tag( $html, 'twitter-image', $image, 'content' );
+		}
 		$html = self::replace_seo_tag( $html, 'twitter-title', $title, 'content' );
 		$html = self::replace_seo_tag( $html, 'twitter-description', $description, 'content' );
 		$html = self::replace_route_content( $html, $content );

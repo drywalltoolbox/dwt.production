@@ -42,7 +42,7 @@ final class DTB_SeoValidator {
 			$issues[] = [
 				'severity' => 'info',
 				'code'     => 'missing_seo_canonical',
-				'message'  => 'Product has no explicit _dtb_seo_canonical. The default WooCommerce permalink will be used; set this if the canonical should differ.',
+				'message'  => 'Product has no explicit _dtb_seo_canonical. The product storefront URL (/products/<slug>) is used as the self-canonical; set this only if the canonical should point elsewhere.',
 			];
 		}
 
