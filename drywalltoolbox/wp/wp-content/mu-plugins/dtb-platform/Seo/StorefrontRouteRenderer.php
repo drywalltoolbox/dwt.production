@@ -266,6 +266,17 @@ final class DTB_StorefrontRouteRenderer {
 		if ( ! taxonomy_exists( $taxonomy ) ) {
 			self::unavailable();
 		}
+		$brand_taxonomy = class_exists( 'DTB_SitemapUrlRepository' ) ? DTB_SitemapUrlRepository::brand_taxonomy() : '';
+		// Brand URLs use the canonical brand slug (e.g. columbia-taping-tools),
+		// while the WooCommerce brand term uses the label-derived slug
+		// (e.g. columbia-tools). Resolve the URL slug to the term slug first,
+		// so direct visits load instead of 404ing.
+		if ( '' !== $brand_taxonomy && $brand_taxonomy === $taxonomy && class_exists( 'DTB_BrandNormalizer' ) ) {
+			$label = DTB_BrandNormalizer::label_from_slug( $slug );
+			if ( '' !== $label ) {
+				$slug = sanitize_title( $label );
+			}
+		}
 		$term = get_term_by( 'slug', $slug, $taxonomy );
 		if ( is_wp_error( $term ) ) {
 			self::unavailable();
@@ -280,7 +291,6 @@ final class DTB_StorefrontRouteRenderer {
 			exit;
 		}
 
-		$brand_taxonomy    = class_exists( 'DTB_SitemapUrlRepository' ) ? DTB_SitemapUrlRepository::brand_taxonomy() : '';
 		$is_product_cat    = 'product_cat' === $taxonomy;
 		$is_product_brand  = '' !== $brand_taxonomy && $brand_taxonomy === $taxonomy;
 		$page              = isset( $_GET['page'] ) ? absint( wp_unslash( $_GET['page'] ) ) : 1; // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- public, read-only catalog pagination.
