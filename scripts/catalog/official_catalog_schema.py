@@ -17,40 +17,179 @@ from catalog_taxonomy_policy import CATEGORY_FIELD, DISPLAY_FIELD, split_categor
 
 
 EXPECTED_COLUMNS = (
-    "Type", "SKU", "GTIN, UPC, EAN, or ISBN", "Name", "Published", "Is featured?",
-    "Visibility in catalog", "Short description", "Description", "Date sale price starts",
-    "Date sale price ends", "Tax status", "Tax class", "In stock?", "Stock",
-    "Low stock amount", "Backorders allowed?", "Sold individually?", "Weight (lbs)",
-    "Length (in)", "Width (in)", "Height (in)", "Allow customer reviews?", "Purchase note",
-    "Sale price", "Regular price", "Categories", "Tags", "Shipping class", "Images",
-    "Download limit", "Download expiry days", "Parent", "Grouped products",
-    "Cross-sells", "External URL", "Button text", "Position", "Cost of goods", "Brands", "Attribute 1 name",
-    "Attribute 1 value(s)", "Attribute 1 visible", "Attribute 1 global", "Attribute 1 default",
-    "Meta: schema_brand", "Meta: schema_mpn", "Meta: _dtb_manufacturer_sku", "Meta: _dtb_mpn",
-    "Meta: schema_condition", "Meta: _dtb_brand_key", "Meta: _dtb_brand_label",
-    "Meta: _dtb_product_kind", "Meta: _dtb_commerce_mode", "Meta: _dtb_category_key",
-    "Meta: _dtb_display_category_key", "Meta: _dtb_is_parts", "Meta: _dtb_parent_product_sku",
-    "Meta: _dtb_variation_axis", "Meta: _dtb_variation_value", "Meta: _dtb_variation_label",
-    "Meta: _dtb_default_variation_sku", "Meta: _dtb_variation_sort",
-    "Meta: _dtb_inherit_parent_image", "Meta: _dtb_schematic_brand",
-    "Meta: _dtb_schematic_group", "Meta: _dtb_schematic_position",
-    "Meta: _dtb_replacement_part_for", "Meta: _dtb_compatible_tool_skus", "Meta: _dtb_brand",
-    "Meta: _dtb_specs_json", "Meta: _dtb_features_json", "Meta: _dtb_content_schema_version",
-    *tuple(value for slot in range(20) for value in (f"Meta: _includes_{slot}_name", f"Meta: _includes_{slot}_sku")),
-    "Meta: _dtb_schematic_id", "Meta: _dtb_schematic_category", "Meta: _dtb_schematic_page",
-    "Meta: _dtb_schematic_variant", "Meta: _dtb_schematic_url", "Meta: _dtb_seo_title",
-    "Meta: _dtb_seo_description", "Meta: _dtb_seo_focus_kw", "Meta: _dtb_seo_canonical",
-    "Meta: _dtb_seo_noindex", "Meta: product_family", "Meta: series", "Meta: model",
-    "Meta: _dtb_map_price", "Meta: _brikpanel_cogs", "Meta: _yoast_wpseo_title",
-    "Meta: _yoast_wpseo_metadesc", "Meta: _yoast_wpseo_focuskw",
-    "Meta: _yoast_wpseo_canonical", "Meta: _yoast_wpseo_meta-robots-noindex",
-    "Meta: rank_math_title", "Meta: rank_math_description", "Meta: rank_math_focus_keyword",
-    "Meta: rank_math_canonical_url", "Meta: _seopress_titles_title",
-    "Meta: _seopress_titles_desc", "Meta: _seopress_analysis_target_kw",
-    "Meta: _seopress_robots_canonical", "Meta: _seopress_robots_index",
-    "Meta: surerank_settings_post_no_index", "Meta: _wds_title", "Meta: _wds_metadesc",
-    "Meta: _wds_canonical", "Meta: _wds_focus-keywords",
-    "Meta: _veeqo_sellable_id", "Meta: _veeqo_mapped_sku", "Meta: _veeqo_product_id",
+    'Type',
+    'SKU',
+    'GTIN, UPC, EAN, or ISBN',
+    'Name',
+    'Published',
+    'Is featured?',
+    'Visibility in catalog',
+    'Short description',
+    'Description',
+    'Date sale price starts',
+    'Date sale price ends',
+    'Tax status',
+    'Tax class',
+    'In stock?',
+    'Stock',
+    'Low stock amount',
+    'Backorders allowed?',
+    'Sold individually?',
+    'Weight (lbs)',
+    'Length (in)',
+    'Width (in)',
+    'Height (in)',
+    'Allow customer reviews?',
+    'Purchase note',
+    'Sale price',
+    'Regular price',
+    'Categories',
+    'Tags',
+    'Shipping class',
+    'Images',
+    'Download limit',
+    'Download expiry days',
+    'Parent',
+    'Grouped products',
+    'Cross-sells',
+    'External URL',
+    'Button text',
+    'Position',
+    'Commodity code (HS code)',
+    'Country of origin',
+    'Customs description',
+    'Cost of goods',
+    'Brands',
+    'Meta: schema_brand',
+    'Meta: schema_mpn',
+    'Meta: _dtb_manufacturer_sku',
+    'Meta: _dtb_mpn',
+    'Meta: schema_condition',
+    'Meta: _dtb_brand_key',
+    'Meta: _dtb_brand_label',
+    'Meta: _dtb_product_kind',
+    'Meta: _dtb_commerce_mode',
+    'Meta: _dtb_category_key',
+    'Meta: _dtb_display_category_key',
+    'Meta: _dtb_is_parts',
+    'Meta: _dtb_parent_product_sku',
+    'Meta: _dtb_variation_axis',
+    'Meta: _dtb_variation_value',
+    'Meta: _dtb_variation_label',
+    'Meta: _dtb_default_variation_sku',
+    'Meta: _dtb_variation_sort',
+    'Meta: _dtb_inherit_parent_image',
+    'Meta: _dtb_schematic_brand',
+    'Meta: _dtb_schematic_group',
+    'Meta: _dtb_schematic_position',
+    'Meta: _dtb_replacement_part_for',
+    'Meta: _dtb_compatible_tool_skus',
+    'Meta: _dtb_brand',
+    'Meta: _dtb_specs_json',
+    'Meta: _dtb_features_json',
+    'Meta: _dtb_content_schema_version',
+    'Meta: _includes_0_name',
+    'Meta: _includes_0_sku',
+    'Meta: _includes_1_name',
+    'Meta: _includes_1_sku',
+    'Meta: _includes_2_name',
+    'Meta: _includes_2_sku',
+    'Meta: _includes_3_name',
+    'Meta: _includes_3_sku',
+    'Meta: _includes_4_name',
+    'Meta: _includes_4_sku',
+    'Meta: _includes_5_name',
+    'Meta: _includes_5_sku',
+    'Meta: _includes_6_name',
+    'Meta: _includes_6_sku',
+    'Meta: _includes_7_name',
+    'Meta: _includes_7_sku',
+    'Meta: _includes_8_name',
+    'Meta: _includes_8_sku',
+    'Meta: _includes_9_name',
+    'Meta: _includes_9_sku',
+    'Meta: _includes_10_name',
+    'Meta: _includes_10_sku',
+    'Meta: _includes_11_name',
+    'Meta: _includes_11_sku',
+    'Meta: _includes_12_name',
+    'Meta: _includes_12_sku',
+    'Meta: _includes_13_name',
+    'Meta: _includes_13_sku',
+    'Meta: _includes_14_name',
+    'Meta: _includes_14_sku',
+    'Meta: _includes_15_name',
+    'Meta: _includes_15_sku',
+    'Meta: _includes_16_name',
+    'Meta: _includes_16_sku',
+    'Meta: _includes_17_name',
+    'Meta: _includes_17_sku',
+    'Meta: _includes_18_name',
+    'Meta: _includes_18_sku',
+    'Meta: _includes_19_name',
+    'Meta: _includes_19_sku',
+    'Meta: _dtb_schematic_id',
+    'Meta: _dtb_schematic_category',
+    'Meta: _dtb_schematic_page',
+    'Meta: _dtb_schematic_variant',
+    'Meta: _dtb_schematic_url',
+    'Meta: _dtb_seo_title',
+    'Meta: _dtb_seo_description',
+    'Meta: _dtb_seo_focus_kw',
+    'Meta: _dtb_seo_canonical',
+    'Meta: _dtb_seo_noindex',
+    'Meta: product_family',
+    'Meta: series',
+    'Meta: model',
+    'Meta: _dtb_map_price',
+    'Meta: _brikpanel_cogs',
+    'Meta: _yoast_wpseo_title',
+    'Meta: _yoast_wpseo_metadesc',
+    'Meta: _yoast_wpseo_focuskw',
+    'Meta: _yoast_wpseo_canonical',
+    'Meta: _yoast_wpseo_meta-robots-noindex',
+    'Meta: rank_math_title',
+    'Meta: rank_math_description',
+    'Meta: rank_math_focus_keyword',
+    'Meta: rank_math_canonical_url',
+    'Meta: _seopress_titles_title',
+    'Meta: _seopress_titles_desc',
+    'Meta: _seopress_analysis_target_kw',
+    'Meta: _seopress_robots_canonical',
+    'Meta: _seopress_robots_index',
+    'Meta: surerank_settings_post_no_index',
+    'Meta: _wds_title',
+    'Meta: _wds_metadesc',
+    'Meta: _wds_canonical',
+    'Meta: _wds_focus-keywords',
+    'Meta: _veeqo_sellable_id',
+    'Meta: _veeqo_mapped_sku',
+    'Meta: _veeqo_product_id',
+    'Meta: _wc_gla_sync_status',
+    'Meta: _wc_gla_visibility',
+    'Meta: _wc_gla_synced_at',
+    'Meta: _wc_gla_mc_status',
+    'Attribute 1 name',
+    'Attribute 1 value(s)',
+    'Attribute 1 visible',
+    'Attribute 1 global',
+    'Attribute 1 default',
+    'Meta: _wc_gla_gtin',
+    'Meta: _wc_gla_mpn',
+    'Meta: _wc_gla_brand',
+    'Meta: _wc_gla_condition',
+    'Meta: _wc_gla_gender',
+    'Meta: _wc_gla_size',
+    'Meta: _wc_gla_sizeSystem',
+    'Meta: _wc_gla_sizeType',
+    'Meta: _wc_gla_color',
+    'Meta: _wc_gla_material',
+    'Meta: _wc_gla_pattern',
+    'Meta: _wc_gla_ageGroup',
+    'Meta: _wc_gla_multipack',
+    'Meta: _wc_gla_isBundle',
+    'Meta: _wc_gla_availabilityDate',
+    'Meta: _wc_gla_adult',
 )
 
 ALLOWED_TYPES = {"simple", "variable", "variation"}
@@ -275,13 +414,58 @@ def validate_catalog(catalog_path: Path, gap_audit_path: Path) -> dict[str, obje
         if condition not in ALLOWED_SCHEMA_CONDITIONS:
             errors.append(f"{sku}: invalid schema_condition {condition!r}")
 
-        identifiers = [
-            (row.get(field) or "").strip()
-            for field in ("Meta: schema_mpn", "Meta: _dtb_manufacturer_sku", "Meta: _dtb_mpn")
-            if (row.get(field) or "").strip()
-        ]
-        if len(set(identifiers)) > 1:
-            errors.append(f"{sku}: MPN/manufacturer-SKU fields disagree: {identifiers}")
+        schema_mpn = (row.get("Meta: schema_mpn") or "").strip()
+        dtb_mpn = (row.get("Meta: _dtb_mpn") or "").strip()
+        gla_mpn = (row.get("Meta: _wc_gla_mpn") or "").strip()
+        if schema_mpn != dtb_mpn:
+            errors.append(f"{sku}: schema and DTB MPN fields disagree")
+        if kind == "variable":
+            parent_identifier_fields = (
+                "Meta: schema_mpn", "Meta: _dtb_mpn",
+                "Meta: _dtb_manufacturer_sku", "Meta: _wc_gla_mpn",
+            )
+            populated = [field for field in parent_identifier_fields if (row.get(field) or "").strip()]
+            if populated:
+                errors.append(f"{sku}: variable parent custom SKU must not be exported as an MPN: {populated}")
+        elif kind in {"simple", "variation"}:
+            if schema_mpn != sku or dtb_mpn != sku or gla_mpn != sku:
+                errors.append(f"{sku}: schema, DTB, and Google MPN fields must equal the sellable SKU")
+
+        gla_brand = (row.get("Meta: _wc_gla_brand") or "").strip()
+        if kind in {"simple", "variable"}:
+            if gla_brand != brand:
+                errors.append(f"{sku}: Google brand must match the WooCommerce Brands value")
+        elif gla_brand:
+            errors.append(f"{sku}: Google brand is inherited from the variable parent, not set on variation")
+
+        gla_condition = (row.get("Meta: _wc_gla_condition") or "").strip()
+        if kind in {"simple", "variation"}:
+            if gla_condition != "new":
+                errors.append(f"{sku}: Google condition must be new for a sellable product")
+        elif gla_condition:
+            errors.append(f"{sku}: Google condition is not supported on a variable parent")
+
+        gla_bundle = (row.get("Meta: _wc_gla_isBundle") or "").strip()
+        is_toolset = (row.get("Meta: _dtb_product_kind") or "").strip() == "toolset"
+        if kind in {"simple", "variation"}:
+            expected_bundle = "yes" if is_toolset else "no"
+            if gla_bundle != expected_bundle:
+                errors.append(f"{sku}: Google Is Bundle must be {expected_bundle!r} for this product line")
+        elif gla_bundle:
+            errors.append(f"{sku}: Google Is Bundle is not supported on a variable parent")
+
+        gla_gtin = (row.get("Meta: _wc_gla_gtin") or "").strip()
+        gtin = (row.get("GTIN, UPC, EAN, or ISBN") or "").strip()
+        expected_gtin = gtin if kind in {"simple", "variation"} else ""
+        if gla_gtin != expected_gtin:
+            errors.append(f"{sku}: Google GTIN must match the verified WooCommerce GTIN")
+
+        attr_name = (row.get("Attribute 1 name") or "").strip().casefold()
+        attr_value = (row.get("Attribute 1 value(s)") or "").strip()
+        gla_size = (row.get("Meta: _wc_gla_size") or "").strip()
+        expected_size = attr_value if kind in {"simple", "variation"} and attr_name == "size" else ""
+        if gla_size != expected_size:
+            errors.append(f"{sku}: Google size must use only the exact existing Size product attribute")
 
         raw_features = (row.get("Meta: _dtb_features_json") or "").strip()
         content_version = (row.get("Meta: _dtb_content_schema_version") or "").strip()
@@ -313,6 +497,18 @@ def validate_catalog(catalog_path: Path, gap_audit_path: Path) -> dict[str, obje
             specs = json.loads(raw_specs)
             if not isinstance(specs, list):
                 raise ValueError("must be a JSON array")
+            gla_material = (row.get("Meta: _wc_gla_material") or "").strip()
+            material_values = list(dict.fromkeys(
+                spec["value"].strip()
+                for spec in specs
+                if isinstance(spec, dict)
+                and normalize_spec_label(spec.get("label", "")) == "material"
+                and isinstance(spec.get("value"), str)
+                and spec["value"].strip()
+            ))
+            expected_material = "; ".join(material_values) if kind in {"simple", "variation"} else ""
+            if gla_material != expected_material:
+                errors.append(f"{sku}: Google material must match explicit structured Material specifications")
             for spec_index, spec in enumerate(specs):
                 if not isinstance(spec, dict):
                     errors.append(f"{sku}: specification {spec_index} must be an object")
@@ -395,8 +591,18 @@ def validate_catalog(catalog_path: Path, gap_audit_path: Path) -> dict[str, obje
             component_sku = (row.get(f"Meta: _includes_{slot}_sku") or "").strip()
             if component_sku and not name:
                 errors.append(f"{sku}: include slot {slot} has a SKU without a name")
+            if is_toolset and component_sku and component_sku not in by_sku:
+                errors.append(f"{sku}: included component SKU {component_sku!r} does not resolve in the catalog")
             if name and not component_sku:
                 observed_gaps[(sku, slot)] = name
+
+        if is_toolset:
+            included_skus = [
+                (row.get(f"Meta: _includes_{slot}_sku") or "").strip()
+                for slot in range(20)
+            ]
+            if not any(included_skus):
+                errors.append(f"{sku}: toolset is missing included component SKU mappings")
 
     for key, name in sorted(observed_gaps.items()):
         if approved_gaps.get(key) != name:

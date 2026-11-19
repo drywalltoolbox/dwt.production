@@ -1,0 +1,2725 @@
+{
+  "task": "TapeTech hidden-parts discoverability configuration",
+  "decision": "Make 189 verified replacement-part rows discoverable and index-eligible; hold 12 records (one duplicate SKU and 11 complete tools/accessories misclassified as parts) hidden and noindex pending identity/taxonomy resolution.",
+  "catalog_path": "products/launch/official/dtb_official_catalog.csv",
+  "backup_path_local": "C:\\Users\\AMD\\AppData\\Local\\Temp\\dtb_official_catalog.before-tapetech-discoverability-20261119.csv",
+  "before_sha256": "26b2ae603e4fea2f9144cf1c114ed707a8ce8fc361c599b65cbd57f0e775813b",
+  "after_sha256": "6fea1d0c28a71de5787bc3e42376bac97a5f2ac83429463af2c5ab24bc49cfea",
+  "rows": 1133,
+  "columns": 150,
+  "target_count": 201,
+  "sitemap_eligible_product_count_before": 484,
+  "sitemap_eligible_product_count_after_expected": 673,
+  "preserved_fields": [
+    "SKU",
+    "Published",
+    "Regular price",
+    "Sale price",
+    "In stock?",
+    "Stock",
+    "Categories",
+    "Brands",
+    "product-kind/category/parts flags",
+    "fitment fields",
+    "canonical field",
+    "noindex field"
+  ],
+  "noindex_policy": "189 verified replacement-part rows remain blank (false). SKU 90TT plus 11 evidenced complete tools/accessories are hidden and _dtb_seo_noindex=1 pending identity/taxonomy resolution; canonical overrides remain blank. Do not block their routes in robots.txt.",
+  "changes": [
+    {
+      "row": 735,
+      "sku": "219095",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 736,
+      "sku": "059038",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 737,
+      "sku": "059024",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 738,
+      "sku": "059107",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 739,
+      "sku": "250009",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 740,
+      "sku": "250040F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 741,
+      "sku": "260024F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 742,
+      "sku": "509008",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 743,
+      "sku": "300026F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 744,
+      "sku": "310096",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 745,
+      "sku": "300009",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 745,
+      "sku": "300009",
+      "field": "Meta: _dtb_seo_description",
+      "before": "Genuine TapeTech 12\" Shim (SKU 300009) for professional drywall tool maintenance. Order direct from the official TapeTech replacement parts catalog.",
+      "after": "TapeTech 12-inch Shim, SKU 300009, for drywall finishing tool maintenance. Confirm the part number and your tool model before ordering.",
+      "reason": "Removed unsupported claim that customers order directly from TapeTech; retained only brand, part identity, use context and fitment-check guidance."
+    },
+    {
+      "row": 746,
+      "sku": "300040F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 747,
+      "sku": "310024F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 748,
+      "sku": "486001F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 749,
+      "sku": "681015",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 750,
+      "sku": "809011",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 751,
+      "sku": "804234",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 752,
+      "sku": "059005",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 753,
+      "sku": "219092",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 754,
+      "sku": "889030",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 755,
+      "sku": "059217",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 756,
+      "sku": "059161",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 757,
+      "sku": "480002F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 758,
+      "sku": "402002F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 759,
+      "sku": "700036",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 760,
+      "sku": "804254",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 761,
+      "sku": "209058",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 762,
+      "sku": "059091",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 763,
+      "sku": "889035",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 764,
+      "sku": "203010",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 765,
+      "sku": "500028",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 766,
+      "sku": "502005F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 767,
+      "sku": "210024F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 768,
+      "sku": "804272",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 769,
+      "sku": "059092",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 770,
+      "sku": "882012",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 771,
+      "sku": "050043F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 772,
+      "sku": "050064F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 773,
+      "sku": "050070F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 774,
+      "sku": "059120",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 775,
+      "sku": "402033",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 776,
+      "sku": "920003",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 777,
+      "sku": "402012",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 778,
+      "sku": "502007",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 779,
+      "sku": "050154",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 780,
+      "sku": "190002",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 781,
+      "sku": "209050",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 782,
+      "sku": "213051",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 783,
+      "sku": "052150",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 784,
+      "sku": "052576",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 785,
+      "sku": "050086F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 786,
+      "sku": "050083F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 787,
+      "sku": "050123",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 788,
+      "sku": "402017F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 789,
+      "sku": "050128F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 791,
+      "sku": "880028",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 792,
+      "sku": "889017",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 793,
+      "sku": "880038",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 794,
+      "sku": "811018",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 795,
+      "sku": "190034",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 796,
+      "sku": "801009",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 797,
+      "sku": "050204",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 798,
+      "sku": "050063",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 799,
+      "sku": "059129",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 800,
+      "sku": "050113F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 801,
+      "sku": "056142F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 802,
+      "sku": "722039",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 803,
+      "sku": "050034F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 804,
+      "sku": "050041F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 805,
+      "sku": "054116F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 806,
+      "sku": "054118F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 807,
+      "sku": "059119",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 807,
+      "sku": "059119",
+      "field": "Meta: _dtb_seo_description",
+      "before": "Genuine TapeTech Drive Dog Holder Pin (059119) for professional drywall tool maintenance. Order official replacement parts from TapeTech.",
+      "after": "TapeTech Drive Dog Holder Pin, SKU 059119, for drywall tool maintenance. Confirm the part number and your tool model before ordering.",
+      "reason": "Removed unsupported claim that customers order directly from TapeTech; retained only brand, part identity, use context and fitment-check guidance."
+    },
+    {
+      "row": 808,
+      "sku": "050110F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 809,
+      "sku": "052121F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 810,
+      "sku": "159024",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 811,
+      "sku": "054059F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 812,
+      "sku": "200052F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 813,
+      "sku": "209047",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 814,
+      "sku": "762011",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 815,
+      "sku": "700004F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 816,
+      "sku": "857355",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 817,
+      "sku": "861014",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 818,
+      "sku": "054028",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 819,
+      "sku": "819038",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 820,
+      "sku": "050205",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 821,
+      "sku": "709007",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 822,
+      "sku": "808015F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 823,
+      "sku": "151011",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 824,
+      "sku": "059044",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 825,
+      "sku": "480021",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 826,
+      "sku": "050405B",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 827,
+      "sku": "052404B",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 828,
+      "sku": "059067",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 829,
+      "sku": "050141",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 830,
+      "sku": "880053",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 831,
+      "sku": "709046",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 832,
+      "sku": "882013",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 833,
+      "sku": "054095F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 834,
+      "sku": "159026",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 835,
+      "sku": "140002C",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 836,
+      "sku": "250026F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 837,
+      "sku": "179009",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 838,
+      "sku": "149028",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 839,
+      "sku": "889055",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 840,
+      "sku": "159023",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 841,
+      "sku": "059040",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 842,
+      "sku": "149032",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 843,
+      "sku": "480005",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 844,
+      "sku": "720009",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 845,
+      "sku": "502006",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 846,
+      "sku": "052403",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 847,
+      "sku": "212086",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 848,
+      "sku": "054032F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 850,
+      "sku": "059201",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 851,
+      "sku": "059013",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 852,
+      "sku": "059029",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 853,
+      "sku": "059117",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 854,
+      "sku": "350033F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 855,
+      "sku": "054110F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 856,
+      "sku": "059098",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 857,
+      "sku": "054096F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 858,
+      "sku": "202036",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 859,
+      "sku": "210059",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 860,
+      "sku": "251023G",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 861,
+      "sku": "251025G",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 862,
+      "sku": "051105",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 863,
+      "sku": "050023F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 864,
+      "sku": "050152F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 865,
+      "sku": "219091",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 866,
+      "sku": "202020",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 867,
+      "sku": "632026",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 869,
+      "sku": "052125",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 870,
+      "sku": "506009",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 871,
+      "sku": "059060",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 872,
+      "sku": "054075",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 873,
+      "sku": "054104",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 874,
+      "sku": "055007",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 876,
+      "sku": "RTTCTT",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 877,
+      "sku": "050027",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 878,
+      "sku": "254005",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 879,
+      "sku": "256027G",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 880,
+      "sku": "306027G",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 881,
+      "sku": "310071",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 882,
+      "sku": "634028",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 883,
+      "sku": "ERASP0214",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 884,
+      "sku": "EALFED48",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 885,
+      "sku": "ERASPSERRATED0414",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 886,
+      "sku": "ERASP0414",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 887,
+      "sku": "EALFED60",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 888,
+      "sku": "ERASPSERRATED0614",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 889,
+      "sku": "EALFED72",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 890,
+      "sku": "EIFSAND0614",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 891,
+      "sku": "ERASP0614",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 894,
+      "sku": "800018F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 895,
+      "sku": "050500",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 896,
+      "sku": "050410B",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 897,
+      "sku": "050413",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 898,
+      "sku": "050058",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 899,
+      "sku": "050145",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 900,
+      "sku": "050249",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 902,
+      "sku": "050019",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 903,
+      "sku": "883020",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 904,
+      "sku": "90TT",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 905,
+      "sku": "704040",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 906,
+      "sku": "202028",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 907,
+      "sku": "209046",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 908,
+      "sku": "310051F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 910,
+      "sku": "054111F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 913,
+      "sku": "729072",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 914,
+      "sku": "196003",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 915,
+      "sku": "050150F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 916,
+      "sku": "JCT01TT",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 917,
+      "sku": "052407B",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 918,
+      "sku": "052409",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 919,
+      "sku": "210058F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 920,
+      "sku": "502034",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 921,
+      "sku": "050212F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 923,
+      "sku": "882014",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 924,
+      "sku": "050163",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 925,
+      "sku": "729060",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 926,
+      "sku": "800021F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 927,
+      "sku": "050200",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 928,
+      "sku": "EHWJS100",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 929,
+      "sku": "149021",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 931,
+      "sku": "800027",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 932,
+      "sku": "650007",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 933,
+      "sku": "650040",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 935,
+      "sku": "054101",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 936,
+      "sku": "149120",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 937,
+      "sku": "050412",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 938,
+      "sku": "700010F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 939,
+      "sku": "TC01TT",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 940,
+      "sku": "140003",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 941,
+      "sku": "142001",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 942,
+      "sku": "050251F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 943,
+      "sku": "059061F",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 944,
+      "sku": "499024",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 945,
+      "sku": "159027",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 946,
+      "sku": "151005",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 947,
+      "sku": "480027",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 948,
+      "sku": "052214",
+      "field": "Visibility in catalog",
+      "before": "hidden",
+      "after": "visible"
+    },
+    {
+      "row": 948,
+      "sku": "052214",
+      "field": "Meta: _dtb_seo_description",
+      "before": "The TapeTech WHEEL ENCLOSURE (052214) is a genuine replacement part for drywall finishing tools. Order your official TapeTech components today.",
+      "after": "TapeTech Wheel Enclosure, SKU 052214, for drywall tool maintenance. Confirm the part number and your tool model before ordering.",
+      "reason": "Removed unsupported claim that customers order directly from TapeTech; retained only brand, part identity, use context and fitment-check guidance."
+    },
+    {
+      "row": 904,
+      "sku": "90TT",
+      "field": "Visibility in catalog",
+      "before": "visible",
+      "after": "hidden",
+      "reason": "Held hidden because the same TapeTech Filler Adapter is already represented by SKU 90T; first-party TapeTech identifies the product as SKU 90T."
+    },
+    {
+      "row": 904,
+      "sku": "90TT",
+      "field": "Meta: _dtb_seo_noindex",
+      "before": "",
+      "after": "1",
+      "reason": "Prevent indexing of the duplicate legacy SKU route while preserving crawlability; canonical override remains blank."
+    },
+    {
+      "row": 883,
+      "sku": "ERASP0214",
+      "field": "Visibility in catalog",
+      "before": "visible",
+      "after": "hidden",
+      "reason": "Held from Replacement Parts discovery until assigned to an accurate product taxonomy; first-party TapeTech evidence identifies this as a complete tool/accessory, not a replacement part."
+    },
+    {
+      "row": 883,
+      "sku": "ERASP0214",
+      "field": "Meta: _dtb_seo_noindex",
+      "before": "",
+      "after": "1",
+      "reason": "Keep the misclassified product route out of search until taxonomy/category routing is corrected; route remains crawlable and canonical override stays blank."
+    },
+    {
+      "row": 884,
+      "sku": "EALFED48",
+      "field": "Visibility in catalog",
+      "before": "visible",
+      "after": "hidden",
+      "reason": "Held from Replacement Parts discovery until assigned to an accurate product taxonomy; first-party TapeTech evidence identifies this as a complete tool/accessory, not a replacement part."
+    },
+    {
+      "row": 884,
+      "sku": "EALFED48",
+      "field": "Meta: _dtb_seo_noindex",
+      "before": "",
+      "after": "1",
+      "reason": "Keep the misclassified product route out of search until taxonomy/category routing is corrected; route remains crawlable and canonical override stays blank."
+    },
+    {
+      "row": 885,
+      "sku": "ERASPSERRATED0414",
+      "field": "Visibility in catalog",
+      "before": "visible",
+      "after": "hidden",
+      "reason": "Held from Replacement Parts discovery until assigned to an accurate product taxonomy; first-party TapeTech evidence identifies this as a complete tool/accessory, not a replacement part."
+    },
+    {
+      "row": 885,
+      "sku": "ERASPSERRATED0414",
+      "field": "Meta: _dtb_seo_noindex",
+      "before": "",
+      "after": "1",
+      "reason": "Keep the misclassified product route out of search until taxonomy/category routing is corrected; route remains crawlable and canonical override stays blank."
+    },
+    {
+      "row": 886,
+      "sku": "ERASP0414",
+      "field": "Visibility in catalog",
+      "before": "visible",
+      "after": "hidden",
+      "reason": "Held from Replacement Parts discovery until assigned to an accurate product taxonomy; first-party TapeTech evidence identifies this as a complete tool/accessory, not a replacement part."
+    },
+    {
+      "row": 886,
+      "sku": "ERASP0414",
+      "field": "Meta: _dtb_seo_noindex",
+      "before": "",
+      "after": "1",
+      "reason": "Keep the misclassified product route out of search until taxonomy/category routing is corrected; route remains crawlable and canonical override stays blank."
+    },
+    {
+      "row": 887,
+      "sku": "EALFED60",
+      "field": "Visibility in catalog",
+      "before": "visible",
+      "after": "hidden",
+      "reason": "Held from Replacement Parts discovery until assigned to an accurate product taxonomy; first-party TapeTech evidence identifies this as a complete tool/accessory, not a replacement part."
+    },
+    {
+      "row": 887,
+      "sku": "EALFED60",
+      "field": "Meta: _dtb_seo_noindex",
+      "before": "",
+      "after": "1",
+      "reason": "Keep the misclassified product route out of search until taxonomy/category routing is corrected; route remains crawlable and canonical override stays blank."
+    },
+    {
+      "row": 888,
+      "sku": "ERASPSERRATED0614",
+      "field": "Visibility in catalog",
+      "before": "visible",
+      "after": "hidden",
+      "reason": "Held from Replacement Parts discovery until assigned to an accurate product taxonomy; first-party TapeTech evidence identifies this as a complete tool/accessory, not a replacement part."
+    },
+    {
+      "row": 888,
+      "sku": "ERASPSERRATED0614",
+      "field": "Meta: _dtb_seo_noindex",
+      "before": "",
+      "after": "1",
+      "reason": "Keep the misclassified product route out of search until taxonomy/category routing is corrected; route remains crawlable and canonical override stays blank."
+    },
+    {
+      "row": 889,
+      "sku": "EALFED72",
+      "field": "Visibility in catalog",
+      "before": "visible",
+      "after": "hidden",
+      "reason": "Held from Replacement Parts discovery until assigned to an accurate product taxonomy; first-party TapeTech evidence identifies this as a complete tool/accessory, not a replacement part."
+    },
+    {
+      "row": 889,
+      "sku": "EALFED72",
+      "field": "Meta: _dtb_seo_noindex",
+      "before": "",
+      "after": "1",
+      "reason": "Keep the misclassified product route out of search until taxonomy/category routing is corrected; route remains crawlable and canonical override stays blank."
+    },
+    {
+      "row": 890,
+      "sku": "EIFSAND0614",
+      "field": "Visibility in catalog",
+      "before": "visible",
+      "after": "hidden",
+      "reason": "Held from Replacement Parts discovery until assigned to an accurate product taxonomy; first-party TapeTech evidence identifies this as a complete tool/accessory, not a replacement part."
+    },
+    {
+      "row": 890,
+      "sku": "EIFSAND0614",
+      "field": "Meta: _dtb_seo_noindex",
+      "before": "",
+      "after": "1",
+      "reason": "Keep the misclassified product route out of search until taxonomy/category routing is corrected; route remains crawlable and canonical override stays blank."
+    },
+    {
+      "row": 891,
+      "sku": "ERASP0614",
+      "field": "Visibility in catalog",
+      "before": "visible",
+      "after": "hidden",
+      "reason": "Held from Replacement Parts discovery until assigned to an accurate product taxonomy; first-party TapeTech evidence identifies this as a complete tool/accessory, not a replacement part."
+    },
+    {
+      "row": 891,
+      "sku": "ERASP0614",
+      "field": "Meta: _dtb_seo_noindex",
+      "before": "",
+      "after": "1",
+      "reason": "Keep the misclassified product route out of search until taxonomy/category routing is corrected; route remains crawlable and canonical override stays blank."
+    },
+    {
+      "row": 928,
+      "sku": "EHWJS100",
+      "field": "Visibility in catalog",
+      "before": "visible",
+      "after": "hidden",
+      "reason": "Held from Replacement Parts discovery until assigned to an accurate product taxonomy; first-party TapeTech evidence identifies this as a complete tool/accessory, not a replacement part."
+    },
+    {
+      "row": 928,
+      "sku": "EHWJS100",
+      "field": "Meta: _dtb_seo_noindex",
+      "before": "",
+      "after": "1",
+      "reason": "Keep the misclassified product route out of search until taxonomy/category routing is corrected; route remains crawlable and canonical override stays blank."
+    },
+    {
+      "row": 939,
+      "sku": "TC01TT",
+      "field": "Visibility in catalog",
+      "before": "visible",
+      "after": "hidden",
+      "reason": "Held from Replacement Parts discovery until assigned to an accurate product taxonomy; first-party TapeTech evidence identifies this as a complete tool/accessory, not a replacement part."
+    },
+    {
+      "row": 939,
+      "sku": "TC01TT",
+      "field": "Meta: _dtb_seo_noindex",
+      "before": "",
+      "after": "1",
+      "reason": "Keep the misclassified product route out of search until taxonomy/category routing is corrected; route remains crawlable and canonical override stays blank."
+    }
+  ],
+  "target_skus": [
+    {
+      "row": 735,
+      "sku": "219095",
+      "name": "#4 NYLON FLAT WASHER"
+    },
+    {
+      "row": 736,
+      "sku": "059038",
+      "name": "#4 Medium Spring Lockwasher"
+    },
+    {
+      "row": 737,
+      "sku": "059024",
+      "name": ".15 Chain Keeper"
+    },
+    {
+      "row": 738,
+      "sku": "059107",
+      "name": "1/4 in x 6-32 Stainless Steel Flat Head Screw"
+    },
+    {
+      "row": 739,
+      "sku": "250009",
+      "name": "10\" Shim"
+    },
+    {
+      "row": 740,
+      "sku": "250040F",
+      "name": "10\" Tie Rod"
+    },
+    {
+      "row": 741,
+      "sku": "260024F",
+      "name": "10\" Wiper"
+    },
+    {
+      "row": 742,
+      "sku": "509008",
+      "name": "10-32 X 1/2\" Bind Head Screw +"
+    },
+    {
+      "row": 743,
+      "sku": "300026F",
+      "name": "12 in Flat Box Wiper"
+    },
+    {
+      "row": 744,
+      "sku": "310096",
+      "name": "12\" SEAL"
+    },
+    {
+      "row": 745,
+      "sku": "300009",
+      "name": "12\" Shim"
+    },
+    {
+      "row": 746,
+      "sku": "300040F",
+      "name": "12\" Tie Rod"
+    },
+    {
+      "row": 747,
+      "sku": "310024F",
+      "name": "12\" Viton Wiper"
+    },
+    {
+      "row": 748,
+      "sku": "486001F",
+      "name": "3\" Easy Roll Head Casting"
+    },
+    {
+      "row": 749,
+      "sku": "681015",
+      "name": "3\" Wiper For EZ Clean Nailspotter"
+    },
+    {
+      "row": 750,
+      "sku": "809011",
+      "name": "3/4 in x 5/16-18 Dog Point Thumbscrew"
+    },
+    {
+      "row": 751,
+      "sku": "804234",
+      "name": "34\" Connector Assembly"
+    },
+    {
+      "row": 752,
+      "sku": "059005",
+      "name": "4-40 Hex S.S. Nut"
+    },
+    {
+      "row": 753,
+      "sku": "219092",
+      "name": "4-40 X 1\" Bind Head Screw"
+    },
+    {
+      "row": 754,
+      "sku": "889030",
+      "name": "4-40 X 3/16 Fillisterhead Screw"
+    },
+    {
+      "row": 755,
+      "sku": "059217",
+      "name": "4-40 X 3/8\" BIND HEADSST SCREW"
+    },
+    {
+      "row": 756,
+      "sku": "059161",
+      "name": "4-40 X 3/8\" Fillister Head Sst Screw +"
+    },
+    {
+      "row": 757,
+      "sku": "480002F",
+      "name": "4040 Wear Pad"
+    },
+    {
+      "row": 758,
+      "sku": "402002F",
+      "name": "4800 Spring Retainer"
+    },
+    {
+      "row": 759,
+      "sku": "700036",
+      "name": "5/16-24 X 1-7/16 Stud"
+    },
+    {
+      "row": 760,
+      "sku": "804254",
+      "name": "54 in Connector Assembly"
+    },
+    {
+      "row": 761,
+      "sku": "209058",
+      "name": "6-32 Brass Nut"
+    },
+    {
+      "row": 762,
+      "sku": "059091",
+      "name": "6-32 X 1/2\" Fillister Head Sst Screw"
+    },
+    {
+      "row": 763,
+      "sku": "889035",
+      "name": "6-32 x 1/4 Pan Head Screw"
+    },
+    {
+      "row": 764,
+      "sku": "203010",
+      "name": "7 & 10 Inch Crown Spring"
+    },
+    {
+      "row": 765,
+      "sku": "500028",
+      "name": "7 in Wiper"
+    },
+    {
+      "row": 766,
+      "sku": "502005F",
+      "name": "7\" Pivot Pressure Plate"
+    },
+    {
+      "row": 767,
+      "sku": "210024F",
+      "name": "7\" Wiper For Power Assist ECH/TTEC Boxes"
+    },
+    {
+      "row": 768,
+      "sku": "804272",
+      "name": "72\" Connector Assembly"
+    },
+    {
+      "row": 769,
+      "sku": "059092",
+      "name": "8-32\" x 1-1/2\" Round Head Screw SST"
+    },
+    {
+      "row": 770,
+      "sku": "882012",
+      "name": "Acutator Clip Pin"
+    },
+    {
+      "row": 771,
+      "sku": "050043F",
+      "name": "Anvil"
+    },
+    {
+      "row": 772,
+      "sku": "050064F",
+      "name": "Automatic Taper Valve"
+    },
+    {
+      "row": 773,
+      "sku": "050070F",
+      "name": "Axle Creaser Wheel"
+    },
+    {
+      "row": 774,
+      "sku": "059120",
+      "name": "Axle, Drive Dog"
+    },
+    {
+      "row": 775,
+      "sku": "402033",
+      "name": "Ball Coupling"
+    },
+    {
+      "row": 776,
+      "sku": "920003",
+      "name": "Ball Coupling"
+    },
+    {
+      "row": 777,
+      "sku": "402012",
+      "name": "Ball Retainer"
+    },
+    {
+      "row": 778,
+      "sku": "502007",
+      "name": "Bearing"
+    },
+    {
+      "row": 779,
+      "sku": "050154",
+      "name": "Bearing Bracket"
+    },
+    {
+      "row": 780,
+      "sku": "190002",
+      "name": "Block"
+    },
+    {
+      "row": 781,
+      "sku": "209050",
+      "name": "Box Screw"
+    },
+    {
+      "row": 782,
+      "sku": "213051",
+      "name": "Box Wheel, side guide"
+    },
+    {
+      "row": 783,
+      "sku": "052150",
+      "name": "Brake Adjuster"
+    },
+    {
+      "row": 784,
+      "sku": "052576",
+      "name": "Brake Spring Mount"
+    },
+    {
+      "row": 785,
+      "sku": "050086F",
+      "name": "Bushing Head"
+    },
+    {
+      "row": 786,
+      "sku": "050083F",
+      "name": "Cable Drum"
+    },
+    {
+      "row": 787,
+      "sku": "050123",
+      "name": "CAM"
+    },
+    {
+      "row": 788,
+      "sku": "402017F",
+      "name": "Center Clip (Short)"
+    },
+    {
+      "row": 789,
+      "sku": "050128F",
+      "name": "Chain Roller Bushing"
+    },
+    {
+      "row": 791,
+      "sku": "880028",
+      "name": "Compression Spring"
+    },
+    {
+      "row": 792,
+      "sku": "889017",
+      "name": "Conical Spring"
+    },
+    {
+      "row": 793,
+      "sku": "880038",
+      "name": "Connecting Rod"
+    },
+    {
+      "row": 794,
+      "sku": "811018",
+      "name": "Connector Plate, Notched"
+    },
+    {
+      "row": 795,
+      "sku": "190034",
+      "name": "Coupler"
+    },
+    {
+      "row": 796,
+      "sku": "801009",
+      "name": "Coupling Pin (Repair Only Box Handles)"
+    },
+    {
+      "row": 797,
+      "sku": "050204",
+      "name": "Cup Washer"
+    },
+    {
+      "row": 798,
+      "sku": "050063",
+      "name": "Cut Off Cover"
+    },
+    {
+      "row": 799,
+      "sku": "059129",
+      "name": "Cutter Block Pin"
+    },
+    {
+      "row": 800,
+      "sku": "050113F",
+      "name": "Cutter Block Tube"
+    },
+    {
+      "row": 801,
+      "sku": "056142F",
+      "name": "Cutter Chain"
+    },
+    {
+      "row": 802,
+      "sku": "722039",
+      "name": "Discharge Tube"
+    },
+    {
+      "row": 803,
+      "sku": "050034F",
+      "name": "Disengaging Rod"
+    },
+    {
+      "row": 804,
+      "sku": "050041F",
+      "name": "Disengaging Rod Bearing"
+    },
+    {
+      "row": 805,
+      "sku": "054116F",
+      "name": "Drive Dog Assembly"
+    },
+    {
+      "row": 806,
+      "sku": "054118F",
+      "name": "Drive Dog Holder Assembly"
+    },
+    {
+      "row": 807,
+      "sku": "059119",
+      "name": "Drive Dog Holder Pin"
+    },
+    {
+      "row": 808,
+      "sku": "050110F",
+      "name": "Driver Shaft"
+    },
+    {
+      "row": 809,
+      "sku": "052121F",
+      "name": "Driver Shaft"
+    },
+    {
+      "row": 810,
+      "sku": "159024",
+      "name": "External Retaining Ring"
+    },
+    {
+      "row": 811,
+      "sku": "054059F",
+      "name": "Filler Tube Assembly"
+    },
+    {
+      "row": 812,
+      "sku": "200052F",
+      "name": "Finishing Box Shoulder Screw"
+    },
+    {
+      "row": 813,
+      "sku": "209047",
+      "name": "Flat Box Nyliner Bearing"
+    },
+    {
+      "row": 814,
+      "sku": "762011",
+      "name": "Foot Valve, Universal"
+    },
+    {
+      "row": 815,
+      "sku": "700004F",
+      "name": "Gland"
+    },
+    {
+      "row": 816,
+      "sku": "857355",
+      "name": "Gooseneck Cleaning Brush"
+    },
+    {
+      "row": 817,
+      "sku": "861014",
+      "name": "Gooseneck Spacer"
+    },
+    {
+      "row": 818,
+      "sku": "054028",
+      "name": "Gooser Assembly"
+    },
+    {
+      "row": 819,
+      "sku": "819038",
+      "name": "Grip Adjuster Spring"
+    },
+    {
+      "row": 820,
+      "sku": "050205",
+      "name": "Hex Head Cup Bolt 1/4-20X3 /4\""
+    },
+    {
+      "row": 821,
+      "sku": "709007",
+      "name": "Hex Head Nut - 5/16\" X 24 - 6 Pack"
+    },
+    {
+      "row": 822,
+      "sku": "808015F",
+      "name": "Hing Assy., Universal With Serial Number"
+    },
+    {
+      "row": 823,
+      "sku": "151011",
+      "name": "Inner Roller"
+    },
+    {
+      "row": 824,
+      "sku": "059044",
+      "name": "Insert"
+    },
+    {
+      "row": 825,
+      "sku": "480021",
+      "name": "Inside Tension Spring"
+    },
+    {
+      "row": 826,
+      "sku": "050405B",
+      "name": "Keeper Axle - Black"
+    },
+    {
+      "row": 827,
+      "sku": "052404B",
+      "name": "Keeper Yoke"
+    },
+    {
+      "row": 828,
+      "sku": "059067",
+      "name": "Key Ring"
+    },
+    {
+      "row": 829,
+      "sku": "050141",
+      "name": "Left Chain Support"
+    },
+    {
+      "row": 830,
+      "sku": "880053",
+      "name": "Lock Block"
+    },
+    {
+      "row": 831,
+      "sku": "709046",
+      "name": "Lock Clip"
+    },
+    {
+      "row": 832,
+      "sku": "882013",
+      "name": "Locking Pin"
+    },
+    {
+      "row": 833,
+      "sku": "054095F",
+      "name": "Long Creaser Assembly"
+    },
+    {
+      "row": 834,
+      "sku": "159026",
+      "name": "Long Nut"
+    },
+    {
+      "row": 835,
+      "sku": "140002C",
+      "name": "MudRunner Main Tube"
+    },
+    {
+      "row": 836,
+      "sku": "250026F",
+      "name": "New Wiper One Piece For 10\" Flat Box"
+    },
+    {
+      "row": 837,
+      "sku": "179009",
+      "name": "Nyliner Type 6"
+    },
+    {
+      "row": 838,
+      "sku": "149028",
+      "name": "Nylon Bushing #6"
+    },
+    {
+      "row": 839,
+      "sku": "889055",
+      "name": "Nylon Spacer"
+    },
+    {
+      "row": 840,
+      "sku": "159023",
+      "name": "Nylon Washer"
+    },
+    {
+      "row": 841,
+      "sku": "059040",
+      "name": "O Ring 568-006 Buna"
+    },
+    {
+      "row": 842,
+      "sku": "149032",
+      "name": "O-Ring, Buna, 2-230"
+    },
+    {
+      "row": 843,
+      "sku": "480005",
+      "name": "Outside Tension Spring"
+    },
+    {
+      "row": 844,
+      "sku": "720009",
+      "name": "Piston Cup"
+    },
+    {
+      "row": 845,
+      "sku": "502006",
+      "name": "PIVOTBEARING"
+    },
+    {
+      "row": 846,
+      "sku": "052403",
+      "name": "PLUNGER STOP LOCKING STRAP"
+    },
+    {
+      "row": 847,
+      "sku": "212086",
+      "name": "Power Assist Hook"
+    },
+    {
+      "row": 848,
+      "sku": "054032F",
+      "name": "Push Rod Assembly"
+    },
+    {
+      "row": 850,
+      "sku": "059201",
+      "name": "Screw 5-40 X 3/4 RD Head SST"
+    },
+    {
+      "row": 851,
+      "sku": "059013",
+      "name": "Screw 6-32 X 5/16 Rd."
+    },
+    {
+      "row": 852,
+      "sku": "059029",
+      "name": "Screw 6-32 X 5/8 Fl."
+    },
+    {
+      "row": 853,
+      "sku": "059117",
+      "name": "Screw Self Tap #8 x5/16\""
+    },
+    {
+      "row": 854,
+      "sku": "350033F",
+      "name": "Seal Block"
+    },
+    {
+      "row": 855,
+      "sku": "054110F",
+      "name": "Shaft Drive Assembly - Includes Sprocket"
+    },
+    {
+      "row": 856,
+      "sku": "059098",
+      "name": "Shim, Side Plate"
+    },
+    {
+      "row": 857,
+      "sku": "054096F",
+      "name": "Short Creaser Assembly"
+    },
+    {
+      "row": 858,
+      "sku": "202036",
+      "name": "Shoulder Screw"
+    },
+    {
+      "row": 859,
+      "sku": "210059",
+      "name": "Shoulder Screw"
+    },
+    {
+      "row": 860,
+      "sku": "251023G",
+      "name": "Side Plate"
+    },
+    {
+      "row": 861,
+      "sku": "251025G",
+      "name": "Side Plate"
+    },
+    {
+      "row": 862,
+      "sku": "051105",
+      "name": "Side Plate- Stainless Steel"
+    },
+    {
+      "row": 863,
+      "sku": "050023F",
+      "name": "Spacer Bar"
+    },
+    {
+      "row": 864,
+      "sku": "050152F",
+      "name": "Spacer Rod"
+    },
+    {
+      "row": 865,
+      "sku": "219091",
+      "name": "Spring"
+    },
+    {
+      "row": 866,
+      "sku": "202020",
+      "name": "Spring Anchor"
+    },
+    {
+      "row": 867,
+      "sku": "632026",
+      "name": "Spring, Nail Spotter"
+    },
+    {
+      "row": 869,
+      "sku": "052125",
+      "name": "Sprocket Driver"
+    },
+    {
+      "row": 870,
+      "sku": "506009",
+      "name": "Stainless Steel Cone"
+    },
+    {
+      "row": 871,
+      "sku": "059060",
+      "name": "Stopnut 3-48 Hex., Nyloc SST"
+    },
+    {
+      "row": 872,
+      "sku": "054075",
+      "name": "Tape Runner Assembly"
+    },
+    {
+      "row": 873,
+      "sku": "054104",
+      "name": "Tape Runner Assembly"
+    },
+    {
+      "row": 874,
+      "sku": "055007",
+      "name": "Automatic Taper Locking Roller Assembly Brake"
+    },
+    {
+      "row": 876,
+      "sku": "RTTCTT",
+      "name": "Taper Cable Repair Tool"
+    },
+    {
+      "row": 877,
+      "sku": "050027",
+      "name": "Automatic Taper Replacement Needle Holder Lock"
+    },
+    {
+      "row": 878,
+      "sku": "254005",
+      "name": "10\" Clamp Assembly"
+    },
+    {
+      "row": 879,
+      "sku": "256027G",
+      "name": "10\" Gold Pressure Plate"
+    },
+    {
+      "row": 880,
+      "sku": "306027G",
+      "name": "12\" Pressure Plate (Gold)"
+    },
+    {
+      "row": 881,
+      "sku": "310071",
+      "name": "12\" Spacer Rod"
+    },
+    {
+      "row": 882,
+      "sku": "634028",
+      "name": "2\" Pressure Plate Assembly w/ New Style Tab"
+    },
+    {
+      "row": 883,
+      "sku": "ERASP0214",
+      "name": "2″ x 14″ Tungsten Carbide Rasp"
+    },
+    {
+      "row": 884,
+      "sku": "EALFED48",
+      "name": "4′ Aluminum Featheredge"
+    },
+    {
+      "row": 885,
+      "sku": "ERASPSERRATED0414",
+      "name": "4″ x 14″ Tungsten Carbide EIFS Claw Rasp"
+    },
+    {
+      "row": 886,
+      "sku": "ERASP0414",
+      "name": "4″ x 14″ Tungsten Carbide EIFS Rasp"
+    },
+    {
+      "row": 887,
+      "sku": "EALFED60",
+      "name": "5′ Aluminum Featheredge"
+    },
+    {
+      "row": 888,
+      "sku": "ERASPSERRATED0614",
+      "name": "6\" x 14\" Tungsten Carbide Claw Rasp"
+    },
+    {
+      "row": 889,
+      "sku": "EALFED72",
+      "name": "6′ Aluminum Featheredge"
+    },
+    {
+      "row": 890,
+      "sku": "EIFSAND0614",
+      "name": "6″ x 14″ EIFS Vacuum Hand Rasp"
+    },
+    {
+      "row": 891,
+      "sku": "ERASP0614",
+      "name": "6″ x 14″ Tungsten Carbide EIFS Rasp"
+    },
+    {
+      "row": 894,
+      "sku": "800018F",
+      "name": "Box Handle Notched Connector Plate"
+    },
+    {
+      "row": 895,
+      "sku": "050500",
+      "name": "Brake Roller"
+    },
+    {
+      "row": 896,
+      "sku": "050410B",
+      "name": "Control Tube Flange - Black"
+    },
+    {
+      "row": 897,
+      "sku": "050413",
+      "name": "Control Tube Wheel"
+    },
+    {
+      "row": 898,
+      "sku": "050058",
+      "name": "Control Valve"
+    },
+    {
+      "row": 899,
+      "sku": "050145",
+      "name": "Creaser Chain"
+    },
+    {
+      "row": 900,
+      "sku": "050249",
+      "name": "Creaser Connector"
+    },
+    {
+      "row": 902,
+      "sku": "050019",
+      "name": "Disengaging Cam"
+    },
+    {
+      "row": 903,
+      "sku": "883020",
+      "name": "Extrusion Insert for XH-TT"
+    },
+    {
+      "row": 904,
+      "sku": "90TT",
+      "name": "Filler Adapter"
+    },
+    {
+      "row": 905,
+      "sku": "704040",
+      "name": "Filler Tube Assembly"
+    },
+    {
+      "row": 906,
+      "sku": "202028",
+      "name": "Flat Box Threaded Washer"
+    },
+    {
+      "row": 907,
+      "sku": "209046",
+      "name": "Flat Box Washer"
+    },
+    {
+      "row": 908,
+      "sku": "310051F",
+      "name": "Flat Box Wheel"
+    },
+    {
+      "row": 910,
+      "sku": "054111F",
+      "name": "Gooser Guide Bushing"
+    },
+    {
+      "row": 913,
+      "sku": "729072",
+      "name": "Head O-Ring"
+    },
+    {
+      "row": 914,
+      "sku": "196003",
+      "name": "Hinge Casting Assembly"
+    },
+    {
+      "row": 915,
+      "sku": "050150F",
+      "name": "Hub"
+    },
+    {
+      "row": 916,
+      "sku": "JCT01TT",
+      "name": "Jam Clearing Tool"
+    },
+    {
+      "row": 917,
+      "sku": "052407B",
+      "name": "Keeper Tube Cradle"
+    },
+    {
+      "row": 918,
+      "sku": "052409",
+      "name": "Keeper Wireform"
+    },
+    {
+      "row": 919,
+      "sku": "210058F",
+      "name": "Latch"
+    },
+    {
+      "row": 920,
+      "sku": "502034",
+      "name": "Latch for Corner Box"
+    },
+    {
+      "row": 921,
+      "sku": "050212F",
+      "name": "Lock Block for 07TT"
+    },
+    {
+      "row": 923,
+      "sku": "882014",
+      "name": "Locking Clip"
+    },
+    {
+      "row": 924,
+      "sku": "050163",
+      "name": "Main Chain Guide"
+    },
+    {
+      "row": 925,
+      "sku": "729060",
+      "name": "O-Ring Gasket - Large"
+    },
+    {
+      "row": 926,
+      "sku": "800021F",
+      "name": "Pin"
+    },
+    {
+      "row": 927,
+      "sku": "050200",
+      "name": "Plastic Piston"
+    },
+    {
+      "row": 928,
+      "sku": "EHWJS100",
+      "name": "Portable Hot Wire Foam Cutter"
+    },
+    {
+      "row": 929,
+      "sku": "149021",
+      "name": "Round Lip U-Cup"
+    },
+    {
+      "row": 931,
+      "sku": "800027",
+      "name": "Short Connector"
+    },
+    {
+      "row": 932,
+      "sku": "650007",
+      "name": "Skid for NS03TT"
+    },
+    {
+      "row": 933,
+      "sku": "650040",
+      "name": "Special Washer"
+    },
+    {
+      "row": 935,
+      "sku": "054101",
+      "name": "Tape Guide Assembly"
+    },
+    {
+      "row": 936,
+      "sku": "149120",
+      "name": "Threaded Gas Spring"
+    },
+    {
+      "row": 937,
+      "sku": "050412",
+      "name": "Wheel Keeper Wire Form"
+    },
+    {
+      "row": 938,
+      "sku": "700010F",
+      "name": "Valve Seal"
+    },
+    {
+      "row": 939,
+      "sku": "TC01TT",
+      "name": "Tool Caddy"
+    },
+    {
+      "row": 940,
+      "sku": "140003",
+      "name": "Tube Cap"
+    },
+    {
+      "row": 941,
+      "sku": "142001",
+      "name": "Tube Only for Mudrunner"
+    },
+    {
+      "row": 942,
+      "sku": "050251F",
+      "name": "Tube Protector"
+    },
+    {
+      "row": 943,
+      "sku": "059061F",
+      "name": "Valve Spring"
+    },
+    {
+      "row": 944,
+      "sku": "499024",
+      "name": "Washer - .188Id X"
+    },
+    {
+      "row": 945,
+      "sku": "159027",
+      "name": "Washer 3/8\" OD 3/16\" IDSST"
+    },
+    {
+      "row": 946,
+      "sku": "151005",
+      "name": "Wheel Angle Roller Roller"
+    },
+    {
+      "row": 947,
+      "sku": "480027",
+      "name": "Wheel Bushing"
+    },
+    {
+      "row": 948,
+      "sku": "052214",
+      "name": "WHEEL ENCLOSURE"
+    }
+  ],
+  "runtime_note": "Local CSV edit only. No WooCommerce or WordPress records were changed; import and live read-back remain for the owner.",
+  "discoverable_count": 189,
+  "exceptions": [
+    {
+      "sku": "90TT",
+      "name": "Filler Adapter",
+      "treatment": "hidden; _dtb_seo_noindex=1; canonical blank",
+      "reason": "Live WooCommerce has published products 90TT and 90T both named Filler Adapter. TapeTech first-party product page identifies the Filler Adapter as SKU 90T. Do not publish both customer-facing records until protected SKU identity and migration/alias handling are resolved."
+    },
+    {
+      "sku": "EALFED48",
+      "treatment": "hidden; _dtb_seo_noindex=1; canonical blank",
+      "reason": "TapeTech first-party catalog/product sources identify this as a complete rasp, featheredge, vacuum hand rasp, portable hot-wire cutter, or tool caddy. Existing DTB taxonomy/source row currently classifies it as Replacement Parts; defer indexing until correctly categorized and routed."
+    },
+    {
+      "sku": "EALFED60",
+      "treatment": "hidden; _dtb_seo_noindex=1; canonical blank",
+      "reason": "TapeTech first-party catalog/product sources identify this as a complete rasp, featheredge, vacuum hand rasp, portable hot-wire cutter, or tool caddy. Existing DTB taxonomy/source row currently classifies it as Replacement Parts; defer indexing until correctly categorized and routed."
+    },
+    {
+      "sku": "EALFED72",
+      "treatment": "hidden; _dtb_seo_noindex=1; canonical blank",
+      "reason": "TapeTech first-party catalog/product sources identify this as a complete rasp, featheredge, vacuum hand rasp, portable hot-wire cutter, or tool caddy. Existing DTB taxonomy/source row currently classifies it as Replacement Parts; defer indexing until correctly categorized and routed."
+    },
+    {
+      "sku": "EHWJS100",
+      "treatment": "hidden; _dtb_seo_noindex=1; canonical blank",
+      "reason": "TapeTech first-party catalog/product sources identify this as a complete rasp, featheredge, vacuum hand rasp, portable hot-wire cutter, or tool caddy. Existing DTB taxonomy/source row currently classifies it as Replacement Parts; defer indexing until correctly categorized and routed."
+    },
+    {
+      "sku": "EIFSAND0614",
+      "treatment": "hidden; _dtb_seo_noindex=1; canonical blank",
+      "reason": "TapeTech first-party catalog/product sources identify this as a complete rasp, featheredge, vacuum hand rasp, portable hot-wire cutter, or tool caddy. Existing DTB taxonomy/source row currently classifies it as Replacement Parts; defer indexing until correctly categorized and routed."
+    },
+    {
+      "sku": "ERASP0214",
+      "treatment": "hidden; _dtb_seo_noindex=1; canonical blank",
+      "reason": "TapeTech first-party catalog/product sources identify this as a complete rasp, featheredge, vacuum hand rasp, portable hot-wire cutter, or tool caddy. Existing DTB taxonomy/source row currently classifies it as Replacement Parts; defer indexing until correctly categorized and routed."
+    },
+    {
+      "sku": "ERASP0414",
+      "treatment": "hidden; _dtb_seo_noindex=1; canonical blank",
+      "reason": "TapeTech first-party catalog/product sources identify this as a complete rasp, featheredge, vacuum hand rasp, portable hot-wire cutter, or tool caddy. Existing DTB taxonomy/source row currently classifies it as Replacement Parts; defer indexing until correctly categorized and routed."
+    },
+    {
+      "sku": "ERASP0614",
+      "treatment": "hidden; _dtb_seo_noindex=1; canonical blank",
+      "reason": "TapeTech first-party catalog/product sources identify this as a complete rasp, featheredge, vacuum hand rasp, portable hot-wire cutter, or tool caddy. Existing DTB taxonomy/source row currently classifies it as Replacement Parts; defer indexing until correctly categorized and routed."
+    },
+    {
+      "sku": "ERASPSERRATED0414",
+      "treatment": "hidden; _dtb_seo_noindex=1; canonical blank",
+      "reason": "TapeTech first-party catalog/product sources identify this as a complete rasp, featheredge, vacuum hand rasp, portable hot-wire cutter, or tool caddy. Existing DTB taxonomy/source row currently classifies it as Replacement Parts; defer indexing until correctly categorized and routed."
+    },
+    {
+      "sku": "ERASPSERRATED0614",
+      "treatment": "hidden; _dtb_seo_noindex=1; canonical blank",
+      "reason": "TapeTech first-party catalog/product sources identify this as a complete rasp, featheredge, vacuum hand rasp, portable hot-wire cutter, or tool caddy. Existing DTB taxonomy/source row currently classifies it as Replacement Parts; defer indexing until correctly categorized and routed."
+    },
+    {
+      "sku": "TC01TT",
+      "treatment": "hidden; _dtb_seo_noindex=1; canonical blank",
+      "reason": "TapeTech first-party catalog/product sources identify this as a complete rasp, featheredge, vacuum hand rasp, portable hot-wire cutter, or tool caddy. Existing DTB taxonomy/source row currently classifies it as Replacement Parts; defer indexing until correctly categorized and routed."
+    }
+  ]
+}
