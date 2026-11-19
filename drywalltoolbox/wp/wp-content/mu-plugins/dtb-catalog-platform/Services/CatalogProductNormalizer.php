@@ -150,7 +150,7 @@ final class DTB_CatalogProductNormalizer {
 
 		foreach ( $meta_data as $entry ) {
 			$key = isset( $entry['key'] ) ? (string) $entry['key'] : '';
-			if ( preg_match( '/^_specs_(\d+)_label$/', $key, $matches ) && self::is_excluded_spec_label( $entry['value'] ?? '' ) ) {
+			if ( preg_match( '/^_specs_(\d+)_label$/', $key, $matches ) && DTB_CatalogSpecificationPolicy::is_excluded_label( $entry['value'] ?? '' ) ) {
 				$excluded_indexes[ $matches[1] ] = true;
 			}
 		}
@@ -192,7 +192,7 @@ final class DTB_CatalogProductNormalizer {
 			if ( preg_match( '/^_specs_(\d+)_(label|value)$/', $key, $matches ) && isset( $excluded_indexes[ $matches[1] ] ) ) {
 				continue;
 			}
-			if ( preg_match( '/^_specs_\d+_label$/', $key ) && self::is_excluded_spec_label( $value ) ) {
+			if ( preg_match( '/^_specs_\d+_label$/', $key ) && DTB_CatalogSpecificationPolicy::is_excluded_label( $value ) ) {
 				continue;
 			}
 
