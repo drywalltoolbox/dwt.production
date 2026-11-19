@@ -594,7 +594,8 @@
   .product-related--pdp .dtb-product-card--rail .dtb-product-card__image {
     aspect-ratio: 1.12 / 1;
     border-radius: var(--dtb-radius-md, 12px);
-    background: #f7f9fc;
+    background: #fff;
+    box-shadow: none;
   }
 
   .dtb-home-product-section .dtb-product-card--rail .dtb-product-card__meta,
@@ -676,7 +677,8 @@
     aspect-ratio: 1.12 / 1;
     overflow: hidden;
     border-radius: var(--dtb-radius-md, 12px);
-    background: #f7f9fc;
+    background: #fff;
+    box-shadow: none;
   }
 
   .dtb-catalog-listing-page .dtb-product-card--grid .dtb-product-card__meta {
