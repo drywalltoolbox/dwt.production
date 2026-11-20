@@ -975,7 +975,10 @@ if ( ! function_exists( 'dtb_render_branded_email' ) ) {
 		$signoff     = dtb_email_clean_text( $args['signoff'] ?? 'Drywall Toolbox Team' );
 		$footer_note = dtb_email_clean_html( (string) ( $args['footer_note'] ?? 'You can reply directly to this email if you need help.' ) );
 		$theme       = sanitize_key( (string) ( $args['theme'] ?? 'dark' ) );
-		$color_scheme = 'dark' === $theme ? 'dark' : 'light';
+		$requested_color_scheme = sanitize_key( (string) ( $args['color_scheme'] ?? '' ) );
+		$color_scheme = in_array( $requested_color_scheme, [ 'light', 'light-only', 'dark' ], true )
+			? str_replace( '-', ' ', $requested_color_scheme )
+			: ( 'dark' === $theme ? 'dark' : 'light' );
 		$hide_heading = ! empty( $args['hide_heading'] );
 		$flush_body   = ! empty( $args['flush_body'] );
 		$full_bleed   = ! empty( $args['full_bleed'] );

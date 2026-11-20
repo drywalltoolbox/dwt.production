@@ -21,6 +21,19 @@
 		a.dtb-btn:focus-visible { outline:2px solid #1748b8 !important; outline-offset:3px !important; }
 		.dtb-rich p { margin:0 0 12px !important; }
 		.dtb-rich p:last-child { margin-bottom:0 !important; }
+		.dtb-launch-icon-dark { display:none !important; }
+		@media (prefers-color-scheme:dark) {
+			.dtb-launch-story { background:#081b2b !important; background-color:#081b2b !important; }
+			.dtb-launch-kicker-rule { color:#f3f7ff !important; }
+			.dtb-launch-kicker { color:#f3f7ff !important; }
+			.dtb-launch-title { color:#f3f7ff !important; }
+			.dtb-launch-copy { color:#c8d6e7 !important; }
+			.dtb-launch-features { border-color:#263b5b !important; background:#071827 !important; background-color:#071827 !important; }
+			.dtb-launch-grid-title, .dtb-launch-feature-label { color:#f3f7ff !important; }
+			.dtb-launch-feature-cell { border-color:#263b5b !important; }
+			.dtb-launch-icon-light { display:none !important; }
+			.dtb-launch-icon-dark { display:block !important; }
+		}
 		@media only screen and (max-width:640px) {
 			.dtb-shell-pad { padding:16px 12px 22px !important; }
 			.dtb-shell-pad--bleed { padding:0 !important; }
@@ -40,6 +53,14 @@
 			.dtb-launch-feature-cell { padding-left:2px !important; padding-right:2px !important; }
 			.dtb-launch-feature-cell p { font-size:11px !important; line-height:14px !important; }
 			.dtb-launch-feature-cell img { width:34px !important; height:34px !important; }
+			.dtb-launch-story { padding:24px 22px 26px !important; }
+			.dtb-launch-title { font-size:26px !important; line-height:31px !important; }
+			.dtb-launch-copy { font-size:14px !important; line-height:23px !important; }
+			.dtb-launch-features { padding:18px 12px 20px !important; }
+			.dtb-launch-fallback-copy { display:block !important; box-sizing:border-box !important; width:100% !important; padding:26px 24px 28px !important; }
+			.dtb-launch-fallback-image { display:block !important; box-sizing:border-box !important; width:100% !important; }
+			.dtb-launch-fallback-image img { width:100% !important; max-width:100% !important; height:auto !important; }
+			.dtb-launch-fallback-title { font-size:28px !important; line-height:32px !important; }
 		}
 	</style>
 	<!--[if mso]>

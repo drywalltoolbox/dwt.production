@@ -1,0 +1,52 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - img "Drywall Toolbox" [ref=e3]
+    - generic [ref=e4]:
+      - paragraph [ref=e5]: Your Drywall Toolbox account
+      - heading "WELCOME TO DRYWALL TOOLBOX" [level=1] [ref=e6]:
+        - generic [ref=e7]: WELCOME TO
+        - generic [ref=e8]: DRYWALL TOOLBOX
+      - paragraph [ref=e9]: Your orders, delivery updates, and project essentials—all in one place.
+      - link "Go to your account →" [ref=e10] [cursor=pointer]:
+        - /url: https://drywalltoolbox.com/my-account/
+      - paragraph [ref=e11]: Welcome, Preview Customer.
+      - paragraph [ref=e12]: You’re all set. Your account is ready whenever you need it.
+      - paragraph [ref=e13]:
+        - text: "Account username:"
+        - strong [ref=e14]: preview-account
+      - paragraph [ref=e15]: Welcome offer
+      - paragraph [ref=e16]: 10% Off
+      - paragraph [ref=e17]: Your First Order
+      - paragraph [ref=e18]: A thank-you for joining us. Enjoy 10% off your first eligible order.
+      - paragraph [ref=e19]: Your unique code
+      - paragraph [ref=e20]: PREVIEW10
+      - paragraph [ref=e21]: Use this code at checkout.
+      - text: With your account, you can 01
+      - paragraph [ref=e22]: Follow your orders
+      - paragraph [ref=e23]: See order details and delivery progress in one place.
+      - text: "02"
+      - paragraph [ref=e24]: Check out faster
+      - paragraph [ref=e25]: Keep your checkout details ready in your account.
+      - text: "03"
+      - paragraph [ref=e26]: Stay project-ready
+      - paragraph [ref=e27]: Keep your account and tool orders organized.
+      - paragraph [ref=e28]: Preview only. Real welcome codes are generated for eligible new accounts.
+  - link [ref=e29] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/
+    - img "Drywall Toolbox" [ref=e30]
+  - link "Instagram" [ref=e31] [cursor=pointer]:
+    - /url: https://www.instagram.com/drywalltoolbox
+    - img "Instagram" [ref=e32]
+  - link "Facebook" [ref=e33] [cursor=pointer]:
+    - /url: https://www.facebook.com/Drywalltoolbox/
+    - img "Facebook" [ref=e34]
+  - link "X" [ref=e35] [cursor=pointer]:
+    - /url: https://twitter.com
+    - img "X" [ref=e36]
+  - link "My Account" [ref=e37] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/my-account/
+  - link "Shop" [ref=e38] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/shop/
+  - link "Contact Us" [ref=e39] [cursor=pointer]:
+    - /url: https://drywalltoolbox.com/contact/
+  - text: © 2026 Drywall Toolbox. All rights reserved.

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" role="img" aria-label="Crossed repair tools outline icon">
+  <g stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
+    <path stroke="#2255EE" d="M10 8.5a10 10 0 0 0 12.6 12.6L35 33.5a4.2 4.2 0 0 1-5.9 5.9L16.7 27A10 10 0 0 0 4.1 14.4l5.2 5.2 4.3-4.3-5.2-5.2Z" transform="translate(3 0)"/>
+    <path stroke="#2255EE" d="M38.2 8.2a9 9 0 0 0-10.5 11.5L15.5 32a4.1 4.1 0 0 0 5.8 5.8L33.5 25.6A9 9 0 0 0 45 15.1l-5.2 5.2-4.3-4.3 5.2-5.2Z" transform="translate(-2 0)"/>
+    <path stroke="#2255EE" d="m15.5 31.5 2.8 2.8M29.2 18.1l3.2-3.2"/>
+  </g>
+</svg>

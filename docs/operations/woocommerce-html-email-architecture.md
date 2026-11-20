@@ -102,10 +102,14 @@ The customer new-account template uses
 a left-to-right navy scrim, live text shadows, and a prominent account CTA.
 The solid navy table color remains the fallback when a client blocks images or
 gradients. The hero image stays visible behind the text on desktop and mobile.
-The display headline follows the storefront hero's bold italic treatment while
-retaining the email-safe Geist/system stack. The CTA continues to use
-WooCommerce's password-setting URL when one is supplied, and otherwise the
-WooCommerce My Account URL. The offer block appears only
+The account hero uses a restrained Geist/system type hierarchy: sentence-case
+welcome copy, a primary-blue brand name on a crisp white title strip, and a
+single high-contrast account CTA. Below it, the account identity is presented
+as a square-edged information rail; a verified welcome offer uses a compact
+two-column treatment; and the account benefits appear as three numbered rows
+with fine steel-gray dividers instead of rounded feature cards. The CTA
+continues to use WooCommerce's password-setting URL when one is supplied, and
+otherwise the WooCommerce My Account URL. The offer block appears only
 for a user-owned welcome campaign coupon verified as a 10% percentage
 discount; preview mode uses a clearly marked `PREVIEW10` code and does not
 create a coupon. The header, footer, and account hero artwork assets are

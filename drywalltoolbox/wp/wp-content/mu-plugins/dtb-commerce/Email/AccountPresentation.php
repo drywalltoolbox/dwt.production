@@ -13,6 +13,8 @@ defined( 'ABSPATH' ) || exit;
 /** Render the welcome hero with a full-bleed image, readability scrim, and account action. */
 function dtb_email_new_account_hero( string $action_url = '', string $action_label = '' ): string {
 	$font = function_exists( 'dtb_email_font_stack' ) ? \dtb_email_font_stack() : "'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+	$palette = function_exists( 'dtb_email_palette' ) ? \dtb_email_palette( 'light' ) : [];
+	$blue    = esc_attr( $palette['accent'] ?? '#2255ee' );
 	$image = home_url( '/assets/email/account-welcome-hero.jpeg' );
 	$url  = esc_url( $action_url );
 	$cta  = '';
@@ -21,11 +23,11 @@ function dtb_email_new_account_hero( string $action_url = '', string $action_lab
 			. '<a href="' . $url . '" style="display:inline-block;padding:15px 23px;color:#ffffff!important;font:700 15px/21px ' . esc_attr( $font ) . ';text-decoration:none;">' . esc_html( $action_label ) . ' &nbsp;&#8594;</a>'
 			. '</td></tr></table>';
 	}
-	return '<table class="dtb-account-welcome-hero" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" background="' . esc_url( $image ) . '" bgcolor="#071827" style="width:100%;border-collapse:collapse;background-color:#071827;background-image:linear-gradient(90deg,rgba(2,10,25,.96) 0%,rgba(2,10,25,.88) 42%,rgba(2,10,25,.58) 68%,rgba(2,10,25,.20) 100%),linear-gradient(0deg,rgba(2,10,25,.34),rgba(2,10,25,.04)),url(\'' . esc_url( $image ) . '\');background-position:center center;background-repeat:no-repeat;background-size:cover;">'
+	return '<table class="dtb-account-welcome-hero" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" background="' . esc_url( $image ) . '" bgcolor="#edf2f7" style="width:100%;border-collapse:collapse;background-color:#edf2f7;background-image:linear-gradient(90deg,rgba(237,242,247,.99) 0%,rgba(237,242,247,.96) 43%,rgba(237,242,247,.78) 62%,rgba(237,242,247,.08) 100%),url(\'' . esc_url( $image ) . '\');background-position:center center;background-repeat:no-repeat;background-size:cover;">'
 		. '<tr><td class="dtb-account-welcome-copy" width="74%" align="left" valign="middle" style="width:74%;padding:40px 30px 42px 38px;background-color:transparent;font-family:' . esc_attr( $font ) . ';">'
-		. '<p style="margin:0 0 13px;color:#c4d5ff;font:750 11px/16px ' . esc_attr( $font ) . ';letter-spacing:1.65px;text-transform:uppercase;text-shadow:0 1px 4px rgba(0,5,20,.72);">' . esc_html__( 'Your Drywall Toolbox account', 'drywall-toolbox' ) . '</p>'
-		. '<h1 style="margin:0;color:#ffffff;font:800 italic 38px/1 ' . esc_attr( $font ) . ';letter-spacing:-.55px;text-shadow:0 2px 5px rgba(0,5,20,.6),0 8px 22px rgba(0,5,20,.48);"><span style="display:block;white-space:nowrap;">' . esc_html__( 'WELCOME TO', 'drywall-toolbox' ) . '</span><span class="dtb-account-welcome-brand" style="display:block;color:#79a0ff;white-space:nowrap;">' . esc_html__( 'DRYWALL TOOLBOX', 'drywall-toolbox' ) . '</span></h1>'
-		. '<p style="max-width:355px;margin:15px 0 0;color:#f4f7ff;font:400 15px/23px ' . esc_attr( $font ) . ';text-shadow:0 1px 3px rgba(0,5,20,.75),0 4px 12px rgba(0,5,20,.48);">' . esc_html__( 'Your orders, delivery updates, and project essentials—all in one place.', 'drywall-toolbox' ) . '</p>'
+		. '<p style="margin:0 0 13px;color:#42536b;font:700 10px/15px ' . esc_attr( $font ) . ';letter-spacing:1.8px;text-transform:uppercase;">' . esc_html__( 'Your account · Drywall Toolbox', 'drywall-toolbox' ) . '</p>'
+		. '<h1 class="dtb-account-welcome-title" style="margin:0;color:#10213a;font-family:' . esc_attr( $font ) . ';font-size:34px;line-height:37px;font-weight:800;letter-spacing:-.8px;text-transform:uppercase;"><span class="dtb-account-welcome-title-line" style="display:block;color:#10213a;font-family:' . esc_attr( $font ) . ';font-size:34px;line-height:36px;font-weight:800;letter-spacing:-.6px;white-space:nowrap;">' . esc_html__( 'WELCOME TO', 'drywall-toolbox' ) . '</span><span class="dtb-account-welcome-brand dtb-account-welcome-title-brand" style="display:block;margin-top:1px;padding:0;color:#' . ltrim( $blue, '#' ) . ';font-family:' . esc_attr( $font ) . ';font-size:30px;line-height:33px;font-weight:850;letter-spacing:.2px;white-space:nowrap;">' . esc_html__( 'DRYWALL TOOLBOX', 'drywall-toolbox' ) . '</span></h1>'
+		. '<p style="max-width:355px;margin:15px 0 0;color:#34445e;font:450 15px/23px ' . esc_attr( $font ) . ';">' . esc_html__( 'Your orders, delivery updates, and project essentials—all in one place.', 'drywall-toolbox' ) . '</p>'
 		. $cta
 		. '</td><td class="dtb-account-welcome-spacer" width="26%" style="width:26%;font-size:1px;line-height:1px;">&nbsp;</td></tr></table>';
 }
@@ -33,41 +35,47 @@ function dtb_email_new_account_hero( string $action_url = '', string $action_lab
 /** Render the welcome offer using only a verified personal coupon code. */
 function dtb_email_new_account_offer( string $coupon_code ): string {
 	$font = function_exists( 'dtb_email_font_stack' ) ? \dtb_email_font_stack() : "'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
-	return '<table class="dtb-account-offer" role="presentation" border="0" cellpadding="0" cellspacing="0" width="92%" align="center" bgcolor="#f2f7ff" style="width:92%;max-width:600px;margin:0 auto 18px;border-collapse:separate;border:1px solid #d9e5f8;border-radius:14px;background-color:#f2f7ff;font-family:' . esc_attr( $font ) . ';">'
-		. '<tr><td class="dtb-account-offer-copy" width="58%" valign="middle" style="width:58%;padding:22px 20px;vertical-align:middle;">'
+	$palette = function_exists( 'dtb_email_palette' ) ? \dtb_email_palette( 'light' ) : [];
+	$blue    = esc_attr( $palette['accent'] ?? '#2255ee' );
+	return '<table class="dtb-account-offer" role="presentation" border="0" cellpadding="0" cellspacing="0" width="92%" align="center" bgcolor="#f2f5f8" style="width:92%;max-width:600px;margin:0 auto 20px;border-collapse:collapse;border-top:3px solid ' . $blue . ';border-bottom:1px solid #d9e1ea;background-color:#f2f5f8;font-family:' . esc_attr( $font ) . ';">'
+		. '<tr><td class="dtb-account-offer-copy" width="58%" valign="middle" style="width:58%;padding:21px 20px;vertical-align:middle;">'
 		. '<table class="dtb-account-offer-copy-inner" role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%" style="width:100%;border-collapse:collapse;"><tr><td valign="middle" style="padding:0;vertical-align:middle;">'
-		. '<p style="margin:0 0 7px;color:#2255EE;font:700 11px/16px ' . esc_attr( $font ) . ';letter-spacing:1.35px;text-transform:uppercase;">' . esc_html__( 'Welcome offer', 'drywall-toolbox' ) . '</p>'
-		. '<p style="margin:0;color:#071827;font:800 40px/43px ' . esc_attr( $font ) . ';letter-spacing:-1.3px;">' . esc_html__( '10% Off', 'drywall-toolbox' ) . '</p>'
-		. '<p style="margin:0;color:#071827;font:750 20px/26px ' . esc_attr( $font ) . ';letter-spacing:-.25px;">' . esc_html__( 'Your First Order', 'drywall-toolbox' ) . '</p>'
-		. '<p style="margin:8px 0 0;color:#263c5c;font:400 13px/19px ' . esc_attr( $font ) . ';">' . esc_html__( 'A thank-you for joining us. Enjoy 10% off your first eligible order.', 'drywall-toolbox' ) . '</p>'
+		. '<p style="margin:0 0 8px;color:' . $blue . ';font:700 10px/15px ' . esc_attr( $font ) . ';letter-spacing:1.8px;text-transform:uppercase;">' . esc_html__( 'A welcome benefit', 'drywall-toolbox' ) . '</p>'
+		. '<p style="margin:0;color:#071827;font:760 36px/40px ' . esc_attr( $font ) . ';letter-spacing:-1.1px;">' . esc_html__( '10% off', 'drywall-toolbox' ) . '</p>'
+		. '<p style="margin:1px 0 0;color:#071827;font:650 17px/23px ' . esc_attr( $font ) . ';letter-spacing:-.2px;">' . esc_html__( 'your first order', 'drywall-toolbox' ) . '</p>'
+		. '<p style="margin:8px 0 0;color:#45566c;font:400 13px/19px ' . esc_attr( $font ) . ';">' . esc_html__( 'A thank-you for joining us. Enjoy 10% off your first eligible order.', 'drywall-toolbox' ) . '</p>'
 		. '</td></tr></table>'
-		. '</td><td class="dtb-account-offer-code" width="42%" align="center" valign="middle" bgcolor="#06245a" style="width:42%;padding:22px 17px;border-left:5px solid #2255EE;border-radius:0 12px 12px 0;background-color:#06245a;vertical-align:middle;">'
-		. '<p style="margin:0 0 11px;color:#ffffff;font:700 11px/16px ' . esc_attr( $font ) . ';letter-spacing:1.5px;text-transform:uppercase;">' . esc_html__( 'Your unique code', 'drywall-toolbox' ) . '</p>'
-		. '<p style="margin:0;padding:14px 8px;border:2px dashed #2255EE;border-radius:9px;background-color:#ffffff;color:#2255EE;font:800 21px/27px ' . esc_attr( $font ) . ';letter-spacing:.5px;overflow-wrap:anywhere;">' . esc_html( $coupon_code ) . '</p>'
-		. '<p style="margin:9px 0 0;color:#ffffff;font:400 12px/17px ' . esc_attr( $font ) . ';">' . esc_html__( 'Use this code at checkout.', 'drywall-toolbox' ) . '</p>'
+		. '</td><td class="dtb-account-offer-code" width="42%" align="left" valign="middle" bgcolor="#071827" style="width:42%;padding:20px 18px;border-left:3px solid ' . $blue . ';background-color:#071827;vertical-align:middle;">'
+		. '<p style="margin:0 0 8px;color:#d7e1ee;font:650 10px/15px ' . esc_attr( $font ) . ';letter-spacing:1.6px;text-transform:uppercase;">' . esc_html__( 'Your unique code', 'drywall-toolbox' ) . '</p>'
+		. '<p style="margin:0;padding:10px 11px;border-bottom:2px solid ' . $blue . ';background-color:#ffffff;color:' . $blue . ';font:750 19px/25px ' . esc_attr( $font ) . ';letter-spacing:.4px;overflow-wrap:anywhere;">' . esc_html( $coupon_code ) . '</p>'
+		. '<p style="margin:8px 0 0;color:#e4eaf2;font:400 12px/17px ' . esc_attr( $font ) . ';">' . esc_html__( 'Enter at checkout.', 'drywall-toolbox' ) . '</p>'
 		. '</td></tr></table>';
 }
 
 /** Render compact account benefits with custom, email-safe numbered marks. */
 function dtb_email_new_account_benefits(): string {
 	$font = function_exists( 'dtb_email_font_stack' ) ? \dtb_email_font_stack() : "'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif";
+	$palette = function_exists( 'dtb_email_palette' ) ? \dtb_email_palette( 'light' ) : [];
+	$blue    = esc_attr( $palette['accent'] ?? '#2255ee' );
 	$items = [
 		[ __( '01', 'drywall-toolbox' ), __( 'Follow your orders', 'drywall-toolbox' ), __( 'See order details and delivery progress in one place.', 'drywall-toolbox' ) ],
 		[ __( '02', 'drywall-toolbox' ), __( 'Check out faster', 'drywall-toolbox' ), __( 'Keep your checkout details ready in your account.', 'drywall-toolbox' ) ],
 		[ __( '03', 'drywall-toolbox' ), __( 'Stay project-ready', 'drywall-toolbox' ), __( 'Keep your account and tool orders organized.', 'drywall-toolbox' ) ],
 	];
 	$cells = '';
-	foreach ( $items as $index => [ $number, $title, $description ] ) {
-		$border = 2 === $index ? '' : 'border-right:1px solid #d7e3f5;';
-		$cells .= '<td class="dtb-account-benefit" width="33.33%" align="center" valign="top" style="width:33.33%;padding:15px 12px 16px;' . $border . 'vertical-align:top;">'
-			. '<table role="presentation" border="0" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 9px;border-collapse:collapse;"><tr><td align="center" valign="middle" width="36" height="36" style="width:36px;height:36px;border:1px solid #b9ccf2;border-radius:50%;background-color:#e8efff;color:#2255EE;font:700 11px/36px ' . esc_attr( $font ) . ';letter-spacing:.5px;">' . esc_html( $number ) . '</td></tr></table>'
-			. '<p style="margin:0;color:#10213a;font:750 15px/20px ' . esc_attr( $font ) . ';letter-spacing:-.2px;">' . esc_html( $title ) . '</p>'
-			. '<p style="margin:6px 0 0;color:#52627e;font:400 13px/19px ' . esc_attr( $font ) . ';">' . esc_html( $description ) . '</p>'
-			. '</td>';
+	foreach ( $items as [ $number, $title, $description ] ) {
+		$cells .= '<tr>'
+			. '<td width="48" valign="top" style="width:48px;padding:14px 12px 14px 0;border-bottom:1px solid #dbe2ea;vertical-align:top;">'
+			. '<span style="display:inline-block;padding:5px 6px;background-color:' . $blue . ';color:#ffffff;font:700 10px/14px ' . esc_attr( $font ) . ';letter-spacing:.5px;">' . esc_html( $number ) . '</span>'
+			. '</td><td valign="top" style="padding:13px 0 14px;border-bottom:1px solid #dbe2ea;vertical-align:top;">'
+			. '<p style="margin:0;color:#10213a;font:700 15px/20px ' . esc_attr( $font ) . ';letter-spacing:-.2px;">' . esc_html( $title ) . '</p>'
+			. '<p style="margin:3px 0 0;color:#52627e;font:400 13px/19px ' . esc_attr( $font ) . ';">' . esc_html( $description ) . '</p>'
+			. '</td></tr>';
 	}
-	return '<table class="dtb-account-benefits" role="presentation" border="0" cellpadding="0" cellspacing="0" width="92%" align="center" bgcolor="#f2f7ff" style="width:92%;max-width:600px;margin:0 auto 14px;border-collapse:separate;border:1px solid #e0e9f7;border-radius:14px;background-color:#f2f7ff;font-family:' . esc_attr( $font ) . ';">'
-		. '<tr><td class="dtb-account-benefits-heading" colspan="3" align="center" style="padding:17px 12px 0;color:#173563;font:700 10px/16px ' . esc_attr( $font ) . ';letter-spacing:2.1px;text-transform:uppercase;">' . esc_html__( 'With your account, you can', 'drywall-toolbox' ) . '</td></tr>'
-		. '<tr class="dtb-account-benefit-row">' . $cells . '</tr></table>';
+	return '<table class="dtb-account-benefits" role="presentation" border="0" cellpadding="0" cellspacing="0" width="92%" align="center" bgcolor="#ffffff" style="width:92%;max-width:600px;margin:0 auto 22px;border-collapse:collapse;border-top:1px solid #cbd5e1;border-bottom:2px solid #10253c;background-color:#ffffff;font-family:' . esc_attr( $font ) . ';">'
+		. '<tr><td colspan="2" style="padding:15px 0 5px;color:' . $blue . ';font:700 10px/15px ' . esc_attr( $font ) . ';letter-spacing:1.7px;text-transform:uppercase;">' . esc_html__( 'Account tools', 'drywall-toolbox' ) . '</td></tr>'
+		. $cells
+		. '</table>';
 }
 
 /** Render campaign terms after the offer and benefits panels. */

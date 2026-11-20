@@ -4,9 +4,13 @@
 
 ## Design and rendering
 
-The launch email opts into the shared shell's full-bleed frame: no outer side gutters, card border, radius, or shadow, while retaining the 620px desktop email measure. The hero, four-icon navigation band, closing context, and shared footer fill the same edge-to-edge canvas. The closing section uses the dark navy email palette and a high-contrast badge/headline hierarchy; its cobalt accent uses the storefront primary token `#2255EE` as a background image with a solid-color fallback so Gmail dark mode is less likely to shift it toward lavender. The hero artwork carries the conditional account offer while the separately owned signup coupon campaign is active; that campaign remains responsible for eligibility and coupon issuance.
+The launch email uses the shared shell's full-bleed 620px frame. The shell owns the brand masthead and footer; the campaign body owns the hero, launch story, primary site CTA, and four destination links.
 
-Four clickable navigation tiles use two-line labels and retain their routes: **Shop Tools** (`/`), **Replacement Parts** (`/parts`), **Interactive Schematics** (`/schematics`), and **Repair Services** (`/repairs/packages`). Their raster icons are `package.png`, `parts.png`, `schematics.png`, and `repairs.png` from the active email icon library. The closing panel retains the approved headline and body copy. The shared shell continues to supply the brand logo, social links, account/shop/contact navigation, and copyright.
+The renderer has two hero modes. When the signup coupon campaign is active, it uses the campaign artwork containing the verified launch offer. When that campaign is inactive, it uses a responsive editorial hero with a live announcement, cobalt rule, and product image; on narrow screens the copy and image stack vertically. Campaign activity, eligibility, coupon identity, and issuance remain owned by the signup coupon campaign.
+
+The story starts with the slim **Same trade.** label and primary-blue rule, then the primary-blue headline **A smarter way to shop it.** It retains the approved body copy and adds one clear **Explore Drywall Toolbox** CTA. Four linked destinations remain **Shop Tools** (`/`), **Replacement Parts** (`/parts`), **Interactive Schematics** (`/schematics`), and **Repair Services** (`/repairs/packages`).
+
+The light palette is the email-safe fallback. A launch-scoped dark-mode rule switches the story and link band to navy, uses white title text and icons, and preserves the primary-blue CTA. The minimal outline icons are separate from the shared icon library: `launch-{package,parts,schematics,repairs}-{light,dark}.png`. Light mode uses blue icons; dark mode uses white icons. The shared shell continues to supply the brand logo, social links, account/shop/contact navigation, and copyright.
 
 ## Synthetic preview and test delivery
 

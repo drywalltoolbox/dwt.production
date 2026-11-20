@@ -133,8 +133,19 @@ function dtb_render_launch_announcement_email( string $unsubscribe_url = '' ): s
 		: home_url( '/assets/email/account-welcome-hero.jpeg' );
 	$hero_html = $offer_active
 		? '<img src="' . esc_url( $hero_url ) . '" width="620" alt="We’re live. The new Drywall Toolbox website is now open for professional tools, replacement parts, schematics, and repair service. New account members receive 10% off their first order." style="display:block;width:100%;max-width:620px;height:auto;border:0;outline:0;text-decoration:none">'
-		: '<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#071827" style="width:100%;background:#071827"><tr><td width="58%" valign="middle" style="width:58%;padding:28px 18px 28px 28px;color:#fff"><p style="margin:0 0 8px;color:#9dbbff;font-size:10px;line-height:15px;font-weight:800;letter-spacing:1.4px">THE NEW WEBSITE IS NOW LIVE</p><h1 style="margin:0;color:#fff;font-family:Arial,sans-serif;font-size:32px;line-height:35px;font-weight:900;font-style:italic">WE’RE LIVE</h1><p style="margin:9px 0 0;color:#f3f6fc;font-size:13px;line-height:19px">Shop tools, find replacement parts, view schematics, and explore repair services.</p></td><td width="42%" style="width:42%"><img src="' . esc_url( $hero_url ) . '" width="260" alt="Drywall Toolbox professional drywall tools" style="display:block;width:100%;height:auto;border:0"></td></tr></table>';
+		: '<table class="dtb-launch-fallback-hero" role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#071827" style="width:100%;border-collapse:collapse;background:#071827;background-color:#071827">'
+			. '<tr><td class="dtb-launch-fallback-copy" width="58%" valign="middle" bgcolor="#071827" style="width:58%;padding:30px 26px 32px 34px;background:#071827;background-color:#071827;color:#f3f7ff;font-family:Arial,sans-serif">'
+			. '<p class="dtb-launch-fallback-kicker" style="margin:0 0 14px;color:#dce7ff;font-family:Arial,sans-serif;font-size:10px;line-height:16px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase"><span style="color:#4b83ff;font-size:16px;line-height:16px;letter-spacing:0">—</span>&nbsp;&nbsp;The new site is open</p>'
+			. '<h1 class="dtb-launch-fallback-title" style="margin:0;color:#ffffff;font-family:Arial,sans-serif;font-size:32px;line-height:36px;font-weight:800;letter-spacing:-.7px">We’re live.</h1>'
+			. '<p style="margin:10px 0 0;color:#cbd7e6;font-family:Arial,sans-serif;font-size:14px;line-height:21px">Shop tools, find replacement parts, explore schematics, and get repair support—all in one place.</p>'
+			. '</td><td class="dtb-launch-fallback-image" width="42%" valign="middle" bgcolor="#071827" style="width:42%;padding:0;background:#071827;background-color:#071827"><img src="' . esc_url( $hero_url ) . '" width="260" alt="A drywall finishing tool on a fresh plaster surface" style="display:block;width:100%;max-width:260px;height:auto;border:0;outline:0;text-decoration:none"></td></tr></table>';
 	$account_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account' );
+	$icon_pair = static function ( string $name ): string {
+		$icon_url = home_url( '/logos/email-icons/launch-' . $name . '-' );
+		$style    = 'width:40px;height:40px;border:0;outline:0;text-decoration:none;';
+		return '<img class="dtb-launch-icon-light" src="' . esc_url( $icon_url . 'light.png' ) . '" width="40" height="40" alt="" style="display:block;width:40px;height:40px;' . $style . '">'
+			. '<img class="dtb-launch-icon-dark" src="' . esc_url( $icon_url . 'dark.png' ) . '" width="40" height="40" alt="" style="display:none;width:40px;height:40px;' . $style . '">';
+	};
 	$values = array(
 		'{{parts_url}}'    => esc_url( home_url( '/parts' ) ),
 		'{{schematics_url}}' => esc_url( home_url( '/schematics' ) ),
@@ -142,10 +153,10 @@ function dtb_render_launch_announcement_email( string $unsubscribe_url = '' ): s
 		'{{home_url}}'     => esc_url( home_url( '/' ) ),
 		'{{hero_html}}'    => $hero_html,
 		'{{account_url}}'  => esc_url( $account_url ),
-		'{{tools_icon}}'   => function_exists( 'dtb_email_icon' ) ? dtb_email_icon( 'package', 44 ) : '',
-		'{{parts_icon}}'   => function_exists( 'dtb_email_icon' ) ? dtb_email_icon( 'parts', 44 ) : '',
-		'{{schematic_icon}}' => function_exists( 'dtb_email_icon' ) ? dtb_email_icon( 'schematics', 44 ) : '',
-		'{{repair_icon}}'  => function_exists( 'dtb_email_icon' ) ? dtb_email_icon( 'repairs', 44 ) : '',
+		'{{tools_icon}}'   => $icon_pair( 'package' ),
+		'{{parts_icon}}'   => $icon_pair( 'parts' ),
+		'{{schematic_icon}}' => $icon_pair( 'schematics' ),
+		'{{repair_icon}}'  => $icon_pair( 'repairs' ),
 	);
 
 	$content = strtr( $template, $values );
@@ -163,7 +174,8 @@ function dtb_render_launch_announcement_email( string $unsubscribe_url = '' ): s
 		array(
 			'title'       => __( 'We’re live', 'dtb' ),
 			'preheader'   => __( 'Professional tools, replacement parts, interactive schematics, and repair services—together in one place.', 'dtb' ),
-			'theme'       => 'dark',
+			'theme'       => 'light',
+			'color_scheme' => 'light-only',
 			'full_bleed'  => true,
 			'hide_heading'  => true,
 			'flush_body'    => true,

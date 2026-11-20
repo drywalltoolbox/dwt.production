@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Drywall Toolbox | Launch email icon direction</title>
+  <style>
+    @font-face{font-family:Geist;src:url("assets/geist-latin-wght.woff2") format("woff2");font-weight:100 900;font-display:swap}
+    *{box-sizing:border-box}body{margin:0;background:#f2f5fa;color:#14243a;font-family:Geist,Arial,sans-serif}
+    main{width:min(1220px,calc(100% - 64px));margin:0 auto;padding:66px 0 72px}
+    .eyebrow{margin:0 0 10px;color:#2255ee;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+    h1{margin:0;color:#111d30;font-size:38px;line-height:1.14;letter-spacing:-.035em}
+    .intro{max-width:700px;margin:14px 0 34px;color:#56657b;font-size:16px;line-height:1.65}
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+    .tile{min-height:220px;padding:22px 16px 20px;border:1px solid #dbe3ed;border-radius:15px;background:#fff;color:#14243a;text-align:center;box-shadow:0 12px 26px rgba(7,24,39,.06)}
+    .icon-pair{display:flex;justify-content:center;gap:9px;margin:0 auto 15px}
+    .icon-swatch{display:grid;width:68px;height:68px;place-items:center;border:1px solid #dbe3ed;border-radius:12px;background:#f4f7fb}
+    .icon-swatch--dark{border-color:#243d59;background:#071827}
+    .icon-swatch img{display:block;width:48px;height:48px}
+    h2{margin:0;color:#14243a;font-size:15px;line-height:1.35;font-weight:720}
+    .detail{margin:7px 0 0;color:#64748b;font-size:11px;line-height:1.45}
+    .spec{display:flex;gap:8px;align-items:center;margin-top:24px;color:#64748b;font-size:12px}
+    .swatch{width:12px;height:12px;border-radius:50%;background:#2255ee;box-shadow:18px 0 0 #fff;border:1px solid #d5deea;margin-right:18px}
+    @media(max-width:850px){main{width:min(620px,calc(100% - 36px));padding:40px 0}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}h1{font-size:31px}}
+    @media(max-width:420px){.grid{grid-template-columns:1fr 1fr}.tile{padding:17px 8px;min-height:184px}.icon-pair{gap:6px}.icon-swatch{width:58px;height:58px}.icon-swatch img{width:42px;height:42px}.detail{font-size:10px}}
+  </style>
+</head>
+<body>
+  <main>
+    <p class="eyebrow">Drywall Toolbox · Email navigation</p>
+    <h1>Four icons. One clean line style.</h1>
+    <p class="intro">A restrained outline redraw keeps each category recognizable. The same icon artwork uses primary blue in the light palette and white in the dark palette for clear contrast.</p>
+    <section class="grid" aria-label="Proposed launch email icons">
+      <article class="tile"><div class="icon-pair"><div class="icon-swatch"><img src="fresh-concept/light-icons/package.png" alt=""></div><div class="icon-swatch icon-swatch--dark"><img src="icons/package.png" alt=""></div></div><h2>Shop Tools</h2><p class="detail">Primary blue on light · white on dark</p></article>
+      <article class="tile"><div class="icon-pair"><div class="icon-swatch"><img src="fresh-concept/light-icons/parts.png" alt=""></div><div class="icon-swatch icon-swatch--dark"><img src="icons/parts.png" alt=""></div></div><h2>Replacement Parts</h2><p class="detail">Primary blue on light · white on dark</p></article>
+      <article class="tile"><div class="icon-pair"><div class="icon-swatch"><img src="fresh-concept/light-icons/schematics.png" alt=""></div><div class="icon-swatch icon-swatch--dark"><img src="icons/schematics.png" alt=""></div></div><h2>Interactive Schematics</h2><p class="detail">Primary blue on light · white on dark</p></article>
+      <article class="tile"><div class="icon-pair"><div class="icon-swatch"><img src="fresh-concept/light-icons/repairs.png" alt=""></div><div class="icon-swatch icon-swatch--dark"><img src="icons/repairs.png" alt=""></div></div><h2>Repair Services</h2><p class="detail">Primary blue on light · white on dark</p></article>
+    </section>
+    <div class="spec"><span class="swatch" aria-hidden="true"></span>Primary blue · white · transparent icon artwork</div>
+  </main>
+</body>
+</html>
