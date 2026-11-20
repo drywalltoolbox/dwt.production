@@ -343,6 +343,82 @@
   height: 38px;
 }
 
+/* The cart recommendation rail gets a little more room than a generic
+   compact cross-sell so product identity and the add action stay legible. */
+@media (max-width: 767px) {
+  .storefront-cart-sheet .scs-body { justify-content: flex-start; }
+
+  .storefront-cart-sheet .scs-body > .dtb-cart-cross-sells--compact {
+    margin-block-start: auto;
+  }
+
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact {
+    padding: 12px clamp(14px, 4.5vw, 20px) 14px;
+    border-top-color: #e5eaf2;
+    background: linear-gradient(180deg, #fbfcff 0%, #fff 100%);
+  }
+
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__heading h2 {
+    margin-bottom: 9px;
+    font-size: .84rem;
+    letter-spacing: -.01em;
+  }
+
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__list {
+    grid-auto-columns: min(88%, 360px);
+    gap: 10px;
+    padding: 1px 2px 6px;
+    scroll-padding-inline: 2px;
+  }
+
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__item {
+    min-height: 84px;
+    gap: 10px;
+    padding: 9px 10px;
+    border-color: #e2e8f2;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 4px 14px rgb(18 39 73 / 5%);
+  }
+
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__product { gap: 10px; }
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__product img {
+    width: 52px;
+    height: 52px;
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__name {
+    font-size: .8rem;
+    line-height: 1.3;
+  }
+
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__fit {
+    font-size: .7rem;
+    line-height: 1.3;
+  }
+
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__price {
+    color: #1748c9;
+    font-size: .77rem;
+    font-weight: 750;
+  }
+
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__add,
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__view {
+    min-height: 42px;
+    padding-inline: 12px;
+    border-radius: 11px;
+    font-size: .76rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__list { grid-auto-columns: 92%; }
+  .storefront-cart-sheet .dtb-cart-cross-sells--compact .dtb-cart-cross-sells__product img { width: 46px; height: 46px; }
+}
+
 @media (min-width: 44rem) {
   .dtb-cart-cross-sells:not(.dtb-cart-cross-sells--compact) .dtb-cart-cross-sells__list {
     grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { m as Motion, useReducedMotion } from 'framer-motion';
 import MotionPresence from '../motion/MotionPresence.jsx';
 import { dtbSpring, dtbTransition, reducedTransition } from '../../motion/dtbMotion.js';
@@ -133,7 +134,7 @@ export default function FilterPanel({
         </div>
       </aside>
 
-      <MotionPresence initial={false}>
+      {typeof document !== 'undefined' && createPortal(<MotionPresence initial={false}>
         {isOpen ? (
           <Motion.div
             key="mobile-filters"
@@ -194,7 +195,7 @@ export default function FilterPanel({
             </Motion.div>
           </Motion.div>
         ) : null}
-      </MotionPresence>
+      </MotionPresence>, document.body)}
     </>
   );
 }

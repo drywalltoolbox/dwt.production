@@ -1,8 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-<g fill="none" stroke="#2255EE" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
-    <path d="m25 19 14 0 8 12-8 12H25l-8-12z"/>
-    <path d="m41 38 29 29m-35-22 7-7m1 14 7-7m1 14 7-7"/>
-    <path d="m69 73 12-8 16 9 0 18-16 9-16-9 0-18z"/>
-    <circle cx="81" cy="83" r="6"/>
+  <g fill="none" stroke="#2255EE" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Large replacement washer / bearing -->
+    <circle cx="34" cy="75" r="25"/><circle cx="34" cy="75" r="10"/>
+    <!-- Slotted replacement screw -->
+    <path d="m73 20 17 9-8 15-32 47-13-9 32-47z"/>
+    <path d="m70 23 16 9m-30 25 11 8m-18 2 11 8m-18 2 10 7"/>
+    <!-- Hex nut -->
+    <path d="m89 81 18 10v20l-18 10-18-10V91z"/><circle cx="89" cy="101" r="7"/>
   </g>
 </svg>

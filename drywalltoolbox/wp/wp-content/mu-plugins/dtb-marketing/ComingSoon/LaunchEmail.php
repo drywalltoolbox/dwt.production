@@ -128,9 +128,16 @@ function dtb_render_launch_announcement_email( string $unsubscribe_url = '' ): s
 		return '';
 	}
 	$offer_active = class_exists( 'DTB_SignupCouponCampaign' ) && DTB_SignupCouponCampaign::is_active();
-	$hero_url = $offer_active
-		? apply_filters( 'dtb_launch_email_hero_url', home_url( '/wp/wp-content/uploads/2026/11/dtb-launch-hero.webp' ) )
+	$launch_hero_url = home_url( '/wp/wp-content/uploads/2026/11/dtb-launch-hero-email-v3.jpg' );
+	$hero_url        = $offer_active
+		? apply_filters( 'dtb_launch_email_hero_url', $launch_hero_url )
 		: home_url( '/assets/email/account-welcome-hero.jpeg' );
+	if ( $offer_active ) {
+		$hero_path = (string) wp_parse_url( $hero_url, PHP_URL_PATH );
+		if ( ! preg_match( '/\.(?:jpe?g|png)$/i', $hero_path ) ) {
+			$hero_url = $launch_hero_url;
+		}
+	}
 	$hero_html = $offer_active
 		? '<img src="' . esc_url( $hero_url ) . '" width="620" alt="We’re live. The new Drywall Toolbox website is now open for professional tools, replacement parts, schematics, and repair service. New account members receive 10% off their first order." style="display:block;width:100%;max-width:620px;height:auto;border:0;outline:0;text-decoration:none">'
 		: '<table class="dtb-launch-fallback-hero" role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#071827" style="width:100%;border-collapse:collapse;background:#071827;background-color:#071827">'
@@ -142,20 +149,20 @@ function dtb_render_launch_announcement_email( string $unsubscribe_url = '' ): s
 	$account_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account' );
 	$icon_urls = array(
 		'package'    => array(
-			'light' => home_url( '/logos/email-icons/launch-package-light.png' ),
-			'dark'  => home_url( '/logos/email-icons/launch-package-dark.png' ),
+			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-package-light-v3.png' ),
+			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-package-dark-v3.png' ),
 		),
 		'parts'      => array(
-			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-parts-light-v2.png' ),
-			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-parts-dark-v2.png' ),
+			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-parts-light-v3.png' ),
+			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-parts-dark-v3.png' ),
 		),
 		'schematics' => array(
-			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-schematics-light-v2.png' ),
-			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-schematics-dark-v2.png' ),
+			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-schematics-light-v3.png' ),
+			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-schematics-dark-v3.png' ),
 		),
 		'repairs'    => array(
-			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-repairs-light-v2.png' ),
-			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-repairs-dark-v2.png' ),
+			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-repairs-light-v3.png' ),
+			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-repairs-dark-v3.png' ),
 		),
 	);
 	$icon_pair = static function ( string $name ) use ( $icon_urls ): string {

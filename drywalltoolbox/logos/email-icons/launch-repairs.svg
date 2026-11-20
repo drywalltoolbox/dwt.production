@@ -1,8 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
-<g fill="none" stroke="#2255EE" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M35 94 79 50"/>
-    <path d="m75 45 13-13c-1-10 7-19 18-19l-9 10 9 9 10-9c1 11-8 20-19 19L85 55"/>
-    <path d="m38 91 9 9-10 10c-6 6-16 6-22 0s-6-16 0-22l10-10 9 9"/>
-    <circle cx="33" cy="103" r="4" fill="#2255EE" stroke="none"/>
+  <g fill="none" stroke="#2255EE" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Wrench with open jaw; reflected so its handle runs to the lower right -->
+    <path transform="translate(123 5) scale(-4.7 4.7)" d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.106-3.105c.32-.322.863-.22.983.218a6 6 0 0 1-8.259 7.057l-7.91 7.91a1 1 0 0 1-2.999-3l7.91-7.91a6 6 0 0 1 7.057-8.259c.438.12.54.662.219.984z"/>
+    <!-- Flat screwdriver crossing the wrench, with a distinct grip and blade -->
+    <g transform="translate(5 5) scale(4.8)">
+      <path d="m3 17 3-3 5 5-3 3a3 3 0 0 1-4-5z"/>
+      <path d="m9 17 8-9 2 2-8 9zM17 8l3-5 2 2-3 5z"/>
+      <path d="m4.5 17.5 2 2m0-4 2 2" stroke-width="1.35"/>
+    </g>
   </g>
 </svg>
