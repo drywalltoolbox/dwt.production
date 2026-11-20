@@ -149,20 +149,20 @@ function dtb_render_launch_announcement_email( string $unsubscribe_url = '' ): s
 	$account_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account' );
 	$icon_urls = array(
 		'package'    => array(
-			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-package-light-v3.png' ),
-			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-package-dark-v3.png' ),
+			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-package-light-v4.png' ),
+			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-package-dark-v4.png' ),
 		),
 		'parts'      => array(
-			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-parts-light-v3.png' ),
-			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-parts-dark-v3.png' ),
+			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-parts-light-v4.png' ),
+			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-parts-dark-v4.png' ),
 		),
 		'schematics' => array(
-			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-schematics-light-v3.png' ),
-			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-schematics-dark-v3.png' ),
+			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-schematics-light-v4.png' ),
+			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-schematics-dark-v4.png' ),
 		),
 		'repairs'    => array(
-			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-repairs-light-v3.png' ),
-			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-repairs-dark-v3.png' ),
+			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-repairs-light-v4.png' ),
+			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-repairs-dark-v4.png' ),
 		),
 	);
 	$icon_pair = static function ( string $name ) use ( $icon_urls ): string {

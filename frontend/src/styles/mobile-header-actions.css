@@ -238,3 +238,41 @@
     transition-delay: 0s !important;
   }
 }
+
+/* Keep the mobile menu's close/back glyphs visually bare. Show keyboard focus
+   as a short underline instead of a box drawn around the icon. */
+@media (max-width: 1024px) {
+  .header-mobile-menu-controls__toggle .header-mobile-toggle.hamburger input:focus-visible + svg {
+    outline: none;
+    border-radius: 0;
+  }
+
+  .header-mobile-menu-controls__toggle .header-mobile-toggle.hamburger:focus-within::after {
+    position: absolute;
+    bottom: 1px;
+    left: 50%;
+    width: 18px;
+    height: 2px;
+    border-radius: 1px;
+    background: rgba(141, 180, 255, .95);
+    content: '';
+    pointer-events: none;
+    transform: translateX(-50%);
+  }
+
+  .header-mobile-menu-controls__back:focus-visible {
+    outline: none;
+  }
+
+  .header-mobile-menu-controls__back:focus-visible::after {
+    position: absolute;
+    bottom: 2px;
+    left: 50%;
+    width: 18px;
+    height: 2px;
+    border-radius: 1px;
+    background: rgba(141, 180, 255, .95);
+    content: '';
+    transform: translateX(-50%);
+  }
+}

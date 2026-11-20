@@ -63,12 +63,18 @@
 .dtb-interior-hero--branded .dtb-interior-hero__title { max-width: 100%; }
 .dtb-interior-hero--branded .dtb-interior-hero__description { max-width: 68ch; }
 @media (max-width: 767px) {
-  .dtb-interior-hero__inner { padding: 0.8rem var(--dtb-viewport-gutter, 1rem) 1.05rem; }
+  .dtb-interior-hero__inner { padding: 0.65rem var(--dtb-viewport-gutter, 1rem) 0.85rem; }
   .dtb-interior-hero__body { padding-left: 1rem; }
-  .dtb-interior-hero__title { font-size: clamp(1.65rem, 6.6vw, 2.2rem); }
-  .dtb-interior-hero__description { font-size: 0.84rem; }
-  .dtb-interior-hero__brand-logo { max-width: min(100%, 245px); max-height: 60px; margin-bottom: 0.65rem; }
+  .dtb-interior-hero__title { font-size: clamp(1.35rem, 5.5vw, 1.8rem); line-height: 1.15; }
+  .dtb-interior-hero__description { margin-top: 0.3rem; font-size: 0.82rem; line-height: 1.4; }
+  .dtb-interior-hero__brand-logo {
+    width: auto;
+    max-width: min(100%, 13rem);
+    max-height: 3rem;
+    margin-bottom: 0.4rem;
+  }
   .dtb-interior-hero--branded .dtb-interior-hero__body { padding-left: 0; }
+  .dtb-breadcrumb-bar--interior-hero { margin-bottom: 0.55rem; }
 }
 
 /* Category and brand listings already live in guttered catalog containers. */
@@ -78,6 +84,13 @@
   margin-left: calc(-1 * var(--dtb-viewport-gutter));
   margin-right: calc(-1 * var(--dtb-viewport-gutter));
   margin-bottom: clamp(0.85rem, 1.5vw, 1.25rem);
+}
+
+@media (max-width: 767px) {
+  .dtb-catalog-category-layout > .dtb-interior-hero,
+  .dtb-catalog-brand-layout .products-brand-selector > .dtb-interior-hero {
+    margin-bottom: 0.75rem;
+  }
 }
 .dtb-category-loading-placeholder {
   display: block;

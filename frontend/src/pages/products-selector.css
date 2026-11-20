@@ -92,8 +92,34 @@
   line-height: 1.35;
 }
 @media (max-width: 767px) {
-  .dtb-brand-listing-header { min-height: 88px; padding: 4px 40px 8px; }
-  .dtb-brand-listing-header__back { left: -6px; }
-  .dtb-brand-listing-header__logo { max-width: min(100%, 245px); max-height: 68px; }
-  .dtb-brand-listing-header__meta { font-size: .76rem; }
+  .dtb-brand-listing-header {
+    min-height: 0;
+    gap: 0;
+    padding: 0 2.75rem 0.2rem;
+  }
+  .dtb-brand-listing-header__back { left: 0; }
+  .dtb-brand-listing-header__logo {
+    width: auto;
+    max-width: min(100%, 12rem);
+    max-height: 3rem;
+  }
+  .dtb-brand-listing-header__category {
+    margin-top: 0.35rem;
+    font-size: clamp(1rem, 4.5vw, 1.2rem);
+    line-height: 1.2;
+  }
+  .dtb-brand-listing-header__meta {
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+  }
+  .dtb-catalog-brand-layout .dtb-listing-heading,
+  .dtb-catalog-category-layout .dtb-listing-heading,
+  .dtb-catalog-category-product-layout .dtb-listing-heading {
+    margin-bottom: 0.75rem;
+  }
+  .dtb-catalog-brand-layout .dtb-listing-toolbar,
+  .dtb-catalog-category-layout .dtb-listing-toolbar,
+  .dtb-catalog-category-product-layout .dtb-listing-toolbar {
+    margin-bottom: 0.85rem;
+  }
 }

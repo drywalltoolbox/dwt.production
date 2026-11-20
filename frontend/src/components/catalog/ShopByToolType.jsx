@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { ArrowRight, ChevronRight, Wrench } from 'lucide-react';
 import StorefrontRail from '../storefront/StorefrontRail.jsx';
 import { MediaSelectorCard } from '../selectors/SelectorCards.jsx';
@@ -69,20 +69,9 @@ export function ToolTypeTile({ category, showSelectorChevron = false, brand = ''
  * layout stability and fitment; the image element must not assert a legacy
  * 348x128 intrinsic ratio.
  */
-export default function ShopByToolType({ categories = [], onOpenFilters, parentLabel = '', brand = '', viewAllHref = '', homeVariant = false }) {
-  const location = useLocation();
+export default function ShopByToolType({ categories = [], parentLabel = '', brand = '', viewAllHref = '', homeVariant = false }) {
   const items = Array.isArray(categories) ? categories : [];
-  const isAllProductsRoute = location.pathname === '/products';
   if (items.length === 0) return null;
-
-  const handleViewAll = (event) => {
-    if (typeof window === 'undefined') return;
-    const target = document.getElementById('dtb-category-filters');
-    if (!target) return;
-    event.preventDefault();
-    onOpenFilters?.();
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
 
   const categoryRail = (
     <StorefrontRail label={parentLabel ? `Shop ${parentLabel} by category` : 'Shop by tool type'} className="dtb-tool-type-rail">
@@ -95,36 +84,18 @@ export default function ShopByToolType({ categories = [], onOpenFilters, parentL
           imageLoading={homeVariant && index === 0 ? 'eager' : 'lazy'}
         />
       ))}
-      {isAllProductsRoute && (
-        <a
-          href="#dtb-category-filters"
-          className="dtb-tool-type-view-all"
-          onClick={handleViewAll}
-          aria-label="View all product categories in filters"
-        >
-          <span className="dtb-tool-type-view-all__icon" aria-hidden="true">
-            <ArrowRight size={20} strokeWidth={2} />
-          </span>
-          <span>View All<br />Categories</span>
-        </a>
-      )}
     </StorefrontRail>
   );
 
   return (
-    <div className={`dtb-tool-type-section mb-6 sm:mb-8${isAllProductsRoute ? ' dtb-tool-type-section--all-products' : ''}${homeVariant ? ' dtb-tool-type-section--home' : ''}`}>
-      {!parentLabel && (
+    <div className={`dtb-tool-type-section mb-6 sm:mb-8${homeVariant ? ' dtb-tool-type-section--home' : ''}`}>
+      {homeVariant && !parentLabel && (
         <div className="storefront-section__head">
           <div className={`storefront-section__head-text${homeVariant ? ' dtb-home-section-heading' : ''}`}>
             <h2 className="storefront-section__title">Shop by Tool Type</h2>
             <p className="storefront-section__subtitle">Explore drywall tools by type and find the right fit for your next project.</p>
           </div>
-          {onOpenFilters ? (
-            <a href="#dtb-category-filters" className="storefront-section__view-all" onClick={handleViewAll}>
-              View all tool types
-              <ArrowRight size={14} aria-hidden="true" />
-            </a>
-          ) : viewAllHref ? (
+          {viewAllHref ? (
             <Link to={viewAllHref} className="storefront-section__view-all">
               View all tool types
               <ArrowRight size={14} aria-hidden="true" />

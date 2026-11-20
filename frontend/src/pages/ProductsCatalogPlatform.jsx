@@ -791,7 +791,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
   return (
     <div className="min-h-screen page-wrapper dtb-catalog-listing-page" data-route-readiness={itemsLoading || (isCategoryPageRoute && categoryMetaLoading) ? 'pending' : 'ready'}>
       <SEOHead title={categorySeoTitle} description={categorySeoDescription} canonical={canonicalUrl} schema={categorySeoSchema} noindex={Boolean(searchQuery) || isBrandCategorySelectorRoute || (isCategoryPageRoute && (categoryMetaLoading || itemsLoading || Boolean(categoryMetaError)))} />
-      <div className={`dtb-container dtb-container--fluid py-4 pt-6${isCategoryPageRoute ? ' dtb-catalog-category-layout' : ''}${showBrandLanding ? ' dtb-catalog-brand-layout' : ''}`}>
+      <div className={`dtb-container dtb-container--fluid py-4 pt-6${isCategoryPageRoute ? ' dtb-catalog-category-layout' : ''}${showBrandLanding ? ' dtb-catalog-brand-layout' : ''}${!isCategoryPageRoute && isCategoryProductRoute ? ' dtb-catalog-category-product-layout' : ''}`}>
         {isCategoryPageRoute && (
           categoryMeta ? (
             <>
@@ -807,7 +807,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
                 onOpenProduct={openModal}
               />
               {Array.isArray(categoryMeta.children) && categoryMeta.children.length > 0 && (
-                <ShopByToolType categories={categoryToolTypes} parentLabel={categoryMeta.label} brand={selectedBrandFacet?.slug || selectedBrand} onOpenFilters={() => setShowFilters(true)} />
+                <ShopByToolType categories={categoryToolTypes} parentLabel={categoryMeta.label} brand={selectedBrandFacet?.slug || selectedBrand} />
               )}
             </>
           ) : categoryMetaError ? (
@@ -835,7 +835,7 @@ export default function ProductsCatalogPlatform({ forceProductGrid = false, titl
         {isAllProductsRoute && !showCategoryLanding && !showBrandLanding && (
           <>
             {allProductsToolTypes.length > 0 && (
-              <ShopByToolType categories={allProductsToolTypes} onOpenFilters={() => setShowFilters(true)} />
+              <ShopByToolType categories={allProductsToolTypes} />
             )}
           </>
         )}
