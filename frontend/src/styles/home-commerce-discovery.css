@@ -267,28 +267,68 @@
   }
 
   .dtb-home-page .home-commerce-categories .storefront-section__head {
-    flex-wrap: nowrap;
-    align-items: center;
-    gap: .5rem;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-rows: auto auto;
+    align-items: start;
+    column-gap: .5rem;
+    row-gap: .38rem;
+    margin-bottom: .72rem;
+    padding-bottom: .78rem;
   }
 
   .dtb-home-page .home-commerce-categories .storefront-section__head-text {
-    flex: 1 1 0%;
+    display: contents;
+  }
+
+  .dtb-home-page .home-commerce-categories .storefront-section__head-text::before {
+    display: none;
+  }
+
+  .dtb-home-page .home-commerce-categories .storefront-section__title {
+    position: relative;
+    grid-column: 1;
+    grid-row: 1;
     min-width: 0;
+    padding-left: .85rem;
+    font-size: clamp(1.2rem, 5.8vw, 1.5rem);
+    line-height: 1.12;
+    letter-spacing: -.035em;
+    text-wrap: balance;
+  }
+
+  .dtb-home-page .home-commerce-categories .storefront-section__title::before {
+    position: absolute;
+    top: -.08rem;
+    bottom: -.08rem;
+    left: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, transparent, #1262ef 24%, #1262ef 76%, transparent);
+    content: '';
+    pointer-events: none;
+  }
+
+  .dtb-home-page .home-commerce-categories .storefront-section__subtitle {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    max-width: 42ch;
+    margin: 0;
+    font-size: .82rem;
+    line-height: 1.42;
   }
 
   .dtb-home-page .home-commerce-categories .storefront-section__view-all {
-    flex: 0 0 auto;
-    min-height: 36px;
-    gap: .25rem;
-    margin-left: auto;
-    padding: 0 0 0 .35rem;
-    font-size: .76rem;
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+    min-height: 32px;
+    gap: .2rem;
+    margin: 0;
+    padding: .12rem 0 0 .15rem;
+    font-size: clamp(.68rem, 3.1vw, .76rem);
+    line-height: 1.25;
     letter-spacing: 0;
-  }
-
-  .dtb-home-page .storefront-section__subtitle {
-    font-size: .84rem;
   }
 
   .home-commerce-categories .dtb-tool-type-rail {
