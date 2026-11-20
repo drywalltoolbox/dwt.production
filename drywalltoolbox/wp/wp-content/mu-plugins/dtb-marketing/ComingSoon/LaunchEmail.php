@@ -140,11 +140,31 @@ function dtb_render_launch_announcement_email( string $unsubscribe_url = '' ): s
 			. '<p style="margin:10px 0 0;color:#cbd7e6;font-family:Arial,sans-serif;font-size:14px;line-height:21px">Shop tools, find replacement parts, explore schematics, and get repair support—all in one place.</p>'
 			. '</td><td class="dtb-launch-fallback-image" width="42%" valign="middle" bgcolor="#071827" style="width:42%;padding:0;background:#071827;background-color:#071827"><img src="' . esc_url( $hero_url ) . '" width="260" alt="A drywall finishing tool on a fresh plaster surface" style="display:block;width:100%;max-width:260px;height:auto;border:0;outline:0;text-decoration:none"></td></tr></table>';
 	$account_url = function_exists( 'wc_get_page_permalink' ) ? wc_get_page_permalink( 'myaccount' ) : home_url( '/my-account' );
-	$icon_pair = static function ( string $name ): string {
-		$icon_url = home_url( '/logos/email-icons/launch-' . $name . '-' );
+	$icon_urls = array(
+		'package'    => array(
+			'light' => home_url( '/logos/email-icons/launch-package-light.png' ),
+			'dark'  => home_url( '/logos/email-icons/launch-package-dark.png' ),
+		),
+		'parts'      => array(
+			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-parts-light-v2.png' ),
+			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-parts-dark-v2.png' ),
+		),
+		'schematics' => array(
+			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-schematics-light-v2.png' ),
+			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-schematics-dark-v2.png' ),
+		),
+		'repairs'    => array(
+			'light' => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-repairs-light-v2.png' ),
+			'dark'  => home_url( '/wp-content/uploads/2026/11/dtb-email-launch-repairs-dark-v2.png' ),
+		),
+	);
+	$icon_pair = static function ( string $name ) use ( $icon_urls ): string {
+		if ( ! isset( $icon_urls[ $name ] ) ) {
+			return '';
+		}
 		$style    = 'width:40px;height:40px;border:0;outline:0;text-decoration:none;';
-		return '<img class="dtb-launch-icon-light" src="' . esc_url( $icon_url . 'light.png' ) . '" width="40" height="40" alt="" style="display:block;width:40px;height:40px;' . $style . '">'
-			. '<img class="dtb-launch-icon-dark" src="' . esc_url( $icon_url . 'dark.png' ) . '" width="40" height="40" alt="" style="display:none;width:40px;height:40px;' . $style . '">';
+		return '<img class="dtb-launch-icon-light" src="' . esc_url( $icon_urls[ $name ]['light'] ) . '" width="40" height="40" alt="" style="display:block;width:40px;height:40px;' . $style . '">'
+			. '<img class="dtb-launch-icon-dark" src="' . esc_url( $icon_urls[ $name ]['dark'] ) . '" width="40" height="40" alt="" style="display:none;width:40px;height:40px;' . $style . '">';
 	};
 	$values = array(
 		'{{parts_url}}'    => esc_url( home_url( '/parts' ) ),
