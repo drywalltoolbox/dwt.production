@@ -1,4 +1,4 @@
-const CATEGORY_THUMBNAIL_ROOT = 'https://drywalltoolbox.com/wp/wp-content/uploads/2026/categories/thumbnails';
+import { CATEGORY_THUMBNAIL_ASSETS } from '../generated/categoryThumbnailAssets.js';
 
 // Existing media filenames are retained as assets. Canonical taxonomy slugs
 // resolve to the closest current image without making media filenames a
@@ -96,9 +96,25 @@ export function resolveCategoryThumbnail(category) {
 
   const configuredThumbnail = CATEGORY_THUMBNAIL_FILE_BY_SLUG[slug];
   const thumbnailSlug = configuredThumbnail || slug;
-  if (configuredThumbnail || CATEGORY_THUMBNAIL_SLUGS.has(thumbnailSlug)) {
-    return `${CATEGORY_THUMBNAIL_ROOT}/${thumbnailSlug}.webp`;
-  }
+  const bundledAsset = (configuredThumbnail || CATEGORY_THUMBNAIL_SLUGS.has(thumbnailSlug))
+    ? CATEGORY_THUMBNAIL_ASSETS[thumbnailSlug]
+    : null;
+  if (bundledAsset) return bundledAsset.src;
 
   return category?.image || '';
+}
+
+export function resolveCategoryThumbnailSet(category) {
+  const slug = String(category?.slug || category?.key || '')
+    .trim()
+    .toLowerCase()
+    .replace(/_/g, '-');
+  const thumbnailSlug = CATEGORY_THUMBNAIL_FILE_BY_SLUG[slug] || slug;
+  const bundledAsset = CATEGORY_THUMBNAIL_ASSETS[thumbnailSlug];
+  if (!bundledAsset) return { src: category?.image || '', srcSet: undefined };
+
+  return {
+    src: bundledAsset.src,
+    srcSet: bundledAsset.variants.map(({ src, width }) => `${src} ${width}w`).join(', '),
+  };
 }

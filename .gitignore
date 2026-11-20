@@ -55,6 +55,8 @@ frontend/.env.*.local
 # frontend build artifacts
 frontend/dist/
 frontend/node_modules/
+frontend/src/generated/categoryThumbnailAssets.js
+frontend/src/generated/category-thumbnails/
 
 # ---------------------------------------------------------------
 # WordPress — wp/ subdirectory (NEVER commit these files)

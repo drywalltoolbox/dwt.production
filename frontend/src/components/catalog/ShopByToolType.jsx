@@ -4,7 +4,7 @@ import { ArrowRight, ChevronRight, Wrench } from 'lucide-react';
 import StorefrontRail from '../storefront/StorefrontRail.jsx';
 import { MediaSelectorCard } from '../selectors/SelectorCards.jsx';
 import { buildCategoryPageUrl } from '../../utils/catalogFacets.js';
-import { resolveCategoryThumbnail } from '../../utils/categoryThumbnailImages.js';
+import { resolveCategoryThumbnail, resolveCategoryThumbnailSet } from '../../utils/categoryThumbnailImages.js';
 import '../../styles/category-hero.css';
 import '../../styles/tool-type-merchandising.css';
 import '../../styles/selector-cards.css';
@@ -12,6 +12,7 @@ import '../../styles/selector-cards.css';
 export function ToolTypeTile({ category, showSelectorChevron = false, brand = '', imageLoading = 'lazy' }) {
   const [imageFailed, setImageFailed] = useState(false);
   const image = resolveCategoryThumbnail(category);
+  const responsiveImage = resolveCategoryThumbnailSet(category);
   const hasImage = Boolean(image) && !imageFailed;
   const description = String(category?.description || '').replace(/<[^>]*>/g, '').trim();
 
@@ -20,7 +21,7 @@ export function ToolTypeTile({ category, showSelectorChevron = false, brand = ''
       <MediaSelectorCard
         to={buildCategoryPageUrl(category.slug, brand)}
         title={category.name}
-        media={hasImage ? <img src={image} alt="" className="dtb-selector-card__image" loading="lazy" decoding="async" onError={() => setImageFailed(true)} /> : undefined}
+        media={hasImage ? <img src={responsiveImage.src || image} srcSet={responsiveImage.srcSet} sizes="(max-width: 767px) 264px, 180px" alt="" className="dtb-selector-card__image" loading="lazy" decoding="async" onError={() => setImageFailed(true)} /> : undefined}
       />
     );
   }
@@ -34,6 +35,8 @@ export function ToolTypeTile({ category, showSelectorChevron = false, brand = ''
         {hasImage ? (
           <img
             src={image}
+            srcSet={responsiveImage.srcSet}
+            sizes="(max-width: 767px) 264px, 180px"
             alt=""
             className="dtb-tool-type-tile__image"
             loading={imageLoading}
@@ -89,7 +92,7 @@ export default function ShopByToolType({ categories = [], onOpenFilters, parentL
           category={category}
           showSelectorChevron
           brand={brand}
-          imageLoading={homeVariant && index < 4 ? 'eager' : 'lazy'}
+          imageLoading={homeVariant && index === 0 ? 'eager' : 'lazy'}
         />
       ))}
       {isAllProductsRoute && (
