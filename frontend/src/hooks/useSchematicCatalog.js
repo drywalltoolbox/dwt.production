@@ -10,7 +10,6 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { fetchSchematicsCollection, SchematicApiError } from '../api/schematicsApi.js';
-import { PRODUCT_SCHEMATIC_LINKS } from '../data/productSchematicLinks.generated.js';
 import { humanizeLabel, humanizeSchematicCategoryLabel } from '../utils/string.js';
 import { canonicalizeSchematicBrandId } from '../data/schematicBrands.js';
 
@@ -37,11 +36,6 @@ const CATEGORY_PREVIEW_OVERRIDES = new Map([
 /**
  * @typedef {'loading'|'success'|'empty'|'error'} SchematicCatalogStatus
  */
-
-/** Model numbers match case-insensitively, ignoring spaces and hyphens ("2 AH" = "2AH"). */
-function normalizeModelSku(value) {
-  return String(value || '').trim().toUpperCase().replace(/[\s-]+/g, '');
-}
 
 export function useSchematicCatalog() {
   const [status, setStatus] = useState('loading');
@@ -151,26 +145,6 @@ export function useSchematicCatalog() {
     return map;
   }, [items]);
 
-  // Model SKUs (e.g. C1PTAPER, 2AH) resolve to schematics through the
-  // generated product→schematic map — but only for schematics the API
-  // actually publishes. The collection stays the authority on what exists,
-  // so a SKU whose diagram is not published (e.g. 07TT) resolves to nothing.
-  const modelSkusBySchematicId = useMemo(() => {
-    const publishedIds = new Set(items.map((item) => String(item.id)));
-    const map = new Map();
-    Object.entries(PRODUCT_SCHEMATIC_LINKS).forEach(([sku, link]) => {
-      const schematicId = String(link?.schematicId || '');
-      if (!schematicId || !publishedIds.has(schematicId)) return;
-      if (!map.has(schematicId)) map.set(schematicId, []);
-      map.get(schematicId).push(String(sku));
-    });
-    return map;
-  }, [items]);
-
-  function getModelSkus(schematicId) {
-    return modelSkusBySchematicId.get(String(schematicId)) || [];
-  }
-
   function getCategoriesForBrand(brandId) {
     return categoriesByBrand.get(brandId) || [];
   }
@@ -183,25 +157,14 @@ export function useSchematicCatalog() {
     return items.find((item) => String(item.id) === String(schematicId)) || null;
   }
 
-  /** Simple client-side search across title/brand/category/variant/model SKU — collection is small. */
+  /** Simple client-side search across title/brand/category — collection is small. */
   function search(query) {
     const q = query.trim().toLowerCase();
-    const qn = normalizeModelSku(query);
     if (!q) return [];
     return items.filter((item) => {
-      const skus = getModelSkus(item.id);
-      const haystack = `${item.title || ''} ${item.brand?.name || ''} ${item.category?.name || ''} ${item.variant_label || ''} ${skus.join(' ')}`.toLowerCase();
-      if (haystack.includes(q)) return true;
-      if (!qn) return false;
-      return skus.some((sku) => normalizeModelSku(sku).includes(qn));
+      const haystack = `${item.title || ''} ${item.brand?.name || ''} ${item.category?.name || ''}`.toLowerCase();
+      return haystack.includes(q);
     });
-  }
-
-  /** Exact model-number match (e.g. C1PTAPER, 2AH) -> that tool's schematic, or null. */
-  function findByModelSku(query) {
-    const qn = normalizeModelSku(query);
-    if (!qn) return null;
-    return items.find((item) => getModelSkus(item.id).some((sku) => normalizeModelSku(sku) === qn)) || null;
   }
 
   return {
@@ -214,6 +177,5 @@ export function useSchematicCatalog() {
     getToolsForBrandCategory,
     findItem,
     search,
-    findByModelSku,
   };
 }
