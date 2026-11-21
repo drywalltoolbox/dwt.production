@@ -5,19 +5,26 @@
  * Purely a composition/state-forwarding layer over useSchematicCatalog +
  * useSchematicRouteState; no data fetching of its own.
  */
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import SearchBar from '../catalog/SearchBar';
 import BrandSelector, { resolveSchematicBrandLogo } from './BrandSelector';
 import CategorySelector from './CategorySelector';
 import ToolSelector from './ToolSelector';
 
 export default function SchematicsCatalog({ catalog, routeState }) {
-  const { status, error, brands, getCategoriesForBrand, getToolsForBrandCategory, search } = catalog;
+  const { status, error, brands, getCategoriesForBrand, getToolsForBrandCategory, search, findByModelSku } = catalog;
   const { brandId, categoryId, goToBrand, goToCategory, goToSchematic, goToCatalogRoot } = routeState;
   const [searchQuery, setSearchQuery] = useState('');
 
   const searchResults = useMemo(() => search(searchQuery), [search, searchQuery]);
   const hasQuery = searchQuery.trim().length > 0;
+
+  // Typing a tool's exact model number (e.g. C1PTAPER, 2AH) jumps straight
+  // to its diagram and parts list. Anything else keeps the results list.
+  const handleSearchSubmit = useCallback((value) => {
+    const exact = findByModelSku(value);
+    if (exact) goToSchematic(exact.id);
+  }, [findByModelSku, goToSchematic]);
 
   const currentBrand = brandId ? brands.find((b) => b.id === brandId) : null;
   const categories = brandId ? getCategoriesForBrand(brandId) : [];
@@ -52,13 +59,13 @@ export default function SchematicsCatalog({ catalog, routeState }) {
 
   return (
     <div className="dtb-schematics-catalog">
-      {!brandId && (
-        <SearchBar
-          placeholder="Search schematics by brand, category, or tool name…"
-          value={searchQuery}
-          onChange={(event) => setSearchQuery(event.target.value)}
-        />
-      )}
+      <SearchBar
+        placeholder="Search by tool name or model number…"
+        value={searchQuery}
+        onChange={(event) => setSearchQuery(event.target.value)}
+        onSubmit={handleSearchSubmit}
+        onClear={() => setSearchQuery('')}
+      />
 
       {hasQuery ? (
         <div>
