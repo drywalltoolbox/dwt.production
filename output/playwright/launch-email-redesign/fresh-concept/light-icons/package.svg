@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" role="img" aria-label="Toolbox outline icon">
-  <g stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2">
-    <path stroke="#14304B" d="M16 15V11.5A3.5 3.5 0 0 1 19.5 8h9a3.5 3.5 0 0 1 3.5 3.5V15"/>
-    <rect stroke="#14304B" x="6.5" y="15" width="35" height="25" rx="4.5"/>
-    <path stroke="#14304B" d="M6.8 24h34.4M20 24v3.2h8V24"/>
-    <path stroke="#4D90FF" d="M12 20h3M33 20h3M24 31v3.5"/>
-  </g>
-</svg>
