@@ -60,7 +60,7 @@ Only published WooCommerce products intended for indexing are included. Products
 - the product is assigned the WooCommerce `exclude-from-search` visibility term;
 - the DTB product SEO flag `_dtb_seo_noindex` is enabled.
 
-Variations are not emitted as independent URLs; the canonical parent product route remains authoritative. Only `/products/{slug}` is a product-page route. Old `/product/{partNumber}` paths are not storefront aliases or sitemap authorities; variation selection stays on the canonical parent URL as query state.
+Variations are not emitted as independent URLs; the canonical parent product route remains authoritative. Only `/products/{slug}` is a product-page route. Legacy `/product/{slug}` requests receive a permanent redirect to `/products/{slug}/`; those redirect-only paths are never emitted in the sitemap. Variation selection stays on the canonical parent URL as query state.
 
 Product sitemap cache invalidation is already tied to `save_post_product`, so changes to the DTB noindex field advance the sitemap generation with the rest of the product mutation.
 
@@ -184,7 +184,7 @@ The following route families are deliberately outside the sitemap contract even 
 
 - brand/category faceted intersections such as `/products/brands/{brand}/categories/{category}` until they have an explicit canonical/indexability contract;
 - variation routes and `?variant=` states;
-- retired `/product/{partNumber}` paths (these are not served as storefront aliases);
+- legacy `/product/{slug}` requests, which redirect to the canonical `/products/{slug}/` route and are never sitemap entries;
 - repair, return, support, order, and tracking status URLs;
 - cart and checkout routes;
 - login, registration, password reset, dashboard, account, settings, rewards, and redirect aliases;
@@ -203,7 +203,7 @@ After deploying staging or production:
 5b. Confirm `/products` contains internal links to eligible product and taxonomy URLs from the canonical catalog source.
 6. Confirm products carrying `_dtb_seo_noindex = 1` are absent from product sitemaps.
 7. Confirm WooCommerce `exclude-from-search` products are absent.
-8. Confirm variation URLs and legacy `/product/{partNumber}` aliases are absent.
+8. Confirm variation URLs are absent, legacy `/product/{slug}` URLs return a permanent redirect, and no legacy paths appear in the sitemap.
 9. Confirm `/robots.txt` advertises exactly one environment-correct sitemap URL where the origin-level robots policy is deployed.
 10. Run a product update and verify a subsequent sitemap request reflects the change.
 11. Confirm the DTB SEO Tools sitemap status view checks `/sitemap.xml`.

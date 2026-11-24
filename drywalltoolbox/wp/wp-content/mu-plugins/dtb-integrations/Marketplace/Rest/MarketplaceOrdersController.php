@@ -73,7 +73,7 @@ if ( ! class_exists( 'DTB_MarketplaceOrdersController' ) ) {
 					? DTB_AmazonOrdersService::sync()
 					: [ 'error' => 'Amazon module not loaded.' ],
 				DTB_CHANNEL_EBAY   => class_exists( 'DTB_EbayFulfillmentService' )
-					? DTB_EbayFulfillmentService::sync()
+					? DTB_EbayFulfillmentService::queue_sync()
 					: [ 'error' => 'eBay module not loaded.' ],
 				default            => [ 'error' => 'Unknown channel: ' . $channel ],
 			};

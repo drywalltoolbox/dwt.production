@@ -15,37 +15,41 @@ if ( ! class_exists( 'DTB_EbayFulfillmentService' ) ) {
 		/**
 		 * Sync recent eBay orders.
 		 *
-		 * @param string $created_after ISO 8601 date string.
+		 * @param string $modified_after  ISO 8601 inclusive lower bound.
+		 * @param string $modified_before ISO 8601 inclusive upper bound.
+		 * @param int    $offset          Provider pagination offset.
+		 * @param int    $imported        Aggregate imported count.
+		 * @param int    $updated         Aggregate updated count.
+		 * @param int    $errors          Aggregate error count.
 		 * @return array{imported: int, updated: int, errors: int}
 		 */
-		public static function sync( string $created_after = '' ): array {
+		public static function sync( string $modified_after = '', string $modified_before = '', int $offset = 0, int $imported = 0, int $updated = 0, int $errors = 0 ): array {
 			if ( ! DTB_EbayConfig::is_configured() ) {
 				return [ 'imported' => 0, 'updated' => 0, 'errors' => 0 ];
 			}
 
-			if ( '' === $created_after ) {
-				$last          = (int) get_option( 'dtb_ebay_last_order_sync', 0 );
-				$created_after = gmdate( 'Y-m-d\TH:i:s.\0\0\0\Z', max( $last - 3600, strtotime( '-7 days' ) ) );
+			if ( '' === $modified_after || '' === $modified_before ) {
+				$last            = (int) get_option( 'dtb_ebay_last_order_sync', 0 );
+				$modified_after  = gmdate( 'Y-m-d\TH:i:s.\0\0\0\Z', max( $last - HOUR_IN_SECONDS, strtotime( '-7 days' ) ) );
+				$modified_before = gmdate( 'Y-m-d\TH:i:s.\0\0\0\Z' );
+				$offset = $imported = $updated = $errors = 0;
 			}
 
-			DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_SYNC_STARTED, DTB_CHANNEL_EBAY, [
-				'payload' => [ 'created_after' => $created_after ],
-			] );
+			if ( 0 === $offset ) {
+				DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_SYNC_STARTED, DTB_CHANNEL_EBAY, [
+					'payload' => [ 'modified_after' => $modified_after, 'modified_before' => $modified_before ],
+				] );
+			}
 
-			$imported   = 0;
-			$updated    = 0;
-			$errors     = 0;
-			$offset     = 0;
-			$limit      = 50;
-			$has_more   = true;
+			$limit      = 200;
 			$sync_failed = false;
 
-			while ( $has_more ) {
+			{
 				$response = DTB_EbayRestClient::request(
 					'GET',
 					'/sell/fulfillment/v1/order',
 					[
-						'filter' => 'creationdate:[' . $created_after . '..]',
+						'filter' => 'lastmodifieddate:[' . $modified_after . '..' . $modified_before . ']',
 						'limit'  => $limit,
 						'offset' => $offset,
 					]
@@ -59,15 +63,24 @@ if ( ! class_exists( 'DTB_EbayFulfillmentService' ) ) {
 						DTB_CHANNEL_EBAY,
 						'fulfillment_api_error',
 						$response['error'],
-						[ 'is_retryable' => ! $response['rate_limited'] ]
+						[ 'is_retryable' => ! empty( $response['rate_limited'] ) || (int) ( $response['status'] ?? 0 ) >= 500 ]
 					);
-					break;
+					DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_SYNC_FAILED, DTB_CHANNEL_EBAY, [
+						'payload' => [ 'imported' => $imported, 'updated' => $updated, 'errors' => $errors, 'offset' => $offset, 'reason' => 'fulfillment_api_error' ],
+					] );
+					return [ 'imported' => $imported, 'updated' => $updated, 'errors' => $errors ];
 				}
 
 				$orders   = $response['data']['orders'] ?? [];
 				$total    = (int) ( $response['data']['total'] ?? 0 );
-				$has_more = ( $offset + $limit ) < $total;
-				$offset  += $limit;
+				$next_offset = $offset + count( $orders );
+				if ( $next_offset < $total && empty( $orders ) ) {
+					$errors++;
+					DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_SYNC_FAILED, DTB_CHANNEL_EBAY, [
+						'payload' => [ 'imported' => $imported, 'updated' => $updated, 'errors' => $errors, 'offset' => $offset, 'reason' => 'empty_page_before_total' ],
+					] );
+					return [ 'imported' => $imported, 'updated' => $updated, 'errors' => $errors ];
+				}
 
 				foreach ( $orders as $raw_order ) {
 					try {
@@ -95,6 +108,20 @@ if ( ! class_exists( 'DTB_EbayFulfillmentService' ) ) {
 						error_log( '[DTB][eBay][Fulfillment] Import error: ' . $e->getMessage() );
 					}
 				}
+
+				if ( $next_offset < $total && count( $orders ) > 0 ) {
+					$next_args = [ $modified_after, $modified_before, $next_offset, $imported, $updated, $errors ];
+					$exists    = function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( 'dtb_ebay_order_sync', $next_args, 'dtb-marketplace' );
+					$action_id = $exists || ! function_exists( 'as_schedule_single_action' ) ? 0 : as_schedule_single_action( time() + 5, 'dtb_ebay_order_sync', $next_args, 'dtb-marketplace', true );
+					$scheduled = $exists || (int) $action_id > 0 || ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( 'dtb_ebay_order_sync', $next_args, 'dtb-marketplace' ) );
+					if ( ! $scheduled ) {
+						$errors++;
+						DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_SYNC_FAILED, DTB_CHANNEL_EBAY, [
+							'payload' => [ 'imported' => $imported, 'updated' => $updated, 'errors' => $errors, 'offset' => $next_offset, 'reason' => 'continuation_not_scheduled' ],
+						] );
+					}
+					return [ 'imported' => $imported, 'updated' => $updated, 'errors' => $errors, 'queued' => $scheduled ];
+				}
 			}
 
 			$sync_payload = [ 'imported' => $imported, 'updated' => $updated, 'errors' => $errors ];
@@ -103,7 +130,7 @@ if ( ! class_exists( 'DTB_EbayFulfillmentService' ) ) {
 					'payload' => $sync_payload,
 				] );
 			} else {
-				update_option( 'dtb_ebay_last_order_sync', time(), false );
+				update_option( 'dtb_ebay_last_order_sync', strtotime( $modified_before ), false );
 				DTB_MarketplaceReadModels::upsert_channel( DTB_CHANNEL_EBAY, [
 					'last_sync_at'   => current_time( 'mysql', true ),
 					'health_state'   => 'ok',
@@ -116,6 +143,25 @@ if ( ! class_exists( 'DTB_EbayFulfillmentService' ) ) {
 			}
 
 			return [ 'imported' => $imported, 'updated' => $updated, 'errors' => $errors ];
+		}
+
+		/** Queue a bounded eBay order poll from the administrative sync action. */
+		public static function queue_sync(): array {
+			if ( ! DTB_EbayConfig::is_configured() ) {
+				return [ 'ok' => false, 'error' => 'eBay is not configured.' ];
+			}
+			if ( ! function_exists( 'as_schedule_single_action' ) ) {
+				return [ 'ok' => false, 'error' => 'Action Scheduler is unavailable; eBay sync was not queued.' ];
+			}
+			$last = (int) get_option( 'dtb_ebay_last_order_sync', 0 );
+			$args = [
+				gmdate( 'Y-m-d\TH:i:s.\0\0\0\Z', max( $last - HOUR_IN_SECONDS, strtotime( '-7 days' ) ) ),
+				gmdate( 'Y-m-d\TH:i:s.\0\0\0\Z' ), 0, 0, 0, 0,
+			];
+			$exists = function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( 'dtb_ebay_order_sync', $args, 'dtb-marketplace' );
+			$id     = $exists ? 1 : as_schedule_single_action( time() + 5, 'dtb_ebay_order_sync', $args, 'dtb-marketplace', true );
+			$queued = (int) $id > 0 || ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( 'dtb_ebay_order_sync', $args, 'dtb-marketplace' ) );
+			return $queued ? [ 'ok' => true, 'queued' => true ] : [ 'ok' => false, 'error' => 'Action Scheduler did not confirm the eBay sync job.' ];
 		}
 
 		/** Import one order fetched by an authenticated eBay notification. */

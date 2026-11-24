@@ -2,8 +2,8 @@
 /**
  * Marketplace — CredentialFacade
  *
- * Stores and retrieves marketplace credentials using WordPress options with
- * AES-256-CBC encryption keyed from AUTH_KEY + AUTH_SALT.
+ * Stores and retrieves marketplace credentials using versioned authenticated
+ * encryption in WordPress options, keyed from AUTH_KEY + AUTH_SALT.
  *
  * NEVER returns raw secrets to REST responses or logs.
  *
@@ -19,52 +19,79 @@ if ( ! class_exists( 'DTB_MarketplaceCredentialFacade' ) ) {
 
 		// ── Encryption helpers ────────────────────────────────────────────────
 
-		/**
-		 * Derive a 32-byte key from WP secret constants.
-		 */
-		private static function derive_key(): string {
+		/** Derive the legacy CBC key for backward-compatible reads. */
+		private static function derive_legacy_key(): string {
 			$raw  = ( defined( 'AUTH_KEY' )  ? AUTH_KEY  : '' )
 				  . ( defined( 'AUTH_SALT' ) ? AUTH_SALT : '' );
 			return hash( 'sha256', $raw, true );
+		}
+
+		/** Derive a purpose-separated authenticated-encryption key. */
+		private static function derive_v2_key(): string|false {
+			$raw = ( defined( 'AUTH_KEY' ) ? (string) AUTH_KEY : '' )
+				. ( defined( 'AUTH_SALT' ) ? (string) AUTH_SALT : '' );
+			if ( '' === $raw ) {
+				return false;
+			}
+			return hash_hkdf( 'sha256', $raw, 32, 'dtb-marketplace-credential-v2' );
 		}
 
 		/**
 		 * Encrypt a plain-text string.
 		 *
 		 * @param string $plain Plain text.
-		 * @return string|false Base64-encoded IV+ciphertext, or false on failure.
+		 * @return string|false Versioned base64-encoded IV+tag+ciphertext, or false on failure.
 		 */
 		public static function encrypt( string $plain ): string|false {
 			if ( '' === $plain ) {
 				return '';
 			}
-			$key = self::derive_key();
-			$iv  = random_bytes( 16 );
-			$ct  = openssl_encrypt( $plain, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv );
-			if ( false === $ct ) {
+			$key = self::derive_v2_key();
+			if ( false === $key ) {
 				return false;
 			}
-			return base64_encode( $iv . $ct ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+			try {
+				$iv = random_bytes( 12 );
+			} catch ( Throwable $e ) {
+				return false;
+			}
+			$tag = '';
+			$ct  = openssl_encrypt( $plain, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag, '', 16 );
+			if ( false === $ct || 16 !== strlen( $tag ) ) {
+				return false;
+			}
+			return 'v2:' . base64_encode( $iv . $tag . $ct ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 		}
 
 		/**
 		 * Decrypt a stored value.
 		 *
-		 * @param string $stored Base64-encoded IV+ciphertext.
+		 * @param string $stored Versioned authenticated value or legacy base64 IV+ciphertext.
 		 * @return string|false Plain text, or false on failure.
 		 */
 		public static function decrypt( string $stored ): string|false {
 			if ( '' === $stored ) {
 				return '';
 			}
-			$key  = self::derive_key();
-			$raw  = base64_decode( $stored, true ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+			if ( str_starts_with( $stored, 'v2:' ) ) {
+				$key = self::derive_v2_key();
+				$raw = base64_decode( substr( $stored, 3 ), true ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+				if ( false === $key || false === $raw || strlen( $raw ) < 29 ) {
+					return false;
+				}
+				$iv  = substr( $raw, 0, 12 );
+				$tag = substr( $raw, 12, 16 );
+				$ct  = substr( $raw, 28 );
+				return openssl_decrypt( $ct, 'aes-256-gcm', $key, OPENSSL_RAW_DATA, $iv, $tag, '' );
+			}
+
+			$raw = base64_decode( $stored, true ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
 			if ( false === $raw || strlen( $raw ) < 17 ) {
 				return false;
 			}
 			$iv = substr( $raw, 0, 16 );
 			$ct = substr( $raw, 16 );
-			return openssl_decrypt( $ct, 'AES-256-CBC', $key, OPENSSL_RAW_DATA, $iv );
+			return openssl_decrypt( $ct, 'AES-256-CBC', self::derive_legacy_key(), OPENSSL_RAW_DATA, $iv );
 		}
 
 		// ── Storage ────────────────────────────────────────────────────────────
@@ -74,17 +101,22 @@ if ( ! class_exists( 'DTB_MarketplaceCredentialFacade' ) ) {
 		 * Encrypts all values before persisting.
 		 *
 		 * @param string               $channel_key Channel key.
-		 * @param array<string,string> $creds       Key-value credential pairs.
+		 * @param array<string,string> $creds       Non-empty key-value fields to add or replace.
+		 * @return bool Whether the merged encrypted bag was durably stored.
 		 */
-		public static function store( string $channel_key, array $creds ): void {
-			$encrypted = [];
+		public static function store( string $channel_key, array $creds ): bool {
+			$option_key = self::OPTION_PREFIX . sanitize_key( $channel_key );
+			$encrypted = (array) get_option( $option_key, [] );
 			foreach ( $creds as $k => $v ) {
 				$enc = self::encrypt( (string) $v );
-				if ( false !== $enc ) {
-					$encrypted[ sanitize_key( $k ) ] = $enc;
+				$key = sanitize_key( (string) $k );
+				if ( false === $enc || '' === $key ) {
+					return false;
 				}
+				$encrypted[ $key ] = $enc;
 			}
-			update_option( self::OPTION_PREFIX . sanitize_key( $channel_key ), $encrypted, false );
+			update_option( $option_key, $encrypted, false );
+			return $encrypted === get_option( $option_key, null );
 		}
 
 		/**

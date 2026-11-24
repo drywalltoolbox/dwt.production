@@ -246,8 +246,42 @@ function dtb_order_marketplace_dispatch_mark_recovery( WC_Order $order, string $
 		] );
 	}
 	$stored_fallback = get_option( $fallback_key, null );
-	return ( function_exists( 'dtb_order_event_idempotency_exists' ) && dtb_order_event_idempotency_exists( $key ) )
+	$durable = ( function_exists( 'dtb_order_event_idempotency_exists' ) && dtb_order_event_idempotency_exists( $key ) )
 		|| ( is_array( $stored_fallback ) && (int) ( $stored_fallback['order_id'] ?? 0 ) === (int) $order->get_id() && hash_equals( $receipt_id, (string) ( $stored_fallback['receipt_id'] ?? '' ) ) );
+	if ( ! $durable ) {
+		return false;
+	}
+
+	// Dispatch recovery is independent of materialization completion. Keep the
+	// durable order projection visible even when this marker arrives after the
+	// materializer has released its identity mutex.
+	$order->update_meta_data( '_dtb_marketplace_dispatch_state', 'recovery_required' );
+	$order->update_meta_data( '_dtb_marketplace_dispatch_error_code', sanitize_key( $reason ) );
+	$order->save();
+	$readback = wc_get_order( (int) $order->get_id() );
+	return $readback instanceof WC_Order
+		&& 'recovery_required' === (string) $readback->get_meta( '_dtb_marketplace_dispatch_state', true )
+		&& sanitize_key( $reason ) === (string) $readback->get_meta( '_dtb_marketplace_dispatch_error_code', true );
+}
+
+/** Acquire the same identity mutex held throughout marketplace materialization. */
+function dtb_order_marketplace_dispatch_acquire_lock( WC_Order $order ): string|false {
+	global $wpdb;
+	$channel      = sanitize_key( (string) $order->get_meta( '_dtb_marketplace_channel', true ) );
+	$external_id  = (string) $order->get_meta( '_dtb_marketplace_order_id', true );
+	if ( ! in_array( $channel, [ 'amazon', 'ebay' ], true ) || '' === $external_id || ! class_exists( 'DTB_MarketplaceEventService' ) ) {
+		return false;
+	}
+	$lock_name = DTB_MarketplaceEventService::materialization_lock_name( $channel, $external_id );
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	return 1 === (int) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 0)', $lock_name ) ) ? $lock_name : false;
+}
+
+function dtb_order_marketplace_dispatch_release_lock( string $lock_name ): void {
+	global $wpdb;
+	// Release on the same request connection that acquired the named lock.
+	// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+	$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock_name ) );
 }
 
 /** Authorize marketplace dispatch only after its exact durable receipt and completion marker exist. */
@@ -276,35 +310,76 @@ function dtb_order_marketplace_dispatch_execution_ready( $order, string $job_typ
 	if ( ! function_exists( 'dtb_order_event_idempotency_exists' ) || dtb_order_event_idempotency_exists( $recovery_key ) || is_array( get_option( $fallback_key, null ) ) ) {
 		return false;
 	}
-	if ( 'complete' === sanitize_key( (string) $order->get_meta( '_dtb_marketplace_orchestration_state', true ) ) ) {
-		$channel = sanitize_key( (string) $order->get_meta( '_dtb_marketplace_channel', true ) );
-		$row_id  = absint( $order->get_meta( '_dtb_marketplace_order_row_id', true ) );
-		$hash    = (string) $order->get_meta( '_dtb_marketplace_identity_hash', true );
-		$key     = 'marketplace-materialization-complete:v2:' . $hash;
-		return '' !== $hash && $row_id > 0 && class_exists( 'DTB_MarketplaceEventService' )
-			&& DTB_MarketplaceEventService::idempotent_event_matches( $key, DTB_MarketplaceEventService::EVT_MATERIALIZATION_COMPLETED, $channel, $row_id, (int) $order->get_id() );
-	}
-	if ( 'dispatch_pending' !== sanitize_key( (string) $order->get_meta( '_dtb_marketplace_orchestration_state', true ) ) ) {
+	$lock_name = dtb_order_marketplace_dispatch_acquire_lock( $order );
+	if ( false === $lock_name ) {
+		if ( $retry >= 6 ) {
+			if ( ! dtb_order_marketplace_dispatch_mark_recovery( $order, $identity, 'dispatch_lock_retry_exhausted' ) ) {
+				throw new RuntimeException( 'Marketplace identity remained locked and recovery could not be durably recorded.' );
+			}
+			throw new RuntimeException( 'Marketplace identity remained locked beyond the bounded retry window; operator recovery is required.' );
+		}
+		if ( ! function_exists( 'as_schedule_single_action' ) ) {
+			if ( ! dtb_order_marketplace_dispatch_mark_recovery( $order, $identity, 'dispatch_scheduler_unavailable' ) ) {
+				throw new RuntimeException( 'Action Scheduler is unavailable and dispatch recovery could not be durably recorded.' );
+			}
+			throw new RuntimeException( 'Marketplace identity is locked or unavailable and downstream dispatch cannot be safely deferred.' );
+		}
+		$deferred = $args;
+		$deferred['_dtb_dispatch_retry'] = $retry + 1;
+		$deferred_args = [ (int) $order->get_id(), $deferred ];
+		$deferred_id   = (int) as_schedule_single_action( time() + 30, $job_type, $deferred_args, 'dtb-orders', true );
+		$history       = dtb_order_queue_find_exact_action( $job_type, $deferred_args );
+		$verified_id   = $deferred_id > 0 ? $deferred_id : absint( $history['action_id'] ?? 0 );
+		if ( $verified_id <= 0 || absint( $history['action_id'] ?? 0 ) !== $verified_id
+			|| ! in_array( (string) ( $history['status'] ?? '' ), class_exists( 'ActionScheduler_Store' )
+				? [ ActionScheduler_Store::STATUS_PENDING, ActionScheduler_Store::STATUS_RUNNING ]
+				: [ 'pending', 'in-progress' ], true )
+		) {
+			if ( ! dtb_order_marketplace_dispatch_mark_recovery( $order, $identity, 'dispatch_deferral_failed' ) ) {
+				throw new RuntimeException( 'Marketplace dispatch deferral failed and recovery could not be durably recorded.' );
+			}
+			throw new RuntimeException( 'Marketplace dispatch deferral was not accepted or cannot be read back exactly.' );
+		}
 		return false;
 	}
-	if ( $retry >= 6 || ! function_exists( 'as_schedule_single_action' ) ) {
-		dtb_order_marketplace_dispatch_mark_recovery( $order, $identity, 'dispatch_fence_retry_exhausted' );
+
+	try {
+		$fresh = wc_get_order( (int) $order->get_id() );
+		$reservation_token = $fresh instanceof WC_Order ? (string) $fresh->get_meta( '_dtb_marketplace_reservation_token', true ) : '';
+		if ( ! $fresh instanceof WC_Order
+			|| '2' !== (string) $fresh->get_meta( '_dtb_marketplace_materialization_contract', true )
+			|| ! preg_match( '/^[a-f0-9]{32}$/D', $reservation_token )
+			|| ! hash_equals( 'dtb_mp_' . $reservation_token, (string) $fresh->get_created_via() )
+			|| ! hash_equals( (string) $fresh->get_meta( '_dtb_marketplace_identity_hash', true ), DTB_MarketplaceEventService::materialization_identity_hash( (string) $fresh->get_meta( '_dtb_marketplace_channel', true ), (string) $fresh->get_meta( '_dtb_marketplace_order_id', true ) ) )
+		) {
+			return false;
+		}
+		$state = sanitize_key( (string) $fresh->get_meta( '_dtb_marketplace_orchestration_state', true ) );
+		if ( 'complete' === $state ) {
+			$channel = sanitize_key( (string) $fresh->get_meta( '_dtb_marketplace_channel', true ) );
+			$row_id  = absint( $fresh->get_meta( '_dtb_marketplace_order_row_id', true ) );
+			$hash    = (string) $fresh->get_meta( '_dtb_marketplace_identity_hash', true );
+			$key     = 'marketplace-materialization-complete:v2:' . $hash;
+			return '' !== $hash && $row_id > 0
+				&& DTB_MarketplaceEventService::idempotent_event_matches( $key, DTB_MarketplaceEventService::EVT_MATERIALIZATION_COMPLETED, $channel, $row_id, (int) $fresh->get_id() );
+		}
+		if ( 'dispatch_pending' !== $state ) {
+			return false;
+		}
+		if ( ! dtb_order_marketplace_dispatch_mark_recovery( $fresh, $identity, 'dispatch_pending_without_materializer_lock' ) ) {
+			throw new RuntimeException( 'Marketplace dispatch found an abandoned pending state and could not durably record recovery.' );
+		}
+		$fresh->update_meta_data( '_dtb_marketplace_orchestration_state', 'recovery_required' );
+		$fresh->update_meta_data( '_dtb_marketplace_materialization_error_code', 'dispatch_pending_without_materializer_lock' );
+		$fresh->save();
+		$readback = wc_get_order( (int) $fresh->get_id() );
+		if ( ! $readback instanceof WC_Order || 'recovery_required' !== (string) $readback->get_meta( '_dtb_marketplace_orchestration_state', true ) ) {
+			throw new RuntimeException( 'Marketplace recovery state readback failed.' );
+		}
 		return false;
+	} finally {
+		dtb_order_marketplace_dispatch_release_lock( $lock_name );
 	}
-	$deferred = $args;
-	$deferred['_dtb_dispatch_retry'] = $retry + 1;
-	$deferred_args = [ (int) $order->get_id(), $deferred ];
-	$deferred_id   = (int) as_schedule_single_action( time() + 30, $job_type, $deferred_args, 'dtb-orders', true );
-	$deferred_readback = dtb_order_queue_find_exact_action( $job_type, $deferred_args );
-	$verified_deferred_id = $deferred_id > 0 ? $deferred_id : absint( $deferred_readback['action_id'] ?? 0 );
-	if ( $verified_deferred_id <= 0 || absint( $deferred_readback['action_id'] ?? 0 ) !== $verified_deferred_id
-		|| ! in_array( (string) ( $deferred_readback['status'] ?? '' ), class_exists( 'ActionScheduler_Store' )
-			? [ ActionScheduler_Store::STATUS_PENDING, ActionScheduler_Store::STATUS_RUNNING ]
-			: [ 'pending', 'in-progress' ], true )
-	) {
-		dtb_order_marketplace_dispatch_mark_recovery( $order, $identity, 'dispatch_fence_defer_unverified' );
-	}
-	return false;
 }
 
 function dtb_order_enqueue_job( string $job_type, int $order_id, array $args = [], int $delay = 0 ): string|int|false {

@@ -149,6 +149,12 @@ if (appEnv === 'production') {
   if (expected !== sharedRootRouting) {
     throw new Error('frontend/.htaccess must match drywalltoolbox/.htaccess before a production build.');
   }
+  const legacyProductRedirect = 'RewriteRule ^product/([^/]+)/?$ /products/$1/ [R=301,L]';
+  const redirectPosition = emitted.indexOf(legacyProductRedirect);
+  const canonicalRoutePosition = emitted.indexOf('RewriteRule ^products/([a-zA-Z0-9_-]+)');
+  if (redirectPosition < 0 || canonicalRoutePosition < 0 || redirectPosition > canonicalRoutePosition) {
+    throw new Error('Legacy /product/{slug} URLs must permanently redirect before canonical /products routes.');
+  }
 }
 
 if (appEnv === 'production' && /^\s*RewriteRule\s+\^cart/m.test(emitted)) {

@@ -101,6 +101,10 @@ ErrorDocument 511 /errors/511.html
   RewriteCond %{HTTP_HOST} ^www\.drywalltoolbox\.com$ [NC]
   RewriteRule ^ https://drywalltoolbox.com%{REQUEST_URI} [R=301,L,NE]
 
+  # Retired WooCommerce product paths remain redirect-only entry points.
+  # Keep Google and visitors on the canonical headless storefront URL.
+  RewriteRule ^product/([^/]+)/?$ /products/$1/ [R=301,L]
+
   # Apple Pay domain association used by WooPayments.
   # WooPayments can create the required association file. If
   # WordPress writes it below /wp because core lives in that subdirectory, expose

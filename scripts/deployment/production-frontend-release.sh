@@ -178,6 +178,7 @@ fi
 (cd "$incoming" && sha256sum -c .dtb-file-sha256 >/dev/null) ||
   { echo "Production frontend payload checksum failed" >&2; exit 2; }
 grep -Fq 'RewriteRule ^$ index.html [L]' "$incoming/.htaccess" || { echo "Root homepage rewrite missing" >&2; exit 2; }
+grep -Fq 'RewriteRule ^product/([^/]+)/?$ /products/$1/ [R=301,L]' "$incoming/.htaccess" || { echo "Legacy product URL redirect missing" >&2; exit 2; }
 grep -Fq 'RewriteRule ^products/?$ wp/index.php?dtb_storefront=1 [QSA,L]' "$incoming/.htaccess" || { echo "Server-rendered products route missing" >&2; exit 2; }
 grep -Fq 'RewriteRule ^products/([a-zA-Z0-9_-]+)(/variations/[0-9]+)?/?$ wp/index.php [QSA,L]' "$incoming/.htaccess" || { echo "Catalog-checked product route missing" >&2; exit 2; }
 if grep -Eq '^[[:space:]]*RewriteRule \^ (index\.html|wp/index\.php) \[QSA,L\]' "$incoming/.htaccess"; then

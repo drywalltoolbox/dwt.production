@@ -40,6 +40,11 @@ if ( ! class_exists( 'DTB_MarketplaceEventService' ) ) {
 			return hash( 'sha256', sanitize_key( $channel_key ) . "\0" . $external_order_id );
 		}
 
+		/** Return the connection-owned MySQL mutex shared by materialization and its queued consumers. */
+		public static function materialization_lock_name( string $channel_key, string $external_order_id ): string {
+			return 'dtb_mp_' . substr( self::materialization_identity_hash( $channel_key, $external_order_id ), 0, 48 );
+		}
+
 		/** Fail closed unless the physical reservation arbiter is present and unique. */
 		private static function materialization_reservation_index_ready(): bool {
 			global $wpdb;

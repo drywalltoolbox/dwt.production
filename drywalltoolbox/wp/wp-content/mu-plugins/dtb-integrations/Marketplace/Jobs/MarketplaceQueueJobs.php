@@ -46,12 +46,12 @@ add_action( 'dtb_amazon_order_sync_single', static function ( string $amazon_ord
 
 // ── eBay Order Sync ───────────────────────────────────────────────────────────
 
-add_action( 'dtb_ebay_order_sync', static function (): void {
+add_action( 'dtb_ebay_order_sync', static function ( string $modified_after = '', string $modified_before = '', int $offset = 0, int $imported = 0, int $updated = 0, int $errors = 0 ): void {
 	if ( ! class_exists( 'DTB_EbayFulfillmentService' ) ) {
 		return;
 	}
-	DTB_EbayFulfillmentService::sync();
-} );
+	DTB_EbayFulfillmentService::sync( $modified_after, $modified_before, $offset, $imported, $updated, $errors );
+}, 10, 6 );
 
 add_action( 'dtb_ebay_order_sync_single', static function ( string $order_id ): void {
 	if ( ! class_exists( 'DTB_EbayFulfillmentService' ) || '' === $order_id ) {

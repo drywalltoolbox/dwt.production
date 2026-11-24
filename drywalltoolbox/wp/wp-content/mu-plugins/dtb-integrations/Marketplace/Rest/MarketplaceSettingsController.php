@@ -79,8 +79,8 @@ if ( ! class_exists( 'DTB_MarketplaceSettingsController' ) ) {
 		 */
 		public static function save_settings( WP_REST_Request $request ): WP_REST_Response {
 			$channel = sanitize_key( $request->get_param( 'channel' ) ?? '' );
-			if ( '' === $channel ) {
-				return new WP_REST_Response( [ 'ok' => false, 'error' => 'channel is required.' ], 400 );
+			if ( ! in_array( $channel, [ DTB_CHANNEL_AMAZON, DTB_CHANNEL_EBAY ], true ) ) {
+				return new WP_REST_Response( [ 'ok' => false, 'error' => 'A supported marketplace channel is required.' ], 400 );
 			}
 
 			// Collect credential fields submitted — only store non-empty values.
@@ -93,28 +93,60 @@ if ( ! class_exists( 'DTB_MarketplaceSettingsController' ) ) {
 			$to_save = [];
 			foreach ( $fields as $f ) {
 				$val = $request->get_param( $f );
-				if ( null !== $val && '' !== (string) $val ) {
-					$to_save[ $f ] = sanitize_text_field( (string) $val );
+				if ( null === $val || '' === $val ) {
+					continue;
 				}
+				if ( ! is_scalar( $val ) ) {
+					return new WP_REST_Response( [ 'ok' => false, 'error' => 'Credential fields must be scalar values.' ], 400 );
+				}
+				$limits = [
+					'client_id'            => 256,
+					'client_secret'        => 1024,
+					'refresh_token'        => 8192,
+					'marketplace_id'       => 80,
+					'seller_id'            => 120,
+					'notification_endpoint'=> 2048,
+					'redirect_uri'         => 120,
+					'deletion_verify_token'=> 512,
+				];
+				$value = (string) $val;
+				if ( strlen( $value ) > ( $limits[ $f ] ?? 1024 ) ) {
+					return new WP_REST_Response( [ 'ok' => false, 'error' => 'A credential field exceeds its allowed length.' ], 400 );
+				}
+				$to_save[ $f ] = sanitize_text_field( $value );
 			}
 
 			// Also store sandbox/enable flags in channel row.
 			$channel_updates = [];
-			if ( null !== $request->get_param( 'is_sandbox' ) ) {
-				$channel_updates['is_sandbox'] = (int) (bool) $request->get_param( 'is_sandbox' );
-			}
-			if ( null !== $request->get_param( 'is_enabled' ) ) {
-				$channel_updates['is_enabled'] = (int) (bool) $request->get_param( 'is_enabled' );
+			foreach ( [ 'is_sandbox', 'is_enabled' ] as $flag ) {
+				$value = $request->get_param( $flag );
+				if ( null === $value ) {
+					continue;
+				}
+				if ( ! in_array( $value, [ true, false, 0, 1, '0', '1' ], true ) ) {
+					return new WP_REST_Response( [ 'ok' => false, 'error' => 'Marketplace flags must be boolean values.' ], 400 );
+				}
+				$channel_updates[ $flag ] = (int) filter_var( $value, FILTER_VALIDATE_BOOLEAN );
 			}
 			if ( null !== $request->get_param( 'account_label' ) ) {
-				$channel_updates['account_label'] = sanitize_text_field( $request->get_param( 'account_label' ) );
+				$value = $request->get_param( 'account_label' );
+				if ( ! is_string( $value ) || strlen( $value ) > 120 ) {
+					return new WP_REST_Response( [ 'ok' => false, 'error' => 'Account label must be a string of at most 120 bytes.' ], 400 );
+				}
+				$channel_updates['account_label'] = sanitize_text_field( $value );
 			}
 			if ( null !== $request->get_param( 'veeqo_channel_id' ) ) {
-				$channel_updates['veeqo_channel_id'] = sanitize_text_field( $request->get_param( 'veeqo_channel_id' ) );
+				$value = $request->get_param( 'veeqo_channel_id' );
+				if ( ! is_string( $value ) || strlen( $value ) > 80 ) {
+					return new WP_REST_Response( [ 'ok' => false, 'error' => 'Veeqo channel ID must be a string of at most 80 bytes.' ], 400 );
+				}
+				$channel_updates['veeqo_channel_id'] = sanitize_text_field( $value );
 			}
 
 			if ( ! empty( $to_save ) ) {
-				DTB_MarketplaceCredentialFacade::store( $channel, $to_save );
+				if ( ! DTB_MarketplaceCredentialFacade::store( $channel, $to_save ) ) {
+					return new WP_REST_Response( [ 'ok' => false, 'error' => 'Credential encryption or persistence failed.' ], 500 );
+				}
 
 				// Flush config cache.
 				if ( DTB_CHANNEL_AMAZON === $channel ) {

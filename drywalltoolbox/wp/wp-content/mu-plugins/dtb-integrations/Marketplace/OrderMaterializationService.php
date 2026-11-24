@@ -211,12 +211,23 @@ if ( ! class_exists( 'DTB_MarketplaceOrderMaterializationService' ) ) {
 			} catch ( Throwable $e ) {
 				if ( isset( $order ) && $order instanceof WC_Order && $order->get_id() > 0 ) {
 					try {
+						$current_order = wc_get_order( (int) $order->get_id() );
+						if ( $current_order instanceof WC_Order ) {
+							$order = $current_order;
+						}
 						$structural_state = sanitize_key( (string) $order->get_meta( '_dtb_marketplace_materialization_state', true ) );
+						$orchestration_state = sanitize_key( (string) $order->get_meta( '_dtb_marketplace_orchestration_state', true ) );
 						if ( 'complete' !== $structural_state ) {
 							$order->update_meta_data( '_dtb_marketplace_materialization_state', 'failed' );
 						}
-						$order->update_meta_data( '_dtb_marketplace_orchestration_state', 'recovery_required' );
-						$order->update_meta_data( '_dtb_marketplace_materialization_error_code', 'materialization_exception' );
+						if ( 'complete' !== $orchestration_state ) {
+							$order->update_meta_data( '_dtb_marketplace_orchestration_state', 'recovery_required' );
+							$order->update_meta_data( '_dtb_marketplace_materialization_error_code', 'materialization_exception' );
+						} else {
+							// A retry failure cannot downgrade verified structural completion.
+							// Queue/recovery receipts retain the separate dispatch failure evidence.
+							$order->update_meta_data( '_dtb_marketplace_dispatch_error_code', 'reconciliation_exception' );
+						}
 						$order->save();
 					} catch ( Throwable $recovery_error ) {
 						// Keep the original failure primary; recovery persistence is best-effort.
@@ -532,13 +543,25 @@ if ( ! class_exists( 'DTB_MarketplaceOrderMaterializationService' ) ) {
 				throw new RuntimeException( 'WooCommerce materialization readback does not match the reserved marketplace order.' );
 			}
 
-			// Keep generic email, stock and provider side effects contained until the
-			// exact marketplace-owned queue receipts and completion event are durable.
-			$order->update_meta_data( '_dtb_marketplace_orchestration_state', 'dispatch_pending' );
-			$order->save();
-			$order = wc_get_order( $order_id );
-			if ( ! $order instanceof WC_Order || 'dispatch_pending' !== (string) $order->get_meta( '_dtb_marketplace_orchestration_state', true ) ) {
-				throw new RuntimeException( 'Marketplace dispatch-pending state readback failed.' );
+			// Keep a completed orchestration state monotonic across reconciliations.
+			// The shared identity mutex prevents workers from racing this transition.
+			$orchestration_state = sanitize_key( (string) $order->get_meta( '_dtb_marketplace_orchestration_state', true ) );
+			if ( 'recovery_required' === $orchestration_state ) {
+				throw new RuntimeException( 'Marketplace order requires audited operator recovery; automatic reconciliation is blocked.' );
+			}
+			if ( 'complete' === $orchestration_state ) {
+				$prior_hash = (string) $order->get_meta( '_dtb_marketplace_identity_hash', true );
+				$prior_key  = 'marketplace-materialization-complete:v2:' . $prior_hash;
+				if ( '' === $prior_hash || ! DTB_MarketplaceEventService::idempotent_event_matches( $prior_key, DTB_MarketplaceEventService::EVT_MATERIALIZATION_COMPLETED, $channel_key, $marketplace_row_id, $order_id ) ) {
+					throw new RuntimeException( 'Completed marketplace order is missing its exact durable completion event; operator recovery is required.' );
+				}
+			} elseif ( 'dispatch_pending' !== $orchestration_state ) {
+				$order->update_meta_data( '_dtb_marketplace_orchestration_state', 'dispatch_pending' );
+				$order->save();
+				$order = wc_get_order( $order_id );
+				if ( ! $order instanceof WC_Order || 'dispatch_pending' !== (string) $order->get_meta( '_dtb_marketplace_orchestration_state', true ) ) {
+					throw new RuntimeException( 'Marketplace dispatch-pending state readback failed.' );
+				}
 			}
 
 			if ( ! self::link_marketplace_order( $channel_key, $external_id, $marketplace_row_id, $order_id ) ) {
@@ -600,12 +623,14 @@ if ( ! class_exists( 'DTB_MarketplaceOrderMaterializationService' ) ) {
 			if ( ! $order instanceof WC_Order ) {
 				throw new RuntimeException( 'Marketplace Woo order disappeared before final completion.' );
 			}
-			if ( 'dispatch_pending' !== sanitize_key( (string) $order->get_meta( '_dtb_marketplace_orchestration_state', true ) ) ) {
-				throw new RuntimeException( 'Marketplace orchestration left dispatch_pending before completion; recovery state is preserved.' );
+			$final_state = sanitize_key( (string) $order->get_meta( '_dtb_marketplace_orchestration_state', true ) );
+			if ( 'dispatch_pending' === $final_state ) {
+				$order->update_meta_data( '_dtb_marketplace_orchestration_state', 'complete' );
+				$order->delete_meta_data( '_dtb_marketplace_materialization_error_code' );
+				$order->save();
+			} elseif ( 'complete' !== $final_state ) {
+				throw new RuntimeException( 'Marketplace orchestration left its expected state before completion; recovery state is preserved.' );
 			}
-			$order->update_meta_data( '_dtb_marketplace_orchestration_state', 'complete' );
-			$order->delete_meta_data( '_dtb_marketplace_materialization_error_code' );
-			$order->save();
 
 			$readback = wc_get_order( $order_id );
 			if ( ! $readback instanceof WC_Order
@@ -775,7 +800,7 @@ if ( ! class_exists( 'DTB_MarketplaceOrderMaterializationService' ) ) {
 		}
 
 		private static function lock_key( string $channel_key, string $external_id ): string {
-			return 'dtb_mp_' . substr( hash( 'sha256', sanitize_key( $channel_key ) . "\0" . $external_id ), 0, 48 );
+			return DTB_MarketplaceEventService::materialization_lock_name( $channel_key, $external_id );
 		}
 
 		private static function acquire_lock( string $lock_key ): bool {
