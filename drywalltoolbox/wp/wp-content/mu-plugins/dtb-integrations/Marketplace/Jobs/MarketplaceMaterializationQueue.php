@@ -29,26 +29,39 @@ if ( ! defined( 'DTB_MARKETPLACE_MATERIALIZATION_BATCH_LIMIT' ) ) {
 if ( ! function_exists( 'dtb_marketplace_materialization_enabled' ) ) {
 	/** Return whether marketplace read models may be converted into Woo orders. */
 	function dtb_marketplace_materialization_enabled(): bool {
-		return filter_var( DTB_MARKETPLACE_MATERIALIZATION_ENABLED, FILTER_VALIDATE_BOOLEAN );
+		$marketplace_enabled = filter_var( DTB_MARKETPLACE_MATERIALIZATION_ENABLED, FILTER_VALIDATE_BOOLEAN );
+		$boundary_disabled   = defined( 'DTB_ORDER_WRITE_BOUNDARY_DISABLE_MARKETPLACE_MATERIALIZATION' )
+			&& filter_var( DTB_ORDER_WRITE_BOUNDARY_DISABLE_MARKETPLACE_MATERIALIZATION, FILTER_VALIDATE_BOOLEAN );
+		return $marketplace_enabled && ! $boundary_disabled;
 	}
 }
 
 add_action( 'dtb_marketplace_materialize_unlinked', 'dtb_marketplace_materialize_unlinked_orders' );
-add_action( 'dtb_marketplace_reconcile', 'dtb_marketplace_materialize_unlinked_orders', 20 );
-add_action( 'wp', 'dtb_marketplace_schedule_materialization_jobs' );
+add_action( 'action_scheduler_init', 'dtb_marketplace_schedule_materialization_jobs' );
 
 if ( ! function_exists( 'dtb_marketplace_schedule_materialization_jobs' ) ) {
 	/** Schedule recurring materialization retry job only when explicit side effects are enabled. */
 	function dtb_marketplace_schedule_materialization_jobs(): void {
+		// Remove the legacy WP-Cron producer unconditionally. Materialization work
+		// has one asynchronous owner: Action Scheduler.
+		if ( function_exists( 'wp_clear_scheduled_hook' ) ) {
+			wp_clear_scheduled_hook( 'dtb_marketplace_materialize_unlinked' );
+		}
 		if ( ! dtb_marketplace_materialization_enabled() ) {
-			if ( function_exists( 'wp_clear_scheduled_hook' ) ) {
-				wp_clear_scheduled_hook( 'dtb_marketplace_materialize_unlinked' );
+			if ( function_exists( 'as_unschedule_all_actions' ) ) {
+				as_unschedule_all_actions( 'dtb_marketplace_materialize_unlinked', [], 'dtb-marketplace' );
 			}
 			return;
 		}
 
-		if ( ! wp_next_scheduled( 'dtb_marketplace_materialize_unlinked' ) ) {
-			wp_schedule_event( time() + 300, 'hourly', 'dtb_marketplace_materialize_unlinked' );
+		if ( ! function_exists( 'as_has_scheduled_action' ) || ! function_exists( 'as_schedule_recurring_action' ) ) {
+			if ( function_exists( 'wc_get_logger' ) ) {
+				wc_get_logger()->error( 'Marketplace materialization is enabled but Action Scheduler is unavailable.', [ 'source' => 'dtb-marketplace-materialization' ] );
+			}
+			return;
+		}
+		if ( ! as_has_scheduled_action( 'dtb_marketplace_materialize_unlinked', [], 'dtb-marketplace' ) ) {
+			as_schedule_recurring_action( time() + 300, HOUR_IN_SECONDS, 'dtb_marketplace_materialize_unlinked', [], 'dtb-marketplace', true );
 		}
 	}
 }

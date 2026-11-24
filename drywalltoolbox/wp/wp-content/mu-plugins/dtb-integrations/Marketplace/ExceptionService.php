@@ -22,6 +22,7 @@ if ( ! class_exists( 'DTB_MarketplaceExceptionService' ) ) {
 		const CAT_ORDER_LINKING       = 'order_linking';
 		const CAT_VEEQO_MISMATCH      = 'veeqo_mismatch';
 		const CAT_MESSAGE_SEND        = 'message_send';
+		const CAT_MESSAGE_RECEIVE     = 'message_receive';
 		const CAT_UNSUPPORTED_ACTION  = 'unsupported_action';
 		const CAT_RATE_LIMIT          = 'rate_limit';
 		const CAT_WEBHOOK_VERIFY      = 'webhook_verify';
@@ -53,8 +54,10 @@ if ( ! class_exists( 'DTB_MarketplaceExceptionService' ) ) {
 			$rec_type   = sanitize_text_field( $options['linked_record_type'] ?? '' );
 			$rec_id     = (int) ( $options['linked_record_id'] ?? 0 );
 			$retryable  = isset( $options['is_retryable'] ) ? (int) (bool) $options['is_retryable'] : 1;
-			$context    = wp_json_encode( $options['context'] ?? [] );
-			$now        = current_time( 'mysql', true );
+			$context_data      = is_array( $options['context'] ?? null ) ? $options['context'] : [];
+			$context           = wp_json_encode( $context_data );
+			$now               = current_time( 'mysql', true );
+			$external_order_id = sanitize_text_field( (string) ( $context_data['external_order_id'] ?? '' ) );
 
 			// Idempotency: find open exception of same category+channel+record within 15 min.
 			if ( $rec_id ) {
@@ -70,6 +73,21 @@ if ( ! class_exists( 'DTB_MarketplaceExceptionService' ) ) {
 					$rec_type,
 					$rec_id,
 					gmdate( 'Y-m-d H:i:s', time() - 900 )
+				) );
+				if ( $existing ) {
+					return (int) $existing;
+				}
+			} elseif ( self::CAT_ORDER_IMPORT === $category && DTB_CHANNEL_EBAY === $channel_key && '' !== $external_order_id ) {
+				$stable_context = wp_json_encode( [ 'external_order_id' => $external_order_id ] );
+				// Keep a single open retry record per exact eBay order identity.
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$existing = $wpdb->get_var( $wpdb->prepare(
+					"SELECT id FROM {$table}
+					 WHERE category = %s AND channel_key = %s AND context_json = %s
+					   AND resolution_state = 'open' LIMIT 1",
+					self::CAT_ORDER_IMPORT,
+					DTB_CHANNEL_EBAY,
+					$stable_context
 				) );
 				if ( $existing ) {
 					return (int) $existing;
@@ -142,6 +160,30 @@ if ( ! class_exists( 'DTB_MarketplaceExceptionService' ) ) {
 			$wpdb->query( $wpdb->prepare(
 				"UPDATE {$table} SET retry_count = retry_count + 1, next_retry_at = %s, updated_at = %s WHERE id = %d",
 				$next, $now, $exception_id
+			) );
+		}
+
+		/** Resolve open eBay import exceptions for one exact external order identity. */
+		public static function resolve_ebay_order_import( string $external_order_id ): void {
+			global $wpdb;
+			$external_order_id = sanitize_text_field( $external_order_id );
+			if ( '' === $external_order_id ) {
+				return;
+			}
+
+			$table   = $wpdb->prefix . 'dtb_marketplace_exceptions';
+			$context = wp_json_encode( [ 'external_order_id' => $external_order_id ] );
+			$now     = current_time( 'mysql', true );
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$wpdb->query( $wpdb->prepare(
+				"UPDATE {$table}
+				 SET resolution_state = 'resolved', resolved_at = %s, resolved_by = 0, updated_at = %s
+				 WHERE category = %s AND channel_key = %s AND context_json = %s AND resolution_state = 'open'",
+				$now,
+				$now,
+				self::CAT_ORDER_IMPORT,
+				DTB_CHANNEL_EBAY,
+				$context
 			) );
 		}
 

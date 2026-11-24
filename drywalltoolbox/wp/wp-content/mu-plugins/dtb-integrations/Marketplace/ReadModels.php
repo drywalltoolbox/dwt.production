@@ -240,7 +240,18 @@ if ( ! class_exists( 'DTB_MarketplaceReadModels' ) ) {
 			], $data );
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->insert( $table, $data );
-			return (int) $wpdb->insert_id;
+			if ( $wpdb->insert_id > 0 ) {
+				return (int) $wpdb->insert_id;
+			}
+
+			// Another request may have inserted the same provider conversation
+			// between the initial lookup and insert. Resolve that unique-key race.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			return (int) $wpdb->get_var( $wpdb->prepare(
+				"SELECT id FROM {$table} WHERE channel_key = %s AND external_conversation_id = %s LIMIT 1",
+				sanitize_key( $channel_key ),
+				sanitize_text_field( $external_conversation_id )
+			) );
 		}
 
 		/**
@@ -281,6 +292,47 @@ if ( ! class_exists( 'DTB_MarketplaceReadModels' ) ) {
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 			$wpdb->insert( $table, $data );
 			return (int) $wpdb->insert_id;
+		}
+
+		/**
+		 * Insert a provider message once under a database-scoped lock.
+		 * Stable provider message IDs are unique within a conversation.
+		 *
+		 * @param array $data Normalized message row.
+		 * @return int Existing or inserted row ID; 0 when the lock/insert fails.
+		 */
+		public static function insert_message_once( array $data ): int {
+			global $wpdb;
+			$conversation_id = (int) ( $data['conversation_id'] ?? 0 );
+			$message_id      = sanitize_text_field( (string) ( $data['external_message_id'] ?? '' ) );
+			if ( $conversation_id < 1 || '' === $message_id ) {
+				return 0;
+			}
+
+			$table     = $wpdb->prefix . 'dtb_marketplace_messages';
+			$lock_name = 'dtb_msg_' . substr( hash( 'sha256', $conversation_id . ':' . $message_id ), 0, 56 );
+			// Named locks serialize concurrent webhook retries without rewriting
+			// historical rows or requiring a destructive uniqueness migration.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			if ( 1 !== (int) $wpdb->get_var( $wpdb->prepare( 'SELECT GET_LOCK(%s, 5)', $lock_name ) ) ) {
+				return 0;
+			}
+
+			try {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$existing = (int) $wpdb->get_var( $wpdb->prepare(
+					"SELECT id FROM {$table} WHERE conversation_id = %d AND external_message_id = %s LIMIT 1",
+					$conversation_id,
+					$message_id
+				) );
+				if ( $existing > 0 ) {
+					return $existing;
+				}
+				return self::insert_message( $data );
+			} finally {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+				$wpdb->get_var( $wpdb->prepare( 'SELECT RELEASE_LOCK(%s)', $lock_name ) );
+			}
 		}
 
 		/**

@@ -67,6 +67,31 @@ if ( ! class_exists( 'DTB_MarketplaceMessageNormalizer' ) ) {
 		}
 
 		/**
+		 * Normalize a signed eBay NEW_MESSAGE notification for the authenticated
+		 * account. eBay sends this notification when the account receives a
+		 * message, so direction is inbound without persisting party identifiers.
+		 *
+		 * @param array $raw     Verified notification data.
+		 * @param int   $conv_id Internal conversation ID.
+		 * @return array
+		 */
+		public static function from_ebay_notification( array $raw, int $conv_id ): array {
+			$body = (string) ( $raw['messageBody'] ?? '' );
+			return [
+				'conversation_id'      => $conv_id,
+				'external_message_id'  => sanitize_text_field( (string) ( $raw['messageId'] ?? '' ) ),
+				'direction'            => 'inbound',
+				'sender_type'          => 'FROM_EBAY' === strtoupper( (string) ( $raw['conversationType'] ?? '' ) ) ? 'ebay' : 'buyer',
+				'body_preview'         => '[eBay message received]',
+				'body_encrypted'       => self::encrypt_body( $body ),
+				'attachment_meta_json' => self::encode_ebay_media( $raw['messageMedia'] ?? [] ),
+				'message_status'       => 'received',
+				'platform_action'      => '',
+				'created_at'           => self::parse_dt( (string) ( $raw['createdDate'] ?? '' ) ),
+			];
+		}
+
+		/**
 		 * Build a draft outbound message record.
 		 *
 		 * @param int    $conv_id         Internal conversation_id.
@@ -139,6 +164,21 @@ if ( ! class_exists( 'DTB_MarketplaceMessageNormalizer' ) ) {
 			return wp_json_encode( $safe );
 		}
 
+		/** Encode only non-sensitive eBay media metadata; never persist media URLs. */
+		private static function encode_ebay_media( mixed $media ): ?string {
+			if ( ! is_array( $media ) || empty( $media ) ) {
+				return null;
+			}
+			$safe = [];
+			foreach ( array_slice( $media, 0, 5 ) as $item ) {
+				if ( ! is_array( $item ) ) {
+					continue;
+				}
+				$safe[] = [ 'type' => sanitize_text_field( (string) ( $item['mediaType'] ?? '' ) ) ];
+			}
+			return $safe ? wp_json_encode( $safe ) : null;
+		}
+
 		private static function parse_dt( string $value ): string {
 			if ( '' === $value ) {
 				return current_time( 'mysql', true );
@@ -146,5 +186,6 @@ if ( ! class_exists( 'DTB_MarketplaceMessageNormalizer' ) ) {
 			$ts = strtotime( $value );
 			return $ts ? gmdate( 'Y-m-d H:i:s', $ts ) : current_time( 'mysql', true );
 		}
+
 	}
 }

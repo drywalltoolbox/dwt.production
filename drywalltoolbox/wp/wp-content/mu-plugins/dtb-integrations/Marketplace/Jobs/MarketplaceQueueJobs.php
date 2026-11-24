@@ -8,8 +8,8 @@
  * Job hooks registered:
  *   dtb_amazon_order_sync            — full Amazon order sync
  *   dtb_amazon_order_sync_single     — single-order re-sync (from notification)
- *   dtb_ebay_order_sync              — full eBay order sync
- *   dtb_ebay_message_sync            — eBay message sync for open conversations
+ *   dtb_ebay_order_sync              — full eBay order reconciliation poll
+ *   dtb_ebay_order_sync_single       — fetch one order from a verified eBay notification
  *   dtb_amazon_message_send          — execute Amazon outbound message (dequeued from table)
  *   dtb_ebay_message_send            — execute eBay outbound reply
  *   dtb_marketplace_health_refresh   — refresh channel health states
@@ -53,21 +53,27 @@ add_action( 'dtb_ebay_order_sync', static function (): void {
 	DTB_EbayFulfillmentService::sync();
 } );
 
-// ── eBay Message Sync ─────────────────────────────────────────────────────────
-
-add_action( 'dtb_ebay_message_sync', static function (): void {
-	if ( ! class_exists( 'DTB_EbayMessageService' ) || ! class_exists( 'DTB_MarketplaceReadModels' ) ) {
+add_action( 'dtb_ebay_order_sync_single', static function ( string $order_id ): void {
+	if ( ! class_exists( 'DTB_EbayFulfillmentService' ) || '' === $order_id ) {
 		return;
 	}
 
-	// Process open eBay conversations that may have new messages.
-	$result = DTB_MarketplaceReadModels::conversations( [ 'channel_key' => DTB_CHANNEL_EBAY, 'status' => 'open' ], 1, 50 );
-	foreach ( $result['items'] as $conv ) {
-		DTB_EbayMessageService::sync_messages(
-			(string) $conv['external_item_id'],
-			'', // buyer username not stored in conversation; in production this would be retrieved from conv record
-			(int) $conv['id']
+	try {
+		$result = DTB_EbayFulfillmentService::sync_order_by_id( $order_id );
+	} catch ( \Throwable $error ) {
+		error_log( '[DTB][eBay][Notification] Single-order sync failed for order ' . sanitize_text_field( $order_id ) );
+		$result = [ 'ok' => false, 'error' => 'Unexpected error while syncing the eBay order notification.' ];
+	}
+	if ( empty( $result['ok'] ) ) {
+		DTB_MarketplaceExceptionService::create(
+			DTB_MarketplaceExceptionService::CAT_ORDER_IMPORT,
+			DTB_CHANNEL_EBAY,
+			'ebay_notification_order_sync_failed',
+			(string) ( $result['error'] ?? 'eBay notification order sync failed.' ),
+			[ 'is_retryable' => true, 'context' => [ 'external_order_id' => sanitize_text_field( $order_id ) ] ]
 		);
+	} elseif ( method_exists( 'DTB_MarketplaceExceptionService', 'resolve_ebay_order_import' ) ) {
+		DTB_MarketplaceExceptionService::resolve_ebay_order_import( $order_id );
 	}
 } );
 
@@ -83,19 +89,17 @@ add_action( 'dtb_amazon_message_send', static function ( array $args ): void {
 
 // ── eBay Message Send ─────────────────────────────────────────────────────────
 
-add_action( 'dtb_ebay_message_send', static function ( array $args ): void {
+add_action( 'dtb_ebay_message_send', static function ( mixed $message_id ): void {
+	// Older queued jobs can still contain the former argument array. During the
+	// transition accept that array and keep only its internal message identity.
+	if ( is_array( $message_id ) ) {
+		$message_id = (int) ( $message_id[0] ?? 0 );
+	}
+	$message_id = (int) $message_id;
 	if ( ! class_exists( 'DTB_EbayMessageService' ) ) {
 		return;
 	}
-	[ $message_id, $buyer_username, $item_id, $order_id, $body, $idempotency_key ] = array_pad( $args, 6, '' );
-	DTB_EbayMessageService::execute_reply(
-		(int) $message_id,
-		(string) $buyer_username,
-		(string) $item_id,
-		(string) $order_id,
-		(string) $body,
-		(string) $idempotency_key
-	);
+	DTB_EbayMessageService::execute_reply( $message_id );
 } );
 
 // ── Health Refresh ────────────────────────────────────────────────────────────
@@ -154,7 +158,11 @@ add_action( 'dtb_marketplace_exception_retry', static function (): void {
 	), ARRAY_A ) ?? [];
 
 	foreach ( $retryable as $exc ) {
-		DTB_MarketplaceExceptionService::mark_retry_scheduled( (int) $exc['id'], 300 * ( (int) $exc['retry_count'] + 1 ) );
+		$context = json_decode( (string) ( $exc['context_json'] ?? '' ), true );
+		$external_order_id = is_array( $context )
+			? sanitize_text_field( (string) ( $context['external_order_id'] ?? '' ) )
+			: '';
+		$scheduled = false;
 
 		// Re-trigger appropriate sync for known categories.
 		$hook = match ( $exc['category'] ) {
@@ -164,12 +172,35 @@ add_action( 'dtb_marketplace_exception_retry', static function (): void {
 			default           => null,
 		};
 
-		if ( $hook ) {
+		if ( 'order_import' === $exc['category'] && DTB_CHANNEL_EBAY === $exc['channel_key'] && '' !== $external_order_id ) {
+			$args = [ $external_order_id ];
 			if ( function_exists( 'as_schedule_single_action' ) ) {
-				as_schedule_single_action( time() + 60, $hook, [], 'dtb-marketplace' );
+				$already_scheduled = function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( 'dtb_ebay_order_sync_single', $args, 'dtb-marketplace' );
+				$action_id        = $already_scheduled ? 1 : as_schedule_single_action( time() + 60, 'dtb_ebay_order_sync_single', $args, 'dtb-marketplace', true );
+				$scheduled        = (int) $action_id > 0 || ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( 'dtb_ebay_order_sync_single', $args, 'dtb-marketplace' ) );
 			} else {
-				wp_schedule_single_event( time() + 60, $hook );
+				$event_result = wp_schedule_single_event( time() + 60, 'dtb_ebay_order_sync_single', $args );
+				$scheduled    = ! is_wp_error( $event_result ) && (bool) $event_result;
+				if ( false === $scheduled && wp_next_scheduled( 'dtb_ebay_order_sync_single', $args ) ) {
+					$scheduled = true;
+				}
 			}
+		} elseif ( $hook ) {
+			if ( function_exists( 'as_schedule_single_action' ) ) {
+				$already_scheduled = function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( $hook, [], 'dtb-marketplace' );
+				$action_id        = $already_scheduled ? 1 : as_schedule_single_action( time() + 60, $hook, [], 'dtb-marketplace', true );
+				$scheduled        = (int) $action_id > 0 || ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( $hook, [], 'dtb-marketplace' ) );
+			} else {
+				$event_result = wp_schedule_single_event( time() + 60, $hook );
+				$scheduled    = ! is_wp_error( $event_result ) && (bool) $event_result;
+				if ( false === $scheduled && wp_next_scheduled( $hook ) ) {
+					$scheduled = true;
+				}
+			}
+		}
+
+		if ( $scheduled ) {
+			DTB_MarketplaceExceptionService::mark_retry_scheduled( (int) $exc['id'], 300 * ( (int) $exc['retry_count'] + 1 ) );
 		}
 	}
 } );
@@ -220,12 +251,21 @@ add_action( 'dtb_marketplace_tracking_sync', static function (): void {
 // ── Scheduled Registration ────────────────────────────────────────────────────
 
 add_action( 'wp', 'dtb_marketplace_schedule_recurring_jobs' );
+add_action( 'init', 'dtb_marketplace_clear_legacy_message_cron', 0 );
+
+/** Remove the obsolete inquiry poller once, including REST/admin-only traffic. */
+function dtb_marketplace_clear_legacy_message_cron(): void {
+	if ( '2' === (string) get_option( 'dtb_marketplace_legacy_message_cron_migration', '' ) ) {
+		return;
+	}
+	wp_clear_scheduled_hook( 'dtb_ebay_message_sync' );
+	update_option( 'dtb_marketplace_legacy_message_cron_migration', '2', false );
+}
 
 function dtb_marketplace_schedule_recurring_jobs(): void {
 	$schedules = [
 		[ 'hook' => 'dtb_amazon_order_sync',           'interval' => 'hourly' ],
 		[ 'hook' => 'dtb_ebay_order_sync',             'interval' => 'hourly' ],
-		[ 'hook' => 'dtb_ebay_message_sync',           'interval' => 'twicedaily' ],
 		[ 'hook' => 'dtb_marketplace_health_refresh',  'interval' => 'twicedaily' ],
 		[ 'hook' => 'dtb_marketplace_reconcile',       'interval' => 'daily' ],
 		[ 'hook' => 'dtb_marketplace_exception_retry', 'interval' => 'hourly' ],

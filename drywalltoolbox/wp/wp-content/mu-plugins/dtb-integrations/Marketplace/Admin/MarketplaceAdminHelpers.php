@@ -147,6 +147,7 @@ function dtb_marketplace_enqueue_assets( string $hook ): void {
 			'error'        => __( 'Error.', 'drywall-toolbox' ),
 			'sending'      => __( 'Sending…', 'drywall-toolbox' ),
 			'sent'         => __( 'Sent.', 'drywall-toolbox' ),
+			'queued'       => __( 'Reply queued.', 'drywall-toolbox' ),
 			'noActions'    => __( 'No supported message actions available for this order.', 'drywall-toolbox' ),
 			'confirmRetry' => __( 'Retry this exception?', 'drywall-toolbox' ),
 			'confirmResolve' => __( 'Mark exception as resolved?', 'drywall-toolbox' ),

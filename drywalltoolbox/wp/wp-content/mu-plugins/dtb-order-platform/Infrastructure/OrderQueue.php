@@ -14,6 +14,299 @@ if ( ! defined( 'DTB_ORDER_JOB_RETRY_BASE' ) ) {
 	define( 'DTB_ORDER_JOB_RETRY_BASE', 300 );
 }
 
+/** Recursively sort associative job arguments before hashing queue identity. */
+function dtb_order_queue_canonicalize_args( array $args ): array {
+	foreach ( $args as $key => $value ) {
+		if ( is_array( $value ) ) {
+			$args[ $key ] = dtb_order_queue_canonicalize_args( $value );
+		}
+	}
+	if ( ! array_is_list( $args ) ) {
+		ksort( $args, SORT_STRING );
+	}
+	return $args;
+}
+
+/** Build stable queue identity from the owning Woo order, hook and canonical arguments. */
+function dtb_order_queue_receipt_identity( string $job_type, int $order_id, array $args ): string {
+	$canonical = wp_json_encode( dtb_order_queue_canonicalize_args( $args ) );
+	return hash( 'sha256', $order_id . "\0" . $job_type . "\0" . ( is_string( $canonical ) ? $canonical : '' ) );
+}
+
+/** Find an exact Action Scheduler action, including terminal history. */
+function dtb_order_queue_find_exact_action( string $job_type, array $scheduled_args ): array {
+	if ( ! function_exists( 'as_get_scheduled_actions' ) ) {
+		return [ 'status' => 'missing', 'action_id' => 0 ];
+	}
+	$statuses = class_exists( 'ActionScheduler_Store' )
+		? [
+			ActionScheduler_Store::STATUS_PENDING,
+			ActionScheduler_Store::STATUS_RUNNING,
+			ActionScheduler_Store::STATUS_COMPLETE,
+			ActionScheduler_Store::STATUS_FAILED,
+			ActionScheduler_Store::STATUS_CANCELED,
+		]
+		: [ 'pending', 'in-progress', 'complete', 'failed', 'canceled' ];
+	foreach ( $statuses as $status ) {
+		$ids = as_get_scheduled_actions( [
+			'hook'     => $job_type,
+			'args'     => $scheduled_args,
+			'group'    => 'dtb-orders',
+			'status'   => $status,
+			'per_page' => 1,
+			'orderby'  => 'ID',
+			'order'    => 'DESC',
+		], 'ids' );
+		if ( is_array( $ids ) && ! empty( $ids ) ) {
+			return [ 'status' => (string) $status, 'action_id' => absint( reset( $ids ) ) ];
+		}
+	}
+	return [ 'status' => 'missing', 'action_id' => 0 ];
+}
+
+/** Verify that a durable receipt belongs to the exact queue identity and action. */
+function dtb_order_queue_receipt_matches( mixed $receipt, string $identity, array $allowed_statuses, ?int $action_id = null ): bool {
+	if ( ! is_array( $receipt )
+		|| ! hash_equals( $identity, (string) ( $receipt['identity'] ?? '' ) )
+		|| ! in_array( (string) ( $receipt['status'] ?? '' ), $allowed_statuses, true )
+	) {
+		return false;
+	}
+	return null === $action_id || $action_id === absint( $receipt['action_id'] ?? 0 );
+}
+
+/**
+ * Persist and return a structured Action Scheduler enqueue receipt.
+ *
+ * `outcome_unknown` deliberately blocks blind replay: it means an intent exists
+ * but neither a durable receipt nor an exact pending action can prove outcome.
+ *
+ * @param array $policy Optional explicit disposition (`not_applicable_reason`).
+ * @return array{status:string,identity:string,action_id:int,message:string}
+ */
+function dtb_order_enqueue_job_with_receipt( string $job_type, int $order_id, array $args = [], int $delay = 0, array $policy = [] ): array {
+	$identity = dtb_order_queue_receipt_identity( $job_type, $order_id, $args );
+	$result   = static fn( string $status, int $action_id = 0, string $message = '' ): array => [
+		'status'    => $status,
+		'identity'  => $identity,
+		'action_id' => $action_id,
+		'message'   => $message,
+	];
+	if ( '' === $job_type || $order_id <= 0 ) {
+		return $result( 'schedule_failed', 0, 'Invalid queue identity.' );
+	}
+
+	$intent_key  = 'dtb_order_job_intent_' . $identity;
+	$receipt_key = 'dtb_order_job_receipt_' . $identity;
+	$receipt     = get_option( $receipt_key, null );
+	if ( dtb_order_queue_receipt_matches( $receipt, $identity, [ 'scheduled', 'already_scheduled', 'already_completed', 'intentionally_not_applicable' ] ) ) {
+		if ( in_array( (string) $receipt['status'], [ 'scheduled', 'already_scheduled' ], true ) ) {
+			$stored_args = $args;
+			$stored_args['_dtb_receipt'] = $identity;
+			$history = dtb_order_queue_find_exact_action( $job_type, [ $order_id, $stored_args ] );
+			if ( in_array( $history['status'], class_exists( 'ActionScheduler_Store' ) ? [ ActionScheduler_Store::STATUS_FAILED, ActionScheduler_Store::STATUS_CANCELED ] : [ 'failed', 'canceled' ], true ) ) {
+				$receipt['status'] = 'blocked';
+				$receipt['failure_status'] = $history['status'];
+				update_option( $receipt_key, $receipt, false );
+				return $result( 'blocked', absint( $history['action_id'] ), 'Exact prior Action Scheduler job ended without success.' );
+			}
+		}
+		return $result( 'already_scheduled', absint( $receipt['action_id'] ?? 0 ), 'Durable queue receipt already exists.' );
+	}
+
+	$not_applicable_reason = sanitize_key( (string) ( $policy['not_applicable_reason'] ?? '' ) );
+	if ( '' !== $not_applicable_reason ) {
+		$allowed_dispositions = [
+			'dtb_order_sync_veeqo'      => [ 'payment_pending', 'veeqo_sync_disabled' ],
+			'dtb_order_sync_quickbooks' => [ 'payment_pending' ],
+		];
+		if ( ! in_array( $not_applicable_reason, $allowed_dispositions[ $job_type ] ?? [], true ) ) {
+			return $result( 'schedule_failed', 0, 'Queue disposition is not allowed by owning policy.' );
+		}
+		$receipt = [
+			'identity'   => $identity,
+			'status'     => 'intentionally_not_applicable',
+			'action_id'  => 0,
+			'reason'     => $not_applicable_reason,
+			'recorded_at'=> current_time( 'mysql', true ),
+		];
+		add_option( $receipt_key, $receipt, '', 'no' );
+		if ( ! dtb_order_queue_receipt_matches( get_option( $receipt_key, null ), $identity, [ 'intentionally_not_applicable' ], 0 ) ) {
+			return $result( 'outcome_unknown', 0, 'Could not prove the explicit queue disposition.' );
+		}
+		return $result( 'intentionally_not_applicable', 0, $not_applicable_reason );
+	}
+
+	if ( 'dtb_order_sync_veeqo' === $job_type && function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) {
+		return $result( 'blocked', 0, 'Veeqo order automation is paused.' );
+	}
+	if ( 'dtb_order_sync_veeqo' === $job_type && function_exists( 'dtb_order_veeqo_order_sync_enabled' ) && ! dtb_order_veeqo_order_sync_enabled() ) {
+		return $result( 'blocked', 0, 'Veeqo order creation is disabled by the active launch policy.' );
+	}
+	if ( 'dtb_order_sync_quickbooks' === $job_type && function_exists( 'dtb_qbo_exports_paused' ) && dtb_qbo_exports_paused() ) {
+		return $result( 'blocked', 0, 'QuickBooks export is paused.' );
+	}
+	$job_args                 = $args;
+	$job_args['_dtb_receipt'] = $identity;
+	if ( function_exists( 'dtb_order_write_boundary_should_block_job' ) && dtb_order_write_boundary_should_block_job( $job_type, $order_id, $job_args, true ) ) {
+		return $result( 'blocked', 0, 'Order write boundary rejected the queue job.' );
+	}
+	if ( ! function_exists( 'as_schedule_single_action' ) || ! function_exists( 'as_next_scheduled_action' ) ) {
+		return $result( 'schedule_failed', 0, 'Action Scheduler is unavailable.' );
+	}
+
+	$scheduled_args           = [ $order_id, $job_args ];
+	$existing                 = dtb_order_queue_find_exact_action( $job_type, $scheduled_args );
+	if ( 'missing' !== $existing['status'] ) {
+		$terminal_success = class_exists( 'ActionScheduler_Store' )
+			? ActionScheduler_Store::STATUS_COMPLETE === $existing['status']
+			: 'complete' === $existing['status'];
+		$terminal_failure = in_array( $existing['status'], class_exists( 'ActionScheduler_Store' )
+			? [ ActionScheduler_Store::STATUS_FAILED, ActionScheduler_Store::STATUS_CANCELED ]
+			: [ 'failed', 'canceled' ], true );
+		if ( $terminal_failure ) {
+			return $result( 'blocked', absint( $existing['action_id'] ), 'Exact prior Action Scheduler job ended without success.' );
+		}
+		$receipt = [
+			'identity'    => $identity,
+			'status'      => $terminal_success ? 'already_completed' : 'already_scheduled',
+			'action_id'   => absint( $existing['action_id'] ),
+			'recorded_at' => current_time( 'mysql', true ),
+		];
+		add_option( $receipt_key, $receipt, '', 'no' );
+		if ( ! dtb_order_queue_receipt_matches( get_option( $receipt_key, null ), $identity, [ $receipt['status'] ], absint( $existing['action_id'] ) ) ) {
+			return $result( 'outcome_unknown', absint( $existing['action_id'] ), 'Exact action exists but a durable receipt cannot be proven.' );
+		}
+		return $result( $terminal_success ? 'already_completed' : 'already_scheduled', absint( $existing['action_id'] ), 'Exact Action Scheduler job is reconciled.' );
+	}
+
+	$intent = [
+		'order_id'   => $order_id,
+		'job_type'   => $job_type,
+		'args_hash'  => hash( 'sha256', (string) wp_json_encode( dtb_order_queue_canonicalize_args( $args ) ) ),
+		'created_at' => current_time( 'mysql', true ),
+	];
+	if ( ! add_option( $intent_key, $intent, '', 'no' ) ) {
+		$existing = dtb_order_queue_find_exact_action( $job_type, $scheduled_args );
+		if ( 'missing' !== $existing['status'] ) {
+			$terminal_success = class_exists( 'ActionScheduler_Store' )
+				? ActionScheduler_Store::STATUS_COMPLETE === $existing['status']
+				: 'complete' === $existing['status'];
+			if ( $terminal_success ) {
+				$receipt = [ 'identity' => $identity, 'status' => 'already_completed', 'action_id' => absint( $existing['action_id'] ), 'recorded_at' => current_time( 'mysql', true ) ];
+				add_option( $receipt_key, $receipt, '', 'no' );
+				if ( dtb_order_queue_receipt_matches( get_option( $receipt_key, null ), $identity, [ 'already_completed' ], absint( $existing['action_id'] ) ) ) {
+					return $result( 'already_completed', absint( $existing['action_id'] ), 'Prior intent resolved to an exact completed action.' );
+				}
+			}
+			return $result( 'outcome_unknown', absint( $existing['action_id'] ), 'Prior intent resolves to an action without a durable successful receipt.' );
+		}
+		// A missing exact action cannot prove that no earlier side effect occurred.
+		// Only an audited operator recovery may authorize a replacement.
+		return $result( 'outcome_unknown', 0, 'Prior intent has no exact Action Scheduler record; operator recovery is required.' );
+	}
+
+	$action_id = (int) as_schedule_single_action( time() + max( 0, $delay ), $job_type, $scheduled_args, 'dtb-orders', true );
+	if ( $action_id <= 0 ) {
+		$existing = dtb_order_queue_find_exact_action( $job_type, $scheduled_args );
+		return 'missing' !== $existing['status']
+			? $result( 'outcome_unknown', absint( $existing['action_id'] ), 'Action exists but its durable receipt could not be recorded.' )
+			: $result( 'schedule_failed', 0, 'Action Scheduler rejected the job.' );
+	}
+
+	$receipt = [
+		'identity'    => $identity,
+		'status'      => 'scheduled',
+		'action_id'   => $action_id,
+		'scheduled_at'=> time() + max( 0, $delay ),
+		'recorded_at' => current_time( 'mysql', true ),
+	];
+	add_option( $receipt_key, $receipt, '', 'no' );
+	if ( ! dtb_order_queue_receipt_matches( get_option( $receipt_key, null ), $identity, [ 'scheduled' ], $action_id ) ) {
+		return $result( 'outcome_unknown', $action_id, 'Action was accepted but its durable receipt could not be recorded.' );
+	}
+
+	return $result( 'scheduled', $action_id, 'Action Scheduler accepted the job and the receipt is durable.' );
+}
+
+/** Append an immutable recovery marker for an accepted marketplace dispatch that cannot be safely deferred. */
+function dtb_order_marketplace_dispatch_mark_recovery( WC_Order $order, string $receipt_id, string $reason ): bool {
+	$identity_hash = (string) $order->get_meta( '_dtb_marketplace_identity_hash', true );
+	if ( ! preg_match( '/^[a-f0-9]{64}$/D', $identity_hash ) || ! preg_match( '/^[a-f0-9]{64}$/D', $receipt_id ) ) {
+		return false;
+	}
+	$key = 'marketplace-dispatch-recovery:v2:' . $identity_hash . ':' . $receipt_id;
+	$fallback_key = 'dtb_marketplace_dispatch_recovery_' . hash( 'sha256', (int) $order->get_id() . ':' . $receipt_id );
+	$fallback     = [ 'order_id' => (int) $order->get_id(), 'receipt_id' => $receipt_id, 'reason' => sanitize_key( $reason ) ];
+	add_option( $fallback_key, $fallback, '', 'no' );
+	if ( function_exists( 'dtb_order_append_event' ) && function_exists( 'dtb_order_event_idempotency_exists' ) ) {
+		dtb_order_append_event( (int) $order->get_id(), 'marketplace.dispatch.recovery_required', [
+			'source' => 'action_scheduler', 'actor_type' => 'system', 'visibility' => 'operator',
+			'idempotency_key' => $key, 'payload' => [ 'reason' => sanitize_key( $reason ), 'receipt_id' => $receipt_id ],
+		] );
+	}
+	$stored_fallback = get_option( $fallback_key, null );
+	return ( function_exists( 'dtb_order_event_idempotency_exists' ) && dtb_order_event_idempotency_exists( $key ) )
+		|| ( is_array( $stored_fallback ) && (int) ( $stored_fallback['order_id'] ?? 0 ) === (int) $order->get_id() && hash_equals( $receipt_id, (string) ( $stored_fallback['receipt_id'] ?? '' ) ) );
+}
+
+/** Authorize marketplace dispatch only after its exact durable receipt and completion marker exist. */
+function dtb_order_marketplace_dispatch_execution_ready( $order, string $job_type, array $args ): bool {
+	if ( ! $order instanceof WC_Order || '2' !== (string) $order->get_meta( '_dtb_marketplace_materialization_contract', true ) ) {
+		return true;
+	}
+	$receipt_id = (string) ( $args['_dtb_receipt'] ?? '' );
+	$retry      = max( 0, absint( $args['_dtb_dispatch_retry'] ?? 0 ) );
+	$base_args  = $args;
+	unset( $base_args['_dtb_receipt'], $base_args['_dtb_dispatch_retry'], $base_args['attempt'] );
+	$identity = dtb_order_queue_receipt_identity( $job_type, (int) $order->get_id(), $base_args );
+	if ( 'marketplace_materialization' !== sanitize_key( (string) ( $args['trigger'] ?? '' ) )
+		|| ! preg_match( '/^[a-f0-9]{64}$/D', $receipt_id )
+		|| ! hash_equals( $identity, $receipt_id )
+	) {
+		return false;
+	}
+	$receipt = get_option( 'dtb_order_job_receipt_' . $identity, null );
+	$receipt_action_id = is_array( $receipt ) ? absint( $receipt['action_id'] ?? 0 ) : 0;
+	if ( $receipt_action_id <= 0 || ! dtb_order_queue_receipt_matches( $receipt, $identity, [ 'scheduled', 'already_scheduled' ], $receipt_action_id ) ) {
+		return false;
+	}
+	$recovery_key = 'marketplace-dispatch-recovery:v2:' . (string) $order->get_meta( '_dtb_marketplace_identity_hash', true ) . ':' . $identity;
+	$fallback_key = 'dtb_marketplace_dispatch_recovery_' . hash( 'sha256', (int) $order->get_id() . ':' . $identity );
+	if ( ! function_exists( 'dtb_order_event_idempotency_exists' ) || dtb_order_event_idempotency_exists( $recovery_key ) || is_array( get_option( $fallback_key, null ) ) ) {
+		return false;
+	}
+	if ( 'complete' === sanitize_key( (string) $order->get_meta( '_dtb_marketplace_orchestration_state', true ) ) ) {
+		$channel = sanitize_key( (string) $order->get_meta( '_dtb_marketplace_channel', true ) );
+		$row_id  = absint( $order->get_meta( '_dtb_marketplace_order_row_id', true ) );
+		$hash    = (string) $order->get_meta( '_dtb_marketplace_identity_hash', true );
+		$key     = 'marketplace-materialization-complete:v2:' . $hash;
+		return '' !== $hash && $row_id > 0 && class_exists( 'DTB_MarketplaceEventService' )
+			&& DTB_MarketplaceEventService::idempotent_event_matches( $key, DTB_MarketplaceEventService::EVT_MATERIALIZATION_COMPLETED, $channel, $row_id, (int) $order->get_id() );
+	}
+	if ( 'dispatch_pending' !== sanitize_key( (string) $order->get_meta( '_dtb_marketplace_orchestration_state', true ) ) ) {
+		return false;
+	}
+	if ( $retry >= 6 || ! function_exists( 'as_schedule_single_action' ) ) {
+		dtb_order_marketplace_dispatch_mark_recovery( $order, $identity, 'dispatch_fence_retry_exhausted' );
+		return false;
+	}
+	$deferred = $args;
+	$deferred['_dtb_dispatch_retry'] = $retry + 1;
+	$deferred_args = [ (int) $order->get_id(), $deferred ];
+	$deferred_id   = (int) as_schedule_single_action( time() + 30, $job_type, $deferred_args, 'dtb-orders', true );
+	$deferred_readback = dtb_order_queue_find_exact_action( $job_type, $deferred_args );
+	$verified_deferred_id = $deferred_id > 0 ? $deferred_id : absint( $deferred_readback['action_id'] ?? 0 );
+	if ( $verified_deferred_id <= 0 || absint( $deferred_readback['action_id'] ?? 0 ) !== $verified_deferred_id
+		|| ! in_array( (string) ( $deferred_readback['status'] ?? '' ), class_exists( 'ActionScheduler_Store' )
+			? [ ActionScheduler_Store::STATUS_PENDING, ActionScheduler_Store::STATUS_RUNNING ]
+			: [ 'pending', 'in-progress' ], true )
+	) {
+		dtb_order_marketplace_dispatch_mark_recovery( $order, $identity, 'dispatch_fence_defer_unverified' );
+	}
+	return false;
+}
+
 function dtb_order_enqueue_job( string $job_type, int $order_id, array $args = [], int $delay = 0 ): string|int|false {
 	if ( '' === $job_type || $order_id <= 0 ) {
 		return false;
@@ -111,9 +404,23 @@ function dtb_order_job_exception_retryable( Throwable $e ): bool {
 	return ! preg_match( '/\b(400|401|403|404|409|410|422)\b/', $e->getMessage() );
 }
 
-function dtb_order_job_should_skip_order_side_effects( $order ): bool {
-	return function_exists( 'dtb_order_write_boundary_order_should_skip_side_effects' )
-		&& dtb_order_write_boundary_order_should_skip_side_effects( $order );
+function dtb_order_job_should_skip_order_side_effects( $order, string $job_type = '', array $args = [] ): bool {
+	if ( $order instanceof WC_Order && '2' === (string) $order->get_meta( '_dtb_marketplace_materialization_contract', true ) ) {
+		return '' === $job_type || ! dtb_order_marketplace_dispatch_execution_ready( $order, $job_type, $args );
+	}
+	if ( ! function_exists( 'dtb_order_write_boundary_order_should_skip_side_effects' )
+		|| ! dtb_order_write_boundary_order_should_skip_side_effects( $order )
+	) {
+		return false;
+	}
+	if ( '' !== $job_type
+		&& $order instanceof WC_Order
+		&& function_exists( 'dtb_order_write_boundary_should_block_job' )
+		&& ! dtb_order_write_boundary_should_block_job( $job_type, (int) $order->get_id(), $args )
+	) {
+		return false;
+	}
+	return true;
 }
 
 /**
@@ -131,6 +438,11 @@ function dtb_order_veeqo_order_sync_enabled(): bool {
 add_action( 'dtb_order_sync_veeqo', 'dtb_order_job_sync_veeqo', 10, 2 );
 function dtb_order_job_sync_veeqo( int $order_id, array $args = [] ): void {
 	$attempt = isset( $args['attempt'] ) ? max( 1, (int) $args['attempt'] ) : 1;
+	$order   = wc_get_order( $order_id );
+	if ( $order instanceof WC_Order && '2' === (string) $order->get_meta( '_dtb_marketplace_materialization_contract', true )
+		&& ! dtb_order_marketplace_dispatch_execution_ready( $order, 'dtb_order_sync_veeqo', $args ) ) {
+		return;
+	}
 	if ( function_exists( 'dtb_veeqo_order_automation_is_paused' ) && dtb_veeqo_order_automation_is_paused() ) {
 		dtb_order_update_integration_state( $order_id, 'veeqo', [ 'status' => 'disabled', 'error' => 'Veeqo order automation is temporarily paused.' ] );
 		dtb_order_append_event( $order_id, 'integration.veeqo.skipped', [ 'source' => 'cron', 'actor_type' => 'system', 'visibility' => 'operator', 'payload' => [ 'reason' => 'veeqo_order_automation_paused' ] ] );
@@ -143,12 +455,11 @@ function dtb_order_job_sync_veeqo( int $order_id, array $args = [] ): void {
 		'payload'    => [ 'attempt' => $attempt ],
 	] );
 
-	$order = wc_get_order( $order_id );
 	if ( ! $order ) {
 		error_log( "[DTB Orders] dtb_order_job_sync_veeqo: order {$order_id} not found." );
 		return;
 	}
-	if ( dtb_order_job_should_skip_order_side_effects( $order ) ) {
+	if ( dtb_order_job_should_skip_order_side_effects( $order, 'dtb_order_sync_veeqo', $args ) ) {
 		dtb_order_append_event( $order_id, 'integration.veeqo.skipped_duplicate', [ 'source' => 'cron', 'actor_type' => 'system', 'visibility' => 'operator', 'payload' => [ 'reason' => 'order_write_boundary' ] ] );
 		return;
 	}
@@ -272,6 +583,14 @@ add_action( 'dtb_order_sync_quickbooks', 'dtb_order_job_sync_quickbooks', 10, 2 
 function dtb_order_job_sync_quickbooks( int $order_id, array $args = [] ): void {
 	$attempt = isset( $args['attempt'] ) ? max( 1, (int) $args['attempt'] ) : 1;
 	$action  = sanitize_key( (string) ( $args['action'] ?? 'create' ) );
+	$order   = wc_get_order( $order_id );
+	if ( $order instanceof WC_Order && '2' === (string) $order->get_meta( '_dtb_marketplace_materialization_contract', true )
+		&& ! dtb_order_marketplace_dispatch_execution_ready( $order, 'dtb_order_sync_quickbooks', $args ) ) {
+		return;
+	}
+	if ( ! $order ) {
+		return;
+	}
 	dtb_order_append_event( $order_id, 'integration.quickbooks.queued', [
 		'source'     => 'cron',
 		'actor_type' => 'system',
@@ -279,16 +598,12 @@ function dtb_order_job_sync_quickbooks( int $order_id, array $args = [] ): void 
 		'payload'    => [ 'action' => $action, 'attempt' => $attempt ],
 	] );
 
-	$order = wc_get_order( $order_id );
-	if ( ! $order ) {
-		return;
-	}
 	if ( dtb_qbo_exports_paused() ) {
 		dtb_order_update_integration_state( $order_id, 'quickbooks', [ 'status' => 'disabled', 'error' => 'DTB QuickBooks writes are disabled; WooCommerce sales sync is managed by the Intuit connector.' ] );
 		dtb_order_append_event( $order_id, 'integration.quickbooks.skipped', [ 'source' => 'cron', 'actor_type' => 'system', 'visibility' => 'operator', 'payload' => [ 'reason' => 'quickbooks_exports_paused' ] ] );
 		return;
 	}
-	if ( dtb_order_job_should_skip_order_side_effects( $order ) ) {
+	if ( dtb_order_job_should_skip_order_side_effects( $order, 'dtb_order_sync_quickbooks', $args ) ) {
 		dtb_order_append_event( $order_id, 'integration.quickbooks.skipped_duplicate', [ 'source' => 'cron', 'actor_type' => 'system', 'visibility' => 'operator', 'payload' => [ 'reason' => 'order_write_boundary' ] ] );
 		return;
 	}
@@ -454,7 +769,11 @@ function dtb_order_job_send_notification( int $order_id, array $args = [] ): voi
 add_action( 'dtb_order_refresh_tracking_projection', 'dtb_order_job_refresh_tracking_projection', 10, 2 );
 function dtb_order_job_refresh_tracking_projection( int $order_id, array $args = [] ): void {
 	$order = function_exists( 'wc_get_order' ) ? wc_get_order( $order_id ) : null;
-	if ( dtb_order_job_should_skip_order_side_effects( $order ) ) {
+	if ( $order instanceof WC_Order && '2' === (string) $order->get_meta( '_dtb_marketplace_materialization_contract', true )
+		&& ! dtb_order_marketplace_dispatch_execution_ready( $order, 'dtb_order_refresh_tracking_projection', $args ) ) {
+		return;
+	}
+	if ( dtb_order_job_should_skip_order_side_effects( $order, 'dtb_order_refresh_tracking_projection', $args ) ) {
 		return;
 	}
 	if ( function_exists( 'dtb_order_build_tracking_projection' ) ) {

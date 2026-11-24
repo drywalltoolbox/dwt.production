@@ -107,8 +107,8 @@ if ( ! class_exists( 'DTB_AmazonOrdersService' ) ) {
 					'payload'         => [ 'marketplace_order_id' => $normalized['marketplace_order_id'] ],
 				] );
 
-				$linked = self::try_auto_link_woo( $id, $normalized['marketplace_order_id'] );
-				if ( ! $linked && class_exists( 'DTB_MarketplaceOrderMaterializationService' ) ) {
+				$link_result = self::try_auto_link_woo( $id, $normalized['marketplace_order_id'] );
+				if ( 'missing' === $link_result && class_exists( 'DTB_MarketplaceOrderMaterializationService' ) ) {
 					$items = self::get_order_items( $normalized['marketplace_order_id'] );
 					if ( $items['ok'] ) {
 						DTB_MarketplaceOrderMaterializationService::materialize_amazon( $id, $normalized, $raw, $items['items'] );
@@ -134,21 +134,26 @@ if ( ! class_exists( 'DTB_AmazonOrdersService' ) ) {
 		 *
 		 * @param int    $mp_order_id      Marketplace order row ID.
 		 * @param string $amazon_order_id  Amazon order ID string.
-		 * @return bool True when linked.
+		 * @return string 'linked'|'missing'|'blocked'
 		 */
-		public static function try_auto_link_woo( int $mp_order_id, string $amazon_order_id ): bool {
-			global $wpdb;
+		public static function try_auto_link_woo( int $mp_order_id, string $amazon_order_id ): string {
+			if ( ! class_exists( 'DTB_MarketplaceOrderMaterializationService' ) ) {
+				return 'blocked';
+			}
 
-			// Look for a Woo order with _amazon_order_id meta matching this order.
-			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-			$woo_id = $wpdb->get_var( $wpdb->prepare(
-				"SELECT post_id FROM {$wpdb->postmeta}
-				 WHERE meta_key = '_amazon_order_id' AND meta_value = %s LIMIT 1",
-				$amazon_order_id
-			) );
-
-			if ( ! $woo_id ) {
-				return false;
+			$woo_id = DTB_MarketplaceOrderMaterializationService::find_existing_woo_order( DTB_CHANNEL_AMAZON, $amazon_order_id );
+			if ( 0 === $woo_id ) {
+				return 'missing';
+			}
+			if ( $woo_id < 0 || ! DTB_MarketplaceOrderMaterializationService::woo_order_matches_marketplace_identity( $woo_id, DTB_CHANNEL_AMAZON, $amazon_order_id ) ) {
+				DTB_MarketplaceExceptionService::create(
+					DTB_MarketplaceExceptionService::CAT_ORDER_LINKING,
+					DTB_CHANNEL_AMAZON,
+					'woo_marketplace_identity_unresolved',
+					'Amazon order could not be safely resolved to one HPOS WooCommerce order with the same channel and external order ID.',
+					[ 'linked_record_type' => 'marketplace_order', 'linked_record_id' => $mp_order_id, 'is_retryable' => false ]
+				);
+				return 'blocked';
 			}
 
 			DTB_MarketplaceReadModels::upsert_order( [
@@ -163,7 +168,7 @@ if ( ! class_exists( 'DTB_AmazonOrdersService' ) ) {
 				'payload'         => [ 'marketplace_order_id' => $amazon_order_id, 'woo_order_id' => $woo_id ],
 			] );
 
-			return true;
+			return 'linked';
 		}
 
 		/**

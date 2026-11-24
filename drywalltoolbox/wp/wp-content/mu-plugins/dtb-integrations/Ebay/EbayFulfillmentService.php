@@ -38,6 +38,7 @@ if ( ! class_exists( 'DTB_EbayFulfillmentService' ) ) {
 			$offset     = 0;
 			$limit      = 50;
 			$has_more   = true;
+			$sync_failed = false;
 
 			while ( $has_more ) {
 				$response = DTB_EbayRestClient::request(
@@ -52,6 +53,7 @@ if ( ! class_exists( 'DTB_EbayFulfillmentService' ) ) {
 
 				if ( ! $response['ok'] ) {
 					$errors++;
+					$sync_failed = true;
 					DTB_MarketplaceExceptionService::create(
 						DTB_MarketplaceExceptionService::CAT_ORDER_IMPORT,
 						DTB_CHANNEL_EBAY,
@@ -77,6 +79,7 @@ if ( ! class_exists( 'DTB_EbayFulfillmentService' ) ) {
 							$imported++;
 							DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_ORDER_IMPORTED, DTB_CHANNEL_EBAY, [
 								'linked_order_id' => $id,
+								'idempotency_key' => 'ebay:order:imported:' . sanitize_text_field( (string) ( $raw_order['orderId'] ?? '' ) ),
 								'payload'         => [ 'ebay_order_id' => $raw_order['orderId'] ?? '' ],
 							] );
 
@@ -88,18 +91,77 @@ if ( ! class_exists( 'DTB_EbayFulfillmentService' ) ) {
 						}
 					} catch ( \Throwable $e ) {
 						$errors++;
+						$sync_failed = true;
 						error_log( '[DTB][eBay][Fulfillment] Import error: ' . $e->getMessage() );
 					}
 				}
 			}
 
-			update_option( 'dtb_ebay_last_order_sync', time(), false );
-
-			DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_SYNC_SUCCEEDED, DTB_CHANNEL_EBAY, [
-				'payload' => [ 'imported' => $imported, 'updated' => $updated, 'errors' => $errors ],
-			] );
+			$sync_payload = [ 'imported' => $imported, 'updated' => $updated, 'errors' => $errors ];
+			if ( $sync_failed ) {
+				DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_SYNC_FAILED, DTB_CHANNEL_EBAY, [
+					'payload' => $sync_payload,
+				] );
+			} else {
+				update_option( 'dtb_ebay_last_order_sync', time(), false );
+				DTB_MarketplaceReadModels::upsert_channel( DTB_CHANNEL_EBAY, [
+					'last_sync_at'   => current_time( 'mysql', true ),
+					'health_state'   => 'ok',
+					'auth_state'     => 'connected',
+					'last_error_msg' => '',
+				] );
+				DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_SYNC_SUCCEEDED, DTB_CHANNEL_EBAY, [
+					'payload' => $sync_payload,
+				] );
+			}
 
 			return [ 'imported' => $imported, 'updated' => $updated, 'errors' => $errors ];
+		}
+
+		/** Import one order fetched by an authenticated eBay notification. */
+		public static function sync_order_by_id( string $order_id ): array {
+			$order_id = sanitize_text_field( $order_id );
+			if ( '' === $order_id || strlen( $order_id ) > 191 || ! DTB_EbayConfig::is_configured() ) {
+				return [ 'ok' => false, 'error' => 'Invalid order identity or eBay is not configured.' ];
+			}
+
+			$response = self::get_order( $order_id );
+			if ( ! $response['ok'] ) {
+				return [ 'ok' => false, 'error' => $response['error'] ];
+			}
+
+			$raw_order = $response['order'];
+			if ( ! is_array( $raw_order ) || $order_id !== (string) ( $raw_order['orderId'] ?? '' ) ) {
+				return [ 'ok' => false, 'error' => 'eBay returned an order that did not match the requested identity.' ];
+			}
+
+			$existing   = DTB_MarketplaceReadModels::find_order( DTB_CHANNEL_EBAY, $order_id );
+			$normalized = DTB_MarketplaceOrderNormalizer::from_ebay( $raw_order );
+			$local_id   = DTB_MarketplaceReadModels::upsert_order( $normalized );
+			if ( $local_id <= 0 ) {
+				return [ 'ok' => false, 'error' => 'The eBay order could not be persisted.' ];
+			}
+
+			if ( ! $existing ) {
+				DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_ORDER_IMPORTED, DTB_CHANNEL_EBAY, [
+					'linked_order_id' => $local_id,
+					'idempotency_key' => 'ebay:order:imported:' . $order_id,
+					'payload'         => [ 'ebay_order_id' => $order_id ],
+				] );
+
+				if ( class_exists( 'DTB_MarketplaceOrderMaterializationService' ) ) {
+					DTB_MarketplaceOrderMaterializationService::materialize_ebay( $local_id, $normalized, $raw_order );
+				}
+			}
+
+			DTB_MarketplaceReadModels::upsert_channel( DTB_CHANNEL_EBAY, [
+				'last_sync_at'   => current_time( 'mysql', true ),
+				'health_state'   => 'ok',
+				'auth_state'     => 'connected',
+				'last_error_msg' => '',
+			] );
+
+			return [ 'ok' => true, 'local_order_id' => $local_id, 'imported' => ! $existing ];
 		}
 
 		/**

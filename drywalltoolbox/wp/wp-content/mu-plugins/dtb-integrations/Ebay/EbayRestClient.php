@@ -88,7 +88,6 @@ if ( ! class_exists( 'DTB_EbayRestClient' ) ) {
 			}
 
 			DTB_MarketplaceReadModels::upsert_channel( DTB_CHANNEL_EBAY, [
-				'last_sync_at' => current_time( 'mysql', true ),
 				'health_state' => 'ok',
 				'auth_state'   => 'connected',
 			] );

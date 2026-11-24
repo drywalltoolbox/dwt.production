@@ -57,7 +57,6 @@ if ( ! class_exists( 'DTB_EbayHealthCheck' ) ) {
 				DTB_MarketplaceReadModels::upsert_channel( DTB_CHANNEL_EBAY, [
 					'health_state'   => 'ok',
 					'auth_state'     => 'connected',
-					'last_sync_at'   => current_time( 'mysql', true ),
 					'last_error_msg' => '',
 				] );
 				return [

@@ -93,6 +93,15 @@ if ( ! class_exists( 'DTB_MarketplaceOrdersController' ) ) {
 			if ( '' === $marketplace_order_id || ! $woo_order_id || '' === $channel_key ) {
 				return new WP_REST_Response( [ 'ok' => false, 'error' => 'Missing required fields.' ], 400 );
 			}
+			if ( ! in_array( $channel_key, [ DTB_CHANNEL_AMAZON, DTB_CHANNEL_EBAY ], true )
+				|| ! class_exists( 'DTB_MarketplaceOrderMaterializationService' )
+				|| ! DTB_MarketplaceOrderMaterializationService::woo_order_matches_marketplace_identity( $woo_order_id, $channel_key, $marketplace_order_id )
+			) {
+				DTB_MarketplaceAuditService::write( 'order.link_rejected', 'marketplace_order', 0, $channel_key, [
+					'after' => [ 'marketplace_order_id' => $marketplace_order_id ],
+				] );
+				return new WP_REST_Response( [ 'ok' => false, 'error' => 'WooCommerce order does not carry the exact marketplace channel and order identity.' ], 409 );
+			}
 
 			DTB_MarketplaceReadModels::upsert_order( [
 				'channel_key'          => $channel_key,

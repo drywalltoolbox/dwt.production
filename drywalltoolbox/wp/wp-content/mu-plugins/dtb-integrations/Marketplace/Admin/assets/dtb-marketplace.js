@@ -112,23 +112,32 @@
 	$( '#dtb-drawer-overlay' ).on( 'click', closeDrawer );
 
 	// ---- eBay reply send ----
+	var ebayReplyIdempotencyKey = null;
 	$( '#dtb-ebay-send-btn' ).on( 'click', function () {
 		var convId = $( '#dtb-ebay-reply-conversation-id' ).val();
 		var body   = $( '#dtb-ebay-reply-body' ).val().trim();
 		var $status = $( '.dtb-reply-status' );
 		if ( ! convId || ! body ) return;
+		if ( ! ebayReplyIdempotencyKey ) {
+			ebayReplyIdempotencyKey = window.crypto && 'function' === typeof window.crypto.randomUUID
+				? window.crypto.randomUUID()
+				: 'reply-' + Date.now() + '-' + Math.random().toString( 36 ).slice( 2 );
+		}
 
 		$( this ).prop( 'disabled', true );
 		$status.text( cfg.i18n.sending );
 
 		dtbFetch( 'POST', '../ebay/replies', {
 			conversation_id: parseInt( convId, 10 ),
-			buyer_username:  'unknown', // populated server-side from conversation row
 			body:            body,
+			idempotency_key: ebayReplyIdempotencyKey,
 		} )
 			.done( function ( res ) {
-				$status.text( res.ok ? cfg.i18n.sent : cfg.i18n.error + ' ' + ( res.error || '' ) );
-				if ( res.ok ) { $( '#dtb-ebay-reply-body' ).val( '' ); }
+				$status.text( res.ok ? cfg.i18n.queued : cfg.i18n.error + ' ' + ( res.error || '' ) );
+				if ( res.ok ) {
+					$( '#dtb-ebay-reply-body' ).val( '' );
+					ebayReplyIdempotencyKey = null;
+				}
 			} )
 			.fail( function () { $status.text( cfg.i18n.error ); } )
 			.always( function () { $( '#dtb-ebay-send-btn' ).prop( 'disabled', false ); } );

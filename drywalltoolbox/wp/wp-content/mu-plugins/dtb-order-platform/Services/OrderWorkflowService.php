@@ -71,6 +71,11 @@ function dtb_order_dispatch_processing_jobs( int $order_id ): void {
 	if ( ! $order instanceof WC_Order ) {
 		return;
 	}
+	// Marketplace materialization v2 owns its exact queue receipt set. The
+	// generic processing dispatcher must not create a second job identity.
+	if ( '2' === (string) $order->get_meta( '_dtb_marketplace_materialization_contract', true ) ) {
+		return;
+	}
 	if ( function_exists( 'dtb_checkout_handoff_is_unpaid_order' ) && dtb_checkout_handoff_is_unpaid_order( $order ) ) {
 		return;
 	}

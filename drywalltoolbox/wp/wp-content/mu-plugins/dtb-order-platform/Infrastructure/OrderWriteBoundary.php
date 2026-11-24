@@ -534,12 +534,29 @@ if ( ! function_exists( 'dtb_order_is_woopayments_test_order' ) ) {
 	}
 }
 
+if ( ! function_exists( 'dtb_order_marketplace_materialization_is_incomplete' ) ) {
+	/** Detect a reservation-correlated marketplace order before its structural build is complete. */
+	function dtb_order_marketplace_materialization_is_incomplete( $order ): bool {
+		if ( ! $order instanceof WC_Order || ! is_callable( [ $order, 'get_created_via' ] ) ) {
+			return false;
+		}
+		$created_via = (string) $order->get_created_via();
+		if ( ! str_starts_with( $created_via, 'dtb_mp_' ) ) {
+			return false;
+		}
+		return 'complete' !== sanitize_key( (string) $order->get_meta( '_dtb_marketplace_materialization_state', true ) )
+			|| 'complete' !== sanitize_key( (string) $order->get_meta( '_dtb_marketplace_orchestration_state', true ) );
+	}
+}
+
 // Native WooCommerce stock handling must not decrement real sellable inventory
 // for WooPayments test transactions on the shared production database.
 add_filter(
 	'woocommerce_can_reduce_order_stock',
 	static function ( $can_reduce, $order ) {
-		return $can_reduce && ! dtb_order_is_woopayments_test_order( $order );
+		return $can_reduce
+			&& ! dtb_order_is_woopayments_test_order( $order )
+			&& ! dtb_order_marketplace_materialization_is_incomplete( $order );
 	},
 	100,
 	2
@@ -554,6 +571,9 @@ if ( ! function_exists( 'dtb_order_write_boundary_order_should_skip_side_effects
 		// Test-payment isolation is unconditional, even if legacy duplicate
 		// containment is explicitly disabled by an operator.
 		if ( dtb_order_is_woopayments_test_order( $order ) ) {
+			return true;
+		}
+		if ( dtb_order_marketplace_materialization_is_incomplete( $order ) ) {
 			return true;
 		}
 		if ( ! dtb_order_write_boundary_enabled() ) {
@@ -571,7 +591,7 @@ if ( ! function_exists( 'dtb_order_write_boundary_order_should_skip_side_effects
 
 if ( ! function_exists( 'dtb_order_write_boundary_should_block_job' ) ) {
 	/** Gate queue scheduling/execution for duplicate-sensitive jobs. */
-	function dtb_order_write_boundary_should_block_job( string $job_type, int $order_id, array $args = [] ): bool {
+	function dtb_order_write_boundary_should_block_job( string $job_type, int $order_id, array $args = [], bool $allow_marketplace_dispatch_enqueue = false ): bool {
 		$side_effect_jobs = [
 			'dtb_order_sync_veeqo',
 			'dtb_order_sync_veeqo_status',
@@ -588,6 +608,26 @@ if ( ! function_exists( 'dtb_order_write_boundary_should_block_job' ) ) {
 		}
 
 		$order = wc_get_order( $order_id );
+		if ( $allow_marketplace_dispatch_enqueue && $order instanceof WC_Order
+			&& '2' === (string) $order->get_meta( '_dtb_marketplace_materialization_contract', true )
+			&& 'complete' === sanitize_key( (string) $order->get_meta( '_dtb_marketplace_materialization_state', true ) )
+			&& 'dispatch_pending' === sanitize_key( (string) $order->get_meta( '_dtb_marketplace_orchestration_state', true ) )
+			&& 'marketplace_materialization' === sanitize_key( (string) ( $args['trigger'] ?? '' ) )
+			&& preg_match( '/^[a-f0-9]{64}$/D', (string) ( $args['_dtb_receipt'] ?? '' ) )
+			&& preg_match( '/^[a-f0-9]{32}$/D', (string) $order->get_meta( '_dtb_marketplace_reservation_token', true ) )
+			&& hash_equals( 'dtb_mp_' . (string) $order->get_meta( '_dtb_marketplace_reservation_token', true ), (string) $order->get_created_via() )
+			&& 'marketplace' === sanitize_key( (string) $order->get_meta( '_dtb_order_type', true ) )
+			&& in_array( sanitize_key( (string) $order->get_meta( '_dtb_marketplace_channel', true ) ), [ 'amazon', 'ebay' ], true )
+			&& '1' !== (string) $order->get_meta( '_dtb_skip_integrations', true )
+			&& 0 === absint( $order->get_meta( '_dtb_duplicate_of_order_id', true ) )
+			&& ! ( function_exists( 'dtb_order_loop_tag_order' ) && dtb_order_loop_tag_order( $order, 'side_effect_gate' ) instanceof WC_Order )
+			&& in_array( $job_type, [ 'dtb_order_sync_veeqo', 'dtb_order_sync_quickbooks', 'dtb_order_refresh_tracking_projection' ], true )
+			&& ! dtb_order_is_woopayments_test_order( $order )
+		) {
+			// Permit only initial receipt-backed scheduling. Execution is separately
+			// authorized by the durable receipt and completion event in OrderQueue.
+			return false;
+		}
 		return $order instanceof WC_Order && dtb_order_write_boundary_order_should_skip_side_effects( $order );
 	}
 }
@@ -595,7 +635,13 @@ if ( ! function_exists( 'dtb_order_write_boundary_should_block_job' ) ) {
 if ( ! function_exists( 'dtb_order_loop_email_guard' ) ) {
 	/** Suppress WooCommerce order emails for contained duplicates. */
 	function dtb_order_loop_email_guard( bool $enabled, $order ): bool {
-		if ( ! $enabled || ! dtb_order_write_boundary_enabled() || ! $order instanceof WC_Order ) {
+		if ( ! $enabled || ! $order instanceof WC_Order ) {
+			return $enabled;
+		}
+		if ( dtb_order_marketplace_materialization_is_incomplete( $order ) ) {
+			return false;
+		}
+		if ( ! dtb_order_write_boundary_enabled() ) {
 			return $enabled;
 		}
 		if ( '1' === (string) $order->get_meta( '_dtb_order_loop_suppress_emails', true ) ) {

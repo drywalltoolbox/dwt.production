@@ -93,8 +93,10 @@ function dtb_marketplace_render_settings_page(): void {
 	echo '<tr><th scope="row">' . esc_html__( 'Marketplace ID', 'drywall-toolbox' ) . '</th>';
 	echo '<td><input type="text" name="marketplace_id" class="regular-text" value="' . esc_attr( $ebay_cfg['marketplace_id'] ?? '' ) . '"></td></tr>';
 
-	echo '<tr><th scope="row">' . esc_html__( 'Redirect URI', 'drywall-toolbox' ) . '</th>';
-	echo '<td><input type="text" name="redirect_uri" class="regular-text" value="' . esc_attr( $ebay_cfg['redirect_uri'] ?? '' ) . '"></td></tr>';
+	echo '<tr><th scope="row">' . esc_html__( 'eBay RuName', 'drywall-toolbox' ) . '</th>';
+	echo '<td><input type="text" name="redirect_uri" class="regular-text" value="' . esc_attr( $ebay_cfg['redirect_uri'] ?? '' ) . '">';
+	echo '<p class="description">' . esc_html__( 'Enter the RuName generated in eBay Developer Portal. Set its Auth Accepted URL to this HTTPS callback:', 'drywall-toolbox' ) . '</p>';
+	echo '<code>' . esc_html( rest_url( 'dtb/v1/admin/marketplace/ebay/oauth-callback' ) ) . '</code></td></tr>';
 
 	foreach ( [ 'client_id', 'client_secret', 'deletion_verify_token' ] as $f ) {
 		$has   = $ebay_cred[ $f ] ?? false;
@@ -102,7 +104,9 @@ function dtb_marketplace_render_settings_page(): void {
 			? '<span class="dtb-badge dtb-badge--success">' . esc_html__( 'Set', 'drywall-toolbox' ) . '</span>'
 			: '<span class="dtb-badge dtb-badge--warning">' . esc_html__( 'Not set', 'drywall-toolbox' ) . '</span>';
 
-		$label = ucwords( str_replace( '_', ' ', $f ) );
+		$label = 'deletion_verify_token' === $f
+			? __( 'Notification / Deletion Verification Token', 'drywall-toolbox' )
+			: ucwords( str_replace( '_', ' ', $f ) );
 		echo '<tr><th scope="row">' . esc_html( $label ) . ' ' . $badge . '</th>'; // phpcs:ignore
 		echo '<td><input type="password" name="' . esc_attr( $f ) . '" class="regular-text" placeholder="' . esc_attr__( 'Leave blank to keep existing', 'drywall-toolbox' ) . '" autocomplete="new-password"></td></tr>';
 	}
@@ -113,10 +117,11 @@ function dtb_marketplace_render_settings_page(): void {
 	echo '<p>';
 	echo '<a href="#" class="button dtb-ebay-oauth-connect" id="dtb-ebay-oauth-btn">' . esc_html__( 'Connect eBay Account (OAuth)', 'drywall-toolbox' ) . '</a>';
 	echo ' <span class="dtb-settings-result dtb-ebay-oauth-status" aria-live="polite">';
-	if ( ! empty( $ebay_cfg['is_connected'] ) ) {
-		echo '<span class="dtb-badge dtb-badge--success">' . esc_html__( 'Connected', 'drywall-toolbox' ) . '</span>';
+	if ( DTB_EbayOAuthTokenService::has_refresh_token() ) {
+		echo '<span class="dtb-badge dtb-badge--success">' . esc_html__( 'OAuth token saved', 'drywall-toolbox' ) . '</span> ';
+		echo '<span class="description">' . esc_html__( 'Use Test Connection to verify current API access.', 'drywall-toolbox' ) . '</span>';
 	} else {
-		echo '<span class="dtb-badge dtb-badge--warning">' . esc_html__( 'Not connected', 'drywall-toolbox' ) . '</span>';
+		echo '<span class="dtb-badge dtb-badge--warning">' . esc_html__( 'OAuth not authorized', 'drywall-toolbox' ) . '</span>';
 	}
 	echo '</span>';
 	echo '</p>';
@@ -124,9 +129,9 @@ function dtb_marketplace_render_settings_page(): void {
 	// eBay deletion endpoint notice.
 	$del_endpoint = rest_url( 'dtb/v1/marketplace/ebay/deletion' );
 	echo '<div class="dtb-notice dtb-notice--info">';
-	echo '<p><strong>' . esc_html__( 'eBay Account Deletion Endpoint:', 'drywall-toolbox' ) . '</strong><br>';
+	echo '<p><strong>' . esc_html__( 'eBay Notification Endpoint:', 'drywall-toolbox' ) . '</strong><br>';
 	echo '<code>' . esc_html( $del_endpoint ) . '</code>';
-	echo '<br>' . esc_html__( 'Register this URL in eBay Developer Portal as your Marketplace Account Deletion / Closure notification endpoint.', 'drywall-toolbox' ) . '</p>';
+	echo '<br>' . esc_html__( 'This signed endpoint handles Marketplace Account Deletion notifications and ORDER_CONFIRMATION notifications. Register it in the eBay Developer Portal for account deletion and as an eBay Notification API destination. The verification token is stored in encrypted marketplace credentials.', 'drywall-toolbox' ) . '</p>';
 	echo '</div>';
 
 	echo '<p class="dtb-settings-form__actions">';

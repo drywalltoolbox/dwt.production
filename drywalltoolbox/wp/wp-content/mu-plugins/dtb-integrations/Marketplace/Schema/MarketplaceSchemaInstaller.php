@@ -17,7 +17,7 @@
 defined( 'ABSPATH' ) || exit;
 
 if ( ! defined( 'DTB_MARKETPLACE_DB_VERSION' ) ) {
-	define( 'DTB_MARKETPLACE_DB_VERSION', '1' );
+	define( 'DTB_MARKETPLACE_DB_VERSION', '2' );
 }
 
 add_action( 'plugins_loaded', 'dtb_marketplace_maybe_install_schema', 6 );
@@ -93,6 +93,7 @@ function dtb_marketplace_maybe_install_schema(): void {
   id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   channel_key varchar(50) NOT NULL DEFAULT '',
   external_conversation_id varchar(191) NOT NULL DEFAULT '',
+  conversation_type varchar(30) NOT NULL DEFAULT 'FROM_MEMBERS',
   external_order_id varchar(191) NOT NULL DEFAULT '',
   external_listing_id varchar(191) NOT NULL DEFAULT '',
   external_item_id varchar(191) NOT NULL DEFAULT '',

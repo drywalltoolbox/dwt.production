@@ -2,13 +2,13 @@
 /**
  * eBay — EbayMessageService
  *
- * Retrieves buyer messages and sends replies using official eBay messaging APIs.
+ * Retrieves buyer messages and sends replies through eBay communication APIs.
  *
- * Uses eBay Customer Service Messaging API where available, enforcing:
- *   - Required buyer_username + item_id or order_id context
+ * Uses the Message API for existing conversation replies, enforcing:
+ *   - Server-resolved existing conversation identity
  *   - Body length limit (2000 chars)
  *   - Local rate-limit guard via DTB_MarketplaceRateLimitState
- *   - Reply idempotency via outbound message records
+ *   - Encrypted message-body storage and duplicate queue containment
  *
  * @package drywall-toolbox
  */
@@ -21,7 +21,8 @@ if ( ! class_exists( 'DTB_EbayMessageService' ) ) {
 		/**
 		 * Sync buyer messages for a conversation.
 		 *
-		 * Uses eBay Post Order API messaging endpoint.
+		 * Deprecated legacy entry point. Message sync now uses signed NEW_MESSAGE
+		 * notifications; never call the retired Post-Order inquiry endpoint.
 		 *
 		 * @param string $item_id        eBay item ID.
 		 * @param string $buyer_username eBay buyer username.
@@ -29,61 +30,88 @@ if ( ! class_exists( 'DTB_EbayMessageService' ) ) {
 		 * @return array{ok: bool, count: int, error: string}
 		 */
 		public static function sync_messages( string $item_id, string $buyer_username, int $conversation_id ): array {
-			// Post Order API: GET /post-order/v2/inquiry?item_id=...
-			$response = DTB_EbayRestClient::request(
-				'GET',
-				'/post-order/v2/inquiry',
-				[
-					'item_id'        => $item_id,
-					'buyer_username' => $buyer_username,
-					'status'         => 'OPEN',
-				]
-			);
+			return [ 'ok' => false, 'count' => 0, 'error' => 'Legacy eBay inquiry polling is retired; use signed NEW_MESSAGE notifications.' ];
+		}
 
-			if ( ! $response['ok'] ) {
-				return [ 'ok' => false, 'count' => 0, 'error' => $response['error'] ];
+		/**
+		 * Persist an authenticated eBay NEW_MESSAGE notification.
+		 *
+		 * The notification is emitted when the authorized account receives a
+		 * message. Raw party identifiers and provider payloads are never stored.
+		 *
+		 * @param array  $data      Verified notification data.
+		 * @param string $event_id  Stable eBay notification ID.
+		 * @return array{ok: bool, conversation_id: int, message_id: int, error: string}
+		 */
+		public static function receive_notification( array $data, string $event_id ): array {
+			$conversation_id = sanitize_text_field( (string) ( $data['conversationId'] ?? '' ) );
+			$external_msg_id = sanitize_text_field( (string) ( $data['messageId'] ?? '' ) );
+			$type            = strtoupper( sanitize_text_field( (string) ( $data['conversationType'] ?? '' ) ) );
+			$body            = (string) ( $data['messageBody'] ?? '' );
+			$media = $data['messageMedia'] ?? [];
+			if ( '' === $conversation_id || strlen( $conversation_id ) > 191
+				|| '' === $external_msg_id || strlen( $external_msg_id ) > 191
+				|| ! in_array( $type, [ 'FROM_MEMBERS', 'FROM_EBAY' ], true )
+				|| strlen( $body ) > 10000
+				|| ( '' === $body && ( ! is_array( $media ) || empty( $media ) ) )
+			) {
+				return [ 'ok' => false, 'conversation_id' => 0, 'message_id' => 0, 'error' => 'The signed eBay message notification is incomplete or outside supported bounds.' ];
 			}
 
-			$messages = $response['data']['inquiries'] ?? $response['data']['messages'] ?? [];
-			$count    = 0;
-
-			foreach ( $messages as $raw ) {
-				global $wpdb;
-				$msg_id = sanitize_text_field( $raw['id'] ?? $raw['messageId'] ?? '' );
-				if ( '' === $msg_id ) {
-					continue;
+			$buyer_hash = '';
+			if ( 'FROM_MEMBERS' === $type ) {
+				$sender = sanitize_text_field( (string) ( $data['senderUserName'] ?? '' ) );
+				if ( '' !== $sender ) {
+					$buyer_hash = hash_hmac( 'sha256', strtolower( trim( $sender ) ), (string) ( defined( 'AUTH_SALT' ) ? AUTH_SALT : 'dtb' ) );
 				}
-				$table = $wpdb->prefix . 'dtb_marketplace_messages';
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-				$exists = $wpdb->get_var( $wpdb->prepare(
-					"SELECT id FROM {$table} WHERE conversation_id = %d AND external_message_id = %s",
-					$conversation_id, $msg_id
-				) );
-				if ( $exists ) {
-					continue;
-				}
-
-				$normalized = DTB_MarketplaceMessageNormalizer::from_ebay( $raw, $conversation_id );
-				DTB_MarketplaceReadModels::insert_message( $normalized );
-
-				DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_MESSAGE_RECEIVED, DTB_CHANNEL_EBAY, [
-					'linked_conversation_id' => $conversation_id,
-					'payload'                => [ 'external_message_id' => $msg_id ],
-				] );
-
-				$count++;
 			}
 
-			return [ 'ok' => true, 'count' => $count, 'error' => '' ];
+			$conversation_data = [
+				'conversation_type' => $type,
+				'last_inbound_at'  => current_time( 'mysql', true ),
+				'status'           => 'open',
+			];
+			$listing_id = sanitize_text_field( (string) ( $data['listingId'] ?? '' ) );
+			if ( '' !== $listing_id ) {
+				$conversation_data['external_item_id'] = $listing_id;
+			}
+			if ( '' !== $buyer_hash ) {
+				$conversation_data['buyer_ref_hash'] = $buyer_hash;
+			}
+			$conv_id = DTB_MarketplaceReadModels::upsert_conversation( DTB_CHANNEL_EBAY, $conversation_id, $conversation_data );
+			if ( $conv_id < 1 ) {
+				return [ 'ok' => false, 'conversation_id' => 0, 'message_id' => 0, 'error' => 'The eBay conversation could not be stored.' ];
+			}
+
+			$message = DTB_MarketplaceMessageNormalizer::from_ebay_notification( $data, $conv_id );
+			if ( '' !== $body && empty( $message['body_encrypted'] ) ) {
+				return [ 'ok' => false, 'conversation_id' => $conv_id, 'message_id' => 0, 'error' => 'The eBay message body could not be encrypted for storage.' ];
+			}
+			$message_id = DTB_MarketplaceReadModels::insert_message_once( $message );
+			if ( $message_id < 1 ) {
+				return [ 'ok' => false, 'conversation_id' => $conv_id, 'message_id' => 0, 'error' => 'The eBay message could not be stored idempotently.' ];
+			}
+
+			DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_MESSAGE_RECEIVED, DTB_CHANNEL_EBAY, [
+				'external_event_id'      => $external_msg_id,
+				'linked_conversation_id' => $conv_id,
+				'linked_message_id'      => $message_id,
+				'payload'                => [ 'source' => 'signed_new_message_notification', 'conversation_type' => $type ],
+			] );
+			DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_WEBHOOK_RECEIVED, DTB_CHANNEL_EBAY, [
+				'external_event_id'      => $event_id,
+				'linked_conversation_id' => $conv_id,
+				'linked_message_id'      => $message_id,
+				'payload'                => [ 'type' => 'new_message', 'status' => 'persisted' ],
+			] );
+
+			return [ 'ok' => true, 'conversation_id' => $conv_id, 'message_id' => $message_id, 'error' => '' ];
 		}
 
 		/**
 		 * Queue an outbound reply and schedule the actual send.
 		 *
 		 * @param int    $conversation_id Internal conversation ID.
-		 * @param string $buyer_username  eBay buyer username (required).
-		 * @param string $item_id         eBay item ID (required or order_id).
-		 * @param string $order_id        eBay order ID (optional).
 		 * @param string $body            Reply body (max 2000 chars).
 		 * @param int    $operator_id     WP user ID.
 		 * @param string $idempotency_key Unique key.
@@ -91,52 +119,96 @@ if ( ! class_exists( 'DTB_EbayMessageService' ) ) {
 		 */
 		public static function queue_reply(
 			int $conversation_id,
-			string $buyer_username,
-			string $item_id,
-			string $order_id,
-			string $body,
-			int $operator_id,
-			string $idempotency_key
+			mixed $body,
+			mixed $operator_id,
+			mixed $idempotency_key,
+			mixed ...$legacy_args
 		): array {
-			// Policy validation.
-			$policy = DTB_MarketplaceActionPolicyValidator::validate_ebay_reply(
-				$buyer_username, $item_id, $order_id, $body, DTB_CHANNEL_EBAY
-			);
+			if ( 3 === count( $legacy_args ) ) {
+				// Preserve already-open admin requests while files are deployed in
+				// sequence; their buyer/item/order values are discarded immediately.
+				$body            = (string) $legacy_args[0];
+				$operator_id     = (int) $legacy_args[1];
+				$idempotency_key = (string) $legacy_args[2];
+			} else {
+				$body            = (string) $body;
+				$operator_id     = (int) $operator_id;
+				$idempotency_key = (string) $idempotency_key;
+			}
+
+			global $wpdb;
+			$table      = $wpdb->prefix . 'dtb_marketplace_messages';
+			$conv_table = $wpdb->prefix . 'dtb_marketplace_conversations';
+
+			// Resolve the provider conversation from server-owned state; never trust
+			// caller-supplied buyer, listing, or order identifiers for a reply.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$conversation = $wpdb->get_row( $wpdb->prepare(
+				"SELECT id, external_conversation_id, status
+				 FROM {$conv_table} WHERE id = %d AND channel_key = %s LIMIT 1",
+				$conversation_id,
+				DTB_CHANNEL_EBAY
+			), ARRAY_A );
+			if ( ! is_array( $conversation )
+				|| '' === (string) $conversation['external_conversation_id']
+				|| ! in_array( (string) $conversation['status'], [ 'open', 'needs_reply', 'replied' ], true )
+			) {
+				return [ 'ok' => false, 'message_id' => 0, 'error' => 'The eBay conversation is unavailable or has no provider identity.' ];
+			}
+
+			$policy = DTB_MarketplaceActionPolicyValidator::validate_ebay_reply( $conversation_id, $body, DTB_CHANNEL_EBAY );
 			if ( ! $policy['ok'] ) {
 				return [ 'ok' => false, 'message_id' => 0, 'error' => $policy['reason'] ];
 			}
 
-			// Check idempotency.
-			global $wpdb;
-			$table = $wpdb->prefix . 'dtb_marketplace_messages';
 			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-			$existing = $wpdb->get_var( $wpdb->prepare(
-				"SELECT id FROM {$table} WHERE idempotency_key = %s",
+			$existing = $wpdb->get_row( $wpdb->prepare(
+				"SELECT id, message_status FROM {$table} WHERE idempotency_key = %s LIMIT 1",
 				$idempotency_key
-			) );
-			if ( $existing ) {
-				return [ 'ok' => true, 'message_id' => (int) $existing, 'error' => '' ];
+			), ARRAY_A );
+			if ( is_array( $existing ) ) {
+				$existing_status = (string) $existing['message_status'];
+				$already_accepted = in_array( $existing_status, [ 'queued', 'sending', 'sent' ], true );
+				return [
+					'ok'         => $already_accepted,
+					'message_id' => (int) $existing['id'],
+					'error'      => $already_accepted ? '' : 'A prior attempt exists and requires reconciliation before retry.',
+				];
 			}
 
 			$msg_data   = DTB_MarketplaceMessageNormalizer::build_outbound(
 				$conversation_id, $body, 'ebay_reply', $operator_id, $idempotency_key
 			);
+			if ( empty( $msg_data['body_encrypted'] ) ) {
+				return [ 'ok' => false, 'message_id' => 0, 'error' => 'The reply could not be encrypted for storage.' ];
+			}
 			$message_id = DTB_MarketplaceReadModels::insert_message( $msg_data );
+			if ( $message_id < 1 ) {
+				return [ 'ok' => false, 'message_id' => 0, 'error' => 'The reply could not be queued.' ];
+			}
+
+			// Action Scheduler receives only the internal message identity. The
+			// provider conversation and encrypted body are reloaded by the worker.
+			$hook = 'dtb_ebay_message_send';
+			$args = [ $message_id ];
+			if ( ! function_exists( 'as_schedule_single_action' ) ) {
+				$wpdb->update( $table, [ 'message_status' => 'failed', 'failure_reason' => 'Action Scheduler is unavailable.', 'failed_at' => current_time( 'mysql', true ) ], [ 'id' => $message_id ] );
+				return [ 'ok' => false, 'message_id' => $message_id, 'error' => 'The marketplace queue is unavailable.' ];
+			}
+
+			$queue_args        = [ $args ];
+			$already_scheduled = function_exists( 'as_has_scheduled_action' )
+				&& as_has_scheduled_action( $hook, $queue_args, 'dtb-marketplace' );
+			$action_id = $already_scheduled ? 1 : as_schedule_single_action( time() + 5, $hook, $queue_args, 'dtb-marketplace', true );
+			if ( (int) $action_id < 1 && ! ( function_exists( 'as_has_scheduled_action' ) && as_has_scheduled_action( $hook, $queue_args, 'dtb-marketplace' ) ) ) {
+				$wpdb->update( $table, [ 'message_status' => 'failed', 'failure_reason' => 'Action Scheduler rejected the reply job.', 'failed_at' => current_time( 'mysql', true ) ], [ 'id' => $message_id ] );
+				return [ 'ok' => false, 'message_id' => $message_id, 'error' => 'The reply job could not be scheduled.' ];
+			}
 
 			DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_REPLY_QUEUED, DTB_CHANNEL_EBAY, [
 				'linked_conversation_id' => $conversation_id,
 				'linked_message_id'      => $message_id,
-				'payload'                => [ 'buyer_username' => $buyer_username, 'item_id' => $item_id ],
 			] );
-
-			// Schedule send job.
-			$hook = 'dtb_ebay_message_send';
-			$args = [ $message_id, $buyer_username, $item_id, $order_id, $body, $idempotency_key ];
-			if ( function_exists( 'as_schedule_single_action' ) ) {
-				as_schedule_single_action( time() + 5, $hook, [ $args ], 'dtb-marketplace' );
-			} else {
-				wp_schedule_single_event( time() + 5, $hook, $args );
-			}
 
 			return [ 'ok' => true, 'message_id' => $message_id, 'error' => '' ];
 		}
@@ -144,26 +216,59 @@ if ( ! class_exists( 'DTB_EbayMessageService' ) ) {
 		/**
 		 * Execute the actual eBay reply API call (called by queue job).
 		 *
-		 * @param int    $message_id      Internal message ID.
-		 * @param string $buyer_username  eBay buyer username.
-		 * @param string $item_id         eBay item ID.
-		 * @param string $order_id        eBay order ID (may be empty).
-		 * @param string $body            Reply body.
-		 * @param string $idempotency_key Idempotency key.
+		 * @param int $message_id Internal message ID.
 		 */
-		public static function execute_reply( int $message_id, string $buyer_username, string $item_id, string $order_id, string $body, string $idempotency_key ): void {
+		public static function execute_reply( int $message_id ): void {
 			global $wpdb;
-			$table = $wpdb->prefix . 'dtb_marketplace_messages';
+			$table      = $wpdb->prefix . 'dtb_marketplace_messages';
+			$conv_table = $wpdb->prefix . 'dtb_marketplace_conversations';
+
+			// Load the encrypted draft and external conversation ID from the
+			// authoritative local records. Only queued eBay messages can send.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$record = $wpdb->get_row( $wpdb->prepare(
+				"SELECT m.id, m.conversation_id, m.body_encrypted, m.idempotency_key,
+				        m.message_status, c.external_conversation_id
+				 FROM {$table} m
+			 JOIN {$conv_table} c ON c.id = m.conversation_id
+			 WHERE m.id = %d AND c.channel_key = %s LIMIT 1",
+				$message_id,
+				DTB_CHANNEL_EBAY
+			), ARRAY_A );
+			if ( ! is_array( $record ) || 'queued' !== (string) $record['message_status'] ) {
+				return;
+			}
+
+			$external_conversation_id = sanitize_text_field( (string) $record['external_conversation_id'] );
+			$body = class_exists( 'DTB_MarketplaceCredentialFacade' )
+				? DTB_MarketplaceCredentialFacade::decrypt( (string) $record['body_encrypted'] )
+				: false;
+			if ( '' === $external_conversation_id || false === $body || '' === $body ) {
+				$wpdb->update( $table, [ 'message_status' => 'failed', 'failure_reason' => 'Stored reply or conversation identity is unavailable.', 'failed_at' => current_time( 'mysql', true ) ], [ 'id' => $message_id, 'message_status' => 'queued' ] );
+				return;
+			}
+
+			$now = current_time( 'mysql', true );
+			// Compare-and-set prevents duplicate queue deliveries from issuing a
+			// second provider send. Ambiguous provider timeouts require reconciliation.
+			// phpcs:ignore WordPress.DB.DirectDatabaseQuery
+			$claimed = $wpdb->query( $wpdb->prepare(
+				"UPDATE {$table} SET message_status = 'sending', send_attempt_count = send_attempt_count + 1, updated_at = %s
+				 WHERE id = %d AND message_status = 'queued'",
+				$now,
+				$message_id
+			) );
+			if ( 1 !== (int) $claimed ) {
+				return;
+			}
 
 			$response = DTB_EbayRestClient::request(
 				'POST',
-				'/post-order/v2/inquiry/reply',
+				'/commerce/message/v1/send_message',
 				[],
 				[
-					'buyerUsername'   => $buyer_username,
-					'itemId'          => $item_id,
-					'orderId'         => $order_id ?: null,
-					'message'         => $body,
+					'conversationId' => $external_conversation_id,
+					'messageText'    => $body,
 				]
 			);
 
@@ -174,46 +279,39 @@ if ( ! class_exists( 'DTB_EbayMessageService' ) ) {
 				$wpdb->update( $table, [
 					'message_status' => 'sent',
 					'sent_at'        => $now,
-					'external_message_id' => sanitize_text_field( (string) ( $response['data']['messageId'] ?? '' ) ),
 					'updated_at'     => $now,
-				], [ 'id' => $message_id ] );
+				], [ 'id' => $message_id, 'message_status' => 'sending' ] );
 
-				// Update conversation last_outbound_at.
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-				$conv_id = (int) $wpdb->get_var( $wpdb->prepare( "SELECT conversation_id FROM {$table} WHERE id = %d", $message_id ) );
-				if ( $conv_id ) {
-					$conv_table = $wpdb->prefix . 'dtb_marketplace_conversations';
-					// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-					$wpdb->update( $conv_table, [ 'last_outbound_at' => $now, 'updated_at' => $now ], [ 'id' => $conv_id ] );
-				}
+				$wpdb->update( $conv_table, [ 'last_outbound_at' => $now, 'updated_at' => $now ], [ 'id' => (int) $record['conversation_id'] ] );
 
 				DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_REPLY_SENT, DTB_CHANNEL_EBAY, [
 					'linked_message_id' => $message_id,
-					'idempotency_key'   => $idempotency_key,
-					'payload'           => [ 'buyer_username' => $buyer_username, 'item_id' => $item_id ],
+					'idempotency_key'   => (string) $record['idempotency_key'],
 				] );
 			} else {
+				$send_status = (int) $response['status'] >= 500 ? 'unknown' : 'failed';
+				$failure_reason = 'unknown' === $send_status
+					? 'eBay response is ambiguous; reconcile the conversation before sending again.'
+					: sprintf( 'eBay declined the message request with HTTP status %d.', (int) $response['status'] );
 				// phpcs:ignore WordPress.DB.DirectDatabaseQuery
 				$wpdb->update( $table, [
-					'message_status' => 'failed',
+					'message_status' => $send_status,
 					'failed_at'      => $now,
-					'failure_reason' => substr( $response['error'], 0, 500 ),
+					'failure_reason' => $failure_reason,
 					'updated_at'     => $now,
-				], [ 'id' => $message_id ] );
-				// phpcs:ignore WordPress.DB.DirectDatabaseQuery
-				$wpdb->query( $wpdb->prepare( "UPDATE {$table} SET send_attempt_count = send_attempt_count + 1 WHERE id = %d", $message_id ) );
+				], [ 'id' => $message_id, 'message_status' => 'sending' ] );
 
 				DTB_MarketplaceExceptionService::create(
 					DTB_MarketplaceExceptionService::CAT_MESSAGE_SEND,
 					DTB_CHANNEL_EBAY,
 					'ebay_reply_failed',
-					$response['error'],
-					[ 'is_retryable' => ! $response['rate_limited'], 'linked_record_type' => 'marketplace_message', 'linked_record_id' => $message_id ]
+					$failure_reason,
+					[ 'is_retryable' => false, 'linked_record_type' => 'marketplace_message', 'linked_record_id' => $message_id ]
 				);
 
 				DTB_MarketplaceEventService::append( DTB_MarketplaceEventService::EVT_REPLY_FAILED, DTB_CHANNEL_EBAY, [
 					'linked_message_id' => $message_id,
-					'payload'           => [ 'error' => $response['error'] ],
+					'payload'           => [ 'status' => (int) $response['status'], 'result' => $send_status ],
 				] );
 			}
 		}

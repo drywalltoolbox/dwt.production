@@ -69,25 +69,38 @@ if ( ! class_exists( 'DTB_MarketplaceActionPolicyValidator' ) ) {
 		/**
 		 * Validate an eBay outbound reply.
 		 *
-		 * @param string $buyer_username eBay buyer username.
-		 * @param string $item_id        eBay item ID.
-		 * @param string $order_id       eBay order ID.
+		 * @param int    $conversation_id Internal eBay conversation ID.
 		 * @param string $body           Reply body.
 		 * @param string $channel_key    Channel key for rate-limit check.
 		 * @return array{ok: bool, reason: string}
 		 */
 		public static function validate_ebay_reply(
-			string $buyer_username,
-			string $item_id,
-			string $order_id,
-			string $body,
-			string $channel_key
+			mixed $conversation_or_buyer,
+			mixed $body_or_item,
+			mixed $channel_or_order,
+			?string $legacy_body = null,
+			?string $legacy_channel = null
 		): array {
-			if ( '' === $buyer_username ) {
-				return [ 'ok' => false, 'reason' => 'eBay reply requires buyer username.' ];
-			}
-			if ( '' === $item_id && '' === $order_id ) {
-				return [ 'ok' => false, 'reason' => 'eBay reply requires item ID or order ID context.' ];
+			if ( null !== $legacy_body && null !== $legacy_channel ) {
+				// Preserve requests already in flight while the guarded backend files
+				// are deployed sequentially. New callers use only internal conversation ID.
+				$buyer_username = (string) $conversation_or_buyer;
+				$item_id        = (string) $body_or_item;
+				$order_id       = (string) $channel_or_order;
+				$body           = $legacy_body;
+				$channel_key    = $legacy_channel;
+				if ( '' === $buyer_username ) {
+					return [ 'ok' => false, 'reason' => 'eBay reply requires buyer username.' ];
+				}
+				if ( '' === $item_id && '' === $order_id ) {
+					return [ 'ok' => false, 'reason' => 'eBay reply requires item ID or order ID context.' ];
+				}
+			} else {
+				if ( ! is_int( $conversation_or_buyer ) || $conversation_or_buyer < 1 ) {
+					return [ 'ok' => false, 'reason' => 'eBay reply requires a valid conversation.' ];
+				}
+				$body        = (string) $body_or_item;
+				$channel_key = sanitize_key( (string) $channel_or_order );
 			}
 			if ( '' === trim( $body ) ) {
 				return [ 'ok' => false, 'reason' => 'Reply body cannot be empty.' ];
