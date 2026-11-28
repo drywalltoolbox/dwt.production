@@ -271,11 +271,12 @@ function mergeImageSets(...sets) {
   return out.length > 0 ? out : [{ src: PLACEHOLDER_IMAGE, srcSet: '', sizes: '' }];
 }
 
-export default function ProductImageGallery({ product, parentProduct = null }) {
+export default function ProductImageGallery({ product, parentProduct = null, preserveImageAspectRatio = false }) {
   const reduceMotion = useReducedMotion();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [imgLoaded, setImgLoaded] = useState({});
+  const [imageAspectRatios, setImageAspectRatios] = useState({});
   const [lightbox, setLightbox] = useState({ open: false, index: 0, dir: 0 });
   const [parentImageMeta, setParentImageMeta] = useState([]);
   const [thumbRailState, setThumbRailState] = useState({ canScrollBack: false, canScrollForward: false });
@@ -640,6 +641,9 @@ export default function ProductImageGallery({ product, parentProduct = null }) {
         <div
           ref={galleryRef}
           className="product-image-gallery__main relative w-full overflow-hidden group cursor-zoom-in select-none"
+          style={preserveImageAspectRatio && imageAspectRatios[activeImageKey]
+            ? { aspectRatio: imageAspectRatios[activeImageKey] }
+            : undefined}
           onClick={onGalleryClick}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
@@ -691,7 +695,16 @@ export default function ProductImageGallery({ product, parentProduct = null }) {
               draggable={false}
               className="product-image-gallery__image absolute inset-0 w-full h-full object-contain p-3 sm:p-4"
               style={{ zIndex: 2 }}
-              onLoad={() => setImgLoaded((state) => ({ ...state, [activeImageKey]: true }))}
+              onLoad={(event) => {
+                const { naturalWidth, naturalHeight } = event.currentTarget;
+                if (preserveImageAspectRatio && naturalWidth > 0 && naturalHeight > 0) {
+                  setImageAspectRatios((current) => ({
+                    ...current,
+                    [activeImageKey]: Math.min(2.2, Math.max(0.7, naturalWidth / naturalHeight)),
+                  }));
+                }
+                setImgLoaded((state) => ({ ...state, [activeImageKey]: true }));
+              }}
               onError={(event) => {
                 event.currentTarget.onerror = null;
                 event.currentTarget.src = PLACEHOLDER_IMAGE;

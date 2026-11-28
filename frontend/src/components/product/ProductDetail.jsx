@@ -715,6 +715,7 @@ export default function ProductDetail({
   initialComputedData = null,
   autoSelectDefaultVariation = false,
   variationsHydrating = false,
+  preserveImageAspectRatio = false,
 }) {
   const { addToCart } = useCart();
   const gallery = useEditableComponent('product-detail', 'image-gallery');
@@ -1097,7 +1098,11 @@ export default function ProductDetail({
         <div className="dtb-pdp__inner max-w-full">
           <div className="dtb-pdp__hero grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 md:gap-8 mb-6 sm:mb-8">
             <div {...gallery.rootProps} className="dtb-pdp-gallery">
-              <ProductImageGallery product={effectiveProduct} parentProduct={product} />
+              <ProductImageGallery
+                product={effectiveProduct}
+                parentProduct={product}
+                preserveImageAspectRatio={preserveImageAspectRatio}
+              />
             </div>
 
             <div className="dtb-pdp__info-column flex flex-col">

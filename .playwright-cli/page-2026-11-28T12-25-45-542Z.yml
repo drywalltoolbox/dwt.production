@@ -1,0 +1,122 @@
+- generic [active] [ref=f6e1]:
+  - status [ref=f6e3]:
+    - paragraph [ref=f6e6]: Loading your storefront
+  - generic [ref=f6e7]:
+    - banner [ref=f6e8]:
+      - generic [ref=f6e9]:
+        - generic [ref=f6e10]: Free shipping on orders $50+
+        - generic [ref=f6e14]:
+          - link "Expert Support" [ref=f6e15] [cursor=pointer]:
+            - /url: /contact
+          - link "612-978-1007 Mon–Fri 8AM–5PM EST" [ref=f6e20] [cursor=pointer]:
+            - /url: tel:+16129781007
+            - generic [ref=f6e24]:
+              - strong [ref=f6e25]: 612-978-1007
+              - generic [ref=f6e26]: Mon–Fri 8AM–5PM EST
+      - generic [ref=f6e28]:
+        - link "Drywall Toolbox home" [ref=f6e30] [cursor=pointer]:
+          - /url: /
+          - img "Drywall Toolbox Logo" [ref=f6e31]
+        - navigation "Primary navigation" [ref=f6e33]:
+          - link "Shop" [ref=f6e35] [cursor=pointer]:
+            - /url: /products
+          - link "Brands" [ref=f6e40] [cursor=pointer]:
+            - /url: /products/brands
+          - link "Parts" [ref=f6e45] [cursor=pointer]:
+            - /url: /parts
+          - link "Repair Services" [ref=f6e50] [cursor=pointer]:
+            - /url: /repairs
+          - link "Schematics" [ref=f6e55] [cursor=pointer]:
+            - /url: /schematics
+        - search [ref=f6e61]:
+          - searchbox "Search products" [ref=f6e62]
+        - generic [ref=f6e63]:
+          - button "Loading account" [disabled] [ref=f6e65]
+          - button "Toggle cart" [ref=f6e71] [cursor=pointer]
+    - main [ref=f6e77]
+    - contentinfo [ref=f6e78]:
+      - generic [ref=f6e79]:
+        - generic [ref=f6e80]:
+          - region "Drywall Toolbox" [ref=f6e81]:
+            - generic [ref=f6e82]:
+              - link "Drywall Toolbox home" [ref=f6e83] [cursor=pointer]:
+                - /url: /
+                - img "Drywall Toolbox" [ref=f6e84]
+              - navigation "Social media" [ref=f6e85]:
+                - link "Instagram" [ref=f6e86] [cursor=pointer]:
+                  - /url: https://www.instagram.com/drywalltoolbox
+                - link "Facebook" [ref=f6e90] [cursor=pointer]:
+                  - /url: https://www.facebook.com/Drywalltoolbox/
+                - link "X" [ref=f6e93] [cursor=pointer]:
+                  - /url: https://twitter.com
+          - region "Shop" [ref=f6e96]:
+            - heading "Shop" [level=2] [ref=f6e97]
+            - list [ref=f6e98]:
+              - listitem [ref=f6e99]:
+                - link "All Products" [ref=f6e100] [cursor=pointer]:
+                  - /url: /products
+              - listitem [ref=f6e101]:
+                - link "Shop by Brand" [ref=f6e102] [cursor=pointer]:
+                  - /url: /products/brands
+              - listitem [ref=f6e103]:
+                - link "Parts" [ref=f6e104] [cursor=pointer]:
+                  - /url: /parts
+          - region "Tools & Services" [ref=f6e105]:
+            - heading "Tools & Services" [level=2] [ref=f6e106]
+            - list [ref=f6e107]:
+              - listitem [ref=f6e108]:
+                - link "Schematics" [ref=f6e109] [cursor=pointer]:
+                  - /url: /schematics
+              - listitem [ref=f6e110]:
+                - link "Repair Services" [ref=f6e111] [cursor=pointer]:
+                  - /url: /repairs
+              - listitem [ref=f6e112]:
+                - link "Repair Packages" [ref=f6e113] [cursor=pointer]:
+                  - /url: /repairs/packages
+          - region "Customer Support" [ref=f6e114]:
+            - heading "Customer Support" [level=2] [ref=f6e115]
+            - list [ref=f6e116]:
+              - listitem [ref=f6e117]:
+                - link "Help" [ref=f6e118] [cursor=pointer]:
+                  - /url: /help
+              - listitem [ref=f6e119]:
+                - link "Contact Us" [ref=f6e120] [cursor=pointer]:
+                  - /url: /contact
+              - listitem [ref=f6e121]:
+                - link "Shipping & Returns" [ref=f6e122] [cursor=pointer]:
+                  - /url: /policies
+          - region "My Account" [ref=f6e123]:
+            - heading "My Account" [level=2] [ref=f6e124]
+            - list [ref=f6e125]:
+              - listitem [ref=f6e126]:
+                - link "Sign In" [ref=f6e127] [cursor=pointer]:
+                  - /url: /login
+              - listitem [ref=f6e128]:
+                - link "Account Dashboard" [ref=f6e129] [cursor=pointer]:
+                  - /url: /dashboard
+              - listitem [ref=f6e130]:
+                - link "Track My Order" [ref=f6e131] [cursor=pointer]:
+                  - /url: /dashboard?tab=orders
+        - generic [ref=f6e133]:
+          - paragraph [ref=f6e134]: © 2026 Drywall Toolbox. All rights reserved.
+          - navigation "Legal" [ref=f6e135]:
+            - link "Privacy" [ref=f6e136] [cursor=pointer]:
+              - /url: /privacy-policy/
+            - link "Terms" [ref=f6e137] [cursor=pointer]:
+              - /url: /terms-of-service/
+    - generic [aria-hidden]:
+      - dialog:
+        - banner:
+          - generic:
+            - heading [level=3]: Your cart
+          - generic:
+            - button
+        - generic:
+          - generic:
+            - generic:
+              - strong: Your cart is empty
+              - paragraph: Add products to get started.
+              - link:
+                - /url: /products
+                - text: Browse Products
+    - status [ref=f6e138]

@@ -2061,13 +2061,9 @@
 
 @media (min-width: 1025px) {
   .dtb-product-page-shell {
-    /* Reuse the shared content-width token scale (storefront-tokens.css)
-       instead of an arbitrary pixel cap — this is the same "full" tier the
-       widest cross-route layouts use, so the PDP is allowed to breathe on
-       desktop instead of sitting narrower than the header/wide layouts. */
-    width: min(calc(100% - (2 * var(--dtb-responsive-gutter, 2rem))), var(--dtb-content-full, 120rem)) !important;
-    max-width: var(--dtb-content-full, 120rem) !important;
-    padding: var(--dtb-space-4) var(--dtb-space-4) 56px !important;
+    width: min(100%, 68.75rem) !important;
+    max-width: 68.75rem !important;
+    padding: var(--dtb-space-4) 1.25rem 56px !important;
   }
 
   .dtb-product-page-shell > nav {
@@ -2108,8 +2104,8 @@
     grid-template-columns: minmax(0, 1.16fr) minmax(470px, 0.84fr);
     grid-auto-rows: auto;
     align-items: start;
-    gap: 42px !important;
-    margin-bottom: var(--dtb-space-3) !important;
+    gap: 2rem;
+    margin-bottom: 2rem !important;
   }
 
   .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-gallery,
@@ -2138,8 +2134,8 @@
   .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__main {
     width: 100%;
     max-width: none;
-    height: auto !important;
-    aspect-ratio: 1 / 1 !important;
+    height: auto;
+    aspect-ratio: 1.85 / 1;
     /* No outer card wraps the gallery column anymore, so the image
        viewport keeps its own light frame (border-gray-100 / rounded-2xl
        set in ProductImageGallery.jsx) rather than having it stripped —
@@ -2148,7 +2144,7 @@
   }
 
   .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__main > img {
-    padding: clamp(var(--dtb-space-4), 2.2vw, var(--dtb-space-6)) !important;
+    padding: 0;
   }
 
   .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__nav-btn,

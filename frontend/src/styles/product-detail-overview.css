@@ -65,9 +65,9 @@
   max-width: 70ch;
   margin: 0;
   color: #334155;
-  font-size: clamp(1.04rem, .25vw + 1rem, 1.1rem) !important;
+  font-size: .875rem !important;
   font-weight: 430;
-  line-height: 1.76 !important;
+  line-height: 1.45 !important;
   letter-spacing: -.008em;
   text-wrap: pretty;
 }
@@ -199,8 +199,8 @@
   .dtb-product-page-shell .dtb-pdp-description-content--formatted > .dtb-pdp-description-card > p,
   .dtb-product-page-shell .dtb-pdp-description-content p,
   .dtb-product-page-shell .dtb-pdp-description-lead {
-    font-size: 1rem !important;
-    line-height: 1.68 !important;
+    font-size: .875rem !important;
+    line-height: 1.45 !important;
   }
 
   .dtb-product-page-shell .dtb-pdp-description-content--rich li {

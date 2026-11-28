@@ -1,0 +1,11 @@
+Platinum interactive schematics | November 27, 2026
+
+Diagrams contains 20 original, single-page supplier PDFs. Files are organized by category and renamed for identification. Original names, source links and SHA-256 checksums are in File manifest.csv.
+
+Read Missing and unverified.csv before assigning a drawing to a product. The corner box diagram identifies the family only. The 10-inch second-generation box drawing is a reference across the family; its width-specific parts require separate selections. NS.pdf is explicitly shared by both nail spotter sizes.
+
+Angle heads: CF35.pdf and CF25.pdf are corner finishers. 35CF.pdf and 25CF.pdf are corner flushers. Their filenames are easy to reverse. Generation evidence is still needed for the finishers. No angle-head diagram is included.
+
+The eight repository WebP files were checked against the repository checksum manifest and compared with supplier sources. Use Repository cross-reference.csv to identify the old asset. Before reusing interactive hotspots on a supplier PDF, check placement and callout numbers against that PDF.
+
+Scope follows the Schematics email from Ben to Elliott dated November 26, with Elliott's November 27 reply. The file manifest and exception list together cover the request. Original PDFs were preferred over alternate PNG and WebP renditions. The older Gmail attachment Platinum Zip Part.zip could not be inspected. Its contents are unknown.

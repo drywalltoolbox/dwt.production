@@ -1,0 +1,511 @@
+- generic [ref=f3e2]:
+  - banner [ref=f3e3]:
+    - generic [ref=f3e4]:
+      - generic [ref=f3e5]: Free shipping on orders $50+
+      - generic [ref=f3e9]:
+        - link "Expert Support" [ref=f3e10] [cursor=pointer]:
+          - /url: /contact
+        - link "612-978-1007 Mon–Fri 8AM–5PM EST" [ref=f3e15] [cursor=pointer]:
+          - /url: tel:+16129781007
+          - generic [ref=f3e19]:
+            - strong [ref=f3e20]: 612-978-1007
+            - generic [ref=f3e21]: Mon–Fri 8AM–5PM EST
+    - generic [ref=f3e23]:
+      - link "Drywall Toolbox home" [ref=f3e25] [cursor=pointer]:
+        - /url: /
+        - img "Drywall Toolbox Logo" [ref=f3e26]
+      - navigation "Primary navigation" [ref=f3e28]:
+        - link "Shop" [ref=f3e30] [cursor=pointer]:
+          - /url: /products
+        - link "Brands" [ref=f3e35] [cursor=pointer]:
+          - /url: /products/brands
+        - link "Parts" [ref=f3e40] [cursor=pointer]:
+          - /url: /parts
+        - link "Repair Services" [ref=f3e45] [cursor=pointer]:
+          - /url: /repairs
+        - link "Schematics" [ref=f3e50] [cursor=pointer]:
+          - /url: /schematics
+      - search [ref=f3e56]:
+        - searchbox "Search products" [ref=f3e57]
+      - generic [ref=f3e58]:
+        - button "Open account hub" [ref=f3e60] [cursor=pointer]
+        - button "Toggle cart" [ref=f3e66] [cursor=pointer]
+  - main [ref=f3e72]:
+    - generic [ref=f3e76]:
+      - generic [ref=f3e80]:
+        - generic [ref=f3e82]:
+          - button "Tap to view fullscreen" [ref=f3e83]:
+            - img "Columbia One Predator Taper — image 1 of 3" [ref=f3e84]
+            - button "Previous image" [ref=f3e85]
+            - button "Next image" [ref=f3e88]
+          - generic [ref=f3e91]:
+            - button "Scroll thumbnail list backward" [disabled] [ref=f3e92]
+            - generic "Product image thumbnails" [ref=f3e95]:
+              - button "View image 1" [ref=f3e96] [cursor=pointer]:
+                - img "Thumbnail 1" [ref=f3e97]
+              - button "View image 2" [ref=f3e98] [cursor=pointer]:
+                - img "Thumbnail 2" [ref=f3e99]
+              - button "View image 3" [ref=f3e100] [cursor=pointer]:
+                - img "Thumbnail 3" [ref=f3e101]
+            - button "Scroll thumbnail list forward" [disabled] [ref=f3e102]
+        - generic [ref=f3e105]:
+          - generic [ref=f3e106]:
+            - navigation "Breadcrumb" [ref=f3e108]:
+              - list [ref=f3e109]:
+                - listitem [ref=f3e110]:
+                  - link "Home" [ref=f3e111] [cursor=pointer]:
+                    - /url: /
+                - listitem [ref=f3e112]:
+                  - text: /
+                  - link "Products" [ref=f3e113] [cursor=pointer]:
+                    - /url: /products
+                - listitem [ref=f3e114]:
+                  - text: /
+                  - generic [ref=f3e115]: Columbia One Predator Taper
+            - generic [ref=f3e116]:
+              - link "Shop Columbia Tools products" [ref=f3e117] [cursor=pointer]:
+                - /url: /products/brands/columbia-taping-tools
+                - img "Columbia Tools logo" [ref=f3e118]
+              - button "Write a review" [ref=f3e119] [cursor=pointer]:
+                - generic "No reviews yet" [ref=f3e120]
+              - heading [level=1] [ref=f3e143]:
+                - link "Columbia One Predator Taper" [ref=f3e144] [cursor=pointer]:
+                  - /url: /products/columbia-one-predator-taper
+              - generic [ref=f3e145]:
+                - generic [ref=f3e146]: "SKU: C1PTAPER"
+                - generic [ref=f3e147]: In Stock
+              - generic [ref=f3e150]:
+                - generic [ref=f3e151]: $1838.55
+                - generic [ref=f3e152]: $2022.41
+                - generic [ref=f3e153]: You save $183.86
+            - paragraph [ref=f3e154]: The Columbia One Predator Taper is a carbon fiber automatic drywall taper featuring a patent-pending pump-action cutting system, titanium pull rod, and a reduced-drag design for corner applications.
+          - generic [ref=f3e155]:
+            - generic [ref=f3e157]:
+              - group "Quantity" [ref=f3e158]:
+                - button "Decrease quantity" [disabled] [ref=f3e159] [cursor=pointer]
+                - spinbutton "Quantity" [ref=f3e161]: "1"
+                - button "Increase quantity" [ref=f3e162] [cursor=pointer]
+              - button "Add to Cart" [ref=f3e164] [cursor=pointer]
+            - complementary "Shipping cutoff" [ref=f3e172]:
+              - generic [ref=f3e178]:
+                - strong [ref=f3e179]: Same-day shipping resumes Monday.
+                - text: You can still place your order anytime.
+          - region "Product information" [ref=f3e180]:
+            - generic [ref=f3e181]:
+              - heading [level=2] [ref=f3e182]:
+                - button "Description" [expanded] [active] [ref=f3e183] [cursor=pointer]
+              - generic [ref=f3e627]:
+                - paragraph [ref=f3e628]:
+                  - text: The
+                  - strong [ref=f3e629]: Columbia One Predator Taper
+                  - text: is an automatic drywall taper constructed with a carbon fiber body and steel components. Designed for both flat joints and internal angles, this tool features a reduced-drag system to assist with corner applications.
+                - paragraph [ref=f3e630]: It is engineered with a titanium pull rod and stainless steel side plates, cable drum, and creaser arms for corrosion resistance.
+                - paragraph [ref=f3e631]: The unit incorporates a patent-pending pump-action cutting system that utilizes a roller chain and glides over Teflon bearings. The design includes an adjustable brake and a quick-release mechanism for efficient tape changes.
+                - paragraph [ref=f3e632]: A quick-release cap is provided to facilitate cleaning. The tool measures 53 inches in length and is manufactured in Canada.
+            - heading [level=2] [ref=f3e192]:
+              - button "Features" [ref=f3e193] [cursor=pointer]
+            - heading [level=2] [ref=f3e202]:
+              - button "Specifications" [ref=f3e203] [cursor=pointer]
+            - heading [level=2] [ref=f3e215]:
+              - button "Shipping & Returns" [ref=f3e216] [cursor=pointer]
+      - region "Compatible parts" [ref=f3e226]:
+        - heading "Compatible parts" [level=2] [ref=f3e229]
+        - generic [ref=f3e230]:
+          - button "Scroll Compatible parts left" [disabled]:
+            - generic [aria-hidden]: ‹
+          - region "Compatible parts" [ref=f3e231]:
+            - article [ref=f3e232]:
+              - generic [ref=f3e233]:
+                - button "View Insert Bushing" [ref=f3e234] [cursor=pointer]:
+                  - img "Insert Bushing" [ref=f3e237]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e238]:
+                - button "View product details for Insert Bushing" [ref=f3e239] [cursor=pointer]: Insert Bushing
+                - generic [ref=f3e240]: Multiple options available
+                - strong [ref=f3e245]:
+                  - generic [ref=f3e246]: From
+                  - generic [ref=f3e247]: $11.64
+            - article [ref=f3e248]:
+              - generic [ref=f3e249]:
+                - button "View Drive Sprocket" [ref=f3e250] [cursor=pointer]:
+                  - img "Drive Sprocket" [ref=f3e253]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e254]:
+                - button "View product details for Drive Sprocket" [ref=f3e255] [cursor=pointer]: Drive Sprocket
+                - generic [ref=f3e256]: Multiple options available
+                - strong [ref=f3e261]:
+                  - generic [ref=f3e262]: From
+                  - generic [ref=f3e263]: $15.52
+            - article [ref=f3e264]:
+              - generic [ref=f3e265]:
+                - button "View Taper Body" [ref=f3e266] [cursor=pointer]:
+                  - img "Taper Body" [ref=f3e269]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e270]:
+                - button "View product details for Taper Body" [ref=f3e271] [cursor=pointer]: Taper Body
+                - generic [ref=f3e272]: "SKU: CT103"
+                - generic [ref=f3e276]:
+                  - generic "Regular price $142.23" [ref=f3e277]: $142.23
+                  - strong [ref=f3e278]: $129.30
+            - article [ref=f3e279]:
+              - generic [ref=f3e280]:
+                - button "View Connection Strap" [ref=f3e281] [cursor=pointer]:
+                  - img "Connection Strap" [ref=f3e284]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e285]:
+                - button "View product details for Connection Strap" [ref=f3e286] [cursor=pointer]: Connection Strap
+                - generic [ref=f3e287]: "SKU: CT104"
+                - generic [ref=f3e291]:
+                  - generic "Regular price $12.80" [ref=f3e292]: $12.80
+                  - strong [ref=f3e293]: $11.64
+            - article [ref=f3e294]:
+              - generic [ref=f3e295]:
+                - button "View Crimper Lever" [ref=f3e296] [cursor=pointer]:
+                  - img "Crimper Lever" [ref=f3e299]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e300]:
+                - button "View product details for Crimper Lever" [ref=f3e301] [cursor=pointer]: Crimper Lever
+                - generic [ref=f3e302]: "SKU: CT105"
+                - generic [ref=f3e306]:
+                  - generic "Regular price $32.69" [ref=f3e307]: $32.69
+                  - strong [ref=f3e308]: $29.72
+            - article [ref=f3e309]:
+              - generic [ref=f3e310]:
+                - button "View Piston Body" [ref=f3e311] [cursor=pointer]:
+                  - img "Piston Body" [ref=f3e314]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e315]:
+                - button "View product details for Piston Body" [ref=f3e316] [cursor=pointer]: Piston Body
+                - generic [ref=f3e317]: "SKU: CT107"
+                - generic [ref=f3e321]:
+                  - generic "Regular price $28.42" [ref=f3e322]: $28.42
+                  - strong [ref=f3e323]: $25.84
+            - article [ref=f3e324]:
+              - generic [ref=f3e325]:
+                - button "View 1/4 - 20 Castle Nut" [ref=f3e326] [cursor=pointer]:
+                  - img "1/4 - 20 Castle Nut" [ref=f3e329]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e330]:
+                - button "View product details for 1/4 - 20 Castle Nut" [ref=f3e331] [cursor=pointer]: 1/4 - 20 Castle Nut
+                - generic [ref=f3e332]: "SKU: CT109"
+                - generic [ref=f3e336]:
+                  - generic "Regular price $4.98" [ref=f3e337]: $4.98
+                  - strong [ref=f3e338]: $4.53
+            - article [ref=f3e339]:
+              - generic [ref=f3e340]:
+                - button "View Crimping Arm Bushing Left" [ref=f3e341] [cursor=pointer]:
+                  - img "Crimping Arm Bushing Left" [ref=f3e344]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e345]:
+                - button "View product details for Crimping Arm Bushing Left" [ref=f3e346] [cursor=pointer]: Crimping Arm Bushing Left
+                - generic [ref=f3e347]: "SKU: CT10A"
+                - generic [ref=f3e351]:
+                  - generic "Regular price $5.34" [ref=f3e352]: $5.34
+                  - strong [ref=f3e353]: $4.85
+            - article [ref=f3e354]:
+              - generic [ref=f3e355]:
+                - button "View Taper Piston Cup" [ref=f3e356] [cursor=pointer]:
+                  - img "Taper Piston Cup" [ref=f3e359]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e360]:
+                - button "View product details for Taper Piston Cup" [ref=f3e361] [cursor=pointer]: Taper Piston Cup
+                - generic [ref=f3e362]: "SKU: CT111"
+                - generic [ref=f3e366]:
+                  - generic "Regular price $17.07" [ref=f3e367]: $17.07
+                  - strong [ref=f3e368]: $15.52
+            - article [ref=f3e369]:
+              - generic [ref=f3e370]:
+                - button "View Slotted Bolt" [ref=f3e371] [cursor=pointer]:
+                  - img "Slotted Bolt" [ref=f3e374]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e375]:
+                - button "View product details for Slotted Bolt" [ref=f3e376] [cursor=pointer]: Slotted Bolt
+                - generic [ref=f3e377]: "SKU: CT112"
+                - generic [ref=f3e381]:
+                  - generic "Regular price $11.94" [ref=f3e382]: $11.94
+                  - strong [ref=f3e383]: $10.85
+          - button "Scroll Compatible parts right" [ref=f3e384] [cursor=pointer]:
+            - generic [aria-hidden] [ref=f3e385]: ›
+      - region "Related products" [ref=f3e386]:
+        - heading "Related products" [level=2] [ref=f3e389]
+        - generic [ref=f3e390]:
+          - button "Scroll Products related to this item left" [disabled]:
+            - generic [aria-hidden]: ‹
+          - region "Products related to this item" [ref=f3e391]:
+            - article [ref=f3e392]:
+              - generic [ref=f3e393]:
+                - button "View Connection Strap" [ref=f3e394] [cursor=pointer]:
+                  - img "Connection Strap" [ref=f3e397]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e398]:
+                - button "View product details for Connection Strap" [ref=f3e399] [cursor=pointer]: Connection Strap
+                - generic [ref=f3e400]: "SKU: CT104"
+                - generic [ref=f3e404]:
+                  - generic "Regular price $12.80" [ref=f3e405]: $12.80
+                  - strong [ref=f3e406]: $11.64
+            - article [ref=f3e407]:
+              - generic [ref=f3e408]:
+                - button "View Crimper Lever" [ref=f3e409] [cursor=pointer]:
+                  - img "Crimper Lever" [ref=f3e412]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e413]:
+                - button "View product details for Crimper Lever" [ref=f3e414] [cursor=pointer]: Crimper Lever
+                - generic [ref=f3e415]: "SKU: CT105"
+                - generic [ref=f3e419]:
+                  - generic "Regular price $32.69" [ref=f3e420]: $32.69
+                  - strong [ref=f3e421]: $29.72
+            - article [ref=f3e422]:
+              - generic [ref=f3e423]:
+                - button "View Piston Body" [ref=f3e424] [cursor=pointer]:
+                  - img "Piston Body" [ref=f3e427]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e428]:
+                - button "View product details for Piston Body" [ref=f3e429] [cursor=pointer]: Piston Body
+                - generic [ref=f3e430]: "SKU: CT107"
+                - generic [ref=f3e434]:
+                  - generic "Regular price $28.42" [ref=f3e435]: $28.42
+                  - strong [ref=f3e436]: $25.84
+            - article [ref=f3e437]:
+              - generic [ref=f3e438]:
+                - button "View 1/4 - 20 Castle Nut" [ref=f3e439] [cursor=pointer]:
+                  - img "1/4 - 20 Castle Nut" [ref=f3e442]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e443]:
+                - button "View product details for 1/4 - 20 Castle Nut" [ref=f3e444] [cursor=pointer]: 1/4 - 20 Castle Nut
+                - generic [ref=f3e445]: "SKU: CT109"
+                - generic [ref=f3e449]:
+                  - generic "Regular price $4.98" [ref=f3e450]: $4.98
+                  - strong [ref=f3e451]: $4.53
+            - article [ref=f3e452]:
+              - generic [ref=f3e453]:
+                - button "View Crimping Arm Bushing Left" [ref=f3e454] [cursor=pointer]:
+                  - img "Crimping Arm Bushing Left" [ref=f3e457]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e458]:
+                - button "View product details for Crimping Arm Bushing Left" [ref=f3e459] [cursor=pointer]: Crimping Arm Bushing Left
+                - generic [ref=f3e460]: "SKU: CT10A"
+                - generic [ref=f3e464]:
+                  - generic "Regular price $5.34" [ref=f3e465]: $5.34
+                  - strong [ref=f3e466]: $4.85
+            - article [ref=f3e467]:
+              - generic [ref=f3e468]:
+                - button "View Taper Piston Cup" [ref=f3e469] [cursor=pointer]:
+                  - img "Taper Piston Cup" [ref=f3e472]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e473]:
+                - button "View product details for Taper Piston Cup" [ref=f3e474] [cursor=pointer]: Taper Piston Cup
+                - generic [ref=f3e475]: "SKU: CT111"
+                - generic [ref=f3e479]:
+                  - generic "Regular price $17.07" [ref=f3e480]: $17.07
+                  - strong [ref=f3e481]: $15.52
+            - article [ref=f3e482]:
+              - generic [ref=f3e483]:
+                - button "View Slotted Bolt" [ref=f3e484] [cursor=pointer]:
+                  - img "Slotted Bolt" [ref=f3e487]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e488]:
+                - button "View product details for Slotted Bolt" [ref=f3e489] [cursor=pointer]: Slotted Bolt
+                - generic [ref=f3e490]: "SKU: CT112"
+                - generic [ref=f3e494]:
+                  - generic "Regular price $11.94" [ref=f3e495]: $11.94
+                  - strong [ref=f3e496]: $10.85
+            - article [ref=f3e497]:
+              - generic [ref=f3e498]:
+                - button "View Guard Ring" [ref=f3e499] [cursor=pointer]:
+                  - img "Guard Ring" [ref=f3e502]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e503]:
+                - button "View product details for Guard Ring" [ref=f3e504] [cursor=pointer]: Guard Ring
+                - generic [ref=f3e505]: "SKU: CT115"
+                - generic [ref=f3e509]:
+                  - generic "Regular price $21.35" [ref=f3e510]: $21.35
+                  - strong [ref=f3e511]: $19.41
+            - article [ref=f3e512]:
+              - generic [ref=f3e513]:
+                - button "View Band Adaptor" [ref=f3e514] [cursor=pointer]:
+                  - img "Band Adaptor" [ref=f3e517]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e518]:
+                - button "View product details for Band Adaptor" [ref=f3e519] [cursor=pointer]: Band Adaptor
+                - generic [ref=f3e520]: "SKU: CT116A"
+                - generic [ref=f3e524]:
+                  - generic "Regular price $21.35" [ref=f3e525]: $21.35
+                  - strong [ref=f3e526]: $19.41
+            - article [ref=f3e527]:
+              - generic [ref=f3e528]:
+                - button "View Spool Retaining Spring" [ref=f3e529] [cursor=pointer]:
+                  - img "Spool Retaining Spring" [ref=f3e532]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e533]:
+                - button "View product details for Spool Retaining Spring" [ref=f3e534] [cursor=pointer]: Spool Retaining Spring
+                - generic [ref=f3e535]: "SKU: CT119"
+                - generic [ref=f3e539]:
+                  - generic "Regular price $6.40" [ref=f3e540]: $6.40
+                  - strong [ref=f3e541]: $5.82
+          - button "Scroll Products related to this item right" [ref=f3e542] [cursor=pointer]:
+            - generic [aria-hidden] [ref=f3e543]: ›
+      - region "Recently viewed" [ref=f3e544]:
+        - heading "Recently viewed" [level=2] [ref=f3e547]
+        - generic [ref=f3e548]:
+          - button "Scroll Recently viewed products left" [disabled]:
+            - generic [aria-hidden]: ‹
+          - region "Recently viewed products" [ref=f3e549]:
+            - article [ref=f3e550]:
+              - generic [ref=f3e551]:
+                - button "View Columbia One Predator Taper" [ref=f3e552] [cursor=pointer]:
+                  - img "Columbia One Predator Taper" [ref=f3e555]
+                - generic [aria-hidden]:
+                  - generic:
+                    - button:
+                      - generic: Quick View
+              - generic [ref=f3e556]:
+                - button "View product details for Columbia One Predator Taper" [ref=f3e557] [cursor=pointer]: Columbia One Predator Taper
+                - strong [ref=f3e563]: $1,838.55
+          - button "Scroll Recently viewed products right" [disabled]:
+            - generic [aria-hidden]: ›
+  - contentinfo [ref=f3e564]:
+    - generic [ref=f3e565]:
+      - generic [ref=f3e566]:
+        - region "Drywall Toolbox" [ref=f3e567]:
+          - generic [ref=f3e568]:
+            - link "Drywall Toolbox home" [ref=f3e569] [cursor=pointer]:
+              - /url: /
+              - img "Drywall Toolbox" [ref=f3e570]
+            - navigation "Social media" [ref=f3e571]:
+              - link "Instagram" [ref=f3e572] [cursor=pointer]:
+                - /url: https://www.instagram.com/drywalltoolbox
+              - link "Facebook" [ref=f3e576] [cursor=pointer]:
+                - /url: https://www.facebook.com/Drywalltoolbox/
+              - link "X" [ref=f3e579] [cursor=pointer]:
+                - /url: https://twitter.com
+        - region "Shop" [ref=f3e582]:
+          - heading "Shop" [level=2] [ref=f3e583]
+          - list [ref=f3e584]:
+            - listitem [ref=f3e585]:
+              - link "All Products" [ref=f3e586] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f3e587]:
+              - link "Shop by Brand" [ref=f3e588] [cursor=pointer]:
+                - /url: /products/brands
+            - listitem [ref=f3e589]:
+              - link "Parts" [ref=f3e590] [cursor=pointer]:
+                - /url: /parts
+        - region "Tools & Services" [ref=f3e591]:
+          - heading "Tools & Services" [level=2] [ref=f3e592]
+          - list [ref=f3e593]:
+            - listitem [ref=f3e594]:
+              - link "Schematics" [ref=f3e595] [cursor=pointer]:
+                - /url: /schematics
+            - listitem [ref=f3e596]:
+              - link "Repair Services" [ref=f3e597] [cursor=pointer]:
+                - /url: /repairs
+            - listitem [ref=f3e598]:
+              - link "Repair Packages" [ref=f3e599] [cursor=pointer]:
+                - /url: /repairs/packages
+        - region "Customer Support" [ref=f3e600]:
+          - heading "Customer Support" [level=2] [ref=f3e601]
+          - list [ref=f3e602]:
+            - listitem [ref=f3e603]:
+              - link "Help" [ref=f3e604] [cursor=pointer]:
+                - /url: /help
+            - listitem [ref=f3e605]:
+              - link "Contact Us" [ref=f3e606] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=f3e607]:
+              - link "Shipping & Returns" [ref=f3e608] [cursor=pointer]:
+                - /url: /policies
+        - region "My Account" [ref=f3e609]:
+          - heading "My Account" [level=2] [ref=f3e610]
+          - list [ref=f3e611]:
+            - listitem [ref=f3e612]:
+              - link "Sign In" [ref=f3e613] [cursor=pointer]:
+                - /url: /login
+            - listitem [ref=f3e614]:
+              - link "Account Dashboard" [ref=f3e615] [cursor=pointer]:
+                - /url: /dashboard
+            - listitem [ref=f3e616]:
+              - link "Track My Order" [ref=f3e617] [cursor=pointer]:
+                - /url: /dashboard?tab=orders
+      - generic [ref=f3e619]:
+        - paragraph [ref=f3e620]: © 2026 Drywall Toolbox. All rights reserved.
+        - navigation "Legal" [ref=f3e621]:
+          - link "Privacy" [ref=f3e622] [cursor=pointer]:
+            - /url: /privacy-policy/
+          - link "Terms" [ref=f3e623] [cursor=pointer]:
+            - /url: /terms-of-service/
+  - generic [aria-hidden]:
+    - dialog:
+      - banner:
+        - generic:
+          - heading [level=3]: Your cart
+        - generic:
+          - button
+      - generic:
+        - generic:
+          - generic:
+            - strong: Your cart is empty
+            - paragraph: Add products to get started.
+            - link:
+              - /url: /products
+              - text: Browse Products
+  - status [ref=f3e624]

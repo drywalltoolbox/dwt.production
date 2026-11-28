@@ -12,6 +12,16 @@
   box-shadow: none;
 }
 
+/* The Shopify product template uses a centered 1100px frame and 20px side
+   padding. Keep its product-page measure without changing the wider shell. */
+.product-detail-page .dtb-product-page-shell {
+  --dtb-container-max: 68.75rem;
+  width: min(100%, 68.75rem);
+  max-width: 68.75rem;
+  padding-inline: 1.25rem;
+  margin-inline: auto;
+}
+
 .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__inner {
   width: 100%;
   max-width: var(--dtb-content-wide);
@@ -45,11 +55,11 @@
   width: 100%;
   min-width: 0;
   min-height: 0;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 1.85 / 1;
   overflow: hidden;
   border: 1px solid var(--dtb-border);
-  border-radius: var(--dtb-radius-lg);
-  background: var(--dtb-surface-muted);
+  border-radius: var(--dtb-radius-md);
+  background: var(--dtb-surface);
   box-shadow: none;
 }
 
@@ -59,7 +69,7 @@
 }
 
 .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__image {
-  padding: clamp(1rem, 3vw, 2rem);
+  padding: 0;
   background: transparent;
   object-fit: contain;
   object-position: center;
@@ -169,10 +179,10 @@
   max-width: 28ch;
   margin: 0;
   color: var(--dtb-text);
-  font-size: clamp(1.625rem, 2.4vw, 2.5rem);
-  font-weight: 680;
-  letter-spacing: -.03em;
-  line-height: 1.14;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -.02em;
+  line-height: 1.2;
   overflow-wrap: anywhere;
 }
 
@@ -235,11 +245,24 @@
 
 .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__price {
   color: var(--dtb-text);
-  font-size: clamp(2rem, 3vw, 2.25rem);
+  font-size: 1.35rem;
   font-weight: 700;
-  letter-spacing: -.035em;
+  letter-spacing: -.02em;
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
+}
+
+.product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__compare-at {
+  font-size: .875rem;
+}
+
+.product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__savings {
+  padding: .25rem .55rem;
+  border-radius: var(--dtb-radius-pill);
+  background: var(--dtb-surface-subtle);
+  color: var(--dtb-text-soft);
+  font-size: .8125rem;
+  font-weight: 600;
 }
 
 .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__compare-at {
@@ -321,6 +344,13 @@
   margin: 0;
 }
 
+.product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__label {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: .75rem;
+}
+
 .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading button {
   display: flex;
   width: 100%;
@@ -337,6 +367,15 @@
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
+}
+
+.product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading button:is(:hover, [aria-expanded="true"]) .dtb-pdp-info-accordion__label,
+.product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading button:is(:hover, [aria-expanded="true"]) .dtb-pdp-info-accordion__label > span {
+  color: var(--dtb-primary, #2255ee);
+}
+
+.product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading button:is(:hover, [aria-expanded="true"]) > svg {
+  color: var(--dtb-primary, #2255ee);
 }
 
 .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading button:hover {
@@ -362,8 +401,8 @@
 .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__panel {
   padding: 0 0 1.25rem;
   color: var(--dtb-text-soft);
-  font-size: var(--dtb-text-sm);
-  line-height: 1.6;
+  font-size: .875rem;
+  line-height: 1.45;
   overflow-wrap: anywhere;
 }
 
@@ -394,8 +433,8 @@
 
 @media (min-width: 64.01rem) {
   .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__hero {
-    grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
-    gap: clamp(2rem, 4vw, 4rem);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 2rem;
     margin-bottom: 2rem;
   }
 
@@ -404,7 +443,7 @@
   }
 
   .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__main {
-    aspect-ratio: 1.08 / 1;
+    aspect-ratio: 1.85 / 1;
     max-height: min(76svh, 54rem);
   }
 
@@ -413,7 +452,20 @@
   }
 
   .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__title {
-    font-size: clamp(1.9rem, 2.4vw, 2.5rem);
+    font-size: 1.75rem;
+  }
+}
+
+/* The reference product template fits both columns whenever each can retain a
+   280px reading/media measure; this moves the two-column layout below 1024px. */
+@media (min-width: 37rem) and (max-width: 64rem) {
+  .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__hero {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17.5rem), 1fr));
+    gap: 2rem;
+  }
+
+  .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__main {
+    aspect-ratio: 1.85 / 1;
   }
 }
 
@@ -438,12 +490,12 @@
   }
 
   .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__main {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 1.85 / 1;
     border-radius: var(--dtb-radius-md);
   }
 
   .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__image {
-    padding: clamp(.75rem, 4vw, 1.25rem);
+    padding: 0;
   }
 
   .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .product-image-gallery__thumb {
@@ -466,16 +518,12 @@
 
   .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__title {
     max-width: none;
-    font-size: clamp(1.625rem, 6vw, 1.75rem);
-    line-height: 1.16;
-  }
-
-  .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__price-block {
-    margin-top: .55rem;
+    font-size: 1.75rem;
+    line-height: 1.2;
   }
 
   .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__price {
-    font-size: clamp(2rem, 7.5vw, 2.125rem);
+    font-size: 1.35rem;
   }
 
   .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__purchase-region {
@@ -515,6 +563,26 @@
 
   .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-info-accordion__heading button {
     min-height: 3.5rem;
+  }
+}
+
+/* At widths where the source template's 280px columns still fit, keep the
+   gallery beside the buying information and let product details span below. */
+@media (min-width: 41rem) and (max-width: 48rem) {
+  .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__hero {
+    grid-template-areas:
+      "gallery breadcrumb"
+      "gallery identity"
+      "gallery variations"
+      "gallery purchase"
+      "details details";
+    gap: 2rem;
+  }
+}
+
+@media (max-width: 40.99rem) {
+  .product-detail-page .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__hero {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
 

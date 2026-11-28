@@ -575,7 +575,7 @@
 /* Tablet/narrow desktop ------------------------------------------------ */
 @media (max-width: 64rem) {
   .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__hero {
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17.5rem), 1fr));
     gap: clamp(1rem, 2.8vw, 1.5rem);
   }
 
@@ -864,7 +864,7 @@
 
   .dtb-product-page-shell .dtb-pdp__inner {
     gap: 0;
-    padding: .9rem clamp(.7rem, 3.3vw, 1rem) 1.25rem;
+    padding: .9rem 0 1.25rem;
   }
 
   .dtb-product-page-shell .dtb-pdp__hero {
@@ -1109,7 +1109,7 @@
   }
 
   .dtb-product-page-shell .dtb-pdp-info-accordion__heading button {
-    min-height: 3.2rem;
+    min-height: 3.625rem;
     color: #102047;
     font-size: 1rem;
     font-weight: 740;
@@ -1121,7 +1121,16 @@
 
   .dtb-product-page-shell .dtb-pdp-info-accordion__heading svg,
   .dtb-product-page-shell .dtb-pdp-info-accordion__heading button > svg {
-    color: #102047;
+    color: var(--dtb-muted, #74839a);
+  }
+
+  .dtb-product-page-shell .dtb-pdp-info-accordion__heading button:is(:hover, [aria-expanded="true"]) .dtb-pdp-info-accordion__label,
+  .dtb-product-page-shell .dtb-pdp-info-accordion__heading button:is(:hover, [aria-expanded="true"]) .dtb-pdp-info-accordion__label > span {
+    color: var(--dtb-primary, #2255ee);
+  }
+
+  .dtb-product-page-shell .dtb-pdp-info-accordion__heading button:is(:hover, [aria-expanded="true"]) > svg {
+    color: var(--dtb-primary, #2255ee);
   }
 }
 
