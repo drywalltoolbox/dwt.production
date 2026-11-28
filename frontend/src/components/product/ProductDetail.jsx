@@ -950,7 +950,7 @@ export default function ProductDetail({
     effectiveProduct.short_description || product.short_description || '',
   ).trim();
   const effectiveSku = effectiveProduct.sku || product.sku || '';
-  const effectiveStock = effectiveProduct.stock_status || product.stock_status || 'instock';
+  const effectiveStock = effectiveProduct.stock_status || product.stock_status || '';
   const isOutOfStock = effectiveStock === 'outofstock';
   const detailProductUrl = product?.slug
     ? `/products/${product.slug}${selectedVariation?.id ? `/variations/${encodeURIComponent(selectedVariation.id)}` : ''}`
@@ -1114,6 +1114,7 @@ export default function ProductDetail({
                   effectiveName={effectiveName}
                   effectiveSku={effectiveSku}
                   isOutOfStock={isOutOfStock}
+                  stockStatus={effectiveStock}
                   brandLabel={brandLabel}
                   brandLogoSrc={brandLabel ? getBrandLogo(brandLabel) : null}
                   brandLogoClassName="product-detail-brand-logo"

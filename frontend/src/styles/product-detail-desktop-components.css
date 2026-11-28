@@ -1,26 +1,19 @@
-/* Desktop PDP + quick-view presentation authority.
+/* Shared product-detail desktop component styles for the full-page route.
  *
- * ProductDetail.jsx remains the shared rendering authority for the full product
- * route and quick-view modal. This stylesheet owns desktop visual hierarchy,
- * spacing and composition only; it does not alter commerce or catalog state.
+ * Quick View has its own scoped presentation file. This file owns desktop
+ * component details only; page layout belongs to
+ * product-detail-page-desktop.css and commerce behavior remains in React.
  */
 
 @media (min-width: 1024px) {
   /* ------------------------------------------------------------------ */
   /* Primary product composition                                        */
   /* ------------------------------------------------------------------ */
-  .dtb-product-page-shell .dtb-pdp__hero {
-    grid-template-columns: minmax(0, 1.42fr) minmax(420px, 0.82fr) !important;
-    gap: clamp(38px, 3vw, 54px) !important;
-    align-items: start;
-    margin-bottom: 34px !important;
-  }
-
-  .dtb-product-page-shell .dtb-pdp-gallery {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-gallery {
     min-width: 0;
   }
 
-  .dtb-product-page-shell .dtb-pdp__info-column {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__info-column {
     display: flex;
     min-width: 0;
     flex-direction: column;
@@ -29,14 +22,14 @@
     border-left: 1px solid var(--dtb-pdp-border);
   }
 
-  .dtb-product-page-shell .dtb-pdp__summary-region {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__summary-region {
     display: flex;
     min-width: 0;
     flex-direction: column;
     gap: 0;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header {
     display: flex;
     min-width: 0;
     flex-direction: column;
@@ -44,7 +37,7 @@
   }
 
   /* Brand -> title ---------------------------------------------------- */
-  .dtb-product-page-shell .dtb-pdp-header__brand-eyebrow {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__brand-eyebrow {
     margin: 0 0 15px;
     color: var(--dtb-pdp-blue);
     font-size: 10.5px;
@@ -54,7 +47,7 @@
     text-transform: uppercase;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__title {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__title {
     max-width: 640px;
     margin: 0;
     color: var(--dtb-pdp-navy);
@@ -64,13 +57,13 @@
     line-height: 1.06;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__title-link {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__title-link {
     color: inherit;
     text-decoration: none;
   }
 
   /* Customer identity row: stock + SKU ------------------------------- */
-  .dtb-product-page-shell .dtb-pdp-header__identity-row {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__identity-row {
     display: flex;
     min-height: 20px;
     align-items: center;
@@ -79,12 +72,12 @@
     margin-top: 18px;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__identity-row > * + * {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__identity-row > * + * {
     position: relative;
     padding-left: 14px;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__identity-row > * + *::before {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__identity-row > * + *::before {
     content: '';
     position: absolute;
     top: 50%;
@@ -95,8 +88,8 @@
     transform: translateY(-50%);
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__meta-stock--desktop,
-  .dtb-product-page-shell .dtb-pdp-header__identity-sku {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__meta-stock--desktop,
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__identity-sku {
     display: inline-flex;
     align-items: center;
     color: var(--dtb-pdp-muted);
@@ -106,28 +99,28 @@
     white-space: nowrap;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__meta-stock--desktop {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__meta-stock--desktop {
     color: #159447;
     font-weight: 760;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__meta-stock--desktop.is-out {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__meta-stock--desktop.is-out {
     color: #b42318;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__meta-stock-dot {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__meta-stock-dot {
     flex: 0 0 auto;
   }
 
   /* Reviews are intentionally secondary metadata, not SKU metadata. */
-  .dtb-product-page-shell .dtb-pdp-header__desktop-reviews-row {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__desktop-reviews-row {
     display: flex;
     align-items: center;
     min-height: 17px;
     margin-top: 8px;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__desktop-reviews-row .dtb-pdp-header__reviews {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__desktop-reviews-row .dtb-pdp-header__reviews {
     display: inline-flex;
     width: auto;
     min-height: 0;
@@ -143,30 +136,30 @@
     cursor: pointer;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__reviews-stars {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__reviews-stars {
     display: inline-flex;
     gap: 1px;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__review-star {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__review-star {
     width: 12px;
     height: 12px;
     color: #d5dde8;
   }
 
   /* Price + shipping -------------------------------------------------- */
-  .dtb-product-page-shell .dtb-pdp-header__price-block {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__price-block {
     margin-top: 18px;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__price-row {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__price-row {
     display: flex;
     align-items: baseline;
     flex-wrap: wrap;
     gap: 9px;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__price {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__price {
     color: var(--dtb-pdp-navy);
     font-size: clamp(32px, 2.15vw, 38px);
     font-weight: 790;
@@ -174,13 +167,13 @@
     line-height: 1;
   }
 
-  .dtb-product-page-shell .dtb-pdp-header__compare-at {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-header__compare-at {
     color: #8b99ab;
     font-size: 14px;
     font-weight: 550;
   }
 
-  .dtb-product-page-shell .dtb-pdp-shipping-note {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-shipping-note {
     margin: 18px 0 0;
     color: #6f8098;
     font-size: 10.5px;
@@ -188,30 +181,30 @@
     line-height: 1.45;
   }
 
-  .dtb-product-page-shell .dtb-pdp-shipping-note__link {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-shipping-note__link {
     color: var(--dtb-pdp-blue);
     font-weight: 650;
     text-underline-offset: 2px;
   }
 
   /* Variations -------------------------------------------------------- */
-  .dtb-product-page-shell .product-variation-rail {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .product-variation-rail {
     margin-top: 26px;
   }
 
   /* Purchase region --------------------------------------------------- */
-  .dtb-product-page-shell .dtb-pdp__purchase-region {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__purchase-region {
     position: static !important;
     margin-top: 27px;
   }
 
-  .dtb-product-page-shell .dtb-pdp-purchase-panel {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-purchase-panel {
     display: flex;
     flex-direction: column;
     gap: 12px;
   }
 
-  .dtb-product-page-shell .dtb-pdp-purchase-panel__quantity-label {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-purchase-panel__quantity-label {
     margin: 0 0 3px;
     color: var(--dtb-pdp-navy);
     font-size: 11px;
@@ -219,28 +212,28 @@
     line-height: 1.25;
   }
 
-  .dtb-product-page-shell .dtb-pdp-purchase-row {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-purchase-row {
     display: grid;
     grid-template-columns: 112px minmax(0, 1fr);
     gap: 12px;
     align-items: stretch;
   }
 
-  .dtb-product-page-shell .dtb-pdp-qty-root,
-  .dtb-product-page-shell .dtb-pdp-add-to-cart,
-  .dtb-product-page-shell .dtb-product-buy-now,
-  .dtb-product-page-shell .dtb-product-buy-now__button {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-qty-root,
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-add-to-cart,
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-product-buy-now,
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-product-buy-now__button {
     min-height: 48px;
   }
 
-  .dtb-product-page-shell .dtb-pdp-add-to-cart,
-  .dtb-product-page-shell .dtb-product-buy-now__button {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-add-to-cart,
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-product-buy-now__button {
     font-size: 12.5px;
     font-weight: 720;
   }
 
   /* Customer reassurance --------------------------------------------- */
-  .dtb-product-page-shell .dtb-pdp-assurance-row {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-assurance-row {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0;
@@ -249,7 +242,7 @@
     border-top: 1px solid var(--dtb-pdp-border);
   }
 
-  .dtb-product-page-shell .dtb-pdp-assurance-row > div {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-assurance-row > div {
     display: flex;
     min-width: 0;
     flex-direction: column;
@@ -258,16 +251,16 @@
     border-right: 1px solid var(--dtb-pdp-border);
   }
 
-  .dtb-product-page-shell .dtb-pdp-assurance-row > div:first-child {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-assurance-row > div:first-child {
     padding-left: 0;
   }
 
-  .dtb-product-page-shell .dtb-pdp-assurance-row > div:last-child {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-assurance-row > div:last-child {
     padding-right: 0;
     border-right: 0;
   }
 
-  .dtb-product-page-shell .dtb-pdp-assurance-row strong {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-assurance-row strong {
     display: block;
     color: var(--dtb-pdp-navy);
     font-size: 10px;
@@ -275,8 +268,8 @@
     line-height: 1.25;
   }
 
-  .dtb-product-page-shell .dtb-pdp-assurance-row span,
-  .dtb-product-page-shell .dtb-pdp-assurance-row a {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-assurance-row span,
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-assurance-row a {
     display: block;
     color: var(--dtb-pdp-muted);
     font-size: 9.25px;
@@ -284,12 +277,12 @@
     line-height: 1.42;
   }
 
-  .dtb-product-page-shell .dtb-pdp-assurance-row a {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-assurance-row a {
     color: var(--dtb-pdp-blue);
     text-decoration: none;
   }
 
-  .dtb-product-page-shell .dtb-pdp-assurance-row a:hover {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-assurance-row a:hover {
     text-decoration: underline;
     text-underline-offset: 2px;
   }
@@ -297,38 +290,38 @@
   /* ------------------------------------------------------------------ */
   /* Product information navigation                                     */
   /* ------------------------------------------------------------------ */
-  .dtb-product-page-shell .dtb-pdp-sections {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-sections {
     margin-top: 28px;
   }
 
-  .dtb-product-page-shell .dtb-pdp-tabs {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-tabs {
     min-height: 58px;
     border-bottom: 1px solid var(--dtb-pdp-border);
   }
 
-  .dtb-product-page-shell .dtb-pdp-tabs__tab {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-tabs__tab {
     min-height: 58px;
     font-size: 11px;
     font-weight: 680;
   }
 
-  .dtb-product-page-shell .dtb-pdp-section,
-  .dtb-product-page-shell .dtb-pdp-section__content,
-  .dtb-product-page-shell .dtb-pdp-section__content--description {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-section,
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-section__content,
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-section__content--description {
     border: 0 !important;
     border-radius: 0 !important;
     background: transparent !important;
     box-shadow: none !important;
   }
 
-  .dtb-product-page-shell .dtb-pdp-section__content {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-section__content {
     padding: 34px 0 12px;
   }
 
   /* ------------------------------------------------------------------ */
   /* Overview / editorial content                                       */
   /* ------------------------------------------------------------------ */
-  .dtb-product-page-shell .dtb-pdp-overview {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-overview {
     display: grid;
     grid-template-columns: minmax(0, 1.62fr) minmax(290px, 0.72fr);
     gap: clamp(42px, 3.2vw, 58px);
@@ -339,12 +332,12 @@
     box-shadow: none !important;
   }
 
-  .dtb-product-page-shell .dtb-pdp-overview__editorial {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-overview__editorial {
     min-width: 0;
     max-width: 860px;
   }
 
-  .dtb-product-page-shell .dtb-pdp-overview__quick {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-overview__quick {
     position: sticky;
     top: calc(var(--dtb-header-height, 72px) + 24px);
     min-width: 0;
@@ -355,7 +348,7 @@
     box-shadow: 0 10px 28px rgba(15, 23, 42, 0.045);
   }
 
-  .dtb-product-page-shell .dtb-pdp-overview__quick-title {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-overview__quick-title {
     margin: 0 0 14px;
     color: var(--dtb-pdp-navy);
     font-size: 14px;
@@ -364,27 +357,27 @@
     line-height: 1.25;
   }
 
-  .dtb-product-page-shell .dtb-pdp-overview__quick .ts-table-shell,
-  .dtb-product-page-shell .dtb-pdp-overview__quick table {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-overview__quick .ts-table-shell,
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-overview__quick table {
     margin: 0;
     border: 0 !important;
     background: transparent !important;
     box-shadow: none !important;
   }
 
-  .dtb-product-page-shell .dtb-pdp-overview__quick thead {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-overview__quick thead {
     display: none;
   }
 
-  .dtb-product-page-shell .dtb-pdp-overview__quick tr {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-overview__quick tr {
     border-top: 1px solid #e8edf4;
   }
 
-  .dtb-product-page-shell .dtb-pdp-overview__quick tr:first-child {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-overview__quick tr:first-child {
     border-top: 0;
   }
 
-  .dtb-product-page-shell .dtb-pdp-overview__quick td {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-overview__quick td {
     padding: 10px 0 !important;
     border: 0 !important;
     background: transparent !important;
@@ -392,13 +385,13 @@
     line-height: 1.4;
   }
 
-  .dtb-product-page-shell .dtb-pdp-overview__quick td:first-child {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-overview__quick td:first-child {
     width: 43%;
     color: var(--dtb-pdp-muted);
     font-weight: 650;
   }
 
-  .dtb-product-page-shell .dtb-pdp-overview__quick td:last-child {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-overview__quick td:last-child {
     color: var(--dtb-pdp-navy);
     font-weight: 650;
   }
@@ -407,11 +400,7 @@
 }
 
 @media (min-width: 1280px) {
-  .dtb-product-page-shell .dtb-pdp__hero {
-    grid-template-columns: minmax(0, 1.46fr) minmax(430px, 0.78fr) !important;
-  }
-
-  .dtb-product-page-shell .dtb-pdp__info-column {
+  .dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp__info-column {
     padding-left: clamp(40px, 3vw, 52px);
   }
 }

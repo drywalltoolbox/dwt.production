@@ -14,7 +14,7 @@ import {
   productModalTransition,
   reducedTransition,
 } from '../../motion/dtbMotion.js';
-import '../../styles/product-quick-view-desktop.css';
+import '../../styles/product-quick-view.css';
 
 const FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 

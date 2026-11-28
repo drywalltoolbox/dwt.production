@@ -689,7 +689,7 @@ export default function ProductImageGallery({ product, parentProduct = null }) {
               fetchPriority={activeIndex === 0 ? 'high' : undefined}
               decoding="async"
               draggable={false}
-              className="product-image-gallery__image absolute inset-0 w-full h-full object-contain p-3 sm:p-4 bg-white"
+              className="product-image-gallery__image absolute inset-0 w-full h-full object-contain p-3 sm:p-4"
               style={{ zIndex: 2 }}
               onLoad={() => setImgLoaded((state) => ({ ...state, [activeImageKey]: true }))}
               onError={(event) => {

@@ -31,16 +31,6 @@
   max-width: none;
 }
 
-@media (min-width: 1024px) {
-  .dtb-product-page-shell .dtb-pdp__hero {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1.36fr) minmax(390px, .86fr) !important;
-    gap: clamp(28px, 2.25vw, 36px) !important;
-    align-items: start;
-    margin-bottom: 20px !important;
-  }
-}
-
 /* Gallery --------------------------------------------------------------- */
 .dtb-product-page-shell .dtb-pdp-gallery {
   min-width: 0;

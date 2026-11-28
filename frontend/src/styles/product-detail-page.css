@@ -1146,44 +1146,48 @@
 .dtb-product-page-shell .dtb-shipping-cutoff {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  align-items: start;
-  gap: 0;
-  min-height: 4rem;
-  margin-top: .25rem;
-  padding: .7rem .8rem;
+  grid-template-columns: 1.25rem minmax(0, 1fr);
+  align-items: center;
+  gap: .7rem;
+  min-height: 0;
+  margin-top: .55rem;
+  padding: .75rem .85rem;
   overflow: hidden;
-  border: 1px solid #e5edf9;
-  border-radius: 12px;
-  background: #eef5ff;
-  color: #102047;
+  border: 1px solid var(--dtb-border);
+  border-radius: var(--dtb-radius-md);
+  background: var(--dtb-surface-subtle);
+  color: var(--dtb-text-soft);
+}
+
+.dtb-product-page-shell .dtb-shipping-cutoff__icon {
+  color: var(--dtb-muted);
 }
 
 .dtb-product-page-shell .dtb-shipping-cutoff__copy {
   min-width: 0;
-  font-size: .9rem;
-  line-height: 1.5;
+  font-size: var(--dtb-text-sm);
+  line-height: 1.45;
 }
 
 .dtb-product-page-shell .dtb-shipping-cutoff__copy strong {
-  color: #12812c;
-  font-weight: 760;
+  color: var(--dtb-success);
+  font-weight: 650;
 }
 
 .dtb-product-page-shell .dtb-shipping-cutoff.is-closed {
-  border-color: #dbe7ff;
-  background: #f3f7ff;
+  border-color: var(--dtb-border);
+  background: var(--dtb-surface-subtle);
 }
 
 .dtb-product-page-shell .dtb-shipping-cutoff.is-closed .dtb-shipping-cutoff__copy strong {
-  color: var(--dtb-pdp-blue);
+  color: var(--dtb-text);
 }
 
 .dtb-product-page-shell .dtb-shipping-cutoff__copy small {
   display: block;
   margin-top: .12rem;
-  color: #25375b;
-  font-size: .82rem;
+  color: var(--dtb-muted);
+  font-size: var(--dtb-text-xs);
   line-height: 1.4;
 }
 
@@ -1199,7 +1203,7 @@
 
 .dtb-product-page-shell .dtb-shipping-cutoff__timer {
   display: inline-block;
-  color: #102047;
+  color: var(--dtb-text);
   font-variant-numeric: tabular-nums;
   font-weight: 780;
   white-space: nowrap;
@@ -1207,7 +1211,7 @@
 
 @media (max-width: 48rem) {
   .dtb-product-page-shell .dtb-shipping-cutoff__copy {
-    font-size: .84rem;
+    font-size: var(--dtb-text-xs);
   }
 
   .dtb-product-page-shell .dtb-shipping-cutoff__copy small {

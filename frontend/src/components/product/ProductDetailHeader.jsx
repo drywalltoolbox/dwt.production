@@ -25,6 +25,7 @@ export default function ProductDetailHeader({
   brandLogoSrc,
   brandLogoClassName = '',
   isOutOfStock,
+  stockStatus = '',
   displayPrice,
   pricePrefix,
   compareAt,
@@ -46,6 +47,13 @@ export default function ProductDetailHeader({
   const rawPriceValue = toFinitePrice(rawPrice);
   const resolvedRegularPrice = toFinitePrice(compareAt);
   const primaryPrice = rawPriceValue != null ? money(rawPriceValue) : displayPrice;
+  const stockLabel = stockStatus === 'outofstock'
+    ? 'Out of Stock'
+    : stockStatus === 'instock'
+      ? 'In Stock'
+      : stockStatus === 'onbackorder'
+        ? 'Available on Backorder'
+        : 'Availability Varies';
 
   return (
     <header className="dtb-pdp-header">
@@ -88,9 +96,9 @@ export default function ProductDetailHeader({
         {effectiveSku ? (
           <span className="dtb-pdp-header__identity-sku">SKU: {effectiveSku}</span>
         ) : null}
-        <span className={`dtb-pdp-header__meta-stock${isOutOfStock ? ' is-out' : ''}`}>
+        <span className={`dtb-pdp-header__meta-stock${isOutOfStock ? ' is-out' : stockStatus === 'instock' ? '' : ' is-unknown'}`}>
           <span className="dtb-pdp-header__meta-stock-dot" aria-hidden="true" />
-          {isOutOfStock ? 'Out of Stock' : 'In Stock'}
+          {stockLabel}
         </span>
       </div>
 

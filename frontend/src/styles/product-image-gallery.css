@@ -403,13 +403,13 @@
  .dtb-product-page-shell .product-image-gallery__thumb {transition:none}
 }
 
-/* The product image is presented directly on the gallery surface. Keep the
-   existing image geometry, controls and focus indicator without card chrome. */
+/* The full PDP uses one contained neutral image stage. Quick View retains its
+   own sizing and remains excluded from these route-specific gallery surfaces. */
 .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-gallery .product-image-gallery__main,
 .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-gallery .product-image-gallery__main:hover {
-  border: 0;
-  border-radius: 0;
-  background: transparent;
+  border: 1px solid var(--dtb-border);
+  border-radius: var(--dtb-radius-lg);
+  background: var(--dtb-surface-muted);
   box-shadow: none;
 }
 
@@ -429,7 +429,13 @@
   }
 
   .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-gallery .product-image-gallery__main,
-  .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-gallery .product-image-gallery__main:hover,
+  .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-gallery .product-image-gallery__main:hover {
+    border: 1px solid var(--dtb-border);
+    border-radius: var(--dtb-radius-md);
+    background: var(--dtb-surface-muted);
+    box-shadow: none;
+  }
+
   .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-gallery .product-image-gallery__image {
     border: 0;
     border-radius: 0;
@@ -458,15 +464,15 @@
     aspect-ratio: 1 / 1;
   }
 
-  .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp .dtb-pdp-gallery .product-image-gallery__image {
+  .dtb-product-page-shell.dtb-product-page-shell .dtb-pdp:not(.dtb-pdp--modal) .dtb-pdp-gallery .product-image-gallery__image {
     box-sizing: border-box;
     width: 100%;
     height: 100%;
     max-width: 100%;
-    padding: 0 !important;
+    padding: clamp(.75rem, 4vw, 1.25rem) !important;
     object-fit: contain;
     object-position: center;
-    background: #fff;
+    background: transparent;
   }
 
   .dtb-product-page-shell .dtb-pdp-gallery .product-image-gallery__thumbs {

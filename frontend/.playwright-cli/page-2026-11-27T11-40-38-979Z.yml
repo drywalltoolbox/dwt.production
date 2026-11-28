@@ -1,0 +1,664 @@
+- generic [ref=f13e2]:
+  - banner [ref=f13e3]:
+    - generic [ref=f13e4]:
+      - generic [ref=f13e5]: Free shipping on orders $50+
+      - generic [ref=f13e9]:
+        - link "Expert Support" [ref=f13e10] [cursor=pointer]:
+          - /url: /contact
+        - link "612-978-1007 Mon–Fri 8AM–5PM EST" [ref=f13e15] [cursor=pointer]:
+          - /url: tel:+16129781007
+          - generic [ref=f13e19]:
+            - strong [ref=f13e20]: 612-978-1007
+            - generic [ref=f13e21]: Mon–Fri 8AM–5PM EST
+    - generic [ref=f13e23]:
+      - link "Drywall Toolbox home" [ref=f13e25] [cursor=pointer]:
+        - /url: /
+        - img "Drywall Toolbox Logo" [ref=f13e26]
+      - navigation "Primary navigation" [ref=f13e28]:
+        - link "Shop" [ref=f13e30] [cursor=pointer]:
+          - /url: /products
+        - link "Brands" [ref=f13e35] [cursor=pointer]:
+          - /url: /products/brands
+        - link "Parts" [ref=f13e40] [cursor=pointer]:
+          - /url: /parts
+        - link "Repair Services" [ref=f13e45] [cursor=pointer]:
+          - /url: /repairs
+        - link "Schematics" [ref=f13e50] [cursor=pointer]:
+          - /url: /schematics
+      - search [ref=f13e56]:
+        - searchbox "Search products" [ref=f13e57]
+      - generic [ref=f13e58]:
+        - button "Open account hub" [ref=f13e60] [cursor=pointer]
+        - button "Toggle cart" [ref=f13e66] [cursor=pointer]
+  - main [ref=f13e72]:
+    - generic [ref=f13e75]:
+      - generic [ref=f13e77]:
+        - navigation "Breadcrumb" [ref=f13e79]:
+          - list [ref=f13e80]:
+            - listitem [ref=f13e81]:
+              - link "Home" [ref=f13e82] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=f13e83]:
+              - text: ›
+              - generic [ref=f13e84]: All Products
+        - generic [ref=f13e85]:
+          - heading "All Products" [level=1] [ref=f13e86]
+          - paragraph [ref=f13e87]: Professional drywall tools, parts and supplies.
+      - generic [ref=f13e89]:
+        - generic [ref=f13e91]:
+          - button "Scroll Shop by tool type left" [disabled]:
+            - generic [aria-hidden]: ‹
+          - region "Shop by tool type" [ref=f13e92]:
+            - link "Automatic Tapers" [ref=f13e93] [cursor=pointer]:
+              - /url: /category/automatic-tapers
+            - link "Flat Boxes" [ref=f13e98] [cursor=pointer]:
+              - /url: /category/flat-boxes
+            - link "Automatic Tool Sets & Kits" [ref=f13e103] [cursor=pointer]:
+              - /url: /category/automatic-tool-sets-kits
+            - link "Corner Finishers" [ref=f13e108] [cursor=pointer]:
+              - /url: /category/corner-finishers
+            - link "Angle Boxes & Corner Applicators" [ref=f13e113] [cursor=pointer]:
+              - /url: /category/angle-boxes-corner-applicators
+            - link "Compound Tubes" [ref=f13e118] [cursor=pointer]:
+              - /url: /category/compound-tubes
+            - link "Powered Compound Applicators" [ref=f13e123] [cursor=pointer]:
+              - /url: /category/powered-compound-applicators
+            - link "Applicator Heads" [ref=f13e128] [cursor=pointer]:
+              - /url: /category/applicator-heads
+            - link "Corner Flushers" [ref=f13e133] [cursor=pointer]:
+              - /url: /category/corner-flushers
+            - link "Corner Rollers" [ref=f13e138] [cursor=pointer]:
+              - /url: /category/corner-rollers
+            - link "Nail Spotters" [ref=f13e143] [cursor=pointer]:
+              - /url: /category/nail-spotters
+            - link "Loading Pumps" [ref=f13e148] [cursor=pointer]:
+              - /url: /category/loading-pumps
+            - link "Goosenecks, Box Fillers & Adapters" [ref=f13e153] [cursor=pointer]:
+              - /url: /category/goosenecks-box-fillers-adapters
+            - link "Handles" [ref=f13e158] [cursor=pointer]:
+              - /url: /category/handles
+            - link "Semi-Automatic Tapers & Banjos" [ref=f13e163] [cursor=pointer]:
+              - /url: /category/semi-automatic-tapers-banjos
+            - link "Mud Pans" [ref=f13e168] [cursor=pointer]:
+              - /url: /category/mud-pans
+            - link "Mud Pan Accessories" [ref=f13e173] [cursor=pointer]:
+              - /url: /category/mud-pan-accessories
+            - link "Mud Mixing Tools" [ref=f13e180] [cursor=pointer]:
+              - /url: /category/mud-mixing-tools
+            - link "Semi-Automatic Tool Sets & Kits" [ref=f13e187] [cursor=pointer]:
+              - /url: /category/semi-automatic-tool-sets-kits
+            - link "Bead Hoppers" [ref=f13e192] [cursor=pointer]:
+              - /url: /category/bead-hoppers
+            - link "Corner Bead Rollers" [ref=f13e197] [cursor=pointer]:
+              - /url: /category/corner-bead-rollers
+            - link "Drywall Squares" [ref=f13e202] [cursor=pointer]:
+              - /url: /category/drywall-squares
+            - link "Drywall Saws" [ref=f13e209] [cursor=pointer]:
+              - /url: /category/drywall-saws
+            - link "Drywall Stilts" [ref=f13e216] [cursor=pointer]:
+              - /url: /category/drywall-stilts
+            - link "Replacement Parts" [ref=f13e221] [cursor=pointer]:
+              - /url: /category/replacement-parts
+            - link "Tool Cases" [ref=f13e226] [cursor=pointer]:
+              - /url: /category/tool-cases
+          - button "Scroll Shop by tool type right" [ref=f13e231] [cursor=pointer]:
+            - generic [aria-hidden] [ref=f13e232]: ›
+        - generic [ref=f13e233]:
+          - complementary [ref=f13e234]:
+            - region "Product filters" [ref=f13e236]:
+              - generic [ref=f13e238]:
+                - heading "Filters" [level=2] [ref=f13e239]
+                - paragraph [ref=f13e240]: 665 products
+              - generic [ref=f13e241]:
+                - generic [ref=f13e242]:
+                  - button "Category 18" [expanded] [ref=f13e243] [cursor=pointer]:
+                    - generic [ref=f13e244]:
+                      - text: Category
+                      - generic [ref=f13e245]: "18"
+                  - generic [ref=f13e248]:
+                    - searchbox "Search category" [ref=f13e253]
+                    - list [ref=f13e254]:
+                      - listitem [ref=f13e255]:
+                        - generic [ref=f13e256] [cursor=pointer]:
+                          - checkbox "Applicator Heads 8" [ref=f13e257]
+                          - generic [ref=f13e259]: Applicator Heads
+                          - generic [ref=f13e260]: "8"
+                      - listitem [ref=f13e261]:
+                        - generic [ref=f13e262] [cursor=pointer]:
+                          - checkbox "Automatic Tapers 4" [ref=f13e263]
+                          - generic [ref=f13e265]: Automatic Tapers
+                          - generic [ref=f13e266]: "4"
+                      - listitem [ref=f13e267]:
+                        - generic [ref=f13e268] [cursor=pointer]:
+                          - checkbox "Compound Tubes 7" [ref=f13e269]
+                          - generic [ref=f13e271]: Compound Tubes
+                          - generic [ref=f13e272]: "7"
+                      - listitem [ref=f13e273]:
+                        - generic [ref=f13e274] [cursor=pointer]:
+                          - checkbox "Corner Applicators & Angle Boxes 4" [ref=f13e275]
+                          - generic [ref=f13e277]: Corner Applicators & Angle Boxes
+                          - generic [ref=f13e278]: "4"
+                      - listitem [ref=f13e279]:
+                        - generic [ref=f13e280] [cursor=pointer]:
+                          - checkbox "Corner Finishers 4" [ref=f13e281]
+                          - generic [ref=f13e283]: Corner Finishers
+                          - generic [ref=f13e284]: "4"
+                      - listitem [ref=f13e285]:
+                        - generic [ref=f13e286] [cursor=pointer]:
+                          - checkbox "Corner Flushers 7" [ref=f13e287]
+                          - generic [ref=f13e289]: Corner Flushers
+                          - generic [ref=f13e290]: "7"
+                      - listitem [ref=f13e291]:
+                        - generic [ref=f13e292] [cursor=pointer]:
+                          - checkbox "Corner Rollers 4" [ref=f13e293]
+                          - generic [ref=f13e295]: Corner Rollers
+                          - generic [ref=f13e296]: "4"
+                      - listitem [ref=f13e297]:
+                        - generic [ref=f13e298] [cursor=pointer]:
+                          - checkbox "Flat Boxes 11" [ref=f13e299]
+                          - generic [ref=f13e301]: Flat Boxes
+                          - generic [ref=f13e302]: "11"
+                    - button "Show 10 more" [ref=f13e303] [cursor=pointer]
+                - generic [ref=f13e306]:
+                  - button "Brand 7" [expanded] [ref=f13e307] [cursor=pointer]:
+                    - generic [ref=f13e308]:
+                      - text: Brand
+                      - generic [ref=f13e309]: "7"
+                  - list [ref=f13e313]:
+                    - listitem [ref=f13e314]:
+                      - generic [ref=f13e315] [cursor=pointer]:
+                        - checkbox "Columbia Tools 350" [ref=f13e316]
+                        - generic [ref=f13e318]: Columbia Tools
+                        - generic [ref=f13e319]: "350"
+                    - listitem [ref=f13e320]:
+                      - generic [ref=f13e321] [cursor=pointer]:
+                        - checkbox "Dura-Stilts 1" [ref=f13e322]
+                        - generic [ref=f13e324]: Dura-Stilts
+                        - generic [ref=f13e325]: "1"
+                    - listitem [ref=f13e326]:
+                      - generic [ref=f13e327] [cursor=pointer]:
+                        - checkbox "LEVEL5 26" [ref=f13e328]
+                        - generic [ref=f13e330]: LEVEL5
+                        - generic [ref=f13e331]: "26"
+                    - listitem [ref=f13e332]:
+                      - generic [ref=f13e333] [cursor=pointer]:
+                        - checkbox "Platinum Drywall Tools 39" [ref=f13e334]
+                        - generic [ref=f13e336]: Platinum Drywall Tools
+                        - generic [ref=f13e337]: "39"
+                    - listitem [ref=f13e338]:
+                      - generic [ref=f13e339] [cursor=pointer]:
+                        - checkbox "SurPro 8" [ref=f13e340]
+                        - generic [ref=f13e342]: SurPro
+                        - generic [ref=f13e343]: "8"
+                    - listitem [ref=f13e344]:
+                      - generic [ref=f13e345] [cursor=pointer]:
+                        - checkbox "TapeTech 229" [ref=f13e346]
+                        - generic [ref=f13e348]: TapeTech
+                        - generic [ref=f13e349]: "229"
+                    - listitem [ref=f13e350]:
+                      - generic [ref=f13e351] [cursor=pointer]:
+                        - checkbox "USG Sheetrock Tools 12" [ref=f13e352]
+                        - generic [ref=f13e354]: USG Sheetrock Tools
+                        - generic [ref=f13e355]: "12"
+          - generic [ref=f13e356]:
+            - generic [ref=f13e357]:
+              - button "Most Popular" [ref=f13e360] [cursor=pointer]
+              - group "Product display mode" [ref=f13e365]:
+                - button "List" [ref=f13e366] [cursor=pointer]
+                - button "Grid" [pressed] [ref=f13e369] [cursor=pointer]
+            - generic [ref=f13e376]:
+              - generic [ref=f13e377]:
+                - generic [ref=f13e378]:
+                  - article [ref=f13e379]:
+                    - generic [ref=f13e380]:
+                      - button "View 12 in USG Sheetrock Tools Classic Stainless Steel Drywall Mud Pan" [active] [ref=f13e381] [cursor=pointer]:
+                        - img "12 in USG Sheetrock Tools Classic Stainless Steel Drywall Mud Pan" [ref=f13e384]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e385]:
+                      - button "View product details for 12 in USG Sheetrock Tools Classic Stainless Steel Drywall Mud Pan" [ref=f13e386] [cursor=pointer]: 12 in USG Sheetrock Tools Classic Stainless Steel Drywall Mud Pan
+                      - generic [ref=f13e387]: "SKU: 340406"
+                      - generic [ref=f13e391]:
+                        - generic "Regular price $38.49" [ref=f13e392]: $38.49
+                        - strong [ref=f13e393]: $34.99
+                  - article [ref=f13e394]:
+                    - generic [ref=f13e395]:
+                      - button "View 30 in USG Sheetrock Tools Mud Mixer" [ref=f13e396] [cursor=pointer]:
+                        - img "30 in USG Sheetrock Tools Mud Mixer" [ref=f13e399]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e400]:
+                      - button "View product details for 30 in USG Sheetrock Tools Mud Mixer" [ref=f13e401] [cursor=pointer]: 30 in USG Sheetrock Tools Mud Mixer
+                      - generic [ref=f13e402]: "SKU: 340413"
+                      - generic [ref=f13e406]:
+                        - generic "Regular price $69.85" [ref=f13e407]: $69.85
+                        - strong [ref=f13e408]: $63.50
+                  - article [ref=f13e409]:
+                    - generic [ref=f13e410]:
+                      - button "View 48 in USG Sheetrock Tools Heavy Duty T-Square" [ref=f13e411] [cursor=pointer]:
+                        - img "48 in USG Sheetrock Tools Heavy Duty T-Square" [ref=f13e414]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e415]:
+                      - button "View product details for 48 in USG Sheetrock Tools Heavy Duty T-Square" [ref=f13e416] [cursor=pointer]: 48 in USG Sheetrock Tools Heavy Duty T-Square
+                      - generic [ref=f13e417]: "SKU: 340416"
+                      - generic [ref=f13e421]:
+                        - generic "Regular price $76.98" [ref=f13e422]: $76.98
+                        - strong [ref=f13e423]: $69.98
+                  - article [ref=f13e424]:
+                    - generic [ref=f13e425]:
+                      - button "View 54 in USG Sheetrock Tools Heavy Duty T-Square" [ref=f13e426] [cursor=pointer]:
+                        - img "54 in USG Sheetrock Tools Heavy Duty T-Square" [ref=f13e429]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e430]:
+                      - button "View product details for 54 in USG Sheetrock Tools Heavy Duty T-Square" [ref=f13e431] [cursor=pointer]: 54 in USG Sheetrock Tools Heavy Duty T-Square
+                      - generic [ref=f13e432]: "SKU: 340417"
+                      - generic [ref=f13e436]:
+                        - generic "Regular price $44.94" [ref=f13e437]: $44.94
+                        - strong [ref=f13e438]: $40.85
+                  - article [ref=f13e439]:
+                    - generic [ref=f13e440]:
+                      - button "View 6 in USG Sheetrock Tools Jab Saw" [ref=f13e441] [cursor=pointer]:
+                        - img "6 in USG Sheetrock Tools Jab Saw" [ref=f13e444]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e445]:
+                      - button "View product details for 6 in USG Sheetrock Tools Jab Saw" [ref=f13e446] [cursor=pointer]: 6 in USG Sheetrock Tools Jab Saw
+                      - generic [ref=f13e447]: "SKU: 340414"
+                      - generic [ref=f13e451]:
+                        - generic "Regular price $19.11" [ref=f13e452]: $19.11
+                        - strong [ref=f13e453]: $17.37
+                  - article [ref=f13e454]:
+                    - generic [ref=f13e455]:
+                      - button "View 8 in USG Sheetrock Tools Mud Pan Grip" [ref=f13e456] [cursor=pointer]:
+                        - img "8 in USG Sheetrock Tools Mud Pan Grip" [ref=f13e459]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e460]:
+                      - button "View product details for 8 in USG Sheetrock Tools Mud Pan Grip" [ref=f13e461] [cursor=pointer]: 8 in USG Sheetrock Tools Mud Pan Grip
+                      - generic [ref=f13e462]: "SKU: 340404"
+                      - generic [ref=f13e466]:
+                        - generic "Regular price $17.59" [ref=f13e467]: $17.59
+                        - strong [ref=f13e468]: $15.99
+                  - article [ref=f13e469]:
+                    - generic [ref=f13e470]:
+                      - button "View Closet Monster Handle" [ref=f13e471] [cursor=pointer]:
+                        - img "Closet Monster Handle" [ref=f13e474]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e475]:
+                      - button "View product details for Closet Monster Handle" [ref=f13e476] [cursor=pointer]: Closet Monster Handle
+                      - generic [ref=f13e477]: "SKU: CMH"
+                      - generic [ref=f13e481]:
+                        - generic "Regular price $125.40" [ref=f13e482]: $125.40
+                        - strong [ref=f13e483]: $114.00
+                  - article [ref=f13e484]:
+                    - generic [ref=f13e485]:
+                      - button "View Corner Cobra" [ref=f13e486] [cursor=pointer]:
+                        - img "Corner Cobra" [ref=f13e489]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e490]:
+                      - button "View product details for Corner Cobra" [ref=f13e491] [cursor=pointer]: Corner Cobra
+                      - generic [ref=f13e492]: "SKU: CC"
+                      - generic [ref=f13e496]:
+                        - generic "Regular price $404.80" [ref=f13e497]: $404.80
+                        - strong [ref=f13e498]: $368.00
+                  - article [ref=f13e499]:
+                    - generic [ref=f13e500]:
+                      - button "View Corner Roller" [ref=f13e501] [cursor=pointer]:
+                        - img "Corner Roller" [ref=f13e504]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e505]:
+                      - button "View product details for Corner Roller" [ref=f13e506] [cursor=pointer]: Corner Roller
+                      - generic [ref=f13e507]: "SKU: CR"
+                      - generic [ref=f13e511]:
+                        - generic "Regular price $184.80" [ref=f13e512]: $184.80
+                        - strong [ref=f13e513]: $168.00
+                  - article [ref=f13e514]:
+                    - generic [ref=f13e515]:
+                      - button "View LEVEL5 50\" Fixed Handle" [ref=f13e516] [cursor=pointer]:
+                        - img "LEVEL5 50\" Fixed Handle" [ref=f13e519]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e520]:
+                      - button "View product details for LEVEL5 50\" Fixed Handle" [ref=f13e521] [cursor=pointer]: LEVEL5 50" Fixed Handle
+                      - generic [ref=f13e522]: Multiple options available
+                      - strong [ref=f13e527]:
+                        - generic [ref=f13e528]: From
+                        - generic [ref=f13e529]: $92.88
+                  - article [ref=f13e530]:
+                    - generic [ref=f13e531]:
+                      - button "View LEVEL5 Corner Roller Handle" [ref=f13e532] [cursor=pointer]:
+                        - img "LEVEL5 Corner Roller Handle" [ref=f13e535]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e536]:
+                      - button "View product details for LEVEL5 Corner Roller Handle" [ref=f13e537] [cursor=pointer]: LEVEL5 Corner Roller Handle
+                      - generic [ref=f13e538]: Multiple options available
+                      - strong [ref=f13e543]:
+                        - generic [ref=f13e544]: From
+                        - generic [ref=f13e545]: $89.99
+                  - article [ref=f13e546]:
+                    - generic [ref=f13e547]:
+                      - button "View LEVEL5 Entry to Automatic Finishing Set" [ref=f13e548] [cursor=pointer]:
+                        - img "LEVEL5 Entry to Automatic Finishing Set" [ref=f13e551]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e552]:
+                      - button "View product details for LEVEL5 Entry to Automatic Finishing Set" [ref=f13e553] [cursor=pointer]: LEVEL5 Entry to Automatic Finishing Set
+                      - generic [ref=f13e554]: Multiple options available
+                      - strong [ref=f13e559]:
+                        - generic [ref=f13e560]: From
+                        - generic [ref=f13e561]: $2,412.75
+                  - article [ref=f13e562]:
+                    - generic [ref=f13e563]:
+                      - button "View Platinum 50\" Corner Tool Handle" [ref=f13e564] [cursor=pointer]:
+                        - img "Platinum 50\" Corner Tool Handle" [ref=f13e567]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e568]:
+                      - button "View product details for Platinum 50\" Corner Tool Handle" [ref=f13e569] [cursor=pointer]: Platinum 50" Corner Tool Handle
+                      - generic [ref=f13e570]: Multiple options available
+                      - strong [ref=f13e575]:
+                        - generic [ref=f13e576]: From
+                        - generic [ref=f13e577]: $49.00
+                  - article [ref=f13e578]:
+                    - generic [ref=f13e579]:
+                      - button "View Platinum 90° Corner Applicator" [ref=f13e580] [cursor=pointer]:
+                        - img "Platinum 90° Corner Applicator" [ref=f13e583]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e584]:
+                      - button "View product details for Platinum 90° Corner Applicator" [ref=f13e585] [cursor=pointer]: Platinum 90° Corner Applicator
+                      - generic [ref=f13e586]: Multiple options available
+                      - strong [ref=f13e591]:
+                        - generic [ref=f13e592]: From
+                        - generic [ref=f13e593]: $59.00
+                  - article [ref=f13e594]:
+                    - generic [ref=f13e595]:
+                      - button "View Platinum Gooseneck" [ref=f13e596] [cursor=pointer]:
+                        - img "Platinum Gooseneck" [ref=f13e599]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e600]:
+                      - button "View product details for Platinum Gooseneck" [ref=f13e601] [cursor=pointer]: Platinum Gooseneck
+                      - generic [ref=f13e602]: "SKU: PT-GN"
+                      - generic [ref=f13e606]:
+                        - generic "Regular price $64.90" [ref=f13e607]: $64.90
+                        - strong [ref=f13e608]: $59.00
+                  - article [ref=f13e609]:
+                    - generic [ref=f13e610]:
+                      - button "View Platinum Inside Corner Roller" [ref=f13e611] [cursor=pointer]:
+                        - img "Platinum Inside Corner Roller" [ref=f13e614]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e615]:
+                      - button "View product details for Platinum Inside Corner Roller" [ref=f13e616] [cursor=pointer]: Platinum Inside Corner Roller
+                      - generic [ref=f13e617]: Multiple options available
+                      - strong [ref=f13e622]:
+                        - generic [ref=f13e623]: From
+                        - generic [ref=f13e624]: $67.99
+                  - article [ref=f13e625]:
+                    - generic [ref=f13e626]:
+                      - button "View Platinum Semi Automatic Drywall Taper" [ref=f13e627] [cursor=pointer]:
+                        - img "Platinum Semi Automatic Drywall Taper" [ref=f13e630]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e631]:
+                      - button "View product details for Platinum Semi Automatic Drywall Taper" [ref=f13e632] [cursor=pointer]: Platinum Semi Automatic Drywall Taper
+                      - generic [ref=f13e633]: "SKU: PT-TP"
+                      - generic [ref=f13e637]:
+                        - generic "Regular price $159.50" [ref=f13e638]: $159.50
+                        - strong [ref=f13e639]: $145.00
+                  - article [ref=f13e640]:
+                    - generic [ref=f13e641]:
+                      - button "View Predator 42\" Cam Lock Compound Tube" [ref=f13e642] [cursor=pointer]:
+                        - img "Predator 42\" Cam Lock Compound Tube" [ref=f13e645]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e646]:
+                      - button "View product details for Predator 42\" Cam Lock Compound Tube" [ref=f13e647] [cursor=pointer]: Predator 42" Cam Lock Compound Tube
+                      - generic [ref=f13e648]: "SKU: PCLT42"
+                      - generic [ref=f13e652]:
+                        - generic "Regular price $405.90" [ref=f13e653]: $405.90
+                        - strong [ref=f13e654]: $369.00
+                  - article [ref=f13e655]:
+                    - generic [ref=f13e656]:
+                      - button "View Predator 42\" Compound Tube" [ref=f13e657] [cursor=pointer]:
+                        - img "Predator 42\" Compound Tube" [ref=f13e660]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e661]:
+                      - button "View product details for Predator 42\" Compound Tube" [ref=f13e662] [cursor=pointer]: Predator 42" Compound Tube
+                      - generic [ref=f13e663]: "SKU: PCMT42"
+                      - generic [ref=f13e667]:
+                        - generic "Regular price $302.50" [ref=f13e668]: $302.50
+                        - strong [ref=f13e669]: $275.00
+                  - article [ref=f13e670]:
+                    - generic [ref=f13e671]:
+                      - button "View Predator Loading Pump" [ref=f13e672] [cursor=pointer]:
+                        - img "Predator Loading Pump" [ref=f13e675]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e676]:
+                      - button "View product details for Predator Loading Pump" [ref=f13e677] [cursor=pointer]: Predator Loading Pump
+                      - generic [ref=f13e678]: "SKU: PHMP"
+                      - generic [ref=f13e682]:
+                        - generic "Regular price $546.70" [ref=f13e683]: $546.70
+                        - strong [ref=f13e684]: $497.00
+                  - article [ref=f13e685]:
+                    - generic [ref=f13e686]:
+                      - button "View Semi Automatic Taper" [ref=f13e687] [cursor=pointer]:
+                        - img "Semi Automatic Taper" [ref=f13e690]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e691]:
+                      - button "View product details for Semi Automatic Taper" [ref=f13e692] [cursor=pointer]: Semi Automatic Taper
+                      - generic [ref=f13e693]: "SKU: SAT"
+                      - generic [ref=f13e697]:
+                        - generic "Regular price $268.40" [ref=f13e698]: $268.40
+                        - strong [ref=f13e699]: $244.00
+                  - article [ref=f13e700]:
+                    - generic [ref=f13e701]:
+                      - button "View Sheetrock Tools 90 Degree Outside Corner Paper Face Bead Roller" [ref=f13e702] [cursor=pointer]:
+                        - img "Sheetrock Tools 90 Degree Outside Corner Paper Face Bead Roller" [ref=f13e705]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e706]:
+                      - button "View product details for Sheetrock Tools 90 Degree Outside Corner Paper Face Bead Roller" [ref=f13e707] [cursor=pointer]: Sheetrock Tools 90 Degree Outside Corner Paper Face Bead Roller
+                      - generic [ref=f13e708]: "SKU: 340310"
+                      - generic [ref=f13e712]:
+                        - generic "Regular price $164.99" [ref=f13e713]: $164.99
+                        - strong [ref=f13e714]: $149.99
+                  - article [ref=f13e715]:
+                    - generic [ref=f13e716]:
+                      - button "View Sheetrock Tools Paper Face Bead Hopper" [ref=f13e717] [cursor=pointer]:
+                        - img "Sheetrock Tools Paper Face Bead Hopper" [ref=f13e720]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e721]:
+                      - button "View product details for Sheetrock Tools Paper Face Bead Hopper" [ref=f13e722] [cursor=pointer]: Sheetrock Tools Paper Face Bead Hopper
+                      - generic [ref=f13e723]: "SKU: 340311"
+                      - generic [ref=f13e727]:
+                        - generic "Regular price $218.77" [ref=f13e728]: $218.77
+                        - strong [ref=f13e729]: $198.88
+                  - article [ref=f13e730]:
+                    - generic [ref=f13e731]:
+                      - button "View TapeTech 90T Filler Adapter" [ref=f13e732] [cursor=pointer]:
+                        - img "TapeTech 90T Filler Adapter" [ref=f13e735]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e736]:
+                      - button "View product details for TapeTech 90T Filler Adapter" [ref=f13e737] [cursor=pointer]: TapeTech 90T Filler Adapter
+                      - generic [ref=f13e738]: "SKU: 90T"
+                      - generic [ref=f13e742]:
+                        - generic "Regular price $86.90" [ref=f13e743]: $86.90
+                        - strong [ref=f13e744]: $79.00
+                  - article [ref=f13e745]:
+                    - generic [ref=f13e746]:
+                      - button "View TapeTech Basic Box Set" [ref=f13e747] [cursor=pointer]:
+                        - img "TapeTech Basic Box Set" [ref=f13e750]
+                      - generic [aria-hidden]:
+                        - generic:
+                          - button:
+                            - generic: Quick View
+                    - generic [ref=f13e751]:
+                      - button "View product details for TapeTech Basic Box Set" [ref=f13e752] [cursor=pointer]: TapeTech Basic Box Set
+                      - generic [ref=f13e753]: "SKU: TTBBS"
+                      - generic [ref=f13e757]:
+                        - generic "Regular price $1,808.40" [ref=f13e758]: $1,808.40
+                        - strong [ref=f13e759]: $1,644.00
+                - region "Catalog pagination" [ref=f13e760]:
+                  - navigation "Product pagination" [ref=f13e762]:
+                    - button "Previous page" [disabled] [ref=f13e763]:
+                      - generic [ref=f13e766]: Previous
+                    - list [ref=f13e767]:
+                      - listitem [ref=f13e768]:
+                        - button "Page 1" [ref=f13e769] [cursor=pointer]: "1"
+                      - listitem [ref=f13e770]:
+                        - button "Page 2" [ref=f13e771] [cursor=pointer]: "2"
+                      - listitem [ref=f13e772]:
+                        - button "Page 3" [ref=f13e773] [cursor=pointer]: "3"
+                      - listitem [aria-hidden] [ref=f13e774]: …
+                      - listitem [ref=f13e775]:
+                        - button "Page 27" [ref=f13e776] [cursor=pointer]: "27"
+                    - button "Next page" [ref=f13e777] [cursor=pointer]:
+                      - generic [ref=f13e778]: Next
+              - status [ref=f13e781]
+  - contentinfo [ref=f13e782]:
+    - generic [ref=f13e783]:
+      - generic [ref=f13e784]:
+        - region "Drywall Toolbox" [ref=f13e785]:
+          - generic [ref=f13e786]:
+            - link "Drywall Toolbox home" [ref=f13e787] [cursor=pointer]:
+              - /url: /
+              - img "Drywall Toolbox" [ref=f13e788]
+            - navigation "Social media" [ref=f13e789]:
+              - link "Instagram" [ref=f13e790] [cursor=pointer]:
+                - /url: https://www.instagram.com/drywalltoolbox
+              - link "Facebook" [ref=f13e794] [cursor=pointer]:
+                - /url: https://www.facebook.com/Drywalltoolbox/
+              - link "X" [ref=f13e797] [cursor=pointer]:
+                - /url: https://twitter.com
+        - region "Shop" [ref=f13e800]:
+          - heading "Shop" [level=2] [ref=f13e801]
+          - list [ref=f13e802]:
+            - listitem [ref=f13e803]:
+              - link "All Products" [ref=f13e804] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=f13e805]:
+              - link "Shop by Brand" [ref=f13e806] [cursor=pointer]:
+                - /url: /products/brands
+            - listitem [ref=f13e807]:
+              - link "Parts" [ref=f13e808] [cursor=pointer]:
+                - /url: /parts
+        - region "Tools & Services" [ref=f13e809]:
+          - heading "Tools & Services" [level=2] [ref=f13e810]
+          - list [ref=f13e811]:
+            - listitem [ref=f13e812]:
+              - link "Schematics" [ref=f13e813] [cursor=pointer]:
+                - /url: /schematics
+            - listitem [ref=f13e814]:
+              - link "Repair Services" [ref=f13e815] [cursor=pointer]:
+                - /url: /repairs
+            - listitem [ref=f13e816]:
+              - link "Repair Packages" [ref=f13e817] [cursor=pointer]:
+                - /url: /repairs/packages
+        - region "Customer Support" [ref=f13e818]:
+          - heading "Customer Support" [level=2] [ref=f13e819]
+          - list [ref=f13e820]:
+            - listitem [ref=f13e821]:
+              - link "Help" [ref=f13e822] [cursor=pointer]:
+                - /url: /help
+            - listitem [ref=f13e823]:
+              - link "Contact Us" [ref=f13e824] [cursor=pointer]:
+                - /url: /contact
+            - listitem [ref=f13e825]:
+              - link "Shipping & Returns" [ref=f13e826] [cursor=pointer]:
+                - /url: /policies
+        - region "My Account" [ref=f13e827]:
+          - heading "My Account" [level=2] [ref=f13e828]
+          - list [ref=f13e829]:
+            - listitem [ref=f13e830]:
+              - link "Sign In" [ref=f13e831] [cursor=pointer]:
+                - /url: /login
+            - listitem [ref=f13e832]:
+              - link "Account Dashboard" [ref=f13e833] [cursor=pointer]:
+                - /url: /dashboard
+            - listitem [ref=f13e834]:
+              - link "Track My Order" [ref=f13e835] [cursor=pointer]:
+                - /url: /dashboard?tab=orders
+      - generic [ref=f13e837]:
+        - paragraph [ref=f13e838]: © 2026 Drywall Toolbox. All rights reserved.
+        - navigation "Legal" [ref=f13e839]:
+          - link "Privacy" [ref=f13e840] [cursor=pointer]:
+            - /url: /privacy-policy/
+          - link "Terms" [ref=f13e841] [cursor=pointer]:
+            - /url: /terms-of-service/
+  - generic [aria-hidden]:
+    - dialog:
+      - banner:
+        - generic:
+          - heading [level=3]: Your cart
+        - generic:
+          - button
+      - generic:
+        - generic:
+          - generic:
+            - strong: Your cart is empty
+            - paragraph: Add products to get started.
+            - link:
+              - /url: /products
+              - text: Browse Products
+  - status [ref=f13e842]

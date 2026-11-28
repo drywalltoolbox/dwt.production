@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Truck } from 'lucide-react';
 import { apiClient } from '../../api/client.js';
 
 const SHIPPING_CUTOFF_ENDPOINT = '/wp-json/dtb/v1/storefront/shipping-cutoff';
@@ -97,9 +98,17 @@ function formatRemaining(milliseconds) {
   return `${dayPrefix}${pad(hours)}h ${pad(minutes)}m ${pad(remainingSeconds)}s`;
 }
 
+function formatCutoffTime(timestamp, timezone) {
+  return new Intl.DateTimeFormat('en-US', {
+    timeZone: timezone,
+    hour: 'numeric',
+    minute: '2-digit',
+  }).format(new Date(timestamp));
+}
+
 export default function ShippingCutoffBanner({ stockStatus }) {
   const [cutoff, setCutoff] = useState(null);
-  const [now, setNow] = useState(Date.now());
+  const [now, setNow] = useState(0);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -181,6 +190,7 @@ export default function ShippingCutoffBanner({ stockStatus }) {
     : remaining === 0;
   const countdown = formatRemaining(remaining);
   const timeZoneLabel = cutoff.timezone ? ` (${cutoff.timezone})` : '';
+  const cutoffTimeLabel = formatCutoffTime(cutoff.cutoffAt, cutoff.timezone);
   const nextWindowDay = getNextWindowDayLabel(cutoff.cutoffAt, cutoff.timezone);
 
   return (
@@ -189,12 +199,13 @@ export default function ShippingCutoffBanner({ stockStatus }) {
       aria-label="Shipping cutoff"
       data-cutoff-state={isSameDayWindowOpen ? 'open' : 'closed'}
     >
+      <Truck className="dtb-shipping-cutoff__icon" size={18} strokeWidth={1.8} aria-hidden="true" />
       <span className="dtb-shipping-cutoff__copy">
         {isSameDayWindowOpen ? (
           <>
             <strong><span className="dtb-shipping-cutoff__stock-dot" />In stock.</strong>
             <span> Order within <time className="dtb-shipping-cutoff__timer" dateTime={new Date(cutoff.cutoffAt).toISOString()}>{countdown}</time> to ship today.</span>
-            <small>Same-day shipping cutoff: 2:00 PM{timeZoneLabel}.</small>
+            <small>Same-day shipping cutoff: {cutoffTimeLabel}{timeZoneLabel}.</small>
           </>
         ) : (
           <>

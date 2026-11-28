@@ -71,6 +71,10 @@
   color: #b42318;
 }
 
+.dtb-pdp__info-column .dtb-pdp-header__meta-stock.is-unknown {
+  color: var(--dtb-muted);
+}
+
 .dtb-pdp__info-column .dtb-pdp-header__price {
   color: #07152f;
   font-size: clamp(1.75rem, 1.35rem + 1.65vw, 2.5rem);
